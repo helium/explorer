@@ -1,75 +1,72 @@
 import React, { Component } from 'react'
-import { Table, Card } from 'antd';
-import Timestamp from 'react-timestamp';
+import { Table, Card, Button, Row } from 'antd'
+import Timestamp from 'react-timestamp'
+import { Client } from '@helium/http'
 
 class BlocksList extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      blocks: [],
-      loading: true,
-    }
+  state = {
+    blocks: [],
+    loading: true,
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const client = new Client()
+    this.list = await client.blocks.list()
     this.loadBlocks()
   }
 
-  async getCursors(blocks, cursor) {
-    const cc = await (await fetch("https://api.helium.io/v1/blocks?cursor=" + cursor)).json()
-    blocks.push(...cc.data)
-    if (blocks.length > 100) { return } //probably dont need more than 200+ blocks for now
-    if (cc.cursor) {
-      await this.getCursors(blocks, cc.cursor)
-    }
-  }
-
-  async loadBlocks() {
-    let { loading, blocks } = this.state
-    const b = await (await fetch("https://api.helium.io/v1/blocks")).json()
-    blocks.push(...b.data)
-    if (b.cursor) { 
-      await this.getCursors(blocks, b.cursor)
-    }
-    loading = false    
-    this.setState({ blocks, loading })
+  loadBlocks = async () => {
+    this.setState({ loading: true })
+    const { blocks } = this.state
+    const newBlocks = await this.list.take(20)
+    this.setState({ blocks: [...blocks, ...newBlocks], loading: false })
   }
 
   render() {
-    const { blocks, loading } = this.state;
+    const { blocks, loading } = this.state
 
     const columns = [
       {
         title: 'Height',
         dataIndex: 'height',
         key: 'height',
-        render: height => <span style={{fontWeight: 'bold'}}>{height}</span>          
+        render: (height) => (
+          <span style={{ fontWeight: 'bold' }}>{height}</span>
+        ),
       },
       {
         title: 'Timestamp',
         dataIndex: 'time',
         key: 'time',
-        render: time => <Timestamp date={time} />
+        render: (time) => <Timestamp date={time} />,
       },
       {
         title: 'Transactions',
-        dataIndex: 'transaction_count',
+        dataIndex: 'transactionCount',
         key: 'transaction_count',
       },
       {
         title: 'Hash',
         dataIndex: 'hash',
         key: 'hash',
-        render: hash => <a href={'/blocks/' + hash}>{hash}</a>
-      }
+        render: (hash) => <a href={'/blocks/' + hash}>{hash}</a>,
+      },
     ]
 
     return (
       <div>
-          <Card>
-            <Table dataSource={blocks} columns={columns} rowKey="hash" pagination={{ pageSize: 50 }} loading={loading}/>
-          </Card>
+        <Card>
+          <Table
+            dataSource={blocks}
+            columns={columns}
+            rowKey="hash"
+            pagination={false}
+            loading={loading}
+          />
+          <Row style={{ textAlign: 'center', paddingTop: 12 }}>
+            <Button onClick={this.loadBlocks}>Load More</Button>
+          </Row>
+        </Card>
       </div>
     )
   }

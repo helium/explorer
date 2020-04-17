@@ -6,15 +6,12 @@ const { Title, Text } = Typography;
 const { Header, Content, Footer } = Layout;
 
 class HotspotView extends Component {
-  constructor(props) {
-    super(props)
-    
-    this.state = {
-      hotspot: {},
-      activity: [],
-      loading: true,
-      activityLoading: true,
-    }
+  state = {
+    hotspot: {},
+    block: {},
+    activity: [],
+    loading: true,
+    activityLoading: true,
   }
 
   componentDidMount() {
@@ -22,22 +19,24 @@ class HotspotView extends Component {
   }
 
   async loadHotspot() {
-    let { hotspot, activity, activityLoading, loading } = this.state
+    let { hotspot, block, activity, activityLoading, loading } = this.state
     const h = await (await fetch("https://api.helium.io/v1/hotspots/" + this.props.match.params.address)).json()
+    const b = await (await fetch("https://api.helium.io/v1/blocks/" + h.data.block)).json()
     fetch("https://api.helium.io/v1/hotspots/" + this.props.match.params.address + "/activity")
     .then(res => res.json())
     .then(act => {
       activity = act.data
       activityLoading = false
       this.setState({ activity, activityLoading })
-    })
-    hotspot = h.data    
+    })    
+    hotspot = h.data
+    block = b.data
     loading = false
-    this.setState({ hotspot, loading })
+    this.setState({ hotspot, block, loading })
   }
   
   render() {
-    const { hotspot, activity, activityLoading, loading } = this.state;
+    const { hotspot, block, activity, activityLoading, loading } = this.state;
     const activityColumns = [
       {
         title: 'Type',
@@ -82,7 +81,7 @@ class HotspotView extends Component {
                         <p><img src={"https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/pin-m(" + hotspot.lng + "," + hotspot.lat + ")/" + hotspot.lng + "," + hotspot.lat + ",11/400x300?access_token=pk.eyJ1IjoicGV0ZXJtYWluIiwiYSI6ImNqMHA5dm8xbTAwMGQycXMwa3NucGptenQifQ.iVCDWzb16acgOKWz65AckA"}/></p>
                         <p>Address: {hotspot.address}</p>
                         <p><Text>Score: {hotspot.score}</Text></p>
-                        <p><Text>Added in block <a href={'/blocks/' + hotspot.block}>{hotspot.block}</a></Text></p>
+                        <p><Text>Added in block <a href={'/blocks/' + block.hash}>{hotspot.block}</a></Text></p>
                         <p><Text>Owner: <a href={'/accounts/' + hotspot.owner}>{hotspot.owner}</a></Text></p>
 
                       </div>
@@ -94,11 +93,12 @@ class HotspotView extends Component {
               <div style={{ marginTop: '20px'}}>              
                 <Row gutter={8}>
                   <Col xs={16} offset={4}>
-                    <Card loading={activityLoading} title={'Activity'}>
+                    <Card title={'Activity'}>
                     <Table dataSource={activity} 
                         columns={activityColumns}
                         size="small" 
                         rowKey="hash"
+                        loading={activityLoading} 
                         pagination={{ pageSize: 50 }}
                       />
                     </Card>

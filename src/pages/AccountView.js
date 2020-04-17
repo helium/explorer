@@ -132,11 +132,12 @@ class AccountView extends Component {
             <div style={{ marginTop: '50px'}}>              
               <Row gutter={8}>
                 <Col xs={16} offset={4}>
-                  <Card loading={loading} title={account.address}>
+                  <Card title={account.address}>
                     <Table dataSource={[account]} 
                       columns={balanceColumns}
                       size="small" 
                       rowKey="hash"
+                      loading={loading}
                       pagination={false}
                     />
                   </Card>
@@ -162,11 +163,12 @@ class AccountView extends Component {
             <div style={{ marginTop: '20px'}}>              
               <Row gutter={8}>
                 <Col xs={16} offset={4}>
-                  <Card loading={activityLoading} title={'Activity'}>
+                  <Card title={'Activity'}>
                   <Table dataSource={activity} 
                       columns={activityColumns}
                       size="small" 
                       rowKey="hash"
+                      loading={activityLoading}
                       pagination={{ pageSize: 50 }}
                     />
                   </Card>

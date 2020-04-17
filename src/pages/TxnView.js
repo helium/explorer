@@ -7,13 +7,10 @@ const { Title, Text } = Typography;
 const { Header, Content, Footer } = Layout;
 
 class TxnView extends Component {
-  constructor(props) {
-    super(props)
-    
-    this.state = {
-      txn: {},
-      loading: true,
-    }
+  state = {
+    txn: {},
+    block: {},
+    loading: true,
   }
 
   componentDidMount() {
@@ -21,16 +18,21 @@ class TxnView extends Component {
   }
 
   async loadTxn() {
-    let { txn, loading } = this.state
+    let { txn, block, loading } = this.state    
     const t = await (await fetch("https://api.helium.io/v1/transactions/" + this.props.match.params.hash)).json()
-    console.log(t)
     txn = t.data
     loading = false
     this.setState({ txn, loading })
+    fetch("https://api.helium.io/v1/blocks/" + txn.height)
+    .then(res => res.json())
+    .then(b => {
+      block = b.data
+      this.setState({ block })
+    })
   }
   
   render() {
-    const { txn, loading } = this.state;
+    const { txn, block, loading } = this.state;
 
     const txnView = (type) => {      
       switch(type) {
@@ -100,6 +102,7 @@ class TxnView extends Component {
           title: 'Payee',
           dataIndex: 'payee',
           key: 'payee',
+          render: data => <a href={'/accounts/' + data}>{data}</a>
         },
         {
           title: 'Amount',
@@ -110,6 +113,7 @@ class TxnView extends Component {
       ]
       return (
         <div>
+          <p><Text>Added in block <a href={'/blocks/' + block.hash}>{txn.height}</a></Text></p>
           <table class>
             <tbody class="ant-table-tbody">
               <tr class="ant-table-row">              
@@ -140,6 +144,7 @@ class TxnView extends Component {
           title: 'Payee',
           dataIndex: 'payee',
           key: 'payee',
+          render: data => <a href={'/accounts/' + data}>{data}</a>
         },
         {
           title: 'Amount',
@@ -152,6 +157,7 @@ class TxnView extends Component {
       txn.payments.map((p) => total += p.amount)
       return (
         <div>
+          <p><Text>Added in block <a href={'/blocks/' + block.hash}>{txn.height}</a></Text></p>
           <p>Total HNT: {total / 100000000} </p>
           <p>Payer: {txn.payer}</p>
           <Table dataSource={txn.payments} 

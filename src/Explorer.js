@@ -1,6 +1,6 @@
 import React from 'react';
 import './Explorer.css';
-import Router from './components/Router'
+import Router from './Router'
 
 class Explorer extends React.Component {
   render() {

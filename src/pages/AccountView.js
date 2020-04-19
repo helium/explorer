@@ -1,64 +1,69 @@
 import React, { Component } from 'react'
-import { Layout, Row, Col, Typography, Icon, Tag, Table, Card } from 'antd';
-import SearchBar from '../components/SearchBar'
-import TxnTag from '../components/TxnTag'
-const { Title, Text } = Typography;
-const { Header, Content, Footer } = Layout;
+import { Row, Col, Table, Card, Typography} from 'antd'
+import { WalletOutlined } from '@ant-design/icons'
+import Client, { Network } from '@helium/http'
+import AppLayout from '../components/AppLayout'
+import ActivityList from '../components/ActivityList'
+const { Title } = Typography
+
+const initialState = {
+    account: {},
+    hotspots: [],
+    loading: true,
+  }
 
 class AccountView extends Component {
-  constructor(props) {
-    super(props)
-    
-    this.state = {
-        account: {},
-        activity: [],
-        hotspots: [],
-        loading: true,
-        activityLoading: true,
+  state = initialState
+
+  componentDidMount() {
+    this.client = new Client(Network.staging)
+    this.loadData()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.pathname !== this.props.location.pathname) {
+      this.loadData()
     }
   }
 
-  componentDidMount() {
-    this.loadAccount()
+  loadData = async () => {
+    const { address } = this.props.match.params
+    await this.setState(initialState)
+    const account = await this.client.accounts.get(address)
+    const list = await this.client.account(address).hotspots.list()
+    const hotspots = []
+    for await (const hotspot of list) {
+      hotspots.push(hotspot)
+    }
+
+    this.setState({ account, hotspots, loading: false })
   }
 
-  async loadAccount() {
-    let { account, activity, hotspots, activityLoading, loading } = this.state
-    const a = await (await fetch("https://api.helium.io/v1/accounts/" + this.props.match.params.address)).json()
-    const h = await (await fetch("https://api.helium.io/v1/accounts/" + this.props.match.params.address + "/hotspots")).json()
-    fetch("https://api.helium.io/v1/accounts/" + this.props.match.params.address + "/activity")
-    .then(res => res.json())
-    .then(act => {
-      activity = act.data
-      activityLoading = false
-      this.setState({ activity, activityLoading })
-    })
-    hotspots = h.data
-    account = a.data
-    loading = false
-    this.setState({ account, hotspots, loading })
-  }
-    
   render() {
-    const { account, hotspots, activity, activityLoading, loading } = this.state;
+    const {
+      account,
+      hotspots,
+      loading,
+    } = this.state
+    const { address } = this.props.match.params
     const balanceColumns = [
       {
         title: 'HNT',
         dataIndex: 'balance',
         key: 'balance',
-        render: data => <span>{data / 100000000} HNT</span>
+        render: (balance) => <span>{balance.toString()}</span>,
       },
       {
         title: 'Data Credits',
-        dataIndex: 'dc_balance',
+        dataIndex: 'dcBalance',
         key: 'dc_balance',
-        render: data => <span>{data / 100000000} DC</span>
+        render: (balance) => <span>{balance.toString()}</span>,
       },
       {
         title: 'Security Tokens',
-        dataIndex: 'sec_balance',
+        dataIndex: 'secBalance',
         key: 'sec_balance',
-        render: data => <span>{data / 100000000} STO</span>
+        render: (balance) => <span>{balance.toString()}</span>,
       },
     ]
 
@@ -67,7 +72,7 @@ class AccountView extends Component {
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
-        render: (data, row) => <a href={'/hotspots/' + row.address}>{data}</a>
+        render: (data, row) => <a href={'/hotspots/' + row.address}>{data}</a>,
       },
       {
         title: 'Score',
@@ -76,109 +81,42 @@ class AccountView extends Component {
       },
     ]
 
-    const activityColumns = [
-      {
-        title: 'Type',
-        dataIndex: 'type',
-        key: 'type',
-        render: data => <TxnTag type={data}></TxnTag>
-      },
-      {
-        title: 'Amount',
-        dataIndex: 'amount',
-        key: 'amount',
-        render: (txt, txn) => activityAmount(txn)
-      },
-      {
-        title: 'Block Height',
-        dataIndex: 'height',
-        key: 'height',
-      }
-    ]
+    return (
+      <AppLayout>
+        <Row gutter={8} style={{ marginTop: 50 }}>
+          <Col xs={16} offset={4}>
+            <Card loading={loading}>
+              <Title level={4}>
+                <WalletOutlined />
+                {account.address}
+              </Title>
+              <Table
+                dataSource={[account]}
+                columns={balanceColumns}
+                size="small"
+                pagination={false}
+              />
+            </Card>
+          </Col>
+        </Row>
 
-    const activityAmount = (txn) => {
-      switch(txn.type) {
-        case "payment_v1":
-          return <span>{txn.amount / 100000000} HNT</span>
-        case "payment_v2":
-          let paymentTotal = 0;
-          txn.payments.map((p) => paymentTotal += p.amount)
-          return <span>{paymentTotal / 100000000} HNT</span>
-        case "rewards_v1":
-          let rewardsTotal = 0;
-          txn.rewards.map((r) => rewardsTotal += r.amount)
-          return <span>{rewardsTotal / 100000000} HNT</span>
-        default:
-          return <span>{txn.amount}</span>
-      }
-    }
+        <Row gutter={8} style={{ marginTop: 20 }}>
+          <Col xs={16} offset={4}>
+            <Card loading={loading} title={'Hotspots'}>
+              <Table
+                dataSource={hotspots}
+                columns={hotspotColumns}
+                size="small"
+                rowKey="name"
+                pagination={false}
+              />
+            </Card>
+          </Col>
+        </Row>
 
-    return(
-      <div>
-        <Layout>
-          <Header>
-          <a href ='/'><div className="logo" /></a>
-          </Header>
+        <ActivityList type="account" address={address} />
 
-          <Content style={{ padding: '50px' }}>
-            <div>
-              <Row gutter={8}>
-                <Col xs={12} offset={6}>
-                    <SearchBar></SearchBar>
-                </Col>
-              </Row>
-            </div>
-
-            <div style={{ marginTop: '50px'}}>              
-              <Row gutter={8}>
-                <Col xs={16} offset={4}>
-                  <Card title={account.address}>
-                    <Table dataSource={[account]} 
-                      columns={balanceColumns}
-                      size="small" 
-                      rowKey="hash"
-                      loading={loading}
-                      pagination={false}
-                    />
-                  </Card>
-                </Col>
-              </Row>
-            </div>
-
-            <div style={{ marginTop: '20px'}}>              
-              <Row gutter={8}>
-                <Col xs={16} offset={4}>
-                  <Card loading={loading} title={'Hotspots'}>
-                  <Table dataSource={hotspots} 
-                      columns={hotspotColumns}
-                      size="small" 
-                      rowKey="name"
-                      pagination={false}
-                    />
-                  </Card>
-                </Col>
-              </Row>
-            </div>
-
-            <div style={{ marginTop: '20px'}}>              
-              <Row gutter={8}>
-                <Col xs={16} offset={4}>
-                  <Card title={'Activity'}>
-                  <Table dataSource={activity} 
-                      columns={activityColumns}
-                      size="small" 
-                      rowKey="hash"
-                      loading={activityLoading}
-                      pagination={{ pageSize: 50 }}
-                    />
-                  </Card>
-                </Col>
-              </Row>
-            </div>
-
-          </Content>
-        </Layout>
-      </div>
+      </AppLayout>
     )
   }
 }

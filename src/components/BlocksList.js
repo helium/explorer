@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Table, Card, Button, Row } from 'antd'
+import { Table } from 'antd'
 import Timestamp from 'react-timestamp'
 import Client from '@helium/http'
+import LoadMoreButton from './LoadMoreButton'
 
 class BlocksList extends Component {
   state = {
@@ -62,9 +63,7 @@ class BlocksList extends Component {
           pagination={false}
           loading={loading}
         />
-        <Row style={{ justifyContent: 'center', paddingTop: 12 }}>
-          <Button onClick={this.loadBlocks}>Load More</Button>
-        </Row>
+        <LoadMoreButton onClick={this.loadBlocks} />
       </>
     )
   }

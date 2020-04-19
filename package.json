@@ -11,6 +11,7 @@
     "base64url": "3.0.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-qr-code": "^1.0.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "react-timestamp": "^5.1.0"

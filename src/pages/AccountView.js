@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
-import { Row, Col, Table, Card, Typography} from 'antd'
-import { WalletOutlined } from '@ant-design/icons'
+import { Row, Col, Table, Card, Typography } from 'antd'
 import Client, { Network } from '@helium/http'
 import AppLayout from '../components/AppLayout'
 import ActivityList from '../components/ActivityList'
-const { Title } = Typography
+import AddressModal from '../components/AddressModal'
+const { Title, Text } = Typography
 
 const initialState = {
-    account: {},
-    hotspots: [],
-    loading: true,
-  }
+  account: {},
+  hotspots: [],
+  loading: true,
+}
 
 class AccountView extends Component {
   state = initialState
@@ -40,11 +40,7 @@ class AccountView extends Component {
   }
 
   render() {
-    const {
-      account,
-      hotspots,
-      loading,
-    } = this.state
+    const { account, hotspots, loading } = this.state
     const { address } = this.props.match.params
     const balanceColumns = [
       {
@@ -85,11 +81,16 @@ class AccountView extends Component {
       <AppLayout>
         <Row gutter={8} style={{ marginTop: 50 }}>
           <Col xs={16} offset={4}>
-            <Card loading={loading}>
-              <Title level={4}>
-                <WalletOutlined />
+            <Card
+              loading={loading}
+              title="Account"
+              extra={
+                <AddressModal address={address} />
+              }
+            >
+              <Text strong copyable>
                 {account.address}
-              </Title>
+              </Text>
               <Table
                 dataSource={[account]}
                 columns={balanceColumns}
@@ -108,14 +109,12 @@ class AccountView extends Component {
                 columns={hotspotColumns}
                 size="small"
                 rowKey="name"
-                pagination={false}
               />
             </Card>
           </Col>
         </Row>
 
         <ActivityList type="account" address={address} />
-
       </AppLayout>
     )
   }

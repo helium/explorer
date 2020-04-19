@@ -38,12 +38,3 @@
     transform: rotate(360deg);
   }
 }
-
-.logo {
-  width: 120px;
-  height: 31px;
-  background: rgba(255, 255, 255, 0.2);
-  background-image: 'https://staging.console.helium.com/js/c25e6e8033bd86c7451a6153b4acb431.svg';
-  margin: 16px 24px 16px 0;
-  float: left;
-}

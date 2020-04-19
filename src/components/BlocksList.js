@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Table, Card, Button, Row } from 'antd'
 import Timestamp from 'react-timestamp'
-import { Client } from '@helium/http'
+import Client from '@helium/http'
 
 class BlocksList extends Component {
   state = {
@@ -54,20 +54,18 @@ class BlocksList extends Component {
     ]
 
     return (
-      <div>
-        <Card>
-          <Table
-            dataSource={blocks}
-            columns={columns}
-            rowKey="hash"
-            pagination={false}
-            loading={loading}
-          />
-          <Row style={{ textAlign: 'center', paddingTop: 12 }}>
-            <Button onClick={this.loadBlocks}>Load More</Button>
-          </Row>
-        </Card>
-      </div>
+      <>
+        <Table
+          dataSource={blocks}
+          columns={columns}
+          rowKey="hash"
+          pagination={false}
+          loading={loading}
+        />
+        <Row style={{ justifyContent: 'center', paddingTop: 12 }}>
+          <Button onClick={this.loadBlocks}>Load More</Button>
+        </Row>
+      </>
     )
   }
 }

@@ -1,69 +1,84 @@
 import React, { Component } from 'react'
-import { Layout, Row, Col, Typography, Icon, Tag, Table, Card } from 'antd';
-import SearchBar from '../components/SearchBar'
+import {
+  Row,
+  Col,
+  Typography,
+  Tag,
+  Table,
+  Card,
+  Button,
+} from 'antd'
+import { CodeSandboxOutlined } from '@ant-design/icons'
+import Client from '@helium/http'
+import Timestamp from 'react-timestamp'
 import TxnTag from '../components/TxnTag'
-import Timestamp from 'react-timestamp';
-const { Title, Text } = Typography;
-const { Header, Content, Footer } = Layout;
+import AppLayout from '../components/AppLayout'
+
+const { Title, Text } = Typography
+
+const PAGE_SIZE = 20
+
+const initialState = {
+  block: {},
+  txns: [],
+  loading: true,
+  hasMore: true,
+}
 
 class BlockView extends Component {
-  constructor(props) {
-    super(props)
-    
-    this.state = {
-      block: {},
-      txns: [],
-      loading: true,
-    }
-    console.log(this.props)
-  }
+  state = initialState
 
   componentDidMount() {
-    this.loadBlock()
+    this.client = new Client()
+    this.loadData()
   }
 
-  async getCursors(txns, cursor) {
-    const cc = await (await fetch("https://api.helium.io/v1/blocks/hash/" + this.props.match.params.hash +"/transactions?cursor=" + cursor)).json()
-    txns.push(...cc.data)
-    if (cc.cursor) {
-      await this.getCursors(txns, cc.cursor)
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.pathname !== this.props.location.pathname) {
+      this.loadData()
     }
   }
 
-  async loadBlock() {
-    let { block, txns, loading } = this.state
-    const b = await (await fetch("https://api.helium.io/v1/blocks/hash/" + this.props.match.params.hash)).json()
-    const t = await (await fetch("https://api.helium.io/v1/blocks/hash/" + this.props.match.params.hash + "/transactions")).json()
-    txns.push(...t.data)
-    if (t.cursor) { 
-      await this.getCursors(txns, t.cursor)
-    }
-    block = b.data
-    loading = false
-    this.setState({ block, loading, txns })
+  loadData = async () => {
+    const { hash } = this.props.match.params
+    await this.setState(initialState)
+    const [block, txnList] = await Promise.all([
+      this.client.blocks.get(hash),
+      this.client.block(hash).transactions.list(),
+    ])
+    this.txnList = txnList
+    this.setState({ block, loading: false })
+    this.loadMoreTxns()
   }
-  
+
+  loadMoreTxns = async () => {
+    const { txns } = this.state
+    const nextTxns = await this.txnList.take(PAGE_SIZE)
+    const hasMore = nextTxns.length === PAGE_SIZE
+    this.setState({ txns: [...txns, ...nextTxns], hasMore })
+  }
+
   render() {
-    const { block, loading, txns } = this.state;
+    const { block, loading, txns, hasMore } = this.state
 
     const txnColumns = [
       {
         title: 'Type',
         dataIndex: 'type',
         key: 'type',
-        render: data => <TxnTag type={data}></TxnTag>
+        render: (data) => <TxnTag type={data}></TxnTag>,
       },
       {
         title: 'Hash',
         dataIndex: 'hash',
         key: 'hash',
-        render: hash => <a href={'/txns/' + hash}>{hash}</a>
+        render: (hash) => <a href={'/txns/' + hash}>{hash}</a>,
       },
       {
         title: 'Fee (DC)',
         dataIndex: 'fee',
         key: 'fee',
-      }
+      },
     ]
 
     const paymentColumns = [
@@ -76,13 +91,13 @@ class BlockView extends Component {
         title: 'Hash',
         dataIndex: 'hash',
         key: 'hash',
-        render: hash => <a href={'/txns/' + hash}>{hash}</a>
+        render: (hash) => <a href={'/txns/' + hash}>{hash}</a>,
       },
       {
         title: 'Fee',
         dataIndex: 'fee',
         key: 'fee',
-      }      
+      },
     ]
 
     const pocColumns = [
@@ -91,69 +106,60 @@ class BlockView extends Component {
         dataIndex: 'challenger',
         key: 'challenger',
       },
-
       {
         title: 'Hash',
         dataIndex: 'hash',
         key: 'hash',
-        render: hash => <a href={'/txns/' + hash}>{hash}</a>
+        render: (hash) => <a href={'/txns/' + hash}>{hash}</a>,
       },
       {
         title: 'Fee',
         dataIndex: 'fee',
         key: 'fee',
-      }
+      },
     ]
 
     return (
-      <div>
-        <Layout>
-          <Header>
-          <a href ='/'><div className="logo" /></a>
-          </Header>
+      <AppLayout>
+        <Row gutter={8} style={{ marginTop: 50 }}>
+          <Col xs={16} offset={4}>
+            <Card loading={loading}>
+              <Title>
+                <CodeSandboxOutlined /> Block {block.height}
+              </Title>
+              <Title level={4} copyable>
+                {block.hash}
+              </Title>
+              <Tag color="green">
+                <Timestamp date={block.time}></Timestamp>
+              </Tag>
+              {txns.length > 0 && (
+                <Tag color="blue">{block.transactionCount} transactions</Tag>
+              )}
+            </Card>
+          </Col>
+        </Row>
 
-          <Content style={{ padding: '50px' }}>
-            <div>
-              <Row gutter={8}>
-                <Col xs={12} offset={6}>
-                    <SearchBar></SearchBar>
-                </Col>
-              </Row>
-            </div>
-            
-            <div style={{ marginTop: '50px'}}>
-              
-              <Row gutter={8}>
-                <Col xs={16} offset={4}>
-                  <Card loading={loading}>
-                    <Title><Icon type="block" /> Block {block.height}</Title>
-                    <Title level={4}>{this.props.match.params.hash} <Icon type="copy" /></Title>
-                    <Tag color="green"><Timestamp date={block.time}></Timestamp></Tag>
-                    { txns.length > 0 && ( <Tag color="blue">{txns.length} transactions</Tag> ) }
-                  </Card>
-                </Col>
-              </Row>
-
-              <Row gutter={8} style={{ marginTop: '10px'}}>
-                <Col xs={16} offset={4}>
-                  <Card loading={loading}>
-                    <Title level={4}>Transactions</Title>
-                    <Table dataSource={txns} 
-                      columns={txnColumns}
-                      size="small" 
-                      rowKey="hash"
-                      pagination={{ pageSize: 50 }}
-                    />
-                  </Card>
-                </Col>
-              </Row>
-              
-            </div>
-          </Content>
-
-          <Footer style={{ textAlign: 'center' }}>Helium Systems Inc ©2020</Footer>
-        </Layout>
-    </div>
+        <Row gutter={8} style={{ marginTop: '10px' }}>
+          <Col xs={16} offset={4}>
+            <Card loading={loading}>
+              <Title level={4}>Transactions</Title>
+              <Table
+                dataSource={txns}
+                columns={txnColumns}
+                size="small"
+                rowKey="hash"
+                pagination={false}
+              />
+              {hasMore && (
+                <Row style={{ justifyContent: 'center', paddingTop: 12 }}>
+                  <Button onClick={this.loadMoreTxns}>Load More</Button>
+                </Row>
+              )}
+            </Card>
+          </Col>
+        </Row>
+      </AppLayout>
     )
   }
 }

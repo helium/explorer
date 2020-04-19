@@ -1,63 +1,69 @@
 import React, { Component } from 'react'
-import { withRouter } from "react-router-dom";
-import { Input } from 'antd';
+import { withRouter } from 'react-router-dom'
+import { Input } from 'antd'
+import Client from '@helium/http'
 
 class SearchBar extends Component {
+  componentDidMount() {
+    this.client = new Client()
+  }
 
-  doSearch = async(val) => {
-    if (val.length <= 10) { //must be a block height
-      const b = await fetch("https://api.helium.io/v1/blocks/" + val)
-      if (b.status === 200) {
-        const res = await b.json()
-        this.props.history.push("/blocks/" + res.data.hash);
-        return;
-      } else {
-        this.props.history.push("/error");
-      }
+  searchBlock = async (term) => {
+    try {
+      return await this.client.blocks.get(term)
+    } catch {}
+  }
+
+  searchTransaction = async (term) => {
+    try {
+      return await this.client.transactions.get(term)
+    } catch {}
+  }
+
+  searchAccount = async (term) => {
+    try {
+      return await this.client.accounts.get(term)
+    } catch {}
+  }
+
+  searchHotspot = async (term) => {
+    try {
+      return await this.client.hotspots.get(term)
+    } catch {}
+  }
+
+  doSearch = async (term) => {
+    const { history } = this.props
+    const cleanTerm = term.trim()
+    const [block, txn, account, hotspot] = await Promise.all([
+      this.searchBlock(cleanTerm),
+      this.searchTransaction(cleanTerm),
+      this.searchAccount(cleanTerm),
+      this.searchHotspot(cleanTerm),
+    ])
+
+    if (block) {
+      history.push('/blocks/' + block.hash)
+    } else if (txn) {
+      history.push('/txns/' + txn.hash)
+    } else if (hotspot) {
+      history.push('/hotspots/' + hotspot.address)
+    } else if (account) {
+      history.push('/accounts/' + account.address)
     } else {
-      //try a block hash first
-      const b = await fetch("https://api.helium.io/v1/blocks/hash/" + val)
-      if (b.status === 200) {
-        console.log("block hash")
-        const res = await b.json()
-        this.props.history.push("/blocks/" + res.data.hash);
-        return;
-      }
-      // try a txn hash
-      const t = await fetch("https://api.helium.io/v1/transactions/" + val)
-      if (t.status === 200) {
-        console.log("txn hash")
-        const res = await t.json()
-        this.props.history.push("/txns/" + res.data.hash);
-        return;
-      }      
-      // try a hotspot
-      const h = await fetch("https://api.helium.io/v1/hotspots/" + val)
-      if (h.status === 200) {
-        console.log("hotspot")
-        const res = await h.json()
-        this.props.history.push("/hotspots/" + res.data.address);
-        return;
-      }
-      // try an account
-      const a = await fetch("https://api.helium.io/v1/accounts/" + val)
-      if (a.status === 200) {
-        console.log("acct")
-        const res = await a.json()
-        console.log(res)
-        this.props.history.push("/accounts/" + res.data.address);
-        return;
-      }
+      history.push('/error')
     }
   }
 
-  render() {    
+  render() {
     return (
-      <div>
-          <Input.Search onSearch={this.doSearch} size="large" placeholder="Search for a block height, hash, transaction, or address"></Input.Search>
-      </div>
+      <Input.Search
+        onSearch={this.doSearch}
+        size="large"
+        placeholder="Search for a block height, hash, transaction, or address"
+      />
     )
   }
 }
 
-export default withRouter(SearchBar);
+export default withRouter(SearchBar)

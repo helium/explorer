@@ -13,6 +13,7 @@ import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
 import TxnTag from '../components/TxnTag'
 import AppLayout from '../components/AppLayout'
+import LoadMoreButton from '../components/LoadMoreButton'
 
 const { Title, Text } = Typography
 
@@ -127,9 +128,12 @@ class BlockView extends Component {
               <Title>
                 <CodeSandboxOutlined /> Block {block.height}
               </Title>
-              <Title level={4} copyable>
-                {block.hash}
-              </Title>
+              <p>
+                <Text strong>Hash:</Text>
+                <Text code copyable>
+                  {block.hash}
+                </Text>
+              </p>
               <Tag color="green">
                 <Timestamp date={block.time}></Timestamp>
               </Tag>
@@ -142,8 +146,7 @@ class BlockView extends Component {
 
         <Row gutter={8} style={{ marginTop: '10px' }}>
           <Col xs={16} offset={4}>
-            <Card loading={loading}>
-              <Title level={4}>Transactions</Title>
+            <Card loading={loading} title="Transactions">
               <Table
                 dataSource={txns}
                 columns={txnColumns}
@@ -152,9 +155,7 @@ class BlockView extends Component {
                 pagination={false}
               />
               {hasMore && (
-                <Row style={{ justifyContent: 'center', paddingTop: 12 }}>
-                  <Button onClick={this.loadMoreTxns}>Load More</Button>
-                </Row>
+                <LoadMoreButton onClick={this.loadMoreTxns} />
               )}
             </Card>
           </Col>

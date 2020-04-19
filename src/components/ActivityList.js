@@ -12,6 +12,7 @@ import {
 } from 'antd'
 import { FilterOutlined } from '@ant-design/icons'
 import TxnTag from './TxnTag'
+import LoadMoreButton from './LoadMoreButton'
 const { Text } = Typography
 
 const initialState = {
@@ -87,8 +88,9 @@ class ActivityList extends Component {
             loading={loadingInitial}
             title="Activity"
             extra={
-              <Tooltip title="Filter Types">
+              <Tooltip title="Toggle Filters">
                 <Button
+                  shape="circle"
                   onClick={this.toggleFilters}
                   icon={<FilterOutlined />}
                 />
@@ -122,9 +124,7 @@ class ActivityList extends Component {
               pagination={false}
               loading={loading}
             />
-            <Row style={{ justifyContent: 'center', paddingTop: 12 }}>
-              <Button onClick={this.loadMore}>Load More</Button>
-            </Row>
+            <LoadMoreButton onClick={this.loadMore} />
           </Card>
         </Col>
       </Row>

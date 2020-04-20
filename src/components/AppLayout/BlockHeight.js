@@ -16,9 +16,13 @@ class BlockHeight extends Component {
   }
 
   loadBlockHeight = async () => {
-    const blocks = await this.client.blocks.list()
-    const [{ height }] = await blocks.take(1)
-    this.setState({ height, loading: false })
+    try {
+      const blocks = await this.client.blocks.list()
+      const [{ height }] = await blocks.take(1)
+      this.setState({ height, loading: false })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   render() {

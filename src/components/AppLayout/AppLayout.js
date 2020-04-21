@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, Typography, Row, Col } from 'antd'
+import { Layout, Typography } from 'antd'
 import SearchBar from '../SearchBar'
 import NavHeader from './NavHeader'
 
@@ -10,12 +10,8 @@ const AppLayout = ({ children }) => (
   <Layout style={{ minHeight: '100vh' }}>
     <NavHeader />
 
-    <Content style={{ padding: '50px' }}>
-      <Row gutter={8}>
-        <Col xs={12} offset={6}>
-          <SearchBar />
-        </Col>
-      </Row>
+    <Content style={{ padding: '50px 10px' }}>
+      <SearchBar />
 
       {children}
     </Content>

@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Table } from 'antd'
+import { Table, Typography } from 'antd'
 import Timestamp from 'react-timestamp'
 import Client from '@helium/http'
 import LoadMoreButton from './LoadMoreButton'
+const { Text } = Typography
 
 class BlocksList extends Component {
   state = {
@@ -32,7 +33,9 @@ class BlocksList extends Component {
         dataIndex: 'height',
         key: 'height',
         render: (height) => (
-          <span style={{ fontWeight: 'bold' }}>{height}</span>
+          <a href={`/blocks/${height}`} style={{ fontWeight: 'bold' }}>
+            {height.toLocaleString()}
+          </a>
         ),
       },
       {
@@ -50,7 +53,7 @@ class BlocksList extends Component {
         title: 'Hash',
         dataIndex: 'hash',
         key: 'hash',
-        render: (hash) => <a href={'/blocks/' + hash}>{hash}</a>,
+        render: (hash) => <Text code>{hash}</Text>,
       },
     ]
 
@@ -62,6 +65,7 @@ class BlocksList extends Component {
           rowKey="hash"
           pagination={false}
           loading={loading}
+          scroll={{ x: true }}
         />
         <LoadMoreButton onClick={this.loadBlocks} />
       </>

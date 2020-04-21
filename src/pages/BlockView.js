@@ -1,18 +1,10 @@
 import React, { Component } from 'react'
-import {
-  Row,
-  Col,
-  Typography,
-  Tag,
-  Table,
-  Card,
-  Button,
-} from 'antd'
+import { Typography, Tag, Table, Card } from 'antd'
 import { CodeSandboxOutlined } from '@ant-design/icons'
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
 import TxnTag from '../components/TxnTag'
-import AppLayout from '../components/AppLayout'
+import AppLayout, { Content } from '../components/AppLayout'
 import LoadMoreButton from '../components/LoadMoreButton'
 
 const { Title, Text } = Typography
@@ -122,44 +114,39 @@ class BlockView extends Component {
 
     return (
       <AppLayout>
-        <Row gutter={8} style={{ marginTop: 50 }}>
-          <Col xs={16} offset={4}>
-            <Card loading={loading}>
-              <Title>
-                <CodeSandboxOutlined /> Block {block.height}
-              </Title>
-              <p>
-                <Text strong>Hash:</Text>
-                <Text code copyable>
-                  {block.hash}
-                </Text>
-              </p>
-              <Tag color="green">
-                <Timestamp date={block.time}></Timestamp>
-              </Tag>
-              {txns.length > 0 && (
-                <Tag color="blue">{block.transactionCount} transactions</Tag>
-              )}
-            </Card>
-          </Col>
-        </Row>
+        <Content style={{ marginTop: 50 }}>
+          <Card loading={loading}>
+            <Title>
+              <CodeSandboxOutlined /> Block {block.height}
+            </Title>
+            <p>
+              <Text strong>Hash:</Text>
+              <Text code copyable>
+                {block.hash}
+              </Text>
+            </p>
+            <Tag color="green">
+              <Timestamp date={block.time}></Timestamp>
+            </Tag>
+            {txns.length > 0 && (
+              <Tag color="blue">{block.transactionCount} transactions</Tag>
+            )}
+          </Card>
+        </Content>
 
-        <Row gutter={8} style={{ marginTop: '10px' }}>
-          <Col xs={16} offset={4}>
-            <Card loading={loading} title="Transactions">
-              <Table
-                dataSource={txns}
-                columns={txnColumns}
-                size="small"
-                rowKey="hash"
-                pagination={false}
-              />
-              {hasMore && (
-                <LoadMoreButton onClick={this.loadMoreTxns} />
-              )}
-            </Card>
-          </Col>
-        </Row>
+        <Content style={{ marginTop: '10px' }}>
+          <Card loading={loading} title="Transactions">
+            <Table
+              dataSource={txns}
+              columns={txnColumns}
+              size="small"
+              rowKey="hash"
+              pagination={false}
+              scroll={{ x: true }}
+            />
+            {hasMore && <LoadMoreButton onClick={this.loadMoreTxns} />}
+          </Card>
+        </Content>
       </AppLayout>
     )
   }

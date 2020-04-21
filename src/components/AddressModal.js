@@ -23,7 +23,7 @@ const AddressModal = ({ address }) => {
       >
         <Space direction="vertical" size="large" style={{ width: '100%' }}>
           <Row justify="center">
-            <QRCode value={address} size={300} />
+            <QRCode value={address} size={200} />
           </Row>
           <Row justify="center">
             <Text code copyable>

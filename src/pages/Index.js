@@ -7,8 +7,8 @@ class Index extends React.Component {
   render() {
     return (
       <AppLayout>
-        <Row gutter={8} style={{ marginTop: 50 }}>
-          <Col xs={16} offset={4}>
+        <Row justify="center" gutter={8} style={{ marginTop: 50 }}>
+          <Col>
             <BlocksList />
           </Col>
         </Row>

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Row, Col, Table, Card } from 'antd'
+import { Table, Card } from 'antd'
 import Client from '@helium/http'
 import round from 'lodash/round'
+import { Content } from './AppLayout'
 
 const initialState = {
   hotspots: [],
@@ -37,19 +38,17 @@ class HotspotsList extends Component {
   render() {
     const { hotspots, loading } = this.state
     return (
-      <Row gutter={8} style={{ marginTop: 20 }}>
-        <Col xs={16} offset={4}>
-          <Card loading={loading} title={'Hotspots'}>
-            <Table
-              dataSource={hotspots}
-              columns={hotspotColumns}
-              size="small"
-              rowKey="name"
-              pagination={{ pageSize: 10 }}
-            />
-          </Card>
-        </Col>
-      </Row>
+      <Content style={{ marginTop: 20 }}>
+        <Card loading={loading} title={'Hotspots'}>
+          <Table
+            dataSource={hotspots}
+            columns={hotspotColumns}
+            size="small"
+            rowKey="name"
+            pagination={{ pageSize: 10 }}
+          />
+        </Card>
+      </Content>
     )
   }
 }
@@ -65,13 +64,17 @@ const hotspotColumns = [
     title: 'Location',
     dataIndex: 'geocode',
     key: 'location',
-    render: (data) => <span>{data.longCity}, {data.shortState}</span>,
+    render: (data) => (
+      <span>
+        {data.longCity}, {data.shortState}
+      </span>
+    ),
   },
   {
     title: 'Score',
     dataIndex: 'score',
     key: 'score',
-    render: (data) => round(data, 2)
+    render: (data) => round(data, 2),
   },
 ]
 

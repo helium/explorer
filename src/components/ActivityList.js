@@ -60,6 +60,7 @@ class ActivityList extends Component {
     this.setState({ loading: true })
     const { txns } = this.state
     const nextTxns = await this.list.take(20)
+    console.log(nextTxns)
     this.setState({
       txns: [...txns, ...nextTxns],
       loading: false,

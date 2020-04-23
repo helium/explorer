@@ -59,6 +59,7 @@ class BlocksList extends Component {
 
     return (
       <>
+      <h2 style={{color: '#27284B'}}>Latest Blocks</h2>
         <Table
           dataSource={blocks}
           columns={columns}

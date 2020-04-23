@@ -28,9 +28,9 @@ class BlockHeight extends Component {
   render() {
     const { height, loading } = this.state
     return (
-      <Tooltip title="Current Block Height">
-        <a href="/">
-          <CodeSandboxOutlined />
+      <Tooltip placement="bottomRight" title="Current Block Height">
+        <a href="/" style={{minWidth: 127, textAlign: 'center', fontSize: 17}}> 
+          
           {!loading && height.toLocaleString()}
           {loading && <Spin size="small" />}
         </a>

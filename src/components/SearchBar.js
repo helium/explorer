@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Row, Input } from 'antd'
 import Client from '@helium/http'
+import classNames from 'classnames'
+
+const { Search } = Input;
 
 class SearchBar extends Component {
   componentDidMount() {
@@ -57,14 +60,15 @@ class SearchBar extends Component {
 
   render() {
     return (
-      <Row justify="center" style={{ padding: '0 10px' }}>
-        <Input.Search
+
+        <Search
+        enterButton
           onSearch={this.doSearch}
           size="large"
+          className="searcher"
           placeholder="Search for a block height, hash, transaction, or address"
-          style={{ maxWidth: 600 }}
+          style={{ width: '100%', maxWidth: 850, background: '#27284B', border: 'none' }}
         />
-      </Row>
     )
   }
 }

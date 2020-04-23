@@ -3,7 +3,7 @@ import { Row, Button } from 'antd'
 import { ArrowDownOutlined } from '@ant-design/icons'
 
 const LoadMoreButton = ({ onClick }) => (
-  <Row style={{ justifyContent: 'center', paddingTop: 12 }}>
+  <Row style={{ justifyContent: 'center', paddingTop: 12, marginBottom: 12 }}>
     <Button
       size="large"
       type="default"

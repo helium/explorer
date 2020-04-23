@@ -8927,6 +8927,13 @@ react-error-overlay@^6.0.6:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.6.tgz#ac4d9dc4c1b5c536c2c312bf66aa2b09bfa384e2"
   integrity sha512-Yzpno3enVzSrSCnnljmr4b/2KUQSMZaPuqmS26t9k4nW7uwJk6STWmH9heNjPuvqUTO3jOSPkHoKgO4+Dw7uIw==
 
+react-grid-system@^6.3.1:
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/react-grid-system/-/react-grid-system-6.3.1.tgz#d62564d68809e9a84e36922cb18fd9bd52a6a015"
+  integrity sha512-TWJcAdICTseZ16ONTt5LhVYLWJPzpFl4U5LSbF4/mZ/pV7fK7W8lr2bvHOnBWLvYgP3QVcLAxdpeoXj4q2QzmA==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -8951,6 +8958,13 @@ react-qr-code@^1.0.0:
     prop-types "^15.7.2"
     qr.js "0.0.0"
     react-art-svg-renderer "^0.0.1-rc.8"
+
+react-reveal@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/react-reveal/-/react-reveal-1.2.2.tgz#f47fbc44debc4c185ae2163a215a9e822c7adfef"
+  integrity sha512-JCv3fAoU6Z+Lcd8U48bwzm4pMZ79qsedSXYwpwt6lJNtj/v5nKJYZZbw3yhaQPPgYePo3Y0NOCoYOq/jcsisuw==
+  dependencies:
+    prop-types "^15.5.10"
 
 react-router-dom@^5.1.2:
   version "5.1.2"
@@ -9045,6 +9059,14 @@ react-timestamp@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/react-timestamp/-/react-timestamp-5.1.0.tgz#fb2ee03fee3f2d2d1ea457d26b8f19e8817644f9"
   integrity sha512-JWiHW3HJAJZvtAi1Th1sqGe1RRflEkz/63Cw6nFQfUIxHQUN3XPsEkQO1TVCLWLMRyCKmSZpGTJp9qs28Ug3FQ==
+
+react-typekit@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/react-typekit/-/react-typekit-1.1.4.tgz#1305675bd8d348eeafc53f013edf1ec164b01f73"
+  integrity sha512-8RyqqRsfzQnTmVWX++GTGexIKs6sGQbgDGvajV3kNRUW7gB+pJG2NRTU8lnHgjsIhIGprlYlIsWi09mY3zm2Ug==
+  dependencies:
+    lodash "^4.17.4"
+    prop-types "^15.5.10"
 
 react@^16.12.0:
   version "16.12.0"

@@ -6,6 +6,8 @@ import Timestamp from 'react-timestamp'
 import TxnTag from '../components/TxnTag'
 import AppLayout, { Content } from '../components/AppLayout'
 import Map from '../components/Map'
+import { BackwardOutlined, ForwardOutlined, ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
+
 const { Title, Text } = Typography
 
 class TxnView extends Component {
@@ -159,19 +161,39 @@ class TxnView extends Component {
 
     return (
       <AppLayout>
-        <Content style={{ marginTop: 50 }}>
-          <Card loading={loading}>
-            <Title level={3} style={{ wordBreak: 'break-all' }}>
-              <DollarOutlined /> {txn.hash}
-            </Title>
-            <Tag color="green">
-              <Timestamp date={txn.time}></Timestamp>
-            </Tag>
-            <TxnTag type={txn.type}></TxnTag>
-          </Card>
+        <Content style={{ marginTop: 0, background: '#27284B', padding: '60px 0 30px' }}>
+         <div style={{margin: '0 auto', maxWidth: 850}}>
+               <Title style={{color: 'white', fontSize: 52, marginTop: 0, lineHeight: 0.7, letterSpacing: '-2px'}}>Transaction</Title>
+                                <Text copyable style={{color: '#6A6B93', fontFamily: 'monospace'}}>
+
+              {txn.hash}
+              </Text>
+              <p style={{marginTop: 20}}>
+              <TxnTag type={txn.type} /></p>
+
+              <hr />
+            <div className="flexwrapper">
+            <a className="button"><BackwardOutlined style={{marginleft: '-6px'}}/> Previous Block</a>
+
+            <h3>
+              <ClockCircleOutlined style={{color: '#FFC769', marginRight: 4}} /> <Timestamp date={txn.time} />
+            </h3>
+
+           
+
+                        <a className="button">Next Block <ForwardOutlined style={{marginRight: '-6px'}}/></a>
+
+            </div>
+
+
+            
+              
+           
+            
+            </div>
         </Content>
 
-        <Content style={{ marginTop: '10px' }}>
+        <Content style={{ marginTop: '10px', margin: '0 auto', maxWidth: 850, paddingBottom: 100 }}>
           <Card loading={loading}>
             <Title level={4}>Transaction Details</Title>
             {txnView(txn.type)}

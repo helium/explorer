@@ -138,4 +138,13 @@ text-transform: uppercase;
             .ant-input-affix-wrapper > input.ant-input::placeholder {
               color: #585A8C;
 }
+
+
+      hr {
+        border: none;
+        width: 100%;
+        border-top: 1px solid #494B7B;
+        margin: 40px 0;
+      }
+
       

@@ -173,7 +173,7 @@ class TxnView extends Component {
 
               <hr />
             <div className="flexwrapper">
-            <a className="button"><BackwardOutlined style={{marginleft: '-6px'}}/> Previous Block</a>
+            <a className="button"><BackwardOutlined style={{marginleft: '-6px'}}/> Previous Transaction</a>
 
             <h3>
               <ClockCircleOutlined style={{color: '#FFC769', marginRight: 4}} /> <Timestamp date={txn.time} />
@@ -181,7 +181,7 @@ class TxnView extends Component {
 
            
 
-                        <a className="button">Next Block <ForwardOutlined style={{marginRight: '-6px'}}/></a>
+                        <a className="button">Next Transaction <ForwardOutlined style={{marginRight: '-6px'}}/></a>
 
             </div>
 
@@ -194,8 +194,8 @@ class TxnView extends Component {
         </Content>
 
         <Content style={{ marginTop: '10px', margin: '0 auto', maxWidth: 850, paddingBottom: 100 }}>
-          <Card loading={loading}>
-            <Title level={4}>Transaction Details</Title>
+          <Card loading={loading} >
+            <h2 style={{padding: 24}}>Transaction Details</h2>
             {txnView(txn.type)}
           </Card>
         </Content>

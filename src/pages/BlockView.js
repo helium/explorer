@@ -153,8 +153,8 @@ class BlockView extends Component {
             </div>
         </Content>
 
-        <Content style={{ marginTop: '10px', margin: '0 auto', maxWidth: 850, paddingBottom: 100 }}>
-          <Card loading={loading} title="Transaction List">
+        <Content style={{ marginTop: '10px', margin: '0 auto', maxWidth: 850, paddingBottom: 100, }}>
+          <Card loading={loading} title="Transaction List" style={{paddingTop: 50}}>
             <Table
               dataSource={txns}
               columns={txnColumns}

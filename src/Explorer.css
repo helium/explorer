@@ -139,6 +139,10 @@ text-transform: uppercase;
               color: #585A8C;
 }
 
+.ant-table-thead > tr > th {
+  border-bottom: 3px solid #E9EAF2;
+}
+
 
       hr {
         border: none;

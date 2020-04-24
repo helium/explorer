@@ -57,6 +57,8 @@ class BlockView extends Component {
   render() {
     const { block, loading, txns, hasMore } = this.state
 
+
+
     const txnColumns = [
       {
         title: 'Type',
@@ -76,6 +78,10 @@ class BlockView extends Component {
         key: 'fee',
       },
     ]
+
+   
+
+
 
     const paymentColumns = [
       {
@@ -138,7 +144,7 @@ class BlockView extends Component {
 
             <hr />
             <div className="flexwrapper">
-            <a className="button"><BackwardOutlined style={{marginleft: '-6px'}}/> Previous Block</a>
+            <a href={`/blocks/${block.height-1}`} className="button"><BackwardOutlined style={{marginleft: '-6px'}}/> Previous Block</a>
 
             <h3>
               <ClockCircleOutlined style={{color: '#FFC769', marginRight: 4}} /> <Timestamp date={block.time}/>
@@ -147,7 +153,7 @@ class BlockView extends Component {
            {txns.length > 0 && (
               <h3><CheckCircleOutlined style={{color: '#29D391', marginRight: 4}} /> {block.transactionCount} transactions</h3>
             )}
-                        <a className="button">Next Block <ForwardOutlined style={{marginRight: '-6px'}}/></a>
+                        <a href={`/blocks/${block.height+1}`} className="button">Next Block <ForwardOutlined style={{marginRight: '-6px'}}/></a>
 
             </div>
             </div>

@@ -41,6 +41,26 @@
   border-bottom: 3px solid #E9EAF2;
 }
 
+.barchart {
+transform: rotate(90deg);
+margin: 0px 0;
+position: absolute;
+bottom: 78px;
+left: 850px;
+display: inline-block;
+height: 0px;
+transform-origin: top left;
+}
+
+.barchart  .ant-table-tbody > tr > td {
+  background: #27284b !important;
+  padding: 2px 0 !important;
+  border: none !important;
+}
+
+.barchart thead {
+  display: none;
+}
 
 
 .App-link {

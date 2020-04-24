@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
-import { Table, Typography } from 'antd'
+import { Table, Typography, Tooltip } from 'antd'
 import Timestamp from 'react-timestamp'
 import Client from '@helium/http'
 import LoadMoreButton from './LoadMoreButton'
+import classNames from 'classnames'
+
 const { Text } = Typography
+
 
 class BlocksList extends Component {
   state = {
@@ -24,42 +27,37 @@ class BlocksList extends Component {
     this.setState({ blocks: [...blocks, ...newBlocks], loading: false })
   }
 
+ 
+
   render() {
+
+     
+
     const { blocks, loading } = this.state
 
     const columns = [
+
       {
-        title: 'Height',
-        dataIndex: 'height',
-        key: 'height',
-        render: (height) => (
-          <a href={`/blocks/${height}`} style={{ fontWeight: '600' }}>
-            {height.toLocaleString()}
-          </a>
-        ),
-      },
-      {
-        title: 'Timestamp',
-        dataIndex: 'time',
-        key: 'time',
-        render: (time) => <Timestamp date={time} />,
-      },
-      {
-        title: 'Transactions',
         dataIndex: 'transactionCount',
         key: 'transaction_count',
+        render: (transactionCount , height) => (
+          <Tooltip placement="bottom" title={transactionCount}><div style={{width: transactionCount, height: 38, backgroundColor: '#3F416D', float: 'right'}}/></Tooltip>
+        ),
       },
-      {
-        title: 'Hash',
-        dataIndex: 'hash',
-        key: 'hash',
-        render: (hash) => <Text code>{hash}</Text>,
-      },
+     
     ]
+
+
 
     return (
       <>
-        <Table
+
+        
+
+         <Table
+
+         showHeader="false"
+         className="barchart"
           dataSource={blocks}
           columns={columns}
           rowKey="hash"
@@ -67,7 +65,7 @@ class BlocksList extends Component {
           loading={loading}
           scroll={{ x: true }}
         />
-        <LoadMoreButton onClick={this.loadBlocks} />
+
       </>
     )
   }

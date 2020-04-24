@@ -169,6 +169,7 @@ class TxnView extends Component {
               {txn.hash}
               </Text>
               <p style={{marginTop: 20}}>
+              
               <TxnTag type={txn.type} /></p>
 
               <hr />
@@ -194,8 +195,8 @@ class TxnView extends Component {
         </Content>
 
         <Content style={{ marginTop: '10px', margin: '0 auto', maxWidth: 850, paddingBottom: 100 }}>
-          <Card loading={loading} >
-            <h2 style={{padding: 24}}>Transaction Details</h2>
+          <Card loading={loading} style={{padding: 24}}>
+            <h2 >Transaction Details</h2>
             {txnView(txn.type)}
           </Card>
         </Content>

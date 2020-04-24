@@ -44,22 +44,29 @@
 .barchart {
 transform: rotate(90deg);
 margin: 0px 0;
-position: absolute;
-bottom: 78px;
-left: 850px;
 display: inline-block;
-height: 0px;
-transform-origin: top left;
+width: 100%;
+transform-origin: bottom right;
+position: absolute;
+margin-top: -100%;
+left: -850px;
+height: 850px;
+background: none;
+bottom: 0;
 }
 
 .barchart  .ant-table-tbody > tr > td {
-  background: #27284b !important;
+  background: none !important;
   padding: 2px 0 !important;
   border: none !important;
 }
 
 .barchart thead {
   display: none;
+}
+
+.barchart .ant-table {
+  background: none;
 }
 
 

@@ -1,14 +1,8 @@
 import React, { Component } from 'react'
 import Client from '@helium/http'
-import {
-  Table,
-  Card,
-  Button,
-  Tooltip,
-  Checkbox,
-  Typography,
-} from 'antd'
+import { Table, Card, Button, Tooltip, Checkbox, Typography } from 'antd'
 import { FilterOutlined } from '@ant-design/icons'
+import Timestamp from 'react-timestamp'
 import TxnTag from './TxnTag'
 import LoadMoreButton from './LoadMoreButton'
 import { Content } from './AppLayout'
@@ -80,6 +74,7 @@ class ActivityList extends Component {
 
   render() {
     const { txns, loading, loadingInitial, filtersOpen } = this.state
+    const { address } = this.props
     return (
       <Content style={{ marginTop: 20 }}>
         <Card
@@ -116,7 +111,7 @@ class ActivityList extends Component {
           )}
           <Table
             dataSource={txns}
-            columns={columns}
+            columns={columns(address)}
             size="small"
             rowKey="hash"
             pagination={false}
@@ -129,40 +124,58 @@ class ActivityList extends Component {
   }
 }
 
-const columns = [
-  {
-    title: 'Type',
-    dataIndex: 'type',
-    key: 'type',
-    render: (data) => <TxnTag type={data}></TxnTag>,
-  },
-  {
-    title: 'Amount',
-    dataIndex: 'amount',
-    key: 'amount',
-    render: (txt, txn) => (
-      <a href={`/txns/${txn.hash}`}>{activityAmount(txn)}</a>
-    ),
-  },
-  {
-    title: 'Block Height',
-    dataIndex: 'height',
-    key: 'height',
-    render: (height) => <a href={`/blocks/${height}`}>{height}</a>,
-  },
-]
-
-const activityAmount = (txn) => {
-  switch (txn.type) {
-    case 'payment_v1':
-      return <span>{txn.amount.toString(2)}</span>
-    case 'payment_v2':
-      return <span>{txn.totalAmount.toString(2)}</span>
-    case 'rewards_v1':
-      return <span>{txn.totalAmount.toString(2)}</span>
-    default:
-      return <span>{txn.amount}</span>
+const columns = (ownerAddress) => {
+  const activityAmount = (txn) => {
+    switch (txn.type) {
+      case 'payment_v1':
+        if (txn.payer === ownerAddress)
+          return <span>{'-' + txn.amount.toString(2)}</span>
+        return <span>{'+' + txn.amount.toString(2)}</span>
+      case 'payment_v2':
+        if (txn.payer === ownerAddress)
+          return <span>{'-' + txn.totalAmount.toString(2)}</span>
+        return (
+          <span>
+            {'+' + txn.payments
+              .find((p) => p.payee === ownerAddress)
+              .amount.toString(2)}
+          </span>
+        )
+      case 'rewards_v1':
+        return <span>{txn.totalAmount.toString(2)}</span>
+      default:
+        return <span>{txn.amount}</span>
+    }
   }
+
+  return [
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      key: 'type',
+      render: (data) => <TxnTag type={data}></TxnTag>,
+    },
+    {
+      title: 'Amount',
+      dataIndex: 'amount',
+      key: 'amount',
+      render: (txt, txn) => (
+        <a href={`/txns/${txn.hash}`}>{activityAmount(txn)}</a>
+      ),
+    },
+    {
+      title: 'Block Height',
+      dataIndex: 'height',
+      key: 'height',
+      render: (height) => <a href={`/blocks/${height}`}>{height}</a>,
+    },
+    {
+      title: 'Time',
+      dataIndex: 'time',
+      key: 'time',
+      render: (time) => <Timestamp date={time} />,
+    },
+  ]
 }
 
 export default ActivityList

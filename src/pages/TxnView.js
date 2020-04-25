@@ -134,10 +134,10 @@ class TxnView extends Component {
       return (
         <Descriptions bordered>
           <Descriptions.Item label="Payer" span={3}>
-            {txn.payer}
+            <a href={`/accounts/${txn.payer}`}>{txn.payer}</a>
           </Descriptions.Item>
           <Descriptions.Item label="Payee" span={3}>
-            {txn.payee}
+            <a href={`/accounts/${txn.payee}`}>{txn.payee}</a>
           </Descriptions.Item>
           <Descriptions.Item label="Amount" span={3}>
             {txn.amount.toString()}
@@ -167,7 +167,7 @@ class TxnView extends Component {
       return (
         <div>
           <p>Total Amount: {txn.totalAmount.toString()} </p>
-          <p>Payer: {txn.payer}</p>
+          <p>Payer: <a href={`/accounts/${txn.payer}`}>{txn.payer}</a></p>
           <Table
             dataSource={txn.payments}
             columns={columns}

@@ -6,7 +6,9 @@ import get from 'lodash/get'
 import AppLayout, { Content } from '../components/AppLayout'
 import ActivityList from '../components/ActivityList'
 import Map from '../components/Map'
-const { Text } = Typography
+import Fade from 'react-reveal/Fade'
+
+const { Title, Text } = Typography
 
 const initialState = {
   hotspot: {},
@@ -42,6 +44,33 @@ class HotspotView extends Component {
 
     return (
       <AppLayout>
+              <Content style={{ marginTop: 0, background: '#27284B', padding: '0px 0 30px' }}>
+              <div style={{margin: '0 auto', maxWidth: 850}}>
+               <Map lat={hotspot.lat} lng={hotspot.lng} />
+
+              <Row style={{paddingTop: 30}}>
+                <Col lg={12}>
+              <Fade delay={1000}>
+              <h3 style={{color: '#27284B', background: '#BE73FF', padding: '3px 10px', borderRadius: 6, fontSize: 18, fontWeight: 600, display: 'inline-block', letterSpacing: -0.5}}>{round(hotspot.score, 2)}</h3>
+              </Fade>
+              <Title style={{color: 'white', fontSize: 52, marginTop: 0, lineHeight: 0.7, letterSpacing: '-2px'}}>
+                  {hotspot.name}
+                </Title>
+                <p style={{color: 'white'}}>Owner: <a style={{ whiteSpace: 'nowrap',                  
+    overflow: 'hidden',
+    textOverflow: 'ellipsis' ,
+    width: 200,
+    display: 'inline-block',
+        direction: 'rtl',
+    textAlign: 'left'}} href={'/accounts/' + hotspot.owner}>{hotspot.owner}</a></p>
+              </Col>
+                            
+              </Row>
+              </div>
+
+
+</Content>
+
         <Content style={{ marginTop: 50 }}>
           <Card loading={loading} title={hotspot.name}>
             <Row>

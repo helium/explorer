@@ -29,7 +29,7 @@ class BlockHeight extends Component {
     const { height, loading } = this.state
     return (
       <Tooltip placement="bottomRight" title="Current Block Height">
-        <a href="/" style={{minWidth: 127, textAlign: 'center', fontSize: 17}}> 
+        <a href={`/blocks/${height}`}  style={{minWidth: 127, textAlign: 'center', fontSize: 17}}> 
           
           {!loading && height.toLocaleString()}
           {loading && <Spin size="small" />}

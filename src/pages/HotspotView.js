@@ -48,7 +48,7 @@ class HotspotView extends Component {
       <AppLayout>
               <Content style={{ marginTop: 0, background: '#27284B', padding: '0px 0 0px' }}>
               <div style={{margin: '0 auto', maxWidth: 850}}>
-               <Map lat={hotspot.lat} lng={hotspot.lng} />
+               <Map coords={[{lat: hotspot.lat, lng: hotspot.lng}]} />
                <div style={{textAlign: 'right', paddingTop: 6, color: 'white'}}>
                  <p style={{marginBottom: '-20px'}}>{get(hotspot, 'geocode.longCity')},{' '}
                     {get(hotspot, 'geocode.shortState')}</p>

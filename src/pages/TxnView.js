@@ -4,6 +4,7 @@ import { DollarOutlined } from '@ant-design/icons'
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
 import TxnTag from '../components/TxnTag'
+import PocPath from '../components/PocPath'
 import AppLayout, { Content } from '../components/AppLayout'
 import Map from '../components/Map'
 import { BackwardOutlined, ForwardOutlined, ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
@@ -45,6 +46,8 @@ class TxnView extends Component {
           return paymentv2()
         case 'poc_request_v1':
           return pocRequestv1()
+        case 'poc_receipts_v1':
+          return pocReceiptsv1()
         case 'rewards_v1':
           return rewardsv1()
        
@@ -62,10 +65,30 @@ class TxnView extends Component {
       }
     }
 
+    const pocReceiptsv1 = () => {
+      return (
+        <div>
+          <PocPath path={txn.path} />
+          <List.Item>Challenging Hotspot: <a href={'/hotspots/' + txn.challenger}>{txn.challenger}</a></List.Item>
+          <List.Item>Challenging Owner: <a href={'/accounts/' + txn.challengerOwner}>{txn.challengerOwner}</a></List.Item>
+          <List.Item>Block Height: <a href={'/blocks/' + txn.height}>{txn.height}</a></List.Item>
+          <List
+            dataSource={Object.entries(txn).map(([key, value]) => {
+              return key + ' ' + value
+            })}
+            renderItem={(item) => <List.Item>{item}</List.Item>}
+          />
+        </div>
+      )
+    }
+
     const pocRequestv1 = () => {
       return (
         <div>
-          <Map lat={txn.lat} lng={txn.lng} />
+          <Map coords={[{lat: txn.lat, lng: txn.lng}]} />
+          <List.Item>Challenging Hotspot: <a href={'/hotspots/' + txn.challenger}>{txn.challenger}</a></List.Item>
+          <List.Item>Challenging Owner: <a href={'/accounts/' + txn.owner}>{txn.owner}</a></List.Item>
+          <List.Item>Block Height: <a href={'/blocks/' + txn.height}>{txn.height}</a></List.Item>
           <List
             dataSource={Object.entries(txn).map(([key, value]) => {
               return key + ' ' + value
@@ -119,10 +142,10 @@ class TxnView extends Component {
       return (
         <Descriptions bordered>
           <Descriptions.Item label="Payer" span={3}>
-            {txn.payer}
+            <a href={`/accounts/${txn.payer}`}>{txn.payer}</a>
           </Descriptions.Item>
           <Descriptions.Item label="Payee" span={3}>
-            {txn.payee}
+            <a href={`/accounts/${txn.payee}`}>{txn.payee}</a>
           </Descriptions.Item>
           <Descriptions.Item label="Amount" span={3}>
             {txn.amount.toString()}
@@ -152,7 +175,7 @@ class TxnView extends Component {
       return (
         <div>
           <p>Total Amount: {txn.totalAmount.toString()} </p>
-          <p>Payer: {txn.payer}</p>
+          <p>Payer: <a href={`/accounts/${txn.payer}`}>{txn.payer}</a></p>
           <Table
             dataSource={txn.payments}
             columns={columns}

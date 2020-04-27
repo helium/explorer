@@ -115,7 +115,7 @@ class HotspotView extends Component {
                 </Descriptions>
               </Col>
               <Col xs={{ order: 0, span: 24, offset: 0 }} md={{ order: 1, span: 7, offset: 1}}>
-                <Map lat={hotspot.lat} lng={hotspot.lng} />
+                <Map coords={[{lat: hotspot.lat, lng: hotspot.lng}]} />
               </Col>
             </Row>
           </Card>

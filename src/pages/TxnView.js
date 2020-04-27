@@ -47,6 +47,8 @@ class TxnView extends Component {
           return pocRequestv1()
         case 'rewards_v1':
           return rewardsv1()
+       
+
         default:
           return (
             <List
@@ -97,6 +99,10 @@ class TxnView extends Component {
       ]
       return (
         <div>
+        <div style={{padding: '0 24px 50px'}}>
+        <h3 style={{color: '#444'}}>About Mining Reward Transactions</h3>
+        <p>Bundles multiple reward transactions at the end of each epoch and distributes all HNT produced in that block to wallets that have earned them. </p>
+          </div>
           <Table
             dataSource={txn.rewards}
             columns={columns}
@@ -159,6 +165,10 @@ class TxnView extends Component {
       )
     }
 
+
+
+
+
     return (
       <AppLayout>
         <Content style={{ marginTop: 0, background: '#27284B', padding: '60px 0 30px' }}>
@@ -169,7 +179,7 @@ class TxnView extends Component {
               {txn.hash}
               </Text>
               <p style={{marginTop: 20}}>
-              
+
               <TxnTag type={txn.type} /></p>
 
               <hr />
@@ -195,8 +205,8 @@ class TxnView extends Component {
         </Content>
 
         <Content style={{ marginTop: '10px', margin: '0 auto', maxWidth: 850, paddingBottom: 100 }}>
-          <Card loading={loading} style={{padding: 24}}>
-            <h2 >Transaction Details</h2>
+          <Card loading={loading} >
+            <h2 style={{padding: '44px 0 10px 24px'}}>Transaction Details</h2>
             {txnView(txn.type)}
           </Card>
         </Content>

@@ -49,10 +49,11 @@ width: 100%;
 transform-origin: bottom right;
 position: absolute;
 margin-top: -100%;
-left: -850px;
+left: -200px;
 height: 850px;
 background: none;
 bottom: 0;
+max-width: 200px;
 }
 
 .barchart  .ant-table-tbody > tr > td {

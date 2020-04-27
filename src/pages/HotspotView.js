@@ -56,7 +56,7 @@ class HotspotView extends Component {
               <Row style={{paddingTop: 30}}>
                <div className="flexwrapper" style={{width: '100%', justifyContent: 'flex-start', alignItems: 'flex-start', marginBottom: 50}}>
 
-                <div>
+                <div style={{width: '100%'}}>
                  <Fade delay={1000}>
               <Tooltip placement="bottom" title="The network score of this hotspot. From 0 to 1, with 1 being optimum performance.">
               <h3 style={{color: '#27284B', background: '#BE73FF', padding: '1px 6px', borderRadius: 6, fontSize: 16, fontWeight: 600, display: 'inline-block', letterSpacing: -0.5}}>{round(hotspot.score, 2)}</h3>

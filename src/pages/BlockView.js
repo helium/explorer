@@ -7,6 +7,10 @@ import TxnTag from '../components/TxnTag'
 import AppLayout, { Content } from '../components/AppLayout'
 import LoadMoreButton from '../components/LoadMoreButton'
 import classNames from 'classnames'
+import Pie from '../images/pie.svg'
+import Fade from 'react-reveal/Fade'
+
+
 import { BackwardOutlined, ForwardOutlined, ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 
 
@@ -137,8 +141,9 @@ class BlockView extends Component {
                   </Text>
                 </p>
             </div>
-
-            <div className="chartplaceholder" />
+            <Fade>
+            <img src={Pie} style={{width: '100%', maxWidth: 330}}/>
+            </Fade>
           </div>
 
 

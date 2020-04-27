@@ -38,7 +38,7 @@ class HotspotsList extends Component {
   render() {
     const { hotspots, loading } = this.state
     return (
-      <Content>
+      <Content style={{marginBottom: 20}}>
         <Card loading={loading} title={'Hotspots'}>
           <Table
             dataSource={hotspots}

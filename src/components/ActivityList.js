@@ -81,10 +81,11 @@ class ActivityList extends Component {
   render() {
     const { txns, loading, loadingInitial, filtersOpen } = this.state
     return (
-      <Content style={{ marginTop: 20 }}>
+      <Content style={{ marginTop: 0 }}>
         <Card
           loading={loadingInitial}
           title="Activity"
+
           extra={
             <Tooltip title="Toggle Filters">
               <Button
@@ -97,6 +98,7 @@ class ActivityList extends Component {
         >
           {filtersOpen && (
             <>
+            <div style={{padding: 24}}>
               <p style={{ marginBottom: 8 }}>
                 <Text strong>Filter by Type:</Text>
               </p>
@@ -112,6 +114,7 @@ class ActivityList extends Component {
                   onChange={this.onFiltersChanged}
                 />
               </p>
+              </div>
             </>
           )}
           <Table

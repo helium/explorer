@@ -47,7 +47,7 @@ class AccountView extends Component {
 
     return (
       <AppLayout>
-       <Content style={{ marginTop: 0, background: '#27284B', padding: '100px 0 70px', overflowX: 'scroll' }}>
+       <Content style={{ marginTop: 0, background: '#27284B', padding: '80px 0 50px', overflowX: 'scroll' }}>
          <div style={{margin: '0 auto', maxWidth: 850, textAlign: 'center'}}>
          <Fade top>
          <div style={{background: 'white', borderRadius: 10, display: 'inline-block', padding: '10px 10px 5px', boxSizing: 'border-box', marginBottom: 30}}>
@@ -73,7 +73,16 @@ class AccountView extends Component {
                     )}
                     </Title>
                     </Fade>
-                    <Fade bottom delay={1000}>
+                    </div>
+                    </Content>
+
+
+                  
+                      <div className="bottombar">
+                        <Fade bottom delay={1000}>
+                        <Content style={{ maxWidth: 850, margin: '0 auto'}}>
+
+
                     <div className="flexwrapper" style={{justifyContent: 'center'}}>
               <Tooltip placement="bottom" title="The amount of Data Credits this account owns.">
             <h3 style={{margin:'0 20px'}}> <ClockCircleOutlined style={{color: '#FFC769', marginRight: 5}} /> 
@@ -95,13 +104,15 @@ class AccountView extends Component {
                 </h3>
                 </Tooltip>
             </div>
-            </Fade>
+            </Content>
+                        </Fade>
+
+            </div>
 
 
-         </div>
-         </Content>
 
-         <Content style={{  margin: '0 auto', maxWidth: 850, paddingBottom: 100, marginTop: 20, }}>
+
+         <Content style={{  margin: '0 auto', maxWidth: 850, paddingBottom: 100, marginTop: 0, }}>
         <HotspotsList address={address} />
         <ActivityList type="account" address={address} title={'Hello'} />
         </Content>

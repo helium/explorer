@@ -4,7 +4,12 @@ import BlocksList from '../components/BlocksList'
 import BlocksChart from '../components/BlocksChart'
 import AppLayout, { Content } from '../components/AppLayout'
 import { Typography, Tag, Table, Card } from 'antd'
+import Chart from '../images/chart.svg'
+
+
+
 const { Title, Text } = Typography
+
 
 
 class Index extends React.Component {
@@ -12,13 +17,24 @@ class Index extends React.Component {
     return (
       <AppLayout>
 
- <Content style={{ marginTop: 0, background: '#27284B', padding: '60px 0 0' }}>
+ <Content style={{ marginTop: 0, background: '#27284B', padding: '60px 0 40px' }}>
         <div style={{margin: '0 auto', maxWidth: 850}}>
           
-          <Title style={{margin: '0px 0 200px', maxWidth: 550, letterSpacing: '-2px', fontSize: 38, lineHeight: 1, color: 'white'}}>Helium <br/><span style={{fontWeight: 300}}>Blockchain Explorer</span></Title>
+          <Title style={{margin: '0px 0 40px', maxWidth: 550, letterSpacing: '-2px', fontSize: 38, lineHeight: 1, color: 'white'}}>Helium <span style={{fontWeight: 300}}>Explorer</span></Title>
+          <div style={{background:'#3F416D', borderRadius: 10, padding: '14px 24px', marginBottom: 50}}>
+            <Row>
+            <Col lg={12}>
+              <h3>Blockchain Stats</h3>
+            </Col>
+            <Col lg={12}>
+              <h3>Market Stats</h3>
+            </Col>
 
+            </Row>
+
+          </div>
           <div style={{position: 'relative', width: '100%'}}>
-           <BlocksChart />
+           <img src={Chart} />
            </div>
             </div>
         </Content>

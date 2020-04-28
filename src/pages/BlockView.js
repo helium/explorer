@@ -60,7 +60,7 @@ class BlockView extends Component {
 
   render() {
     const { block, loading, txns, hasMore } = this.state
-
+    console.log(txns)
 
 
     const txnColumns = [
@@ -80,48 +80,7 @@ class BlockView extends Component {
         title: 'Fee (DC)',
         dataIndex: 'fee',
         key: 'fee',
-      },
-    ]
-
-   
-
-
-
-    const paymentColumns = [
-      {
-        title: 'Amount',
-        dataIndex: 'amount',
-        key: 'amount',
-      },
-      {
-        title: 'Hash',
-        dataIndex: 'hash',
-        key: 'hash',
-        render: (hash) => <a href={'/txns/' + hash}>{hash}</a>,
-      },
-      {
-        title: 'Fee',
-        dataIndex: 'fee',
-        key: 'fee',
-      },
-    ]
-
-    const pocColumns = [
-      {
-        title: 'Challenger',
-        dataIndex: 'challenger',
-        key: 'challenger',
-      },
-      {
-        title: 'Hash',
-        dataIndex: 'hash',
-        key: 'hash',
-        render: (hash) => <a href={'/txns/' + hash}>{hash}</a>,
-      },
-      {
-        title: 'Fee',
-        dataIndex: 'fee',
-        key: 'fee',
+        render: (data) => <span>{(typeof data === 'object' && data !== null) ? data.integerBalance : data}</span>
       },
     ]
 
@@ -142,7 +101,7 @@ class BlockView extends Component {
                 </p>
             </div>
             <Fade>
-            <img src={Pie} style={{width: '100%', maxWidth: 330}}/>
+              <img src={Pie} style={{width: '100%', maxWidth: 330}}/>
             </Fade>
           </div>
 

@@ -9,7 +9,7 @@ import LoadMoreButton from '../components/LoadMoreButton'
 import classNames from 'classnames'
 import Pie from '../images/pie.svg'
 import Fade from 'react-reveal/Fade'
-
+import PieChart from '../components/PieChart'
 
 import { BackwardOutlined, ForwardOutlined, ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 
@@ -89,6 +89,8 @@ class BlockView extends Component {
         <Content style={{ marginTop: 0, background: '#27284B', padding: '60px 0 30px' }}>
         <div style={{margin: '0 auto', maxWidth: 850}}>
           <div className="flexwrapper">
+        
+
         <div>
             <h3>Block</h3>
                 <Title style={{color: 'white', fontSize: 52, marginTop: 0, lineHeight: 0.7, letterSpacing: '-2px'}}>
@@ -100,9 +102,10 @@ class BlockView extends Component {
                   </Text>
                 </p>
             </div>
-            <Fade>
-              <img src={Pie} style={{width: '100%', maxWidth: 330}}/>
-            </Fade>
+
+            <div>
+              <PieChart />
+            </div>
           </div>
 
 

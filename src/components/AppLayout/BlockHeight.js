@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Typography, Tooltip, Spin } from 'antd'
 import { CodeSandboxOutlined } from '@ant-design/icons'
 import Client from '@helium/http'
+import Block from '../../images/block.svg'
+
 
 class BlockHeight extends Component {
   state = {
@@ -30,7 +32,7 @@ class BlockHeight extends Component {
     return (
       <Tooltip placement="bottomRight" title="Current Block Height">
         <a href={`/blocks/${height}`}  style={{minWidth: 127, textAlign: 'center', fontSize: 17}}> 
-          
+          <img style={{marginRight: 5, position: 'relative', top: '-1px'}} src={Block} />
           {!loading && height.toLocaleString()}
           {loading && <Spin size="small" />}
         </a>

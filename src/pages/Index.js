@@ -4,8 +4,12 @@ import BlocksList from '../components/BlocksList'
 import BlocksChart from '../components/BlocksChart'
 import AppLayout, { Content } from '../components/AppLayout'
 import { Typography, Tag, Table, Card } from 'antd'
-import Chart from '../images/chart.svg'
 import classNames from 'classnames'
+import BarChart from '../components/BarChart'
+import Fade from 'react-reveal/Fade'
+import { SocialIcon } from 'react-social-icons'
+
+
 
 
 
@@ -21,7 +25,20 @@ class Index extends React.Component {
  <Content style={{ marginTop: 0, background: '#27284B', padding: '60px 0 20px' }}>
         <div style={{margin: '0 auto', maxWidth: 850}}>
           
+                    <div className="flexwrapper">
+
           <Title style={{margin: '0px 0 40px', maxWidth: 550, letterSpacing: '-2px', fontSize: 38, lineHeight: 1, color: 'white'}}>Helium <span style={{fontWeight: 300}}>Explorer</span></Title>
+         
+          <div className="social">
+            <SocialIcon url="https://t.me/helium_network" />
+            <SocialIcon url="http://chat.helium.com/" network="slack" />
+            <SocialIcon url="https://twitter.com/helium"  />
+
+          </div>
+          
+          </div>
+
+          <Fade top>
           <div style={{background:'#3F416D', borderRadius: 10, padding: '16px 24px', marginBottom: 100}}>
             <Row>
             <Col lg={12}>
@@ -43,8 +60,9 @@ class Index extends React.Component {
             </Row>
 
           </div>
+          </Fade>
           <div style={{position: 'relative', width: '100%'}}>
-           <img src={Chart} />
+           <BarChart />
            </div>
             </div>
         </Content>

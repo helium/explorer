@@ -7,7 +7,6 @@ import { Typography, Tag, Table, Card } from 'antd'
 import classNames from 'classnames'
 import BarChart from '../components/BarChart'
 import Fade from 'react-reveal/Fade'
-import { SocialIcon } from 'react-social-icons'
 
 
 
@@ -29,12 +28,7 @@ class Index extends React.Component {
 
           <Title style={{margin: '0px 0 40px', maxWidth: 550, letterSpacing: '-2px', fontSize: 38, lineHeight: 1, color: 'white'}}>Helium <span style={{fontWeight: 300}}>Explorer</span></Title>
          
-          <div className="social">
-            <SocialIcon url="https://t.me/helium_network" />
-            <SocialIcon url="http://chat.helium.com/" network="slack" />
-            <SocialIcon url="https://twitter.com/helium"  />
-
-          </div>
+        
           
           </div>
 

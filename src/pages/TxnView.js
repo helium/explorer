@@ -8,6 +8,8 @@ import PocPath from '../components/PocPath'
 import AppLayout, { Content } from '../components/AppLayout'
 import Map from '../components/Map'
 import { BackwardOutlined, ForwardOutlined, ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import Block from '../images/block.svg'
+
 
 const { Title, Text } = Typography
 
@@ -66,6 +68,10 @@ class TxnView extends Component {
     }
 
     const pocReceiptsv1 = () => {
+
+      console.log(txn)
+
+
       return (
         <div>
           <PocPath path={txn.path} />
@@ -89,6 +95,7 @@ class TxnView extends Component {
           <List.Item>Challenging Hotspot: <a href={'/hotspots/' + txn.challenger}>{txn.challenger}</a></List.Item>
           <List.Item>Challenging Owner: <a href={'/accounts/' + txn.owner}>{txn.owner}</a></List.Item>
           <List.Item>Block Height: <a href={'/blocks/' + txn.height}>{txn.height}</a></List.Item>
+
           <List
             dataSource={Object.entries(txn).map(([key, value]) => {
               return key + ' ' + value
@@ -196,15 +203,20 @@ class TxnView extends Component {
       <AppLayout>
         <Content style={{ marginTop: 0, background: '#27284B', padding: '60px 0 30px' }}>
          <div style={{margin: '0 auto', maxWidth: 850}}>
+               
+         <div className="flexwrapper" style={{alignItems:'flex-start'}}>
+         <div>
                <Title style={{color: 'white', fontSize: 52, marginTop: 0, lineHeight: 0.7, letterSpacing: '-2px'}}>Transaction</Title>
-                                <Text copyable style={{color: '#6A6B93', fontFamily: 'monospace'}}>
+               <Text copyable style={{color: '#6A6B93', fontFamily: 'monospace'}}>
 
               {txn.hash}
               </Text>
               <p style={{marginTop: 20}}>
 
               <TxnTag type={txn.type} /></p>
-
+              </div>
+                            <p><img style={{marginRight: 5, position: 'relative', top: '-1px'}} src={Block} /><a href={'/blocks/' + txn.height}>{txn.height}</a></p>
+                            </div>
               <hr />
             <div className="flexwrapper">
             <a className="button"><BackwardOutlined style={{marginleft: '-6px'}}/> Previous Transaction</a>

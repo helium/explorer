@@ -1,20 +1,7 @@
 import React, { PureComponent } from 'react';
 import { ResponsiveContainer, PieChart, Pie, Sector, Cell } from 'recharts';
 
-const data = [
-  { name: 'PoC Challenge', value: 200 },
-  { name: 'PoC Receipt', value: 200 },
-  { name: 'Mining Reward', value: 200 },
-  { name: 'Consensus Election', value: 200 },
-  { name: 'PoC Challenger', value: 200 },
-  { name: 'PoC Challengee', value: 200 },
-  { name: 'PoC Witness', value: 200 },
-  { name: 'Security Token Reward', value: 200 },
-
-];
-
-  const COLORS = ['#29D391', '#38A2FF', '#E68B00', '#FF6666','#BE73FF', '#595a9a', '#FFC769', '#9AE8C9'];
-
+const COLORS = ['#29D391', '#38A2FF', '#E68B00', '#FF6666','#BE73FF', '#595a9a', '#FFC769', '#9AE8C9'];
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
@@ -32,14 +19,10 @@ const renderActiveShape = (props) => {
   const ey = my;
   const textAnchor = cos >= 0 ? 'start' : 'end';
 
-
-
   return (
     <g>
       <text scaleToFit={true} x={cx} y={cy-10} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
      <text x={cx} y={cy+10} dy={8} textAnchor="middle" fill="#fff">{value}</text>
-
-
       <Sector
         cx={cx}
         cy={cy}
@@ -50,9 +33,7 @@ const renderActiveShape = (props) => {
         fill={fill}
         stroke="#27284b"
         strokeWidth="3"
-
-      />
-    
+      />    
     </g>
   );
 };
@@ -72,6 +53,7 @@ export default class Example extends PureComponent {
   };
 
   render() {
+    const { data } = this.props
     return (
     <div style={{ width: 230, height: 230 }}>
     <ResponsiveContainer>

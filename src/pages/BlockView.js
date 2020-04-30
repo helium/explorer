@@ -7,7 +7,6 @@ import TxnTag from '../components/TxnTag'
 import AppLayout, { Content } from '../components/AppLayout'
 import LoadMoreButton from '../components/LoadMoreButton'
 import classNames from 'classnames'
-import Pie from '../images/pie.svg'
 import Fade from 'react-reveal/Fade'
 import PieChart from '../components/PieChart'
 
@@ -16,7 +15,7 @@ import { BackwardOutlined, ForwardOutlined, ClockCircleOutlined, CheckCircleOutl
 
 const { Title, Text } = Typography
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 500
 
 const initialState = {
   block: {},
@@ -60,8 +59,22 @@ class BlockView extends Component {
 
   render() {
     const { block, loading, txns, hasMore } = this.state
-    console.log(txns)
-
+    
+    const filterTxns = () => {
+      const res = []
+      if (txns.length > 0) {
+        txns.map((t) => {
+          let f = res.find(x => x.name === t.type)
+          if (f) {
+            f.value++
+          } else {
+            let n = {name: t.type, value: 1}
+            res.push(n)
+          }
+        })
+      }
+      return res
+    }    
 
     const txnColumns = [
       {
@@ -104,7 +117,7 @@ class BlockView extends Component {
             </div>
 
             <div>
-              <PieChart />
+              <PieChart data={filterTxns()} />
             </div>
           </div>
 

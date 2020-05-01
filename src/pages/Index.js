@@ -12,13 +12,20 @@ const { Title, Text } = Typography
 class Index extends Component {
   state = {
     height: 0,
+    volume: 0,
     marketData: null,
   }
 
   componentDidMount = async () => {
+    let newVolume = 0
     fetch('https://api.coingecko.com/api/v3/coins/helium')
     .then(res => res.json())
-    .then(marketData => this.setState({ marketData }))
+    .then(marketData => {
+        marketData.tickers.map((t) => {
+          newVolume += t.converted_volume.usd
+        })
+        this.setState({ volume: newVolume, marketData })
+     })
 
     this.client = new Client()
     const blocks = await this.client.blocks.list()
@@ -27,9 +34,10 @@ class Index extends Component {
   }
 
   render() {
-    const { marketData, height } = this.state
+    const { marketData, volume, height } = this.state
+    console.log(marketData)
 
-    return (
+    return (      
       <AppLayout>
         <Content style={{ marginTop: 0, background: '#27284B', padding: '60px 0 20px' }}>
           <div style={{margin: '0 auto', maxWidth: 850}}>
@@ -50,7 +58,7 @@ class Index extends Component {
                   <Col lg={12}>
                     <h3 style={{marginBottom: 20, color: '#1890ff', fontSize: 14}}>Market Stats</h3>
                     <p className="stat"><span>Market Price</span>{marketData ? marketData.market_data.current_price.usd.toLocaleString('en-US', {style:'currency', currency:'USD'}) : 'NA'}</p>
-                    <p className="stat"><span>Volume (24hr):</span>{marketData ? marketData.market_data.total_volume.usd.toLocaleString('en-US', {style:'currency', currency:'USD'}) : 'NA'}</p>
+                    <p className="stat"><span>Volume (24hr):</span>{volume ? volume.toLocaleString('en-US', {style:'currency', currency:'USD'}) : 'NA'}</p>
                     <p className="stat"><span>Circulating Supply:</span>NA</p>
                     <p className="stat"><span>Market Cap:</span>$NA</p>
                   </Col>

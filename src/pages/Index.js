@@ -13,7 +13,7 @@ class Index extends Component {
   state = {
     height: 0,
     volume: 0,
-    marketData: null,
+    price: 0,
   }
 
   componentDidMount = async () => {
@@ -24,7 +24,7 @@ class Index extends Component {
         marketData.tickers.map((t) => {
           newVolume += t.converted_volume.usd
         })
-        this.setState({ volume: newVolume, marketData })
+        this.setState({ volume: newVolume, price: marketData.market_data.current_price.usd })
      })
 
     this.client = new Client()
@@ -34,8 +34,7 @@ class Index extends Component {
   }
 
   render() {
-    const { marketData, volume, height } = this.state
-    console.log(marketData)
+    const { price, volume, height } = this.state
 
     return (      
       <AppLayout>
@@ -57,8 +56,8 @@ class Index extends Component {
                   </Col>
                   <Col lg={12}>
                     <h3 style={{marginBottom: 20, color: '#1890ff', fontSize: 14}}>Market Stats</h3>
-                    <p className="stat"><span>Market Price</span>{marketData ? marketData.market_data.current_price.usd.toLocaleString('en-US', {style:'currency', currency:'USD'}) : 'NA'}</p>
-                    <p className="stat"><span>Volume (24hr):</span>{volume ? volume.toLocaleString('en-US', {style:'currency', currency:'USD'}) : 'NA'}</p>
+                    <p className="stat"><span>Market Price</span>{price.toLocaleString('en-US', {style:'currency', currency:'USD'})}</p>
+                    <p className="stat"><span>Volume (24hr):</span>{volume.toLocaleString('en-US', {style:'currency', currency:'USD'})}</p>
                     <p className="stat"><span>Circulating Supply:</span>NA</p>
                     <p className="stat"><span>Market Cap:</span>$NA</p>
                   </Col>

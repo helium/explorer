@@ -56,8 +56,8 @@ class Index extends Component {
                   </Col>
                   <Col lg={12}>
                     <h3 style={{marginBottom: 20, color: '#1890ff', fontSize: 14}}>Market Stats</h3>
-                    <p className="stat"><span>Market Price</span>{price.toLocaleString('en-US', {style:'currency', currency:'USD'})}</p>
-                    <p className="stat"><span>Volume (24hr):</span>{volume.toLocaleString('en-US', {style:'currency', currency:'USD'})}</p>
+                    <p className="stat"><span>Market Price</span>{price.toLocaleString('en-US', {style:'currency', currency:'USD', minimumFractionDigits: 0, maximumFractionDigits: 4})}</p>
+                    <p className="stat"><span>Volume (24hr):</span>{volume.toLocaleString('en-US', {style:'currency', currency:'USD', minimumFractionDigits: 0, maximumFractionDigits: 2})}</p>
                     <p className="stat"><span>Circulating Supply:</span>NA</p>
                     <p className="stat"><span>Market Cap:</span>$NA</p>
                   </Col>

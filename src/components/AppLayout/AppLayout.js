@@ -1,23 +1,27 @@
 import React from 'react'
 import { Layout, Typography } from 'antd'
-import SearchBar from '../SearchBar'
 import NavHeader from './NavHeader'
+import Typekit from 'react-typekit'
 
 const { Content, Footer } = Layout
 const { Text } = Typography
 
+const layoutStyle = {
+  fontFamily: 'soleil, sans-serif',
+  fontStyle: 'normal',
+  minHeight: '100vh',
+}
+
 const AppLayout = ({ children }) => (
-  <Layout style={{ minHeight: '100vh' }}>
+  <Layout style={layoutStyle}>
+    <Typekit kitId="bum5vme" />
+
     <NavHeader />
 
-    <Content style={{ padding: '50px 10px' }}>
-      <SearchBar />
-
-      {children}
-    </Content>
+    <Content style={{ padding: '0px' }}>{children}</Content>
 
     <Footer style={{ textAlign: 'center' }}>
-      <Text>©2020 Helium Systems, Inc.</Text>
+      <Text style={{ color: '#8182AB' }}>©2020 Helium Systems, Inc.</Text>
     </Footer>
   </Layout>
 )

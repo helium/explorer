@@ -1,10 +1,10 @@
-import React from 'react';
-import './Explorer.css';
+import React from 'react'
+import './Explorer.css'
 import Router from './Router'
 
 class Explorer extends React.Component {
   render() {
-    return(
+    return (
       <div>
         <Router />
       </div>
@@ -12,4 +12,4 @@ class Explorer extends React.Component {
   }
 }
 
-export default Explorer;
+export default Explorer

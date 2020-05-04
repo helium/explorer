@@ -13,17 +13,19 @@ class PocPath extends Component {
 
   async componentDidMount() {
     this.client = new Client()
-    const { path } = this.props    
-    const pathHotspots = await Promise.all(path.map(p => this.client.hotspots.get(p.challengee)))
+    const { path } = this.props
+    const pathHotspots = await Promise.all(
+      path.map((p) => this.client.hotspots.get(p.challengee)),
+    )
     this.setState({ loadingInitial: false, hotspots: pathHotspots })
   }
 
   render() {
     const { hotspots, loadingInitial } = this.state
     if (!loadingInitial) {
-      return (<Map coords={hotspots} />)
+      return <Map coords={hotspots} />
     } else {
-      return (<div> doh</div>)
+      return <div> doh</div>
     }
   }
 }

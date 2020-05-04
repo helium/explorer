@@ -7,6 +7,14 @@ import TxnTag from '../components/TxnTag'
 import PocPath from '../components/PocPath'
 import AppLayout, { Content } from '../components/AppLayout'
 import Map from '../components/Map'
+import {
+  BackwardOutlined,
+  ForwardOutlined,
+  ClockCircleOutlined,
+  CheckCircleOutlined,
+} from '@ant-design/icons'
+import Block from '../images/block.svg'
+
 const { Title, Text } = Typography
 
 class TxnView extends Component {
@@ -29,7 +37,6 @@ class TxnView extends Component {
   async loadTxn() {
     const { hash } = this.props.match.params
     const txn = await this.client.transactions.get(hash)
-    console.log(txn)
     this.setState({ txn, loading: false })
   }
 
@@ -48,6 +55,7 @@ class TxnView extends Component {
           return pocReceiptsv1()
         case 'rewards_v1':
           return rewardsv1()
+
         default:
           return (
             <List
@@ -61,30 +69,45 @@ class TxnView extends Component {
       }
     }
 
-    const pocReceiptsv1 = () => {
-      return (
-        <div>
-          <PocPath path={txn.path} />
-          <List.Item>Challenging Hotspot: <a href={'/hotspots/' + txn.challenger}>{txn.challenger}</a></List.Item>
-          <List.Item>Challenging Owner: <a href={'/accounts/' + txn.challengerOwner}>{txn.challengerOwner}</a></List.Item>
-          <List.Item>Block Height: <a href={'/blocks/' + txn.height}>{txn.height}</a></List.Item>
-          <List
-            dataSource={Object.entries(txn).map(([key, value]) => {
-              return key + ' ' + value
-            })}
-            renderItem={(item) => <List.Item>{item}</List.Item>}
-          />
-        </div>
-      )
-    }
+    const pocReceiptsv1 = () => (
+      <div>
+        <PocPath path={txn.path} />
+        <List.Item>
+          Challenging Hotspot:{' '}
+          <a href={'/hotspots/' + txn.challenger}>{txn.challenger}</a>
+        </List.Item>
+        <List.Item>
+          Challenging Owner:{' '}
+          <a href={'/accounts/' + txn.challengerOwner}>{txn.challengerOwner}</a>
+        </List.Item>
+        <List.Item>
+          Block Height: <a href={'/blocks/' + txn.height}>{txn.height}</a>
+        </List.Item>
+        <List
+          dataSource={Object.entries(txn).map(([key, value]) => {
+            return key + ' ' + value
+          })}
+          renderItem={(item) => <List.Item>{item}</List.Item>}
+        />
+      </div>
+    )
 
     const pocRequestv1 = () => {
       return (
         <div>
-          <Map coords={[{lat: txn.lat, lng: txn.lng}]} />
-          <List.Item>Challenging Hotspot: <a href={'/hotspots/' + txn.challenger}>{txn.challenger}</a></List.Item>
-          <List.Item>Challenging Owner: <a href={'/accounts/' + txn.owner}>{txn.owner}</a></List.Item>
-          <List.Item>Block Height: <a href={'/blocks/' + txn.height}>{txn.height}</a></List.Item>
+          <Map coords={[{ lat: txn.lat, lng: txn.lng }]} />
+          <List.Item>
+            Challenging Hotspot:{' '}
+            <a href={'/hotspots/' + txn.challenger}>{txn.challenger}</a>
+          </List.Item>
+          <List.Item>
+            Challenging Owner:{' '}
+            <a href={'/accounts/' + txn.owner}>{txn.owner}</a>
+          </List.Item>
+          <List.Item>
+            Block Height: <a href={'/blocks/' + txn.height}>{txn.height}</a>
+          </List.Item>
+
           <List
             dataSource={Object.entries(txn).map(([key, value]) => {
               return key + ' ' + value
@@ -118,6 +141,14 @@ class TxnView extends Component {
       ]
       return (
         <div>
+          <div style={{ padding: '0 24px 50px' }}>
+            <h3 style={{ color: '#444' }}>About Mining Reward Transactions</h3>
+            <p>
+              Bundles multiple reward transactions at the end of each epoch and
+              distributes all HNT produced in that block to wallets that have
+              earned them.{' '}
+            </p>
+          </div>
           <Table
             dataSource={txn.rewards}
             columns={columns}
@@ -167,7 +198,9 @@ class TxnView extends Component {
       return (
         <div>
           <p>Total Amount: {txn.totalAmount.toString()} </p>
-          <p>Payer: <a href={`/accounts/${txn.payer}`}>{txn.payer}</a></p>
+          <p>
+            Payer: <a href={`/accounts/${txn.payer}`}>{txn.payer}</a>
+          </p>
           <Table
             dataSource={txn.payments}
             columns={columns}
@@ -182,21 +215,77 @@ class TxnView extends Component {
 
     return (
       <AppLayout>
-        <Content style={{ marginTop: 50 }}>
-          <Card loading={loading}>
-            <Title level={3} style={{ wordBreak: 'break-all' }}>
-              <DollarOutlined /> {txn.hash}
-            </Title>
-            <Tag color="green">
-              <Timestamp date={txn.time}></Timestamp>
-            </Tag>
-            <TxnTag type={txn.type}></TxnTag>
-          </Card>
+        <Content
+          style={{
+            marginTop: 0,
+            background: '#27284B',
+            padding: '60px 0 30px',
+          }}
+        >
+          <div style={{ margin: '0 auto', maxWidth: 850 }}>
+            <div className="flexwrapper" style={{ alignItems: 'flex-start' }}>
+              <div>
+                <Title
+                  style={{
+                    color: 'white',
+                    fontSize: 52,
+                    marginTop: 0,
+                    lineHeight: 0.7,
+                    letterSpacing: '-2px',
+                  }}
+                >
+                  Transaction
+                </Title>
+                <Text
+                  copyable
+                  style={{ color: '#6A6B93', fontFamily: 'monospace' }}
+                >
+                  {txn.hash}
+                </Text>
+                <p style={{ marginTop: 20 }}>
+                  <TxnTag type={txn.type} />
+                </p>
+              </div>
+              <p>
+                <img
+                  style={{ marginRight: 5, position: 'relative', top: '-1px' }}
+                  src={Block}
+                />
+                <a href={'/blocks/' + txn.height}>{txn.height}</a>
+              </p>
+            </div>
+            <hr />
+            <div className="flexwrapper">
+              <a className="button">
+                <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
+                Transaction
+              </a>
+
+              <h3>
+                <ClockCircleOutlined
+                  style={{ color: '#FFC769', marginRight: 4 }}
+                />{' '}
+                <Timestamp date={txn.time} />
+              </h3>
+
+              <a className="button">
+                Next Transaction{' '}
+                <ForwardOutlined style={{ marginRight: '-6px' }} />
+              </a>
+            </div>
+          </div>
         </Content>
 
-        <Content style={{ marginTop: '10px' }}>
+        <Content
+          style={{
+            marginTop: '10px',
+            margin: '0 auto',
+            maxWidth: 850,
+            paddingBottom: 100,
+          }}
+        >
           <Card loading={loading}>
-            <Title level={4}>Transaction Details</Title>
+            <h2 style={{ padding: '44px 0 10px 24px' }}>Transaction Details</h2>
             {txnView(txn.type)}
           </Card>
         </Content>

@@ -29,6 +29,12 @@
     "eject": "react-scripts eject",
     "pretty": "prettier --write \"./**/*.{js,jsx,json}\""
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged",
+      "post-commit": "git update-index -g"
+    }
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -45,6 +51,8 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^2.0.5"
+    "husky": "^4.2.5",
+    "prettier": "2.0.5",
+    "pretty-quick": "^2.0.1"
   }
 }

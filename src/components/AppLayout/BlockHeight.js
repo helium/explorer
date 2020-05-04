@@ -4,7 +4,6 @@ import { CodeSandboxOutlined } from '@ant-design/icons'
 import Client from '@helium/http'
 import Block from '../../images/block.svg'
 
-
 class BlockHeight extends Component {
   state = {
     height: 0,
@@ -31,8 +30,14 @@ class BlockHeight extends Component {
     const { height, loading } = this.state
     return (
       <Tooltip placement="bottomRight" title="Current Block Height">
-        <a href={`/blocks/${height}`}  style={{minWidth: 127, textAlign: 'center', fontSize: 17}}> 
-          <img style={{marginRight: 5, position: 'relative', top: '-1px'}} src={Block} />
+        <a
+          href={`/blocks/${height}`}
+          style={{ minWidth: 127, textAlign: 'center', fontSize: 17 }}
+        >
+          <img
+            style={{ marginRight: 5, position: 'relative', top: '-1px' }}
+            src={Block}
+          />
           {!loading && height.toLocaleString()}
           {loading && <Spin size="small" />}
         </a>

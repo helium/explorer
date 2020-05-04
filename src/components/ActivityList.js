@@ -80,7 +80,6 @@ class ActivityList extends Component {
         <Card
           loading={loadingInitial}
           title="Activity"
-
           extra={
             <Tooltip title="Toggle Filters">
               <Button
@@ -93,22 +92,22 @@ class ActivityList extends Component {
         >
           {filtersOpen && (
             <>
-            <div style={{padding: 24}}>
-              <p style={{ marginBottom: 8 }}>
-                <Text strong>Filter by Type:</Text>
-              </p>
-              <p style={{ marginBottom: 20 }}>
-                <Checkbox.Group
-                  options={[
-                    { label: 'Mining Rewards', value: 'rewards_v1' },
-                    { label: 'Payment (v1)', value: 'payment_v1' },
-                    { label: 'Payment (v2)', value: 'payment_v2' },
-                    { label: 'Add Hotspot', value: 'add_gateway_v1' },
-                    { label: 'Assert Location', value: 'assert_location_v1' },
-                  ]}
-                  onChange={this.onFiltersChanged}
-                />
-              </p>
+              <div style={{ padding: 24 }}>
+                <p style={{ marginBottom: 8 }}>
+                  <Text strong>Filter by Type:</Text>
+                </p>
+                <p style={{ marginBottom: 20 }}>
+                  <Checkbox.Group
+                    options={[
+                      { label: 'Mining Rewards', value: 'rewards_v1' },
+                      { label: 'Payment (v1)', value: 'payment_v1' },
+                      { label: 'Payment (v2)', value: 'payment_v2' },
+                      { label: 'Add Hotspot', value: 'add_gateway_v1' },
+                      { label: 'Assert Location', value: 'assert_location_v1' },
+                    ]}
+                    onChange={this.onFiltersChanged}
+                  />
+                </p>
               </div>
             </>
           )}
@@ -139,9 +138,10 @@ const columns = (ownerAddress) => {
           return <span>{'-' + txn.totalAmount.toString(2)}</span>
         return (
           <span>
-            {'+' + txn.payments
-              .find((p) => p.payee === ownerAddress)
-              .amount.toString(2)}
+            {'+' +
+              txn.payments
+                .find((p) => p.payee === ownerAddress)
+                .amount.toString(2)}
           </span>
         )
       case 'rewards_v1':

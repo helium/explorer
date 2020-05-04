@@ -38,7 +38,7 @@ class HotspotsList extends Component {
   render() {
     const { hotspots, loading } = this.state
     return (
-      <Content style={{marginBottom: 20}}>
+      <Content style={{ marginBottom: 20 }}>
         <Card loading={loading} title={'Hotspots'}>
           <Table
             dataSource={hotspots}
@@ -58,7 +58,14 @@ const hotspotColumns = [
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
-    render: (data, row) => <a style={{fontFamily: 'soleil, sans-serif'}} href={'/hotspots/' + row.address}>{data}</a>,
+    render: (data, row) => (
+      <a
+        style={{ fontFamily: 'soleil, sans-serif' }}
+        href={'/hotspots/' + row.address}
+      >
+        {data}
+      </a>
+    ),
   },
   {
     title: 'Location',

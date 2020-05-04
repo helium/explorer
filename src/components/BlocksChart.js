@@ -7,7 +7,6 @@ import classNames from 'classnames'
 
 const { Text } = Typography
 
-
 class BlocksList extends Component {
   state = {
     blocks: [],
@@ -27,37 +26,33 @@ class BlocksList extends Component {
     this.setState({ blocks: [...blocks, ...newBlocks], loading: false })
   }
 
- 
-
   render() {
-
-     
-
     const { blocks, loading } = this.state
 
     const columns = [
-
       {
         dataIndex: 'transactionCount',
         key: 'transaction_count',
-        render: (transactionCount , height) => (
-          <Tooltip placement="bottom" title={transactionCount}><div style={{width: transactionCount, height: 38, backgroundColor: '#3F416D', float: 'right'}}/></Tooltip>
+        render: (transactionCount, height) => (
+          <Tooltip placement="bottom" title={transactionCount}>
+            <div
+              style={{
+                width: transactionCount,
+                height: 38,
+                backgroundColor: '#3F416D',
+                float: 'right',
+              }}
+            />
+          </Tooltip>
         ),
       },
-     
     ]
-
-
 
     return (
       <>
-
-        
-
-         <Table
-
-         showHeader="false"
-         className="barchart"
+        <Table
+          showHeader="false"
+          className="barchart"
           dataSource={blocks}
           columns={columns}
           rowKey="hash"
@@ -65,7 +60,6 @@ class BlocksList extends Component {
           loading={loading}
           scroll={{ x: true }}
         />
-
       </>
     )
   }

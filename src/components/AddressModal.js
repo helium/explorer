@@ -10,11 +10,7 @@ const AddressModal = ({ address }) => {
 
   return (
     <>
-      <Button
-        onClick={toggleOpen}
-        shape="circle"
-        icon={<QrcodeOutlined />}
-      />
+      <Button onClick={toggleOpen} shape="circle" icon={<QrcodeOutlined />} />
       <Modal
         title="Account Address"
         visible={open}

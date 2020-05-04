@@ -4,7 +4,7 @@ import { Row, Input } from 'antd'
 import Client from '@helium/http'
 import classNames from 'classnames'
 
-const { Search } = Input;
+const { Search } = Input
 
 class SearchBar extends Component {
   componentDidMount() {
@@ -60,15 +60,19 @@ class SearchBar extends Component {
 
   render() {
     return (
-
-        <Search
+      <Search
         enterButton
-          onSearch={this.doSearch}
-          size="large"
-          className="searcher"
-          placeholder="Search for a block height, hash, transaction, or address"
-          style={{ width: '100%', maxWidth: 850, background: '#27284B', border: 'none' }}
-        />
+        onSearch={this.doSearch}
+        size="large"
+        className="searcher"
+        placeholder="Search for a block height, hash, transaction, or address"
+        style={{
+          width: '100%',
+          maxWidth: 850,
+          background: '#27284B',
+          border: 'none',
+        }}
+      />
     )
   }
 }

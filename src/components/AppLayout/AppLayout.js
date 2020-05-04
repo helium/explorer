@@ -1,19 +1,16 @@
 import React from 'react'
 import { Layout, Typography } from 'antd'
 import NavHeader from './NavHeader'
-import Typekit from 'react-typekit';
-
-
+import Typekit from 'react-typekit'
 
 const { Content, Footer } = Layout
 const { Text } = Typography
 
 const layoutStyle = {
-  
   fontFamily: 'soleil, sans-serif',
   fontStyle: 'normal',
-  minHeight: '100vh'
-};
+  minHeight: '100vh',
+}
 
 const AppLayout = ({ children }) => (
   <Layout style={layoutStyle}>
@@ -21,13 +18,10 @@ const AppLayout = ({ children }) => (
 
     <NavHeader />
 
-    <Content style={{ padding: '0px' }}>
-
-      {children}
-    </Content>
+    <Content style={{ padding: '0px' }}>{children}</Content>
 
     <Footer style={{ textAlign: 'center' }}>
-      <Text style={{color: '#8182AB'}}>©2020 Helium Systems, Inc.</Text>
+      <Text style={{ color: '#8182AB' }}>©2020 Helium Systems, Inc.</Text>
     </Footer>
   </Layout>
 )

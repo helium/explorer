@@ -6,16 +6,15 @@ import SearchBar from '../SearchBar'
 import classNames from 'classnames'
 import Fade from 'react-reveal/Fade'
 
-
 const { Header } = Layout
 
 const NavHeader = () => (
-  <Header style={{display: 'flex', justifyContent: 'space-between'}}>
+  <Header style={{ display: 'flex', justifyContent: 'space-between' }}>
     <a href="/">
       <Logo />
     </a>
-        <SearchBar />
-           <BlockHeight/>
+    <SearchBar />
+    <BlockHeight />
   </Header>
 )
 

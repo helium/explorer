@@ -45,6 +45,7 @@ class ActivityList extends Component {
   }
 
   loadData = async () => {
+    if (!this.props.address) return
     await this.setState(initialState)
     this.list = await this.makeList()
     this.loadMore()

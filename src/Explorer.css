@@ -44,46 +44,49 @@ p.stat {
 }
 
 p.stat span {
-    color: white;
-    margin-right: 10px;
-    font-weight: 300;
-    width: 170px;
-    display: inline-block;
-
+  color: white;
+  margin-right: 10px;
+  font-weight: 300;
+  width: 170px;
+  display: inline-block;
 }
 
 .bottombar {
   width: 100%;
-  background-color: #1C1D3F;
+  background-color: #1c1d3f;
   padding: 20px;
   text-align: center;
 }
 
-.ant-table.ant-table-small .ant-table-title, .ant-table.ant-table-small .ant-table-footer, .ant-table.ant-table-small .ant-table-thead > tr > th, .ant-table.ant-table-small .ant-table-tbody > tr > td, .ant-table.ant-table-small tfoot > tr > th, .ant-table.ant-table-small tfoot > tr > td {
+.ant-table.ant-table-small .ant-table-title,
+.ant-table.ant-table-small .ant-table-footer,
+.ant-table.ant-table-small .ant-table-thead > tr > th,
+.ant-table.ant-table-small .ant-table-tbody > tr > td,
+.ant-table.ant-table-small tfoot > tr > th,
+.ant-table.ant-table-small tfoot > tr > td {
   padding: 12px 24px;
 }
 
 .ant-table-tbody > tr > td {
-
-  border-bottom: 2px solid #E9EAF2;
+  border-bottom: 2px solid #e9eaf2;
 }
 
 .barchart {
-transform: rotate(90deg);
-margin: 0px 0;
-display: inline-block;
-width: 100%;
-transform-origin: bottom right;
-position: absolute;
-margin-top: -100%;
-left: -200px;
-height: 850px;
-background: none;
-bottom: 0;
-max-width: 200px;
+  transform: rotate(90deg);
+  margin: 0px 0;
+  display: inline-block;
+  width: 100%;
+  transform-origin: bottom right;
+  position: absolute;
+  margin-top: -100%;
+  left: -200px;
+  height: 850px;
+  background: none;
+  bottom: 0;
+  max-width: 200px;
 }
 
-.barchart  .ant-table-tbody > tr > td {
+.barchart .ant-table-tbody > tr > td {
   background: none !important;
   padding: 2px 0 !important;
   border: none !important;
@@ -96,7 +99,6 @@ max-width: 200px;
 .barchart .ant-table {
   background: none;
 }
-
 
 .App-link {
   color: #61dafb;
@@ -112,13 +114,13 @@ max-width: 200px;
 }
 
 .ant-layout-header {
-  background: #1C1D3F;
+  background: #1c1d3f;
   padding: 10px 20px;
   align-items: center;
 }
 
 .ant-layout {
-  background: #E9EAF2;
+  background: #e9eaf2;
 }
 
 .flexwrapper {
@@ -127,10 +129,8 @@ max-width: 200px;
   align-items: center;
 }
 
-.ant-table.ant-table-small td a { 
-
+.ant-table.ant-table-small td a {
   font-family: monospace;
-
 }
 
 .ant-table-small .ant-table-thead > tr > th {
@@ -140,70 +140,64 @@ max-width: 200px;
   letter-spacing: 1px;
 }
 
+a.button {
+  padding: 12px 30px;
+  background: #383a64;
+  border-radius: 6px;
+  color: white;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  transform: scale(1);
+  display: inline-block;
+}
 
- a.button {
-        padding: 12px 30px;
-        background: #383A64;
-        border-radius: 6px;
-        color: white;
-        text-decoration: none;
-        transition: all .2s ease;
-        transform: scale(1);
-        display: inline-block;
-      }
+a.button:hover {
+  transform: scale(1.05);
+  background: #454677;
+}
 
-      a.button:hover {
-        transform: scale(1.05);
-        background:#454677;
+.ant-tag {
+  font-size: 12px;
+  border: none;
+  font-weight: 600;
+  padding: 2px 10px 3px;
+  border-radius: 4px;
+  min-width: 106px;
+  text-align: center;
+}
 
-      }
+h3 {
+  font-size: 12px;
+  color: #ffffff;
+  letter-spacing: 1.81px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
 
-      .ant-tag {
-        font-size: 12px;
-        border: none;
-        font-weight: 600;
-        padding: 2px 10px 3px;
-        border-radius: 4px;
-min-width: 106px;
-text-align: center;
-      }
+.ant-table-container table > thead {
+  font-family: soleil, sans-serif;
+}
 
-        h3 {
-font-size: 12px;
-color: #FFFFFF;
-letter-spacing: 1.81px;
-font-weight: 400;
-text-transform: uppercase;
-      }
+.ant-layout-footer {
+  background: #27284b;
+}
 
+.ant-input-affix-wrapper > input.ant-input {
+  background: none;
+  color: white;
+}
 
-      .ant-table-container table > thead  {
-        font-family: soleil, sans-serif;
-      }
-
-      .ant-layout-footer {
-        background: #27284B;
-      }
-
-      .ant-input-affix-wrapper > input.ant-input {
-        background: none;
-        color: white;
-      }
-
-            .ant-input-affix-wrapper > input.ant-input::placeholder {
-              color: #585A8C;
+.ant-input-affix-wrapper > input.ant-input::placeholder {
+  color: #585a8c;
 }
 
 .ant-table-thead > tr > th {
-  border-bottom: 2px solid #E9EAF2;
+  border-bottom: 2px solid #e9eaf2;
 }
 
-
-      hr {
-        border: none;
-        width: 100%;
-        border-top: 1px solid #494B7B;
-        margin: 40px 0;
-      }
-
-      
+hr {
+  border: none;
+  width: 100%;
+  border-top: 1px solid #494b7b;
+  margin: 40px 0;
+}

@@ -31,15 +31,12 @@ class ActivityList extends Component {
 
   makeList = async (filters = []) => {
     const { type, address } = this.props
+    const params = filters.length === 0 ? {} : { filterTypes: filters }
     if (type === 'account') {
-      return await this.client
-        .account(address)
-        .activity.list({ filterTypes: filters })
+      return await this.client.account(address).activity.list(params)
     }
     if (type === 'hotspot') {
-      return await this.client
-        .hotspot(address)
-        .activity.list({ filterTypes: filters })
+      return await this.client.hotspot(address).activity.list(params)
     }
     throw new Error('type prop is required')
   }

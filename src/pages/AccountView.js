@@ -55,7 +55,7 @@ class AccountView extends Component {
             marginTop: 0,
             background: '#27284B',
             padding: '80px 0 50px',
-            overflowX: 'scroll',
+            overflowX: 'hidden',
           }}
         >
           <div style={{ margin: '0 auto', maxWidth: 850, textAlign: 'center' }}>

@@ -14,6 +14,8 @@ class Index extends Component {
     height: 0,
     volume: 0,
     price: 0,
+    circulatingSupply: 0,
+    marketCap: 0,
   }
 
   componentDidMount = async () => {
@@ -21,12 +23,15 @@ class Index extends Component {
     fetch('https://api.coingecko.com/api/v3/coins/helium')
       .then((res) => res.json())
       .then((marketData) => {
+        console.log(marketData)
         marketData.tickers.map((t) => {
           newVolume += t.converted_volume.usd
         })
         this.setState({
           volume: newVolume,
           price: marketData.market_data.current_price.usd,
+          circulatingSupply: marketData.market_data.circulating_supply,
+          marketCap: marketData.market_data.market_cap.usd,
         })
       })
 
@@ -37,7 +42,7 @@ class Index extends Component {
   }
 
   render() {
-    const { price, volume, height } = this.state
+    const { price, volume, height, circulatingSupply, marketCap } = this.state
 
     return (
       <AppLayout>
@@ -127,10 +132,21 @@ class Index extends Component {
                       })}
                     </p>
                     <p className="stat">
-                      <span>Circulating Supply:</span>NA
+                      <span>Circulating Supply:</span>
+                      {circulatingSupply.toLocaleString('en-US', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                      })}{' '}
+                      HNT
                     </p>
                     <p className="stat">
-                      <span>Market Cap:</span>$NA
+                      <span>Market Cap:</span>
+                      {marketCap.toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 2,
+                      })}
                     </p>
                   </Col>
                 </Row>

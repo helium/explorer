@@ -62,7 +62,7 @@ class TxnView extends Component {
               {Object.entries(txn).map(([key, value]) => {
                 return (
                   <Descriptions.Item label={key} span={3}>
-                    {value}
+                    {typeof value === 'object' ? JSON.stringify(value) : value}
                   </Descriptions.Item>
                 )
               })}

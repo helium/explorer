@@ -58,13 +58,15 @@ class TxnView extends Component {
 
         default:
           return (
-            <List
-              dataSource={Object.entries(txn).map(([key, value]) => {
-                return key + ' ' + value
+            <Descriptions bordered>
+              {Object.entries(txn).map(([key, value]) => {
+                return (
+                  <Descriptions.Item label={key} span={3}>
+                    {value}
+                  </Descriptions.Item>
+                )
               })}
-              renderItem={(item) => <List.Item>{item}</List.Item>}
-              style={{ overflowX: 'hidden' }}
-            />
+            </Descriptions>
           )
       }
     }
@@ -72,23 +74,26 @@ class TxnView extends Component {
     const pocReceiptsv1 = () => (
       <div>
         <PocPath path={txn.path} />
-        <List.Item>
-          Challenging Hotspot:{' '}
-          <a href={'/hotspots/' + txn.challenger}>{txn.challenger}</a>
-        </List.Item>
-        <List.Item>
-          Challenging Owner:{' '}
-          <a href={'/accounts/' + txn.challengerOwner}>{txn.challengerOwner}</a>
-        </List.Item>
-        <List.Item>
-          Block Height: <a href={'/blocks/' + txn.height}>{txn.height}</a>
-        </List.Item>
-        <List
-          dataSource={Object.entries(txn).map(([key, value]) => {
-            return key + ' ' + value
+        <Descriptions bordered>
+          <Descriptions.Item label="Hotspot" span={3}>
+            <a href={'/hotspots/' + txn.challenger}>{txn.challenger}</a>
+          </Descriptions.Item>
+          <Descriptions.Item label="Owner" span={3}>
+            <a href={'/accounts/' + txn.challengerOwner}>
+              {txn.challengerOwner}
+            </a>
+          </Descriptions.Item>
+          <Descriptions.Item label="Block Height" span={3}>
+            <a href={'/blocks/' + txn.height}>{txn.height}</a>
+          </Descriptions.Item>
+          {Object.entries(txn).map(([key, value]) => {
+            return (
+              <Descriptions.Item label={key} span={3}>
+                {key === 'path' ? JSON.stringify(value) : value}
+              </Descriptions.Item>
+            )
           })}
-          renderItem={(item) => <List.Item>{item}</List.Item>}
-        />
+        </Descriptions>
       </div>
     )
 
@@ -96,24 +101,24 @@ class TxnView extends Component {
       return (
         <div>
           <Map coords={[{ lat: txn.lat, lng: txn.lng }]} />
-          <List.Item>
-            Challenging Hotspot:{' '}
-            <a href={'/hotspots/' + txn.challenger}>{txn.challenger}</a>
-          </List.Item>
-          <List.Item>
-            Challenging Owner:{' '}
-            <a href={'/accounts/' + txn.owner}>{txn.owner}</a>
-          </List.Item>
-          <List.Item>
-            Block Height: <a href={'/blocks/' + txn.height}>{txn.height}</a>
-          </List.Item>
-
-          <List
-            dataSource={Object.entries(txn).map(([key, value]) => {
-              return key + ' ' + value
+          <Descriptions bordered>
+            <Descriptions.Item label="Hotspot" span={3}>
+              <a href={'/hotspots/' + txn.challenger}>{txn.challenger}</a>
+            </Descriptions.Item>
+            <Descriptions.Item label="Owner" span={3}>
+              <a href={'/accounts/' + txn.owner}>{txn.owner}</a>
+            </Descriptions.Item>
+            <Descriptions.Item label="Block Height" span={3}>
+              <a href={'/blocks/' + txn.height}>{txn.height}</a>
+            </Descriptions.Item>
+            {Object.entries(txn).map(([key, value]) => {
+              return (
+                <Descriptions.Item label={key} span={3}>
+                  {value}
+                </Descriptions.Item>
+              )
             })}
-            renderItem={(item) => <List.Item>{item}</List.Item>}
-          />
+          </Descriptions>
         </div>
       )
     }
@@ -164,7 +169,11 @@ class TxnView extends Component {
     const paymentv1 = () => {
       return (
         <Descriptions bordered>
-          <Descriptions.Item label="Payer" span={3}>
+          <Descriptions.Item
+            label="Payer"
+            span={3}
+            style={{ overflow: 'ellipsis' }}
+          >
             <a href={`/accounts/${txn.payer}`}>{txn.payer}</a>
           </Descriptions.Item>
           <Descriptions.Item label="Payee" span={3}>

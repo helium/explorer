@@ -141,40 +141,6 @@ class HotspotView extends Component {
         >
           <ActivityList type="hotspot" address={hotspot.address} />
         </Content>
-
-        <Content style={{ marginTop: 50 }}>
-          <Card loading={loading} title={hotspot.name}>
-            <Row>
-              <Col xs={{ order: 1, span: 24 }} md={{ order: 0, span: 16 }}>
-                <Descriptions bordered>
-                  <Descriptions.Item label="Address" span={3}>
-                    <Text code copyable>
-                      {hotspot.address}
-                    </Text>
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Owner" span={3}>
-                    <a href={'/accounts/' + hotspot.owner}>{hotspot.owner}</a>
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Score" span={3}>
-                    {round(hotspot.score, 2)}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Location" span={3}>
-                    {get(hotspot, 'geocode.longCity')},{' '}
-                    {get(hotspot, 'geocode.shortState')}
-                  </Descriptions.Item>
-                </Descriptions>
-              </Col>
-              <Col
-                xs={{ order: 0, span: 24, offset: 0 }}
-                md={{ order: 1, span: 7, offset: 1 }}
-              >
-                <Map coords={[{ lat: hotspot.lat, lng: hotspot.lng }]} />
-              </Col>
-            </Row>
-          </Card>
-        </Content>
-
-        <ActivityList type="hotspot" address={hotspot.address} />
       </AppLayout>
     )
   }

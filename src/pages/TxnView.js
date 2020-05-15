@@ -37,6 +37,7 @@ class TxnView extends Component {
   async loadTxn() {
     const { hash } = this.props.match.params
     const txn = await this.client.transactions.get(hash)
+    console.log(txn)
     this.setState({ txn, loading: false })
   }
 
@@ -55,6 +56,8 @@ class TxnView extends Component {
           return pocReceiptsv1()
         case 'rewards_v1':
           return rewardsv1()
+        case 'state_channel_close_v1':
+          return stateChannelClosev1()
 
         default:
           return (
@@ -69,6 +72,42 @@ class TxnView extends Component {
             </Descriptions>
           )
       }
+    }
+
+    const stateChannelClosev1 = () => {
+      return (
+        <div>
+          <Descriptions bordered>
+            <Descriptions.Item label="Block Height" span={3}>
+              <a href={'/blocks/' + txn.height}>{txn.height}</a>
+            </Descriptions.Item>
+            <Descriptions.Item label="State Channel Closer" span={3}>
+              <a href={'/accounts/' + txn.closer}>{txn.closer}</a>
+            </Descriptions.Item>
+            <Descriptions.Item label="State Channel Owner" span={3}>
+              <a href={'/accounts/' + txn.stateChannel.owner}>
+                {txn.stateChannel.owner}
+              </a>
+            </Descriptions.Item>
+          </Descriptions>
+
+          {txn.stateChannel.summaries.map((s) => {
+            return (
+              <Descriptions bordered style={{ marginTop: '10px' }}>
+                <Descriptions.Item label="Hotspot" span={3}>
+                  <a href={'/hotspots/' + s.client}>{s.client}</a>
+                </Descriptions.Item>
+                <Descriptions.Item label="Packets Sent" span={3}>
+                  {s.num_packets}
+                </Descriptions.Item>
+                <Descriptions.Item label="Data Credits Used" span={3}>
+                  {s.num_dcs}
+                </Descriptions.Item>
+              </Descriptions>
+            )
+          })}
+        </div>
+      )
     }
 
     const pocReceiptsv1 = () => (

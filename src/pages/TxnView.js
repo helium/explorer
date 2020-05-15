@@ -95,7 +95,11 @@ class TxnView extends Component {
           {txn.stateChannel.summaries.map((s) => {
             return (
               <Descriptions bordered style={{ marginTop: '10px' }}>
-                <Descriptions.Item label="Hotspot" span={3}>
+                <Descriptions.Item
+                  label="Hotspot"
+                  span={3}
+                  style={{ width: '235px' }}
+                >
                   <a href={'/hotspots/' + s.client}>{animalHash(s.client)}</a>
                 </Descriptions.Item>
                 <Descriptions.Item label="Packets Sent" span={3}>

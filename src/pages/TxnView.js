@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Typography, Tag, Table, Card, List, Descriptions } from 'antd'
+import animalHash from 'angry-purple-tiger'
 import { DollarOutlined } from '@ant-design/icons'
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
@@ -95,7 +96,7 @@ class TxnView extends Component {
             return (
               <Descriptions bordered style={{ marginTop: '10px' }}>
                 <Descriptions.Item label="Hotspot" span={3}>
-                  <a href={'/hotspots/' + s.client}>{s.client}</a>
+                  <a href={'/hotspots/' + s.client}>{animalHash(s.client)}</a>
                 </Descriptions.Item>
                 <Descriptions.Item label="Packets Sent" span={3}>
                   {s.num_packets}

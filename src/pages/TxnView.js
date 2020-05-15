@@ -106,6 +106,16 @@ class TxnView extends Component {
               </Descriptions>
             )
           })}
+
+          <Descriptions bordered style={{ marginTop: '20px' }}>
+            {Object.entries(txn).map(([key, value]) => {
+              return (
+                <Descriptions.Item label={key} span={3}>
+                  {typeof value === 'object' ? JSON.stringify(value) : value}
+                </Descriptions.Item>
+              )
+            })}
+          </Descriptions>
         </div>
       )
     }

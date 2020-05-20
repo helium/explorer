@@ -76,11 +76,27 @@ class TxnView extends Component {
     }
 
     const stateChannelClosev1 = () => {
+      let totalPackets = 0
+      let totalHotspots = txn.stateChannel.summaries.length
+      let totalDcs = 0
+      txn.stateChannel.summaries.map((s) => {
+        totalPackets += s.num_packets
+        totalDcs += s.num_dcs
+      })
       return (
         <div>
           <Descriptions bordered>
             <Descriptions.Item label="Block Height" span={3}>
               <a href={'/blocks/' + txn.height}>{txn.height}</a>
+            </Descriptions.Item>
+            <Descriptions.Item label="Total Packets" span={3}>
+              {totalPackets}
+            </Descriptions.Item>
+            <Descriptions.Item label="Data Credits Spent" span={3}>
+              {totalDcs}
+            </Descriptions.Item>
+            <Descriptions.Item label="Number of Hotspots" span={3}>
+              {totalHotspots}
             </Descriptions.Item>
             <Descriptions.Item label="State Channel Closer" span={3}>
               <a href={'/accounts/' + txn.closer}>{txn.closer}</a>

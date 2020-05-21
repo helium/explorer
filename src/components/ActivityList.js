@@ -131,7 +131,7 @@ const columns = (ownerAddress) => {
         let res = txn.stateChannel.summaries.find(
           (o) => o.client === ownerAddress,
         )
-        return <span>{'+' + res.num_dcs} DC</span>
+        return <span>{res.num_dcs} DC</span>
       case 'payment_v1':
         if (txn.payer === ownerAddress)
           return <span>{'-' + txn.amount.toString(2)}</span>

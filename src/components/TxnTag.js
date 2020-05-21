@@ -5,6 +5,8 @@ const TxnTag = ({ type }) => typeTag(type)
 
 const typeTag = (type) => {
   switch (type) {
+    case 'state_channel_close_v1':
+      return <Tag color="teal">Packets Transferred</Tag>
     case 'payment_v1':
       return <Tag color="green">Payment</Tag>
     case 'payment_v2':

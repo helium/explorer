@@ -178,6 +178,10 @@ h3 {
   font-family: soleil, sans-serif;
 }
 
+.ant-descriptions-bordered .ant-descriptions-view > table {
+  table-layout: fixed;
+}
+
 .ant-layout-footer {
   background: #27284b;
 }

@@ -16,6 +16,8 @@ class Index extends Component {
     price: 0,
     circulatingSupply: 0,
     marketCap: 0,
+    blockTime: 0,
+    electionTime: 0,
   }
 
   componentDidMount = async () => {
@@ -23,15 +25,23 @@ class Index extends Component {
     fetch('https://api.coingecko.com/api/v3/coins/helium')
       .then((res) => res.json())
       .then((marketData) => {
-        console.log(marketData)
         marketData.tickers.map((t) => {
           newVolume += t.converted_volume.usd
         })
         this.setState({
           volume: newVolume,
           price: marketData.market_data.current_price.usd,
-          circulatingSupply: marketData.market_data.circulating_supply,
           marketCap: marketData.market_data.market_cap.usd,
+        })
+      })
+    fetch('https://api.helium.io/v1/stats')
+      .then((res) => res.json())
+      .then((stats) => {
+        console.log(stats)
+        this.setState({
+          circulatingSupply: stats.data.token_supply,
+          blockTime: stats.data.block_times.last_day.avg,
+          electionTime: stats.data.election_times.last_day.avg,
         })
       })
 
@@ -42,7 +52,15 @@ class Index extends Component {
   }
 
   render() {
-    const { price, volume, height, circulatingSupply, marketCap } = this.state
+    const {
+      price,
+      volume,
+      height,
+      circulatingSupply,
+      marketCap,
+      blockTime,
+      electionTime,
+    } = this.state
 
     return (
       <AppLayout>
@@ -97,10 +115,12 @@ class Index extends Component {
                       <span>TPS(24hr):</span>NA
                     </p>
                     <p className="stat">
-                      <span>Pending Txs:</span>NA
+                      <span>Avg Election Time (24hr):</span>
+                      {Math.floor(electionTime / 60)}m
                     </p>
                     <p className="stat">
-                      <span>Avg Block Time (24hr):</span>NA
+                      <span>Avg Block Time (24hr):</span>
+                      {Math.round(blockTime * 10) / 10}s
                     </p>
                   </Col>
                   <Col lg={12}>

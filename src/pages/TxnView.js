@@ -8,6 +8,8 @@ import TxnTag from '../components/TxnTag'
 import PocPath from '../components/PocPath'
 import AppLayout, { Content } from '../components/AppLayout'
 import Map from '../components/Map'
+import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
+import hotspots from '../data/hotspots.json'
 import {
   BackwardOutlined,
   ForwardOutlined,
@@ -17,6 +19,46 @@ import {
 import Block from '../images/block.svg'
 
 const { Title, Text } = Typography
+
+const Mapbox = ReactMapboxGl({
+  accessToken:
+    'pk.eyJ1IjoicGV0ZXJtYWluIiwiYSI6ImNqMHA5dm8xbTAwMGQycXMwa3NucGptenQifQ.iVCDWzb16acgOKWz65AckA',
+})
+
+const styles = {
+  selectedMarker: {
+    width: 14,
+    height: 14,
+    borderRadius: '50%',
+    backgroundColor: '#1B8DFF',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: '4px solid #fff',
+  },
+  transmittingMarker: {
+    width: 14,
+    height: 14,
+    borderRadius: '50%',
+    backgroundColor: 'black',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: '4px solid #fff',
+  },
+  gatewayMarker: {
+    width: 14,
+    height: 14,
+    borderRadius: '50%',
+    backgroundColor: '#A984FF',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: '3px solid #8B62EA',
+    boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
+    cursor: 'pointer',
+  },
+}
 
 class TxnView extends Component {
   state = {
@@ -85,6 +127,32 @@ class TxnView extends Component {
       })
       return (
         <div>
+          <Mapbox
+            style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
+            container="map"
+            center={[-95.712891, 37.09024]}
+            containerStyle={{
+              height: '600px',
+              width: '100%',
+            }}
+            zoom={[3]}
+            movingMethod="jumpTo"
+          >
+            {txn.stateChannel.summaries.map((s) => {
+              const hotspot = hotspots.data.find((e) => e.address === s.client)
+              console.log(hotspot)
+              return (
+                <Marker
+                  key={hotspot.address}
+                  style={styles.gatewayMarker}
+                  anchor="center"
+                  coordinates={[hotspot.lng, hotspot.lat]}
+                />
+              )
+            })}
+            )}
+          </Mapbox>
+
           <Descriptions bordered>
             <Descriptions.Item label="Block Height" span={3}>
               <a href={'/blocks/' + txn.height}>{txn.height}</a>

@@ -125,6 +125,25 @@ class TxnView extends Component {
         totalPackets += s.num_packets
         totalDcs += s.num_dcs
       })
+      const columns = [
+        {
+          title: 'Hotspot',
+          dataIndex: 'client',
+          key: 'client',
+          render: (data) => <span>{animalHash(data)}</span>,
+        },
+        {
+          title: 'Packets Sent',
+          dataIndex: 'num_packets',
+          key: 'num_packets',
+        },
+        {
+          title: 'Data Credits Used',
+          dataIndex: 'num_dcs',
+          key: 'num_dcs',
+        },
+      ]
+      const data = []
       return (
         <div>
           <Mapbox
@@ -139,8 +158,12 @@ class TxnView extends Component {
             movingMethod="jumpTo"
           >
             {txn.stateChannel.summaries.map((s) => {
+              data.push({
+                client: s.client,
+                num_packets: s.num_packets,
+                num_dcs: s.num_packets,
+              })
               const hotspot = hotspots.data.find((e) => e.address === s.client)
-              console.log(hotspot)
               return (
                 <Marker
                   key={hotspot.address}
@@ -176,25 +199,11 @@ class TxnView extends Component {
             </Descriptions.Item>
           </Descriptions>
 
-          {txn.stateChannel.summaries.map((s) => {
-            return (
-              <Descriptions bordered style={{ marginTop: '10px' }}>
-                <Descriptions.Item
-                  label="Hotspot"
-                  span={3}
-                  style={{ width: '235px' }}
-                >
-                  <a href={'/hotspots/' + s.client}>{animalHash(s.client)}</a>
-                </Descriptions.Item>
-                <Descriptions.Item label="Packets Sent" span={3}>
-                  {s.num_packets}
-                </Descriptions.Item>
-                <Descriptions.Item label="Data Credits Used" span={3}>
-                  {s.num_dcs}
-                </Descriptions.Item>
-              </Descriptions>
-            )
-          })}
+          <Table
+            dataSource={data}
+            columns={columns}
+            style={{ marginTop: '10px' }}
+          />
 
           <Descriptions bordered style={{ marginTop: '20px' }}>
             {Object.entries(txn).map(([key, value]) => {

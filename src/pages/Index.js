@@ -173,15 +173,14 @@ class Index extends Component {
               </div>
             </Fade>
 
-            <div style={{ position: 'relative', width: '100%' }}>
+            {/*<div style={{ position: 'relative', width: '100%' }}>
               <BarChart />
-            </div>
+            </div>*/}
           </div>
         </Content>
 
         <Content
           style={{
-            marginTop: '50px',
             margin: '0 auto',
             maxWidth: 850,
             paddingBottom: 100,

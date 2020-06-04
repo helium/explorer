@@ -18,6 +18,7 @@ class Index extends Component {
     marketCap: 0,
     blockTime: 0,
     electionTime: 0,
+    packetsTransferred: 0,
   }
 
   componentDidMount = async () => {
@@ -34,7 +35,7 @@ class Index extends Component {
           marketCap: marketData.market_data.market_cap.usd,
         })
       })
-    fetch('https://api.helium.io/v1/stats')
+    fetch('https://api.helium.wtf/v1/stats')
       .then((res) => res.json())
       .then((stats) => {
         console.log(stats)
@@ -42,6 +43,8 @@ class Index extends Component {
           circulatingSupply: stats.data.token_supply,
           blockTime: stats.data.block_times.last_day.avg,
           electionTime: stats.data.election_times.last_day.avg,
+          packetsTransferred:
+            stats.data.state_channel_counts.last_month.num_packets,
         })
       })
 
@@ -60,6 +63,7 @@ class Index extends Component {
       marketCap,
       blockTime,
       electionTime,
+      packetsTransferred,
     } = this.state
 
     return (
@@ -112,7 +116,8 @@ class Index extends Component {
                       {height.toLocaleString()}
                     </p>
                     <p className="stat">
-                      <span>TPS(24hr):</span>NA
+                      <span>LongFi Packets (30d):</span>
+                      {packetsTransferred.toLocaleString()}
                     </p>
                     <p className="stat">
                       <span>Avg Election Time (24hr):</span>

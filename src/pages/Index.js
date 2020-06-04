@@ -38,7 +38,6 @@ class Index extends Component {
     fetch('https://api.helium.wtf/v1/stats')
       .then((res) => res.json())
       .then((stats) => {
-        console.log(stats)
         this.setState({
           circulatingSupply: stats.data.token_supply,
           blockTime: stats.data.block_times.last_day.avg,
@@ -47,11 +46,13 @@ class Index extends Component {
             stats.data.state_channel_counts.last_week.num_packets,
         })
       })
-
-    this.client = new Client()
-    const blocks = await this.client.blocks.list()
-    const [{ height }] = await blocks.take(1)
-    this.setState({ height })
+    fetch('https://api.helium.io/v1/blocks/height')
+      .then((res) => res.json())
+      .then((h) => {
+        this.setState({
+          height: h.data.height,
+        })
+      })
   }
 
   render() {

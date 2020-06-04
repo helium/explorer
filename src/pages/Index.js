@@ -44,7 +44,7 @@ class Index extends Component {
           blockTime: stats.data.block_times.last_day.avg,
           electionTime: stats.data.election_times.last_day.avg,
           packetsTransferred:
-            stats.data.state_channel_counts.last_month.num_packets,
+            stats.data.state_channel_counts.last_week.num_packets,
         })
       })
 
@@ -116,7 +116,7 @@ class Index extends Component {
                       {height.toLocaleString()}
                     </p>
                     <p className="stat">
-                      <span>LongFi Packets (30d):</span>
+                      <span>LongFi Packets (7d):</span>
                       {packetsTransferred.toLocaleString()}
                     </p>
                     <p className="stat">

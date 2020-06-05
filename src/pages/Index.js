@@ -19,6 +19,8 @@ class Index extends Component {
     blockTime: 0,
     electionTime: 0,
     packetsTransferred: 0,
+    totalHotspots: 0,
+    dataCredits: 0,
   }
 
   componentDidMount = async () => {
@@ -35,7 +37,7 @@ class Index extends Component {
           marketCap: marketData.market_data.market_cap.usd,
         })
       })
-    fetch('https://api.helium.wtf/v1/stats')
+    fetch('https://api.helium.io/v1/stats')
       .then((res) => res.json())
       .then((stats) => {
         this.setState({
@@ -44,6 +46,7 @@ class Index extends Component {
           electionTime: stats.data.election_times.last_day.avg,
           packetsTransferred:
             stats.data.state_channel_counts.last_week.num_packets,
+          dataCredits: stats.data.state_channel_counts.last_week.num_dcs,
         })
       })
     fetch('https://api.helium.io/v1/blocks/height')
@@ -53,6 +56,14 @@ class Index extends Component {
           height: h.data.height,
         })
       })
+
+    this.client = new Client()
+    const list = await this.client.hotspots.list()
+    const hotspots = []
+    for await (const hotspot of list) {
+      hotspots.push(hotspot)
+    }
+    this.setState({ totalHotspots: hotspots.length })
   }
 
   render() {
@@ -65,6 +76,8 @@ class Index extends Component {
       blockTime,
       electionTime,
       packetsTransferred,
+      dataCredits,
+      totalHotspots,
     } = this.state
 
     return (
@@ -117,6 +130,10 @@ class Index extends Component {
                       {height.toLocaleString()}
                     </p>
                     <p className="stat">
+                      <span>Total Hotspots:</span>
+                      {totalHotspots.toLocaleString()}
+                    </p>
+                    <p className="stat">
                       <span>LongFi Packets (7d):</span>
                       {packetsTransferred.toLocaleString()}
                     </p>
@@ -164,6 +181,10 @@ class Index extends Component {
                         maximumFractionDigits: 0,
                       })}{' '}
                       HNT
+                    </p>
+                    <p className="stat">
+                      <span>Data Credits spent (7d):</span>
+                      {dataCredits.toLocaleString()} DC
                     </p>
                     <p className="stat">
                       <span>Market Cap:</span>

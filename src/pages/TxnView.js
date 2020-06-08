@@ -329,9 +329,6 @@ class TxnView extends Component {
           <Descriptions.Item label="Amount" span={3}>
             {txn.amount.toString()}
           </Descriptions.Item>
-          <Descriptions.Item label="Signature" span={3}>
-            {txn.signature}
-          </Descriptions.Item>
         </Descriptions>
       )
     }

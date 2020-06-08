@@ -14,6 +14,7 @@ class Index extends Component {
     height: 0,
     volume: 0,
     price: 0,
+    priceChange: 0,
     circulatingSupply: 0,
     marketCap: 0,
     blockTime: 0,
@@ -28,6 +29,7 @@ class Index extends Component {
     fetch('https://api.coingecko.com/api/v3/coins/helium')
       .then((res) => res.json())
       .then((marketData) => {
+        console.log(marketData)
         marketData.tickers.map((t) => {
           newVolume += t.converted_volume.usd
         })
@@ -35,6 +37,7 @@ class Index extends Component {
           volume: newVolume,
           price: marketData.market_data.current_price.usd,
           marketCap: marketData.market_data.market_cap.usd,
+          priceChange: marketData.market_data.price_change_percentage_24h,
         })
       })
     fetch('https://api.helium.wtf/v1/stats')
@@ -62,6 +65,7 @@ class Index extends Component {
   render() {
     const {
       price,
+      priceChange,
       volume,
       height,
       circulatingSupply,
@@ -156,7 +160,9 @@ class Index extends Component {
                         currency: 'USD',
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 4,
-                      })}
+                      })}{' '}
+                      ({priceChange > 0 ? '+' : '-'}
+                      {priceChange.toLocaleString()}%)
                     </p>
                     <p className="stat">
                       <span>Volume (24hr):</span>

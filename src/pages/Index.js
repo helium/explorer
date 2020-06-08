@@ -37,7 +37,7 @@ class Index extends Component {
           marketCap: marketData.market_data.market_cap.usd,
         })
       })
-    fetch('https://api.helium.io/v1/stats')
+    fetch('https://api.helium.wtf/v1/stats')
       .then((res) => res.json())
       .then((stats) => {
         this.setState({
@@ -47,6 +47,7 @@ class Index extends Component {
           packetsTransferred:
             stats.data.state_channel_counts.last_week.num_packets,
           dataCredits: stats.data.state_channel_counts.last_week.num_dcs,
+          totalHotspots: stats.data.hotspots.count,
         })
       })
     fetch('https://api.helium.io/v1/blocks/height')
@@ -56,14 +57,6 @@ class Index extends Component {
           height: h.data.height,
         })
       })
-
-    this.client = new Client()
-    const list = await this.client.hotspots.list()
-    const hotspots = []
-    for await (const hotspot of list) {
-      hotspots.push(hotspot)
-    }
-    this.setState({ totalHotspots: hotspots.length })
   }
 
   render() {

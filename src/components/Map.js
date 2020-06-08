@@ -12,7 +12,7 @@ const Map = ({ coords }) => {
   url = url.substring(0, url.length - 1)
   let center = Math.floor(coords.length / 2)
   url += `/${coords[center].lng},${coords[center].lat},11/850x400@2x?access_token=${MAPBOX_TOKEN}`
-  return <img style={{ width: '850px', height: '400px' }} src={url} />
+  return <img style={{ width: '100%' }} src={url} />
 }
 
 export default Map

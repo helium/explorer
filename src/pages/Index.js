@@ -161,7 +161,7 @@ class Index extends Component {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 4,
                       })}{' '}
-                      ({priceChange > 0 ? '+' : '-'}
+                      ({priceChange > 0 ? '+' : ''}
                       {priceChange.toLocaleString()}%)
                     </p>
                     <p className="stat">

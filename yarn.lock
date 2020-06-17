@@ -971,10 +971,10 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@helium/http@^0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-0.0.16.tgz#2bc3517de7faa352076d589f7d978ffd7b6ed37c"
-  integrity sha512-ZjxEYW5YKhKfCD7S/PcUpYAolyMD7x04Pl1yphGVIpJQ/SMmVmnlKDbbN6hU0de/QCS+EZbkOIBNNcQCc+oY6A==
+"@helium/http@^0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-0.0.22.tgz#7cd1888fd086aeca70762f324720cd6dd492f285"
+  integrity sha512-ebKowxYwYCm/EvfrqNR81Y8mgRI+7Ko6EMnUp073RHtSPcw4fIdbzpEXJOWZsrU+ySwfsKIg2eCmvgVuLEVzvw==
   dependencies:
     axios "^0.19.2"
     bignumber.js "^9.0.0"

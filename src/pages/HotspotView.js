@@ -8,6 +8,7 @@ import ActivityList from '../components/ActivityList'
 import Map from '../components/Map'
 import Fade from 'react-reveal/Fade'
 import HotspotImg from '../images/hotspot.svg'
+import GpsTag from '../components/GpsTag'
 
 const { Title, Text } = Typography
 
@@ -36,6 +37,7 @@ class HotspotView extends Component {
     const { address } = this.props.match.params
     await this.setState(initialState)
     const hotspot = await this.client.hotspots.get(address)
+    console.log(hotspot)
     this.setState({ hotspot, loading: false })
   }
 
@@ -81,11 +83,13 @@ class HotspotView extends Component {
                           fontWeight: 600,
                           display: 'inline-block',
                           letterSpacing: -0.5,
+                          float: 'left',
                         }}
                       >
                         {round(hotspot.score, 2)}
                       </h3>
                     </Tooltip>
+                    <GpsTag type={hotspot.status} />
                   </Fade>
                   <Title
                     style={{

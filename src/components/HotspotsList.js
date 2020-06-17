@@ -29,10 +29,24 @@ class HotspotsList extends Component {
     const list = await this.client.account(address).hotspots.list()
     const hotspots = []
     for await (const hotspot of list) {
+      hotspot.status.gpsText = this.gpsLocation(hotspot.status.gps)
       hotspots.push(hotspot)
     }
 
     this.setState({ hotspots, loading: false })
+  }
+
+  gpsLocation = (text) => {
+    switch (text) {
+      case 'bad_assert':
+        return 'Bad GPS Location'
+      case 'good_fix':
+        return 'Good GPS Location'
+      case 'no_fix':
+        return 'No GPS Fix'
+      default:
+        return false
+    }
   }
 
   render() {
@@ -82,6 +96,12 @@ const hotspotColumns = [
     dataIndex: 'score',
     key: 'score',
     render: (data) => round(data, 2),
+  },
+  {
+    title: 'GPS',
+    dataIndex: 'status',
+    key: 'status',
+    render: (data) => <span>{data.gpsText}</span>,
   },
 ]
 

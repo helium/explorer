@@ -164,14 +164,16 @@ class TxnView extends Component {
                 num_dcs: s.num_packets,
               })
               const hotspot = hotspots.data.find((e) => e.address === s.client)
-              return (
-                <Marker
-                  key={hotspot.address}
-                  style={styles.gatewayMarker}
-                  anchor="center"
-                  coordinates={[hotspot.lng, hotspot.lat]}
-                />
-              )
+              if (hotspot) {
+                return (
+                  <Marker
+                    key={hotspot.address}
+                    style={styles.gatewayMarker}
+                    anchor="center"
+                    coordinates={[hotspot.lng, hotspot.lat]}
+                  />
+                )
+              }
             })}
             )}
           </Mapbox>

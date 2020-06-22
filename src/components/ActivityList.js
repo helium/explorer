@@ -128,10 +128,16 @@ const columns = (ownerAddress) => {
   const activityAmount = (txn) => {
     switch (txn.type) {
       case 'state_channel_close_v1':
+        let totalDcs = 0
         let res = txn.stateChannel.summaries.find(
           (o) => o.client === ownerAddress,
         )
-        return <span>{res.num_dcs} DC</span>
+        if (!res) {
+          txn.stateChannel.summaries.map((s) => {
+            totalDcs += s.num_dcs
+          })
+        }
+        return <span>{res ? res.num_dcs : totalDcs} DC</span>
       case 'payment_v1':
         if (txn.payer === ownerAddress)
           return <span>{'-' + txn.amount.toString(2)}</span>

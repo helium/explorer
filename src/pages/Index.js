@@ -40,7 +40,7 @@ class Index extends Component {
           priceChange: marketData.market_data.price_change_percentage_24h,
         })
       })
-    fetch('https://api.helium.wtf/v1/stats')
+    fetch('https://api.helium.io/v1/stats')
       .then((res) => res.json())
       .then((stats) => {
         this.setState({

@@ -43,6 +43,7 @@ class Index extends Component {
     fetch('https://api.helium.io/v1/stats')
       .then((res) => res.json())
       .then((stats) => {
+        console.log(stats)
         this.setState({
           circulatingSupply: stats.data.token_supply,
           blockTime: stats.data.block_times.last_day.avg,
@@ -50,7 +51,7 @@ class Index extends Component {
           packetsTransferred:
             stats.data.state_channel_counts.last_week.num_packets,
           dataCredits: stats.data.state_channel_counts.last_week.num_dcs,
-          totalHotspots: stats.data.hotspots.count,
+          totalHotspots: stats.data.counts.hotspots,
         })
       })
     fetch('https://api.helium.io/v1/blocks/height')

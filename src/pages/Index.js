@@ -49,8 +49,8 @@ class Index extends Component {
           blockTime: stats.data.block_times.last_day.avg,
           electionTime: stats.data.election_times.last_day.avg,
           packetsTransferred:
-            stats.data.state_channel_counts.last_week.num_packets,
-          dataCredits: stats.data.state_channel_counts.last_week.num_dcs,
+            stats.data.state_channel_counts.last_month.num_packets,
+          dataCredits: stats.data.state_channel_counts.last_month.num_dcs,
           totalHotspots: stats.data.counts.hotspots,
         })
       })
@@ -132,7 +132,7 @@ class Index extends Component {
                       {totalHotspots.toLocaleString()}
                     </p>
                     <p className="stat">
-                      <span>LongFi Packets (7d):</span>
+                      <span>LongFi Packets (30d):</span>
                       {packetsTransferred.toLocaleString()}
                     </p>
                     <p className="stat">
@@ -183,7 +183,7 @@ class Index extends Component {
                       HNT
                     </p>
                     <p className="stat">
-                      <span>Data Credits spent (7d):</span>
+                      <span>Data Credits spent (30d):</span>
                       {dataCredits.toLocaleString()} DC
                     </p>
                     <p className="stat">

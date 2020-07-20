@@ -331,12 +331,15 @@ class TxnView extends Component {
           <Descriptions.Item label="Amount" span={3}>
             {txn.amount.toString()}
           </Descriptions.Item>
+          <Descriptions.Item label="Fee" span={3}>
+            {txn.fee.toString()}
+          </Descriptions.Item>
         </Descriptions>
       )
     }
 
     const paymentv2 = () => {
-      const columns = [
+      /*const columns = [
         {
           title: 'Payee',
           dataIndex: 'payee',
@@ -365,6 +368,32 @@ class TxnView extends Component {
             scroll={{ x: true }}
           />
         </div>
+      )*/
+      return (
+        <Descriptions bordered>
+          <Descriptions.Item
+            label="Payer"
+            span={3}
+            style={{ overflow: 'ellipsis' }}
+          >
+            <a href={`/accounts/${txn.payer}`}>{txn.payer}</a>
+          </Descriptions.Item>
+          <Descriptions.Item label="Total HNT" span={3}>
+            {txn.totalAmount.toString()}
+          </Descriptions.Item>
+          {txn.payments.map((p, idx) => {
+            console.log(idx)
+            return (
+              <Descriptions.Item label={'Payee ' + Number(idx + 1)} span={3}>
+                <a href={`/accounts/${p.payee}`}>{p.payee}</a> (
+                {p.amount.toString()})
+              </Descriptions.Item>
+            )
+          })}
+          <Descriptions.Item label="Fee" span={3}>
+            {txn.fee.toString()}
+          </Descriptions.Item>
+        </Descriptions>
       )
     }
 

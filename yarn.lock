@@ -971,10 +971,10 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@helium/http@^0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-0.0.22.tgz#7cd1888fd086aeca70762f324720cd6dd492f285"
-  integrity sha512-ebKowxYwYCm/EvfrqNR81Y8mgRI+7Ko6EMnUp073RHtSPcw4fIdbzpEXJOWZsrU+ySwfsKIg2eCmvgVuLEVzvw==
+"@helium/http@^0.0.30":
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-0.0.30.tgz#8f8cd70bc5220325fbca61a678e5be2b7237399b"
+  integrity sha512-T/kmzNOVB8o1GY/lJMWGA+oU/wkV9FzozD2GUID478u/H+tLE75WAO5j2n726Qvvj+hvJs+geG6w+CyBlbgg4w==
   dependencies:
     axios "^0.19.2"
     bignumber.js "^9.0.0"
@@ -4496,6 +4496,11 @@ expect@^24.9.0:
     jest-matcher-utils "^24.9.0"
     jest-message-util "^24.9.0"
     jest-regex-util "^24.9.0"
+
+export-to-csv@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-0.2.1.tgz#8f997156feebc1cf995096da16341aa0100cce4e"
+  integrity sha512-KTbrd3CAZ0cFceJEZr1e5uiMasabeCpXq1/5uvVxDl53o4jXJHnltasQoj2NkzrxD8hU9kdwjnMhoir/7nNx/A==
 
 express@^4.17.1:
   version "4.17.1"
@@ -9358,6 +9363,11 @@ react-art-svg-renderer@^0.0.1-rc.8:
     lodash "^4.17.4"
     prop-types "^15.5.9"
     uuid "^3.0.1"
+
+react-csv@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-csv/-/react-csv-2.0.3.tgz#f5d17a3c71107d9bcbe580049350200debdc042a"
+  integrity sha512-exyAdFLAxtuM4wNwLYrlKyPYLiJ7e0mv9tqPAd3kq+k1CiJFtznevR3yP0icv5q/y200w+lzNgi7TQn1Wrhu0w==
 
 react-dev-utils@^10.2.0:
   version "10.2.0"

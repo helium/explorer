@@ -5,12 +5,41 @@ import round from 'lodash/round'
 import get from 'lodash/get'
 import AppLayout, { Content } from '../components/AppLayout'
 import ActivityList from '../components/ActivityList'
-import Map from '../components/Map'
+import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 import Fade from 'react-reveal/Fade'
 import HotspotImg from '../images/hotspot.svg'
-import GpsTag from '../components/GpsTag'
 
 const { Title, Text } = Typography
+
+const Mapbox = ReactMapboxGl({
+  accessToken:
+    'pk.eyJ1IjoicGV0ZXJtYWluIiwiYSI6ImNqMHA5dm8xbTAwMGQycXMwa3NucGptenQifQ.iVCDWzb16acgOKWz65AckA',
+})
+
+const styles = {
+  selectedMarker: {
+    width: 14,
+    height: 14,
+    borderRadius: '50%',
+    backgroundColor: '#1B8DFF',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: '4px solid #fff',
+  },
+  gatewayMarker: {
+    width: 14,
+    height: 14,
+    borderRadius: '50%',
+    backgroundColor: '#A984FF',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: '3px solid #8B62EA',
+    boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
+    cursor: 'pointer',
+  },
+}
 
 const initialState = {
   hotspot: {},
@@ -37,7 +66,6 @@ class HotspotView extends Component {
     const { address } = this.props.match.params
     await this.setState(initialState)
     const hotspot = await this.client.hotspots.get(address)
-    console.log(hotspot)
     this.setState({ hotspot, loading: false })
   }
 
@@ -50,7 +78,27 @@ class HotspotView extends Component {
           style={{ marginTop: 0, background: '#27284B', padding: '0px 0 0px' }}
         >
           <div style={{ margin: '0 auto', maxWidth: 850 }}>
-            <Map coords={[{ lat: hotspot.lat, lng: hotspot.lng }]} />
+            <Mapbox
+              style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
+              container="map"
+              center={[
+                hotspot.lng ? hotspot.lng : 0,
+                hotspot.lat ? hotspot.lat : 0,
+              ]}
+              containerStyle={{
+                height: '400px',
+                width: '100%',
+              }}
+              zoom={[11]}
+              movingMethod="jumpTo"
+            >
+              <Marker
+                key={hotspot.address}
+                style={styles.gatewayMarker}
+                anchor="center"
+                coordinates={[hotspot.lng, hotspot.lat]}
+              />
+            </Mapbox>
             <div style={{ textAlign: 'right', paddingTop: 6, color: 'white' }}>
               <p style={{ marginBottom: '-20px' }}>
                 {get(hotspot, 'geocode.longCity')},{' '}
@@ -83,13 +131,11 @@ class HotspotView extends Component {
                           fontWeight: 600,
                           display: 'inline-block',
                           letterSpacing: -0.5,
-                          float: 'left',
                         }}
                       >
                         {round(hotspot.score, 2)}
                       </h3>
                     </Tooltip>
-                    <GpsTag type={hotspot.status} />
                   </Fade>
                   <Title
                     style={{

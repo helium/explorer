@@ -96,7 +96,10 @@ class HotspotView extends Component {
                 key={hotspot.address}
                 style={styles.gatewayMarker}
                 anchor="center"
-                coordinates={[hotspot.lng, hotspot.lat]}
+                coordinates={[
+                  hotspot.lng ? hotspot.lng : 0,
+                  hotspot.lat ? hotspot.lat : 0,
+                ]}
               />
             </Mapbox>
             <div style={{ textAlign: 'right', paddingTop: 6, color: 'white' }}>

@@ -9,6 +9,7 @@ import PocPath from '../components/PocPath'
 import AppLayout, { Content } from '../components/AppLayout'
 import Map from '../components/Map'
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
+import PieChart from '../components/PieChart'
 import hotspots from '../data/hotspots.json'
 import {
   BackwardOutlined,
@@ -82,6 +83,25 @@ class TxnView extends Component {
     const txn = await this.client.transactions.get(hash)
     console.log(txn)
     this.setState({ txn, loading: false })
+  }
+
+  rewardChart() {
+    const { txn } = this.state
+    if (txn.type === 'rewards_v1') {
+      const res = []
+      if (txn.rewards.length > 0) {
+        txn.rewards.map((t) => {
+          let f = res.find((x) => x.name === t.type)
+          if (f) {
+            f.value++
+          } else {
+            let n = { name: t.type, value: 1 }
+            res.push(n)
+          }
+        })
+      }
+      return res
+    }
   }
 
   render() {
@@ -429,14 +449,24 @@ class TxnView extends Component {
                 <p style={{ marginTop: 20 }}>
                   <TxnTag type={txn.type} />
                 </p>
+                <p>
+                  <img
+                    style={{
+                      marginRight: 5,
+                      position: 'relative',
+                      top: '-1px',
+                    }}
+                    src={Block}
+                  />
+                  <a href={'/blocks/' + txn.height}>{txn.height}</a>
+                </p>
               </div>
-              <p>
-                <img
-                  style={{ marginRight: 5, position: 'relative', top: '-1px' }}
-                  src={Block}
-                />
-                <a href={'/blocks/' + txn.height}>{txn.height}</a>
-              </p>
+
+              {txn.type === 'rewards_v1' && (
+                <div>
+                  <PieChart data={this.rewardChart()} />
+                </div>
+              )}
             </div>
             <hr />
             <div className="flexwrapper">

@@ -50,6 +50,7 @@ class TxnSCClose extends Component {
     totalPackets: 0,
     totalHotspots: 0,
     totalDcs: 0,
+    totalBytes: 0,
     columns: [
       {
         title: 'Hotspot',
@@ -111,10 +112,11 @@ class TxnSCClose extends Component {
 
   tallyValues() {
     const { txn } = this.props
-    let { totalPackets, totalHotspots, totalDcs, data } = this.state
+    let { totalPackets, totalHotspots, totalDcs, totalBytes, data } = this.state
     txn.stateChannel.summaries.map((s) => {
       totalPackets += s.num_packets
       totalDcs += s.num_dcs
+      totalBytes += s.num_dcs * 24
       data.push({
         client: s.client,
         num_packets: s.num_packets,
@@ -126,7 +128,13 @@ class TxnSCClose extends Component {
       a.num_dcs > b.num_dcs ? 1 : b.num_dcs > a.num_dcs ? -1 : 0,
     )
     totalHotspots = txn.stateChannel.summaries.length
-    this.setState({ totalPackets, totalDcs, totalHotspots, data: [...data] })
+    this.setState({
+      totalPackets,
+      totalDcs,
+      totalHotspots,
+      totalBytes,
+      data: [...data],
+    })
   }
 
   render() {
@@ -135,6 +143,7 @@ class TxnSCClose extends Component {
       hotspots,
       totalPackets,
       totalDcs,
+      totalBytes,
       totalHotspots,
       columns,
       data,
@@ -175,6 +184,9 @@ class TxnSCClose extends Component {
           </Descriptions.Item>
           <Descriptions.Item label="Total Packets" span={3}>
             {totalPackets.toLocaleString()}
+          </Descriptions.Item>
+          <Descriptions.Item label="Total Data" span={3}>
+            {this.formatBytes(totalBytes)}
           </Descriptions.Item>
           <Descriptions.Item label="Data Credits Spent" span={3}>
             {totalDcs.toLocaleString()}

@@ -22,14 +22,39 @@ const columns = [
   },
 ]
 
+const expandedColumns = [
+  {
+    title: 'Type',
+    dataIndex: 'type',
+    render: (data) => <TxnTag type={data}></TxnTag>,
+  },
+  {
+    title: 'HNT mined',
+    dataIndex: 'amount',
+    key: 'amount',
+    render: (data) => <span>{data.toLocaleString()}</span>,
+  },
+]
+
 class TxnReward extends Component {
   state = {
     groupedRewards: [],
+    expandedTable: {
+      expandedRowRender: (record) => (
+        <Table
+          pagination={{ pageSize: 50 }}
+          size="small"
+          columns={expandedColumns}
+          dataSource={record.rewards}
+        />
+      ),
+    },
   }
 
   componentDidMount() {
     const { txn } = this.props
     const { groupedRewards } = this.state
+
     txn.rewards.map((r) => {
       const val = { account: r.account }
       val['rewards'] = txn.rewards.filter((obj) => {
@@ -55,7 +80,7 @@ class TxnReward extends Component {
 
   render() {
     const { txn } = this.props
-    const { groupedRewards } = this.state
+    const { groupedRewards, expandedTable } = this.state
 
     return (
       <div>
@@ -74,9 +99,7 @@ class TxnReward extends Component {
           rowKey="account"
           pagination={{ pageSize: 50 }}
           scroll={{ x: true }}
-          /*expandable={{
-            expandedRowRender: record => <p style={{ margin: 0 }}>{record.rewards}</p>,
-          }}*/
+          expandable={expandedTable}
         />
       </div>
     )

@@ -65,15 +65,35 @@ class TxnSCClose extends Component {
         title: 'Packets Sent',
         dataIndex: 'num_packets',
         key: 'num_packets',
+        render: (data) => <span>{data.toLocaleString()}</span>,
       },
       {
-        title: 'Data Credits Used',
+        title: 'Data Sent',
+        dataIndex: 'num_bytes',
+        key: 'num_bytes',
+        render: (data) => <span>{this.formatBytes(data)}</span>,
+      },
+      {
+        title: 'Data Credits',
         dataIndex: 'num_dcs',
         key: 'num_dcs',
+        render: (data) => <span>{data.toLocaleString()}</span>,
       },
     ],
     data: [],
     hotspots: [],
+  }
+
+  formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes'
+
+    const k = 1024
+    const dm = decimals < 0 ? 0 : decimals
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
   }
 
   componentDidMount() {
@@ -99,6 +119,7 @@ class TxnSCClose extends Component {
         client: s.client,
         num_packets: s.num_packets,
         num_dcs: s.num_dcs,
+        num_bytes: s.num_dcs * 24,
       })
     })
     data.sort((b, a) =>
@@ -153,13 +174,13 @@ class TxnSCClose extends Component {
             <a href={'/blocks/' + txn.height}>{txn.height}</a>
           </Descriptions.Item>
           <Descriptions.Item label="Total Packets" span={3}>
-            {totalPackets}
+            {totalPackets.toLocaleString()}
           </Descriptions.Item>
           <Descriptions.Item label="Data Credits Spent" span={3}>
-            {totalDcs}
+            {totalDcs.toLocaleString()}
           </Descriptions.Item>
           <Descriptions.Item label="Number of Hotspots" span={3}>
-            {totalHotspots}
+            {totalHotspots.toLocaleString()}
           </Descriptions.Item>
           <Descriptions.Item label="State Channel Closer" span={3}>
             <a href={'/accounts/' + txn.closer}>{txn.closer}</a>
@@ -177,16 +198,6 @@ class TxnSCClose extends Component {
           style={{ marginTop: '10px' }}
           pagination={false}
         />
-
-        <Descriptions bordered style={{ marginTop: '20px' }}>
-          {Object.entries(txn).map(([key, value]) => {
-            return (
-              <Descriptions.Item label={key} span={3}>
-                {typeof value === 'object' ? JSON.stringify(value) : value}
-              </Descriptions.Item>
-            )
-          })}
-        </Descriptions>
       </div>
     )
   }

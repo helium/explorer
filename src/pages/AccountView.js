@@ -47,6 +47,7 @@ class AccountView extends Component {
   render() {
     const { account, loading } = this.state
     const { address } = this.props.match.params
+    console.log(account)
 
     return (
       <AppLayout>
@@ -134,7 +135,7 @@ class AccountView extends Component {
                     />
                     {!loading && (
                       <Descriptions.Item label="Security Tokens">
-                        {account.secBalance.toString(2)}
+                        {account.secBalance.integerBalance.toLocaleString()} HST
                       </Descriptions.Item>
                     )}
                   </h3>

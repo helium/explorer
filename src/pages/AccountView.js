@@ -135,7 +135,7 @@ class AccountView extends Component {
                     />
                     {!loading && (
                       <Descriptions.Item label="Security Tokens">
-                        {account.secBalance.integerBalance.toLocaleString()} HST
+                        {account.secBalance.toString(2)}
                       </Descriptions.Item>
                     )}
                   </h3>

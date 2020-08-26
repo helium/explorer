@@ -81,6 +81,7 @@ class ActivityList extends Component {
           title="Activity"
           extra={
             <>
+              <ExportCSV address={address} style={{ marginRight: 10 }} />
               <Tooltip title="Toggle Filters">
                 <Button
                   shape="circle"
@@ -88,7 +89,6 @@ class ActivityList extends Component {
                   icon={<FilterOutlined />}
                 />
               </Tooltip>
-              <ExportCSV address={address} />
             </>
           }
         >

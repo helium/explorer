@@ -1,6 +1,7 @@
 import moment from 'moment'
 import Balance from '@helium/http/build/models/Balance'
 import CurrencyType from '@helium/http/build/models/CurrencyType'
+import animalHash from 'angry-purple-tiger'
 
 export const parseTxn = (
   ownerAddress,
@@ -8,7 +9,7 @@ export const parseTxn = (
   opts = { groupHotspots: true, convertFee: true },
 ) => {
   console.log(txn)
-  const timestamp = moment.unix(txn.time).utc().format('MM/DD/YYYY HH:MM:SS')
+  const timestamp = moment.unix(txn.time).format('MM/DD/YYYY HH:MM:SS')
   switch (txn.type) {
     case 'rewards_v1':
       if (opts.groupHotspots) {
@@ -23,14 +24,18 @@ export const parseTxn = (
           Tag: 'mined',
         }
       } else {
-        throw new Error('not implemented yet')
-        // return txn.rewards.map(({ type, gateway, amount }) => ({
-        //   // time,
-        //   // height,
-        //   type,
-        //   gateway,
-        //   amount,
-        // }))
+        return txn.rewards.map(({ type, gateway, amount }) => ({
+          Date: timestamp,
+          'Received Quantity': amount.toString(8).slice(0, -4),
+          'Received Currency': 'HNT',
+          'Sent Quantity': '',
+          'Sent Currency': '',
+          'Fee Amount': '',
+          'Fee Currency': '',
+          Tag: 'mined',
+          Hotspot: animalHash(gateway),
+          'Reward Type': type,
+        }))
       }
 
     case 'payment_v1':

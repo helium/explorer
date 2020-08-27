@@ -6,20 +6,15 @@ import moment from 'moment'
 import { parseTxn } from './utils'
 import ExportProgress from './ExportProgress'
 import ExportForm from './ExportForm'
-import Balance from '@helium/http/build/models/Balance'
-import CurrencyType from '@helium/http/build/models/CurrencyType'
 
 const initialState = {
   open: false,
   loading: false,
   done: false,
   startDate: moment(),
-  endDate: moment(),
+  endDate: moment().startOf('day'),
   txn: ['payment', 'reward'],
   fee: 'dc',
-  groupHotspots: true,
-  groupTime: 'epoch',
-
   lastTxnTime: moment().unix(),
 }
 
@@ -33,14 +28,15 @@ class ExportModal extends React.Component {
   showModal = () => this.setState({ open: true })
 
   handleOk = async () => {
+    if (this.state.done) {
+      return this.handleCancel()
+    }
     this.setState({ loading: true })
     await this.handleExportCsv()
     this.setState({ done: true, loading: false })
   }
 
-  handleCancel = (e) => {
-    this.setState(initialState)
-  }
+  handleCancel = () => this.setState(initialState)
 
   onDateChange = (dates) => {
     this.setState({
@@ -50,15 +46,11 @@ class ExportModal extends React.Component {
   }
 
   onTxnChange = (txn) => this.setState({ txn })
-  onFeeChange = (fee) => this.setState({ fee })
-  onGroupHotspotsChange = ({ target: { value: groupHotspots } }) =>
-    this.setState({ groupHotspots })
-  onGroupTimeChange = ({ target: { value: groupTime } }) =>
-    this.setState({ groupTime })
+  onFeeChange = (e) => this.setState({ fee: e.target.value })
 
   handleExportCsv = async () => {
     const { address } = this.props
-    const { startDate, endDate, txn, groupTime, groupHotspots } = this.state
+    const { startDate, endDate, txn, fee } = this.state
 
     const filterTypes = []
     if (txn.includes('payment')) filterTypes.push('payment_v1', 'payment_v2')
@@ -70,95 +62,18 @@ class ExportModal extends React.Component {
 
     let data = []
 
-    if (groupTime === 'epoch') {
-      for await (const txn of list) {
-        if (txn.time < startDate.unix()) break
-        if (txn.time <= endDate.unix()) {
-          data.push(
-            ...[].concat(
-              parseTxn(address, txn, { groupHotspots, convertFee: false }),
-            ),
-          )
-        }
-        this.setState({ lastTxnTime: txn.time })
+    for await (const txn of list) {
+      if (txn.time < startDate.unix()) break
+      if (txn.time <= endDate.unix()) {
+        data.push(
+          ...[].concat(
+            await parseTxn(address, txn, { convertFee: fee === 'hnt' }),
+          ),
+        )
       }
-    } else if (groupTime === 'day') {
-      const dateGroups = {}
-
-      for await (const txn of list) {
-        console.log('txn.time', txn.time)
-        console.log('startDate', startDate.unix())
-        if (txn.time < startDate.unix()) break
-        if (txn.time <= endDate.unix()) {
-          const day = moment
-            .unix(txn.time)
-            .startOf('day')
-            .format('MM/DD/YYYY HH:MM:SS')
-          console.log('day', day)
-          if (dateGroups[day]) {
-            dateGroups[day] = dateGroups[day] + txn.totalAmount.integerBalance
-          } else {
-            dateGroups[day] = txn.totalAmount.integerBalance
-          }
-        }
-        this.setState({ lastTxnTime: txn.time })
-      }
-      console.log('dateGroups', dateGroups)
-
-      data = Object.keys(dateGroups).map((date) => {
-        const amount = new Balance(dateGroups[date], CurrencyType.default)
-
-        return {
-          Date: date,
-          'Received Quantity': amount.toString(8).slice(0, -4),
-          'Received Currency': 'HNT',
-          'Sent Quantity': '',
-          'Sent Currency': '',
-          'Fee Amount': '',
-          'Fee Currency': '',
-          Tag: 'mined',
-        }
-      })
-    } else {
-      const dateGroups = {}
-
-      for await (const txn of list) {
-        console.log('txn.time', txn.time)
-        console.log('startDate', startDate.unix())
-        if (txn.time < startDate.unix()) break
-        if (txn.time <= endDate.unix()) {
-          const month = moment
-            .unix(txn.time)
-            .utc()
-            .startOf('month')
-            .format('MM/DD/YYYY HH:MM:SS')
-          console.log('month', month)
-          if (dateGroups[month]) {
-            dateGroups[month] =
-              dateGroups[month] + txn.totalAmount.integerBalance
-          } else {
-            dateGroups[month] = txn.totalAmount.integerBalance
-          }
-        }
-        this.setState({ lastTxnTime: txn.time })
-      }
-      console.log('dateGroups', dateGroups)
-
-      data = Object.keys(dateGroups).map((date) => {
-        const amount = new Balance(dateGroups[date], CurrencyType.default)
-
-        return {
-          Date: date,
-          'Received Quantity': amount.toString(8).slice(0, -4),
-          'Received Currency': 'HNT',
-          'Sent Quantity': '',
-          'Sent Currency': '',
-          'Fee Amount': '',
-          'Fee Currency': '',
-          Tag: 'mined',
-        }
-      })
+      this.setState({ lastTxnTime: txn.time })
     }
+    debugger
 
     const options = {
       filename: 'helium',
@@ -209,8 +124,6 @@ class ExportModal extends React.Component {
             <ExportForm
               onDateChange={this.onDateChange}
               onTxnChange={this.onTxnChange}
-              onGroupHotspotsChange={this.onGroupHotspotsChange}
-              onGroupTimeChange={this.onGroupTimeChange}
               onFeeChange={this.onFeeChange}
             />
           )}

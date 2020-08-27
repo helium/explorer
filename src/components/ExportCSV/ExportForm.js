@@ -1,5 +1,5 @@
 import React from 'react'
-import { DatePicker, Typography, Radio, Input, Checkbox } from 'antd'
+import { DatePicker, Typography, Radio, Checkbox } from 'antd'
 import moment from 'moment'
 const { RangePicker } = DatePicker
 const { Text } = Typography
@@ -14,13 +14,7 @@ const InputGroup = ({ children }) => (
   <div style={{ margin: '0 0 12px 0' }}>{children}</div>
 )
 
-const ExportForm = ({
-  onDateChange,
-  onTxnChange,
-  onGroupHotspotsChange,
-  onGroupTimeChange,
-  onFeeChange,
-}) => {
+const ExportForm = ({ onDateChange, onTxnChange, onFeeChange }) => {
   return (
     <div>
       <InputGroup>
@@ -30,7 +24,7 @@ const ExportForm = ({
         <div>
           <RangePicker
             ranges={{
-              Today: [moment(), moment()],
+              Today: [moment().startOf('day'), moment()],
               'This Month': [moment().startOf('month'), moment()],
               'Last Month': [
                 moment().subtract(1, 'months').startOf('month'),
@@ -62,47 +56,13 @@ const ExportForm = ({
       </InputGroup>
 
       <InputGroup>
-        <Text strong>Display Hotspot Rewards:</Text>
-        <div>
-          <Radio.Group onChange={onGroupHotspotsChange} defaultValue={true}>
-            <Radio style={radioStyle} value={true}>
-              Single Entry per Epoch
-            </Radio>
-            <Radio style={radioStyle} value={false}>
-              Separate Entries per Hotspot
-            </Radio>
-          </Radio.Group>
-        </div>
-      </InputGroup>
-
-      <InputGroup>
-        <Text strong>Group Reward Transactions:</Text>
-        <div>
-          <Radio.Group onChange={onGroupTimeChange} defaultValue="epoch">
-            <Radio style={radioStyle} value="epoch">
-              By Epoch
-            </Radio>
-            <Radio style={radioStyle} value="day">
-              By Day
-            </Radio>
-            <Radio style={radioStyle} value="week">
-              By Week
-            </Radio>
-            <Radio style={radioStyle} value="month">
-              By Month
-            </Radio>
-          </Radio.Group>
-        </div>
-      </InputGroup>
-
-      <InputGroup>
         <Text strong>Display Fees in:</Text>
         <div>
-          <Radio.Group onChange={onFeeChange} value={1}>
-            <Radio style={radioStyle} value={1}>
+          <Radio.Group onChange={onFeeChange} defaultValue="dc">
+            <Radio style={radioStyle} value="dc">
               Data Credits (DC)
             </Radio>
-            <Radio style={radioStyle} value={2} disabled>
+            <Radio style={radioStyle} value="hnt">
               HNT (experimental)
             </Radio>
           </Radio.Group>

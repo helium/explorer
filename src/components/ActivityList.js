@@ -6,6 +6,7 @@ import Timestamp from 'react-timestamp'
 import TxnTag from './TxnTag'
 import LoadMoreButton from './LoadMoreButton'
 import { Content } from './AppLayout'
+import ExportCSV from './ExportCSV'
 const { Text } = Typography
 
 const initialState = {
@@ -72,20 +73,25 @@ class ActivityList extends Component {
 
   render() {
     const { txns, loading, loadingInitial, filtersOpen } = this.state
-    const { address } = this.props
+    const { address, type } = this.props
     return (
       <Content style={{ marginTop: 0 }}>
         <Card
           loading={loadingInitial}
           title="Activity"
           extra={
-            <Tooltip title="Toggle Filters">
-              <Button
-                shape="circle"
-                onClick={this.toggleFilters}
-                icon={<FilterOutlined />}
-              />
-            </Tooltip>
+            <>
+              {type === 'account' && (
+                <ExportCSV address={address} style={{ marginRight: 10 }} />
+              )}
+              <Tooltip title="Toggle Filters">
+                <Button
+                  shape="circle"
+                  onClick={this.toggleFilters}
+                  icon={<FilterOutlined />}
+                />
+              </Tooltip>
+            </>
           }
         >
           {filtersOpen && (

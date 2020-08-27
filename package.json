@@ -2,8 +2,9 @@
   "name": "explorer",
   "version": "0.1.0",
   "private": true,
+  "license": "Apache-2.0",
   "dependencies": {
-    "@helium/http": "^1.0.0",
+    "@helium/http": "1.0.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",

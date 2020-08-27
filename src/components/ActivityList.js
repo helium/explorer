@@ -172,6 +172,12 @@ const columns = (ownerAddress) => {
       render: (data) => <TxnTag type={data}></TxnTag>,
     },
     {
+      title: 'Hash',
+      dataIndex: 'hash',
+      key: 'hash',
+      render: (data) => <a href={`/txns/${data}`}>{data.substring(1, 6)}...</a>,
+    },
+    {
       title: 'Amount',
       dataIndex: 'amount',
       key: 'amount',

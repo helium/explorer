@@ -978,7 +978,7 @@
   dependencies:
     bignumber.js "^9.0.0"
 
-"@helium/http@^1.0.0":
+"@helium/http@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@helium/http/-/http-1.0.0.tgz#1d2d113412d2194461568518523a4069ee8b81ba"
   integrity sha512-oNpuMW58Eo+iRXbnlEPX3Q4WVf1MyPPhAWxI5ykErK6IsVFH1XUFUwHpvl8H1ErfRBwJQ0kPTYjBfwzvBJ4dnA==

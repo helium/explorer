@@ -157,7 +157,13 @@ class BlockView extends Component {
                 <ClockCircleOutlined
                   style={{ color: '#FFC769', marginRight: 4 }}
                 />{' '}
-                <Timestamp date={block.time} />
+                <Timestamp
+                  date={
+                    block.hash === 'La6PuV80Ps9qTP0339Pwm64q3_deMTkv6JOo1251EJI'
+                      ? 1564436673
+                      : block.time
+                  }
+                />
               </h3>
 
               {txns.length > 0 && (

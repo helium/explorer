@@ -29,7 +29,6 @@ class Index extends Component {
     fetch('https://api.coingecko.com/api/v3/coins/helium')
       .then((res) => res.json())
       .then((marketData) => {
-        console.log(marketData)
         marketData.tickers.map((t) => {
           newVolume += t.converted_volume.usd
         })
@@ -43,14 +42,13 @@ class Index extends Component {
     fetch('https://api.helium.io/v1/stats')
       .then((res) => res.json())
       .then((stats) => {
-        console.log(stats)
         this.setState({
           circulatingSupply: stats.data.token_supply,
           blockTime: stats.data.block_times.last_day.avg,
           electionTime: stats.data.election_times.last_day.avg,
           packetsTransferred:
-            stats.data.state_channel_counts.last_week.num_packets,
-          dataCredits: stats.data.state_channel_counts.last_week.num_dcs,
+            stats.data.state_channel_counts.last_month.num_packets,
+          dataCredits: stats.data.state_channel_counts.last_month.num_dcs,
           totalHotspots: stats.data.counts.hotspots,
         })
       })
@@ -132,8 +130,8 @@ class Index extends Component {
                       {totalHotspots.toLocaleString()}
                     </p>
                     <p className="stat">
-                      <span>LongFi Packets (7d):</span>
-                      {packetsTransferred.toLocaleString()}
+                      <span>LongFi data (30d):</span>
+                      {((dataCredits * 24) / 10e8).toLocaleString()} GB
                     </p>
                     <p className="stat">
                       <span>Avg Election Time (24hr):</span>
@@ -183,7 +181,7 @@ class Index extends Component {
                       HNT
                     </p>
                     <p className="stat">
-                      <span>Data Credits spent (7d):</span>
+                      <span>Data Credits spent (30d):</span>
                       {dataCredits.toLocaleString()} DC
                     </p>
                     <p className="stat">

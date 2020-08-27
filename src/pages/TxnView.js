@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Typography, Tag, Table, Card, List, Descriptions } from 'antd'
-import animalHash from 'angry-purple-tiger'
 import { DollarOutlined } from '@ant-design/icons'
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
@@ -9,7 +8,10 @@ import PocPath from '../components/PocPath'
 import AppLayout, { Content } from '../components/AppLayout'
 import Map from '../components/Map'
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
-import hotspots from '../data/hotspots.json'
+import PieChart from '../components/PieChart'
+import TxnReward from '../components/TxnReward'
+import TxnSCClose from '../components/TxnSCClose'
+//import hotspots from '../data/hotspots.json'
 import {
   BackwardOutlined,
   ForwardOutlined,
@@ -80,8 +82,26 @@ class TxnView extends Component {
   async loadTxn() {
     const { hash } = this.props.match.params
     const txn = await this.client.transactions.get(hash)
-    console.log(txn)
     this.setState({ txn, loading: false })
+  }
+
+  rewardChart() {
+    const { txn } = this.state
+    if (txn.type === 'rewards_v1') {
+      const res = []
+      if (txn.rewards.length > 0) {
+        txn.rewards.map((t) => {
+          let f = res.find((x) => x.name === t.type)
+          if (f) {
+            f.value++
+          } else {
+            let n = { name: t.type, value: 1 }
+            res.push(n)
+          }
+        })
+      }
+      return res
+    }
   }
 
   render() {
@@ -98,9 +118,9 @@ class TxnView extends Component {
         case 'poc_receipts_v1':
           return pocReceiptsv1()
         case 'rewards_v1':
-          return rewardsv1()
+          return <TxnReward txn={txn} />
         case 'state_channel_close_v1':
-          return stateChannelClosev1()
+          return <TxnSCClose txn={txn} />
 
         default:
           return (
@@ -115,109 +135,6 @@ class TxnView extends Component {
             </Descriptions>
           )
       }
-    }
-
-    const stateChannelClosev1 = () => {
-      let totalPackets = 0
-      let totalHotspots = txn.stateChannel.summaries.length
-      let totalDcs = 0
-      txn.stateChannel.summaries.map((s) => {
-        totalPackets += s.num_packets
-        totalDcs += s.num_dcs
-      })
-      const columns = [
-        {
-          title: 'Hotspot',
-          dataIndex: 'client',
-          key: 'client',
-          render: (data) => <span>{animalHash(data)}</span>,
-        },
-        {
-          title: 'Packets Sent',
-          dataIndex: 'num_packets',
-          key: 'num_packets',
-        },
-        {
-          title: 'Data Credits Used',
-          dataIndex: 'num_dcs',
-          key: 'num_dcs',
-        },
-      ]
-      const data = []
-      return (
-        <div>
-          <Mapbox
-            style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
-            container="map"
-            center={[-95.712891, 37.09024]}
-            containerStyle={{
-              height: '600px',
-              width: '100%',
-            }}
-            zoom={[3]}
-            movingMethod="jumpTo"
-          >
-            {txn.stateChannel.summaries.map((s) => {
-              data.push({
-                client: s.client,
-                num_packets: s.num_packets,
-                num_dcs: s.num_packets,
-              })
-              const hotspot = hotspots.data.find((e) => e.address === s.client)
-              if (hotspot) {
-                return (
-                  <Marker
-                    key={hotspot.address}
-                    style={styles.gatewayMarker}
-                    anchor="center"
-                    coordinates={[hotspot.lng, hotspot.lat]}
-                  />
-                )
-              }
-            })}
-            )}
-          </Mapbox>
-
-          <Descriptions bordered>
-            <Descriptions.Item label="Block Height" span={3}>
-              <a href={'/blocks/' + txn.height}>{txn.height}</a>
-            </Descriptions.Item>
-            <Descriptions.Item label="Total Packets" span={3}>
-              {totalPackets}
-            </Descriptions.Item>
-            <Descriptions.Item label="Data Credits Spent" span={3}>
-              {totalDcs}
-            </Descriptions.Item>
-            <Descriptions.Item label="Number of Hotspots" span={3}>
-              {totalHotspots}
-            </Descriptions.Item>
-            <Descriptions.Item label="State Channel Closer" span={3}>
-              <a href={'/accounts/' + txn.closer}>{txn.closer}</a>
-            </Descriptions.Item>
-            <Descriptions.Item label="State Channel Owner" span={3}>
-              <a href={'/accounts/' + txn.stateChannel.owner}>
-                {txn.stateChannel.owner}
-              </a>
-            </Descriptions.Item>
-          </Descriptions>
-
-          <Table
-            dataSource={data}
-            columns={columns}
-            style={{ marginTop: '10px' }}
-          />
-
-          <Descriptions bordered style={{ marginTop: '20px' }}>
-            {Object.entries(txn).map(([key, value]) => {
-              return (
-                <Descriptions.Item label={key} span={3}>
-                  {typeof value === 'object' ? JSON.stringify(value) : value}
-                </Descriptions.Item>
-              )
-            })}
-          </Descriptions>
-        </div>
-      )
     }
 
     const pocReceiptsv1 = () => (
@@ -331,12 +248,15 @@ class TxnView extends Component {
           <Descriptions.Item label="Amount" span={3}>
             {txn.amount.toString()}
           </Descriptions.Item>
+          <Descriptions.Item label="Fee" span={3}>
+            {txn.fee.toString()}
+          </Descriptions.Item>
         </Descriptions>
       )
     }
 
     const paymentv2 = () => {
-      const columns = [
+      /*const columns = [
         {
           title: 'Payee',
           dataIndex: 'payee',
@@ -365,6 +285,32 @@ class TxnView extends Component {
             scroll={{ x: true }}
           />
         </div>
+      )*/
+      return (
+        <Descriptions bordered>
+          <Descriptions.Item
+            label="Payer"
+            span={3}
+            style={{ overflow: 'ellipsis' }}
+          >
+            <a href={`/accounts/${txn.payer}`}>{txn.payer}</a>
+          </Descriptions.Item>
+          <Descriptions.Item label="Total HNT" span={3}>
+            {txn.totalAmount.toString()}
+          </Descriptions.Item>
+          {txn.payments.map((p, idx) => {
+            console.log(idx)
+            return (
+              <Descriptions.Item label={'Payee ' + Number(idx + 1)} span={3}>
+                <a href={`/accounts/${p.payee}`}>{p.payee}</a> (
+                {p.amount.toString()})
+              </Descriptions.Item>
+            )
+          })}
+          <Descriptions.Item label="Fee" span={3}>
+            {txn.fee.toString()}
+          </Descriptions.Item>
+        </Descriptions>
       )
     }
 
@@ -400,14 +346,24 @@ class TxnView extends Component {
                 <p style={{ marginTop: 20 }}>
                   <TxnTag type={txn.type} />
                 </p>
+                <p>
+                  <img
+                    style={{
+                      marginRight: 5,
+                      position: 'relative',
+                      top: '-1px',
+                    }}
+                    src={Block}
+                  />
+                  <a href={'/blocks/' + txn.height}>{txn.height}</a>
+                </p>
               </div>
-              <p>
-                <img
-                  style={{ marginRight: 5, position: 'relative', top: '-1px' }}
-                  src={Block}
-                />
-                <a href={'/blocks/' + txn.height}>{txn.height}</a>
-              </p>
+
+              {txn.type === 'rewards_v1' && (
+                <div>
+                  <PieChart data={this.rewardChart()} />
+                </div>
+              )}
             </div>
             <hr />
             <div className="flexwrapper">

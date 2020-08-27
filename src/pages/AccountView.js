@@ -47,6 +47,7 @@ class AccountView extends Component {
   render() {
     const { account, loading } = this.state
     const { address } = this.props.match.params
+    console.log(account)
 
     return (
       <AppLayout>

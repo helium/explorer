@@ -73,7 +73,7 @@ class ActivityList extends Component {
 
   render() {
     const { txns, loading, loadingInitial, filtersOpen } = this.state
-    const { address } = this.props
+    const { address, type } = this.props
     return (
       <Content style={{ marginTop: 0 }}>
         <Card
@@ -81,7 +81,9 @@ class ActivityList extends Component {
           title="Activity"
           extra={
             <>
-              <ExportCSV address={address} style={{ marginRight: 10 }} />
+              {type === 'account' && (
+                <ExportCSV address={address} style={{ marginRight: 10 }} />
+              )}
               <Tooltip title="Toggle Filters">
                 <Button
                   shape="circle"

@@ -88,7 +88,6 @@ class ExportModal extends React.Component {
 
     const csvExporter = new ExportToCsv(options)
 
-    console.log('data', data)
     csvExporter.generateCsv(data)
   }
 
@@ -101,11 +100,6 @@ class ExportModal extends React.Component {
       : Math.floor(
           (1 - (lastTxnTime - startTime) / (moment().unix() - startTime)) * 100,
         )
-
-    console.log('percent', percent)
-    console.log('lastTxnTime', lastTxnTime)
-    console.log('startTime', startTime)
-    console.log('moment unix', moment().unix())
 
     return (
       <>

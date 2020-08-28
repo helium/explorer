@@ -73,7 +73,6 @@ class ExportModal extends React.Component {
       }
       this.setState({ lastTxnTime: txn.time })
     }
-    debugger
 
     const options = {
       filename: 'helium',

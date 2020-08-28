@@ -39,10 +39,23 @@ const styles = {
     boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
     cursor: 'pointer',
   },
+  witnessMarker: {
+    width: 14,
+    height: 14,
+    borderRadius: '50%',
+    backgroundColor: '#F1C40F',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: '3px solid #B7950B',
+    boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
+    cursor: 'pointer',
+  },
 }
 
 const initialState = {
   hotspot: {},
+  witnesses: [],
   activity: [],
   loading: true,
   activityLoading: true,
@@ -54,6 +67,7 @@ class HotspotView extends Component {
   componentDidMount() {
     this.client = new Client()
     this.loadData()
+    this.loadWitnesses()
   }
 
   componentDidUpdate(prevProps) {
@@ -69,8 +83,20 @@ class HotspotView extends Component {
     this.setState({ hotspot, loading: false })
   }
 
+  async loadWitnesses() {
+    const { witnesses } = this.state
+    const { address } = this.props.match.params
+    fetch('https://api.helium.io/v1/hotspots/' + address + '/witnesses')
+      .then((res) => res.json())
+      .then((witnessData) => {
+        this.setState({
+          witnesses: witnessData.data,
+        })
+      })
+  }
+
   render() {
-    const { hotspot, loading } = this.state
+    const { hotspot, witnesses, loading } = this.state
 
     return (
       <AppLayout>
@@ -96,11 +122,38 @@ class HotspotView extends Component {
                 key={hotspot.address}
                 style={styles.gatewayMarker}
                 anchor="center"
+                symbol="yolo"
                 coordinates={[
                   hotspot.lng ? hotspot.lng : 0,
                   hotspot.lat ? hotspot.lat : 0,
                 ]}
               />
+
+              {witnesses.map((w) => {
+                return (
+                  <span>
+                    <Marker
+                      key={w.address}
+                      style={styles.witnessMarker}
+                      anchor="center"
+                      coordinates={[w.lng, w.lat]}
+                    ></Marker>
+                    <Layer
+                      key={'line-' + w.address}
+                      type="line"
+                      layout={{ 'line-cap': 'round', 'line-join': 'round' }}
+                      paint={{ 'line-color': '#F1C40F', 'line-width': 2 }}
+                    >
+                      <Feature
+                        coordinates={[
+                          [w.lng, w.lat],
+                          [hotspot.lng, hotspot.lat],
+                        ]}
+                      />
+                    </Layer>
+                  </span>
+                )
+              })}
             </Mapbox>
             <div style={{ textAlign: 'right', paddingTop: 6, color: 'white' }}>
               <p style={{ marginBottom: '-20px' }}>

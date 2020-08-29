@@ -50,7 +50,7 @@ const styles = {
     border: '3px solid #B7950B',
     boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
     cursor: 'pointer',
-    opacity: 0.2,
+    opacity: 0.3,
   },
 }
 
@@ -152,9 +152,12 @@ class HotspotView extends Component {
                         layout={{
                           'line-cap': 'round',
                           'line-join': 'round',
-                          'line-opacity': 0.2,
                         }}
-                        paint={{ 'line-color': '#F1C40F', 'line-width': 2 }}
+                        paint={{
+                          'line-color': '#F1C40F',
+                          'line-width': 2,
+                          'line-opacity': 0.3,
+                        }}
                       >
                         <Feature
                           coordinates={[

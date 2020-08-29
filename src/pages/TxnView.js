@@ -164,15 +164,17 @@ class TxnView extends Component {
     )
 
     const pocRequestv1 = () => {
+      console.log(txn)
       return (
         <div>
-          <Map coords={[{ lat: txn.lat, lng: txn.lng }]} />
           <Descriptions bordered>
             <Descriptions.Item label="Hotspot" span={3}>
               <a href={'/hotspots/' + txn.challenger}>{txn.challenger}</a>
             </Descriptions.Item>
             <Descriptions.Item label="Owner" span={3}>
-              <a href={'/accounts/' + txn.owner}>{txn.owner}</a>
+              <a href={'/accounts/' + txn.challengerOwner}>
+                {txn.challengerOwner}
+              </a>
             </Descriptions.Item>
             <Descriptions.Item label="Block Height" span={3}>
               <a href={'/blocks/' + txn.height}>{txn.height}</a>
@@ -185,49 +187,6 @@ class TxnView extends Component {
               )
             })}
           </Descriptions>
-        </div>
-      )
-    }
-
-    const rewardsv1 = () => {
-      const columns = [
-        {
-          title: 'Type',
-          dataIndex: 'type',
-          key: 'type',
-          render: (data) => <TxnTag type={data}></TxnTag>,
-        },
-        {
-          title: 'Account',
-          dataIndex: 'account',
-          key: 'account',
-          render: (data) => <a href={'/accounts/' + data}>{data}</a>,
-        },
-        {
-          title: 'Amount',
-          dataIndex: 'amount',
-          key: 'amount',
-          render: (data) => <span>{data.toString()}</span>,
-        },
-      ]
-      return (
-        <div>
-          <div style={{ padding: '0 24px 50px' }}>
-            <h3 style={{ color: '#444' }}>About Mining Reward Transactions</h3>
-            <p>
-              Bundles multiple reward transactions at the end of each epoch and
-              distributes all HNT produced in that block to wallets that have
-              earned them.{' '}
-            </p>
-          </div>
-          <Table
-            dataSource={txn.rewards}
-            columns={columns}
-            size="small"
-            rowKey="payee"
-            pagination={{ pageSize: 50 }}
-            scroll={{ x: true }}
-          />
         </div>
       )
     }
@@ -256,36 +215,6 @@ class TxnView extends Component {
     }
 
     const paymentv2 = () => {
-      /*const columns = [
-        {
-          title: 'Payee',
-          dataIndex: 'payee',
-          key: 'payee',
-          render: (data) => <a href={'/accounts/' + data}>{data}</a>,
-        },
-        {
-          title: 'Amount',
-          dataIndex: 'amount',
-          key: 'amount',
-          render: (data) => <span>{data.toString()}</span>,
-        },
-      ]
-      return (
-        <div>
-          <p>Total Amount: {txn.totalAmount.toString()} </p>
-          <p>
-            Payer: <a href={`/accounts/${txn.payer}`}>{txn.payer}</a>
-          </p>
-          <Table
-            dataSource={txn.payments}
-            columns={columns}
-            size="small"
-            rowKey="payee"
-            pagination={{ pageSize: 50 }}
-            scroll={{ x: true }}
-          />
-        </div>
-      )*/
       return (
         <Descriptions bordered>
           <Descriptions.Item

@@ -24,9 +24,20 @@ class Index extends Component {
     dataCredits: 0,
   }
 
-  componentDidMount = async () => {
+  componentDidMount() {
+    this.getMarketData()
+    fetch('https://api.helium.io/v1/blocks/height')
+      .then((res) => res.json())
+      .then((h) => {
+        this.setState({
+          height: h.data.height,
+        })
+      })
+  }
+
+  getMarketData = async () => {
     let newVolume = 0
-    fetch('https://api.coingecko.com/api/v3/coins/helium')
+    await fetch('https://api.coingecko.com/api/v3/coins/helium')
       .then((res) => res.json())
       .then((marketData) => {
         marketData.tickers.map((t) => {
@@ -35,13 +46,18 @@ class Index extends Component {
         this.setState({
           volume: newVolume,
           price: marketData.market_data.current_price.usd,
-          marketCap: marketData.market_data.market_cap.usd,
           priceChange: marketData.market_data.price_change_percentage_24h,
         })
       })
-    fetch('https://api.helium.io/v1/stats')
+    this.getChainStats()
+  }
+
+  getChainStats = async () => {
+    const { price } = this.state
+    await fetch('https://api.helium.io/v1/stats')
       .then((res) => res.json())
       .then((stats) => {
+        const realCap = price * stats.data.token_supply
         this.setState({
           circulatingSupply: stats.data.token_supply,
           blockTime: stats.data.block_times.last_day.avg,
@@ -50,13 +66,7 @@ class Index extends Component {
             stats.data.state_channel_counts.last_month.num_packets,
           dataCredits: stats.data.state_channel_counts.last_month.num_dcs,
           totalHotspots: stats.data.counts.hotspots,
-        })
-      })
-    fetch('https://api.helium.io/v1/blocks/height')
-      .then((res) => res.json())
-      .then((h) => {
-        this.setState({
-          height: h.data.height,
+          marketCap: realCap,
         })
       })
   }

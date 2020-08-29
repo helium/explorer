@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Typography, Card, Descriptions, Tooltip } from 'antd'
+import { Row, Typography, Checkbox, Tooltip } from 'antd'
 import Client from '@helium/http'
 import round from 'lodash/round'
 import get from 'lodash/get'
@@ -59,6 +59,7 @@ const initialState = {
   activity: [],
   loading: true,
   activityLoading: true,
+  showWitnesses: false,
 }
 
 class HotspotView extends Component {
@@ -84,7 +85,6 @@ class HotspotView extends Component {
   }
 
   async loadWitnesses() {
-    const { witnesses } = this.state
     const { address } = this.props.match.params
     fetch('https://api.helium.io/v1/hotspots/' + address + '/witnesses')
       .then((res) => res.json())
@@ -95,8 +95,14 @@ class HotspotView extends Component {
       })
   }
 
+  toggleWitnesses = (e) => {
+    this.setState({
+      showWitnesses: e.target.checked,
+    })
+  }
+
   render() {
-    const { hotspot, witnesses, loading } = this.state
+    const { hotspot, witnesses, showWitnesses } = this.state
 
     return (
       <AppLayout>
@@ -129,33 +135,40 @@ class HotspotView extends Component {
                 ]}
               />
 
-              {witnesses.map((w) => {
-                return (
-                  <span>
-                    <Marker
-                      key={w.address}
-                      style={styles.witnessMarker}
-                      anchor="center"
-                      coordinates={[w.lng, w.lat]}
-                    ></Marker>
-                    <Layer
-                      key={'line-' + w.address}
-                      type="line"
-                      layout={{ 'line-cap': 'round', 'line-join': 'round' }}
-                      paint={{ 'line-color': '#F1C40F', 'line-width': 2 }}
-                    >
-                      <Feature
-                        coordinates={[
-                          [w.lng, w.lat],
-                          [hotspot.lng, hotspot.lat],
-                        ]}
-                      />
-                    </Layer>
-                  </span>
-                )
-              })}
+              {showWitnesses &&
+                witnesses.map((w) => {
+                  return (
+                    <span>
+                      <Marker
+                        key={w.address}
+                        style={styles.witnessMarker}
+                        anchor="center"
+                        coordinates={[w.lng, w.lat]}
+                      ></Marker>
+                      <Layer
+                        key={'line-' + w.address}
+                        type="line"
+                        layout={{ 'line-cap': 'round', 'line-join': 'round' }}
+                        paint={{ 'line-color': '#F1C40F', 'line-width': 2 }}
+                      >
+                        <Feature
+                          coordinates={[
+                            [w.lng, w.lat],
+                            [hotspot.lng, hotspot.lat],
+                          ]}
+                        />
+                      </Layer>
+                    </span>
+                  )
+                })}
             </Mapbox>
             <div style={{ textAlign: 'right', paddingTop: 6, color: 'white' }}>
+              <Checkbox
+                onChange={this.toggleWitnesses}
+                style={{ color: 'white' }}
+              >
+                Show witnesses
+              </Checkbox>
               <p style={{ marginBottom: '-20px' }}>
                 {get(hotspot, 'geocode.longCity')},{' '}
                 {get(hotspot, 'geocode.shortState')}

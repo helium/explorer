@@ -7,8 +7,20 @@ import classNames from 'classnames'
 const { Search } = Input
 
 class SearchBar extends Component {
+  state = {
+    hotspots: [],
+  }
+
   componentDidMount() {
     this.client = new Client()
+    this.loadHotspots()
+  }
+
+  async loadHotspots() {
+    const { hotspots } = this.state
+    const list = await this.client.hotspots.list()
+    const allSpots = await list.take(10000)
+    this.setState({ hotspots: allSpots })
   }
 
   searchBlock = async (term) => {
@@ -35,14 +47,20 @@ class SearchBar extends Component {
     } catch {}
   }
 
+  searchHotspotName = async (term) => {
+    const { hotspots } = this.state
+    return hotspots.find((o) => o.name === term)
+  }
+
   doSearch = async (term) => {
     const { history } = this.props
     const cleanTerm = term.trim()
-    const [block, txn, account, hotspot] = await Promise.all([
+    const [block, txn, account, hotspot, hotspotName] = await Promise.all([
       this.searchBlock(cleanTerm),
       this.searchTransaction(cleanTerm),
       this.searchAccount(cleanTerm),
       this.searchHotspot(cleanTerm),
+      this.searchHotspotName(cleanTerm),
     ])
 
     if (block) {
@@ -51,6 +69,8 @@ class SearchBar extends Component {
       history.push('/txns/' + txn.hash)
     } else if (hotspot) {
       history.push('/hotspots/' + hotspot.address)
+    } else if (hotspotName) {
+      history.push('/hotspots/' + hotspotName.address)
     } else if (account) {
       history.push('/accounts/' + account.address)
     } else {

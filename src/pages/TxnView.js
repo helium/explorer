@@ -11,6 +11,7 @@ import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 import PieChart from '../components/PieChart'
 import TxnReward from '../components/TxnReward'
 import TxnSCClose from '../components/TxnSCClose'
+import animalHash from 'angry-purple-tiger'
 //import hotspots from '../data/hotspots.json'
 import {
   BackwardOutlined,
@@ -152,13 +153,19 @@ class TxnView extends Component {
           <Descriptions.Item label="Block Height" span={3}>
             <a href={'/blocks/' + txn.height}>{txn.height}</a>
           </Descriptions.Item>
-          {Object.entries(txn).map(([key, value]) => {
-            return (
-              <Descriptions.Item label={key} span={3}>
-                {key === 'path' ? JSON.stringify(value) : value}
-              </Descriptions.Item>
-            )
-          })}
+          <Descriptions.Item label="PoC Path" span={3}>
+            <ol>
+              {txn.path.map((p) => {
+                return (
+                  <li>
+                    <a href={'/hotspots/' + p.challengee}>
+                      {animalHash(p.challengee)}
+                    </a>
+                  </li>
+                )
+              })}
+            </ol>
+          </Descriptions.Item>
         </Descriptions>
       </div>
     )

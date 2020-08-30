@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Checkbox } from 'antd'
 import { h3ToGeo } from 'h3-js'
+import animalHash from 'angry-purple-tiger'
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 
 const Mapbox = ReactMapboxGl({
@@ -106,8 +107,11 @@ class PocPath extends Component {
                     }
                     anchor="center"
                     coordinates={[p.challengee_lon, p.challengee_lat]}
-                    onClick={console.log(p.challengee)}
-                  />
+                  >
+                    <span style={{ color: 'white', fontSize: '8px' }}>
+                      {idx + 1}
+                    </span>
+                  </Marker>
                   <Layer
                     key={'line-' + p.challengee}
                     type="line"

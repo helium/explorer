@@ -7,7 +7,7 @@ export const parseTxn = async (
   txn,
   opts = { convertFee: true },
 ) => {
-  const timestamp = moment.unix(txn.time).format('MM/DD/YYYY HH:MM:SS')
+  const timestamp = moment.unix(txn.time).format('MM/DD/YYYY HH:mm:ss')
   switch (txn.type) {
     case 'rewards_v1':
       return txn.rewards.map(({ type, gateway, amount }) => ({
@@ -21,6 +21,7 @@ export const parseTxn = async (
         Tag: 'mined',
         Hotspot: animalHash(gateway),
         'Reward Type': type,
+        Block: txn.height,
       }))
 
     case 'payment_v1':
@@ -36,6 +37,7 @@ export const parseTxn = async (
           Tag: '',
           Hotspot: '',
           'Reward Type': '',
+          Block: txn.height,
         }
       } else {
         return {
@@ -49,6 +51,7 @@ export const parseTxn = async (
           Tag: '',
           Hotspot: '',
           'Reward Type': '',
+          Block: txn.height,
         }
       }
 
@@ -65,6 +68,7 @@ export const parseTxn = async (
           Tag: '',
           Hotspot: '',
           'Reward Type': '',
+          Block: txn.height,
         }
       } else {
         return {
@@ -81,6 +85,7 @@ export const parseTxn = async (
           Tag: '',
           Hotspot: '',
           'Reward Type': '',
+          Block: txn.height,
         }
       }
 

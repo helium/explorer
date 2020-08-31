@@ -97,12 +97,6 @@ const hotspotColumns = [
     key: 'score',
     render: (data) => round(data, 2),
   },
-  {
-    title: 'GPS',
-    dataIndex: 'status',
-    key: 'status',
-    render: (data) => <span>{data.gpsText}</span>,
-  },
 ]
 
 export default HotspotsList

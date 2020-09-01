@@ -177,7 +177,7 @@ const columns = (ownerAddress) => {
       title: 'Hash',
       dataIndex: 'hash',
       key: 'hash',
-      render: (data) => <a href={`/txns/${data}`}>{data.substring(1, 6)}...</a>,
+      render: (data) => <a href={`/txns/${data}`}>{data.substring(0, 6)}...</a>,
     },
     {
       title: 'Amount',

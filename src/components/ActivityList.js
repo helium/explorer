@@ -122,6 +122,7 @@ class ActivityList extends Component {
             rowKey="hash"
             pagination={false}
             loading={loading}
+            scroll={{ x: true }}
           />
           <LoadMoreButton onClick={this.loadMore} />
         </Card>

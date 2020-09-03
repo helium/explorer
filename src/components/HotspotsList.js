@@ -60,6 +60,7 @@ class HotspotsList extends Component {
             size="small"
             rowKey="name"
             pagination={{ pageSize: 10, hideOnSinglePage: true }}
+            scroll={{ x: true }}
           />
         </Card>
       </Content>

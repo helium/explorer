@@ -79,6 +79,7 @@ class PocPath extends Component {
   render() {
     const { loadingInitial, showWitnesses } = this.state
     const { path } = this.props
+    console.log(path)
 
     if (!loadingInitial) {
       return (
@@ -103,7 +104,9 @@ class PocPath extends Component {
                   <Marker
                     key={p.challengee}
                     style={
-                      p.receipt ? styles.gatewaySuccess : styles.gatewayFailed
+                      p.receipt || p.witnesses.length > 0
+                        ? styles.gatewaySuccess
+                        : styles.gatewayFailed
                     }
                     anchor="center"
                     coordinates={[p.challengee_lon, p.challengee_lat]}
@@ -117,7 +120,9 @@ class PocPath extends Component {
                     type="line"
                     layout={{ 'line-cap': 'round', 'line-join': 'round' }}
                     paint={
-                      path[idx + 1] && path[idx + 1].receipt
+                      path[idx + 1] &&
+                      (path[idx + 1].receipt ||
+                        path[idx + 1].witnesses.length > 0)
                         ? styles.lineSuccess
                         : styles.lineFailure
                     }

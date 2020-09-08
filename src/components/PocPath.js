@@ -104,7 +104,11 @@ class PocPath extends Component {
                   <Marker
                     key={p.challengee}
                     style={
-                      p.receipt || p.witnesses.length > 0
+                      p.receipt ||
+                      p.witnesses.length > 0 ||
+                      (path[idx + 1] &&
+                        (path[idx + 1].receipt ||
+                          path[idx + 1].witnesses.length > 0))
                         ? styles.gatewaySuccess
                         : styles.gatewayFailed
                     }
@@ -120,9 +124,11 @@ class PocPath extends Component {
                     type="line"
                     layout={{ 'line-cap': 'round', 'line-join': 'round' }}
                     paint={
-                      path[idx + 1] &&
-                      (path[idx + 1].receipt ||
-                        path[idx + 1].witnesses.length > 0)
+                      p.receipt ||
+                      p.witnesses.length > 0 ||
+                      (path[idx + 1] &&
+                        (path[idx + 1].receipt ||
+                          path[idx + 1].witnesses.length > 0))
                         ? styles.lineSuccess
                         : styles.lineFailure
                     }

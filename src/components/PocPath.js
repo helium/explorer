@@ -79,7 +79,6 @@ class PocPath extends Component {
   render() {
     const { loadingInitial, showWitnesses } = this.state
     const { path } = this.props
-    console.log(path)
 
     if (!loadingInitial) {
       return (

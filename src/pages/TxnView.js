@@ -1,18 +1,15 @@
 import React, { Component } from 'react'
-import { Typography, Tag, Table, Card, List, Descriptions } from 'antd'
-import { DollarOutlined } from '@ant-design/icons'
+import { Typography, Card, Descriptions } from 'antd'
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
 import TxnTag from '../components/TxnTag'
 import PocPath from '../components/PocPath'
 import AppLayout, { Content } from '../components/AppLayout'
-import Map from '../components/Map'
-import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 import PieChart from '../components/PieChart'
 import TxnReward from '../components/TxnReward'
 import TxnSCClose from '../components/TxnSCClose'
 import animalHash from 'angry-purple-tiger'
-//import hotspots from '../data/hotspots.json'
+
 import {
   BackwardOutlined,
   ForwardOutlined,
@@ -22,11 +19,6 @@ import {
 import Block from '../images/block.svg'
 
 const { Title, Text } = Typography
-
-const Mapbox = ReactMapboxGl({
-  accessToken:
-    'pk.eyJ1IjoicGV0ZXJtYWluIiwiYSI6ImNqMHA5dm8xbTAwMGQycXMwa3NucGptenQifQ.iVCDWzb16acgOKWz65AckA',
-})
 
 const styles = {
   selectedMarker: {
@@ -107,6 +99,7 @@ class TxnView extends Component {
 
   render() {
     const { txn, loading } = this.state
+    console.log(txn)
 
     const txnView = (type) => {
       switch (type) {

@@ -74,6 +74,7 @@ class ActivityList extends Component {
   render() {
     const { txns, loading, loadingInitial, filtersOpen } = this.state
     const { address, type } = this.props
+
     return (
       <Content style={{ marginTop: 0 }}>
         <Card
@@ -123,6 +124,20 @@ class ActivityList extends Component {
             pagination={false}
             loading={loading}
             scroll={{ x: true }}
+            expandable={{
+              expandedRowRender: (record) =>
+                record.rewards.map((r) => (
+                  <p style={{ marginLeft: '95px' }}>
+                    <TxnTag type={r.type}></TxnTag>
+                    <span
+                      style={{ marginLeft: '20px', fontFamily: 'monospace' }}
+                    >
+                      {r.amount.toString(2)}
+                    </span>
+                  </p>
+                )),
+              rowExpandable: (record) => record.type == 'rewards_v1',
+            }}
           />
           <LoadMoreButton onClick={this.loadMore} />
         </Card>

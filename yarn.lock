@@ -9494,6 +9494,11 @@ react-router-dom@^5.1.2:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
+react-router-ga@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/react-router-ga/-/react-router-ga-1.2.3.tgz#3011b63554e65f50dd16df3dbcdf4ed286b74e73"
+  integrity sha512-0rNBGGI6Q1hkznbLB+bAmDTS+8w3duaJYYIbCrCwof/p7RbZuv+Lsv9enumRZXxb4oTZrY95vOvFxnsRQ4cFCg==
+
 react-router@5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/react-router/-/react-router-5.1.2.tgz#6ea51d789cb36a6be1ba5f7c0d48dd9e817d3418"

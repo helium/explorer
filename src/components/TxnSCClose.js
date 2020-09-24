@@ -165,7 +165,7 @@ class TxnSCClose extends Component {
         >
           {txn.stateChannel.summaries.map((s) => {
             const hotspot = hotspots.find((e) => e.address === s.client)
-            if (hotspot) {
+            if (hotspot && hotspot.lng && hotspot.lat) {
               return (
                 <Marker
                   key={hotspot.address}

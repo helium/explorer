@@ -135,12 +135,9 @@ class TxnView extends Component {
       <div>
         <PocPath path={txn.path} />
         <Descriptions bordered>
-          <Descriptions.Item label="Hotspot" span={3}>
-            <a href={'/hotspots/' + txn.challenger}>{txn.challenger}</a>
-          </Descriptions.Item>
-          <Descriptions.Item label="Owner" span={3}>
-            <a href={'/accounts/' + txn.challengerOwner}>
-              {txn.challengerOwner}
+          <Descriptions.Item label="Challenger" span={3}>
+            <a href={'/hotspots/' + txn.challenger}>
+              {animalHash(txn.challenger)}
             </a>
           </Descriptions.Item>
           <Descriptions.Item label="Block Height" span={3}>

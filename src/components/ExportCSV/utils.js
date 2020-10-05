@@ -13,8 +13,10 @@ export const parseTxn = async (
       return txn.rewards.map(({ type, gateway, amount }) => ({
         Date: timestamp,
         'Received Quantity': amount.toString(8).slice(0, -4),
+        'Recxeived From': 'Helium Network',
         'Received Currency': 'HNT',
         'Sent Quantity': '',
+        'Sent To': '',
         'Sent Currency': '',
         'Fee Amount': '',
         'Fee Currency': '',
@@ -29,8 +31,10 @@ export const parseTxn = async (
         return {
           Date: timestamp,
           'Received Quantity': '',
+          'Received From': '',
           'Received Currency': '',
           'Sent Quantity': txn.amount.toString(8).slice(0, -4),
+          'Sent To': txn.payee,
           'Sent Currency': 'HNT',
           'Fee Amount': await getFee(txn, opts.convertFee),
           'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
@@ -43,8 +47,10 @@ export const parseTxn = async (
         return {
           Date: timestamp,
           'Received Quantity': txn.amount.toString(8).slice(0, -4),
+          'Received From': txn.payer,
           'Received Currency': 'HNT',
           'Sent Quantity': '',
+          'Sent To': '',
           'Sent Currency': '',
           'Fee Amount': 0,
           'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
@@ -60,8 +66,10 @@ export const parseTxn = async (
         return {
           Date: timestamp,
           'Received Quantity': '',
+          'Received From': '',
           'Received Currency': '',
           'Sent Quantity': txn.totalAmount.toString(8).slice(0, -4),
+          'Sent To': txn.payments[0].payee,
           'Sent Currency': 'HNT',
           'Fee Amount': await getFee(txn, opts.convertFee),
           'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
@@ -77,8 +85,10 @@ export const parseTxn = async (
             .find((p) => p.payee === ownerAddress)
             .amount.toString(8)
             .slice(0, -4),
+          'Received From': txn.payer,
           'Received Currency': 'HNT',
           'Sent Quantity': '',
+          'Sent To': '',
           'Sent Currency': '',
           'Fee Amount': 0,
           'Fee Currency': opts.convertFee ? 'HNT' : 'DC',

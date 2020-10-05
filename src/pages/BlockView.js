@@ -26,6 +26,7 @@ const initialState = {
   txns: [],
   loading: true,
   hasMore: true,
+  height: 0,
 }
 
 class BlockView extends Component {
@@ -50,7 +51,9 @@ class BlockView extends Component {
       this.client.block(hash).transactions.list(),
     ])
     this.txnList = txnList
-    this.setState({ block, loading: false })
+    const blocks = await this.client.blocks.list()
+    const [{ height }] = await blocks.take(1)
+    this.setState({ block, height, loading: false })
     this.loadMoreTxns()
   }
 
@@ -62,7 +65,7 @@ class BlockView extends Component {
   }
 
   render() {
-    const { block, loading, txns, hasMore } = this.state
+    const { block, loading, txns, hasMore, height } = this.state
 
     const filterTxns = () => {
       const res = []
@@ -174,9 +177,17 @@ class BlockView extends Component {
                   {block.transactionCount} transactions
                 </h3>
               )}
-              <a href={`/blocks/${block.height + 1}`} className="button">
-                Next Block <ForwardOutlined style={{ marginRight: '-6px' }} />
-              </a>
+              {block.height < height ? (
+                <a href={`/blocks/${block.height + 1}`} className="button">
+                  Next Block <ForwardOutlined style={{ marginRight: '-6px' }} />
+                </a>
+              ) : (
+                <span
+                  style={{
+                    width: '139.5px', // the width the "Next block" button takes up
+                  }}
+                />
+              )}
             </div>
           </div>
         </Content>

@@ -13,7 +13,7 @@ export const parseTxn = async (
       return txn.rewards.map(({ type, gateway, amount }) => ({
         Date: timestamp,
         'Received Quantity': amount.toString(8).slice(0, -4),
-        'Recxeived From': 'Helium Network',
+        'Received From': 'Helium Network',
         'Received Currency': 'HNT',
         'Sent Quantity': '',
         'Sent To': '',

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Typography, Checkbox, Tooltip } from 'antd'
+import { Row, Typography, Checkbox, Tooltip, Card, Table } from 'antd'
 import Client from '@helium/http'
 import round from 'lodash/round'
 import get from 'lodash/get'
@@ -104,6 +104,47 @@ class HotspotView extends Component {
 
   render() {
     const { hotspot, witnesses, showWitnesses } = this.state
+
+    console.log(witnesses)
+
+    const witnessColumns = [
+      {
+        title: 'Hotspot',
+        dataIndex: 'name',
+        key: 'name',
+        render: (data, row) => (
+          <a
+            style={{ fontFamily: 'soleil, sans-serif' }}
+            href={'/hotspots/' + row.address}
+          >
+            {data}
+          </a>
+        ),
+      },
+      {
+        title: 'Location',
+        dataIndex: 'geocode',
+        key: 'location',
+        render: (data) => (
+          <span>
+            {data.long_city}, {data.short_state}
+          </span>
+        ),
+      },
+      {
+        title: 'RSSI',
+        dataIndex: 'witness_info',
+        key: 'rssi',
+        render: (data) => (
+          <span>
+            {Object.keys(data.histogram).reduce((a, b) =>
+              data.histogram[a] > data.histogram[b] ? a : b,
+            )}{' '}
+            dBm
+          </span>
+        ),
+      },
+    ]
 
     return (
       <AppLayout>
@@ -256,6 +297,26 @@ class HotspotView extends Component {
               </p>
             </Content>
           </div>
+        </Content>
+
+        <Content
+          style={{
+            margin: '0 auto',
+            maxWidth: 850,
+            paddingBottom: 20,
+            marginTop: 0,
+          }}
+        >
+          <Card title={'Witnesses'}>
+            <Table
+              dataSource={witnesses}
+              columns={witnessColumns}
+              size="small"
+              rowKey="name"
+              pagination={{ pageSize: 10, hideOnSinglePage: true }}
+              scroll={{ x: true }}
+            />
+          </Card>
         </Content>
 
         <Content

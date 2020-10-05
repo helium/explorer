@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Typography, Card, Descriptions } from 'antd'
+import { Typography, Card, Descriptions, List } from 'antd'
+
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
 import TxnTag from '../components/TxnTag'
@@ -145,13 +146,33 @@ class TxnView extends Component {
           </Descriptions.Item>
           <Descriptions.Item label="PoC Path" span={3}>
             <ol>
-              {txn.path.map((p) => {
+              {txn.path.map((p, idx) => {
                 return (
-                  <li>
-                    <a href={'/hotspots/' + p.challengee}>
-                      {animalHash(p.challengee)}
-                    </a>
-                  </li>
+                  <div>
+                    <p style={{ marginBottom: '0px', paddingTop: '10px' }}>
+                      {idx + 1} -
+                      <a href={'/hotspots/' + p.challengee}>
+                        {animalHash(p.challengee)}
+                      </a>
+                    </p>
+                    {p.witnesses.length > 0 &&
+                      p.witnesses.map((w) => {
+                        return (
+                          <div style={{ marginLeft: '25px' }}>
+                            <span>
+                              <small>
+                                <a href={'/hotspots/' + txn.challenger}>
+                                  {animalHash(w.gateway)}
+                                </a>
+                                - RSSI {w.signal}dBm, SNR {w.snr.toFixed(2)}dB,{' '}
+                                {String.fromCharCode.apply(null, w.datarate)} (
+                                {w.is_valid ? 'valid' : 'invalid'})
+                              </small>
+                            </span>
+                          </div>
+                        )
+                      })}
+                  </div>
                 )
               })}
             </ol>

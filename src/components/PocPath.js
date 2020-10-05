@@ -34,7 +34,7 @@ const styles = {
     boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
     cursor: 'pointer',
   },
-  witnessMarker: {
+  witnessMarkerValid: {
     width: 14,
     height: 14,
     borderRadius: '50%',
@@ -45,7 +45,20 @@ const styles = {
     border: '3px solid #B7950B',
     boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
     cursor: 'pointer',
-    opacity: 0.3,
+    opacity: 1,
+  },
+  witnessMarkerInvalid: {
+    width: 14,
+    height: 14,
+    borderRadius: '50%',
+    backgroundColor: 'grey',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: '3px solid #696969',
+    boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
+    cursor: 'pointer',
+    opacity: 1,
   },
   lineSuccess: {
     'line-color': '#09B851',
@@ -54,6 +67,16 @@ const styles = {
   lineFailure: {
     'line-color': '#CA0926',
     'line-width': 2,
+  },
+  witnessLineValid: {
+    'line-color': '#F1C40F',
+    'line-width': 2,
+    'line-opacity': 0.3,
+  },
+  witnessLineInvalid: {
+    'line-color': 'grey',
+    'line-width': 2,
+    'line-opacity': 0.3,
   },
 }
 
@@ -151,7 +174,11 @@ class PocPath extends Component {
                         <span>
                           <Marker
                             key={w.address}
-                            style={styles.witnessMarker}
+                            style={
+                              w.is_valid
+                                ? styles.witnessMarkerValid
+                                : styles.witnessMarkerInvalid
+                            }
                             anchor="center"
                             coordinates={[
                               h3ToGeo(w.location)[1],
@@ -165,11 +192,11 @@ class PocPath extends Component {
                               'line-cap': 'round',
                               'line-join': 'round',
                             }}
-                            paint={{
-                              'line-color': '#F1C40F',
-                              'line-width': 2,
-                              'line-opacity': 0.3,
-                            }}
+                            paint={
+                              w.is_valid
+                                ? styles.witnessLineValid
+                                : styles.witnessLineInvalid
+                            }
                           >
                             <Feature
                               coordinates={[

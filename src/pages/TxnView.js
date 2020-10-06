@@ -161,7 +161,7 @@ class TxnView extends Component {
                           <div style={{ marginLeft: '25px' }}>
                             <span>
                               <small>
-                                <a href={'/hotspots/' + txn.challenger}>
+                                <a href={'/hotspots/' + w.gateway}>
                                   {animalHash(w.gateway)}
                                 </a>
                                 - RSSI {w.signal}dBm, SNR {w.snr.toFixed(2)}dB,{' '}

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Checkbox } from 'antd'
 import { h3ToGeo } from 'h3-js'
-import animalHash from 'angry-purple-tiger'
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 
 const Mapbox = ReactMapboxGl({

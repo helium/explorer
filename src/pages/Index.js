@@ -2,12 +2,10 @@ import React, { Component } from 'react'
 import { Row, Col } from 'antd'
 import BlocksList from '../components/BlocksList'
 import AppLayout, { Content } from '../components/AppLayout'
-import { Typography, Tag, Table, Card } from 'antd'
-import BarChart from '../components/BarChart'
+import { Typography } from 'antd'
 import Fade from 'react-reveal/Fade'
-import Client from '@helium/http'
 
-const { Title, Text } = Typography
+const { Title } = Typography
 
 class Index extends Component {
   state = {
@@ -40,7 +38,7 @@ class Index extends Component {
     await fetch('https://api.coingecko.com/api/v3/coins/helium')
       .then((res) => res.json())
       .then((marketData) => {
-        marketData.tickers.map((t) => {
+        marketData.tickers.forEach((t) => {
           newVolume += t.converted_volume.usd
         })
         this.setState({
@@ -81,7 +79,6 @@ class Index extends Component {
       marketCap,
       blockTime,
       electionTime,
-      packetsTransferred,
       dataCredits,
       totalHotspots,
     } = this.state

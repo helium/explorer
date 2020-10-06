@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
-import { Row, Col } from 'antd'
 import AppLayout, { Content } from '../components/AppLayout'
-import { Typography, Tag, Table, Card } from 'antd'
-import BarChart from '../components/BarChart'
-import Fade from 'react-reveal/Fade'
-import Client from '@helium/http'
+import { Typography, Table } from 'antd'
 
-const { Title, Text } = Typography
+const { Title } = Typography
 
 class RichList extends Component {
   state = {

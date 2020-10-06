@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Typography, Card, Descriptions, List } from 'antd'
+import { Typography, Card, Descriptions } from 'antd'
 
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
@@ -15,46 +15,10 @@ import {
   BackwardOutlined,
   ForwardOutlined,
   ClockCircleOutlined,
-  CheckCircleOutlined,
 } from '@ant-design/icons'
 import Block from '../images/block.svg'
 
 const { Title, Text } = Typography
-
-const styles = {
-  selectedMarker: {
-    width: 14,
-    height: 14,
-    borderRadius: '50%',
-    backgroundColor: '#1B8DFF',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '4px solid #fff',
-  },
-  transmittingMarker: {
-    width: 14,
-    height: 14,
-    borderRadius: '50%',
-    backgroundColor: 'black',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '4px solid #fff',
-  },
-  gatewayMarker: {
-    width: 14,
-    height: 14,
-    borderRadius: '50%',
-    backgroundColor: '#A984FF',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '3px solid #8B62EA',
-    boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
-    cursor: 'pointer',
-  },
-}
 
 class TxnView extends Component {
   state = {
@@ -84,7 +48,7 @@ class TxnView extends Component {
     if (txn.type === 'rewards_v1') {
       const res = []
       if (txn.rewards.length > 0) {
-        txn.rewards.map((t) => {
+        txn.rewards.forEach((t) => {
           let f = res.find((x) => x.name === t.type)
           if (f) {
             f.value++
@@ -122,7 +86,7 @@ class TxnView extends Component {
             <Descriptions bordered>
               {Object.entries(txn).map(([key, value]) => {
                 return (
-                  <Descriptions.Item label={key} span={3}>
+                  <Descriptions.Item label={key} key={key} span={3}>
                     {typeof value === 'object' ? JSON.stringify(value) : value}
                   </Descriptions.Item>
                 )
@@ -199,7 +163,7 @@ class TxnView extends Component {
             </Descriptions.Item>
             {Object.entries(txn).map(([key, value]) => {
               return (
-                <Descriptions.Item label={key} span={3}>
+                <Descriptions.Item label={key} key={key} span={3}>
                   {value}
                 </Descriptions.Item>
               )
@@ -301,6 +265,7 @@ class TxnView extends Component {
                       top: '-1px',
                     }}
                     src={Block}
+                    alt="img"
                   />
                   <a href={'/blocks/' + txn.height}>{txn.height}</a>
                 </p>

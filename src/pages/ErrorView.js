@@ -1,9 +1,4 @@
 import React, { Component } from 'react'
-import { Layout, Row, Col, Typography, Icon, Tag, Table, Card } from 'antd'
-import SearchBar from '../components/SearchBar'
-import Timestamp from 'react-timestamp'
-const { Title, Text } = Typography
-const { Header, Content, Footer } = Layout
 
 class ErrorView extends Component {
   constructor(props) {

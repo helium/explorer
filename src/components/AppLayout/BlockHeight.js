@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import { Typography, Tooltip, Spin } from 'antd'
-import { CodeSandboxOutlined } from '@ant-design/icons'
-import Client from '@helium/http'
+import { Tooltip, Spin } from 'antd'
 import Block from '../../images/block.svg'
 import withBlockHeight from '../withBlockHeight'
 

@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Typography, Tag, Table, Card, List, Descriptions } from 'antd'
-import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
+import { Table, Descriptions } from 'antd'
+import ReactMapboxGl, { Marker } from 'react-mapbox-gl'
 import Client from '@helium/http'
 import animalHash from 'angry-purple-tiger'
-import TxnTag from '../components/TxnTag'
 
 const Mapbox = ReactMapboxGl({
   accessToken:
@@ -104,7 +103,6 @@ class TxnSCClose extends Component {
   }
 
   async loadData() {
-    const { hotspots } = this.state
     const list = await this.client.hotspots.list()
     const allSpots = await list.take(10000)
     this.setState({ hotspots: allSpots })
@@ -113,7 +111,7 @@ class TxnSCClose extends Component {
   tallyValues() {
     const { txn } = this.props
     let { totalPackets, totalHotspots, totalDcs, totalBytes, data } = this.state
-    txn.stateChannel.summaries.map((s) => {
+    txn.stateChannel.summaries.forEach((s) => {
       totalPackets += s.num_packets
       totalDcs += s.num_dcs
       totalBytes += s.num_dcs * 24
@@ -163,7 +161,7 @@ class TxnSCClose extends Component {
           zoom={[3]}
           movingMethod="jumpTo"
         >
-          {txn.stateChannel.summaries.map((s) => {
+          {txn.stateChannel.summaries.forEach((s) => {
             const hotspot = hotspots.find((e) => e.address === s.client)
             if (hotspot && hotspot.lng && hotspot.lat) {
               return (

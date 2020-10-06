@@ -277,6 +277,7 @@ class HotspotView extends Component {
                         position: 'relative',
                         top: '-2px',
                       }}
+                      alt="Hotspot Network Address"
                     />
                     <Text
                       copyable

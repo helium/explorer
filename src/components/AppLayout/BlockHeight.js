@@ -18,7 +18,6 @@ class BlockHeight extends Component {
             style={{
               marginRight: 5,
               position: 'relative',
-              top: '-1px',
               height: 17,
               width: 15,
             }}

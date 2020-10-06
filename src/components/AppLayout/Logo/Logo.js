@@ -1,9 +1,11 @@
 import React from 'react'
 import logo from './helium-logo-white.svg'
+import logoMobile from './helium-logo-symbol-white.svg'
 
 const Logo = () => (
-  <div style={{ float: 'left', marginRight: 20 }}>
-    <img src={logo} style={{ height: 30 }} />
+  <div className="logo-container" style={{ float: 'left' }}>
+    <img src={logo} className="logo-full" style={{ height: 30 }} />
+    <img src={logoMobile} className="logo-small" style={{ height: 30 }} />
   </div>
 )
 

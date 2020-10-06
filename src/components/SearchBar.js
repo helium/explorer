@@ -84,7 +84,6 @@ class SearchBar extends Component {
         enterButton
         onSearch={this.doSearch}
         size="large"
-        className="searcher"
         placeholder="Search for a block height, hash, transaction, or address"
         style={{
           width: '100%',

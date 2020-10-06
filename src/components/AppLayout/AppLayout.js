@@ -10,6 +10,7 @@ const layoutStyle = {
   fontFamily: 'soleil, sans-serif',
   fontStyle: 'normal',
   minHeight: '100vh',
+  marginTop: '64px',
 }
 
 const AppLayout = ({ children }) => (

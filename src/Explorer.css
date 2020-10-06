@@ -215,11 +215,12 @@ hr {
 }
 
 .block-height {
+  min-width: 127px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 17px;
-  margin-left: 20px;
+  /* margin-left: 20px; */
 }
 
 @media screen and (max-width: 640px) {
@@ -233,6 +234,7 @@ hr {
     display: block;
   }
   .block-height {
+    min-width: auto;
     font-size: 14px;
     height: 10px;
     margin-left: 12px;

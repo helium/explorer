@@ -13,9 +13,10 @@ const NavHeader = () => (
     className="header"
     style={{
       display: 'flex',
-      // position: 'fixed',
-      // zIndex: 5,
-      // width: '100%',
+      position: 'fixed',
+      zIndex: 2,
+      width: '100%',
+      marginTop: '-64px',
       justifyContent: 'space-between',
     }}
   >

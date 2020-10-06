@@ -11,15 +11,25 @@ class BlockHeight extends Component {
       <Tooltip placement="bottomRight" title="Current Block Height">
         <a
           className="block-height"
-          href={`/blocks/${height}`}
-          style={{ textAlign: 'center' }}
+          href={`/blocks/${this.props.height}`}
+          style={{ textAlign: 'center', lineHeight: 1.5715 }}
         >
           <img
-            style={{ marginRight: 5, position: 'relative', top: '-1px' }}
+            style={{
+              marginRight: 5,
+              position: 'relative',
+              top: '-1px',
+              height: 17,
+              width: 15,
+            }}
             src={Block}
             alt=""
           />
-          {!this.props.heightLoading && this.props.height.toLocaleString()}
+          {!this.props.heightLoading && (
+            <span style={{ lineHeight: 1.5715 }}>
+              {this.props.height.toLocaleString()}
+            </span>
+          )}
           {this.props.heightLoading && <Spin size="small" />}
         </a>
       </Tooltip>

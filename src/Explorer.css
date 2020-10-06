@@ -234,7 +234,9 @@ hr {
   }
   .block-height {
     font-size: 14px;
+    height: 10px;
     margin-left: 12px;
+    flex-direction: column;
   }
   .header {
     padding: 12px;

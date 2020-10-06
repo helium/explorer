@@ -222,6 +222,26 @@ hr {
   font-size: 17px;
 }
 
+.content-container {
+  padding: 60px 20px 30px 20px;
+}
+
+.flex-responsive {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  /* padding: 0 calc(20px * 2); */
+
+  /* max-width: calc(850px + 40px); */
+}
+
+@media screen and (max-width: 890px) {
+  /* .flex-responsive {
+    padding: 0 20px;
+  } */
+}
 @media screen and (max-width: 640px) {
   .logo-container {
     margin-right: 12px;
@@ -241,5 +261,11 @@ hr {
   }
   .header {
     padding: 12px;
+  }
+  .content-container {
+    padding: 30px 12px 30px 12px;
+  }
+  .flex-responsive {
+    flex-direction: column;
   }
 }

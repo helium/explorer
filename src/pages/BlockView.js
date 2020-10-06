@@ -114,11 +114,14 @@ class BlockView extends Component {
           style={{
             marginTop: 0,
             background: '#27284B',
-            padding: '60px 0 30px',
+            // padding: '60px 0 30px',
           }}
         >
-          <div style={{ margin: '0 auto', maxWidth: 850 }}>
-            <div className="flexwrapper">
+          <div
+            style={{ margin: '0 auto', maxWidth: 850 + 40 }}
+            className="content-container"
+          >
+            <div className="flex-responsive">
               <div>
                 <h3>Block</h3>
                 <Title

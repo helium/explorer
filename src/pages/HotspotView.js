@@ -90,8 +90,11 @@ class HotspotView extends Component {
     fetch('https://api.helium.io/v1/hotspots/' + address + '/witnesses')
       .then((res) => res.json())
       .then((witnessData) => {
+        const witnessList = witnessData.data.filter(
+          (w) => !(w.address === address),
+        )
         this.setState({
-          witnesses: witnessData.data,
+          witnesses: witnessList,
         })
       })
   }
@@ -104,8 +107,6 @@ class HotspotView extends Component {
 
   render() {
     const { hotspot, witnesses, showWitnesses } = this.state
-
-    console.log(witnesses)
 
     const witnessColumns = [
       {

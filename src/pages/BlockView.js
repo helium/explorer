@@ -9,6 +9,7 @@ import LoadMoreButton from '../components/LoadMoreButton'
 import classNames from 'classnames'
 import Fade from 'react-reveal/Fade'
 import PieChart from '../components/PieChart'
+import withBlockHeight from '../components/withBlockHeight'
 
 import {
   BackwardOutlined,
@@ -62,7 +63,7 @@ class BlockView extends Component {
   }
 
   render() {
-    const { block, loading, txns, hasMore } = this.state
+    const { block, loading, txns, hasMore, height } = this.state
 
     const filterTxns = () => {
       const res = []
@@ -174,9 +175,17 @@ class BlockView extends Component {
                   {block.transactionCount} transactions
                 </h3>
               )}
-              <a href={`/blocks/${block.height + 1}`} className="button">
-                Next Block <ForwardOutlined style={{ marginRight: '-6px' }} />
-              </a>
+              {block.height < this.props.height ? (
+                <a href={`/blocks/${block.height + 1}`} className="button">
+                  Next Block <ForwardOutlined style={{ marginRight: '-6px' }} />
+                </a>
+              ) : (
+                <span
+                  style={{
+                    width: '139.5px', // the width the "Next block" button takes up
+                  }}
+                />
+              )}
             </div>
           </div>
         </Content>
@@ -225,4 +234,6 @@ class BlockView extends Component {
   }
 }
 
-export default BlockView
+const WrappedBlockView = withBlockHeight(BlockView)
+
+export default WrappedBlockView

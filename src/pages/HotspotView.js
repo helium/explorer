@@ -90,8 +90,11 @@ class HotspotView extends Component {
     fetch('https://api.helium.io/v1/hotspots/' + address + '/witnesses')
       .then((res) => res.json())
       .then((witnessData) => {
+        const witnessList = witnessData.data.filter(
+          (w) => !(w.address === address),
+        )
         this.setState({
-          witnesses: witnessData.data,
+          witnesses: witnessList,
         })
       })
   }
@@ -104,8 +107,6 @@ class HotspotView extends Component {
 
   render() {
     const { hotspot, witnesses, showWitnesses } = this.state
-
-    console.log(witnesses)
 
     const witnessColumns = [
       {
@@ -268,19 +269,19 @@ class HotspotView extends Component {
                     {hotspot.name}
                   </Title>
                   <Tooltip placement="bottom" title="Hotspot Network Address">
+                    <img
+                      src={HotspotImg}
+                      style={{
+                        height: 15,
+                        marginRight: 5,
+                        position: 'relative',
+                        top: '-2px',
+                      }}
+                    />
                     <Text
                       copyable
                       style={{ fontFamily: 'monospace', color: '#8283B2' }}
                     >
-                      <img
-                        src={HotspotImg}
-                        style={{
-                          height: 15,
-                          marginRight: 5,
-                          position: 'relative',
-                          top: '-2px',
-                        }}
-                      />
                       {hotspot.address}
                     </Text>
                   </Tooltip>

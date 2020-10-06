@@ -269,19 +269,19 @@ class HotspotView extends Component {
                     {hotspot.name}
                   </Title>
                   <Tooltip placement="bottom" title="Hotspot Network Address">
+                    <img
+                      src={HotspotImg}
+                      style={{
+                        height: 15,
+                        marginRight: 5,
+                        position: 'relative',
+                        top: '-2px',
+                      }}
+                    />
                     <Text
                       copyable
                       style={{ fontFamily: 'monospace', color: '#8283B2' }}
                     >
-                      <img
-                        src={HotspotImg}
-                        style={{
-                          height: 15,
-                          marginRight: 5,
-                          position: 'relative',
-                          top: '-2px',
-                        }}
-                      />
                       {hotspot.address}
                     </Text>
                   </Tooltip>

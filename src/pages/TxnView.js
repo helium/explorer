@@ -118,6 +118,16 @@ class TxnView extends Component {
                       <a href={'/hotspots/' + p.challengee}>
                         {animalHash(p.challengee)}
                       </a>
+                      {p.receipt && p.receipt.origin == 'radio' ? (
+                        <small>
+                          {' '}
+                          (received at RSSI {p.receipt.signal}dBm, SNR{' '}
+                          {p.receipt.snr.toFixed(2)}dB,{' '}
+                          {String.fromCharCode.apply(null, p.receipt.datarate)})
+                        </small>
+                      ) : (
+                        <span></span>
+                      )}
                     </p>
                     {p.witnesses.length > 0 &&
                       p.witnesses.map((w) => {
@@ -128,7 +138,8 @@ class TxnView extends Component {
                                 <a href={'/hotspots/' + w.gateway}>
                                   {animalHash(w.gateway)}
                                 </a>
-                                - RSSI {w.signal}dBm, SNR {w.snr.toFixed(2)}dB,{' '}
+                                - witnessed at RSSI {w.signal}dBm, SNR{' '}
+                                {w.snr.toFixed(2)}dB,{' '}
                                 {String.fromCharCode.apply(null, w.datarate)} (
                                 {w.is_valid ? 'valid' : 'invalid'})
                               </small>

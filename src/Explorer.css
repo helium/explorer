@@ -205,3 +205,41 @@ hr {
   border-top: 1px solid #494b7b;
   margin: 40px 0;
 }
+
+.logo-small {
+  display: none;
+}
+
+.logo-container {
+  margin-right: 20px;
+}
+
+.block-height {
+  min-width: 127px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+}
+
+@media screen and (max-width: 640px) {
+  .logo-container {
+    margin-right: 12px;
+  }
+  .logo-full {
+    display: none;
+  }
+  .logo-small {
+    display: block;
+  }
+  .block-height {
+    min-width: auto;
+    font-size: 14px;
+    height: 10px;
+    margin-left: 12px;
+    flex-direction: column;
+  }
+  .header {
+    padding: 12px;
+  }
+}

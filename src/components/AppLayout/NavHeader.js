@@ -9,7 +9,16 @@ import Fade from 'react-reveal/Fade'
 const { Header } = Layout
 
 const NavHeader = () => (
-  <Header style={{ display: 'flex', justifyContent: 'space-between' }}>
+  <Header
+    className="header"
+    style={{
+      display: 'flex',
+      // position: 'fixed',
+      // zIndex: 5,
+      // width: '100%',
+      justifyContent: 'space-between',
+    }}
+  >
     <a href="/">
       <Logo />
     </a>

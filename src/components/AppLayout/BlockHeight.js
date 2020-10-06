@@ -31,8 +31,9 @@ class BlockHeight extends Component {
     return (
       <Tooltip placement="bottomRight" title="Current Block Height">
         <a
+          className="block-height"
           href={`/blocks/${height}`}
-          style={{ minWidth: 127, textAlign: 'center', fontSize: 17 }}
+          style={{ textAlign: 'center' }}
         >
           <img
             style={{ marginRight: 5, position: 'relative', top: '-1px' }}

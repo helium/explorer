@@ -55,7 +55,7 @@ class TxnReward extends Component {
     const { txn } = this.props
     const { groupedRewards } = this.state
 
-    txn.rewards.map((r) => {
+    txn.rewards.forEach((r) => {
       const val = { account: r.account }
       val['rewards'] = txn.rewards.filter((obj) => {
         return obj.account === r.account
@@ -65,7 +65,7 @@ class TxnReward extends Component {
       ) {
         val['count'] = val.rewards.length
         let amount = 0
-        val.rewards.map((r) => {
+        val.rewards.forEach((r) => {
           amount += r.amount.integerBalance / 100000000
         })
         val['amount'] = amount
@@ -79,7 +79,6 @@ class TxnReward extends Component {
   }
 
   render() {
-    const { txn } = this.props
     const { groupedRewards, expandedTable } = this.state
 
     return (

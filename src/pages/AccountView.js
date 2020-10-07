@@ -1,21 +1,15 @@
 import React, { Component } from 'react'
-import { Card, Typography, Descriptions, Tooltip } from 'antd'
+import { Typography, Descriptions, Tooltip } from 'antd'
 import Client from '@helium/http'
 import AppLayout, { Content } from '../components/AppLayout'
 import ActivityList from '../components/ActivityList'
-import AddressModal from '../components/AddressModal'
 import HotspotsList from '../components/HotspotsList'
 import QRCode from 'react-qr-code'
 import Fade from 'react-reveal/Fade'
 
-import {
-  BackwardOutlined,
-  ForwardOutlined,
-  ClockCircleOutlined,
-  CheckCircleOutlined,
-} from '@ant-design/icons'
+import { ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons'
 
-const { Title, Text } = Typography
+const { Title } = Typography
 
 const initialState = {
   account: {},
@@ -47,7 +41,6 @@ class AccountView extends Component {
   render() {
     const { account, loading } = this.state
     const { address } = this.props.match.params
-    console.log(account)
 
     return (
       <AppLayout>

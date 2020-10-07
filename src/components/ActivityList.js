@@ -7,6 +7,7 @@ import TxnTag from './TxnTag'
 import LoadMoreButton from './LoadMoreButton'
 import { Content } from './AppLayout'
 import ExportCSV from './ExportCSV'
+
 const { Text } = Typography
 
 const initialState = {
@@ -73,7 +74,7 @@ class ActivityList extends Component {
 
   render() {
     const { txns, loading, loadingInitial, filtersOpen } = this.state
-    const { address, type } = this.props
+    const { address, hotspots, type } = this.props
 
     return (
       <Content style={{ marginTop: 0 }}>
@@ -125,17 +126,16 @@ class ActivityList extends Component {
             loading={loading}
             scroll={{ x: true }}
             expandable={{
-              expandedRowRender: (record) =>
-                record.rewards.map((r) => (
-                  <p style={{ marginLeft: '95px' }}>
-                    <TxnTag type={r.type}></TxnTag>
-                    <span
-                      style={{ marginLeft: '20px', fontFamily: 'monospace' }}
-                    >
-                      {r.amount.toString(2)}
-                    </span>
-                  </p>
-                )),
+              expandedRowRender: (record) => (
+                <span className="ant-table-override">
+                  <Table
+                    dataSource={record.rewards}
+                    columns={rewardColumns(hotspots, type)}
+                    size="small"
+                    rowKey={(r) => `${r.type}-${r.gateway}`}
+                  />
+                </span>
+              ),
               rowExpandable: (record) => record.type === 'rewards_v1',
             }}
           />
@@ -144,6 +144,44 @@ class ActivityList extends Component {
       </Content>
     )
   }
+}
+
+const rewardColumns = (hotspots, type) => {
+  let columns = [
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      key: 'type',
+      render: (data) => <TxnTag type={data} />,
+    },
+    {
+      title: 'Amount',
+      dataIndex: 'amount',
+      key: 'amount',
+      render: (data) => (
+        <span className="ant-table-cell-override">
+          <p>{data.toString(2)}</p>
+        </span>
+      ),
+    },
+  ]
+
+  if (type === 'account') {
+    columns.push({
+      title: 'Hotspot',
+      dataIndex: 'gateway',
+      key: 'gateway',
+      render: (data) => (
+        <span className="ant-table-cell-override">
+          <p>
+            {hotspots.find((hotspot) => hotspot.address === data)?.name ?? ''}
+          </p>
+        </span>
+      ),
+    })
+  }
+
+  return columns
 }
 
 const columns = (ownerAddress) => {

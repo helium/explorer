@@ -13,6 +13,7 @@ const { Title } = Typography
 
 const initialState = {
   account: {},
+  hotspots: [],
   loading: true,
 }
 
@@ -35,11 +36,31 @@ class AccountView extends Component {
     await this.setState(initialState)
     const account = await this.client.accounts.get(address)
 
-    this.setState({ account, loading: false })
+    const list = await this.client.account(address).hotspots.list()
+    const hotspots = []
+    for await (const hotspot of list) {
+      hotspot.status.gpsText = this.gpsLocation(hotspot.status.gps)
+      hotspots.push(hotspot)
+    }
+
+    this.setState({ account, hotspots, loading: false })
+  }
+
+  gpsLocation = (text) => {
+    switch (text) {
+      case 'bad_assert':
+        return 'Bad GPS Location'
+      case 'good_fix':
+        return 'Good GPS Location'
+      case 'no_fix':
+        return 'No GPS Fix'
+      default:
+        return false
+    }
   }
 
   render() {
-    const { account, loading } = this.state
+    const { account, hotspots, loading } = this.state
     const { address } = this.props.match.params
 
     return (
@@ -146,8 +167,8 @@ class AccountView extends Component {
             marginTop: 0,
           }}
         >
-          <HotspotsList address={address} />
-          <ActivityList type="account" address={address} title={'Hello'} />
+          <HotspotsList hotspots={hotspots} loading={loading} />
+          <ActivityList type="account" address={address} title={'Hello'} hotspots={hotspots} />
         </Content>
       </AppLayout>
     )

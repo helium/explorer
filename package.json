@@ -27,7 +27,8 @@
     "react-social-icons": "^4.1.0",
     "react-timestamp": "^5.1.0",
     "react-typekit": "^1.1.4",
-    "recharts": "^1.8.5"
+    "recharts": "^1.8.5",
+    "styled-components": "^5.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

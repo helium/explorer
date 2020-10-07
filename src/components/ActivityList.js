@@ -3,11 +3,19 @@ import Client from '@helium/http'
 import { Table, Card, Button, Tooltip, Checkbox, Typography } from 'antd'
 import { FilterOutlined } from '@ant-design/icons'
 import Timestamp from 'react-timestamp'
+import styled from 'styled-components'
 import TxnTag from './TxnTag'
 import LoadMoreButton from './LoadMoreButton'
 import { Content } from './AppLayout'
 import ExportCSV from './ExportCSV'
+
 const { Text } = Typography
+
+const ExpandableTable = styled(Table)`
+  & > .ant-spin-nested-loading > .ant-spin-container > .ant-table.ant-table-small {
+    margin: 0;
+  }
+`;
 
 const initialState = {
   txns: [],
@@ -73,7 +81,7 @@ class ActivityList extends Component {
 
   render() {
     const { txns, loading, loadingInitial, filtersOpen } = this.state
-    const { address, type } = this.props
+    const { address, hotspots, type } = this.props
 
     return (
       <Content style={{ marginTop: 0 }}>
@@ -125,17 +133,16 @@ class ActivityList extends Component {
             loading={loading}
             scroll={{ x: true }}
             expandable={{
-              expandedRowRender: (record) =>
-                record.rewards.map((r) => (
-                  <p style={{ marginLeft: '95px' }}>
-                    <TxnTag type={r.type}></TxnTag>
-                    <span
-                      style={{ marginLeft: '20px', fontFamily: 'monospace' }}
-                    >
-                      {r.amount.toString(2)}
-                    </span>
-                  </p>
-                )),
+              expandedRowRender: (record) => (
+                <ExpandableTable
+                  className="activity-list-expandable"
+                  dataSource={record.rewards}
+                  columns={rewardColumns(hotspots, type)}
+                  size="small"
+                  style={{ margin: 0, padding: 0 }}
+                  rowKey={(r) => (`${r.type}-${r.gateway}`)}
+                />
+              ),
               rowExpandable: (record) => record.type === 'rewards_v1',
             }}
           />
@@ -144,6 +151,35 @@ class ActivityList extends Component {
       </Content>
     )
   }
+}
+
+const rewardColumns = (hotspots, type) => {
+  let columns = [{
+    title: 'Type',
+    dataIndex: 'type',
+    key: 'type',
+    render: (data) => <TxnTag type={data} />,
+  }, {
+    title: 'Amount',
+    dataIndex: 'amount',
+    key: 'amount',
+    render: (data) => <span style={{ marginLeft: '20px', fontFamily: 'monospace' }}>{data.toString(2)}</span>,
+  }];
+
+  if (type === 'account') {
+    columns.push({
+      title: 'Hotspot',
+      dataIndex: 'gateway',
+      key: 'gateway',
+      render: (data) => <span
+        style={{
+          marginLeft: '20px',
+          fontFamily: 'monospace',
+        }}>{hotspots.find(hotspot => hotspot.address === data)?.name ?? ''}</span>,
+    });
+  }
+
+  return columns;
 }
 
 const columns = (ownerAddress) => {

@@ -154,7 +154,7 @@ class HotspotView extends Component {
         >
           <div style={{ margin: '0 auto', maxWidth: 850 }}>
             <Mapbox
-              style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
+              style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
               container="map"
               center={[
                 hotspot.lng ? hotspot.lng : 0,
@@ -277,6 +277,7 @@ class HotspotView extends Component {
                         position: 'relative',
                         top: '-2px',
                       }}
+                      alt="Hotspot Network Address"
                     />
                     <Text
                       copyable

@@ -4,8 +4,18 @@ import logoMobile from './helium-logo-symbol-white.svg'
 
 const Logo = () => (
   <div className="logo-container" style={{ float: 'left' }}>
-    <img src={logo} className="logo-full" style={{ height: 30 }} />
-    <img src={logoMobile} className="logo-small" style={{ height: 30 }} />
+    <img
+      src={logo}
+      className="logo-full"
+      style={{ height: 30 }}
+      alt="Helium logo"
+    />
+    <img
+      src={logoMobile}
+      className="logo-small"
+      style={{ height: 30 }}
+      alt="Helium logo"
+    />
   </div>
 )
 

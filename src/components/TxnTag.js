@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Tag, Icon, Tooltip } from 'antd'
+import React from 'react'
+import { Tag, Tooltip } from 'antd'
 
 const TxnTag = ({ type }) => typeTag(type)
 

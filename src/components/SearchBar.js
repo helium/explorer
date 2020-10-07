@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import { Row, Input } from 'antd'
+import { Input } from 'antd'
 import Client from '@helium/http'
-import classNames from 'classnames'
 
 const { Search } = Input
 
@@ -17,7 +16,6 @@ class SearchBar extends Component {
   }
 
   async loadHotspots() {
-    const { hotspots } = this.state
     const list = await this.client.hotspots.list()
     const allSpots = await list.take(10000)
     this.setState({ hotspots: allSpots })

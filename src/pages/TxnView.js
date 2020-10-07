@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Typography, Card, Descriptions, List } from 'antd'
+import { Typography, Card, Descriptions } from 'antd'
 
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
@@ -11,50 +11,10 @@ import TxnReward from '../components/TxnReward'
 import TxnSCClose from '../components/TxnSCClose'
 import animalHash from 'angry-purple-tiger'
 
-import {
-  BackwardOutlined,
-  ForwardOutlined,
-  ClockCircleOutlined,
-  CheckCircleOutlined,
-} from '@ant-design/icons'
+import { ClockCircleOutlined } from '@ant-design/icons'
 import Block from '../images/block.svg'
 
 const { Title, Text } = Typography
-
-const styles = {
-  selectedMarker: {
-    width: 14,
-    height: 14,
-    borderRadius: '50%',
-    backgroundColor: '#1B8DFF',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '4px solid #fff',
-  },
-  transmittingMarker: {
-    width: 14,
-    height: 14,
-    borderRadius: '50%',
-    backgroundColor: 'black',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '4px solid #fff',
-  },
-  gatewayMarker: {
-    width: 14,
-    height: 14,
-    borderRadius: '50%',
-    backgroundColor: '#A984FF',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '3px solid #8B62EA',
-    boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
-    cursor: 'pointer',
-  },
-}
 
 class TxnView extends Component {
   state = {
@@ -84,7 +44,7 @@ class TxnView extends Component {
     if (txn.type === 'rewards_v1') {
       const res = []
       if (txn.rewards.length > 0) {
-        txn.rewards.map((t) => {
+        txn.rewards.forEach((t) => {
           let f = res.find((x) => x.name === t.type)
           if (f) {
             f.value++
@@ -100,7 +60,6 @@ class TxnView extends Component {
 
   render() {
     const { txn, loading } = this.state
-    console.log(txn)
 
     const txnView = (type) => {
       switch (type) {
@@ -122,7 +81,7 @@ class TxnView extends Component {
             <Descriptions bordered>
               {Object.entries(txn).map(([key, value]) => {
                 return (
-                  <Descriptions.Item label={key} span={3}>
+                  <Descriptions.Item label={key} key={key} span={3}>
                     {typeof value === 'object' ? JSON.stringify(value) : value}
                   </Descriptions.Item>
                 )
@@ -148,13 +107,13 @@ class TxnView extends Component {
             <ol>
               {txn.path.map((p, idx) => {
                 return (
-                  <div>
+                  <div key={`${p.receipt}-${idx}`}>
                     <p style={{ marginBottom: '0px', paddingTop: '10px' }}>
                       {idx + 1} -
                       <a href={'/hotspots/' + p.challengee}>
                         {animalHash(p.challengee)}
                       </a>
-                      {p.receipt && p.receipt.origin == 'radio' ? (
+                      {p.receipt && p.receipt.origin === 'radio' ? (
                         <small>
                           {' '}
                           (received at RSSI {p.receipt.signal}dBm, SNR{' '}
@@ -166,9 +125,12 @@ class TxnView extends Component {
                       )}
                     </p>
                     {p.witnesses.length > 0 &&
-                      p.witnesses.map((w) => {
+                      p.witnesses.map((w, i) => {
                         return (
-                          <div style={{ marginLeft: '25px' }}>
+                          <div
+                            key={`${idx}-${i}`}
+                            style={{ marginLeft: '25px' }}
+                          >
                             <span>
                               <small>
                                 <a href={'/hotspots/' + w.gateway}>
@@ -193,7 +155,6 @@ class TxnView extends Component {
     )
 
     const pocRequestv1 = () => {
-      console.log(txn)
       return (
         <div>
           <Descriptions bordered>
@@ -210,7 +171,7 @@ class TxnView extends Component {
             </Descriptions.Item>
             {Object.entries(txn).map(([key, value]) => {
               return (
-                <Descriptions.Item label={key} span={3}>
+                <Descriptions.Item label={key} key={key} span={3}>
                   {value}
                 </Descriptions.Item>
               )
@@ -257,7 +218,6 @@ class TxnView extends Component {
             {txn.totalAmount.toString()}
           </Descriptions.Item>
           {txn.payments.map((p, idx) => {
-            console.log(idx)
             return (
               <Descriptions.Item label={'Payee ' + Number(idx + 1)} span={3}>
                 <a href={`/accounts/${p.payee}`}>{p.payee}</a> (
@@ -312,6 +272,7 @@ class TxnView extends Component {
                       top: '-1px',
                     }}
                     src={Block}
+                    alt="img"
                   />
                   <a href={'/blocks/' + txn.height}>{txn.height}</a>
                 </p>
@@ -324,11 +285,22 @@ class TxnView extends Component {
               )}
             </div>
             <hr />
-            <div className="flexwrapper">
-              <a className="button">
+            <div
+              //className="flexwrapper"
+              // Temporary styling to center timestamp until next / prev transaction buttons work
+              // at which point the flexwrapper class can be turned back on instead
+              style={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              {/* TODO: efficiently determine next transaction and previous transaction */}
+              {/* <a className="button">
                 <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
                 Transaction
-              </a>
+              </a> */}
 
               <h3>
                 <ClockCircleOutlined
@@ -337,10 +309,10 @@ class TxnView extends Component {
                 <Timestamp date={txn.time} />
               </h3>
 
-              <a className="button">
+              {/* <a className="button">
                 Next Transaction{' '}
                 <ForwardOutlined style={{ marginRight: '-6px' }} />
-              </a>
+              </a> */}
             </div>
           </div>
         </Content>

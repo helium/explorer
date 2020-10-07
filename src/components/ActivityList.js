@@ -136,7 +136,7 @@ class ActivityList extends Component {
                     </span>
                   </p>
                 )),
-              rowExpandable: (record) => record.type == 'rewards_v1',
+              rowExpandable: (record) => record.type === 'rewards_v1',
             }}
           />
           <LoadMoreButton onClick={this.loadMore} />
@@ -155,7 +155,7 @@ const columns = (ownerAddress) => {
           (o) => o.client === ownerAddress,
         )
         if (!res) {
-          txn.stateChannel.summaries.map((s) => {
+          txn.stateChannel.summaries.forEach((s) => {
             totalDcs += s.num_dcs
           })
         }

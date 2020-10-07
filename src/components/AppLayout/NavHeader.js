@@ -1,10 +1,8 @@
 import React from 'react'
-import { Layout, Menu } from 'antd'
+import { Layout } from 'antd'
 import Logo from './Logo'
 import BlockHeight from './BlockHeight'
 import SearchBar from '../SearchBar'
-import classNames from 'classnames'
-import Fade from 'react-reveal/Fade'
 
 const { Header } = Layout
 
@@ -14,7 +12,7 @@ const NavHeader = () => (
     style={{
       display: 'flex',
       position: 'fixed',
-      zIndex: 2,
+      zIndex: 10,
       width: '100%',
       marginTop: '-64px',
       justifyContent: 'space-between',

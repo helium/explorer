@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
-import { Typography, Tag, Table, Card } from 'antd'
-import { CodeSandboxOutlined } from '@ant-design/icons'
+import { Typography, Table, Card } from 'antd'
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
 import TxnTag from '../components/TxnTag'
 import AppLayout, { Content } from '../components/AppLayout'
 import LoadMoreButton from '../components/LoadMoreButton'
-import classNames from 'classnames'
-import Fade from 'react-reveal/Fade'
 import PieChart from '../components/PieChart'
 import withBlockHeight from '../components/withBlockHeight'
 
@@ -63,12 +60,12 @@ class BlockView extends Component {
   }
 
   render() {
-    const { block, loading, txns, hasMore, height } = this.state
+    const { block, loading, txns, hasMore } = this.state
 
     const filterTxns = () => {
       const res = []
       if (txns.length > 0) {
-        txns.map((t) => {
+        txns.forEach((t) => {
           let f = res.find((x) => x.name === t.type)
           if (f) {
             f.value++
@@ -135,14 +132,14 @@ class BlockView extends Component {
                 >
                   {block.height}
                 </Title>
-                <p>
+                <div>
                   <Text
                     copyable
                     style={{ color: '#6A6B93', fontFamily: 'monospace' }}
                   >
                     {block.hash}
                   </Text>
-                </p>
+                </div>
               </div>
 
               <div>
@@ -217,7 +214,7 @@ class BlockView extends Component {
             {hasMore && <LoadMoreButton onClick={this.loadMoreTxns} />}
           </Card>
         </Content>
-        <style jsx>{`
+        <style jsx="true">{`
           hr {
             border: none;
             width: 100%;

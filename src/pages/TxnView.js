@@ -115,10 +115,25 @@ class TxnView extends Component {
                       </a>
                       {p.receipt && p.receipt.origin === 'radio' ? (
                         <small>
-                          {' '}
-                          (received at RSSI {p.receipt.signal}dBm, SNR{' '}
-                          {p.receipt.snr.toFixed(2)}dB,{' '}
-                          {String.fromCharCode.apply(null, p.receipt.datarate)})
+                          {` (received at RSSI ${
+                            p.receipt.signal
+                          }dBm, SNR ${p.receipt.snr.toFixed(2)}dB${
+                            p.receipt !== null
+                              ? Array.isArray(p.receipt.datarate)
+                                ? `${
+                                    p.receipt.datarate.length > 0
+                                      ? `, ${String.fromCharCode.apply(
+                                          null,
+                                          p.receipt.datarate,
+                                        )}`
+                                      : ``
+                                  }`
+                                : `${
+                                    p.receipt.datarate !== null &&
+                                    `, ${p.receipt.datarate} `
+                                  }`
+                              : ``
+                          })`}
                         </small>
                       ) : (
                         <span></span>
@@ -136,10 +151,24 @@ class TxnView extends Component {
                                 <a href={'/hotspots/' + w.gateway}>
                                   {animalHash(w.gateway)}
                                 </a>
-                                - witnessed at RSSI {w.signal}dBm, SNR{' '}
-                                {w.snr.toFixed(2)}dB,{' '}
-                                {String.fromCharCode.apply(null, w.datarate)} (
-                                {w.is_valid ? 'valid' : 'invalid'})
+                                {`- witnessed at RSSI ${
+                                  w.signal
+                                }dBm, SNR ${w.snr.toFixed(2)}dB${
+                                  Array.isArray(w.datarate)
+                                    ? `${
+                                        w.datarate.length > 0
+                                          ? `, ${String.fromCharCode.apply(
+                                              null,
+                                              w.datarate,
+                                            )}`
+                                          : ``
+                                      } `
+                                    : `${
+                                        w.datarate !== null &&
+                                        `, ${w.datarate} `
+                                      }`
+                                }
+                                  (${w.is_valid ? 'valid' : 'invalid'})`}
                               </small>
                             </span>
                           </div>

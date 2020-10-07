@@ -146,12 +146,11 @@ class TxnSCClose extends Component {
       columns,
       data,
     } = this.state
-    console.log(data)
 
     return (
       <div>
         <Mapbox
-          style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
+          style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
           container="map"
           center={[-95.712891, 37.09024]}
           containerStyle={{

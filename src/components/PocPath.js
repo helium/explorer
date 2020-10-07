@@ -106,7 +106,7 @@ class PocPath extends Component {
       return (
         <span>
           <Mapbox
-            style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
+            style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
             container="map"
             center={[
               path[0].challengee_lon ? path[0].challengee_lon : 0,
@@ -121,7 +121,7 @@ class PocPath extends Component {
           >
             {path.map((p, idx) => {
               return (
-                <span>
+                <span key={`${p}-${idx}`}>
                   <Marker
                     key={p.challengee}
                     style={

@@ -11,11 +11,7 @@ import TxnReward from '../components/TxnReward'
 import TxnSCClose from '../components/TxnSCClose'
 import animalHash from 'angry-purple-tiger'
 
-import {
-  BackwardOutlined,
-  ForwardOutlined,
-  ClockCircleOutlined,
-} from '@ant-design/icons'
+import { ClockCircleOutlined } from '@ant-design/icons'
 import Block from '../images/block.svg'
 
 const { Title, Text } = Typography
@@ -64,7 +60,6 @@ class TxnView extends Component {
 
   render() {
     const { txn, loading } = this.state
-    console.log(txn)
 
     const txnView = (type) => {
       switch (type) {
@@ -112,13 +107,13 @@ class TxnView extends Component {
             <ol>
               {txn.path.map((p, idx) => {
                 return (
-                  <div>
+                  <div key={`${p.receipt}-${idx}`}>
                     <p style={{ marginBottom: '0px', paddingTop: '10px' }}>
                       {idx + 1} -
                       <a href={'/hotspots/' + p.challengee}>
                         {animalHash(p.challengee)}
                       </a>
-                      {p.receipt && p.receipt.origin == 'radio' ? (
+                      {p.receipt && p.receipt.origin === 'radio' ? (
                         <small>
                           {' '}
                           (received at RSSI {p.receipt.signal}dBm, SNR{' '}
@@ -130,9 +125,12 @@ class TxnView extends Component {
                       )}
                     </p>
                     {p.witnesses.length > 0 &&
-                      p.witnesses.map((w) => {
+                      p.witnesses.map((w, i) => {
                         return (
-                          <div style={{ marginLeft: '25px' }}>
+                          <div
+                            key={`${idx}-${i}`}
+                            style={{ marginLeft: '25px' }}
+                          >
                             <span>
                               <small>
                                 <a href={'/hotspots/' + w.gateway}>
@@ -157,7 +155,6 @@ class TxnView extends Component {
     )
 
     const pocRequestv1 = () => {
-      console.log(txn)
       return (
         <div>
           <Descriptions bordered>
@@ -221,7 +218,6 @@ class TxnView extends Component {
             {txn.totalAmount.toString()}
           </Descriptions.Item>
           {txn.payments.map((p, idx) => {
-            console.log(idx)
             return (
               <Descriptions.Item label={'Payee ' + Number(idx + 1)} span={3}>
                 <a href={`/accounts/${p.payee}`}>{p.payee}</a> (
@@ -290,10 +286,11 @@ class TxnView extends Component {
             </div>
             <hr />
             <div className="flexwrapper">
-              <a className="button">
+              {/* TODO: efficiently determine next transaction and previous transaction */}
+              {/* <a className="button">
                 <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
                 Transaction
-              </a>
+              </a> */}
 
               <h3>
                 <ClockCircleOutlined
@@ -302,10 +299,10 @@ class TxnView extends Component {
                 <Timestamp date={txn.time} />
               </h3>
 
-              <a className="button">
+              {/* <a className="button">
                 Next Transaction{' '}
                 <ForwardOutlined style={{ marginRight: '-6px' }} />
-              </a>
+              </a> */}
             </div>
           </div>
         </Content>

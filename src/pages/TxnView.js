@@ -285,7 +285,17 @@ class TxnView extends Component {
               )}
             </div>
             <hr />
-            <div className="flexwrapper">
+            <div
+              //className="flexwrapper"
+              // Temporary styling to center timestamp until next / prev transaction buttons work
+              // at which point the flexwrapper class can be turned back on instead
+              style={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               {/* TODO: efficiently determine next transaction and previous transaction */}
               {/* <a className="button">
                 <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous

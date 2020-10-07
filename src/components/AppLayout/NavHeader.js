@@ -12,7 +12,7 @@ const NavHeader = () => (
     style={{
       display: 'flex',
       position: 'fixed',
-      zIndex: 2,
+      zIndex: 3,
       width: '100%',
       marginTop: '-64px',
       justifyContent: 'space-between',

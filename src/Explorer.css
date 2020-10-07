@@ -199,6 +199,18 @@ h3 {
   border-bottom: 2px solid #e9eaf2;
 }
 
+.ant-table-override
+  > .ant-table-wrapper
+  > .ant-spin-nested-loading
+  > .ant-spin-container
+  > .ant-table.ant-table-small {
+  margin: 0;
+}
+
+.ant-table-cell-override > p {
+  font-family: monospace;
+}
+
 hr {
   border: none;
   width: 100%;

@@ -3,23 +3,12 @@ import Client from '@helium/http'
 import { Table, Card, Button, Tooltip, Checkbox, Typography } from 'antd'
 import { FilterOutlined } from '@ant-design/icons'
 import Timestamp from 'react-timestamp'
-import styled from 'styled-components'
 import TxnTag from './TxnTag'
 import LoadMoreButton from './LoadMoreButton'
 import { Content } from './AppLayout'
 import ExportCSV from './ExportCSV'
 
 const { Text } = Typography
-
-const ExpandableTable = styled(Table)`
-  & > .ant-spin-nested-loading > .ant-spin-container > .ant-table.ant-table-small {
-    margin: 0;
-  }
-`;
-
-const MinigRewardCell = styled.p`
-  font-family: monospace;
-`;
 
 const initialState = {
   txns: [],
@@ -138,14 +127,14 @@ class ActivityList extends Component {
             scroll={{ x: true }}
             expandable={{
               expandedRowRender: (record) => (
-                <ExpandableTable
-                  className="activity-list-expandable"
-                  dataSource={record.rewards}
-                  columns={rewardColumns(hotspots, type)}
-                  size="small"
-                  style={{ margin: 0, padding: 0 }}
-                  rowKey={(r) => (`${r.type}-${r.gateway}`)}
-                />
+                <span className="ant-table-override">
+                  <Table
+                    dataSource={record.rewards}
+                    columns={rewardColumns(hotspots, type)}
+                    size="small"
+                    rowKey={(r) => `${r.type}-${r.gateway}`}
+                  />
+                </span>
               ),
               rowExpandable: (record) => record.type === 'rewards_v1',
             }}
@@ -158,17 +147,24 @@ class ActivityList extends Component {
 }
 
 const rewardColumns = (hotspots, type) => {
-  let columns = [{
-    title: 'Type',
-    dataIndex: 'type',
-    key: 'type',
-    render: (data) => <TxnTag type={data} />,
-  }, {
-    title: 'Amount',
-    dataIndex: 'amount',
-    key: 'amount',
-    render: (data) => <MinigRewardCell>{data.toString(2)}</MinigRewardCell>,
-  }];
+  let columns = [
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      key: 'type',
+      render: (data) => <TxnTag type={data} />,
+    },
+    {
+      title: 'Amount',
+      dataIndex: 'amount',
+      key: 'amount',
+      render: (data) => (
+        <span className="ant-table-cell-override">
+          <p>{data.toString(2)}</p>
+        </span>
+      ),
+    },
+  ]
 
   if (type === 'account') {
     columns.push({
@@ -176,14 +172,16 @@ const rewardColumns = (hotspots, type) => {
       dataIndex: 'gateway',
       key: 'gateway',
       render: (data) => (
-        <MinigRewardCell>
-          {hotspots.find(hotspot => hotspot.address === data)?.name ?? ''}
-        </MinigRewardCell>
+        <span className="ant-table-cell-override">
+          <p>
+            {hotspots.find((hotspot) => hotspot.address === data)?.name ?? ''}
+          </p>
+        </span>
       ),
-    });
+    })
   }
 
-  return columns;
+  return columns
 }
 
 const columns = (ownerAddress) => {

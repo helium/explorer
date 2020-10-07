@@ -17,6 +17,10 @@ const ExpandableTable = styled(Table)`
   }
 `;
 
+const MinigRewardCell = styled.p`
+  font-family: monospace;
+`;
+
 const initialState = {
   txns: [],
   loading: true,
@@ -163,7 +167,7 @@ const rewardColumns = (hotspots, type) => {
     title: 'Amount',
     dataIndex: 'amount',
     key: 'amount',
-    render: (data) => <span style={{ marginLeft: '20px', fontFamily: 'monospace' }}>{data.toString(2)}</span>,
+    render: (data) => <MinigRewardCell>{data.toString(2)}</MinigRewardCell>,
   }];
 
   if (type === 'account') {
@@ -171,11 +175,11 @@ const rewardColumns = (hotspots, type) => {
       title: 'Hotspot',
       dataIndex: 'gateway',
       key: 'gateway',
-      render: (data) => <span
-        style={{
-          marginLeft: '20px',
-          fontFamily: 'monospace',
-        }}>{hotspots.find(hotspot => hotspot.address === data)?.name ?? ''}</span>,
+      render: (data) => (
+        <MinigRewardCell>
+          {hotspots.find(hotspot => hotspot.address === data)?.name ?? ''}
+        </MinigRewardCell>
+      ),
     });
   }
 

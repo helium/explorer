@@ -181,7 +181,7 @@ class BlockView extends Component {
                     <CheckCircleOutlined
                       style={{
                         color: '#29D391',
-                        marginRight: 4,
+                        marginRight: 8,
                       }}
                     />
                     {block.transactionCount} transactions

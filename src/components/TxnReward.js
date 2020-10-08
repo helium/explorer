@@ -41,12 +41,14 @@ class TxnReward extends Component {
     groupedRewards: [],
     expandedTable: {
       expandedRowRender: (record) => (
-        <Table
-          pagination={{ pageSize: 50 }}
-          size="small"
-          columns={expandedColumns}
-          dataSource={record.rewards}
-        />
+        <span className="ant-table-override">
+          <Table
+            pagination={{ pageSize: 50 }}
+            size="small"
+            columns={expandedColumns}
+            dataSource={record.rewards}
+          />
+        </span>
       ),
     },
   }

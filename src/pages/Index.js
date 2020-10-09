@@ -89,11 +89,13 @@ class Index extends Component {
           style={{
             marginTop: 0,
             background: '#27284B',
-            padding: '60px 0 20px',
           }}
         >
-          <div style={{ margin: '0 auto', maxWidth: 850 }}>
-            <div className="flexwrapper">
+          <div
+            style={{ margin: '0 auto', maxWidth: 850 + 40 }}
+            className="content-container"
+          >
+            <div className="flex-responsive">
               <Title
                 style={{
                   margin: '0px 0 40px',
@@ -113,9 +115,8 @@ class Index extends Component {
                 style={{
                   background: '#3F416D',
                   borderRadius: 10,
-                  padding: '16px 24px',
-                  marginBottom: 100,
                 }}
+                className="summary-header"
               >
                 <Row>
                   <Col lg={12}>
@@ -149,6 +150,7 @@ class Index extends Component {
                       {Math.round(blockTime * 10) / 10}s
                     </p>
                   </Col>
+
                   <Col lg={12}>
                     <h3
                       style={{

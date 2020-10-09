@@ -234,6 +234,12 @@ hr {
   font-size: 17px;
 }
 
+.summary-header {
+  margin-bottom: 100px;
+}
+.summary-header > .ant-row > .ant-col-lg-12 {
+  padding: 16px 24px;
+}
 .content-container {
   padding: 60px 20px 30px 20px;
 }
@@ -296,6 +302,9 @@ hr {
     height: 10px;
     margin-left: 12px;
     flex-direction: column;
+  }
+  .summary-header {
+    margin-bottom: 0px;
   }
   .header {
     padding: 12px;

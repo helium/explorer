@@ -267,12 +267,14 @@ class TxnView extends Component {
           style={{
             marginTop: 0,
             background: '#27284B',
-            padding: '60px 0 30px',
           }}
         >
-          <div style={{ margin: '0 auto', maxWidth: 850 }}>
-            <div className="flexwrapper" style={{ alignItems: 'flex-start' }}>
-              <div>
+          <div
+            style={{ margin: '0 auto', maxWidth: 850 + 40 }}
+            className="content-container-txn-view"
+          >
+            <div className="flex-responsive">
+              <div style={{ paddingRight: 30, width: '100%' }}>
                 <Title
                   style={{
                     color: 'white',
@@ -286,7 +288,11 @@ class TxnView extends Component {
                 </Title>
                 <Text
                   copyable
-                  style={{ color: '#6A6B93', fontFamily: 'monospace' }}
+                  style={{
+                    color: '#6A6B93',
+                    fontFamily: 'monospace',
+                    wordBreak: 'break-all',
+                  }}
                 >
                   {txn.hash}
                 </Text>

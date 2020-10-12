@@ -152,7 +152,10 @@ class HotspotView extends Component {
         <Content
           style={{ marginTop: 0, background: '#27284B', padding: '0px 0 0px' }}
         >
-          <div style={{ margin: '0 auto', maxWidth: 850 }}>
+          <div
+            style={{ margin: '0 auto', maxWidth: 850 + 40 }}
+            className="content-container-hotspot-view"
+          >
             <Mapbox
               style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
               container="map"
@@ -161,7 +164,6 @@ class HotspotView extends Component {
                 hotspot.lat ? hotspot.lat : 0,
               ]}
               containerStyle={{
-                height: '400px',
                 width: '100%',
               }}
               zoom={[11]}
@@ -231,7 +233,8 @@ class HotspotView extends Component {
                   width: '100%',
                   justifyContent: 'flex-start',
                   alignItems: 'flex-start',
-                  marginBottom: 50,
+                  // marginBottom: 50,
+                  paddingRight: 20,
                 }}
               >
                 <div style={{ width: '100%' }}>
@@ -256,18 +259,19 @@ class HotspotView extends Component {
                       </h3>
                     </Tooltip>
                   </Fade>
-                  <Title
-                    style={{
-                      color: 'white',
-                      fontSize: 52,
-                      marginTop: 0,
-                      lineHeight: 0.7,
-                      letterSpacing: '-2px',
-                      marginBottom: 17,
-                    }}
-                  >
-                    {hotspot.name}
-                  </Title>
+                  <span className="hotspot-name">
+                    <Title
+                      style={{
+                        color: 'white',
+                        fontSize: 52,
+                        marginTop: 0,
+                        letterSpacing: '-2px',
+                        marginBottom: 17,
+                      }}
+                    >
+                      {hotspot.name}
+                    </Title>
+                  </span>
                   <Tooltip placement="bottom" title="Hotspot Network Address">
                     <img
                       src={HotspotImg}
@@ -281,7 +285,11 @@ class HotspotView extends Component {
                     />
                     <Text
                       copyable
-                      style={{ fontFamily: 'monospace', color: '#8283B2' }}
+                      style={{
+                        fontFamily: 'monospace',
+                        color: '#8283B2',
+                        wordBreak: 'break-all',
+                      }}
                     >
                       {hotspot.address}
                     </Text>
@@ -294,8 +302,13 @@ class HotspotView extends Component {
           <div className="bottombar">
             <Content style={{ maxWidth: 850, margin: '0 auto' }}>
               <p style={{ color: 'white', margin: 0 }}>
-                Owned by:{' '}
-                <a href={'/accounts/' + hotspot.owner}>{hotspot.owner}</a>
+                Owned by: <br className="line-break-only-at-small" />
+                <a
+                  style={{ wordBreak: 'break-all' }}
+                  href={'/accounts/' + hotspot.owner}
+                >
+                  {hotspot.owner}
+                </a>
               </p>
             </Content>
           </div>

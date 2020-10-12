@@ -69,11 +69,17 @@ class AccountView extends Component {
           style={{
             marginTop: 0,
             background: '#27284B',
-            padding: '80px 0 50px',
             overflowX: 'hidden',
           }}
         >
-          <div style={{ margin: '0 auto', maxWidth: 850, textAlign: 'center' }}>
+          <div
+            style={{
+              margin: '0 auto',
+              maxWidth: 850 + 40,
+              textAlign: 'center',
+            }}
+            className="content-container-account-view"
+          >
             <Fade top>
               <div
                 style={{
@@ -94,7 +100,12 @@ class AccountView extends Component {
                 code
                 level={4}
                 copyable
-                style={{ color: 'white', marginBottom: 0, fontWeight: 300 }}
+                style={{
+                  color: 'white',
+                  marginBottom: 0,
+                  fontWeight: 300,
+                  wordBreak: 'break-all',
+                }}
               >
                 {account.address}
               </Title>
@@ -168,7 +179,7 @@ class AccountView extends Component {
           }}
         >
           <HotspotsList hotspots={hotspots} loading={loading} />
-          <ActivityList type="account" address={address} title={'Hello'} hotspots={hotspots} />
+          <ActivityList type="account" address={address} hotspots={hotspots} />
         </Content>
       </AppLayout>
     )

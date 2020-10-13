@@ -17,7 +17,7 @@ class SearchBar extends Component {
 
   async loadHotspots() {
     const list = await this.client.hotspots.list()
-    const allSpots = await list.take(10000)
+    const allSpots = await list.take(20000)
     this.setState({ hotspots: allSpots })
   }
 

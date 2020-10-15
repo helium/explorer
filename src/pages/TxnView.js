@@ -82,7 +82,11 @@ class TxnView extends Component {
               {Object.entries(txn).map(([key, value]) => {
                 return (
                   <Descriptions.Item label={key} key={key} span={3}>
-                    {typeof value === 'object' ? JSON.stringify(value) : value}
+                    <p className={key}>
+                      {typeof value === 'object' ?
+                        value.map(member => animalHash(member)).join(', ')
+                        : value}
+                    </p>
                   </Descriptions.Item>
                 )
               })}
@@ -121,8 +125,8 @@ class TxnView extends Component {
                           {String.fromCharCode.apply(null, p.receipt.datarate)})
                         </small>
                       ) : (
-                        <span></span>
-                      )}
+                          <span></span>
+                        )}
                     </p>
                     {p.witnesses.length > 0 &&
                       p.witnesses.map((w, i) => {

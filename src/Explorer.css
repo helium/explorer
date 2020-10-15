@@ -209,7 +209,7 @@ hr {
 .logo-small {
   display: none;
 }
-
+ 
 .logo-container {
   margin-right: 20px;
 }
@@ -220,6 +220,18 @@ hr {
   align-items: center;
   justify-content: center;
   font-size: 17px;
+}
+
+.ant-descriptions-item-content p {
+  display: table-cell;
+}
+
+.proof,
+.members {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60ch;
 }
 
 @media screen and (max-width: 640px) {

@@ -12,12 +12,13 @@ import { Heading } from "../../components/Heading";
 import { Header } from "../../components/Header";
 import { Footer } from "../../components/Footer";
 import { Container } from "../../components/Container";
+import { Star } from "../../components/Star";
 
 export default function Hotspot({
   hotspotId,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { isFallback } = useRouter();
-  
+
   const hotspotQuery = useHotspot(isFallback ? undefined : hotspotId);
   const hotspot = hotspotQuery.data;
 
@@ -40,7 +41,7 @@ export default function Hotspot({
           {!isLoading && (
             <div className="text-white">
               <Heading type="h1">{hotspot.name}</Heading>
-              <div className="flex items-center space-x-2">
+              <div className="mt-4 flex items-center space-x-2">
                 <img
                   src="https://explorer.helium.com/static/media/hotspot.7112996e.svg"
                   alt="Hotspot"
@@ -49,6 +50,7 @@ export default function Hotspot({
                 <code className="text-gray-300 text-sm leading-relaxed">
                   {hotspotId}
                 </code>
+                <Star id={`hotspot:${hotspotId}`} />
               </div>
             </div>
           )}

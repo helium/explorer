@@ -16,12 +16,14 @@ import {
   useMarketStats,
 } from "../api";
 import { formatNumber } from "../utils";
+import { useStars } from "../hooks";
 
 export default function Home() {
   return (
     <Page>
       <Header />
       <Hero />
+      <Starred />
       <section>
         <Container>
           <div className="bg-white">
@@ -152,6 +154,29 @@ function Statistic({
       <div className="flex-1 font-hairline">{title}:</div>
       <div className="flex-1">{value}</div>
     </div>
+  );
+}
+
+function Starred() {
+  const { isServer, stars } = useStars();
+
+  return (
+    <Container>
+      <section className="bg-white">
+        <Heading type="h2">Starred Resources:</Heading>
+        <ul className="mt-4">
+          {stars.map((resource) => {
+            const [type, id] = resource.split(":");
+
+            return (
+              <li>
+                {type}: {id}
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    </Container>
   );
 }
 

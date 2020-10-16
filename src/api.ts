@@ -1,7 +1,6 @@
 import { Client, Network } from "@helium/http";
-import Hotspot from "@helium/http/build/models/Hotspot";
 import { useQuery, QueryCache } from "react-query";
-import { ChainStats, MarketStats } from "./types";
+import { ChainStats, MarketStats, Hotspot } from "./types";
 
 // TODO(ehesp): break this file out?
 
@@ -72,17 +71,23 @@ export function useMarketStats() {
 }
 
 export async function getHotspot(address: string): Promise<Hotspot> {
-  if (!address) {
-    return null;
-  }
+  const hotspot = await client.hotspots.get(address);
 
-  return client.hotspots.get(address);
+  // The HTTP client returns a class, which we need to serialize before
+  // returning to allow for caching.
+  const serialized: Hotspot = JSON.parse(JSON.stringify(hotspot));
+  delete serialized["client"];
+
+  return serialized;
 }
 
 export async function prefetchHotspot(queryCache: QueryCache, address: string) {
-  await queryCache.prefetchQuery([HOTSPOT, address], getHotspot);
+  await queryCache.prefetchQuery([HOTSPOT, address], () => getHotspot(address));
 }
 
-export function useHotspot(address: string) {
-  return useQuery<Hotspot>([HOTSPOT, address], () => getHotspot(address));
+export function useHotspot(address?: string) {
+  return useQuery<Hotspot>([HOTSPOT, address], () => getHotspot(address), {
+    enabled: !!address,
+    retry: 0,
+  });
 }

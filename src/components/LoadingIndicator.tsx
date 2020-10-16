@@ -1,9 +1,13 @@
-import React, { useEffect, useRef } from 'react';
-import { useIsFetching } from 'react-query'
-import NProgress from 'nprogress';
+import React, { useEffect, useRef } from "react";
+import { useIsFetching } from "react-query";
+import NProgress from "nprogress";
+
+NProgress.configure({
+  showSpinner: false,
+});
 
 function LoadingIndicator() {
-  const isFetching = useIsFetching()
+  const isFetching = useIsFetching();
   const currentlyFetching = useRef<boolean>(false);
 
   useEffect(() => {

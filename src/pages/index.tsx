@@ -4,6 +4,7 @@ import { dehydrate } from "react-query/hydration";
 
 import { Page } from "../components/Page";
 import { Header } from "../components/Header";
+import { Heading } from "../components/Heading";
 import { Footer } from "../components/Footer";
 import { Container } from "../components/Container";
 import {
@@ -25,7 +26,7 @@ export default function Home() {
         <Container>
           <div className="bg-white">
             <div className="p-6">
-              <h2 className="text-black font-thin text-2xl">Latest Blocks</h2>
+              <Heading type="h2">Latest Blocks</Heading>
             </div>
           </div>
         </Container>

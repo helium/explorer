@@ -1,9 +1,9 @@
 import React from "react";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
+import Error from "next/error";
 import { useRouter } from "next/router";
 import { QueryCache } from "react-query";
 import { dehydrate } from "react-query/hydration";
-
 
 import { prefetchBlockHeight, prefetchHotspot, useHotspot } from "../../api";
 
@@ -16,13 +16,19 @@ import { Container } from "../../components/Container";
 export default function Hotspot({
   hotspotId,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const router = useRouter();
-  const hotspotQuery = useHotspot(hotspotId);
+  const { isFallback } = useRouter();
+  
+  const hotspotQuery = useHotspot(isFallback ? undefined : hotspotId);
   const hotspot = hotspotQuery.data;
 
   // TODO(ehesp): Handle not found pages
-  const title = router.isFallback ? "" : hotspot?.name;
-  const isLoading = router.isFallback || !hotspot;
+  const isLoading = isFallback || hotspotQuery.isLoading;
+
+  if (!isLoading && !hotspot) {
+    return <Error statusCode={404} title="This hotspot could not be found." />;
+  }
+
+  const title = isLoading && hotspot?.name;
 
   return (
     <Page title={title}>
@@ -32,11 +38,17 @@ export default function Hotspot({
           {isLoading && <div>Loading....</div>}
 
           {!isLoading && (
-            <div>
+            <div className="text-white">
               <Heading type="h1">{hotspot.name}</Heading>
               <div className="flex items-center space-x-2">
-                <img src="https://explorer.helium.com/static/media/hotspot.7112996e.svg" alt="Hotspot" className="h-4" />
-                <code className="text-gray-300 text-sm leading-relaxed">{hotspotId}</code>
+                <img
+                  src="https://explorer.helium.com/static/media/hotspot.7112996e.svg"
+                  alt="Hotspot"
+                  className="h-4"
+                />
+                <code className="text-gray-300 text-sm leading-relaxed">
+                  {hotspotId}
+                </code>
               </div>
             </div>
           )}
@@ -46,7 +58,6 @@ export default function Hotspot({
     </Page>
   );
 }
-
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const hotspotId = params.hid.toString();
@@ -64,6 +75,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export async function getStaticPaths() {
+  // TODO(ehesp): Iterate through known hotspots & add as paths.
+  // Note; we still allow fallbacks incase new ones are added after build.
   return {
     paths: [],
     fallback: true,

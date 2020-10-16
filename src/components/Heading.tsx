@@ -19,7 +19,7 @@ const sizeStyles: { [key in HeadingType]: string } = {
 function Heading({ type, children, className, style }: HeadingProps) {
   return React.createElement(type, {
     children,
-    className: cx("text-white", sizeStyles[type], className),
+    className: cx(sizeStyles[type], "font-thin", className),
     style,
   });
 }

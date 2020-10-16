@@ -1,3 +1,5 @@
+import RawHotspot from "@helium/http/build/models/Hotspot";
+
 export interface ChainStats {
   circulatingSupply: number;
   blockTime: number;
@@ -12,3 +14,5 @@ export interface MarketStats {
   price: number;
   priceChange: number;
 }
+
+export type Hotspot = Omit<RawHotspot, "activity" | "witnesses">;

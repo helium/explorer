@@ -5,6 +5,9 @@ import AppLayout, { Content } from '../components/AppLayout'
 import { Typography } from 'antd'
 import Fade from 'react-reveal/Fade'
 
+import MiniCoverageMap from '../components/CoverageMap/MiniCoverageMap'
+import Client from '@helium/http'
+
 const { Title } = Typography
 
 class Index extends Component {
@@ -20,9 +23,14 @@ class Index extends Component {
     packetsTransferred: 0,
     totalHotspots: 0,
     dataCredits: 0,
+    hotspots: [],
+    hotspotsLoading: false,
   }
 
   componentDidMount() {
+    this.client = new Client()
+    this.loadHotspots()
+
     this.getMarketData()
     fetch('https://api.helium.io/v1/blocks/height')
       .then((res) => res.json())
@@ -69,6 +77,13 @@ class Index extends Component {
       })
   }
 
+  async loadHotspots() {
+    this.setState({ hotspotsLoading: true })
+    const list = await this.client.hotspots.list()
+    const allSpots = await list.take(20000)
+    this.setState({ hotspots: allSpots, hotspotsLoading: false })
+  }
+
   render() {
     const {
       price,
@@ -81,6 +96,8 @@ class Index extends Component {
       electionTime,
       dataCredits,
       totalHotspots,
+      hotspots,
+      hotspotsLoading,
     } = this.state
 
     return (
@@ -204,12 +221,30 @@ class Index extends Component {
                     </p>
                   </Col>
                 </Row>
+                {/* <div className="flex-responsive"> */}
+                <Row>
+                  <Col lg={12}>
+                    <h3
+                      style={{
+                        marginBottom: 20,
+                        color: '#1890ff',
+                        fontSize: 14,
+                      }}
+                    >
+                      Coverage Map
+                    </h3>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={24}>
+                    <MiniCoverageMap
+                      hotspots={hotspots}
+                      hotspotsLoading={hotspotsLoading}
+                    />
+                  </Col>
+                </Row>
               </div>
             </Fade>
-
-            {/*<div style={{ position: 'relative', width: '100%' }}>
-              <BarChart />
-            </div>*/}
           </div>
         </Content>
 

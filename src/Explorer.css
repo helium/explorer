@@ -1,7 +1,6 @@
 @import '~antd/dist/antd.css';
 <link rel="stylesheet" href="https://use.typekit.net/bum5vme.css">
 
-
 .App {
   text-align: center;
 }
@@ -294,6 +293,10 @@ hr {
   flex-wrap: wrap;
   justify-content: space-between;
   flex-direction: row;
+}
+
+.green-spin .ant-spin-dot-item {
+  background-color: #29d391;
 }
 
 @media screen and (max-width: 890px) {

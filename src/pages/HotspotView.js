@@ -82,6 +82,9 @@ class HotspotView extends Component {
     const { address } = this.props.match.params
     await this.setState(initialState)
     const hotspot = await this.client.hotspots.get(address)
+    console.log(hotspot)
+    const stats = await this.client.accounts.getStats(address)
+    console.log(stats)
     this.setState({ hotspot, loading: false })
   }
 

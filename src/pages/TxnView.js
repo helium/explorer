@@ -20,6 +20,7 @@ class TxnView extends Component {
   state = {
     txn: {},
     loading: true,
+    truncated: {},
   }
 
   componentDidMount() {
@@ -37,6 +38,14 @@ class TxnView extends Component {
     const { hash } = this.props.match.params
     const txn = await this.client.transactions.get(hash)
     this.setState({ txn, loading: false })
+
+    const truncated = {}
+    Object.entries(txn).map(([key, value]) => {
+      if (key === 'proof') {
+        truncated[key] = true
+      }
+    })
+    this.setState({ truncated })
   }
 
   rewardChart() {
@@ -59,7 +68,15 @@ class TxnView extends Component {
   }
 
   render() {
-    const { txn, loading } = this.state
+    const { txn, loading, truncated } = this.state
+
+    const handleTruncation = (key) => {
+      if (key === 'proof') {
+        const truncatedCopy = truncated
+        truncatedCopy[key] = !truncatedCopy[key]
+        this.setState({ truncated: truncatedCopy })
+      }
+    }
 
     const txnView = (type) => {
       switch (type) {
@@ -82,11 +99,53 @@ class TxnView extends Component {
               {Object.entries(txn).map(([key, value]) => {
                 return (
                   <Descriptions.Item label={key} key={key} span={3}>
-                    <p className={key}>
-                      {typeof value === 'object'
-                        ? value.map((member) => animalHash(member)).join(', ')
-                        : value}
-                    </p>
+                    {key === 'members' && typeof value === 'object' ? (
+                      <ul className={key}>
+                        {value.map((member, index) => {
+                          return (
+                            <li key={`${key}-${index}`}>
+                              <a href={`/hotspots/${member}`}>
+                                {animalHash(member)}
+                              </a>
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    ) : key !== 'members' && typeof value === 'object' ? (
+                      <p className={key} id={key}>
+                        {JSON.stringify(value)}
+                      </p>
+                    ) : (
+                      <>
+                        <p
+                          className={key}
+                          id={key}
+                          style={
+                            // if this value in the description is being truncated (set manually in the handleTruncation function above)
+                            truncated[key] !== undefined &&
+                            truncated[key] === true
+                              ? {
+                                  // then truncate the text by hiding most of it behind an ellipsis
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  maxWidth: '60ch',
+                                }
+                              : {}
+                          }
+                        >
+                          {value}
+                        </p>
+                        {truncated[key] !== undefined && (
+                          // if this value can be truncated
+                          // show a button to toggle truncation on and off again
+                          <button onClick={() => handleTruncation(key)}>
+                            {truncated[key] === true ? 'Show' : 'Hide'} entire
+                            response
+                          </button>
+                        )}
+                      </>
+                    )}
                   </Descriptions.Item>
                 )
               })}

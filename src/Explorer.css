@@ -238,12 +238,9 @@ hr {
   display: table-cell;
 }
 
-.proof,
-.members {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 60ch;
+.proof {
+  padding-bottom: 12px;
+  word-break: break-all;
 }
 
 .summary-header {

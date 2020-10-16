@@ -1,7 +1,19 @@
 @tailwind base;
 
 body {
-  background-color: #E9EAF2;
+  background-color: #e9eaf2;
+}
+
+table th,
+table td {
+  /* Each cell should grow equally */
+  width: 1%;
+}
+
+table th.collapse,
+table td.collapse {
+  /* "collapsed" cells should be as small as possible */
+  width: 0.0000000001%;
 }
 
 @tailwind components;

@@ -1,6 +1,6 @@
 import { Client, Network } from "@helium/http";
 import { useQuery, QueryCache } from "react-query";
-import { ChainStats, MarketStats, Hotspot } from "./types";
+import { ChainStats, MarketStats, Hotspot, Account } from "./types";
 
 // TODO(ehesp): break this file out?
 
@@ -11,6 +11,7 @@ const BLOCK_HEIGHT = "block-height";
 const CHAIN_STATS = "chain-stats";
 const MARKET_STATS = "market-stats";
 const HOTSPOT = "hotspot";
+const ACCOUNT = "account";
 
 export function getBlockHeight(): Promise<number> {
   return client.blocks.getHeight();
@@ -87,6 +88,56 @@ export async function prefetchHotspot(queryCache: QueryCache, address: string) {
 
 export function useHotspot(address?: string) {
   return useQuery<Hotspot>([HOTSPOT, address], () => getHotspot(address), {
+    enabled: !!address,
+    retry: 0,
+  });
+}
+
+export async function getRichestAccounts(): Promise<Account[]> {
+  // HTTP API doesn't support listing richest accounts?
+  const accounts = await fetch(
+    "https://api.helium.io/v1/accounts/rich"
+  ).then(($) => $.json());
+
+  return accounts.data.map((acc: any) => {
+    return {
+      secNonce: acc.sec_nonce,
+      secBalance: acc.sec_balance,
+      nonce: acc.nonce,
+      dcNonce: acc.dc_nonce,
+      block: acc.block,
+      balance: acc.balance,
+      address: acc.address,
+    } as Account;
+  });
+}
+
+export async function prefetchRichestAccounts(queryCache: QueryCache) {
+  await queryCache.prefetchQuery([ACCOUNT, "richest"], () =>
+    getRichestAccounts()
+  );
+}
+
+export function useRichestAccounts() {
+  return useQuery<Account[]>([ACCOUNT, "richest"], () => getRichestAccounts());
+}
+
+export async function getAccount(address: string): Promise<Account> {
+  const account = await client.accounts.get(address);
+  // The HTTP client returns a class, which we need to serialize before
+  // returning to allow for caching.
+  const serialized: Account = JSON.parse(JSON.stringify(account));
+  delete serialized["client"];
+
+  return serialized;
+}
+
+export async function prefetchAccount(queryCache: QueryCache, address: string) {
+  await queryCache.prefetchQuery([ACCOUNT, address], () => getAccount(address));
+}
+
+export function useAccount(address: string) {
+  return useQuery<Account>([ACCOUNT, address], () => getAccount(address), {
     enabled: !!address,
     retry: 0,
   });

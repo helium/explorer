@@ -1,4 +1,5 @@
 import RawHotspot from "@helium/http/build/models/Hotspot";
+import RawAccount from "@helium/http/build/models/Account";
 
 export interface ChainStats {
   circulatingSupply: number;
@@ -16,3 +17,5 @@ export interface MarketStats {
 }
 
 export type Hotspot = Omit<RawHotspot, "activity" | "witnesses">;
+
+export type Account = RawAccount;

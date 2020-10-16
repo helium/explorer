@@ -83,8 +83,8 @@ class TxnView extends Component {
                 return (
                   <Descriptions.Item label={key} key={key} span={3}>
                     <p className={key}>
-                      {typeof value === 'object' ?
-                        value.map(member => animalHash(member)).join(', ')
+                      {typeof value === 'object'
+                        ? value.map((member) => animalHash(member)).join(', ')
                         : value}
                     </p>
                   </Descriptions.Item>
@@ -119,14 +119,29 @@ class TxnView extends Component {
                       </a>
                       {p.receipt && p.receipt.origin === 'radio' ? (
                         <small>
-                          {' '}
-                          (received at RSSI {p.receipt.signal}dBm, SNR{' '}
-                          {p.receipt.snr.toFixed(2)}dB,{' '}
-                          {String.fromCharCode.apply(null, p.receipt.datarate)})
+                          {` (received at RSSI ${
+                            p.receipt.signal
+                          }dBm, SNR ${p.receipt.snr.toFixed(2)}dB${
+                            p.receipt !== null
+                              ? Array.isArray(p.receipt.datarate)
+                                ? `${
+                                    p.receipt.datarate.length > 0
+                                      ? `, ${String.fromCharCode.apply(
+                                          null,
+                                          p.receipt.datarate,
+                                        )}`
+                                      : ``
+                                  }`
+                                : `${
+                                    p.receipt.datarate !== null &&
+                                    `, ${p.receipt.datarate} `
+                                  }`
+                              : ``
+                          })`}
                         </small>
                       ) : (
-                          <span></span>
-                        )}
+                        <span></span>
+                      )}
                     </p>
                     {p.witnesses.length > 0 &&
                       p.witnesses.map((w, i) => {
@@ -140,10 +155,24 @@ class TxnView extends Component {
                                 <a href={'/hotspots/' + w.gateway}>
                                   {animalHash(w.gateway)}
                                 </a>
-                                - witnessed at RSSI {w.signal}dBm, SNR{' '}
-                                {w.snr.toFixed(2)}dB,{' '}
-                                {String.fromCharCode.apply(null, w.datarate)} (
-                                {w.is_valid ? 'valid' : 'invalid'})
+                                {`- witnessed at RSSI ${
+                                  w.signal
+                                }dBm, SNR ${w.snr.toFixed(2)}dB${
+                                  Array.isArray(w.datarate)
+                                    ? `${
+                                        w.datarate.length > 0
+                                          ? `, ${String.fromCharCode.apply(
+                                              null,
+                                              w.datarate,
+                                            )}`
+                                          : ``
+                                      } `
+                                    : `${
+                                        w.datarate !== null &&
+                                        `, ${w.datarate} `
+                                      }`
+                                }
+                                  (${w.is_valid ? 'valid' : 'invalid'})`}
                               </small>
                             </span>
                           </div>
@@ -242,12 +271,14 @@ class TxnView extends Component {
           style={{
             marginTop: 0,
             background: '#27284B',
-            padding: '60px 0 30px',
           }}
         >
-          <div style={{ margin: '0 auto', maxWidth: 850 }}>
-            <div className="flexwrapper" style={{ alignItems: 'flex-start' }}>
-              <div>
+          <div
+            style={{ margin: '0 auto', maxWidth: 850 + 40 }}
+            className="content-container-txn-view"
+          >
+            <div className="flex-responsive">
+              <div style={{ paddingRight: 30, width: '100%' }}>
                 <Title
                   style={{
                     color: 'white',
@@ -261,7 +292,11 @@ class TxnView extends Component {
                 </Title>
                 <Text
                   copyable
-                  style={{ color: '#6A6B93', fontFamily: 'monospace' }}
+                  style={{
+                    color: '#6A6B93',
+                    fontFamily: 'monospace',
+                    wordBreak: 'break-all',
+                  }}
                 >
                   {txn.hash}
                 </Text>

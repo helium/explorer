@@ -9,6 +9,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@zeit/next-css": "^1.0.1",
+    "algoliasearch": "^4.5.1",
     "angry-purple-tiger": "1.0.5",
     "antd": "^4.1.4",
     "base64url": "3.0.1",

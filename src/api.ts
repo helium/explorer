@@ -5,7 +5,7 @@ import { ChainStats, MarketStats, Hotspot, Account } from "./types";
 // TODO(ehesp): break this file out?
 
 // TODO(ehesp): client based on dev/prod (dev crashes on chain stats)
-const client = new Client(Network.production);
+export const client = new Client(Network.production);
 
 const BLOCK_HEIGHT = "block-height";
 const CHAIN_STATS = "chain-stats";

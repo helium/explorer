@@ -1,3 +1,4 @@
+import React from 'react'
 import classNames from 'classnames'
 import InfiniteScroll from 'react-infinite-scroller'
 
@@ -28,7 +29,17 @@ export default ({ autoHeight = false, children }) => (
 )
 
 export const SidebarHeader = ({ collapse = false, children }) => (
-  <header className={classNames({ collapse })}>
+  <header
+    className={classNames({ collapse })}
+    style={{
+      background: '#0c151e',
+      padding: 22,
+      opacity: 1,
+      transition: 'all 0.2s',
+      borderBottom: '1px solid #263441',
+      display: 'block',
+    }}
+  >
     {children}
     <style jsx>{`
       header {
@@ -59,7 +70,7 @@ export const SidebarScrollable = ({
   infinite ? (
     <InfiniteScrollSidebar children={children} loadMore={loadMore} />
   ) : (
-    <section className={classNames({ scroll })}>
+    <section className={classNames({ scroll })} style={{ overflowY: 'scroll' }}>
       {children}
       <style jsx>{`
         section {
@@ -74,7 +85,7 @@ export const SidebarScrollable = ({
   )
 
 const InfiniteScrollSidebar = ({ loadMore, children }) => (
-  <section className="scroll">
+  <section className="scroll" style={{ overflowY: 'scroll' }}>
     {children.length > 0 && (
       <InfiniteScroll
         pageStart={0}

@@ -27,17 +27,17 @@ export default class PathSidebar extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.activePath &&
-      this.props.activePath !== prevProps.activePath
-    ) {
-      this.activeRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      })
-    } else if (this.props.activePath) {
-      this.activeRef.current.scrollIntoView()
-    }
+    // if (
+    //   this.props.activePath &&
+    //   this.props.activePath !== prevProps.activePath
+    // ) {
+    //   this.activeRef.current.scrollIntoView({
+    //     behavior: 'smooth',
+    //     block: 'center',
+    //   })
+    // } else if (this.props.activePath) {
+    //   this.activeRef.current.scrollIntoView()
+    // }
   }
 
   componentWillUnmount() {

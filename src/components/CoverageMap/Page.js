@@ -1,12 +1,13 @@
-import Head from 'next/head'
+import React from 'react'
+// import Head from 'next/head'
 import Typekit from 'react-typekit'
 
 export default ({ children, backgroundColor = '#212E3A' }) => (
   <article>
-    <Head>
+    <head>
       <Typekit kitId="qfu3tzp" />
       <link rel="icon" type="image/png" href="static/img/favicon.png" />
-    </Head>
+    </head>
 
     <style jsx global>{`
       html,

@@ -7,6 +7,7 @@ import TxnView from './pages/TxnView'
 import AccountView from './pages/AccountView'
 import RichList from './pages/RichList'
 import HotspotView from './pages/HotspotView'
+import Coverage from './pages/Coverage'
 import ErrorView from './pages/ErrorView'
 
 const Router = () => {
@@ -18,6 +19,7 @@ const Router = () => {
       <Route path="/accounts/richest" component={RichList}></Route>
       <Route path="/accounts/:address" component={AccountView}></Route>
       <Route path="/hotspots/:address" component={HotspotView}></Route>
+      <Route path="/coverage" component={Coverage}></Route>
       <Route path="/error" component={ErrorView}></Route>
     </Switch>
   )

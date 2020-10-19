@@ -1,18 +1,23 @@
+import React from 'react'
 import classNames from 'classnames'
-import Link from 'next/link'
+// import Link from 'next/link'
 
 export default ({ activeNav }) => (
   <header>
-    <Link href="/">
+    <a href="/">
       <img className="logo" src="/static/img/logo.svg" />
-    </Link>
+    </a>
 
     <nav className="nav">
-      <Link href="/coverage">
-        <a className={classNames({ active: activeNav === 'coverage' })}>
-          Hotspot Map
-        </a>
-      </Link>
+      {/* <Link
+      > */}
+      <a
+        href="/coverage"
+        className={classNames({ active: activeNav === 'coverage' })}
+      >
+        Hotspot Map
+      </a>
+      {/* </Link> */}
 
       {/*<Link href="/challenges">
         <a className={classNames({ active: activeNav === 'challenges' })}>
@@ -28,11 +33,14 @@ export default ({ activeNav }) => (
         </Link>
       )}*/}
 
-      <Link href="https://explorer.helium.com/">
-        <a className={classNames({ active: activeNav === 'blocks' })}>
-          Block Explorer
-        </a>
-      </Link>
+      <a
+        href="https://explorer.helium.com/"
+        // <a
+        className={classNames({ active: activeNav === 'blocks' })}
+      >
+        Block Explorer
+        {/* </a> */}
+      </a>
     </nav>
 
     <style jsx>{`

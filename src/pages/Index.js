@@ -237,11 +237,13 @@ class Index extends Component {
                 </Row>
                 <Row>
                   <Col span={24}>
-                    <MiniCoverageMap
+                    <a href="/coverage">
+                      <MiniCoverageMap
                         zoomLevel={0.65}
-                      hotspots={hotspots}
-                      hotspotsLoading={hotspotsLoading}
-                    />
+                        hotspots={hotspots}
+                        hotspotsLoading={hotspotsLoading}
+                      />
+                    </a>
                   </Col>
                 </Row>
               </div>

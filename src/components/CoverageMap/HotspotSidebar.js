@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Sidebar, { SidebarHeader, SidebarScrollable } from './Sidebar'
 import Hotspot from './Hotspot'
-import { humanizeAddress } from '../util'
+import animalHash from 'angry-purple-tiger'
 import lowerCase from 'lodash/lowerCase'
 
 export default class HotspotSidebar extends Component {
@@ -32,12 +32,16 @@ export default class HotspotSidebar extends Component {
       lowerCase(string).includes(lowerCase(filter))
 
     const hotspotsToFilter =
-      selectedHotspots.length > 0 ? selectedHotspots : hotspots
+      selectedHotspots.length > 0
+        ? selectedHotspots
+        : hotspots.length > 0
+        ? hotspots
+        : []
 
     const filteredHotspots = hotspotsToFilter.filter(
       (hotspot) =>
         matchesFilter(hotspot.location) ||
-        matchesFilter(humanizeAddress(hotspot.address)) ||
+        matchesFilter(animalHash(hotspot.address)) ||
         matchesFilter(hotspot.owner),
     )
 

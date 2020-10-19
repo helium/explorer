@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import { humanizeAddress } from '../util'
+import animalHash from 'angry-purple-tiger'
 
 export default class Hotspot extends Component {
   handleClick = () => {
@@ -31,9 +31,7 @@ export default class Hotspot extends Component {
             </div>*/}
 
           <div className="hotspot-section">
-            <div className="hotspot-name">
-              {humanizeAddress(hotspot.address)}
-            </div>
+            <div className="hotspot-name">{animalHash(hotspot.address)}</div>
           </div>
 
           <div className="hotspot-section">

@@ -31,13 +31,13 @@ class CoverageMap extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.isGeolocationEnabled &&
-      prevProps.coords === null &&
-      this.props.coords !== null
-    ) {
-      this.setState({ hasGeolocation: true })
-    }
+    // if (
+    //   this.props.isGeolocationEnabled &&
+    //   prevProps.coords === null &&
+    //   this.props.coords !== null
+    // ) {
+    //   this.setState({ hasGeolocation: true })
+    // }
   }
 
   handleGeolocationButtonClick = () => {

@@ -226,7 +226,7 @@ class Index extends Component {
                   <Col lg={12}>
                     <h3
                       style={{
-                        marginBottom: 20,
+                        marginBottom: 0,
                         color: '#1890ff',
                         fontSize: 14,
                       }}
@@ -238,6 +238,7 @@ class Index extends Component {
                 <Row>
                   <Col span={24}>
                     <MiniCoverageMap
+                        zoomLevel={0.65}
                       hotspots={hotspots}
                       hotspotsLoading={hotspotsLoading}
                     />

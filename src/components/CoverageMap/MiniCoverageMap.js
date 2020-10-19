@@ -61,33 +61,40 @@ class CoverageMap extends React.Component {
 
   render() {
     const { hasGeolocation } = this.state
+    const { zoomLevel } = this.props
 
     return (
-      <Mapbox
-        style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
-        containerStyle={{
-          position: 'relative',
-          width: '100%',
-          height: '500px',
-          overflow: 'visible',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-        // center={this.state.center}
-        zoom={[0.65]}
-        onStyleLoad={(map) => {
-          this.setState({ map })
-        }}
-        ref={(e) => {
-          this.map = e
-        }}
-      >
-        {this.renderOverviewMap()}
-        {hasGeolocation && (
-          <GeolocationButton onClick={this.handleGeolocationButtonClick} />
-        )}
-      </Mapbox>
+      <span className="mini-coverage-map">
+        <p className="mini-coverage-map-interactive-text unselectable-text">
+          Click to open full-screen interactive map
+        </p>
+        <span className="mini-coverage-map-overlay" />
+        <Mapbox
+          style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
+          containerStyle={{
+            position: 'relative',
+            width: '100%',
+            height: '500px',
+            overflow: 'visible',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          // center={this.state.center}
+          zoom={[zoomLevel]}
+          onStyleLoad={(map) => {
+            this.setState({ map })
+          }}
+          ref={(e) => {
+            this.map = e
+          }}
+        >
+          {this.renderOverviewMap()}
+          {hasGeolocation && (
+            <GeolocationButton onClick={this.handleGeolocationButtonClick} />
+          )}
+        </Mapbox>
+      </span>
     )
   }
 }

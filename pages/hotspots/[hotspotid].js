@@ -5,16 +5,18 @@ import round from 'lodash/round'
 import get from 'lodash/get'
 import AppLayout, { Content } from '../../components/AppLayout'
 import ActivityList from '../../components/ActivityList'
-import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
+// import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 import Fade from 'react-reveal/Fade'
-import HotspotImg from '../images/hotspot.svg'
+import HotspotImg from '../../public/images/hotspot.svg'
+
+import { withRouter } from 'next/router'
 
 const { Title, Text } = Typography
 
-const Mapbox = ReactMapboxGl({
-  accessToken:
-    'pk.eyJ1IjoicGV0ZXJtYWluIiwiYSI6ImNqMHA5dm8xbTAwMGQycXMwa3NucGptenQifQ.iVCDWzb16acgOKWz65AckA',
-})
+// const Mapbox = ReactMapboxGl({
+//   accessToken:
+//     'pk.eyJ1IjoicGV0ZXJtYWluIiwiYSI6ImNqMHA5dm8xbTAwMGQycXMwa3NucGptenQifQ.iVCDWzb16acgOKWz65AckA',
+// })
 
 const styles = {
   selectedMarker: {
@@ -68,30 +70,36 @@ class HotspotView extends Component {
 
   componentDidMount() {
     this.client = new Client()
-    this.loadData()
-    this.loadWitnesses()
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.location.pathname !== this.props.location.pathname) {
-      this.loadData()
+    const { hotspotid } = this.props.router.query
+    if (hotspotid !== undefined) {
+      this.loadData(hotspotid)
+      this.loadWitnesses(hotspotid)
     }
   }
 
-  async loadData() {
-    const { address } = this.props.match.params
+  componentDidUpdate(prevProps) {
+    if (prevProps.router.query !== this.props.router.query) {
+      const { hotspotid } = this.props.router.query
+      if (hotspotid !== undefined) {
+        this.loadData(hotspotid)
+      }
+    }
+  }
+
+  async loadData(hotspotid) {
+    // const { address } = this.props.match.params
     await this.setState(initialState)
-    const hotspot = await this.client.hotspots.get(address)
+    const hotspot = await this.client.hotspots.get(hotspotid)
     this.setState({ hotspot, loading: false })
   }
 
-  async loadWitnesses() {
-    const { address } = this.props.match.params
-    fetch('https://api.helium.io/v1/hotspots/' + address + '/witnesses')
+  async loadWitnesses(hotspotid) {
+    // const { address } = this.props.match.params
+    fetch('https://api.helium.io/v1/hotspots/' + hotspotid + '/witnesses')
       .then((res) => res.json())
       .then((witnessData) => {
         const witnessList = witnessData.data.filter(
-          (w) => !(w.address === address),
+          (w) => !(w.address === hotspotid),
         )
         this.setState({
           witnesses: witnessList,
@@ -156,7 +164,7 @@ class HotspotView extends Component {
             style={{ margin: '0 auto', maxWidth: 850 + 40 }}
             className="content-container-hotspot-view"
           >
-            <Mapbox
+            {/* <Mapbox
               style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
               container="map"
               center={[
@@ -213,7 +221,7 @@ class HotspotView extends Component {
                     </span>
                   )
                 })}
-            </Mapbox>
+            </Mapbox> */}
             <div style={{ textAlign: 'right', paddingTop: 6, color: 'white' }}>
               <Checkbox
                 onChange={this.toggleWitnesses}
@@ -349,4 +357,4 @@ class HotspotView extends Component {
   }
 }
 
-export default HotspotView
+export default withRouter(HotspotView)

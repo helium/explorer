@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { Typography, Table, Card } from 'antd'
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
-import TxnTag from '../components/TxnTag'
-import AppLayout, { Content } from '../components/AppLayout'
-import LoadMoreButton from '../components/LoadMoreButton'
-import PieChart from '../components/PieChart'
-import withBlockHeight from '../components/withBlockHeight'
+import TxnTag from '../../components/TxnTag'
+import AppLayout, { Content } from '../../components/AppLayout'
+import LoadMoreButton from '../../components/LoadMoreButton'
+import PieChart from '../../components/PieChart'
+import withBlockHeight from '../../components/withBlockHeight'
 
 import {
   BackwardOutlined,
@@ -238,7 +238,6 @@ class BlockView extends Component {
             border-top: 1px solid #494b7b;
             margin: 40px 0;
           }
-
           .chartplaceholder {
             width: 350px;
             height: 200px;

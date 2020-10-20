@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Tooltip, Spin } from 'antd'
-import Block from '../../images/block.svg'
+import Block from '../../public/images/block.svg' // '../../images/block.svg'
 import withBlockHeight from '../withBlockHeight'
 
 class BlockHeight extends Component {

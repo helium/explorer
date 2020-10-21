@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import AppLayout, { Content } from '../components/AppLayout'
+import AppLayout, { Content } from '../../components/AppLayout'
 import { Typography, Table } from 'antd'
 import Link from 'next/link'
 

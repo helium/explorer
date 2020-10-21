@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Table, Descriptions } from 'antd'
 import Client from '@helium/http'
 import animalHash from 'angry-purple-tiger'
-
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 
 const SCCloseMapbox = dynamic(() => import('../components/SCCloseMapbox'), {
   ssr: false,
@@ -23,7 +23,9 @@ class TxnSCClose extends Component {
         key: 'client',
         render: (data) => (
           <span>
-            <a href={'/hotspots/' + data}>{animalHash(data)}</a>
+            <Link href={'/hotspots/' + data}>
+              <a>{animalHash(data)}</a>
+            </Link>
           </span>
         ),
       },
@@ -119,7 +121,9 @@ class TxnSCClose extends Component {
 
         <Descriptions bordered>
           <Descriptions.Item label="Block Height" span={3}>
-            <a href={'/blocks/' + txn.height}>{txn.height}</a>
+            <Link href={'/blocks/' + txn.height}>
+              <a>{txn.height}</a>
+            </Link>
           </Descriptions.Item>
           <Descriptions.Item label="Total Packets" span={3}>
             {totalPackets.toLocaleString()}
@@ -134,12 +138,14 @@ class TxnSCClose extends Component {
             {totalHotspots.toLocaleString()}
           </Descriptions.Item>
           <Descriptions.Item label="State Channel Closer" span={3}>
-            <a href={'/accounts/' + txn.closer}>{txn.closer}</a>
+            <Link href={'/accounts/' + txn.closer}>
+              <a>{txn.closer}</a>
+            </Link>
           </Descriptions.Item>
           <Descriptions.Item label="State Channel Owner" span={3}>
-            <a href={'/accounts/' + txn.stateChannel.owner}>
-              {txn.stateChannel.owner}
-            </a>
+            <Link href={'/accounts/' + txn.stateChannel.owner}>
+              <a>{txn.stateChannel.owner}</a>
+            </Link>
           </Descriptions.Item>
         </Descriptions>
 

@@ -7,7 +7,6 @@ import AppLayout, { Content } from '../../components/AppLayout'
 import LoadMoreButton from '../../components/LoadMoreButton'
 import PieChart from '../../components/PieChart'
 import withBlockHeight from '../../components/withBlockHeight'
-
 import { withRouter } from 'next/router'
 import Link from 'next/link'
 
@@ -93,7 +92,11 @@ class BlockView extends Component {
         title: 'Hash',
         dataIndex: 'hash',
         key: 'hash',
-        render: (hash) => <a href={'/txns/' + hash}>{hash}</a>,
+        render: (hash) => (
+          <Link href={'/txns/' + hash}>
+            <a>{hash}</a>
+          </Link>
+        ),
       },
       {
         title: 'Fee (DC)',

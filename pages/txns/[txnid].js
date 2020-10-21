@@ -12,6 +12,7 @@ import TxnSCClose from '../../components/TxnSCClose'
 import animalHash from 'angry-purple-tiger'
 
 import { withRouter } from 'next/router'
+import Link from 'next/link'
 
 import { ClockCircleOutlined } from '@ant-design/icons'
 import Block from '../../public/images/block.svg'
@@ -103,12 +104,14 @@ class TxnView extends Component {
         <PocPath path={txn.path} />
         <Descriptions bordered>
           <Descriptions.Item label="Challenger" span={3}>
-            <a href={'/hotspots/' + txn.challenger}>
-              {animalHash(txn.challenger)}
-            </a>
+            <Link href={'/hotspots/' + txn.challenger}>
+              <a>{animalHash(txn.challenger)}</a>
+            </Link>
           </Descriptions.Item>
           <Descriptions.Item label="Block Height" span={3}>
-            <a href={'/blocks/' + txn.height}>{txn.height}</a>
+            <Link href={'/blocks/' + txn.height}>
+              <a>{txn.height}</a>
+            </Link>
           </Descriptions.Item>
           <Descriptions.Item label="PoC Path" span={3}>
             <ol>
@@ -117,9 +120,9 @@ class TxnView extends Component {
                   <div key={`${p.receipt}-${idx}`}>
                     <p style={{ marginBottom: '0px', paddingTop: '10px' }}>
                       {idx + 1} -
-                      <a href={'/hotspots/' + p.challengee}>
-                        {animalHash(p.challengee)}
-                      </a>
+                      <Link href={'/hotspots/' + p.challengee}>
+                        <a>{animalHash(p.challengee)}</a>
+                      </Link>
                       {p.receipt && p.receipt.origin === 'radio' ? (
                         <small>
                           {` (received at RSSI ${
@@ -155,9 +158,9 @@ class TxnView extends Component {
                           >
                             <span>
                               <small>
-                                <a href={'/hotspots/' + w.gateway}>
-                                  {animalHash(w.gateway)}
-                                </a>
+                                <Link href={'/hotspots/' + w.gateway}>
+                                  <a>{animalHash(w.gateway)}</a>
+                                </Link>
                                 {`- witnessed at RSSI ${
                                   w.signal
                                 }dBm, SNR ${w.snr.toFixed(2)}dB${
@@ -195,15 +198,19 @@ class TxnView extends Component {
         <div>
           <Descriptions bordered>
             <Descriptions.Item label="Hotspot" span={3}>
-              <a href={'/hotspots/' + txn.challenger}>{txn.challenger}</a>
+              <Link href={'/hotspots/' + txn.challenger}>
+                <a>{txn.challenger}</a>
+              </Link>
             </Descriptions.Item>
             <Descriptions.Item label="Owner" span={3}>
-              <a href={'/accounts/' + txn.challengerOwner}>
-                {txn.challengerOwner}
-              </a>
+              <Link href={'/accounts/' + txn.challengerOwner}>
+                <a>{txn.challengerOwner}</a>
+              </Link>
             </Descriptions.Item>
             <Descriptions.Item label="Block Height" span={3}>
-              <a href={'/blocks/' + txn.height}>{txn.height}</a>
+              <Link href={'/blocks/' + txn.height}>
+                <a>{txn.height}</a>
+              </Link>
             </Descriptions.Item>
             {Object.entries(txn).map(([key, value]) => {
               return (
@@ -225,10 +232,14 @@ class TxnView extends Component {
             span={3}
             style={{ overflow: 'ellipsis' }}
           >
-            <a href={`/accounts/${txn.payer}`}>{txn.payer}</a>
+            <Link href={`/accounts/${txn.payer}`}>
+              <a>{txn.payer}</a>
+            </Link>
           </Descriptions.Item>
           <Descriptions.Item label="Payee" span={3}>
-            <a href={`/accounts/${txn.payee}`}>{txn.payee}</a>
+            <Link href={`/accounts/${txn.payee}`}>
+              <a>{txn.payee}</a>
+            </Link>
           </Descriptions.Item>
           <Descriptions.Item label="Amount" span={3}>
             {txn.amount.toString()}
@@ -248,7 +259,9 @@ class TxnView extends Component {
             span={3}
             style={{ overflow: 'ellipsis' }}
           >
-            <a href={`/accounts/${txn.payer}`}>{txn.payer}</a>
+            <Link href={`/accounts/${txn.payer}`}>
+              <a>{txn.payer}</a>
+            </Link>
           </Descriptions.Item>
           <Descriptions.Item label="Total HNT" span={3}>
             {txn.totalAmount.toString()}
@@ -256,8 +269,10 @@ class TxnView extends Component {
           {txn.payments.map((p, idx) => {
             return (
               <Descriptions.Item label={'Payee ' + Number(idx + 1)} span={3}>
-                <a href={`/accounts/${p.payee}`}>{p.payee}</a> (
-                {p.amount.toString()})
+                <Link href={`/accounts/${p.payee}`}>
+                  <a>{p.payee}</a>
+                </Link>{' '}
+                ({p.amount.toString()})
               </Descriptions.Item>
             )
           })}
@@ -316,7 +331,9 @@ class TxnView extends Component {
                     src={Block}
                     alt="img"
                   />
-                  <a href={'/blocks/' + txn.height}>{txn.height}</a>
+                  <Link href={'/blocks/' + txn.height}>
+                    <a>{txn.height}</a>
+                  </Link>
                 </p>
               </div>
 

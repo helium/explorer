@@ -3,6 +3,7 @@ import { Layout } from 'antd'
 import Logo from './Logo'
 import BlockHeight from './BlockHeight'
 import SearchBar from '../SearchBar'
+import Link from 'next/link'
 
 const { Header } = Layout
 
@@ -18,9 +19,11 @@ const NavHeader = () => (
       justifyContent: 'space-between',
     }}
   >
-    <a href="/">
-      <Logo />
-    </a>
+    <Link href="/">
+      <a>
+        <Logo />
+      </a>
+    </Link>
     <SearchBar />
     <BlockHeight />
   </Header>

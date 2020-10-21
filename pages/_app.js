@@ -7,10 +7,6 @@ import '../styles/Explorer.css'
 function MyApp({ Component, pageProps }) {
   return (
     <>
-      <link
-        href="https://api.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css"
-        rel="stylesheet"
-      />
       <Component {...pageProps} />
     </>
   )

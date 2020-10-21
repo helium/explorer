@@ -10,6 +10,7 @@ import HotspotImg from '../../public/images/hotspot.svg'
 
 import { withRouter } from 'next/router'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 
 const HotspotMapbox = dynamic(() => import('../../components/HotspotMapbox'), {
   ssr: false,
@@ -84,12 +85,9 @@ class HotspotView extends Component {
         dataIndex: 'name',
         key: 'name',
         render: (data, row) => (
-          <a
-            style={{ fontFamily: 'soleil, sans-serif' }}
-            href={'/hotspots/' + row.address}
-          >
-            {data}
-          </a>
+          <Link href={'/hotspots/' + row.address}>
+            <a style={{ fontFamily: 'soleil, sans-serif' }}>{data}</a>
+          </Link>
         ),
       },
       {
@@ -220,12 +218,9 @@ class HotspotView extends Component {
             <Content style={{ maxWidth: 850, margin: '0 auto' }}>
               <p style={{ color: 'white', margin: 0 }}>
                 Owned by: <br className="line-break-only-at-small" />
-                <a
-                  style={{ wordBreak: 'break-all' }}
-                  href={'/accounts/' + hotspot.owner}
-                >
-                  {hotspot.owner}
-                </a>
+                <Link href={'/accounts/' + hotspot.owner}>
+                  <a style={{ wordBreak: 'break-all' }}>{hotspot.owner}</a>
+                </Link>
               </p>
             </Content>
           </div>

@@ -11,6 +11,8 @@ import TxnReward from '../../components/TxnReward'
 import TxnSCClose from '../../components/TxnSCClose'
 import animalHash from 'angry-purple-tiger'
 
+import { withRouter } from 'next/router'
+
 import { ClockCircleOutlined } from '@ant-design/icons'
 import Block from '../../public/images/block.svg'
 
@@ -24,18 +26,23 @@ class TxnView extends Component {
 
   componentDidMount() {
     this.client = new Client()
-    this.loadTxn()
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.location.pathname !== this.props.location.pathname) {
-      this.loadTxn()
+    const { txnid } = this.props.router.query
+    if (txnid !== undefined) {
+      this.loadTxn(txnid)
     }
   }
 
-  async loadTxn() {
-    const { hash } = this.props.match.params
-    const txn = await this.client.transactions.get(hash)
+  componentDidUpdate(prevProps) {
+    if (prevProps.router.query !== this.props.router.query) {
+      const { txnid } = this.props.router.query
+      if (txnid !== undefined) {
+        this.loadTxn(txnid)
+      }
+    }
+  }
+
+  async loadTxn(txnid) {
+    const txn = await this.client.transactions.get(txnid)
     this.setState({ txn, loading: false })
   }
 
@@ -370,4 +377,4 @@ class TxnView extends Component {
   }
 }
 
-export default TxnView
+export default withRouter(TxnView)

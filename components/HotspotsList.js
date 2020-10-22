@@ -2,6 +2,7 @@ import React from 'react'
 import { Table, Card } from 'antd'
 import round from 'lodash/round'
 import { Content } from './AppLayout'
+import Link from 'next/link'
 
 const HotspotsList = ({ hotspots, loading }) => (
   <Content style={{ marginBottom: 20 }}>
@@ -24,12 +25,9 @@ const hotspotColumns = [
     dataIndex: 'name',
     key: 'name',
     render: (data, row) => (
-      <a
-        style={{ fontFamily: 'soleil, sans-serif' }}
-        href={'/hotspots/' + row.address}
-      >
-        {data}
-      </a>
+      <Link href={'/hotspots/' + row.address}>
+        <a style={{ fontFamily: 'soleil, sans-serif' }}>{data}</a>
+      </Link>
     ),
   },
   {

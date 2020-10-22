@@ -21,7 +21,7 @@ export const parseTxn = async (
         'Fee Amount': '',
         'Fee Currency': '',
         Tag: 'mined',
-        Hotspot: animalHash(gateway),
+        Hotspot: gateway ? animalHash(gateway) : '',
         'Reward Type': type,
         Block: txn.height,
       }))

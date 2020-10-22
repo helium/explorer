@@ -111,12 +111,16 @@ class BlockView extends Component {
           style={{
             marginTop: 0,
             background: '#27284B',
-            padding: '60px 0 30px',
           }}
         >
-          <div style={{ margin: '0 auto', maxWidth: 850 }}>
-            <div className="flexwrapper">
-              <div>
+          <div
+            style={{ margin: '0 auto', maxWidth: 850 + 40 }}
+            className="content-container"
+          >
+            <div className="flex-responsive">
+              <div
+                style={{ paddingBottom: 30, paddingRight: 30, width: '100%' }}
+              >
                 <h3>Block</h3>
                 <Title
                   style={{
@@ -132,7 +136,11 @@ class BlockView extends Component {
                 <div>
                   <Text
                     copyable
-                    style={{ color: '#6A6B93', fontFamily: 'monospace' }}
+                    style={{
+                      color: '#6A6B93',
+                      fontFamily: 'monospace',
+                      wordBreak: 'break-all',
+                    }}
                   >
                     {block.hash}
                   </Text>
@@ -145,39 +153,51 @@ class BlockView extends Component {
             </div>
 
             <hr />
-            <div className="flexwrapper">
-              <a href={`/blocks/${block.height - 1}`} className="button">
+            <div className="block-view-summary-container">
+              <a
+                href={`/blocks/${block.height - 1}`}
+                className="button block-view-prev-button"
+              >
                 <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
                 Block
               </a>
-
-              <h3>
-                <ClockCircleOutlined
-                  style={{ color: '#FFC769', marginRight: 4 }}
-                />{' '}
-                <Timestamp
-                  date={
-                    block.hash === 'La6PuV80Ps9qTP0339Pwm64q3_deMTkv6JOo1251EJI'
-                      ? 1564436673
-                      : block.time
-                  }
-                />
-              </h3>
-
-              {txns.length > 0 && (
+              <span className="block-view-summary-info">
                 <h3>
-                  <CheckCircleOutlined
-                    style={{ color: '#29D391', marginRight: 4 }}
+                  <ClockCircleOutlined
+                    style={{ color: '#FFC769', marginRight: 4 }}
                   />{' '}
-                  {block.transactionCount} transactions
+                  <Timestamp
+                    date={
+                      block.hash ===
+                      'La6PuV80Ps9qTP0339Pwm64q3_deMTkv6JOo1251EJI'
+                        ? 1564436673
+                        : block.time
+                    }
+                  />
                 </h3>
-              )}
+
+                {txns.length > 0 && (
+                  <h3 className="block-view-clock-icon">
+                    <CheckCircleOutlined
+                      style={{
+                        color: '#29D391',
+                        marginRight: 8,
+                      }}
+                    />
+                    {block.transactionCount} transactions
+                  </h3>
+                )}
+              </span>
               {block.height < this.props.height ? (
-                <a href={`/blocks/${block.height + 1}`} className="button">
+                <a
+                  href={`/blocks/${block.height + 1}`}
+                  className="button block-view-next-button"
+                >
                   Next Block <ForwardOutlined style={{ marginRight: '-6px' }} />
                 </a>
               ) : (
                 <span
+                  className="block-view-next-button"
                   style={{
                     width: '139.5px', // the width the "Next block" button takes up
                   }}

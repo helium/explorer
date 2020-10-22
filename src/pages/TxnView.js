@@ -283,7 +283,7 @@ class TxnView extends Component {
                 {txn.type === 'rewards_v1' && (
                   <p style={{ color: '#FFC769' }}>
                     <WalletOutlined style={{ color: '#FFC769', marginRight: 6, }}/>
-                    {txn.rewards}
+                    { txn.totalAmount.floatBalance }
                   </p>
                 )}
                 

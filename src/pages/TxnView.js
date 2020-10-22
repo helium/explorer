@@ -11,7 +11,7 @@ import TxnReward from '../components/TxnReward'
 import TxnSCClose from '../components/TxnSCClose'
 import animalHash from 'angry-purple-tiger'
 
-import { ClockCircleOutlined } from '@ant-design/icons'
+import { ClockCircleOutlined, WalletOutlined } from '@ant-design/icons'
 import Block from '../images/block.svg'
 
 const { Title, Text } = Typography
@@ -92,7 +92,7 @@ class TxnView extends Component {
               })}
             </Descriptions>
           )
-      }
+      }                  
     }
 
     const pocReceiptsv1 = () => (
@@ -280,6 +280,13 @@ class TxnView extends Component {
                   />
                   <a href={'/blocks/' + txn.height}>{txn.height}</a>
                 </p>
+                {txn.type === 'rewards_v1' && (
+                  <p style={{ color: '#FFC769' }}>
+                    <WalletOutlined style={{ color: '#FFC769', marginRight: 6, }}/>
+                    {txn.rewards}
+                  </p>
+                )}
+                
               </div>
 
               {txn.type === 'rewards_v1' && (

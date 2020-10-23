@@ -1,24 +1,26 @@
 import React from 'react'
 import classNames from 'classnames'
-// import Link from 'next/link'
+import Link from 'next/link'
 
 const CoverageHeader = ({ activeNav }) => {
   return (
     <header>
-      <a href="/">
-        <img className="logo" src="/images/logo.svg" />
-      </a>
+      <Link href="/">
+        <a>
+          {/* Block Explorer */}
+          <img className="logo" src="/images/logo.svg" />
+        </a>
+      </Link>
 
       <nav className="nav">
-        {/* <Link
-      > */}
-        <a
-          href="/coverage"
-          className={classNames({ active: activeNav === 'coverage' })}
-        >
-          Hotspot Map
-        </a>
-        {/* </Link> */}
+        <Link href="/coverage">
+          <a
+            // className={classNames({ active: activeNav === 'coverage' })}>
+            className={'text-link'}
+          >
+            Hotspot Map
+          </a>
+        </Link>
 
         {/*<Link href="/challenges">
         <a className={classNames({ active: activeNav === 'challenges' })}>
@@ -33,15 +35,17 @@ const CoverageHeader = ({ activeNav }) => {
           </a>
         </Link>
       )}*/}
-
-        <a
-          href="https://explorer.helium.com/"
-          // <a
-          className={classNames({ active: activeNav === 'blocks' })}
-        >
-          Block Explorer
-          {/* </a> */}
-        </a>
+        <Link href="/">
+          <a
+            // href="https://explorer.helium.com/"
+            // <a
+            // className={classNames({ active: activeNav === 'blocks' })}
+            className={'text-link'}
+          >
+            Block Explorer
+            {/* </a> */}
+          </a>
+        </Link>
       </nav>
 
       <style jsx>{`
@@ -67,7 +71,7 @@ const CoverageHeader = ({ activeNav }) => {
           cursor: pointer;
         }
 
-        a {
+        .text-link {
           text-decoration: none;
           color: #566d80;
           font-size: 16px;
@@ -76,11 +80,11 @@ const CoverageHeader = ({ activeNav }) => {
           transition: color 0.2s;
         }
 
-        a:hover {
+        .text-link:hover {
           color: #b377ff;
         }
 
-        a.active {
+        .text-link.active {
           color: #b377ff;
         }
       `}</style>

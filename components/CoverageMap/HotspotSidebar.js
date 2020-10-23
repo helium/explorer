@@ -128,6 +128,7 @@ export default class HotspotSidebar extends Component {
             font-size: 60px;
             font-weight: 500;
             margin-right: 10px;
+            line-height: 60px;
           }
 
           .header-subtitle {
@@ -136,6 +137,7 @@ export default class HotspotSidebar extends Component {
             font-weight: 500;
             max-width: 200px;
             line-height: normal;
+            font-family: 'soleil';
           }
 
           .header-go-back {

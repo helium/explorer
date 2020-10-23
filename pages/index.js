@@ -4,8 +4,17 @@ import BlocksList from '../components/BlocksList'
 import AppLayout, { Content } from '../components/AppLayout'
 import { Typography } from 'antd'
 import Fade from 'react-reveal/Fade'
+import dynamic from 'next/dynamic'
 
-import MiniCoverageMap from '../components/CoverageMap/MiniCoverageMap'
+// import MiniCoverageMap from '../components/CoverageMap/MiniCoverageMap'
+
+const MiniCoverageMap = dynamic(
+  () => import('../components/CoverageMap/MiniCoverageMap'),
+  {
+    ssr: false,
+    loading: () => <div />,
+  },
+)
 import Client from '@helium/http'
 
 const { Title } = Typography

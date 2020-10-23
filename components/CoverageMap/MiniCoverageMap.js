@@ -48,7 +48,7 @@ class CoverageMap extends React.Component {
 
     return (
       <React.Fragment>
-        <Image id="green-hex" url="/static/img/hex-green.png" />
+        <Image id="green-hex" url="/images/hex-green.png" />
         {hotspotsLoading && (
           <span className="green-spin">
             <Spin size="large" />

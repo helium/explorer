@@ -63,8 +63,7 @@ export default class HotspotSidebar extends Component {
           {selectedHotspots.length > 0 ? (
             <div className="header-search">
               <span className="header-go-back" onClick={clearSelectedHotspots}>
-                <img src="/static/img/back.svg" className="header-back-img" />{' '}
-                Back
+                <img src="/images/back.svg" className="header-back-img" /> Back
               </span>
             </div>
           ) : (

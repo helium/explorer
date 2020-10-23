@@ -20,7 +20,7 @@ export default class Hotspot extends Component {
             <div className="hotspot-location mono">
               <img
                 className="location-white"
-                src="/static/img/location-white.png"
+                src="/images/location-white.png"
               />{' '}
               {hotspot.lat ? hotspot.location : 'No Location'}
             </div>
@@ -36,8 +36,7 @@ export default class Hotspot extends Component {
 
           <div className="hotspot-section">
             <div className="hotspot-owner mono">
-              <img className="owner" src="/static/img/owner.png" />{' '}
-              {hotspot.owner}
+              <img className="owner" src="/images/owner.png" /> {hotspot.owner}
             </div>
           </div>
         </header>

@@ -31,13 +31,13 @@ class CoverageMap extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    // if (
-    //   this.props.isGeolocationEnabled &&
-    //   prevProps.coords === null &&
-    //   this.props.coords !== null
-    // ) {
-    //   this.setState({ hasGeolocation: true })
-    // }
+    if (
+      this.props.isGeolocationEnabled &&
+      prevProps.coords === null &&
+      this.props.coords !== null
+    ) {
+      this.setState({ hasGeolocation: true })
+    }
   }
 
   handleGeolocationButtonClick = () => {
@@ -82,7 +82,7 @@ class CoverageMap extends React.Component {
 
     return (
       <>
-        <Image id="green-hex" url="/static/img/hex-green.png" />
+        <Image id="green-hex" url="/images/hex-green.png" />
         <GeoJSONLayer
           id="selected-hotspots-glow"
           data={selectedData}
@@ -118,10 +118,10 @@ class CoverageMap extends React.Component {
         containerStyle={{
           position: 'relative',
           width: '100%',
-          height: '500px',
+          height: '100vh',
           overflow: 'visible',
         }}
-        // center={this.state.center}
+        center={this.state.center}
         zoom={this.state.zoom}
         onStyleLoad={(map) => {
           this.setState({ map })

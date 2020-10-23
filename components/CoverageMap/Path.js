@@ -51,10 +51,7 @@ export default class Path extends Component {
               {/*<span className="path-challenger mono">*/}
 
               <span className="target-location mono">
-                <img
-                  className="sound-wave"
-                  src="/static/img/location-white.png"
-                />{' '}
+                <img className="sound-wave" src="/images/location-white.png" />{' '}
                 {path.targets[0].location}
               </span>
             </div>

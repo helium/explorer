@@ -151,7 +151,7 @@ class TxnView extends Component {
               })}
             </Descriptions>
           )
-      }                  
+      }
     }
 
     const pocReceiptsv1 = () => (
@@ -376,11 +376,12 @@ class TxnView extends Component {
                 </p>
                 {txn.type === 'rewards_v1' && (
                   <p style={{ color: '#FFC769' }}>
-                    <WalletOutlined style={{ color: '#FFC769', marginRight: 6, }}/>
-                    { txn.totalAmount.floatBalance }
+                    <WalletOutlined
+                      style={{ color: '#FFC769', marginRight: 6 }}
+                    />
+                    {txn.totalAmount.toString(2)}
                   </p>
                 )}
-                
               </div>
 
               {txn.type === 'rewards_v1' && (

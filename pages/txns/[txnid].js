@@ -10,8 +10,10 @@ import PieChart from '../../components/PieChart'
 import TxnReward from '../../components/TxnReward'
 import TxnSCClose from '../../components/TxnSCClose'
 import animalHash from 'angry-purple-tiger'
+
 import { withRouter } from 'next/router'
 import Link from 'next/link'
+
 import { ClockCircleOutlined, WalletOutlined } from '@ant-design/icons'
 import Block from '../../public/images/block.svg'
 
@@ -147,7 +149,7 @@ class TxnView extends Component {
                           // show a button to toggle truncation on and off again
                           <button onClick={() => handleTruncation(key)}>
                             {truncated[key] === true ? 'Show' : 'Hide'} entire
-                            response
+                            value
                           </button>
                         )}
                       </>

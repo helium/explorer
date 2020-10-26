@@ -12,7 +12,7 @@ import TxnSCClose from '../../components/TxnSCClose'
 import animalHash from 'angry-purple-tiger'
 
 import { ClockCircleOutlined, WalletOutlined } from '@ant-design/icons'
-import Block from '../images/block.svg'
+import Block from '../../public/images/block.svg'
 
 const { Title, Text } = Typography
 

@@ -125,9 +125,11 @@ class TxnView extends Component {
                       </Link>
                       {p.receipt && p.receipt.origin === 'radio' ? (
                         <small>
-                          {` (received at RSSI ${
-                            p.receipt.signal
-                          }dBm, SNR ${p.receipt.snr.toFixed(2)}dB${
+                          {` (received at RSSI ${p.receipt.signal}dBm, SNR ${
+                            p.receipt.snr
+                              ? `${p.receipt.snr.toFixed(2)}dB `
+                              : ' '
+                          }${
                             p.receipt !== null
                               ? Array.isArray(p.receipt.datarate)
                                 ? `${
@@ -161,9 +163,9 @@ class TxnView extends Component {
                                 <Link href={'/hotspots/' + w.gateway}>
                                   <a>{animalHash(w.gateway)}</a>
                                 </Link>
-                                {`- witnessed at RSSI ${
-                                  w.signal
-                                }dBm, SNR ${w.snr.toFixed(2)}dB${
+                                {`- witnessed at RSSI ${w.signal}dBm, SNR ${
+                                  w.snr ? `${w.snr.toFixed(2)}dB ` : ' '
+                                }${
                                   Array.isArray(w.datarate)
                                     ? `${
                                         w.datarate.length > 0

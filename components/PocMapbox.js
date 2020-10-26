@@ -83,8 +83,8 @@ const PocMapbox = ({ path, showWitnesses }) => {
       style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
       container="map"
       center={[
-        path[0].challengee_lon ? path[0].challengee_lon : 0,
-        path[0].challengee_lat ? path[0].challengee_lat : 0,
+        path[0].challengeeLon ? path[0].challengeeLon : 0,
+        path[0].challengeeLat ? path[0].challengeeLat : 0,
       ]}
       containerStyle={{
         height: '600px',
@@ -107,7 +107,10 @@ const PocMapbox = ({ path, showWitnesses }) => {
                   : styles.gatewayFailed
               }
               anchor="center"
-              coordinates={[p.challengee_lon, p.challengee_lat]}
+              coordinates={[
+                p.challengeeLon ? p.challengeeLon : 0,
+                p.challengeeLat ? p.challengeeLat : 0,
+              ]}
             >
               <span style={{ color: 'white', fontSize: '8px' }}>{idx + 1}</span>
             </Marker>
@@ -126,12 +129,9 @@ const PocMapbox = ({ path, showWitnesses }) => {
             >
               <Feature
                 coordinates={[
-                  [p.challengee_lon, p.challengee_lat],
+                  [p.challengeeLon, p.challengeeLat],
                   path[idx + 1]
-                    ? [
-                        path[idx + 1].challengee_lon,
-                        path[idx + 1].challengee_lat,
-                      ]
+                    ? [path[idx + 1].challengeeLon, path[idx + 1].challengeeLat]
                     : [false],
                 ]}
               />
@@ -170,7 +170,7 @@ const PocMapbox = ({ path, showWitnesses }) => {
                       <Feature
                         coordinates={[
                           [h3ToGeo(w.location)[1], h3ToGeo(w.location)[0]],
-                          [p.challengee_lon, p.challengee_lat],
+                          [p.challengeeLon, p.challengeeLat],
                         ]}
                       />
                     </Layer>

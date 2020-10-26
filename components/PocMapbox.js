@@ -107,7 +107,10 @@ const PocMapbox = ({ path, showWitnesses }) => {
                   : styles.gatewayFailed
               }
               anchor="center"
-              coordinates={[p.challengee_lon, p.challengee_lat]}
+              coordinates={[
+                p.challengee_lon ? p.challengee_lon : 0,
+                p.challengee_lat ? p.challengee_lat : 0,
+              ]}
             >
               <span style={{ color: 'white', fontSize: '8px' }}>{idx + 1}</span>
             </Marker>

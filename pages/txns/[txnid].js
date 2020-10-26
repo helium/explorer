@@ -14,7 +14,7 @@ import animalHash from 'angry-purple-tiger'
 import { withRouter } from 'next/router'
 import Link from 'next/link'
 
-import { ClockCircleOutlined } from '@ant-design/icons'
+import { ClockCircleOutlined, WalletOutlined } from '@ant-design/icons'
 import Block from '../../public/images/block.svg'
 
 const { Title, Text } = Typography
@@ -125,9 +125,11 @@ class TxnView extends Component {
                       </Link>
                       {p.receipt && p.receipt.origin === 'radio' ? (
                         <small>
-                          {` (received at RSSI ${
-                            p.receipt.signal
-                          }dBm, SNR ${p.receipt.snr.toFixed(2)}dB${
+                          {` (received at RSSI ${p.receipt.signal}dBm, SNR ${
+                            p.receipt.snr
+                              ? `${p.receipt.snr.toFixed(2)}dB `
+                              : ' '
+                          }${
                             p.receipt !== null
                               ? Array.isArray(p.receipt.datarate)
                                 ? `${
@@ -161,9 +163,9 @@ class TxnView extends Component {
                                 <Link href={'/hotspots/' + w.gateway}>
                                   <a>{animalHash(w.gateway)}</a>
                                 </Link>
-                                {`- witnessed at RSSI ${
-                                  w.signal
-                                }dBm, SNR ${w.snr.toFixed(2)}dB${
+                                {`- witnessed at RSSI ${w.signal}dBm, SNR ${
+                                  w.snr ? `${w.snr.toFixed(2)}dB ` : ' '
+                                }${
                                   Array.isArray(w.datarate)
                                     ? `${
                                         w.datarate.length > 0
@@ -335,6 +337,14 @@ class TxnView extends Component {
                     <a>{txn.height}</a>
                   </Link>
                 </p>
+                {txn.type === 'rewards_v1' && (
+                  <p style={{ color: '#FFC769' }}>
+                    <WalletOutlined
+                      style={{ color: '#FFC769', marginRight: 6 }}
+                    />
+                    {txn.totalAmount.toString(2)}
+                  </p>
+                )}
               </div>
 
               {txn.type === 'rewards_v1' && (

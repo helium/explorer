@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { Typography, Descriptions, Tooltip } from 'antd'
 import Client from '@helium/http'
-import AppLayout, { Content } from '../components/AppLayout'
-import ActivityList from '../components/ActivityList'
-import HotspotsList from '../components/HotspotsList'
+import AppLayout, { Content } from '../../components/AppLayout'
+import ActivityList from '../../components/ActivityList'
+import HotspotsList from '../../components/HotspotsList'
 import QRCode from 'react-qr-code'
 import Fade from 'react-reveal/Fade'
 
 import { ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons'
+
+import { withRouter } from 'next/router'
 
 const { Title } = Typography
 
@@ -22,21 +24,22 @@ class AccountView extends Component {
 
   componentDidMount() {
     this.client = new Client()
-    this.loadData()
+    const { accountid } = this.props.router.query
+    if (accountid !== undefined) this.loadData(accountid)
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.location.pathname !== this.props.location.pathname) {
-      this.loadData()
+    if (prevProps.router.query !== this.props.router.query) {
+      const { accountid } = this.props.router.query
+      if (accountid !== undefined) this.loadData(accountid)
     }
   }
 
-  loadData = async () => {
-    const { address } = this.props.match.params
+  loadData = async (accountid) => {
     await this.setState(initialState)
-    const account = await this.client.accounts.get(address)
+    const account = await this.client.accounts.get(accountid)
 
-    const list = await this.client.account(address).hotspots.list()
+    const list = await this.client.account(accountid).hotspots.list()
     const hotspots = []
     for await (const hotspot of list) {
       hotspot.status.gpsText = this.gpsLocation(hotspot.status.gps)
@@ -61,7 +64,7 @@ class AccountView extends Component {
 
   render() {
     const { account, hotspots, loading } = this.state
-    const { address } = this.props.match.params
+    // const { accountid } = this.props.router.query
 
     return (
       <AppLayout>
@@ -91,7 +94,10 @@ class AccountView extends Component {
                   marginBottom: 30,
                 }}
               >
-                <QRCode value={address} size={150} />
+                <QRCode
+                  value={account.address ? account.address : ''}
+                  size={150}
+                />
               </div>
             </Fade>
             <h3 style={{ color: '#38A2FF' }}>Account:</h3>
@@ -179,11 +185,15 @@ class AccountView extends Component {
           }}
         >
           <HotspotsList hotspots={hotspots} loading={loading} />
-          <ActivityList type="account" address={address} hotspots={hotspots} />
+          <ActivityList
+            type="account"
+            address={account.address}
+            hotspots={hotspots}
+          />
         </Content>
       </AppLayout>
     )
   }
 }
 
-export default AccountView
+export default withRouter(AccountView)

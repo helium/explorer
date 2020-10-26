@@ -1,48 +1,14 @@
 import React, { Component } from 'react'
 import { Table, Descriptions } from 'antd'
-import ReactMapboxGl, { Marker } from 'react-mapbox-gl'
 import Client from '@helium/http'
 import animalHash from 'angry-purple-tiger'
+import dynamic from 'next/dynamic'
+import Link from 'next/link'
 
-const Mapbox = ReactMapboxGl({
-  accessToken:
-    'pk.eyJ1IjoicGV0ZXJtYWluIiwiYSI6ImNqMHA5dm8xbTAwMGQycXMwa3NucGptenQifQ.iVCDWzb16acgOKWz65AckA',
+const SCCloseMapbox = dynamic(() => import('../components/SCCloseMapbox'), {
+  ssr: false,
+  loading: () => <div />,
 })
-
-const styles = {
-  selectedMarker: {
-    width: 14,
-    height: 14,
-    borderRadius: '50%',
-    backgroundColor: '#1B8DFF',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '4px solid #fff',
-  },
-  transmittingMarker: {
-    width: 14,
-    height: 14,
-    borderRadius: '50%',
-    backgroundColor: 'black',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '4px solid #fff',
-  },
-  gatewayMarker: {
-    width: 14,
-    height: 14,
-    borderRadius: '50%',
-    backgroundColor: '#A984FF',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '3px solid #8B62EA',
-    boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
-    cursor: 'pointer',
-  },
-}
 
 class TxnSCClose extends Component {
   state = {
@@ -57,7 +23,9 @@ class TxnSCClose extends Component {
         key: 'client',
         render: (data) => (
           <span>
-            <a href={'/hotspots/' + data}>{animalHash(data)}</a>
+            <Link href={'/hotspots/' + data}>
+              <a>{animalHash(data)}</a>
+            </Link>
           </span>
         ),
       },
@@ -104,7 +72,7 @@ class TxnSCClose extends Component {
 
   async loadData() {
     const list = await this.client.hotspots.list()
-    const allSpots = await list.take(10000)
+    const allSpots = await list.take(20000)
     this.setState({ hotspots: allSpots })
   }
 
@@ -149,35 +117,13 @@ class TxnSCClose extends Component {
 
     return (
       <div>
-        <Mapbox
-          style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
-          container="map"
-          center={[-95.712891, 37.09024]}
-          containerStyle={{
-            height: '600px',
-            width: '100%',
-          }}
-          zoom={[3]}
-          movingMethod="jumpTo"
-        >
-          {txn.stateChannel.summaries.forEach((s) => {
-            const hotspot = hotspots.find((e) => e.address === s.client)
-            if (hotspot && hotspot.lng && hotspot.lat) {
-              return (
-                <Marker
-                  key={hotspot.address}
-                  style={styles.gatewayMarker}
-                  anchor="center"
-                  coordinates={[hotspot.lng, hotspot.lat]}
-                />
-              )
-            }
-          })}
-        </Mapbox>
+        <SCCloseMapbox hotspots={hotspots} txn={txn} />
 
         <Descriptions bordered>
           <Descriptions.Item label="Block Height" span={3}>
-            <a href={'/blocks/' + txn.height}>{txn.height}</a>
+            <Link href={'/blocks/' + txn.height}>
+              <a>{txn.height}</a>
+            </Link>
           </Descriptions.Item>
           <Descriptions.Item label="Total Packets" span={3}>
             {totalPackets.toLocaleString()}
@@ -192,12 +138,14 @@ class TxnSCClose extends Component {
             {totalHotspots.toLocaleString()}
           </Descriptions.Item>
           <Descriptions.Item label="State Channel Closer" span={3}>
-            <a href={'/accounts/' + txn.closer}>{txn.closer}</a>
+            <Link href={'/accounts/' + txn.closer}>
+              <a>{txn.closer}</a>
+            </Link>
           </Descriptions.Item>
           <Descriptions.Item label="State Channel Owner" span={3}>
-            <a href={'/accounts/' + txn.stateChannel.owner}>
-              {txn.stateChannel.owner}
-            </a>
+            <Link href={'/accounts/' + txn.stateChannel.owner}>
+              <a>{txn.stateChannel.owner}</a>
+            </Link>
           </Descriptions.Item>
         </Descriptions>
 

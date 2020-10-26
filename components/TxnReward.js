@@ -1,13 +1,18 @@
 import React, { Component } from 'react'
 import { Table } from 'antd'
 import TxnTag from '../components/TxnTag'
+import Link from 'next/link'
 
 const columns = [
   {
     title: 'Account',
     dataIndex: 'account',
     key: 'account',
-    render: (data) => <a href={'/accounts/' + data}>{data}</a>,
+    render: (data) => (
+      <Link href={'/accounts/' + data}>
+        <a>{data}</a>
+      </Link>
+    ),
   },
   {
     title: 'Rewards',

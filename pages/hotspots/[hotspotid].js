@@ -3,56 +3,21 @@ import { Row, Typography, Checkbox, Tooltip, Card, Table } from 'antd'
 import Client from '@helium/http'
 import round from 'lodash/round'
 import get from 'lodash/get'
-import AppLayout, { Content } from '../components/AppLayout'
-import ActivityList from '../components/ActivityList'
-import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
+import AppLayout, { Content } from '../../components/AppLayout'
+import ActivityList from '../../components/ActivityList'
 import Fade from 'react-reveal/Fade'
-import HotspotImg from '../images/hotspot.svg'
+import HotspotImg from '../../public/images/hotspot.svg'
 
-const { Title, Text } = Typography
+import { withRouter } from 'next/router'
+import dynamic from 'next/dynamic'
+import Link from 'next/link'
 
-const Mapbox = ReactMapboxGl({
-  accessToken:
-    'pk.eyJ1IjoicGV0ZXJtYWluIiwiYSI6ImNqMHA5dm8xbTAwMGQycXMwa3NucGptenQifQ.iVCDWzb16acgOKWz65AckA',
+const HotspotMapbox = dynamic(() => import('../../components/HotspotMapbox'), {
+  ssr: false,
+  loading: () => <div />,
 })
 
-const styles = {
-  selectedMarker: {
-    width: 14,
-    height: 14,
-    borderRadius: '50%',
-    backgroundColor: '#1B8DFF',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '4px solid #fff',
-  },
-  gatewayMarker: {
-    width: 14,
-    height: 14,
-    borderRadius: '50%',
-    backgroundColor: '#A984FF',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '3px solid #8B62EA',
-    boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
-    cursor: 'pointer',
-  },
-  witnessMarker: {
-    width: 14,
-    height: 14,
-    borderRadius: '50%',
-    backgroundColor: '#F1C40F',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '3px solid #B7950B',
-    boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
-    cursor: 'pointer',
-    opacity: 0.3,
-  },
-}
+const { Title, Text } = Typography
 
 const initialState = {
   hotspot: {},
@@ -68,30 +33,36 @@ class HotspotView extends Component {
 
   componentDidMount() {
     this.client = new Client()
-    this.loadData()
-    this.loadWitnesses()
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.location.pathname !== this.props.location.pathname) {
-      this.loadData()
+    const { hotspotid } = this.props.router.query
+    if (hotspotid !== undefined) {
+      this.loadData(hotspotid)
+      this.loadWitnesses(hotspotid)
     }
   }
 
-  async loadData() {
-    const { address } = this.props.match.params
+  componentDidUpdate(prevProps) {
+    if (prevProps.router.query !== this.props.router.query) {
+      const { hotspotid } = this.props.router.query
+      if (hotspotid !== undefined) {
+        this.loadData(hotspotid)
+      }
+    }
+  }
+
+  async loadData(hotspotid) {
+    // const { address } = this.props.match.params
     await this.setState(initialState)
-    const hotspot = await this.client.hotspots.get(address)
+    const hotspot = await this.client.hotspots.get(hotspotid)
     this.setState({ hotspot, loading: false })
   }
 
-  async loadWitnesses() {
-    const { address } = this.props.match.params
-    fetch('https://api.helium.io/v1/hotspots/' + address + '/witnesses')
+  async loadWitnesses(hotspotid) {
+    // const { address } = this.props.match.params
+    fetch('https://api.helium.io/v1/hotspots/' + hotspotid + '/witnesses')
       .then((res) => res.json())
       .then((witnessData) => {
         const witnessList = witnessData.data.filter(
-          (w) => !(w.address === address),
+          (w) => !(w.address === hotspotid),
         )
         this.setState({
           witnesses: witnessList,
@@ -114,12 +85,9 @@ class HotspotView extends Component {
         dataIndex: 'name',
         key: 'name',
         render: (data, row) => (
-          <a
-            style={{ fontFamily: 'soleil, sans-serif' }}
-            href={'/hotspots/' + row.address}
-          >
-            {data}
-          </a>
+          <Link href={'/hotspots/' + row.address}>
+            <a style={{ fontFamily: 'soleil, sans-serif' }}>{data}</a>
+          </Link>
         ),
       },
       {
@@ -156,64 +124,11 @@ class HotspotView extends Component {
             style={{ margin: '0 auto', maxWidth: 850 + 40 }}
             className="content-container-hotspot-view"
           >
-            <Mapbox
-              style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
-              container="map"
-              center={[
-                hotspot.lng ? hotspot.lng : 0,
-                hotspot.lat ? hotspot.lat : 0,
-              ]}
-              containerStyle={{
-                width: '100%',
-              }}
-              zoom={[11]}
-              movingMethod="jumpTo"
-            >
-              <Marker
-                key={hotspot.address}
-                style={styles.gatewayMarker}
-                anchor="center"
-                symbol="yolo"
-                coordinates={[
-                  hotspot.lng ? hotspot.lng : 0,
-                  hotspot.lat ? hotspot.lat : 0,
-                ]}
-              />
-
-              {showWitnesses &&
-                witnesses.map((w) => {
-                  return (
-                    <span>
-                      <Marker
-                        key={w.address}
-                        style={styles.witnessMarker}
-                        anchor="center"
-                        coordinates={[w.lng, w.lat]}
-                      ></Marker>
-                      <Layer
-                        key={'line-' + w.address}
-                        type="line"
-                        layout={{
-                          'line-cap': 'round',
-                          'line-join': 'round',
-                        }}
-                        paint={{
-                          'line-color': '#F1C40F',
-                          'line-width': 2,
-                          'line-opacity': 0.3,
-                        }}
-                      >
-                        <Feature
-                          coordinates={[
-                            [w.lng, w.lat],
-                            [hotspot.lng, hotspot.lat],
-                          ]}
-                        />
-                      </Layer>
-                    </span>
-                  )
-                })}
-            </Mapbox>
+            <HotspotMapbox
+              hotspot={hotspot}
+              witnesses={witnesses}
+              showWitnesses={showWitnesses}
+            />
             <div style={{ textAlign: 'right', paddingTop: 6, color: 'white' }}>
               <Checkbox
                 onChange={this.toggleWitnesses}
@@ -303,12 +218,9 @@ class HotspotView extends Component {
             <Content style={{ maxWidth: 850, margin: '0 auto' }}>
               <p style={{ color: 'white', margin: 0 }}>
                 Owned by: <br className="line-break-only-at-small" />
-                <a
-                  style={{ wordBreak: 'break-all' }}
-                  href={'/accounts/' + hotspot.owner}
-                >
-                  {hotspot.owner}
-                </a>
+                <Link href={'/accounts/' + hotspot.owner}>
+                  <a style={{ wordBreak: 'break-all' }}>{hotspot.owner}</a>
+                </Link>
               </p>
             </Content>
           </div>
@@ -349,4 +261,4 @@ class HotspotView extends Component {
   }
 }
 
-export default HotspotView
+export default withRouter(HotspotView)

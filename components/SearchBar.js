@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'next/router'
 import { Input } from 'antd'
 import Client from '@helium/http'
 
@@ -51,7 +51,7 @@ class SearchBar extends Component {
   }
 
   doSearch = async (term) => {
-    const { history } = this.props
+    const { router } = this.props
     const cleanTerm = term.trim()
     const [block, txn, account, hotspot, hotspotName] = await Promise.all([
       this.searchBlock(cleanTerm),
@@ -62,17 +62,17 @@ class SearchBar extends Component {
     ])
 
     if (block) {
-      history.push('/blocks/' + block.hash)
+      router.push('/blocks/' + block.hash)
     } else if (txn) {
-      history.push('/txns/' + txn.hash)
+      router.push('/txns/' + txn.hash)
     } else if (hotspot) {
-      history.push('/hotspots/' + hotspot.address)
+      router.push('/hotspots/' + hotspot.address)
     } else if (hotspotName) {
-      history.push('/hotspots/' + hotspotName.address)
+      router.push('/hotspots/' + hotspotName.address)
     } else if (account) {
-      history.push('/accounts/' + account.address)
+      router.push('/accounts/' + account.address)
     } else {
-      history.push('/error')
+      router.push('/error')
     }
   }
 

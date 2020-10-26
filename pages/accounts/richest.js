@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import AppLayout, { Content } from '../components/AppLayout'
+import AppLayout, { Content } from '../../components/AppLayout'
 import { Typography, Table } from 'antd'
+import Link from 'next/link'
 
 const { Title } = Typography
 
@@ -30,9 +31,9 @@ class RichList extends Component {
         dataIndex: 'address',
         key: 'address',
         render: (address) => (
-          <a href={`/accounts/${address}`} style={{ fontWeight: '600' }}>
-            {address}
-          </a>
+          <Link href={`/accounts/${address}`}>
+            <a style={{ fontWeight: '600' }}>{address}</a>
+          </Link>
         ),
       },
       {

@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import { Typography, Table, Card } from 'antd'
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
-import TxnTag from '../components/TxnTag'
-import AppLayout, { Content } from '../components/AppLayout'
-import LoadMoreButton from '../components/LoadMoreButton'
-import PieChart from '../components/PieChart'
-import withBlockHeight from '../components/withBlockHeight'
+import TxnTag from '../../components/TxnTag'
+import AppLayout, { Content } from '../../components/AppLayout'
+import LoadMoreButton from '../../components/LoadMoreButton'
+import PieChart from '../../components/PieChart'
+import withBlockHeight from '../../components/withBlockHeight'
+import { withRouter } from 'next/router'
+import Link from 'next/link'
 
 import {
   BackwardOutlined,
@@ -31,21 +33,22 @@ class BlockView extends Component {
 
   componentDidMount() {
     this.client = new Client()
-    this.loadData()
+    const { blockid } = this.props.router.query
+    if (blockid !== undefined) this.loadData(blockid)
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.location.pathname !== this.props.location.pathname) {
-      this.loadData()
+    if (prevProps.router.query !== this.props.router.query) {
+      const { blockid } = this.props.router.query
+      if (blockid !== undefined) this.loadData(blockid)
     }
   }
 
-  loadData = async () => {
-    const { hash } = this.props.match.params
+  loadData = async (blockid) => {
     await this.setState(initialState)
     const [block, txnList] = await Promise.all([
-      this.client.blocks.get(hash),
-      this.client.block(hash).transactions.list(),
+      this.client.blocks.get(blockid),
+      this.client.block(blockid).transactions.list(),
     ])
     this.txnList = txnList
     this.setState({ block, loading: false })
@@ -89,7 +92,11 @@ class BlockView extends Component {
         title: 'Hash',
         dataIndex: 'hash',
         key: 'hash',
-        render: (hash) => <a href={'/txns/' + hash}>{hash}</a>,
+        render: (hash) => (
+          <Link href={'/txns/' + hash}>
+            <a>{hash}</a>
+          </Link>
+        ),
       },
       {
         title: 'Fee (DC)',
@@ -154,13 +161,12 @@ class BlockView extends Component {
 
             <hr />
             <div className="block-view-summary-container">
-              <a
-                href={`/blocks/${block.height - 1}`}
-                className="button block-view-prev-button"
-              >
-                <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
-                Block
-              </a>
+              <Link href={`/blocks/${block.height - 1}`}>
+                <a className="button block-view-prev-button">
+                  <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
+                  Block
+                </a>
+              </Link>
               <span className="block-view-summary-info">
                 <h3>
                   <ClockCircleOutlined
@@ -189,12 +195,12 @@ class BlockView extends Component {
                 )}
               </span>
               {block.height < this.props.height ? (
-                <a
-                  href={`/blocks/${block.height + 1}`}
-                  className="button block-view-next-button"
-                >
-                  Next Block <ForwardOutlined style={{ marginRight: '-6px' }} />
-                </a>
+                <Link href={`/blocks/${block.height + 1}`}>
+                  <a className="button block-view-next-button">
+                    Next Block{' '}
+                    <ForwardOutlined style={{ marginRight: '-6px' }} />
+                  </a>
+                </Link>
               ) : (
                 <span
                   className="block-view-next-button"
@@ -238,7 +244,6 @@ class BlockView extends Component {
             border-top: 1px solid #494b7b;
             margin: 40px 0;
           }
-
           .chartplaceholder {
             width: 350px;
             height: 200px;
@@ -253,4 +258,4 @@ class BlockView extends Component {
 
 const WrappedBlockView = withBlockHeight(BlockView)
 
-export default WrappedBlockView
+export default withRouter(WrappedBlockView)

@@ -10,7 +10,8 @@ import PieChart from '../../components/PieChart'
 import TxnReward from '../../components/TxnReward'
 import TxnSCClose from '../../components/TxnSCClose'
 import animalHash from 'angry-purple-tiger'
-
+import { withRouter } from 'next/router'
+import Link from 'next/link'
 import { ClockCircleOutlined, WalletOutlined } from '@ant-design/icons'
 import Block from '../../public/images/block.svg'
 

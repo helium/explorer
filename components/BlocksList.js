@@ -4,6 +4,7 @@ import Timestamp from 'react-timestamp'
 import Client from '@helium/http'
 import LoadMoreButton from './LoadMoreButton'
 const { Text } = Typography
+import Link from 'next/link'
 
 class BlocksList extends Component {
   state = {
@@ -33,9 +34,9 @@ class BlocksList extends Component {
         dataIndex: 'height',
         key: 'height',
         render: (height) => (
-          <a href={`/blocks/${height}`} style={{ fontWeight: '600' }}>
-            {height.toLocaleString()}
-          </a>
+          <Link href={`/blocks/${height}`}>
+            <a style={{ fontWeight: '600' }}>{height.toLocaleString()}</a>
+          </Link>
         ),
       },
       {

@@ -7,6 +7,7 @@ import TxnTag from './TxnTag'
 import LoadMoreButton from './LoadMoreButton'
 import { Content } from './AppLayout'
 import ExportCSV from './ExportCSV'
+import Link from 'next/link'
 
 const { Text } = Typography
 
@@ -231,21 +232,31 @@ const columns = (ownerAddress) => {
       title: 'Hash',
       dataIndex: 'hash',
       key: 'hash',
-      render: (data) => <a href={`/txns/${data}`}>{data.substring(0, 6)}...</a>,
+      render: (data) => (
+        <Link href={`/txns/${data}`}>
+          <a>{data.substring(0, 6)}...</a>
+        </Link>
+      ),
     },
     {
       title: 'Amount',
       dataIndex: 'amount',
       key: 'amount',
       render: (txt, txn) => (
-        <a href={`/txns/${txn.hash}`}>{activityAmount(txn)}</a>
+        <Link href={`/txns/${txn.hash}`}>
+          <a>{activityAmount(txn)}</a>
+        </Link>
       ),
     },
     {
       title: 'Block Height',
       dataIndex: 'height',
       key: 'height',
-      render: (height) => <a href={`/blocks/${height}`}>{height}</a>,
+      render: (height) => (
+        <Link href={`/blocks/${height}`}>
+          <a>{height}</a>
+        </Link>
+      ),
     },
     {
       title: 'Time',

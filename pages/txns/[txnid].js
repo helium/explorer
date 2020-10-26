@@ -15,6 +15,7 @@ import { withRouter } from 'next/router'
 import Link from 'next/link'
 
 import { ClockCircleOutlined } from '@ant-design/icons'
+import { WalletOutlined } from '@ant-design/icons'
 import Block from '../../public/images/block.svg'
 
 const { Title, Text } = Typography

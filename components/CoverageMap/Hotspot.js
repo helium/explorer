@@ -77,13 +77,16 @@ export default class Hotspot extends Component {
           }
 
           .hotspot-owner {
-            font-size: 10px;
+            font-size: 9px;
             color: #a0b0c2;
             margin-top: 8px;
-            display: inline-block;
             overflow: hidden;
             margin-top: 15px;
             opacity: 0.6;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
           }
 
           .hotspot-score {
@@ -98,6 +101,7 @@ export default class Hotspot extends Component {
 
           .owner {
             height: 10px;
+            margin-right: 5px;
             display: inline-block;
           }
 

@@ -58,45 +58,50 @@ export default class HotspotSidebar extends Component {
       selectedHotspots.length > 0 ? selectedHotspots : filteredHotspots
 
     return (
-      <Sidebar>
-        <SidebarHeader>
-          {selectedHotspots.length > 0 ? (
-            <div className="header-search">
-              <span className="header-go-back" onClick={clearSelectedHotspots}>
-                <img src="/images/back.svg" className="header-back-img" /> Back
+      <span className="coverage-map-sidebar">
+        <Sidebar>
+          <SidebarHeader>
+            {selectedHotspots.length > 0 ? (
+              <div className="header-search">
+                <span
+                  className="header-go-back"
+                  onClick={clearSelectedHotspots}
+                >
+                  <img src="/images/back.svg" className="header-back-img" />{' '}
+                  Back
+                </span>
+              </div>
+            ) : (
+              <div className="header-search">
+                <input
+                  type="search"
+                  className="search"
+                  placeholder="Hotspot Lookup"
+                  value={this.state.filter}
+                  onChange={this.updateFilter}
+                />
+              </div>
+            )}
+            <div className="header-title-section">
+              <span className="header-title mono">
+                {selectedHotspots.length > 0 ? hotspotsToFilter.length : count}
               </span>
+              <span className="header-subtitle mono">{titleText}</span>
             </div>
-          ) : (
-            <div className="header-search">
-              <input
-                type="search"
-                className="search"
-                placeholder="Hotspot Lookup"
-                value={this.state.filter}
-                onChange={this.updateFilter}
-              />
-            </div>
-          )}
-          <div className="header-title-section">
-            <span className="header-title mono">
-              {selectedHotspots.length > 0 ? hotspotsToFilter.length : count}
-            </span>
-            <span className="header-subtitle mono">{titleText}</span>
-          </div>
-        </SidebarHeader>
+          </SidebarHeader>
 
-        <SidebarScrollable loadMore={this.loadMore}>
-          {hotspotsToShow.map((hotspot) => (
-            <div key={hotspot.address}>
-              <Hotspot
-                key={hotspot.address}
-                hotspot={hotspot}
-                selectHotspots={selectHotspots}
-              />
-            </div>
-          ))}
-        </SidebarScrollable>
-
+          <SidebarScrollable loadMore={this.loadMore}>
+            {hotspotsToShow.map((hotspot) => (
+              <div key={hotspot.address}>
+                <Hotspot
+                  key={hotspot.address}
+                  hotspot={hotspot}
+                  selectHotspots={selectHotspots}
+                />
+              </div>
+            ))}
+          </SidebarScrollable>
+        </Sidebar>
         <style jsx>{`
           .header-search {
             margin-bottom: 20px;
@@ -111,6 +116,13 @@ export default class HotspotSidebar extends Component {
             -webkit-appearance: none;
             border-radius: 6px;
             border: none;
+          }
+
+          @media screen and (max-width: 890px) {
+            .search {
+              font-size: 16px;
+              /* So that pressing on the input field on a phone doesn't cause the UI to zoom in slightly */
+            }
           }
 
           .search::placeholder {
@@ -137,7 +149,6 @@ export default class HotspotSidebar extends Component {
             font-weight: 500;
             max-width: 200px;
             line-height: normal;
-            font-family: 'soleil';
           }
 
           .header-go-back {
@@ -155,7 +166,7 @@ export default class HotspotSidebar extends Component {
             margin-right: 6px;
           }
         `}</style>
-      </Sidebar>
+      </span>
     )
   }
 }

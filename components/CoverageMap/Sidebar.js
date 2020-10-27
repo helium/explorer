@@ -2,7 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import InfiniteScroll from 'react-infinite-scroller'
 
-export default ({ autoHeight = false, children }) => (
+const Sidebar = ({ autoHeight = false, children }) => (
   <aside className={classNames({ autoHeight })}>
     {children}
     <style jsx>{`
@@ -23,6 +23,16 @@ export default ({ autoHeight = false, children }) => (
 
       aside.autoHeight {
         bottom: auto;
+      }
+      @media screen and (max-width: 890px) {
+        aside {
+          width: 100%;
+          left: 0px;
+          right: 0px;
+          bottom: 0px;
+          top: 50vh;
+          border-radius: 0px;
+        }
       }
     `}</style>
   </aside>
@@ -105,3 +115,5 @@ const InfiniteScrollSidebar = ({ loadMore, children }) => (
     `}</style>
   </section>
 )
+
+export default Sidebar

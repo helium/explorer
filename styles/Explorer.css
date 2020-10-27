@@ -303,6 +303,11 @@ hr {
   border-radius: 0 0 10px 10px;
 }
 
+.interactive-coverage-map > .mapboxgl-map {
+  /* position: absolute; */
+  height: 100vh;
+}
+
 .hotspot-name > h1 {
   line-height: 0.7;
 }
@@ -369,7 +374,12 @@ hr {
   .block-view-clock-icon {
     margin-left: 0px;
   }
+  .interactive-coverage-map > .mapboxgl-map {
+    position: absolute;
+    height: 50vh;
+  }
 }
+
 @media screen and (max-width: 640px) {
   .logo-container {
     margin-right: 12px;

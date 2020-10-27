@@ -113,28 +113,29 @@ class CoverageMap extends React.Component {
     const { hasGeolocation } = this.state
 
     return (
-      <Mapbox
-        style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
-        containerStyle={{
-          position: 'relative',
-          width: '100%',
-          height: '100vh',
-          overflow: 'visible',
-        }}
-        center={this.state.center}
-        zoom={this.state.zoom}
-        onStyleLoad={(map) => {
-          this.setState({ map })
-        }}
-        ref={(e) => {
-          this.map = e
-        }}
-      >
-        {this.renderOverviewMap()}
-        {hasGeolocation && (
-          <GeolocationButton onClick={this.handleGeolocationButtonClick} />
-        )}
-      </Mapbox>
+      <span className="interactive-coverage-map">
+        <Mapbox
+          style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
+          containerStyle={{
+            position: 'relative',
+            width: '100%',
+            overflow: 'visible',
+          }}
+          center={this.state.center}
+          zoom={this.state.zoom}
+          onStyleLoad={(map) => {
+            this.setState({ map })
+          }}
+          ref={(e) => {
+            this.map = e
+          }}
+        >
+          {this.renderOverviewMap()}
+          {hasGeolocation && (
+            <GeolocationButton onClick={this.handleGeolocationButtonClick} />
+          )}
+        </Mapbox>
+      </span>
     )
   }
 }

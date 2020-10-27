@@ -1,13 +1,13 @@
 import React from 'react'
-// import Head from 'next/head'
-import Typekit from 'react-typekit'
+import Head from 'next/head'
 
 export default ({ children, backgroundColor = '#212E3A' }) => (
   <article>
-    <head>
-      <Typekit kitId="qfu3tzp" />
+    <Head>
+      <link rel="stylesheet" href="https://use.typekit.net/qfu3tzp.css"></link>
+      <link rel="stylesheet" href="https://use.typekit.net/bum5vme.css"></link>
       <link rel="icon" type="image/png" href="static/img/favicon.png" />
-    </head>
+    </Head>
 
     <style jsx global>{`
       html,
@@ -145,7 +145,7 @@ export default ({ children, backgroundColor = '#212E3A' }) => (
         height: 100vh;
       }
       .mono {
-        font-family: 'inputmono', monaco, monospace !important;
+        font-family: 'input-mono', monaco, monospace !important;
       }
     `}</style>
     {children}

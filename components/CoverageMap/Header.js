@@ -4,49 +4,20 @@ import Link from 'next/link'
 
 const CoverageHeader = ({ activeNav }) => {
   return (
-    <header>
+    <header
+      style={{
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+      }}
+    >
       <Link href="/">
-        <a>
-          {/* Block Explorer */}
-          <img className="logo" src="/images/logo.svg" />
+        <a className="back-container">
+          <img src="/images/back.svg" className="back-image" />
+          <span className="back-text">Block Explorer</span>
         </a>
       </Link>
-
-      <nav className="nav">
-        <Link href="/coverage">
-          <a
-            // className={classNames({ active: activeNav === 'coverage' })}>
-            className={'text-link'}
-          >
-            Hotspot Map
-          </a>
-        </Link>
-
-        {/*<Link href="/challenges">
-        <a className={classNames({ active: activeNav === 'challenges' })}>
-          Challenges
-        </a>
-      </Link>
-
-      {true && (
-        <Link href="/consensus">
-          <a className={classNames({ active: activeNav === 'consensus' })}>
-            Consensus
-          </a>
-        </Link>
-      )}*/}
-        <Link href="/">
-          <a
-            // href="https://explorer.helium.com/"
-            // <a
-            // className={classNames({ active: activeNav === 'blocks' })}
-            className={'text-link'}
-          >
-            Block Explorer
-            {/* </a> */}
-          </a>
-        </Link>
-      </nav>
 
       <style jsx>{`
         header {
@@ -63,28 +34,41 @@ const CoverageHeader = ({ activeNav }) => {
           z-index: 1;
         }
 
-        .logo {
-          height: 28px;
+        @media screen and (max-width: 890px) {
+          header {
+            padding: 0 10px;
+          }
         }
 
-        .logo:hover {
-          cursor: pointer;
+        .back-container {
+          min-width: 150px;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
         }
 
-        .text-link {
+        .back-image {
+          height: 22px;
+          padding: 5px;
+        }
+
+        .back-text {
           text-decoration: none;
-          color: #566d80;
+          color: #a0b0c2;
           font-size: 16px;
           font-weight: 500;
-          padding: 14px 20px;
+          padding: 14px 5px;
           transition: color 0.2s;
         }
 
-        .text-link:hover {
+        .back-text:hover {
           color: #b377ff;
         }
+        .back-image:hover {
+          fill: #b377ff;
+        }
 
-        .text-link.active {
+        .back-text.active {
           color: #b377ff;
         }
       `}</style>

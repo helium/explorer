@@ -16,9 +16,9 @@ const Mapbox = ReactMapboxGl({
 
 const circleLayout = {
   'circle-color': '#29d391',
-  'circle-radius': 5,
-  'circle-opacity': 0.4,
-  'circle-blur': 0.8,
+  'circle-radius': 3,
+  'circle-opacity': 0.5,
+  'circle-blur': 0.95,
 }
 
 class CoverageMap extends React.Component {

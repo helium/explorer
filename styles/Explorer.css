@@ -224,7 +224,7 @@ hr {
   margin-right: 20px;
 }
 
-.block-height {
+.map-button {
   min-width: 127px;
   display: flex;
   align-items: center;
@@ -348,6 +348,20 @@ hr {
   background-color: #29d391;
 }
 
+@media screen and (max-width: 1200px) {
+  .map-button {
+    min-width: auto;
+    font-size: 14px;
+    height: 10px;
+    margin-left: 12px;
+    flex-direction: column;
+    padding-left: 10px;
+  }
+
+  .map-button-text {
+    display: none;
+  }
+}
 @media screen and (max-width: 890px) {
   .block-view-summary-info {
     flex-direction: column;
@@ -366,13 +380,7 @@ hr {
   .logo-small {
     display: block;
   }
-  .block-height {
-    min-width: auto;
-    font-size: 14px;
-    height: 10px;
-    margin-left: 12px;
-    flex-direction: column;
-  }
+
   .summary-header {
     margin-bottom: 0px;
   }

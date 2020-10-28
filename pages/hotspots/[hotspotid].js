@@ -45,6 +45,7 @@ class HotspotView extends Component {
       const { hotspotid } = this.props.router.query
       if (hotspotid !== undefined) {
         this.loadData(hotspotid)
+        this.loadWitnesses(hotspotid)
       }
     }
   }
@@ -66,6 +67,7 @@ class HotspotView extends Component {
         )
         this.setState({
           witnesses: witnessList,
+          showWitnesses: false,
         })
       })
   }
@@ -132,6 +134,7 @@ class HotspotView extends Component {
             <div style={{ textAlign: 'right', paddingTop: 6, color: 'white' }}>
               <Checkbox
                 onChange={this.toggleWitnesses}
+                checked={showWitnesses}
                 style={{ color: 'white' }}
               >
                 Show witnesses

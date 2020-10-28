@@ -31,6 +31,7 @@ class CoverageMap extends React.Component {
     center: [-98.5795, 39.8283],
     zoom: [3],
     hasGeolocation: false,
+    flyingComplete: false,
   }
 
   componentDidUpdate(prevProps) {
@@ -40,6 +41,19 @@ class CoverageMap extends React.Component {
       this.props.coords !== null
     ) {
       this.setState({ hasGeolocation: true })
+    }
+
+    if (
+      // If the selected hotspots change...
+      prevProps.selectedHotspots !== this.props.selectedHotspots ||
+      // or if the same already selected hotspot is selected again...
+      (prevProps.selectedHotspots.length > 0 &&
+        this.props.selectedHotspots > 0 &&
+        prevProps.selectedHotspots[0].address ===
+          this.props.selectedHotspots[0].address)
+    ) {
+      // reset the flyingComplete flag so the flying event can start again
+      this.setState({ flyingComplete: false })
     }
   }
 
@@ -85,12 +99,37 @@ class CoverageMap extends React.Component {
       Point: ['lat', 'lng'],
     })
 
+    let flying = false
+
     if (selectedHotspots.length > 0) {
       if (!this.state.map) return
-      this.state.map.flyTo({
-        center: [selectedHotspots[0].lng, selectedHotspots[0].lat],
-        zoom: 14,
-      })
+
+      if (!this.state.flyingComplete) {
+        if (!flying) {
+          this.state.map.flyTo({
+            center: [selectedHotspots[0].lng, selectedHotspots[0].lat],
+            zoom: 14,
+          })
+          // So that we know that the map is currently flying from one location to another
+          this.state.map.fire('flystart')
+          flying = true
+        }
+
+        if (flying) {
+          // While the flying event is happening, wait until it's completed
+          // (either by the user interrupting it, or once it reaches its end state)
+          this.state.map.once('moveend', (event) => {
+            // Once it's finished, reset the flying flag
+            flying = false
+            // Set the flyingComplete flag to true so this code chunk doesn't keep running
+            this.setState({ flyingComplete: true })
+            // Set zoom state variable to what the zoom level was when the flying event stopped
+            // Without setting this, the manual zoom +/- buttons would be incrementing or
+            // decrementing the zoom level from before the fly action started
+            this.setState({ zoom: [event.target.transform.tileZoom] })
+          })
+        }
+      }
     }
 
     return (

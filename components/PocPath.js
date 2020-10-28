@@ -37,6 +37,7 @@ class PocPath extends Component {
           <PocMapbox path={path} showWitnesses={showWitnesses} />
           <Checkbox
             onChange={this.toggleWitnesses}
+            checked={showWitnesses}
             style={{ color: 'black', float: 'right' }}
           >
             Show witnesses

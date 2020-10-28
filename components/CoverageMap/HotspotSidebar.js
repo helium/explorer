@@ -4,7 +4,6 @@ import Hotspot from './Hotspot'
 import animalHash from 'angry-purple-tiger'
 import lowerCase from 'lodash/lowerCase'
 import Link from 'next/link'
-import { BarChartOutlined } from '@ant-design/icons'
 
 export default class HotspotSidebar extends Component {
   state = {
@@ -77,7 +76,10 @@ export default class HotspotSidebar extends Component {
                     <Link href={`/hotspots/${selectedHotspots[0].address}`}>
                       <a className="header-view-details">
                         View hotspot details
-                        <BarChartOutlined style={{ marginLeft: 10 }} />
+                        <img
+                          src="/images/back.svg"
+                          className="header-fwd-img"
+                        />{' '}
                       </a>
                     </Link>
                   </>
@@ -190,6 +192,11 @@ export default class HotspotSidebar extends Component {
           .header-back-img {
             height: 10px;
             margin-right: 6px;
+          }
+          .header-fwd-img {
+            height: 10px;
+            margin-left: 6px;
+            transform: rotate(180deg);
           }
         `}</style>
       </span>

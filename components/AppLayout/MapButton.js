@@ -10,7 +10,10 @@ class MapButton extends Component {
         <Link href="/coverage">
           <a
             className="map-button"
-            style={{ textAlign: 'center', lineHeight: 1.5715 }}
+            style={{
+              textAlign: 'center',
+              lineHeight: 1.5715,
+            }}
           >
             <GlobalOutlined
               style={{

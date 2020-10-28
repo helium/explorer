@@ -366,12 +366,17 @@ hr {
 .mapboxgl-ctrl-bottom-right {
   display: none !important;
 }
+.map-button {
+  min-width: 127px;
+}
+.map-button-text {
+  font-size: 14px;
+}
 
 @media screen and (max-width: 1200px) {
   .map-button {
-    min-width: auto;
+    min-width: 0;
     font-size: 14px;
-    height: 10px;
     margin-left: 12px;
     flex-direction: column;
     padding-left: 10px;

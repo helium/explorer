@@ -1,7 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 
-export default ({ children, backgroundColor = '#212E3A' }) => (
+const Page = ({ children, backgroundColor = '#212E3A' }) => (
   <article>
     <Head>
       <link rel="stylesheet" href="https://use.typekit.net/qfu3tzp.css"></link>
@@ -151,3 +151,5 @@ export default ({ children, backgroundColor = '#212E3A' }) => (
     {children}
   </article>
 )
+
+export default Page

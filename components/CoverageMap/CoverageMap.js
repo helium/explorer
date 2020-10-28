@@ -4,13 +4,16 @@ import geoJSON from 'geojson'
 import get from 'lodash/get'
 import GeolocationButton from './GeolocationButton'
 
+const maxZoom = 14
+const minZoom = 3
+
 const Mapbox = ReactMapboxGl({
   accessToken:
     'pk.eyJ1IjoicGV0ZXJtYWluIiwiYSI6ImNqMHA5dm8xbTAwMGQycXMwa3NucGptenQifQ.iVCDWzb16acgOKWz65AckA',
   interactive: true,
   touchZoomRotate: true,
-  maxZoom: 14,
-  minZoom: 3,
+  maxZoom: maxZoom,
+  minZoom: minZoom,
 })
 
 const circleLayout = {
@@ -37,6 +40,16 @@ class CoverageMap extends React.Component {
       this.props.coords !== null
     ) {
       this.setState({ hasGeolocation: true })
+    }
+  }
+
+  handleMapZoomButtons = (event) => {
+    const zoomArray = this.state.zoom
+
+    if (event.target.id === 'zoom-in' && zoomArray[0] !== maxZoom) {
+      this.setState((prevState) => ({ zoom: [prevState.zoom[0] + 1] }))
+    } else if (event.target.id === 'zoom-out' && zoomArray[0] !== minZoom) {
+      this.setState((prevState) => ({ zoom: [prevState.zoom[0] - 1] }))
     }
   }
 
@@ -114,6 +127,24 @@ class CoverageMap extends React.Component {
 
     return (
       <span className="interactive-coverage-map">
+        <button
+          id="zoom-in"
+          className="map-zoom-button map-zoom-in-button"
+          onClick={this.handleMapZoomButtons}
+        >
+          <span id="zoom-in" className="unselectable-text">
+            +
+          </span>
+        </button>
+        <button
+          id="zoom-out"
+          className="map-zoom-button map-zoom-out-button"
+          onClick={this.handleMapZoomButtons}
+        >
+          <span id="zoom-out" className="unselectable-text">
+            -
+          </span>
+        </button>
         <Mapbox
           style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
           containerStyle={{
@@ -135,6 +166,50 @@ class CoverageMap extends React.Component {
             <GeolocationButton onClick={this.handleGeolocationButtonClick} />
           )}
         </Mapbox>
+        <style jsx>{`
+          .map-zoom-button {
+            position: absolute;
+            height: 50px;
+            width: 50px;
+            font-size: 24px;
+            text-align: center;
+            border-radius: 50px;
+            right: 20px;
+            z-index: 3;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(12, 21, 30);
+            color: white;
+            transition: all 0.3s;
+          }
+          .map-zoom-button:hover {
+            transform: scale(1.1, 1.1);
+          }
+
+          .map-zoom-in-button {
+            bottom: 110px;
+          }
+          .map-zoom-out-button {
+            bottom: 40px;
+          }
+          .map-zoom-button:focus {
+            outline: none;
+          }
+
+          @media screen and (max-width: 890px) {
+            .map-zoom-button {
+              right: 10px;
+            }
+            .map-zoom-in-button {
+              bottom: calc(50vh + 70px);
+            }
+            .map-zoom-out-button {
+              bottom: calc(50vh + 10px);
+            }
+          }
+        `}</style>
       </span>
     )
   }

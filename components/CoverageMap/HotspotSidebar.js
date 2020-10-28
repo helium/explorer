@@ -133,6 +133,7 @@ export default class HotspotSidebar extends Component {
           .header-title-section {
             display: flex;
             align-items: flex-end;
+            padding-top: 10px;
           }
 
           .header-title {
@@ -140,7 +141,7 @@ export default class HotspotSidebar extends Component {
             font-size: 60px;
             font-weight: 500;
             margin-right: 10px;
-            line-height: 60px;
+            line-height: 48px;
           }
 
           .header-subtitle {

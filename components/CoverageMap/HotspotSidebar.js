@@ -3,6 +3,8 @@ import Sidebar, { SidebarHeader, SidebarScrollable } from './Sidebar'
 import Hotspot from './Hotspot'
 import animalHash from 'angry-purple-tiger'
 import lowerCase from 'lodash/lowerCase'
+import Link from 'next/link'
+import { BarChartOutlined } from '@ant-design/icons'
 
 export default class HotspotSidebar extends Component {
   state = {
@@ -70,6 +72,16 @@ export default class HotspotSidebar extends Component {
                   <img src="/images/back.svg" className="header-back-img" />{' '}
                   Back
                 </span>
+                {selectedHotspots.length === 1 && (
+                  <>
+                    <Link href={`/hotspots/${selectedHotspots[0].address}`}>
+                      <a className="header-view-details">
+                        View hotspot details
+                        <BarChartOutlined style={{ marginLeft: 10 }} />
+                      </a>
+                    </Link>
+                  </>
+                )}
               </div>
             ) : (
               <div className="header-search">
@@ -105,6 +117,10 @@ export default class HotspotSidebar extends Component {
         <style jsx>{`
           .header-search {
             margin-bottom: 20px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
           }
 
           .search {
@@ -159,6 +175,15 @@ export default class HotspotSidebar extends Component {
             display: flex;
             align-items: center;
             width: 75px;
+            padding: 6px 0;
+          }
+
+          .header-view-details {
+            color: #a0b0c2;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
             padding: 6px 0;
           }
 

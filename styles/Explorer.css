@@ -232,6 +232,15 @@ hr {
   font-size: 17px;
 }
 
+.ant-descriptions-item-content p {
+  display: table-cell;
+}
+
+.proof {
+  padding-bottom: 12px;
+  word-break: break-all;
+}
+
 .summary-header {
   margin-bottom: 100px;
 }

@@ -78,7 +78,6 @@ const styles = {
 }
 
 const PocMapbox = ({ path, showWitnesses }) => {
-  console.log(path)
   return (
     <Mapbox
       style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}

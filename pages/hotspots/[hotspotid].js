@@ -211,7 +211,6 @@ export async function getStaticPaths() {
   }
 }
 
-// This also gets called at build time
 export async function getStaticProps({ params }) {
   const client = new Client()
   const { hotspotid } = params

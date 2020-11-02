@@ -36,7 +36,7 @@ const hotspotColumns = [
     key: 'location',
     render: (data) => (
       <span>
-        {data.longCity}, {data.shortState}
+        {data.longCity}, {data.shortState}, {data.shortCountry}
       </span>
     ),
   },

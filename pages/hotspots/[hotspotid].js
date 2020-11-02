@@ -98,7 +98,7 @@ class HotspotView extends Component {
         key: 'location',
         render: (data) => (
           <span>
-            {data.long_city}, {data.short_state}
+            {data.long_city}, {data.short_state}, {data.short_country}
           </span>
         ),
       },
@@ -141,7 +141,8 @@ class HotspotView extends Component {
               </Checkbox>
               <p style={{ marginBottom: '-20px' }}>
                 {get(hotspot, 'geocode.longCity')},{' '}
-                {get(hotspot, 'geocode.shortState')}
+                {get(hotspot, 'geocode.shortState')},{' '}
+                {get(hotspot, 'geocode.shortCountry')}
               </p>
             </div>
             <Row style={{ paddingTop: 30 }}>

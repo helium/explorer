@@ -8,6 +8,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Component {...pageProps} />
+      <script src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js"></script>
     </>
   )
 }

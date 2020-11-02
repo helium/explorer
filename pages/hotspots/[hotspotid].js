@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Row, Typography, Checkbox, Tooltip, Card, Table } from 'antd'
 import Client from '@helium/http'
 import round from 'lodash/round'
-import get from 'lodash/get'
 import AppLayout, { Content } from '../../components/AppLayout'
 import ActivityList from '../../components/ActivityList'
 import Fade from 'react-reveal/Fade'
@@ -98,7 +97,18 @@ class HotspotView extends Component {
         key: 'location',
         render: (data) => (
           <span>
-            {data.long_city}, {data.short_state}, {data.short_country}
+            {data?.long_city === null &&
+            data?.short_state === null &&
+            data?.long_country === null
+              ? // The location data didn't load properly
+                `No location data`
+              : // The hotspot has location data
+                `${data?.long_city}, ${
+                  data?.short_state !== null && data?.short_state !== undefined
+                    ? // Add the state if it's included in the data
+                      `${data?.short_state}, `
+                    : ``
+                }${data?.long_country}`}
           </span>
         ),
       },
@@ -140,9 +150,24 @@ class HotspotView extends Component {
                 Show witnesses
               </Checkbox>
               <p style={{ marginBottom: '-20px' }}>
-                {get(hotspot, 'geocode.longCity')},{' '}
-                {get(hotspot, 'geocode.shortState')},{' '}
-                {get(hotspot, 'geocode.shortCountry')}
+                {hotspot?.geocode?.longCity === undefined &&
+                hotspot?.geocode?.shortState === undefined &&
+                hotspot?.geocode?.longCountry === undefined
+                  ? // Still loading the location data
+                    `Loading location data...`
+                  : hotspot?.geocode?.longCity === null &&
+                    hotspot?.geocode?.shortState === null &&
+                    hotspot?.geocode?.longCountry === null
+                  ? // The hotspot doesn't have a location
+                    `No location data`
+                  : // The hotspot has location data
+                    `${hotspot?.geocode?.longCity}, ${
+                      hotspot?.geocode?.shortState !== null &&
+                      hotspot?.geocode?.shortState !== undefined
+                        ? // Add the state if it's included in the data
+                          `${hotspot?.geocode?.shortState}, `
+                        : ``
+                    }${hotspot?.geocode?.longCountry}`}
               </p>
             </div>
             <Row style={{ paddingTop: 30 }}>

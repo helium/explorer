@@ -6,13 +6,11 @@ import { Typography } from 'antd'
 import Fade from 'react-reveal/Fade'
 import dynamic from 'next/dynamic'
 
-// import MiniCoverageMap from '../components/CoverageMap/MiniCoverageMap'
-
 const MiniCoverageMap = dynamic(
   () => import('../components/CoverageMap/MiniCoverageMap'),
   {
     ssr: false,
-    loading: () => <div />,
+    loading: () => <div style={{ height: '500px' }} />,
   },
 )
 import Client from '@helium/http'

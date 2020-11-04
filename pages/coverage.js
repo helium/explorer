@@ -5,6 +5,7 @@ import Page from '../components/CoverageMap/Page'
 import dynamic from 'next/dynamic'
 import HotspotSidebar from '../components/CoverageMap/HotspotSidebar'
 import { fetchHotspots } from '../data/hotspots'
+import { Client } from '@helium/http'
 
 const Map = dynamic(() => import('../components/CoverageMap/CoverageMap'), {
   ssr: false,
@@ -46,21 +47,15 @@ const Coverage = (props) => {
 export default Coverage
 
 export async function getStaticProps() {
-  let props = {}
+  const client = new Client()
+  const stats = await client.stats.get()
+  const newCount = stats.counts.hotspots
 
-  await fetch('https://api.helium.io/v1/stats')
-    .then((res) => res.json())
-    .then((stats) => {
-      let newCount = stats.data.counts.hotspots
-      props = {
-        ...props,
-        count: newCount,
-      }
-    })
   const newHotspots = await fetchHotspots()
-  props = {
-    ...props,
+
+  let props = {
     hotspots: newHotspots,
+    count: newCount,
   }
 
   return {

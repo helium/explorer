@@ -4,7 +4,7 @@ import round from 'lodash/round'
 import { Content } from './AppLayout'
 import Link from 'next/link'
 
-const HotspotsList = ({ hotspots, loading }) => (
+const HotspotsList = ({ hotspots, loading = false }) => (
   <Content style={{ marginBottom: 20 }}>
     <Card loading={loading} title={'Hotspots'}>
       <Table

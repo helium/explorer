@@ -14,6 +14,17 @@ const MetaTags = ({ title, description, openGraphImageFullUrl, url }) => {
   return (
     <>
       <Head>
+        {/* General Meta Tags */}
+        <meta charset="utf-8" />
+        <link rel="icon" href="https://explorer.helium.com/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <link
+          rel="apple-touch-icon"
+          href="https://explorer.helium.com/logo192.png"
+        />
+        <link rel="manifest" href="https://explorer.helium.com/manifest.json" />
+
         {/* Primary Meta Tags */}
         <title>{metaTitle}</title>
 
@@ -21,8 +32,8 @@ const MetaTags = ({ title, description, openGraphImageFullUrl, url }) => {
         <meta name="description" content={metaDescription} />
 
         {/* Item Props */}
-        <meta itemprop="name" content={metaTitle} />
-        <meta itemprop="description" content={metaDescription} />
+        <meta itemProp="name" content={metaTitle} />
+        <meta itemProp="description" content={metaDescription} />
         {/* <meta itemprop="image" content={metaDescription} /> */}
 
         {/* Twitter */}

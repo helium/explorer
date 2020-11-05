@@ -205,7 +205,7 @@ function HotspotView({ hotspot, witnesses }) {
       >
         <Card title={'Witnesses'}>
           <Table
-            dataSource={witnesses.data}
+            dataSource={witnesses}
             columns={witnessColumns}
             size="small"
             rowKey="name"

@@ -36,7 +36,18 @@ const hotspotColumns = [
     key: 'location',
     render: (data) => (
       <span>
-        {data.longCity}, {data.shortState}
+        {data?.longCity === null &&
+        data?.shortState === null &&
+        data?.longCountry === null
+          ? // The location data didn't load properly
+            `No location data`
+          : // The hotspot has location data
+            `${data?.longCity}, ${
+              data?.shortState !== null && data?.shortState !== undefined
+                ? // Add the state if it's included in the data
+                  `${data?.shortState}, `
+                : ``
+            }${data?.longCountry}`}
       </span>
     ),
   },

@@ -4,7 +4,7 @@ import round from 'lodash/round'
 import { Content } from './AppLayout'
 import Link from 'next/link'
 
-const HotspotsList = ({ hotspots, loading }) => (
+const HotspotsList = ({ hotspots, loading = false }) => (
   <Content style={{ marginBottom: 20 }}>
     <Card loading={loading} title={'Hotspots'}>
       <Table
@@ -36,7 +36,18 @@ const hotspotColumns = [
     key: 'location',
     render: (data) => (
       <span>
-        {data.longCity}, {data.shortState}
+        {data?.longCity === null &&
+        data?.shortState === null &&
+        data?.longCountry === null
+          ? // The location data didn't load properly
+            `No location data`
+          : // The hotspot has location data
+            `${data?.longCity}, ${
+              data?.shortState !== null && data?.shortState !== undefined
+                ? // Add the state if it's included in the data
+                  `${data?.shortState}, `
+                : ``
+            }${data?.longCountry}`}
       </span>
     ),
   },

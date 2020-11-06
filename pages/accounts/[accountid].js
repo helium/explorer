@@ -72,7 +72,7 @@ function AccountView({ account, hotspots }) {
               }}
             >
               <Descriptions.Item label="HNT">
-                {account.balance.floatBalance.toFixed(2).toString()}
+                {account.balance.floatBalance.toLocaleString()} HNT
               </Descriptions.Item>
             </Title>
           </Fade>
@@ -93,7 +93,7 @@ function AccountView({ account, hotspots }) {
                     style={{ color: '#FFC769', marginRight: 5 }}
                   />
                   <Descriptions.Item label="Data Credits">
-                    {account.dcBalance.floatBalance.toFixed(2).toString()} DC
+                    {account.dcBalance.floatBalance.toLocaleString()} DC
                   </Descriptions.Item>
                 </h3>
               </Tooltip>
@@ -107,7 +107,7 @@ function AccountView({ account, hotspots }) {
                     style={{ color: '#29D391', marginRight: 5 }}
                   />
                   <Descriptions.Item label="Security Tokens">
-                    {account.secBalance.floatBalance.toFixed(2).toString(2)} HST
+                    {account.secBalance.floatBalance.toLocaleString()} HST
                   </Descriptions.Item>
                 </h3>
               </Tooltip>

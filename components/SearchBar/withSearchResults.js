@@ -88,7 +88,6 @@ const withSearchResults = (WrappedComponent) => {
 
     searchAccount = debounce(
       async (term) => {
-        console.log('searchAccount', term)
         try {
           const account = await this.client.accounts.get(term)
           this.setState({ accountResult: account })

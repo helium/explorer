@@ -184,15 +184,6 @@ h3 {
   background: #27284b;
 }
 
-.ant-input-affix-wrapper > input.ant-input {
-  background: none;
-  color: white;
-}
-
-.ant-input-affix-wrapper > input.ant-input::placeholder {
-  color: #585a8c;
-}
-
 .ant-table-thead > tr > th {
   border-bottom: 2px solid #e9eaf2;
 }
@@ -369,5 +360,8 @@ hr {
     min-width: 170px;
     min-width: 49%;
     order: 3;
+  }
+  .ant-input-suffix {
+    display: none;
   }
 }

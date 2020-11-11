@@ -279,8 +279,8 @@ class TxnView extends Component {
                       {p.witnesses.length > 0 && (
                         <>
                           <Collapse
-                          // Uncomment below line to enable witness panel to be shown by default
-                          // defaultActiveKey={[idx]}
+                            // Uncomment below line to enable witness panel to be shown by default
+                            defaultActiveKey={[idx]}
                           >
                             <Panel header="Witnesses" key={idx}>
                               <div style={{ paddingLeft: 20 }}>

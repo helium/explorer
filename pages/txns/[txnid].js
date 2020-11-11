@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Typography, Card, Descriptions } from 'antd'
+import { h3Distance } from 'h3-js'
 
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
@@ -10,6 +11,7 @@ import PieChart from '../../components/PieChart'
 import TxnReward from '../../components/TxnReward'
 import TxnSCClose from '../../components/TxnSCClose'
 import animalHash from 'angry-purple-tiger'
+import { Collapse } from 'antd'
 
 import { withRouter } from 'next/router'
 import Link from 'next/link'
@@ -17,6 +19,9 @@ import Link from 'next/link'
 import { ClockCircleOutlined, WalletOutlined } from '@ant-design/icons'
 import Block from '../../public/images/block.svg'
 
+import { Tooltip } from 'antd'
+
+const { Panel } = Collapse
 const { Title, Text } = Typography
 
 class TxnView extends Component {
@@ -24,6 +29,8 @@ class TxnView extends Component {
     txn: {},
     loading: true,
     truncated: {},
+    h3exclusionCells: 0,
+    h3maxHopCells: 99999999,
   }
 
   componentDidMount() {
@@ -31,6 +38,7 @@ class TxnView extends Component {
     const { txnid } = this.props.router.query
     if (txnid !== undefined) {
       this.loadTxn(txnid)
+      this.loadChainVars()
     }
   }
 
@@ -39,6 +47,7 @@ class TxnView extends Component {
       const { txnid } = this.props.router.query
       if (txnid !== undefined) {
         this.loadTxn(txnid)
+        this.loadChainVars()
       }
     }
   }
@@ -54,6 +63,19 @@ class TxnView extends Component {
       }
     })
     this.setState({ truncated })
+  }
+
+  async loadChainVars() {
+    await fetch('https://api.helium.io/v1/vars/poc_v4_exclusion_cells')
+      .then((res) => res.json())
+      .then((min) => {
+        this.setState({ h3exclusionCells: min.data })
+      })
+    await fetch('https://api.helium.io/v1/vars/poc_max_hop_cells')
+      .then((res) => res.json())
+      .then((max) => {
+        this.setState({ h3maxHopCells: max.data })
+      })
   }
 
   rewardChart() {
@@ -176,79 +198,198 @@ class TxnView extends Component {
               <a>{txn.height}</a>
             </Link>
           </Descriptions.Item>
+        </Descriptions>
+        <Descriptions bordered layout="vertical">
           <Descriptions.Item label="PoC Path" span={3}>
             <ol>
               {txn.path.map((p, idx) => {
                 return (
                   <div key={`${p.receipt}-${idx}`}>
-                    <p style={{ marginBottom: '0px', paddingTop: '10px' }}>
-                      {idx + 1} -
-                      <Link href={'/hotspots/' + p.challengee}>
-                        <a>{animalHash(p.challengee)}</a>
-                      </Link>
-                      {p.receipt && p.receipt.origin === 'radio' ? (
-                        <small>
-                          {` (received at RSSI ${p.receipt.signal}dBm, SNR ${
-                            p.receipt.snr
-                              ? `${p.receipt.snr.toFixed(2)}dB `
-                              : ' '
-                          }${
-                            p.receipt !== null
-                              ? Array.isArray(p.receipt.datarate)
-                                ? `${
-                                    p.receipt.datarate.length > 0
-                                      ? `, ${String.fromCharCode.apply(
-                                          null,
-                                          p.receipt.datarate,
-                                        )}`
-                                      : ``
-                                  }`
-                                : `${
-                                    p.receipt.datarate !== null &&
-                                    `, ${p.receipt.datarate} `
-                                  }`
-                              : ``
-                          })`}
-                        </small>
-                      ) : (
-                        <span></span>
-                      )}
-                    </p>
-                    {p.witnesses.length > 0 &&
-                      p.witnesses.map((w, i) => {
-                        return (
-                          <div
-                            key={`${idx}-${i}`}
-                            style={{ marginLeft: '25px' }}
+                    <div
+                      style={{
+                        marginBottom: '0px',
+                        paddingTop: '10px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                        }}
+                      >
+                        <p
+                          style={{
+                            backgroundColor: `${
+                              p.receipt ||
+                              p.witnesses.length > 0 ||
+                              (txn.path[idx + 1] &&
+                                (txn.path[idx + 1].receipt ||
+                                  txn.path[idx + 1].witnesses.length > 0))
+                                ? '#09B851'
+                                : '#CA0926'
+                            }`,
+                            color: 'white',
+                            width: '22px',
+                            heigh: '22px',
+                            borderRadius: 22,
+                            textAlign: 'center',
+                          }}
+                        >
+                          {idx + 1}
+                        </p>
+                        <Link href={'/hotspots/' + p.challengee}>
+                          <a style={{ paddingLeft: 10 }}>
+                            {animalHash(p.challengee)}
+                          </a>
+                        </Link>
+                        {console.log(p)}
+                        {p.receipt && p.receipt.origin === 'radio' && (
+                          <span style={{ paddingLeft: 10, color: '#777' }}>
+                            {`— received at RSSI ${p.receipt.signal}dBm, SNR ${
+                              p.receipt.snr
+                                ? `${p.receipt.snr.toFixed(2)}dB`
+                                : ''
+                            }${
+                              p.receipt !== null &&
+                              p.receipt.datarate !== undefined
+                                ? Array.isArray(p.receipt.datarate)
+                                  ? `${
+                                      p.receipt.datarate.length > 0
+                                        ? `, ${String.fromCharCode.apply(
+                                            null,
+                                            p.receipt.datarate,
+                                          )}`
+                                        : ``
+                                    }`
+                                  : `${
+                                      p.receipt.datarate !== null &&
+                                      `, ${p.receipt.datarate} `
+                                    }`
+                                : ``
+                            }`}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        marginLeft: '30px',
+                        backgroundColor: '#eee',
+                      }}
+                    >
+                      {p.witnesses.length > 0 && (
+                        <>
+                          <Collapse
+                          // Uncomment below line to enable witness panel to be shown by default
+                          // defaultActiveKey={[idx]}
                           >
-                            <span>
-                              <small>
-                                <Link href={'/hotspots/' + w.gateway}>
-                                  <a>{animalHash(w.gateway)}</a>
-                                </Link>
-                                {`- witnessed at RSSI ${w.signal}dBm, SNR ${
-                                  w.snr ? `${w.snr.toFixed(2)}dB ` : ' '
-                                }${
-                                  Array.isArray(w.datarate)
-                                    ? `${
-                                        w.datarate.length > 0
-                                          ? `, ${String.fromCharCode.apply(
-                                              null,
-                                              w.datarate,
-                                            )}`
-                                          : ``
-                                      } `
-                                    : `${
-                                        w.datarate !== null &&
-                                        `, ${w.datarate} `
-                                      }`
-                                }
-                                  (${w.is_valid ? 'valid' : 'invalid'})`}
-                              </small>
-                            </span>
-                          </div>
-                        )
-                      })}
+                            <Panel header="Witnesses" key={idx}>
+                              <div style={{ paddingLeft: 20 }}>
+                                {p.witnesses.map((w, i) => {
+                                  const wDist = h3Distance(
+                                    p.challengee_location,
+                                    w.location,
+                                  )
+
+                                  const h3DistanceMinValid =
+                                    this.state.h3exclusionCells <= wDist
+                                  const h3DistanceMaxValid =
+                                    wDist < this.state.h3maxHopCells
+
+                                  const h3DistanceIsValid =
+                                    h3DistanceMinValid && h3DistanceMaxValid
+
+                                  return (
+                                    <div
+                                      key={`${idx}-${i}`}
+                                      style={i !== 0 ? { paddingTop: 16 } : {}}
+                                    >
+                                      <span>
+                                        <span>{i + 1} — </span>
+                                        <Link href={'/hotspots/' + w.gateway}>
+                                          <a>{animalHash(w.gateway)}</a>
+                                        </Link>
+                                        <span
+                                          style={{
+                                            color: w.is_valid
+                                              ? '#F1C40F'
+                                              : 'grey',
+                                            paddingLeft: 10,
+                                          }}
+                                        >
+                                          {w.is_valid
+                                            ? '(Valid witness)'
+                                            : '(Invalid witness)'}
+                                        </span>
+                                        <ul>
+                                          <li>RSSI: {`${w.signal}dBm`}</li>
+                                          {w.snr && (
+                                            <li>
+                                              {`SNR: ${w.snr.toFixed(2)}dB`}
+                                            </li>
+                                          )}
+                                          {console.log(txn)}
+                                          {txn.height > 123479 && (
+                                            <li>
+                                              Distance (h3):{' '}
+                                              <span
+                                                style={
+                                                  !h3DistanceIsValid
+                                                    ? { color: '#CA0926' }
+                                                    : {}
+                                                }
+                                              >
+                                                {wDist}
+                                              </span>
+                                              <span
+                                                style={
+                                                  !h3DistanceIsValid
+                                                    ? { color: '#CA0926' }
+                                                    : {}
+                                                }
+                                              >
+                                                {!h3DistanceMinValid
+                                                  ? ' (too close)'
+                                                  : !h3DistanceMaxValid
+                                                  ? ' (too far)'
+                                                  : ''}
+                                              </span>
+                                            </li>
+                                          )}
+
+                                          {w.datarate !== undefined &&
+                                            ((Array.isArray(w.datarate) &&
+                                              w.datarate.length > 0) ||
+                                              (!Array.isArray(w.datarate) &&
+                                                w.datarate !== null)) && (
+                                              <li>
+                                                Data rate:{' '}
+                                                {Array.isArray(w.datarate)
+                                                  ? `${
+                                                      w.datarate.length > 0
+                                                        ? `${String.fromCharCode.apply(
+                                                            null,
+                                                            w.datarate,
+                                                          )}`
+                                                        : ``
+                                                    } `
+                                                  : `${
+                                                      w.datarate !== null &&
+                                                      `${w.datarate} `
+                                                    }`}
+                                              </li>
+                                            )}
+                                        </ul>
+                                      </span>
+                                    </div>
+                                  )
+                                })}
+                              </div>
+                            </Panel>
+                          </Collapse>
+                        </>
+                      )}
+                    </div>
                   </div>
                 )
               })}

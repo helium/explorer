@@ -19,7 +19,7 @@ import Link from 'next/link'
 import { ClockCircleOutlined, WalletOutlined } from '@ant-design/icons'
 import Block from '../../public/images/block.svg'
 
-import { Tooltip } from 'antd'
+// import { Tooltip } from 'antd'
 
 const { Panel } = Collapse
 const { Title, Text } = Typography
@@ -242,7 +242,6 @@ class TxnView extends Component {
                             {animalHash(p.challengee)}
                           </a>
                         </Link>
-                        {console.log(p)}
                         {p.receipt && p.receipt.origin === 'radio' && (
                           <span style={{ paddingLeft: 10, color: '#777' }}>
                             {`— received at RSSI ${p.receipt.signal}dBm, SNR ${
@@ -328,7 +327,6 @@ class TxnView extends Component {
                                               {`SNR: ${w.snr.toFixed(2)}dB`}
                                             </li>
                                           )}
-                                          {console.log(txn)}
                                           {txn.height > 123479 && (
                                             <li>
                                               Distance (h3):{' '}
@@ -356,7 +354,6 @@ class TxnView extends Component {
                                               </span>
                                             </li>
                                           )}
-
                                           {w.datarate !== undefined &&
                                             ((Array.isArray(w.datarate) &&
                                               w.datarate.length > 0) ||

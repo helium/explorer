@@ -8,8 +8,22 @@ import QRCode from 'react-qr-code'
 import Fade from 'react-reveal/Fade'
 
 import { ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons'
+import AccountIcon from '../../components/AccountIcon'
 
 const { Title } = Typography
+
+function truncStringPortion(
+  str,
+  firstCharCount = str.length,
+  endCharCount = 0,
+  dotCount = 3,
+) {
+  var convertedStr = ''
+  convertedStr += str.substring(0, firstCharCount)
+  convertedStr += '.'.repeat(dotCount)
+  convertedStr += str.substring(str.length - endCharCount, str.length)
+  return convertedStr
+}
 
 function AccountView({ account, hotspots }) {
   return (
@@ -46,21 +60,30 @@ function AccountView({ account, hotspots }) {
               />
             </div>
           </Fade>
-          <h3 style={{ color: '#38A2FF' }}>Account:</h3>
           <Fade delay={1000}>
-            <Title
-              code
-              level={4}
-              copyable
+            <div
               style={{
-                color: 'white',
-                marginBottom: 0,
-                fontWeight: 300,
-                wordBreak: 'break-all',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
-              {account.address}
-            </Title>
+              <AccountIcon address={account.address} size={48} />
+              <Title
+                code
+                level={2}
+                copyable={{ text: account.address }}
+                style={{
+                  color: 'white',
+                  marginBottom: 0,
+                  fontWeight: 300,
+                  wordBreak: 'break-all',
+                  marginLeft: 6,
+                }}
+              >
+                {truncStringPortion(account.address, 10, 10)}
+              </Title>
+            </div>
           </Fade>
           <Fade bottom>
             <Title

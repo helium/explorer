@@ -9,6 +9,7 @@ import HotspotImg from '../../public/images/hotspot.svg'
 
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import AccountIcon from '../../components/AccountIcon'
 
 const HotspotMapbox = dynamic(() => import('../../components/HotspotMapbox'), {
   ssr: false,
@@ -185,8 +186,18 @@ function HotspotView({ hotspot, witnesses }) {
 
         <div className="bottombar">
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
-            <p style={{ color: 'white', margin: 0 }}>
+            <p
+              style={{
+                color: 'white',
+                margin: 0,
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
               Owned by: <br className="line-break-only-at-small" />
+              <span style={{ width: 21, marginLeft: 8, marginRight: 2 }}>
+                <AccountIcon address={hotspot.owner} size={18} />
+              </span>
               <Link href={'/accounts/' + hotspot.owner}>
                 <a style={{ wordBreak: 'break-all' }}>{hotspot.owner}</a>
               </Link>

@@ -2,11 +2,22 @@ import React, { Component } from 'react'
 import AppLayout, { Content } from '../../components/AppLayout'
 import { Typography, Table } from 'antd'
 import Link from 'next/link'
+import AccountIcon from '../../components/AccountIcon'
 
 const { Title } = Typography
 
 function RichList({ accounts }) {
   const columns = [
+    {
+      title: '',
+      dataIndex: 'address',
+      key: 'icon',
+      render: (address) => (
+        <span style={{ display: 'flex' }}>
+          <AccountIcon address={address} size={24} />
+        </span>
+      ),
+    },
     {
       title: 'Address',
       dataIndex: 'address',

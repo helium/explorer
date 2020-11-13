@@ -285,15 +285,31 @@ class TxnView extends Component {
                             <Panel header="Witnesses" key={idx}>
                               <div style={{ paddingLeft: 20 }}>
                                 {p.witnesses.map((w, i) => {
-                                  const wDist = h3Distance(
+                                  const witnessDistInH3Res12Cells = h3Distance(
                                     p.challengee_location,
                                     w.location,
                                   )
 
+                                  // We can assume the diameter of 1 hexagon is roughly equal to its edge length * 2
+                                  // The average edge length of a resolution-12 hexagon in h3 is given in km here: https://h3geo.org/docs/core-library/restable
+                                  const avgRes12HexEdgeLengthInKm = 0.009415526
+                                  const avgRes12HexDiameterInKm =
+                                    avgRes12HexEdgeLengthInKm * 2
+
+                                  const witnessDistInKm =
+                                    avgRes12HexDiameterInKm *
+                                    witnessDistInH3Res12Cells
+
+                                  // console.log(
+                                  //   `Witness distance in km: ~${witnessDistInKm}`,
+                                  // )
+
                                   const h3DistanceMinValid =
-                                    this.state.h3exclusionCells <= wDist
+                                    this.state.h3exclusionCells <=
+                                    witnessDistInH3Res12Cells
                                   const h3DistanceMaxValid =
-                                    wDist < this.state.h3maxHopCells
+                                    witnessDistInH3Res12Cells <
+                                    this.state.h3maxHopCells
 
                                   const h3DistanceIsValid =
                                     h3DistanceMinValid && h3DistanceMaxValid
@@ -329,7 +345,7 @@ class TxnView extends Component {
                                           )}
                                           {txn.height > 123479 && (
                                             <li>
-                                              Distance (h3):{' '}
+                                              Distance:{' '}
                                               <span
                                                 style={
                                                   !h3DistanceIsValid
@@ -337,7 +353,13 @@ class TxnView extends Component {
                                                     : {}
                                                 }
                                               >
-                                                {wDist}
+                                                {witnessDistInKm < 1
+                                                  ? `${(
+                                                      witnessDistInKm * 1000
+                                                    ).toFixed(2)}m`
+                                                  : `${witnessDistInKm.toFixed(
+                                                      2,
+                                                    )}km`}
                                               </span>
                                               <span
                                                 style={

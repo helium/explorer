@@ -12,17 +12,14 @@ import AccountIcon from '../../components/AccountIcon'
 
 const { Title } = Typography
 
-function truncStringPortion(
-  str,
-  firstCharCount = str.length,
-  endCharCount = 0,
-  dotCount = 3,
-) {
-  var convertedStr = ''
-  convertedStr += str.substring(0, firstCharCount)
-  convertedStr += '.'.repeat(dotCount)
-  convertedStr += str.substring(str.length - endCharCount, str.length)
-  return convertedStr
+const AccountAddress = ({ address, truncate = false }) => {
+  return (
+    <Tooltip title={address}>
+      <span style={{ cursor: 'pointer' }}>
+        {truncate ? `${address.slice(0, 10)}...${address.slice(-10)}` : address}
+      </span>
+    </Tooltip>
+  )
 }
 
 function AccountView({ account, hotspots }) {
@@ -81,7 +78,7 @@ function AccountView({ account, hotspots }) {
                   marginLeft: 6,
                 }}
               >
-                {truncStringPortion(account.address, 10, 10)}
+                <AccountAddress address={account.address} truncate />
               </Title>
             </div>
           </Fade>

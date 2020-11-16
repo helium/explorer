@@ -17,7 +17,7 @@ const PocRequestV1 = ({ txn }) => {
           <div style={{ display: 'flex' }}>
             <AccountIcon
               address={txn.challengerOwner}
-              style={{ marginRight: 4 }}
+              style={{ marginRight: 4, width: 24, height: 24 }}
             />
             <Link href={'/accounts/' + txn.challengerOwner}>
               <a>{txn.challengerOwner}</a>

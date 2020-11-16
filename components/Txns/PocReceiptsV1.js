@@ -1,5 +1,5 @@
 import React from 'react'
-import { Descriptions, Collapse } from 'antd'
+import { Descriptions, Collapse, Table } from 'antd'
 
 import { h3Distance } from 'h3-js'
 import Link from 'next/link'
@@ -132,6 +132,77 @@ const PocReceiptsV1 = ({ txn, h3exclusionCells, h3maxHopCells }) => (
                               const h3DistanceIsValid =
                                 h3DistanceMinValid && h3DistanceMaxValid
 
+                              const columns =
+                                w.datarate !== undefined &&
+                                ((Array.isArray(w.datarate) &&
+                                  w.datarate.length > 0) ||
+                                  (!Array.isArray(w.datarate) &&
+                                    w.datarate !== null))
+                                  ? [
+                                      {
+                                        title: 'RSSI',
+                                        dataIndex: 'rssi',
+                                      },
+                                      {
+                                        title: 'SNR',
+                                        dataIndex: 'snr',
+                                      },
+                                      {
+                                        title: 'Distance',
+                                        dataIndex: 'distance',
+                                      },
+                                      {
+                                        title: 'Data rate',
+                                        dataIndex: 'datarate',
+                                      },
+                                    ]
+                                  : [
+                                      {
+                                        title: 'RSSI',
+                                        dataIndex: 'rssi',
+                                      },
+                                      {
+                                        title: 'SNR',
+                                        dataIndex: 'snr',
+                                      },
+                                      {
+                                        title: 'Distance',
+                                        dataIndex: 'distance',
+                                      },
+                                    ]
+                              const data = [
+                                {
+                                  key: '1',
+                                  rssi: `${w.signal}dBm`,
+                                  snr: `${w.snr.toFixed(2)}dB`,
+                                  distance:
+                                    witnessDistInKm < 1
+                                      ? `${(witnessDistInKm * 1000).toFixed(
+                                          2,
+                                        )}m`
+                                      : `${witnessDistInKm.toFixed(2)}km`,
+                                  datarate:
+                                    w.datarate !== undefined &&
+                                    ((Array.isArray(w.datarate) &&
+                                      w.datarate.length > 0) ||
+                                      (!Array.isArray(w.datarate) &&
+                                        w.datarate !== null)) &&
+                                    (Array.isArray(w.datarate)
+                                      ? `${
+                                          w.datarate.length > 0
+                                            ? `${String.fromCharCode.apply(
+                                                null,
+                                                w.datarate,
+                                              )}`
+                                            : ``
+                                        } `
+                                      : `${
+                                          w.datarate !== null &&
+                                          `${w.datarate} `
+                                        }`),
+                                },
+                              ]
+
                               return (
                                 <div
                                   key={`${idx}-${i}`}
@@ -152,7 +223,13 @@ const PocReceiptsV1 = ({ txn, h3exclusionCells, h3maxHopCells }) => (
                                         ? '(Valid witness)'
                                         : '(Invalid witness)'}
                                     </span>
-                                    <ul>
+                                    <Table
+                                      pagination={{ hideOnSinglePage: true }}
+                                      columns={columns}
+                                      dataSource={data}
+                                      size="small"
+                                    />
+                                    {/* <ul>
                                       <li>RSSI: {`${w.signal}dBm`}</li>
                                       {w.snr && (
                                         <li>{`SNR: ${w.snr.toFixed(2)}dB`}</li>
@@ -212,7 +289,7 @@ const PocReceiptsV1 = ({ txn, h3exclusionCells, h3maxHopCells }) => (
                                                 }`}
                                           </li>
                                         )}
-                                    </ul>
+                                    </ul> */}
                                   </span>
                                 </div>
                               )

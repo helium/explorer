@@ -294,6 +294,17 @@ hr {
   flex-direction: row;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hotspot-checklist-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hotspot-checklist-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 @media screen and (max-width: 890px) {
   .block-view-summary-info {
     flex-direction: column;

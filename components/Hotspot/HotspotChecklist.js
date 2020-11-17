@@ -1,10 +1,61 @@
 import { useState } from 'react'
 
 const HotspotChecklist = (props) => {
+  const possibleChecklistItems = [
+    {
+      sortOrder: 0,
+      title: 'Synced',
+      detailText: `This hotspot is ${
+        props.blockchainHeight - props.hotspot.status.height
+      } blocks behind the Helium blockchain and is roughly ${(
+        (props.hotspot.status.height / props.blockchainHeight) *
+        100
+      ).toFixed(2)}% synced.`,
+      condition: props.blockchainHeight - props.hotspot.status.height < 100,
+    },
+    {
+      sortOrder: 1,
+      title: 'Online',
+      detailText: `This hotspot is ${props.hotspot.status.online}`,
+      condition: props.hotspot.status.online === 'online',
+    },
+    {
+      sortOrder: 2,
+      title: 'Issued a challenge',
+      detailText: 'Whether this hotspot is online or not',
+      condition: true,
+    },
+    {
+      sortOrder: 3,
+      title: 'Witnessed a challenge',
+      detailText: 'Whether this hotspot is online or not',
+      condition: false,
+    },
+    {
+      sortOrder: 4,
+      title: 'Has witness list',
+      detailText: 'Whether this hotspot is online or not',
+      condition: false,
+    },
+    {
+      sortOrder: 5,
+      title: 'Participated in proof of coverage',
+      detailText: 'Whether this hotspot is online or not',
+      condition: false,
+    },
+    {
+      sortOrder: 6,
+      title: 'Transferred data',
+      detailText: 'Whether this hotspot is online or not',
+      condition: false,
+    },
+  ]
+
   const CARD_WIDTH = 300
   const CARD_MARGIN = 20
 
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [hideNextButton, setHideNextButton] = useState(false)
 
   const handleScroll = () => {
     const currentScrollPosition = document.getElementById(
@@ -16,8 +67,21 @@ const HotspotChecklist = (props) => {
         (currentScrollPosition + CARD_MARGIN) / (CARD_WIDTH + CARD_MARGIN),
       ),
     )
-    // console.log(`Current index: ${currentIndex}`)
-    // console.log(`Current scroll position: ${currentScrollPosition}`)
+
+    const containerOffsetWidth = document.getElementById(
+      'hotspot-checklist-container',
+    ).offsetWidth
+    const containerScrollLeft = document.getElementById(
+      'hotspot-checklist-container',
+    ).scrollLeft
+    const containerScrollWidth = document.getElementById(
+      'hotspot-checklist-container',
+    ).scrollWidth
+
+    setHideNextButton(
+      containerOffsetWidth + containerScrollLeft >=
+        containerScrollWidth - CARD_WIDTH,
+    )
   }
 
   const handleNextCardClick = () => {
@@ -36,57 +100,23 @@ const HotspotChecklist = (props) => {
     handleScroll()
   }
 
-  const possibleChecklistItems = [
-    {
-      incompleteOrder: 0,
-      title: 'Synced',
-      detailText: `This hotspot is ${
-        props.blockchainHeight - props.hotspot.status.height
-      } blocks behind the Helium blockchain and is roughly ${(
-        (props.hotspot.status.height / props.blockchainHeight) *
-        100
-      ).toFixed(2)}% synced.`,
-      condition: props.blockchainHeight - props.hotspot.status.height < 100,
-    },
-    {
-      incompleteOrder: 1,
-      title: 'Online',
-      detailText: `This hotspot is ${props.hotspot.status.online}`,
-      condition: props.hotspot.status.online === 'online',
-    },
-    {
-      incompleteOrder: 2,
-      title: 'Issued a challenge',
-      detailText: 'Whether this hotspot is online or not',
-      condition: true,
-    },
-    {
-      incompleteOrder: 3,
-      title: 'Witnessed a challenge',
-      detailText: 'Whether this hotspot is online or not',
-      condition: true,
-    },
-    {
-      incompleteOrder: 4,
-      title: 'Has witness list',
-      detailText: 'Whether this hotspot is online or not',
-      condition: true,
-    },
-    {
-      incompleteOrder: 5,
-      title: 'Participated in proof of coverage',
-      detailText: 'Whether this hotspot is online or not',
-      condition: true,
-    },
-    {
-      incompleteOrder: 6,
-      title: 'Transferred data',
-      detailText: 'Whether this hotspot is online or not',
-      condition: true,
-    },
-  ]
+  const sortChecklistItems = (checklistItems) => {
+    const unsortedChecklistItems = checklistItems
 
-  const ChecklistCheck = ({ checked }) => {
+    const sortedChecklistItems = unsortedChecklistItems.sort(function (a, b) {
+      if (b.condition || a.condition) {
+        // if one of the items is complete, sort it first
+        return b.condition - a.condition
+      } else if (a.sortOrder < b.sortOrder) {
+        // otherwise, sort them by their "sortOrder field"
+        return -1
+      }
+    })
+
+    return sortedChecklistItems
+  }
+
+  const ChecklistCheck = () => {
     return (
       <svg
         width="20"
@@ -112,8 +142,8 @@ const HotspotChecklist = (props) => {
         style={{
           backgroundColor: checked ? '#35375c' : '#242747',
           height: '100%',
-          padding: '10px 10px',
-          marginRight: index + 1 === maxIndex ? '100px' : '20px',
+          // for the last card, we use a spacer div instead of margin
+          marginRight: index + 1 === maxIndex ? '0px' : '20px',
           minWidth: `${CARD_WIDTH}px`,
           width: `${CARD_WIDTH}px`,
           borderRadius: '10px',
@@ -125,13 +155,63 @@ const HotspotChecklist = (props) => {
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
+            padding: '10px 10px',
           }}
         >
           <div style={{ maxWidth: 'calc(100% - 40px)' }}>
-            <h3>{title}</h3>
-            <p>{detailText}</p>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'flex-row',
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+              }}
+            >
+              <h2
+                style={{
+                  fontFamily: 'soleil',
+                  fontWeight: 700,
+                  color: 'white',
+                  fontSize: '15px',
+                  lineHeight: '19.05px',
+                }}
+              >
+                {title}
+              </h2>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                style={{
+                  color: 'white',
+                  height: 18,
+                  width: 18,
+                  marginBottom: 6,
+                  marginLeft: 6,
+                }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <p
+              style={{
+                color: '#9D9FCA',
+                fontFamily: 'soleil',
+                fontSize: '14px',
+                lineHeight: '17.78px',
+                fontWeight: 400,
+              }}
+            >
+              {detailText}
+            </p>
           </div>
-          <ChecklistCheck checked={checked} />
+          <div>{checked && <ChecklistCheck />}</div>
         </div>
       </div>
     )
@@ -143,69 +223,108 @@ const HotspotChecklist = (props) => {
         {currentIndex !== 0 && (
           <button
             onClick={handlePreviousCardClick}
+            className="hotspot-checklist-nav-button"
             style={{
-              position: 'absolute',
               left: 0,
               zIndex: 2,
-              top: '72.5px',
-              height: 30,
-              minWidth: 30,
-              width: 30,
               marginLeft: 10,
-              borderRadius: '30px',
-              outline: 'none',
-              border: 'none',
             }}
           >
-            {'<'}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              style={{ height: 20, width: 20 }}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
           </button>
         )}
-        <div
-          onScroll={handleScroll}
-          className="hotspot-checklist-scrollbar"
-          id="hotspot-checklist-container"
-          style={{
-            position: 'relative',
-            marginTop: 20,
-            backgroundColor: '#1c1d3f',
-            borderRadius: 20,
-            height: 185,
-            padding: CARD_MARGIN,
-            display: 'flex',
-            overflowX: 'scroll',
-            borderRight: '20px solid #1c1d3f',
-          }}
-        >
-          {possibleChecklistItems.map((checklistItem, index) => {
-            return (
-              <ChecklistCard
-                index={index}
-                maxIndex={possibleChecklistItems.length}
-                title={checklistItem.title}
-                detailText={checklistItem.detailText}
-                checked={checklistItem.condition}
-              />
-            )
-          })}
-        </div>
-
-        {currentIndex + 1 !== possibleChecklistItems.length && (
-          <button
-            onClick={handleNextCardClick}
+        <div style={{ position: 'relative' }}>
+          <div
+            onScroll={handleScroll}
+            className="hotspot-checklist-scrollbar"
+            id="hotspot-checklist-container"
             style={{
-              position: 'absolute',
-              top: '72.5px',
-              right: 0,
-              height: 30,
-              minWidth: 30,
-              width: 30,
-              marginRight: 10,
-              borderRadius: '30px',
-              outline: 'none',
-              border: 'none',
+              position: 'relative',
+              marginTop: 20,
+              backgroundColor: '#1c1d3f',
+              borderRadius: 20,
+              overflowX: 'scroll',
+              padding: CARD_MARGIN,
+              position: 'relative',
+              display: 'flex',
+              height: 185,
             }}
           >
-            {'>'}
+            {sortChecklistItems(possibleChecklistItems).map(
+              (checklistItem, index) => {
+                return (
+                  <>
+                    <ChecklistCard
+                      index={index}
+                      maxIndex={possibleChecklistItems.length}
+                      title={checklistItem.title}
+                      detailText={checklistItem.detailText}
+                      checked={checklistItem.condition}
+                    />
+                    {index === possibleChecklistItems.length - 1 && (
+                      // Add a spacer div of the margin size on the right of the last item, otherwise it's difficult to get a margin at the end of an overflowed container
+                      <div
+                        style={{
+                          minWidth: CARD_MARGIN,
+                        }}
+                      />
+                    )}
+                  </>
+                )
+              },
+            )}
+          </div>
+          {/* Shadow for the right side of the container to show that there's more content to be scrolled */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              borderRadius: '0 20px 20px 0',
+              height: '100%',
+              width: 50,
+              bottom: 0,
+              boxShadow: 'inset -15px 0 8px -2px rgba(0, 0, 0, 0.16)',
+            }}
+          />
+        </div>
+
+        {!hideNextButton && (
+          <button
+            onClick={handleNextCardClick}
+            className="hotspot-checklist-nav-button"
+            style={{
+              right: 0,
+              marginRight: 10,
+            }}
+          >
+            <svg
+              style={{ height: 20, width: 20 }}
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
           </button>
         )}
       </div>

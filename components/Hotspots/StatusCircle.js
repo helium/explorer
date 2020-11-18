@@ -12,7 +12,7 @@ function tooltipTitle(status, height) {
 }
 
 const StatusCircle = ({
-  status: { online: status, height } = { online: 'online' },
+  status: { online: status, height } = { online: null, height: null },
 }) => (
   <Tooltip title={tooltipTitle(status, height)}>
     <span

@@ -6,7 +6,7 @@ import AppLayout, { Content } from '../../components/AppLayout'
 import ActivityList from '../../components/ActivityList'
 import Fade from 'react-reveal/Fade'
 import HotspotImg from '../../public/images/hotspot.svg'
-import HotspotChecklist from '../../components/Hotspot/HotspotChecklist'
+import Checklist from '../../components/Hotspot/Checklist/Checklist'
 
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
@@ -18,7 +18,7 @@ const HotspotMapbox = dynamic(() => import('../../components/HotspotMapbox'), {
 
 const { Title, Text } = Typography
 
-function HotspotView({ hotspot, witnesses, height }) {
+const HotspotView = ({ hotspot, witnesses }) => {
   const [showWitnesses, setShowWitnesses] = useState(false)
 
   const witnessColumns = [
@@ -183,9 +183,8 @@ function HotspotView({ hotspot, witnesses, height }) {
             </div>
           </Row>
 
-          <HotspotChecklist hotspot={hotspot} blockchainHeight={height} />
+          <Checklist hotspot={hotspot} />
         </div>
-
         <div className="bottombar">
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
             <p style={{ color: 'white', margin: 0 }}>
@@ -244,12 +243,9 @@ export async function getStaticProps({ params }) {
   const { hotspotid } = params
   const hotspot = await client.hotspots.get(hotspotid)
 
-  const currentHeight = await client.blocks.getHeight()
-
   return {
     props: {
       hotspot: JSON.parse(JSON.stringify(hotspot)),
-      height: currentHeight,
       // TODO convert to use @helium/http
       witnesses: await fetch(
         `https://api.helium.io/v1/hotspots/${hotspotid}/witnesses`,

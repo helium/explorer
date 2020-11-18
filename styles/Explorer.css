@@ -311,11 +311,10 @@ hr {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  top: 72.5px;
+  top: 63.5px;
   height: 40px;
   min-width: 40px;
   width: 40px;
-  /* opacity: 0.5; */
   border-radius: 30px;
   outline: none;
   border: none;

@@ -1,57 +1,95 @@
 import { useState } from 'react'
+import ChecklistCard from './ChecklistCard'
 
 const HotspotChecklist = (props) => {
   const possibleChecklistItems = [
     {
       sortOrder: 0,
-      title: 'Synced',
-      detailText: `This hotspot is ${
-        props.blockchainHeight - props.hotspot.status.height
-      } blocks behind the Helium blockchain and is roughly ${(
-        (props.hotspot.status.height / props.blockchainHeight) *
-        100
-      ).toFixed(2)}% synced.`,
-      condition: props.blockchainHeight - props.hotspot.status.height < 100,
+      title: 'Blockchain Sync',
+      infoTooltipText: `Hotspots must be fully synced before they can mine. New Hotspots can take up to 48 hours to sync.`,
+      detailText:
+        isNaN(props.hotspot.status.height) || isNaN(props.hotspot.block)
+          ? `Hotspot is not yet synced.`
+          : props.hotspot.block - props.hotspot.status.height < 100
+          ? `Hotspot is fully synced.`
+          : `Hotspot is ${(
+              props.hotspot.block - props.hotspot.status.height
+            ).toLocaleString()} blocks behind the Helium blockchain and is roughly ${(
+              (props.hotspot.status.height / props.hotspot.block) *
+              100
+            )
+              .toFixed(2)
+              .toLocaleString()}% synced.`,
+      condition: props.hotspot.block - props.hotspot.status.height < 100,
     },
     {
       sortOrder: 1,
-      title: 'Online',
-      detailText: `This hotspot is ${props.hotspot.status.online}`,
+      title: 'Hotspot Status',
+      infoTooltipText:
+        'Hotspots must be online to sync and mine. Not online? Read our troubleshooting guide (linked below).',
+      detailText:
+        props.hotspot.status.online === 'online' ? (
+          `Hotspot is online.`
+        ) : (
+          <p>
+            Hotspot is offline.{' '}
+            <a
+              href="https://intercom.help/heliumnetwork/en/articles/3207912-troubleshooting-network-connection-issues"
+              target="_blank"
+              rel="noopener"
+              rel="noreferrer"
+            >
+              Read our troubleshooting guide.
+            </a>
+          </p>
+        ),
       condition: props.hotspot.status.online === 'online',
     },
     {
       sortOrder: 2,
-      title: 'Issued a challenge',
-      detailText: 'Whether this hotspot is online or not',
-      condition: true,
+      title: 'Create a Challenge',
+      infoTooltipText:
+        'Hotspots that are synced and online create a challenge automatically, every 60 blocks.',
+      detailText:
+        'This Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically.',
+      condition: false,
     },
     {
       sortOrder: 3,
-      title: 'Witnessed a challenge',
-      detailText: 'Whether this hotspot is online or not',
+      title: 'Witness a Challenge',
+      detailText:
+        'Hotspots automatically witness challenges occuring around them.',
+      infoTooltipText:
+        'Hotspots that are synced and online can witness challenges if they’re in range of other Hotspots. If there are no Hotspots nearby, they will not be able to witness.',
       condition: false,
     },
     {
       sortOrder: 4,
-      title: 'Has witness list',
-      detailText: 'Whether this hotspot is online or not',
+      title: 'Witness List',
+      detailText: "This hotspot doesn't have a witness list yet.",
+      infoTooltipText:
+        'A Hotspot’s witness list is populated the more challenges it witnesses. Witness Lists refresh periodically to exclude offline Hotspots.',
       condition: false,
     },
     {
       sortOrder: 5,
-      title: 'Participated in proof of coverage',
-      detailText: 'Whether this hotspot is online or not',
+      title: 'Participate in a Challenge',
+      detailText: 'This Hotspot hasn’t participated in a challenge yet.',
+      infoTooltipText:
+        'Participation in a challenge depends on having a witness list. Use the checkbox to see Hotspots in your list. It can take a few hours for challenges to include this Hotspot once a witness list is built.',
       condition: false,
     },
     {
       sortOrder: 6,
-      title: 'Transferred data',
-      detailText: 'Whether this hotspot is online or not',
+      title: 'Transferred Data',
+      detailText: 'This Hotspot hasn’t transfered data yet.',
+      infoTooltipText:
+        'Hotspots transfer encryped data on behalf of devices using the network. Device usage is expanding, and it is normal to have a Hotspot that does not transfer data. This likely means there are no devices using the network in the area.',
       condition: false,
     },
   ]
 
-  const CARD_WIDTH = 300
+  const CARD_WIDTH = 218
   const CARD_MARGIN = 20
 
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -107,118 +145,37 @@ const HotspotChecklist = (props) => {
       if (b.condition || a.condition) {
         // if one of the items is complete, sort it first
         return b.condition - a.condition
-      } else if (a.sortOrder < b.sortOrder) {
+      } else {
         // otherwise, sort them by their "sortOrder field"
-        return -1
+        return a.sortOrder < b.sortOrder
+          ? -1
+          : a.sortOrder > b.sortOrder
+          ? 1
+          : 0
       }
     })
 
     return sortedChecklistItems
   }
 
-  const ChecklistCheck = () => {
-    return (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M9.9999 19.5999C12.546 19.5999 14.9878 18.5885 16.7881 16.7881C18.5885 14.9878 19.5999 12.546 19.5999 9.9999C19.5999 7.45382 18.5885 5.01203 16.7881 3.21168C14.9878 1.41133 12.546 0.399902 9.9999 0.399902C7.45382 0.399902 5.01203 1.41133 3.21168 3.21168C1.41133 5.01203 0.399902 7.45382 0.399902 9.9999C0.399902 12.546 1.41133 14.9878 3.21168 16.7881C5.01203 18.5885 7.45382 19.5999 9.9999 19.5999ZM14.4483 8.4483C14.6669 8.22198 14.7878 7.91886 14.7851 7.60422C14.7824 7.28958 14.6562 6.98861 14.4337 6.76612C14.2112 6.54363 13.9102 6.41743 13.5956 6.41469C13.2809 6.41196 12.9778 6.53291 12.7515 6.7515L8.7999 10.7031L7.2483 9.1515C7.02198 8.93291 6.71886 8.81196 6.40422 8.81469C6.08958 8.81743 5.78861 8.94363 5.56612 9.16612C5.34363 9.38861 5.21743 9.68958 5.21469 10.0042C5.21196 10.3189 5.33291 10.622 5.5515 10.8483L7.9515 13.2483C8.17654 13.4733 8.4817 13.5996 8.7999 13.5996C9.1181 13.5996 9.42327 13.4733 9.6483 13.2483L14.4483 8.4483Z"
-          fill="#32C48D"
-        />
-      </svg>
-    )
-  }
-
-  const ChecklistCard = ({ checked, title, detailText, index, maxIndex }) => {
-    return (
-      <div
-        id={`hotspot-checklist-item-${index}`}
-        style={{
-          backgroundColor: checked ? '#35375c' : '#242747',
-          height: '100%',
-          // for the last card, we use a spacer div instead of margin
-          marginRight: index + 1 === maxIndex ? '0px' : '20px',
-          minWidth: `${CARD_WIDTH}px`,
-          width: `${CARD_WIDTH}px`,
-          borderRadius: '10px',
-          display: 'block',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: '10px 10px',
-          }}
-        >
-          <div style={{ maxWidth: 'calc(100% - 40px)' }}>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'flex-row',
-                justifyContent: 'flex-start',
-                alignItems: 'flex-start',
-              }}
-            >
-              <h2
-                style={{
-                  fontFamily: 'soleil',
-                  fontWeight: 700,
-                  color: 'white',
-                  fontSize: '15px',
-                  lineHeight: '19.05px',
-                }}
-              >
-                {title}
-              </h2>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                style={{
-                  color: 'white',
-                  height: 18,
-                  width: 18,
-                  marginBottom: 6,
-                  marginLeft: 6,
-                }}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-            <p
-              style={{
-                color: '#9D9FCA',
-                fontFamily: 'soleil',
-                fontSize: '14px',
-                lineHeight: '17.78px',
-                fontWeight: 400,
-              }}
-            >
-              {detailText}
-            </p>
-          </div>
-          <div>{checked && <ChecklistCheck />}</div>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <>
+      <h2
+        style={{
+          fontFamily: 'soleil',
+          fontSize: 18,
+          lineHeight: '18px',
+          color: 'white',
+          paddingTop: 48,
+          paddingBottom: 0,
+        }}
+      >
+        Hotspot Checklist:{' '}
+        <span style={{ color: '#32C48D', letterSpacing: 5 }}>
+          {possibleChecklistItems.filter((item) => item.condition).length}/
+          {possibleChecklistItems.length}
+        </span>
+      </h2>
       <div style={{ position: 'relative' }}>
         {currentIndex !== 0 && (
           <button
@@ -260,7 +217,6 @@ const HotspotChecklist = (props) => {
               padding: CARD_MARGIN,
               position: 'relative',
               display: 'flex',
-              height: 185,
             }}
           >
             {sortChecklistItems(possibleChecklistItems).map(
@@ -268,7 +224,9 @@ const HotspotChecklist = (props) => {
                 return (
                   <>
                     <ChecklistCard
+                      cardWidth={CARD_WIDTH}
                       index={index}
+                      tooltipText={checklistItem.infoTooltipText}
                       maxIndex={possibleChecklistItems.length}
                       title={checklistItem.title}
                       detailText={checklistItem.detailText}

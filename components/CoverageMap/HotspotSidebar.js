@@ -75,7 +75,7 @@ export default class HotspotSidebar extends Component {
                   <>
                     <Link href={`/hotspots/${selectedHotspots[0].address}`}>
                       <a target="_blank" className="header-view-details">
-                        View hotspot details
+                        View Hotspot Details
                         <img
                           src="/images/back.svg"
                           className="header-fwd-img"

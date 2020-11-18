@@ -28,7 +28,8 @@ const HotspotMapbox = dynamic(
 const { Title, Text } = Typography
 
 function HotspotView({ hotspot, witnesses, nearbyHotspots }) {
-  const [showWitnesses, setShowWitnesses] = useState(false)
+  const [showWitnesses, setShowWitnesses] = useState(true)
+  const [showNearbyHotspots, setShowNearbyHotspots] = useState(true)
 
   return (
     <AppLayout>
@@ -44,8 +45,16 @@ function HotspotView({ hotspot, witnesses, nearbyHotspots }) {
             witnesses={witnesses}
             showWitnesses={showWitnesses}
             nearbyHotspots={nearbyHotspots}
+            showNearbyHotspots={showNearbyHotspots}
           />
           <div style={{ textAlign: 'right', paddingTop: 6, color: 'white' }}>
+            <Checkbox
+              onChange={(e) => setShowNearbyHotspots(e.target.checked)}
+              checked={showNearbyHotspots}
+              style={{ color: 'white' }}
+            >
+              Show nearby hotspots
+            </Checkbox>
             <Checkbox
               onChange={(e) => setShowWitnesses(e.target.checked)}
               checked={showWitnesses}

@@ -1,4 +1,5 @@
 import capitalize from 'lodash/capitalize'
+import camelcaseKeys from 'camelcase-keys'
 
 export const formatHotspotName = (dashedName) =>
   dashedName.split('-').map(capitalize).join(' ')
@@ -21,7 +22,9 @@ export const formatDistance = (meters) => {
   )
 }
 
-export const formatLocation = (geocode) => {
+export const formatLocation = (geocode0) => {
+  const geocode = camelcaseKeys(geocode0)
+
   if (!geocode?.longCity && !geocode?.shortState && !geocode?.longCountry) {
     return 'No location set'
   }

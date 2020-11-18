@@ -12,12 +12,18 @@ import ActivityList from '../../components/ActivityList'
 import WitnessesList from '../../components/WitnessesList'
 import HotspotImg from '../../public/images/hotspot.svg'
 import NearbyHotspotsList from '../../components/NearbyHotspotsList'
-import { formatHotspotName } from '../../components/Hotspots/utils'
+import {
+  formatHotspotName,
+  formatLocation,
+} from '../../components/Hotspots/utils'
 
-const HotspotMapbox = dynamic(() => import('../../components/HotspotMapbox'), {
-  ssr: false,
-  loading: () => <div style={{ height: 400, width: '100%' }} />,
-})
+const HotspotMapbox = dynamic(
+  () => import('../../components/Hotspots/HotspotMapbox'),
+  {
+    ssr: false,
+    loading: () => <div style={{ height: 400, width: '100%' }} />,
+  },
+)
 
 const { Title, Text } = Typography
 
@@ -37,6 +43,7 @@ function HotspotView({ hotspot, witnesses, nearbyHotspots }) {
             hotspot={hotspot}
             witnesses={witnesses}
             showWitnesses={showWitnesses}
+            nearbyHotspots={nearbyHotspots}
           />
           <div style={{ textAlign: 'right', paddingTop: 6, color: 'white' }}>
             <Checkbox
@@ -47,24 +54,7 @@ function HotspotView({ hotspot, witnesses, nearbyHotspots }) {
               Show witnesses
             </Checkbox>
             <p style={{ marginBottom: '-20px' }}>
-              {hotspot?.geocode?.longCity === undefined &&
-              hotspot?.geocode?.shortState === undefined &&
-              hotspot?.geocode?.longCountry === undefined
-                ? // Still loading the location data
-                  `Loading location data...`
-                : hotspot?.geocode?.longCity === null &&
-                  hotspot?.geocode?.shortState === null &&
-                  hotspot?.geocode?.longCountry === null
-                ? // The hotspot doesn't have a location
-                  `No location data`
-                : // The hotspot has location data
-                  `${hotspot?.geocode?.longCity}, ${
-                    hotspot?.geocode?.shortState !== null &&
-                    hotspot?.geocode?.shortState !== undefined
-                      ? // Add the state if it's included in the data
-                        `${hotspot?.geocode?.shortState}, `
-                      : ``
-                  }${hotspot?.geocode?.longCountry}`}
+              {formatLocation(hotspot?.geocode)}
             </p>
           </div>
           <Row style={{ paddingTop: 30 }}>

@@ -10,7 +10,8 @@
   ],
   "env": {
     "ALGOLIA_API_KEY": {
-      "description": "Algolia Admin API Key"
+      "description": "Algolia Admin API Key",
+      "required": false
     },
     "NEXT_PUBLIC_ALGOLIA_APP_ID": {
       "description": "Algolia App ID",

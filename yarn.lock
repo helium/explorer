@@ -1658,13 +1658,13 @@
   dependencies:
     bignumber.js "^9.0.0"
 
-"@helium/http@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-2.0.0.tgz#53a5f458cb7e98605fe44c5aed5c67d60937a868"
-  integrity sha512-qH/YywXnHhfjc4/FP3Rj98yO6au0dvOmCvFe9Kkq51tSGDFSZDJwfQYw/d3qvhH4Jm6KlhAC+qRpvcitAlkxNw==
+"@helium/http@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-1.0.0.tgz#1d2d113412d2194461568518523a4069ee8b81ba"
+  integrity sha512-oNpuMW58Eo+iRXbnlEPX3Q4WVf1MyPPhAWxI5ykErK6IsVFH1XUFUwHpvl8H1ErfRBwJQ0kPTYjBfwzvBJ4dnA==
   dependencies:
-    "@helium/currency" "^2.0.0"
-    axios "^0.20.0"
+    "@helium/currency" "^1.0.0"
+    axios "^0.19.2"
     camelcase-keys "^6.2.2"
     qs "^6.9.3"
     retry-axios "^2.1.2"
@@ -3212,12 +3212,12 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
 
-axios@^0.20.0:
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.20.0.tgz#057ba30f04884694993a8cd07fa394cff11c50bd"
-  integrity sha512-ANA4rr2BDcmmAQLOKft2fufrtuvlqR+cXNNinUmvfeSNCOF98PZL+7M/v1zIdGo7OLjEA9J2gXJL+j4zGsl0bA==
+axios@^0.19.2:
+  version "0.19.2"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.19.2.tgz#3ea36c5d8818d0d5f8a8a97a6d36b86cdc00cb27"
+  integrity sha512-fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==
   dependencies:
-    follow-redirects "^1.10.0"
+    follow-redirects "1.5.10"
 
 axobject-query@^2.0.2:
   version "2.2.0"
@@ -4953,6 +4953,13 @@ debug@4, debug@^4.0.0, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1:
   dependencies:
     ms "2.1.2"
 
+debug@=3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
+  integrity sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==
+  dependencies:
+    ms "2.0.0"
+
 debug@^3.1.1, debug@^3.2.5:
   version "3.2.6"
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.2.6.tgz#e83d17de16d8a7efb7717edbe5fb10135eee629b"
@@ -6199,7 +6206,14 @@ flush-write-stream@^1.0.0:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
 
-follow-redirects@^1.0.0, follow-redirects@^1.10.0:
+follow-redirects@1.5.10:
+  version "1.5.10"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.10.tgz#7b7a9f9aea2fdff36786a94ff643ed07f4ff5e2a"
+  integrity sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==
+  dependencies:
+    debug "=3.1.0"
+
+follow-redirects@^1.0.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
   integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==
@@ -11354,17 +11368,18 @@ react-grid-system@^6.3.1:
   dependencies:
     prop-types "^15.7.2"
 
+"react-identicon-variety-pack@https://github.com/allenan/react-identicon-variety-pack.git":
+  version "0.2.1"
+  resolved "https://github.com/allenan/react-identicon-variety-pack.git#7861d73a1029314ea977519f69bd71a5750ec06f"
+  dependencies:
+    lodash "^4.17.15"
+
 react-infinite-scroller@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/react-infinite-scroller/-/react-infinite-scroller-1.2.4.tgz#f67eaec4940a4ce6417bebdd6e3433bfc38826e9"
   integrity sha512-/oOa0QhZjXPqaD6sictN2edFMsd3kkMiE19Vcz5JDgHpzEJVqYcmq+V3mkwO88087kvKGe1URNksHEOt839Ubw==
   dependencies:
     prop-types "^15.5.8"
-"react-identicon-variety-pack@https://github.com/allenan/react-identicon-variety-pack.git":
-  version "0.2.1"
-  resolved "https://github.com/allenan/react-identicon-variety-pack.git#7861d73a1029314ea977519f69bd71a5750ec06f"
-  dependencies:
-    lodash "^4.17.15"
 
 react-is@16.13.1, react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.13.1"

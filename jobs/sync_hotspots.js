@@ -22,6 +22,10 @@ const syncHotspots = async () => {
     return {
       ...serialized,
       objectID: serialized.address,
+      _geoloc: {
+        lat: serialized.lat ? parseFloat(serialized.lat) : undefined,
+        lng: serialized.lng ? parseFloat(serialized.lng) : undefined,
+      },
     }
   })
 

@@ -1,7 +1,10 @@
 const algoliasearch = require('algoliasearch')
 const { Client } = require('@helium/http')
 
-const algolia = algoliasearch('ZS8YIZ4JYF', process.env.ALGOLIA_API_KEY)
+const algolia = algoliasearch(
+  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+  process.env.ALGOLIA_API_KEY,
+)
 const index = algolia.initIndex('hotspots')
 
 const MAX_HOTSPOTS = 100000
@@ -19,6 +22,10 @@ const syncHotspots = async () => {
     return {
       ...serialized,
       objectID: serialized.address,
+      _geoloc: {
+        lat: serialized.lat ? parseFloat(serialized.lat) : undefined,
+        lng: serialized.lng ? parseFloat(serialized.lng) : undefined,
+      },
     }
   })
 

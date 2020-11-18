@@ -5,12 +5,12 @@ import animalHash from 'angry-purple-tiger'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 
-const SCCloseMapbox = dynamic(() => import('../components/SCCloseMapbox'), {
+const SCCloseMapbox = dynamic(() => import('./SCCloseMapbox'), {
   ssr: false,
   loading: () => <div />,
 })
 
-class TxnSCClose extends Component {
+class StateChannelCloseV1 extends Component {
   state = {
     totalPackets: 0,
     totalHotspots: 0,
@@ -160,4 +160,4 @@ class TxnSCClose extends Component {
   }
 }
 
-export default TxnSCClose
+export default StateChannelCloseV1

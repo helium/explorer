@@ -8,8 +8,19 @@ import QRCode from 'react-qr-code'
 import Fade from 'react-reveal/Fade'
 
 import { ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons'
+import AccountIcon from '../../components/AccountIcon'
 
 const { Title } = Typography
+
+const AccountAddress = ({ address, truncate = false }) => {
+  return (
+    <Tooltip title={address}>
+      <span style={{ cursor: 'pointer' }}>
+        {truncate ? `${address.slice(0, 10)}...${address.slice(-10)}` : address}
+      </span>
+    </Tooltip>
+  )
+}
 
 function AccountView({ account, hotspots }) {
   return (
@@ -46,21 +57,30 @@ function AccountView({ account, hotspots }) {
               />
             </div>
           </Fade>
-          <h3 style={{ color: '#38A2FF' }}>Account:</h3>
           <Fade delay={1000}>
-            <Title
-              code
-              level={4}
-              copyable
+            <div
               style={{
-                color: 'white',
-                marginBottom: 0,
-                fontWeight: 300,
-                wordBreak: 'break-all',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
-              {account.address}
-            </Title>
+              <AccountIcon address={account.address} size={48} />
+              <Title
+                code
+                level={2}
+                copyable={{ text: account.address }}
+                style={{
+                  color: 'white',
+                  marginBottom: 0,
+                  fontWeight: 300,
+                  wordBreak: 'break-all',
+                  marginLeft: 6,
+                }}
+              >
+                <AccountAddress address={account.address} truncate />
+              </Title>
+            </div>
           </Fade>
           <Fade bottom>
             <Title

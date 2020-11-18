@@ -1,17 +1,21 @@
 import React, { Component } from 'react'
 import { Table } from 'antd'
-import TxnTag from '../components/TxnTag'
+import { TxnTag } from '.'
 import Link from 'next/link'
+import AccountIcon from '../AccountIcon'
 
 const columns = [
   {
     title: 'Account',
     dataIndex: 'account',
     key: 'account',
-    render: (data) => (
-      <Link href={'/accounts/' + data}>
-        <a>{data}</a>
-      </Link>
+    render: (address) => (
+      <div style={{ display: 'flex' }}>
+        <AccountIcon address={address} style={{ marginRight: 4 }} />
+        <Link href={'/accounts/' + address}>
+          <a>{address}</a>
+        </Link>
+      </div>
     ),
   },
   {
@@ -23,7 +27,7 @@ const columns = [
     title: 'Total HNT',
     dataIndex: 'amount',
     key: 'amount',
-    render: (data) => <span>{data.toLocaleString()}</span>,
+    render: (amount) => <span>{amount.toLocaleString()}</span>,
   },
 ]
 
@@ -31,17 +35,17 @@ const expandedColumns = [
   {
     title: 'Type',
     dataIndex: 'type',
-    render: (data) => <TxnTag type={data}></TxnTag>,
+    render: (type) => <TxnTag type={type}></TxnTag>,
   },
   {
     title: 'HNT mined',
     dataIndex: 'amount',
     key: 'amount',
-    render: (data) => <span>{data.toLocaleString()}</span>,
+    render: (amount) => <span>{amount.toLocaleString()}</span>,
   },
 ]
 
-class TxnReward extends Component {
+class RewardsV1 extends Component {
   state = {
     groupedRewards: [],
     expandedTable: {
@@ -112,4 +116,4 @@ class TxnReward extends Component {
   }
 }
 
-export default TxnReward
+export default RewardsV1

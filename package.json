@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@helium/crypto": "^3.1.0",
-    "@helium/http": "1.0.0",
+    "@helium/http": "^3.4.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",

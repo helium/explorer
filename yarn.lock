@@ -1651,20 +1651,20 @@
     create-hash "^1.2.0"
     libsodium-wrappers "^0.7.6"
 
-"@helium/currency@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@helium/currency/-/currency-1.0.0.tgz#40f3c3505c2b245deb648b44716b6e05b40097f7"
-  integrity sha512-AlQh2cBx9ehwjqTP95/ohbLxsxzuzo3CBMCe9TDlD1+ZxvbRnJkRMoceE5vn8dOmz9HzAUOKIgKn+DGp8pkeOg==
+"@helium/currency@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@helium/currency/-/currency-3.0.0.tgz#c730be8fded993f311f40e6c02f4ac100b4d30d9"
+  integrity sha512-Nh83a+N+kQ12Je2lbr4knJ878+cVHKLq82wNvQVmnJu+3E35Lzo7a0zzRf84iLI1dW+dLsWWCclujA1JvY8yIA==
   dependencies:
     bignumber.js "^9.0.0"
 
-"@helium/http@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-1.0.0.tgz#1d2d113412d2194461568518523a4069ee8b81ba"
-  integrity sha512-oNpuMW58Eo+iRXbnlEPX3Q4WVf1MyPPhAWxI5ykErK6IsVFH1XUFUwHpvl8H1ErfRBwJQ0kPTYjBfwzvBJ4dnA==
+"@helium/http@^3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.4.0.tgz#9595241eb1355cde044ccb33bc9d263388c52c21"
+  integrity sha512-OmoWqWDzv1B82y4I/a3tRGUk3b3I9Fu544IuVQu40LXTTU9rCFSAUJWl4TcWc2NbDK6Vjqdg36vjgGWGNDs2iQ==
   dependencies:
-    "@helium/currency" "^1.0.0"
-    axios "^0.19.2"
+    "@helium/currency" "^3.0.0"
+    axios "^0.21.0"
     camelcase-keys "^6.2.2"
     qs "^6.9.3"
     retry-axios "^2.1.2"
@@ -3212,12 +3212,12 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
 
-axios@^0.19.2:
-  version "0.19.2"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.19.2.tgz#3ea36c5d8818d0d5f8a8a97a6d36b86cdc00cb27"
-  integrity sha512-fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==
+axios@^0.21.0:
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.0.tgz#26df088803a2350dff2c27f96fef99fe49442aca"
+  integrity sha512-fmkJBknJKoZwem3/IKSSLpkdNXZeBu5Q7GA/aRsr2btgrptmSCxi2oFjZHqGdK9DoTil9PIHlPIZw2EcRJXRvw==
   dependencies:
-    follow-redirects "1.5.10"
+    follow-redirects "^1.10.0"
 
 axobject-query@^2.0.2:
   version "2.2.0"
@@ -4953,13 +4953,6 @@ debug@4, debug@^4.0.0, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1:
   dependencies:
     ms "2.1.2"
 
-debug@=3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
-  integrity sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==
-  dependencies:
-    ms "2.0.0"
-
 debug@^3.1.1, debug@^3.2.5:
   version "3.2.6"
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.2.6.tgz#e83d17de16d8a7efb7717edbe5fb10135eee629b"
@@ -6206,14 +6199,7 @@ flush-write-stream@^1.0.0:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
 
-follow-redirects@1.5.10:
-  version "1.5.10"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.10.tgz#7b7a9f9aea2fdff36786a94ff643ed07f4ff5e2a"
-  integrity sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==
-  dependencies:
-    debug "=3.1.0"
-
-follow-redirects@^1.0.0:
+follow-redirects@^1.0.0, follow-redirects@^1.10.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
   integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==

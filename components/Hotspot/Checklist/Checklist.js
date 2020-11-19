@@ -183,22 +183,6 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
 
   return (
     <>
-      {/* <h2
-        style={{
-          fontFamily: 'soleil',
-          fontSize: 18,
-          lineHeight: '18px',
-          color: 'white',
-          paddingTop: 48,
-          paddingBottom: 0,
-        }}
-      >
-        Hotspot Checklist:{' '}
-        <span style={{ color: '#32C48D', letterSpacing: 5 }}>
-          {possibleChecklistItems.filter((item) => item.condition).length}/
-          {possibleChecklistItems.length}
-        </span>
-      </h2> */}
       <div style={{ position: 'relative' }}>
         {currentIndex !== 0 && (
           <button

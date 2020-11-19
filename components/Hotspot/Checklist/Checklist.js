@@ -1,26 +1,26 @@
 import { useState } from 'react'
 import ChecklistCard from './ChecklistCard'
 
-const HotspotChecklist = (props) => {
+const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
   const possibleChecklistItems = [
     {
       sortOrder: 0,
       title: 'Blockchain Sync',
       infoTooltipText: `Hotspots must be fully synced before they can mine. New Hotspots can take up to 48 hours to sync.`,
       detailText:
-        isNaN(props.hotspot.status.height) || isNaN(props.hotspot.block)
+        isNaN(hotspot.status.height) || isNaN(hotspot.block)
           ? `Hotspot is not yet synced.`
-          : props.hotspot.block - props.hotspot.status.height < 100
+          : hotspot.block - hotspot.status.height < 100
           ? `Hotspot is fully synced.`
           : `Hotspot is ${(
-              props.hotspot.block - props.hotspot.status.height
+              hotspot.block - hotspot.status.height
             ).toLocaleString()} blocks behind the Helium blockchain and is roughly ${(
-              (props.hotspot.status.height / props.hotspot.block) *
+              (hotspot.status.height / hotspot.block) *
               100
             )
               .toFixed(2)
               .toLocaleString()}% synced.`,
-      condition: props.hotspot.block - props.hotspot.status.height < 100,
+      condition: hotspot.block - hotspot.status.height < 100,
     },
     {
       sortOrder: 1,
@@ -28,7 +28,7 @@ const HotspotChecklist = (props) => {
       infoTooltipText:
         'Hotspots must be online to sync and mine. Not online? Read our troubleshooting guide (linked below).',
       detailText:
-        props.hotspot.status.online === 'online' ? (
+        hotspot.status.online === 'online' ? (
           `Hotspot is online.`
         ) : (
           <p>
@@ -43,7 +43,7 @@ const HotspotChecklist = (props) => {
             </a>
           </p>
         ),
-      condition: props.hotspot.status.online === 'online',
+      condition: hotspot.status.online === 'online',
     },
     {
       sortOrder: 2,
@@ -51,41 +51,64 @@ const HotspotChecklist = (props) => {
       infoTooltipText:
         'Hotspots that are synced and online create a challenge automatically, every 60 blocks.',
       detailText:
-        'This Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically.',
-      condition: false,
+        activity.challengerTxn !== null
+          ? `Hotspot was rewarded for creating a challenge ${(
+              hotspot.block - activity.challengerTxn.height
+            ).toLocaleString()} blocks ago.`
+          : `Hotspot hasn’t issued a challenge recently. Hotspots create challenges automatically.`,
+      condition: activity.challengerTxn !== null,
     },
     {
       sortOrder: 3,
       title: 'Witness a Challenge',
       detailText:
-        'Hotspots automatically witness challenges occuring around them.',
+        activity.witnessTxn !== null
+          ? `Hotspot was rewarded for witnessing a challenge ${(
+              hotspot.block - activity.witnessTxn.height
+            ).toLocaleString()} blocks ago.`
+          : `Hotspot hasn't witnessed a challenge yet. Hotspots automatically witness challenges occuring around them.`,
       infoTooltipText:
         'Hotspots that are synced and online can witness challenges if they’re in range of other Hotspots. If there are no Hotspots nearby, they will not be able to witness.',
-      condition: false,
+      condition: activity.witnessTxn !== null,
     },
     {
       sortOrder: 4,
       title: 'Witness List',
-      detailText: "This hotspot doesn't have a witness list yet.",
+      detailText:
+        witnesses.length > 0
+          ? `Hotspot has ${witnesses.length} Hotspot${
+              witnesses.length > 1 && 's'
+            } in its witness list.`
+          : `Hotspot doesn't have a witness list yet.`,
       infoTooltipText:
         'A Hotspot’s witness list is populated the more challenges it witnesses. Witness Lists refresh periodically to exclude offline Hotspots.',
-      condition: false,
+      condition: witnesses.length > 0,
     },
     {
       sortOrder: 5,
       title: 'Participate in a Challenge',
-      detailText: 'This Hotspot hasn’t participated in a challenge yet.',
+      detailText:
+        activity.challengeeTxn !== null
+          ? `Hotspot was rewarded for participating in a challenge ${(
+              hotspot.block - activity.challengeeTxn.height
+            ).toLocaleString()} blocks ago.`
+          : `Hotspot hasn’t participated in a challenge recently.`,
       infoTooltipText:
         'Participation in a challenge depends on having a witness list. Use the checkbox to see Hotspots in your list. It can take a few hours for challenges to include this Hotspot once a witness list is built.',
-      condition: false,
+      condition: activity.challengeeTxn !== null,
     },
     {
       sortOrder: 6,
       title: 'Transferred Data',
-      detailText: 'This Hotspot hasn’t transfered data yet.',
+      detailText:
+        activity.dataTransferTxn !== null
+          ? `Hotspot was rewarded for transferring data ${(
+              hotspot.block - activity.dataTransferTxn.height
+            ).toLocaleString()} blocks ago.`
+          : `Hotspot hasn’t transfered data yet.`,
       infoTooltipText:
         'Hotspots transfer encryped data on behalf of devices using the network. Device usage is expanding, and it is normal to have a Hotspot that does not transfer data. This likely means there are no devices using the network in the area.',
-      condition: false,
+      condition: activity.dataTransferTxn !== null,
     },
   ]
 
@@ -141,7 +164,7 @@ const HotspotChecklist = (props) => {
   const sortChecklistItems = (checklistItems) => {
     const unsortedChecklistItems = checklistItems
 
-    const sortedChecklistItems = unsortedChecklistItems.sort(function (a, b) {
+    const sortedChecklistItems = unsortedChecklistItems.sort((a, b) => {
       if (b.condition || a.condition) {
         // if one of the items is complete, sort it first
         return b.condition - a.condition
@@ -160,7 +183,7 @@ const HotspotChecklist = (props) => {
 
   return (
     <>
-      <h2
+      {/* <h2
         style={{
           fontFamily: 'soleil',
           fontSize: 18,
@@ -175,7 +198,7 @@ const HotspotChecklist = (props) => {
           {possibleChecklistItems.filter((item) => item.condition).length}/
           {possibleChecklistItems.length}
         </span>
-      </h2>
+      </h2> */}
       <div style={{ position: 'relative' }}>
         {currentIndex !== 0 && (
           <button
@@ -210,7 +233,7 @@ const HotspotChecklist = (props) => {
             id="hotspot-checklist-container"
             style={{
               position: 'relative',
-              marginTop: 20,
+              marginTop: 40,
               backgroundColor: '#1c1d3f',
               borderRadius: 20,
               overflowX: 'scroll',

@@ -18,7 +18,7 @@ const HotspotMapbox = dynamic(() => import('../../components/HotspotMapbox'), {
 
 const { Title, Text } = Typography
 
-const HotspotView = ({ hotspot, witnesses }) => {
+const HotspotView = ({ hotspot, witnesses, activity }) => {
   const [showWitnesses, setShowWitnesses] = useState(false)
 
   const witnessColumns = [
@@ -163,7 +163,7 @@ const HotspotView = ({ hotspot, witnesses }) => {
                           }}
                         ></div>
                       </Tooltip>
-                  <Tooltip
+                      <Tooltip
                         placement="top"
                         title={`Hotspot is ${(
                           hotspot.block - hotspot.status.height
@@ -182,25 +182,25 @@ const HotspotView = ({ hotspot, witnesses }) => {
                     </div>
                     <Tooltip
                       placement="top"
-                    title="The network score of this hotspot. From 0 to 1, with 1 being optimum performance."
-                  >
-                    <h3
-                      style={{
-                        color: '#27284B',
-                        background: '#BE73FF',
-                        padding: '1px 6px',
+                      title="The network score of this hotspot. From 0 to 1, with 1 being optimum performance."
+                    >
+                      <h3
+                        style={{
+                          color: '#27284B',
+                          background: '#BE73FF',
+                          padding: '1px 6px',
                           marginBottom: 0,
-                        borderRadius: 6,
+                          borderRadius: 6,
                           marginLeft: 10,
                           fontSize: 14,
-                        fontWeight: 600,
-                        display: 'inline-block',
-                        letterSpacing: -0.5,
-                      }}
-                    >
-                      {round(hotspot.score, 2)}
-                    </h3>
-                  </Tooltip>
+                          fontWeight: 600,
+                          display: 'inline-block',
+                          letterSpacing: -0.5,
+                        }}
+                      >
+                        {round(hotspot.score, 2)}
+                      </h3>
+                    </Tooltip>
                   </div>
                 </Fade>
                 <span className="hotspot-name">
@@ -242,7 +242,11 @@ const HotspotView = ({ hotspot, witnesses }) => {
             </div>
           </Row>
 
-          <Checklist hotspot={hotspot} />
+          <Checklist
+            hotspot={hotspot}
+            witnesses={witnesses}
+            activity={activity}
+          />
         </div>
         <div className="bottombar">
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
@@ -302,6 +306,57 @@ export async function getStaticProps({ params }) {
   const { hotspotid } = params
   const hotspot = await client.hotspots.get(hotspotid)
 
+  const rewardTxnsList = await client.hotspot(hotspotid).activity.list({
+    filterTypes: ['rewards_v1'],
+  })
+
+  const rewardTxns = await rewardTxnsList.take(200)
+
+  let challengerTxn = null
+  rewardTxns.some(function (txn) {
+    return txn.rewards.some(function (txnReward) {
+      if (txnReward.type === 'poc_challengers') {
+        challengerTxn = txn
+        return
+      }
+    })
+  })
+  let challengeeTxn = null
+  rewardTxns.some(function (txn) {
+    return txn.rewards.some(function (txnReward) {
+      if (txnReward.type === 'poc_challengees') {
+        challengeeTxn = txn
+        return
+      }
+    })
+  })
+  let witnessTxn = null
+  rewardTxns.some(function (txn) {
+    return txn.rewards.some(function (txnReward) {
+      if (txnReward.type === 'poc_witnesses') {
+        witnessTxn = txn
+        return
+      }
+    })
+  })
+
+  let dataTransferTxn = null
+  rewardTxns.some(function (txn) {
+    return txn.rewards.some(function (txnReward) {
+      if (txnReward.type === 'data_credits') {
+        dataTransferTxn = txn
+        return
+      }
+    })
+  })
+
+  const hotspotActivity = {
+    challengerTxn: challengerTxn,
+    challengeeTxn: challengeeTxn,
+    witnessTxn: witnessTxn,
+    dataTransferTxn: dataTransferTxn,
+  }
+
   return {
     props: {
       hotspot: JSON.parse(JSON.stringify(hotspot)),
@@ -311,6 +366,7 @@ export async function getStaticProps({ params }) {
       )
         .then((res) => res.json())
         .then((json) => json.data.filter((w) => !(w.address === hotspotid))),
+      activity: JSON.parse(JSON.stringify(hotspotActivity)),
     },
     revalidate: 10,
   }

@@ -180,27 +180,6 @@ const HotspotView = ({ hotspot, witnesses, activity }) => {
                           .toLocaleString()}% synced`}</p>
                       </Tooltip>
                     </div>
-                    <Tooltip
-                      placement="top"
-                      title="The network score of this hotspot. From 0 to 1, with 1 being optimum performance."
-                    >
-                      <h3
-                        style={{
-                          color: '#27284B',
-                          background: '#BE73FF',
-                          padding: '1px 6px',
-                          marginBottom: 0,
-                          borderRadius: 6,
-                          marginLeft: 10,
-                          fontSize: 14,
-                          fontWeight: 600,
-                          display: 'inline-block',
-                          letterSpacing: -0.5,
-                        }}
-                      >
-                        {round(hotspot.score, 2)}
-                      </h3>
-                    </Tooltip>
                   </div>
                 </Fade>
                 <span className="hotspot-name">

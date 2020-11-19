@@ -185,7 +185,7 @@ export async function getStaticProps() {
       countriesCount,
       latestHotspots,
     },
-    revalidate: 10,
+    revalidate: 60,
   }
 }
 

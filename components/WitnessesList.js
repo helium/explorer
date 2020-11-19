@@ -48,7 +48,7 @@ const WitnessesList = ({ witnesses }) => (
       columns={columns}
       size="small"
       rowKey="name"
-      pagination={{ pageSize: 10, hideOnSinglePage: true }}
+      pagination={{ pageSize: 5, hideOnSinglePage: true }}
       scroll={{ x: true }}
     />
   </Card>

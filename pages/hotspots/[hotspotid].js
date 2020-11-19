@@ -123,9 +123,65 @@ const HotspotView = ({ hotspot, witnesses }) => {
               }}
             >
               <div style={{ width: '100%' }}>
-                <Fade delay={1000}>
+                <Fade delay={500}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      padding: '0 0 8px 0',
+                      width: 'auto',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '2px 10px',
+                        backgroundColor: '#1c1d3f',
+                        borderRadius: '10px',
+                      }}
+                    >
+                      <Tooltip
+                        placement="top"
+                        title={`Hotspot is ${hotspot.status.online}`}
+                      >
+                        <div
+                          style={{
+                            height: 10,
+                            minWidth: 10,
+                            width: 10,
+                            // marginLeft: 15,
+                            backgroundColor:
+                              hotspot.status.online === 'online'
+                                ? '#32C48D'
+                                : '#fb6666',
+                            borderRadius: 20,
+                          }}
+                        ></div>
+                      </Tooltip>
                   <Tooltip
-                    placement="bottom"
+                        placement="top"
+                        title={`Hotspot is ${(
+                          hotspot.block - hotspot.status.height
+                        ).toLocaleString()} blocks behind the Helium blockchain`}
+                      >
+                        <p
+                          style={{
+                            marginBottom: 0,
+                            color: '#8283B2',
+                            marginLeft: 10,
+                          }}
+                        >{`${((hotspot.status.height / hotspot.block) * 100)
+                          .toFixed(2)
+                          .toLocaleString()}% synced`}</p>
+                      </Tooltip>
+                    </div>
+                    <Tooltip
+                      placement="top"
                     title="The network score of this hotspot. From 0 to 1, with 1 being optimum performance."
                   >
                     <h3
@@ -133,8 +189,10 @@ const HotspotView = ({ hotspot, witnesses }) => {
                         color: '#27284B',
                         background: '#BE73FF',
                         padding: '1px 6px',
+                          marginBottom: 0,
                         borderRadius: 6,
-                        fontSize: 16,
+                          marginLeft: 10,
+                          fontSize: 14,
                         fontWeight: 600,
                         display: 'inline-block',
                         letterSpacing: -0.5,
@@ -143,6 +201,7 @@ const HotspotView = ({ hotspot, witnesses }) => {
                       {round(hotspot.score, 2)}
                     </h3>
                   </Tooltip>
+                  </div>
                 </Fade>
                 <span className="hotspot-name">
                   <Title

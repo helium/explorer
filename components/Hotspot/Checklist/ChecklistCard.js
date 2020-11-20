@@ -46,7 +46,7 @@ const ChecklistCard = ({
                 fontFamily: 'soleil',
                 fontWeight: 700,
                 color: 'white',
-                fontSize: '15px',
+                fontSize: '14px',
                 lineHeight: '19.05px',
               }}
             >
@@ -79,7 +79,7 @@ const ChecklistCard = ({
             style={{
               color: '#9D9FCA',
               fontFamily: 'soleil',
-              fontSize: '11px',
+              fontSize: '14px',
               lineHeight: '17.78px',
               fontWeight: 400,
             }}

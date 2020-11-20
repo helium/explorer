@@ -52,10 +52,10 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
         'Hotspots that are synced and online create a challenge automatically, every 60 blocks.',
       detailText:
         activity.challengerTxn !== null
-          ? `Hotspot was rewarded for creating a challenge ${(
+          ? `Hotspot issued a challenge ${(
               hotspot.block - activity.challengerTxn.height
             ).toLocaleString()} blocks ago.`
-          : `Hotspot hasn’t issued a challenge recently. Hotspots create challenges automatically.`,
+          : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically.`,
       condition: activity.challengerTxn !== null,
     },
     {
@@ -63,12 +63,11 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
       title: 'Witness a Challenge',
       detailText:
         activity.witnessTxn !== null
-          ? `Hotspot was rewarded for witnessing a challenge ${(
-              hotspot.block - activity.witnessTxn.height
-            ).toLocaleString()} blocks ago.`
-          : `Hotspot hasn't witnessed a challenge yet. Hotspots automatically witness challenges occuring around them.`,
+          ? // TODO: make this message more specific (e.g. add: "x blocks ago") once the API has been updated to make that number easier to get
+            `Hotspot has witnessed a challenge recently.`
+          : `Hotspot hasn't witnessed a challenge recently.`,
       infoTooltipText:
-        'Hotspots that are synced and online can witness challenges if they’re in range of other Hotspots. If there are no Hotspots nearby, they will not be able to witness.',
+        'Hotspots that are synced and online automatically witness challenges if they’re in range of other Hotspots. If there are no Hotspots nearby, they will not be able to witness.',
       condition: activity.witnessTxn !== null,
     },
     {
@@ -79,7 +78,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
           ? `Hotspot has ${witnesses.length} Hotspot${
               witnesses.length > 1 && 's'
             } in its witness list.`
-          : `Hotspot doesn't have a witness list yet.`,
+          : `Hotspot doesn't currently have a witness list.`,
       infoTooltipText:
         'A Hotspot’s witness list is populated the more challenges it witnesses. Witness Lists refresh periodically to exclude offline Hotspots.',
       condition: witnesses.length > 0,
@@ -89,10 +88,10 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
       title: 'Participate in a Challenge',
       detailText:
         activity.challengeeTxn !== null
-          ? `Hotspot was rewarded for participating in a challenge ${(
+          ? `Hotspot last participated in a challenge ${(
               hotspot.block - activity.challengeeTxn.height
             ).toLocaleString()} blocks ago.`
-          : `Hotspot hasn’t participated in a challenge recently.`,
+          : `Hotspot hasn’t participated in a challenge yet.`,
       infoTooltipText:
         'Participation in a challenge depends on having a witness list. Use the checkbox to see Hotspots in your list. It can take a few hours for challenges to include this Hotspot once a witness list is built.',
       condition: activity.challengeeTxn !== null,
@@ -102,10 +101,9 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
       title: 'Transferred Data',
       detailText:
         activity.dataTransferTxn !== null
-          ? `Hotspot was rewarded for transferring data ${(
-              hotspot.block - activity.dataTransferTxn.height
-            ).toLocaleString()} blocks ago.`
-          : `Hotspot hasn’t transfered data yet.`,
+          ? // TODO: make this message more specific (e.g. add "x blocks ago") once the API has been updated to make that number easier to get
+            `Hotspot has transferred data packets recently.`
+          : `Hotspot hasn’t transfered data packets recently.`,
       infoTooltipText:
         'Hotspots transfer encryped data on behalf of devices using the network. Device usage is expanding, and it is normal to have a Hotspot that does not transfer data. This likely means there are no devices using the network in the area.',
       condition: activity.dataTransferTxn !== null,
@@ -199,7 +197,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              style={{ height: 20, width: 20 }}
+              style={{ height: 20, width: 20, color: 'white' }}
             >
               <path
                 strokeLinecap="round"
@@ -277,7 +275,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
             }}
           >
             <svg
-              style={{ height: 20, width: 20 }}
+              style={{ height: 20, width: 20, color: 'white' }}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"

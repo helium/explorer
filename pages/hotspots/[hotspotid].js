@@ -285,6 +285,19 @@ export async function getStaticProps({ params }) {
   const { hotspotid } = params
   const hotspot = await client.hotspots.get(hotspotid)
 
+  // Get most recent challenger transaction
+  const challengerTxnList = await client.hotspot(hotspotid).activity.list({
+    filterTypes: ['poc_request_v1'],
+  })
+  const challengerTxn = await challengerTxnList.take(1)
+
+  // Get most recent challengee transaction
+  const challengeeTxnList = await client.hotspot(hotspotid).activity.list({
+    filterTypes: ['poc_receipts_v1'],
+  })
+  const challengeeTxn = await challengeeTxnList.take(1)
+
+  // Get most recent rewards transactions to search for...
   const rewardTxnsList = await client.hotspot(hotspotid).activity.list({
     filterTypes: ['rewards_v1'],
   })
@@ -310,6 +323,7 @@ export async function getStaticProps({ params }) {
     })
   })
   let witnessTxn = null
+  // most recent witness transaction
   rewardTxns.some(function (txn) {
     return txn.rewards.some(function (txnReward) {
       if (txnReward.type === 'poc_witnesses') {
@@ -320,6 +334,7 @@ export async function getStaticProps({ params }) {
   })
 
   let dataTransferTxn = null
+  // most recent data credit transaction
   rewardTxns.some(function (txn) {
     return txn.rewards.some(function (txnReward) {
       if (txnReward.type === 'data_credits') {
@@ -330,8 +345,8 @@ export async function getStaticProps({ params }) {
   })
 
   const hotspotActivity = {
-    challengerTxn: challengerTxn,
-    challengeeTxn: challengeeTxn,
+    challengerTxn: challengerTxn.length === 1 ? challengerTxn[0] : null,
+    challengeeTxn: challengeeTxn.length === 1 ? challengeeTxn[0] : null,
     witnessTxn: witnessTxn,
     dataTransferTxn: dataTransferTxn,
   }

@@ -35,7 +35,8 @@
     "react-social-icons": "^4.1.0",
     "react-timestamp": "^5.1.0",
     "react-typekit": "^1.1.4",
-    "recharts": "^1.8.5"
+    "recharts": "^1.8.5",
+    "swr": "^0.3.9"
   },
   "scripts": {
     "dev": "next dev",

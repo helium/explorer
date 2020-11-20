@@ -6,17 +6,21 @@ import { ArrowUpOutlined } from '@ant-design/icons'
 import AppLayout, { Content } from '../../components/AppLayout'
 import HotspotChart from '../../components/Hotspots/HotspotChart'
 import LatestHotspotsTable from '../../components/Hotspots/LatestHotspotsTable'
+import { fetchStats, useStats } from '../../data/stats'
 
 const { Title } = Typography
 
 function Hotspots({
   hotspotGrowth,
-  hotspotCount,
   onlineHotspotCount,
   citiesCount,
   countriesCount,
   latestHotspots,
+  stats: initialStats,
 }) {
+  const { stats } = useStats(initialStats)
+  const { totalHotspots } = stats
+
   return (
     <AppLayout>
       <Content
@@ -62,9 +66,9 @@ function Hotspots({
                   <Tooltip title="past week (10,000 blocks)">
                     <Statistic
                       value={
-                        ((hotspotCount -
+                        ((totalHotspots -
                           hotspotGrowth.slice(-11, -10)[0].count) /
-                          hotspotCount) *
+                          totalHotspots) *
                         100
                       }
                       precision={0}
@@ -75,7 +79,10 @@ function Hotspots({
                   </Tooltip>
                 }
               >
-                <Statistic value={hotspotCount} valueStyle={{ fontSize: 40 }} />
+                <Statistic
+                  value={totalHotspots}
+                  valueStyle={{ fontSize: 40 }}
+                />
               </Card>
             </Col>
             <Col xs={24} md={7}>
@@ -85,7 +92,7 @@ function Hotspots({
                 style={{ height: '100%' }}
                 extra={
                   <Statistic
-                    value={(onlineHotspotCount / hotspotCount) * 100}
+                    value={(onlineHotspotCount / totalHotspots) * 100}
                     precision={0}
                     valueStyle={{ fontSize: 14, color: 'rgba(0, 0, 0, 0.45)' }}
                     suffix={<span style={{ fontSize: 12 }}>%</span>}
@@ -148,19 +155,18 @@ function Hotspots({
   )
 }
 
-// this will need to be heavily cached
 export async function getStaticProps() {
   const client = new Client()
-  const stats = await client.stats.get()
+  const stats = await fetchStats()
   const hotspots = await (await client.hotspots.list()).take(100000)
   const cities = await (await client.cities.list()).take(100000)
 
   const hotspotGrowth = [
-    { block: stats.counts.blocks, count: stats.counts.hotspots },
+    { block: stats.totalBlocks, count: stats.totalHotspots },
   ]
 
   Array.from({ length: 39 }, (x, i) => {
-    const block = stats.counts.blocks - 10000 * (i + 1)
+    const block = stats.totalBlocks - 10000 * (i + 1)
     const count = countBy(hotspots, (h) => h.blockAdded <= block).true
     hotspotGrowth.unshift({ block, count })
   })
@@ -179,11 +185,11 @@ export async function getStaticProps() {
   return {
     props: {
       hotspotGrowth,
-      hotspotCount: stats.counts.hotspots,
       onlineHotspotCount,
       citiesCount: cities.length,
       countriesCount,
       latestHotspots,
+      stats,
     },
     revalidate: 60,
   }

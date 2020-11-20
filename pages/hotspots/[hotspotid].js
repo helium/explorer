@@ -301,27 +301,8 @@ export async function getStaticProps({ params }) {
   const rewardTxnsList = await client.hotspot(hotspotid).activity.list({
     filterTypes: ['rewards_v1'],
   })
-
   const rewardTxns = await rewardTxnsList.take(200)
 
-  let challengerTxn = null
-  rewardTxns.some(function (txn) {
-    return txn.rewards.some(function (txnReward) {
-      if (txnReward.type === 'poc_challengers') {
-        challengerTxn = txn
-        return
-      }
-    })
-  })
-  let challengeeTxn = null
-  rewardTxns.some(function (txn) {
-    return txn.rewards.some(function (txnReward) {
-      if (txnReward.type === 'poc_challengees') {
-        challengeeTxn = txn
-        return
-      }
-    })
-  })
   let witnessTxn = null
   // most recent witness transaction
   rewardTxns.some(function (txn) {

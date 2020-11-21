@@ -14,7 +14,9 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
           ? `Hotspot is fully synced.`
           : `Hotspot is ${(
               hotspot.block - hotspot.status.height
-            ).toLocaleString()} blocks behind the Helium blockchain and is roughly ${(
+            ).toLocaleString()} block${
+              hotspot.block - hotspot.status.height === 1 ? '' : 's'
+            } behind the Helium blockchain and is roughly ${(
               (hotspot.status.height / hotspot.block) *
               100
             )
@@ -25,8 +27,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
     {
       sortOrder: 1,
       title: 'Hotspot Status',
-      infoTooltipText:
-        'Hotspots must be online to sync and mine. Not online? Read our troubleshooting guide (linked below).',
+      infoTooltipText: 'Hotspots must be online to sync and mine.',
       detailText:
         hotspot.status.online === 'online' ? (
           `Hotspot is online.`
@@ -54,7 +55,9 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
         activity.challengerTxn !== null
           ? `Hotspot issued a challenge ${(
               hotspot.block - activity.challengerTxn.height
-            ).toLocaleString()} blocks ago.`
+            ).toLocaleString()} block${
+              hotspot.block - activity.challengerTxn.height === 1 ? '' : 's'
+            } ago.`
           : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically.`,
       condition: activity.challengerTxn !== null,
     },
@@ -76,7 +79,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
       detailText:
         witnesses.length > 0
           ? `Hotspot has ${witnesses.length} Hotspot${
-              witnesses.length > 1 && 's'
+              witnesses.length === 1 ? '' : 's'
             } in its witness list.`
           : `Hotspot doesn't currently have a witness list.`,
       infoTooltipText:
@@ -90,7 +93,9 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
         activity.challengeeTxn !== null
           ? `Hotspot last participated in a challenge ${(
               hotspot.block - activity.challengeeTxn.height
-            ).toLocaleString()} blocks ago.`
+            ).toLocaleString()} block${
+              hotspot.block - activity.challengeeTxn.height === 1 ? '' : 's'
+            } ago.`
           : `Hotspot hasn’t participated in a challenge yet.`,
       infoTooltipText:
         'Participation in a challenge depends on having a witness list. Use the checkbox to see Hotspots in your list. It can take a few hours for challenges to include this Hotspot once a witness list is built.',

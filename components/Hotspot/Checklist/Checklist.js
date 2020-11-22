@@ -143,6 +143,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
   }, [])
 
   const updateScrollAndWindowSizes = () => {
+    // Refresh the values
     const currentScrollPosition = document.getElementById(
       'hotspot-checklist-container',
     ).scrollLeft
@@ -295,7 +296,6 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
       <div className="hotspot-checklist-progress-bar-container">
         <div
           className="hotspot-checklist-progress-bar"
-          id=""
           style={{
             position: 'relative',
             marginBottom: 10,

@@ -2,6 +2,7 @@ import ChecklistCheck from './ChecklistCheck'
 import { Tooltip } from 'antd'
 
 const ChecklistCard = ({
+  isCurrentCard,
   checked,
   title,
   tooltipText,
@@ -15,6 +16,9 @@ const ChecklistCard = ({
       id={`hotspot-checklist-item-${index}`}
       style={{
         backgroundColor: checked ? '#35375c' : '#242747',
+        // conditional styling for the currently selected card
+        boxShadow: isCurrentCard ? '0 0 20px #00000046' : 'none',
+        border: isCurrentCard ? '1px solid #ffffff44' : '1px solid transparent',
         minHeight: '108px',
         // for the last card, we use a spacer div instead of margin
         marginRight: index + 1 === maxIndex ? '0px' : '20px',

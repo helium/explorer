@@ -242,7 +242,7 @@ hr {
   padding: 60px 20px 30px 20px;
 }
 .content-container-hotspot-view {
-  padding: 0px 20px 50px 20px;
+  padding: 0px 20px 20px 20px;
 }
 .content-container-txn-view {
   padding: 60px 20px 30px 20px;
@@ -303,6 +303,26 @@ hr {
 .hotspot-checklist-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+#hotspot-checklist-container {
+  border-radius: 20px;
+}
+
+.hotspot-checklist-padding-container {
+  padding: 0 20px;
+}
+
+#hotspot-checklist-inner-shadow {
+  border-radius: 0 20px 20px 0;
+}
+
+.hotspot-checklist-progress-bar-container {
+  padding: 0 20px;
+}
+
+.hotspot-checklist-progress-bar-slice:hover {
+  cursor: pointer;
 }
 
 .hotspot-checklist-nav-button {
@@ -369,6 +389,19 @@ hr {
   .content-container-hotspot-view > .mapboxgl-map {
     height: 200px;
   }
+  #hotspot-checklist-container {
+    border-radius: 0px;
+  }
+  .hotspot-checklist-padding-container {
+    padding: 0 0;
+  }
+  .hotspot-checklist-progress-bar-container {
+    padding: 0 15px;
+  }
+  #hotspot-checklist-inner-shadow {
+    border-radius: 0 0 0 0;
+  }
+
   .hotspot-name > h1 {
     line-height: 1;
   }

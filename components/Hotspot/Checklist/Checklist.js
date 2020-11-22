@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ChecklistCard from './ChecklistCard'
+import { Tooltip } from 'antd'
 
 const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
   const possibleChecklistItems = [
@@ -119,49 +120,154 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
   const CARD_MARGIN = 20
 
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentScrollPosition, setCurrentScrollPosition] = useState(0)
+  const [outerContainerWidth, setOuterContainerWidth] = useState(0)
+  const [scrollContainerWidth, setScrollContainerWidth] = useState(0)
   const [hideNextButton, setHideNextButton] = useState(false)
 
-  const handleScroll = () => {
+  useEffect(() => {
+    // Scroll to the furthest card that isn't completed yet 1 second after the page loads
+    let targetIndex = 0
+    sortChecklistItems(possibleChecklistItems).find((checklistItem, index) => {
+      if (!checklistItem.condition) {
+        targetIndex = index
+        return checklistItem
+      }
+    })
+
+    if (targetIndex !== 0) {
+      setTimeout(() => {
+        scrollToIndex(targetIndex)
+      }, 1000)
+    }
+  }, [])
+
+  const updateScrollAndWindowSizes = () => {
     const currentScrollPosition = document.getElementById(
       'hotspot-checklist-container',
     ).scrollLeft
-
-    setCurrentIndex(
-      Math.floor(
-        (currentScrollPosition + CARD_MARGIN) / (CARD_WIDTH + CARD_MARGIN),
-      ),
-    )
-
-    const containerOffsetWidth = document.getElementById(
-      'hotspot-checklist-container',
-    ).offsetWidth
-    const containerScrollLeft = document.getElementById(
-      'hotspot-checklist-container',
-    ).scrollLeft
-    const containerScrollWidth = document.getElementById(
+    setCurrentScrollPosition(currentScrollPosition)
+    const scrollContainerWidth = document.getElementById(
       'hotspot-checklist-container',
     ).scrollWidth
+    setScrollContainerWidth(scrollContainerWidth)
+    const outerContainerWidth = document.getElementById(
+      'hotspot-checklist-outer-container',
+    ).clientWidth
+    setOuterContainerWidth(outerContainerWidth)
+  }
 
-    setHideNextButton(
-      containerOffsetWidth + containerScrollLeft >=
-        containerScrollWidth - CARD_WIDTH,
-    )
+  const handleScroll = () => {
+    updateScrollAndWindowSizes()
+
+    let index = 0
+
+    if (
+      currentScrollPosition < CARD_MARGIN ||
+      currentScrollPosition <
+        outerContainerWidth / 2 - (CARD_WIDTH + CARD_MARGIN) - CARD_MARGIN
+    ) {
+      // BEGINNING FEW CARDS
+      index = currentScrollPosition > CARD_MARGIN ? 1 : 0
+    } else if (
+      currentScrollPosition >
+      scrollContainerWidth - outerContainerWidth - CARD_MARGIN
+    ) {
+      // LAST FEW CARDS
+      index =
+        currentScrollPosition >
+        scrollContainerWidth - outerContainerWidth + CARD_MARGIN
+          ? Math.floor(
+              ((currentScrollPosition +
+                outerContainerWidth / 2 +
+                CARD_WIDTH +
+                CARD_WIDTH / 2 +
+                CARD_MARGIN * 2) /
+                scrollContainerWidth) *
+                possibleChecklistItems.length,
+            )
+          : possibleChecklistItems.length - 1
+    } else {
+      // MIDDLE CARDS
+      index = Math.round(
+        ((currentScrollPosition + outerContainerWidth / 2 + CARD_WIDTH) /
+          scrollContainerWidth) *
+          possibleChecklistItems.length -
+          1,
+      )
+    }
+    setCurrentIndex(index)
+
+    setHideNextButton(currentIndex + 1 === possibleChecklistItems.length)
+    updateScrollAndWindowSizes()
   }
 
   const handleNextCardClick = () => {
-    document.getElementById('hotspot-checklist-container').scrollTo({
-      left: (currentIndex + 1) * (CARD_WIDTH + CARD_MARGIN),
-      behavior: 'smooth',
-    })
-    handleScroll()
+    const currentScrolledIndex = currentIndex
+
+    const scrollTargetIndex =
+      currentScrolledIndex + 1 !== possibleChecklistItems.length
+        ? currentScrolledIndex + 1
+        : currentScrolledIndex
+    scrollToIndex(scrollTargetIndex)
   }
 
   const handlePreviousCardClick = () => {
+    const currentScrolledIndex = currentIndex
+    const scrollTargetIndex =
+      currentIndex !== 0 ? currentScrolledIndex - 1 : currentIndex
+    scrollToIndex(scrollTargetIndex)
+  }
+
+  const scrollToIndex = (index) => {
+    updateScrollAndWindowSizes()
+
+    let scrollTargetPos = 0
+
+    let scrollCenteredCardOffset =
+      index === possibleChecklistItems.length - 2
+        ? // second last item
+          outerContainerWidth / 2 - CARD_WIDTH / 2
+        : index === 1
+        ? // second item
+          outerContainerWidth / 2 - CARD_WIDTH / 2 + CARD_MARGIN
+        : outerContainerWidth / 2 - CARD_WIDTH / 2 - CARD_MARGIN
+
+    scrollTargetPos =
+      (index + 1) * (CARD_WIDTH + CARD_MARGIN) -
+      (CARD_WIDTH + CARD_MARGIN) -
+      scrollCenteredCardOffset
+
+    if (
+      scrollTargetPos > scrollContainerWidth - outerContainerWidth ||
+      scrollTargetPos < 0
+    ) {
+      // The target index is outside the scroll container
+      if (
+        scrollTargetPos > scrollContainerWidth - outerContainerWidth &&
+        index !== possibleChecklistItems.length - 1
+      ) {
+        // The last few items in the checklist
+        scrollTargetPos =
+          scrollContainerWidth -
+          outerContainerWidth -
+          (CARD_WIDTH +
+            CARD_MARGIN * (possibleChecklistItems.length - 1 - index)) -
+          CARD_WIDTH +
+          outerContainerWidth / 2
+      } else if (scrollTargetPos < 0 && index !== 0) {
+        // The first few items in the checklist
+        // Set the second item scroll target to 25 pixels so we can differentiate it from the first item
+        scrollTargetPos = CARD_MARGIN + 5 * index
+      }
+    }
+
     document.getElementById('hotspot-checklist-container').scrollTo({
-      left: (currentIndex - 1) * (CARD_WIDTH + CARD_MARGIN),
+      left: scrollTargetPos,
       behavior: 'smooth',
     })
-    handleScroll()
+
+    updateScrollAndWindowSizes()
   }
 
   const sortChecklistItems = (checklistItems) => {
@@ -186,115 +292,163 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
 
   return (
     <>
-      <div style={{ position: 'relative' }}>
-        {currentIndex !== 0 && (
-          <button
-            onClick={handlePreviousCardClick}
-            className="hotspot-checklist-nav-button"
-            style={{
-              left: 0,
-              zIndex: 2,
-              marginLeft: 10,
-            }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              style={{ height: 20, width: 20, color: 'white' }}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
-        )}
-        <div style={{ position: 'relative' }}>
-          <div
-            onScroll={handleScroll}
-            className="hotspot-checklist-scrollbar"
-            id="hotspot-checklist-container"
-            style={{
-              position: 'relative',
-              marginTop: 40,
-              backgroundColor: '#1c1d3f',
-              borderRadius: 20,
-              overflowX: 'scroll',
-              padding: CARD_MARGIN,
-              position: 'relative',
-              display: 'flex',
-            }}
-          >
-            {sortChecklistItems(possibleChecklistItems).map(
-              (checklistItem, index) => {
-                return (
-                  <>
-                    <ChecklistCard
-                      cardWidth={CARD_WIDTH}
-                      index={index}
-                      tooltipText={checklistItem.infoTooltipText}
-                      maxIndex={possibleChecklistItems.length}
-                      title={checklistItem.title}
-                      detailText={checklistItem.detailText}
-                      checked={checklistItem.condition}
-                    />
-                    {index === possibleChecklistItems.length - 1 && (
-                      // Add a spacer div of the margin size on the right of the last item, otherwise it's difficult to get a margin at the end of an overflowed container
-                      <div
-                        style={{
-                          minWidth: CARD_MARGIN,
-                        }}
-                      />
-                    )}
-                  </>
-                )
-              },
-            )}
-          </div>
-          {/* Shadow for the right side of the container to show that there's more content to be scrolled */}
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              borderRadius: '0 20px 20px 0',
-              height: '100%',
-              width: 50,
-              bottom: 0,
-              boxShadow: 'inset -15px 0 8px -2px rgba(0, 0, 0, 0.16)',
-            }}
-          />
+      <div className="hotspot-checklist-progress-bar-container">
+        <div
+          className="hotspot-checklist-progress-bar"
+          id=""
+          style={{
+            position: 'relative',
+            marginBottom: 10,
+            backgroundColor: '#1c1d3f',
+            borderRadius: 20,
+            padding: 5,
+            position: 'relative',
+            display: 'flex',
+          }}
+        >
+          {sortChecklistItems(possibleChecklistItems).map(
+            (checklistItem, index) => {
+              return (
+                <Tooltip title={checklistItem.title}>
+                  <div
+                    onClick={() => scrollToIndex(index)}
+                    className="hotspot-checklist-progress-bar-slice"
+                    style={{
+                      backgroundColor: checklistItem.condition
+                        ? '#32C48D'
+                        : '#242747',
+                      height: 8,
+                      padding: 5,
+                      borderRadius:
+                        index === 0
+                          ? '10px 0 0 10px'
+                          : index + 1 === possibleChecklistItems.length
+                          ? '0 10px 10px 0'
+                          : '0',
+                      border: '2px solid #1c1d3f',
+                      width: `${(1 / possibleChecklistItems.length) * 100}%`,
+                    }}
+                  />
+                </Tooltip>
+              )
+            },
+          )}
         </div>
-
-        {!hideNextButton && (
-          <button
-            onClick={handleNextCardClick}
-            className="hotspot-checklist-nav-button"
-            style={{
-              right: 0,
-              marginRight: 10,
-            }}
-          >
-            <svg
-              style={{ height: 20, width: 20, color: 'white' }}
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+      </div>
+      <div className="hotspot-checklist-padding-container">
+        <div
+          style={{ position: 'relative' }}
+          id="hotspot-checklist-outer-container"
+        >
+          {currentIndex !== 0 && (
+            <button
+              onClick={handlePreviousCardClick}
+              className="hotspot-checklist-nav-button"
+              style={{
+                left: 0,
+                zIndex: 2,
+                marginLeft: 10,
+              }}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
-        )}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                style={{ height: 20, width: 20, color: 'white' }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+          )}
+          <div style={{ position: 'relative' }}>
+            <div
+              onScroll={handleScroll}
+              className="hotspot-checklist-scrollbar"
+              id="hotspot-checklist-container"
+              style={{
+                position: 'relative',
+                marginTop: 15,
+                backgroundColor: '#1c1d3f',
+                overflowX: 'scroll',
+                padding: CARD_MARGIN,
+                position: 'relative',
+                display: 'flex',
+              }}
+            >
+              {sortChecklistItems(possibleChecklistItems).map(
+                (checklistItem, index) => {
+                  return (
+                    <>
+                      <ChecklistCard
+                        isCurrentCard={index === currentIndex}
+                        cardWidth={CARD_WIDTH}
+                        index={index}
+                        tooltipText={checklistItem.infoTooltipText}
+                        maxIndex={possibleChecklistItems.length}
+                        title={checklistItem.title}
+                        detailText={checklistItem.detailText}
+                        checked={checklistItem.condition}
+                      />
+                      {index === possibleChecklistItems.length - 1 && (
+                        // Add a spacer div of the margin size on the right of the last item, otherwise it's difficult to get a margin at the end of an overflowed container
+                        <div
+                          style={{
+                            minWidth: CARD_MARGIN,
+                          }}
+                        />
+                      )}
+                    </>
+                  )
+                },
+              )}
+            </div>
+            {/* Shadow for the right side of the container to show that there's more content to be scrolled */}
+            <div
+              id="hotspot-checklist-inner-shadow"
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                height: '100%',
+                width: 50,
+                bottom: 0,
+                boxShadow: 'inset -15px 0 8px -2px rgba(0, 0, 0, 0.16)',
+              }}
+            />
+          </div>
+
+          {!hideNextButton && (
+            <button
+              onClick={handleNextCardClick}
+              className="hotspot-checklist-nav-button"
+              style={{
+                right: 0,
+                marginRight: 10,
+              }}
+            >
+              <svg
+                style={{ height: 20, width: 20, color: 'white' }}
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          )}
+        </div>
       </div>
     </>
   )

@@ -82,7 +82,13 @@ const HotspotView = ({ hotspot, witnesses, activity }) => {
             witnesses={witnesses}
             showWitnesses={showWitnesses}
           />
-          <div style={{ textAlign: 'right', paddingTop: 6, color: 'white' }}>
+          <div
+            style={{
+              textAlign: 'right',
+              paddingTop: 10,
+              color: 'white',
+            }}
+          >
             <Checkbox
               onChange={(e) => setShowWitnesses(e.target.checked)}
               checked={showWitnesses}
@@ -220,7 +226,10 @@ const HotspotView = ({ hotspot, witnesses, activity }) => {
               </div>
             </div>
           </Row>
-
+        </div>
+        <div
+          style={{ maxWidth: 850 + 40, margin: '0 auto', paddingBottom: 50 }}
+        >
           <Checklist
             hotspot={hotspot}
             witnesses={witnesses}

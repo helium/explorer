@@ -135,6 +135,10 @@ function Index(props) {
                   HNT
                 </p>
                 <p className="stat">
+                  <span>Maximum Supply:</span>
+                  223,000,000 HNT
+                </p>
+                <p className="stat">
                   <span>Data Credits spent (30d):</span>
                   {dataCredits.toLocaleString()} DC
                 </p>

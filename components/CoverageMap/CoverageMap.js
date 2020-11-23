@@ -7,8 +7,7 @@ const maxZoom = 14
 const minZoom = 2
 
 const Mapbox = ReactMapboxGl({
-  accessToken:
-    'pk.eyJ1IjoicGV0ZXJtYWluIiwiYSI6ImNqMHA5dm8xbTAwMGQycXMwa3NucGptenQifQ.iVCDWzb16acgOKWz65AckA',
+  accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
   interactive: true,
   touchZoomRotate: true,
   maxZoom: maxZoom,

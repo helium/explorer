@@ -1,7 +1,6 @@
 import React from 'react'
 
-const MAPBOX_TOKEN =
-  'pk.eyJ1IjoicGV0ZXJtYWluIiwiYSI6ImNqMHA5dm8xbTAwMGQycXMwa3NucGptenQifQ.iVCDWzb16acgOKWz65AckA'
+const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_KEY
 
 const Map = ({ coords }) => {
   let url =

@@ -7,5 +7,23 @@
     {
       "url": "heroku/nodejs"
     }
-  ]
+  ],
+  "env": {
+    "ALGOLIA_API_KEY": {
+      "description": "Algolia Admin API Key",
+      "required": false
+    },
+    "NEXT_PUBLIC_ALGOLIA_APP_ID": {
+      "description": "Algolia App ID",
+      "required": true
+    },
+    "NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY": {
+      "description": "Algolia Search-Only API Key",
+      "required": true
+    },
+    "NEXT_PUBLIC_MAPBOX_KEY": {
+      "description": "MapBox Key",
+      "required": true
+    }
+  }
 }

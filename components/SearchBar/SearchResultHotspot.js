@@ -1,7 +1,7 @@
 import React from 'react'
-import capitalize from 'lodash/capitalize'
 import ReactCountryFlag from 'react-country-flag'
-import StatusCircle from './StatusCircle'
+import { formatHotspotName } from '../Hotspots/utils'
+import { StatusCircle } from '../Hotspots'
 
 const SearchResultHotspot = ({ name, geocode, status }) => (
   <div
@@ -12,8 +12,8 @@ const SearchResultHotspot = ({ name, geocode, status }) => (
     }}
   >
     <span>
-      <StatusCircle online={status.online === 'online'} />
-      {name.split('-').map(capitalize).join(' ')}
+      <StatusCircle status={status} />
+      {formatHotspotName(name)}
     </span>
     <span
       style={{

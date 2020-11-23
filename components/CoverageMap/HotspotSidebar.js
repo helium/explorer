@@ -14,10 +14,6 @@ export default class HotspotSidebar extends Component {
     this.setState({ filter: e.target.value })
   }
 
-  loadMore = () => {
-    return null
-  }
-
   render() {
     const {
       hotspots,
@@ -25,6 +21,7 @@ export default class HotspotSidebar extends Component {
       selectedHotspots,
       selectHotspots,
       clearSelectedHotspots,
+      fetchMoreHotspots,
     } = this.props
 
     const { filter } = this.state
@@ -104,7 +101,7 @@ export default class HotspotSidebar extends Component {
             </div>
           </SidebarHeader>
 
-          <SidebarScrollable loadMore={this.loadMore}>
+          <SidebarScrollable loadMore={fetchMoreHotspots}>
             {hotspotsToShow.map((hotspot) => (
               <div key={hotspot.address}>
                 <Hotspot

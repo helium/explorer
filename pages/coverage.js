@@ -1,19 +1,48 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import castArray from 'lodash/castArray'
 import Header from '../components/CoverageMap/Header'
 import Page from '../components/CoverageMap/Page'
 import dynamic from 'next/dynamic'
 import HotspotSidebar from '../components/CoverageMap/HotspotSidebar'
-import { fetchHotspots } from '../data/hotspots'
 import { Client } from '@helium/http'
 
 const Map = dynamic(() => import('../components/CoverageMap/CoverageMap'), {
   ssr: false,
   loading: () => <div />,
 })
+
+const hotspotToObj = (hotspot) => ({
+  ...hotspot,
+  location: hotspot.geocode.longCity + ', ' + hotspot.geocode.shortState,
+})
+
 const Coverage = (props) => {
-  const { hotspots, count } = props
+  const { count } = props
+  const [hotspotList, setHotspotList] = useState(null)
+  const [hotspots, setHotspots] = useState([])
   const [selectedHotspots, setSelectedHotspots] = useState([])
+
+  useEffect(() => {
+    const setupHotspotList = async () => {
+      const client = new Client()
+      setHotspotList(await client.hotspots.list())
+    }
+    setupHotspotList()
+  }, [])
+
+  useEffect(() => {
+    const setupInitialHotspots = async () => {
+      if (!hotspotList) return
+      const initialHotspots = (await hotspotList.take(20)).map(hotspotToObj)
+      setHotspots(initialHotspots)
+    }
+    setupInitialHotspots()
+  }, [hotspotList])
+
+  const fetchMoreHotspots = async () => {
+    const newHotspots = (await hotspotList.take(20)).map(hotspotToObj)
+    setHotspots([...hotspots, ...newHotspots])
+  }
 
   const selectHotspots = (hotspots) => {
     setSelectedHotspots(castArray(hotspots))
@@ -33,9 +62,9 @@ const Coverage = (props) => {
         selectedHotspots={selectedHotspots}
         selectHotspots={selectHotspots}
         clearSelectedHotspots={clearSelectedHotspots}
+        fetchMoreHotspots={fetchMoreHotspots}
       />
       <Map
-        hotspots={hotspots}
         selectedHotspots={selectedHotspots}
         selectHotspots={selectHotspots}
         clearSelectedHotspots={clearSelectedHotspots}
@@ -49,13 +78,10 @@ export default Coverage
 export async function getStaticProps() {
   const client = new Client()
   const stats = await client.stats.get()
-  const newCount = stats.counts.hotspots
-
-  const newHotspots = await fetchHotspots()
+  const count = stats.counts.hotspots
 
   let props = {
-    hotspots: newHotspots,
-    count: newCount,
+    count,
   }
 
   return {

@@ -1,9 +1,5 @@
 import React from 'react'
-import ReactMapboxGl, { GeoJSONLayer, Image } from 'react-mapbox-gl'
-import geoJSON from 'geojson'
-// import get from 'lodash/get'
-import { Spin } from 'antd'
-import GeolocationButton from './GeolocationButton'
+import ReactMapboxGl from 'react-mapbox-gl'
 
 const Mapbox = ReactMapboxGl({
   accessToken:
@@ -14,53 +10,12 @@ const Mapbox = ReactMapboxGl({
   minZoom: 0,
 })
 
-const circleLayout = {
-  'circle-color': '#29d391',
-  'circle-radius': 3,
-  'circle-opacity': 0.5,
-  'circle-blur': 0.95,
-}
-
-class CoverageMap extends React.Component {
-  //  map = React.createRef()
-
+class MiniCoverageMap extends React.Component {
   state = {
-    map: null,
-    center: [-98.5795, 39.8283],
     zoom: [3],
-    hasGeolocation: false,
-  }
-
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.isGeolocationEnabled &&
-      prevProps.coords === null &&
-      this.props.coords !== null
-    ) {
-      this.setState({ hasGeolocation: true })
-    }
-  }
-
-  renderOverviewMap = () => {
-    const { hotspots, hotspotsLoading } = this.props
-
-    const data = geoJSON.parse(hotspots, { Point: ['lat', 'lng'] })
-
-    return (
-      <React.Fragment>
-        <Image id="green-hex" url="/images/hex-green.png" />
-        {hotspotsLoading && (
-          <span className="green-spin">
-            <Spin size="large" />
-          </span>
-        )}
-        <GeoJSONLayer id="hotspots" data={data} circlePaint={circleLayout} />
-      </React.Fragment>
-    )
   }
 
   render() {
-    const { hasGeolocation } = this.state
     const { zoomLevel } = this.props
 
     return (
@@ -70,7 +25,7 @@ class CoverageMap extends React.Component {
         </p>
         <span className="mini-coverage-map-overlay" />
         <Mapbox
-          style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
+          style="mapbox://styles/petermain/ckhtuzof73dpe19nydccv3zma"
           containerStyle={{
             position: 'relative',
             width: '100%',
@@ -80,23 +35,11 @@ class CoverageMap extends React.Component {
             alignItems: 'center',
             justifyContent: 'center',
           }}
-          // center={this.state.center}
           zoom={[zoomLevel]}
-          onStyleLoad={(map) => {
-            this.setState({ map })
-          }}
-          ref={(e) => {
-            this.map = e
-          }}
-        >
-          {this.renderOverviewMap()}
-          {hasGeolocation && (
-            <GeolocationButton onClick={this.handleGeolocationButtonClick} />
-          )}
-        </Mapbox>
+        />
       </span>
     )
   }
 }
 
-export default CoverageMap
+export default MiniCoverageMap

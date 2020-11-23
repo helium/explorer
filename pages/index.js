@@ -4,7 +4,6 @@ import BlocksList from '../components/BlocksList'
 import AppLayout, { Content } from '../components/AppLayout'
 import { Typography } from 'antd'
 import dynamic from 'next/dynamic'
-import { fetchHotspots } from '../data/hotspots'
 
 const MiniCoverageMap = dynamic(
   () => import('../components/CoverageMap/MiniCoverageMap'),
@@ -28,7 +27,6 @@ function Index(props) {
     electionTime,
     dataCredits,
     totalHotspots,
-    hotspots,
   } = props
 
   return (
@@ -168,11 +166,7 @@ function Index(props) {
             <Row>
               <Col span={24}>
                 <a href="/coverage">
-                  <MiniCoverageMap
-                    zoomLevel={0.65}
-                    hotspots={hotspots}
-                    hotspotsLoading={false}
-                  />
+                  <MiniCoverageMap zoomLevel={0.65} />
                 </a>
               </Col>
             </Row>
@@ -234,11 +228,8 @@ export async function getStaticProps() {
       }
     })
 
-  const newHotspots = await fetchHotspots()
-
   return {
     props: {
-      hotspots: newHotspots,
       height: await fetch('https://api.helium.io/v1/blocks/height')
         .then((res) => res.json())
         .then((json) => json.data.height),

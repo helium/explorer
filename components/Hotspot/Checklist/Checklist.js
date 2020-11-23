@@ -121,8 +121,10 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [currentScrollPosition, setCurrentScrollPosition] = useState(0)
-  const [outerContainerWidth, setOuterContainerWidth] = useState(0)
-  const [scrollContainerWidth, setScrollContainerWidth] = useState(0)
+  const [outerContainerWidth, setOuterContainerWidth] = useState(850)
+  const [scrollContainerWidth, setScrollContainerWidth] = useState(
+    possibleChecklistItems.length * (CARD_WIDTH + CARD_MARGIN) + CARD_MARGIN,
+  )
   const [hideNextButton, setHideNextButton] = useState(false)
 
   useEffect(() => {
@@ -140,7 +142,13 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
         scrollToIndex(targetIndex)
       }, 500)
     }
+    handleScroll()
   }, [])
+
+  useEffect(() => {
+    handleScroll()
+    updateScrollAndWindowSizes()
+  })
 
   const updateScrollAndWindowSizes = () => {
     // Refresh the values
@@ -259,7 +267,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
       } else if (scrollTargetPos < 0 && index !== 0) {
         // The first few items in the checklist
         // Set the second item scroll target to 25 pixels so we can differentiate it from the first item
-        scrollTargetPos = CARD_MARGIN + 5 * index
+        scrollTargetPos = CARD_MARGIN * index + 5
       }
     }
 
@@ -267,8 +275,8 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
       left: scrollTargetPos,
       behavior: 'smooth',
     })
-
     updateScrollAndWindowSizes()
+    handleScroll()
   }
 
   const sortChecklistItems = (checklistItems) => {
@@ -369,6 +377,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
           <div style={{ position: 'relative' }}>
             <div
               onScroll={handleScroll}
+              onWheel={handleScroll}
               className="hotspot-checklist-scrollbar"
               id="hotspot-checklist-container"
               style={{

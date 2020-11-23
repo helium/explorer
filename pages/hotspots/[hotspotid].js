@@ -148,7 +148,7 @@ const HotspotView = ({ hotspot, witnesses, activity }) => {
                         justifyContent: 'center',
                         padding: '2px 10px',
                         backgroundColor: '#1c1d3f',
-                        borderRadius: '10px',
+                        borderRadius: '20px',
                       }}
                     >
                       <Tooltip
@@ -171,9 +171,9 @@ const HotspotView = ({ hotspot, witnesses, activity }) => {
                       </Tooltip>
                       <Tooltip
                         placement="top"
-                        title={`Hotspot is ${(
+                        title={`Syncing block ${hotspot.status.height.toLocaleString()}. Blocks remaining: ${(
                           hotspot.block - hotspot.status.height
-                        ).toLocaleString()} blocks behind the Helium blockchain`}
+                        ).toLocaleString()}`}
                       >
                         <p
                           style={{
@@ -181,9 +181,13 @@ const HotspotView = ({ hotspot, witnesses, activity }) => {
                             color: '#8283B2',
                             marginLeft: 10,
                           }}
-                        >{`${((hotspot.status.height / hotspot.block) * 100)
-                          .toFixed(2)
-                          .toLocaleString()}% synced`}</p>
+                        >
+                          {hotspot.status.online === 'offline'
+                            ? `Offline`
+                            : hotspot.block - hotspot.status.height >= 500
+                            ? `Syncing`
+                            : `Synced`}
+                        </p>
                       </Tooltip>
                     </div>
                   </div>

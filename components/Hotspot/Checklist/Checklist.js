@@ -138,7 +138,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
     if (targetIndex !== 0) {
       setTimeout(() => {
         scrollToIndex(targetIndex)
-      }, 1000)
+      }, 500)
     }
   }, [])
 

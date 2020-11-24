@@ -4,7 +4,7 @@ import Client from '@helium/http'
 import round from 'lodash/round'
 import algoliasearch from 'algoliasearch'
 import Fade from 'react-reveal/Fade'
-import Checklist from '../../components/Hotspot/Checklist/Checklist'
+import Checklist from '../../components/Hotspots/Checklist/Checklist'
 
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
@@ -128,7 +128,11 @@ function HotspotView({ hotspot, witnesses, nearbyHotspots, activity }) {
                       </Tooltip>
                       <Tooltip
                         placement="top"
-                        title={`Syncing block ${hotspot.status.height.toLocaleString()}. Blocks remaining: ${(
+                        title={`${
+                          hotspot.status.online === 'online'
+                            ? `Syncing block ${hotspot.status.height.toLocaleString()}. `
+                            : 'Hotspot is not syncing. '
+                        }Blocks remaining: ${(
                           hotspot.block - hotspot.status.height
                         ).toLocaleString()}`}
                       >

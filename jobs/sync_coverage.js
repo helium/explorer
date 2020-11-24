@@ -120,7 +120,7 @@ const syncCoverage = async () => {
   const hotspotAddresses = Object.keys(hotspotLookup)
 
   const newHotspotAddresses = difference(hotspotAddresses, datasetAddresses)
-  newHotspotAddresses.reduce(async (previousPromise, nextAddress) => {
+  await newHotspotAddresses.reduce(async (previousPromise, nextAddress) => {
     await previousPromise
     return insertHotspot(hotspotLookup[nextAddress])
   }, Promise.resolve())

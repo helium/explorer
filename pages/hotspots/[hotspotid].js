@@ -323,7 +323,10 @@ export async function getStaticProps({ params }) {
   )
   const hotspotsIndex = algoliaClient.initIndex('hotspots')
   const { hits: nearbyHotspots } = await hotspotsIndex.search('', {
-    aroundLatLng: [hotspot.lat, hotspot.lng].join(', '),
+    aroundLatLng: [
+      hotspot.lat ? hotspot.lat : 0,
+      hotspot.lng ? hotspot.lng : 0,
+    ].join(', '),
     getRankingInfo: true,
     filters: `NOT address:${hotspotid}`,
   })

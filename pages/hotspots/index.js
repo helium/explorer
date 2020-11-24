@@ -15,13 +15,11 @@ const { Title } = Typography
 function Hotspots({
   hotspotGrowth,
   onlineHotspotCount,
-  citiesCount,
-  countriesCount,
   latestHotspots: initialLatestHotspots,
   stats: initialStats,
 }) {
   const {
-    stats: { totalHotspots },
+    stats: { totalHotspots, totalCities, totalCountries },
   } = useStats(initialStats)
   const { latestHotspots } = useLatestHotspots(initialLatestHotspots)
 
@@ -119,12 +117,12 @@ function Hotspots({
                 <Row justify="space-around">
                   <Statistic
                     title="Cities"
-                    value={citiesCount}
+                    value={totalCities}
                     valueStyle={{ fontSize: 30 }}
                   />
                   <Statistic
                     title="Countries"
-                    value={countriesCount}
+                    value={totalCountries}
                     valueStyle={{ fontSize: 30 }}
                   />
                   <Statistic
@@ -163,7 +161,6 @@ export async function getStaticProps() {
   const client = new Client()
   const stats = await fetchStats()
   const hotspots = await (await client.hotspots.list()).take(100000)
-  const cities = await (await client.cities.list()).take(100000)
 
   const now = new Date()
 
@@ -188,8 +185,6 @@ export async function getStaticProps() {
     })
   })
 
-  const countriesCount = Object.keys(countBy(cities, 'shortCountry')).length
-
   const onlineHotspotCount = countBy(
     hotspots,
     (h) => h.status.online === 'online',
@@ -201,8 +196,6 @@ export async function getStaticProps() {
     props: {
       hotspotGrowth,
       onlineHotspotCount,
-      citiesCount: cities.length,
-      countriesCount,
       latestHotspots,
       stats,
     },

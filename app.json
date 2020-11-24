@@ -7,5 +7,35 @@
     {
       "url": "heroku/nodejs"
     }
-  ]
+  ],
+  "env": {
+    "ALGOLIA_API_KEY": {
+      "description": "Algolia Admin API Key",
+      "required": false
+    },
+    "NEXT_PUBLIC_ALGOLIA_APP_ID": {
+      "description": "Algolia App ID",
+      "required": true
+    },
+    "NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY": {
+      "description": "Algolia Search-Only API Key",
+      "required": true
+    },
+    "NEXT_PUBLIC_MAPBOX_KEY": {
+      "description": "Mapbox Key",
+      "required": true
+    },
+    "MAPBOX_SECRET_DATASET_KEY": {
+      "description": "Mapbox secret key for managing datasets",
+      "required": false
+    },
+    "MAPBOX_COVERAGE_DATASET_ID": {
+      "description": "Mapbox dataset ID for hotspots",
+      "required": false
+    },
+    "MAPBOX_COVERAGE_TILESET_ID": {
+      "description": "Mapbox tileset ID for coverage layer",
+      "required": false
+    }
+  }
 }

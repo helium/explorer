@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout } from 'antd'
 import Logo from './Logo'
-import BlockHeight from './BlockHeight'
+import MapButton from './MapButton'
 import SearchBar from '../SearchBar'
 import Link from 'next/link'
 
@@ -25,7 +25,7 @@ const NavHeader = () => (
       </a>
     </Link>
     <SearchBar />
-    <BlockHeight />
+    <MapButton />
   </Header>
 )
 

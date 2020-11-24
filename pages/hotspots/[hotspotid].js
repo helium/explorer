@@ -1,72 +1,36 @@
 import React, { useState } from 'react'
-import { Row, Typography, Checkbox, Tooltip, Card, Table } from 'antd'
+import { Row, Typography, Checkbox, Tooltip } from 'antd'
 import Client from '@helium/http'
-import round from 'lodash/round'
-import AppLayout, { Content } from '../../components/AppLayout'
-import ActivityList from '../../components/ActivityList'
+import algoliasearch from 'algoliasearch'
 import Fade from 'react-reveal/Fade'
-import HotspotImg from '../../public/images/hotspot.svg'
+import Checklist from '../../components/Hotspots/Checklist/Checklist'
 
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import AppLayout, { Content } from '../../components/AppLayout'
 import AccountIcon from '../../components/AccountIcon'
+import ActivityList from '../../components/ActivityList'
+import WitnessesList from '../../components/WitnessesList'
+import HotspotImg from '../../public/images/hotspot.svg'
+import NearbyHotspotsList from '../../components/NearbyHotspotsList'
+import {
+  formatHotspotName,
+  formatLocation,
+} from '../../components/Hotspots/utils'
 
-const HotspotMapbox = dynamic(() => import('../../components/HotspotMapbox'), {
-  ssr: false,
-  loading: () => <div style={{ height: 400, width: '100%' }} />,
-})
+const HotspotMapbox = dynamic(
+  () => import('../../components/Hotspots/HotspotMapbox'),
+  {
+    ssr: false,
+    loading: () => <div style={{ height: 400, width: '100%' }} />,
+  },
+)
 
 const { Title, Text } = Typography
 
-function HotspotView({ hotspot, witnesses }) {
-  const [showWitnesses, setShowWitnesses] = useState(false)
-
-  const witnessColumns = [
-    {
-      title: 'Hotspot',
-      dataIndex: 'name',
-      key: 'name',
-      render: (data, row) => (
-        <Link href={'/hotspots/' + row.address}>
-          <a style={{ fontFamily: 'soleil, sans-serif' }}>{data}</a>
-        </Link>
-      ),
-    },
-    {
-      title: 'Location',
-      dataIndex: 'geocode',
-      key: 'location',
-      render: (data) => (
-        <span>
-          {data?.long_city === null &&
-          data?.short_state === null &&
-          data?.long_country === null
-            ? // The location data didn't load properly
-              `No location data`
-            : // The hotspot has location data
-              `${data?.long_city}, ${
-                data?.short_state !== null && data?.short_state !== undefined
-                  ? // Add the state if it's included in the data
-                    `${data?.short_state}, `
-                  : ``
-              }${data?.long_country}`}
-        </span>
-      ),
-    },
-    {
-      title: 'RSSI',
-      dataIndex: 'witness_info',
-      key: 'rssi',
-      render: (data) => (
-        <span>
-          {Object.keys(data.histogram).reduce((a, b) =>
-            data.histogram[a] > data.histogram[b] ? a : b,
-          )}{' '}
-          dBm
-        </span>
-      ),
-    },
-  ]
+function HotspotView({ hotspot, witnesses, nearbyHotspots, activity }) {
+  const [showWitnesses, setShowWitnesses] = useState(true)
+  const [showNearbyHotspots, setShowNearbyHotspots] = useState(true)
 
   return (
     <AppLayout>
@@ -81,8 +45,23 @@ function HotspotView({ hotspot, witnesses }) {
             hotspot={hotspot}
             witnesses={witnesses}
             showWitnesses={showWitnesses}
+            nearbyHotspots={nearbyHotspots}
+            showNearbyHotspots={showNearbyHotspots}
           />
-          <div style={{ textAlign: 'right', paddingTop: 6, color: 'white' }}>
+          <div
+            style={{
+              textAlign: 'right',
+              paddingTop: 10,
+              color: 'white',
+            }}
+          >
+            <Checkbox
+              onChange={(e) => setShowNearbyHotspots(e.target.checked)}
+              checked={showNearbyHotspots}
+              style={{ color: 'white' }}
+            >
+              Show nearby hotspots
+            </Checkbox>
             <Checkbox
               onChange={(e) => setShowWitnesses(e.target.checked)}
               checked={showWitnesses}
@@ -91,24 +70,7 @@ function HotspotView({ hotspot, witnesses }) {
               Show witnesses
             </Checkbox>
             <p style={{ marginBottom: '-20px' }}>
-              {hotspot?.geocode?.longCity === undefined &&
-              hotspot?.geocode?.shortState === undefined &&
-              hotspot?.geocode?.longCountry === undefined
-                ? // Still loading the location data
-                  `Loading location data...`
-                : hotspot?.geocode?.longCity === null &&
-                  hotspot?.geocode?.shortState === null &&
-                  hotspot?.geocode?.longCountry === null
-                ? // The hotspot doesn't have a location
-                  `No location data`
-                : // The hotspot has location data
-                  `${hotspot?.geocode?.longCity}, ${
-                    hotspot?.geocode?.shortState !== null &&
-                    hotspot?.geocode?.shortState !== undefined
-                      ? // Add the state if it's included in the data
-                        `${hotspot?.geocode?.shortState}, `
-                      : ``
-                  }${hotspot?.geocode?.longCountry}`}
+              {formatLocation(hotspot?.geocode)}
             </p>
           </div>
           <Row style={{ paddingTop: 30 }}>
@@ -123,26 +85,82 @@ function HotspotView({ hotspot, witnesses }) {
               }}
             >
               <div style={{ width: '100%' }}>
-                <Fade delay={1000}>
-                  <Tooltip
-                    placement="bottom"
-                    title="The network score of this hotspot. From 0 to 1, with 1 being optimum performance."
+                <Fade delay={500}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      padding: '0 0 8px 0',
+                      width: 'auto',
+                    }}
                   >
-                    <h3
+                    <div
                       style={{
-                        color: '#27284B',
-                        background: '#BE73FF',
-                        padding: '1px 6px',
-                        borderRadius: 6,
-                        fontSize: 16,
-                        fontWeight: 600,
-                        display: 'inline-block',
-                        letterSpacing: -0.5,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '2px 10px',
+                        backgroundColor: '#1c1d3f',
+                        borderRadius: '20px',
                       }}
                     >
-                      {round(hotspot.score, 2)}
-                    </h3>
-                  </Tooltip>
+                      <Tooltip
+                        placement="top"
+                        title={`Hotspot is ${hotspot.status.online}`}
+                      >
+                        <div
+                          style={{
+                            height: 10,
+                            minWidth: 10,
+                            width: 10,
+                            // marginLeft: 15,
+                            backgroundColor:
+                              hotspot.status.online === 'online'
+                                ? '#32C48D'
+                                : '#fb6666',
+                            borderRadius: 20,
+                          }}
+                        ></div>
+                      </Tooltip>
+                      <Tooltip
+                        placement="top"
+                        title={`${
+                          hotspot.status.online === 'online' &&
+                          hotspot.status.height === null
+                            ? 'Beginning to sync'
+                            : hotspot.status.online === 'online' &&
+                              hotspot.status.height !== null
+                            ? `Syncing block ${hotspot.status?.height.toLocaleString()}. `
+                            : 'Hotspot is not syncing. '
+                        }${
+                          hotspot.status.online === 'online' &&
+                          hotspot.status.height !== null
+                            ? `Blocks remaining: ${(
+                                hotspot.block - hotspot.status?.height
+                              ).toLocaleString()}.`
+                            : ``
+                        }`}
+                      >
+                        <p
+                          style={{
+                            marginBottom: 0,
+                            color: '#8283B2',
+                            marginLeft: 10,
+                          }}
+                        >
+                          {hotspot.status.online === 'offline'
+                            ? `Offline`
+                            : hotspot.block - hotspot.status?.height >= 500 ||
+                              hotspot.status.height === null
+                            ? `Syncing`
+                            : `Synced`}
+                        </p>
+                      </Tooltip>
+                    </div>
+                  </div>
                 </Fade>
                 <span className="hotspot-name">
                   <Title
@@ -154,7 +172,7 @@ function HotspotView({ hotspot, witnesses }) {
                       marginBottom: 17,
                     }}
                   >
-                    {hotspot.name}
+                    {formatHotspotName(hotspot.name)}
                   </Title>
                 </span>
                 <Tooltip placement="bottom" title="Hotspot Network Address">
@@ -183,7 +201,15 @@ function HotspotView({ hotspot, witnesses }) {
             </div>
           </Row>
         </div>
-
+        <div
+          style={{ maxWidth: 850 + 40, margin: '0 auto', paddingBottom: 50 }}
+        >
+          <Checklist
+            hotspot={hotspot}
+            witnesses={witnesses}
+            activity={activity}
+          />
+        </div>
         <div className="bottombar">
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
             <p
@@ -214,16 +240,18 @@ function HotspotView({ hotspot, witnesses }) {
           marginTop: 0,
         }}
       >
-        <Card title={'Witnesses'}>
-          <Table
-            dataSource={witnesses}
-            columns={witnessColumns}
-            size="small"
-            rowKey="name"
-            pagination={{ pageSize: 10, hideOnSinglePage: true }}
-            scroll={{ x: true }}
-          />
-        </Card>
+        <WitnessesList witnesses={witnesses} />
+      </Content>
+
+      <Content
+        style={{
+          margin: '0 auto',
+          maxWidth: 850,
+          paddingBottom: 20,
+          marginTop: 0,
+        }}
+      >
+        <NearbyHotspotsList nearbyHotspots={nearbyHotspots} />
       </Content>
 
       <Content
@@ -252,15 +280,79 @@ export async function getStaticProps({ params }) {
   const { hotspotid } = params
   const hotspot = await client.hotspots.get(hotspotid)
 
+  // Get most recent challenger transaction
+  const challengerTxnList = await client.hotspot(hotspotid).activity.list({
+    filterTypes: ['poc_request_v1'],
+  })
+  const challengerTxn = await challengerTxnList.take(1)
+
+  // Get most recent challengee transaction
+  const challengeeTxnList = await client.hotspot(hotspotid).activity.list({
+    filterTypes: ['poc_receipts_v1'],
+  })
+  const challengeeTxn = await challengeeTxnList.take(1)
+
+  // Get most recent rewards transactions to search for...
+  const rewardTxnsList = await client.hotspot(hotspotid).activity.list({
+    filterTypes: ['rewards_v1'],
+  })
+  const rewardTxns = await rewardTxnsList.take(200)
+
+  let witnessTxn = null
+  // most recent witness transaction
+  rewardTxns.some(function (txn) {
+    return txn.rewards.some(function (txnReward) {
+      if (txnReward.type === 'poc_witnesses') {
+        witnessTxn = txn
+        return
+      }
+    })
+  })
+
+  let dataTransferTxn = null
+  // most recent data credit transaction
+  rewardTxns.some(function (txn) {
+    return txn.rewards.some(function (txnReward) {
+      if (txnReward.type === 'data_credits') {
+        dataTransferTxn = txn
+        return
+      }
+    })
+  })
+
+  const hotspotActivity = {
+    challengerTxn: challengerTxn.length === 1 ? challengerTxn[0] : null,
+    challengeeTxn: challengeeTxn.length === 1 ? challengeeTxn[0] : null,
+    witnessTxn: witnessTxn,
+    dataTransferTxn: dataTransferTxn,
+  }
+  const algoliaClient = algoliasearch(
+    process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+    process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY,
+  )
+  const hotspotsIndex = algoliaClient.initIndex('hotspots')
+  const { hits: nearbyHotspots } = await hotspotsIndex.search('', {
+    aroundLatLng: [
+      hotspot.lat ? hotspot.lat : 0,
+      hotspot.lng ? hotspot.lng : 0,
+    ].join(', '),
+    getRankingInfo: true,
+    filters: `NOT address:${hotspotid}`,
+  })
+
+  // TODO convert to use @helium/http
+  const witnesses = await fetch(
+    `https://api.helium.io/v1/hotspots/${hotspotid}/witnesses`,
+  )
+    .then((res) => res.json())
+    .then((json) => json.data.filter((w) => !(w.address === hotspotid)))
+
   return {
     props: {
       hotspot: JSON.parse(JSON.stringify(hotspot)),
-      // TODO convert to use @helium/http
-      witnesses: await fetch(
-        `https://api.helium.io/v1/hotspots/${hotspotid}/witnesses`,
-      )
-        .then((res) => res.json())
-        .then((json) => json.data.filter((w) => !(w.address === hotspotid))),
+      activity: JSON.parse(JSON.stringify(hotspotActivity)),
+      nearbyHotspots,
+      witnesses,
     },
     revalidate: 10,
   }

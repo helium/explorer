@@ -129,12 +129,21 @@ function HotspotView({ hotspot, witnesses, nearbyHotspots, activity }) {
                       <Tooltip
                         placement="top"
                         title={`${
-                          hotspot.status.online === 'online'
-                            ? `Syncing block ${hotspot.status.height.toLocaleString()}. `
+                          hotspot.status.online === 'online' &&
+                          hotspot.status.height === null
+                            ? 'Beginning to sync'
+                            : hotspot.status.online === 'online' &&
+                              hotspot.status.height !== null
+                            ? `Syncing block ${hotspot.status?.height.toLocaleString()}. `
                             : 'Hotspot is not syncing. '
-                        }Blocks remaining: ${(
-                          hotspot.block - hotspot.status.height
-                        ).toLocaleString()}`}
+                        }${
+                          hotspot.status.online === 'online' &&
+                          hotspot.status.height !== null
+                            ? `Blocks remaining: ${(
+                                hotspot.block - hotspot.status?.height
+                              ).toLocaleString()}.`
+                            : ``
+                        }`}
                       >
                         <p
                           style={{
@@ -145,7 +154,8 @@ function HotspotView({ hotspot, witnesses, nearbyHotspots, activity }) {
                         >
                           {hotspot.status.online === 'offline'
                             ? `Offline`
-                            : hotspot.block - hotspot.status.height >= 500
+                            : hotspot.block - hotspot.status?.height >= 500 ||
+                              hotspot.status.height === null
                             ? `Syncing`
                             : `Synced`}
                         </p>

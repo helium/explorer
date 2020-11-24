@@ -34,7 +34,7 @@ const fetchDataset = () => {
           reject(error)
         }
 
-        if (response?.body?.features) {
+        if (response.body && response.body.features) {
           dataset = [...dataset, ...response.body.features]
         }
 

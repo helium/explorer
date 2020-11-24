@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Row, Typography, Checkbox, Tooltip } from 'antd'
 import Client from '@helium/http'
-import round from 'lodash/round'
 import algoliasearch from 'algoliasearch'
 import Fade from 'react-reveal/Fade'
 import Checklist from '../../components/Hotspots/Checklist/Checklist'

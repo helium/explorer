@@ -3,6 +3,8 @@ import { Row, Col } from 'antd'
 import BlocksList from '../components/BlocksList'
 import AppLayout, { Content } from '../components/AppLayout'
 import { Typography } from 'antd'
+import { fetchMarket, useMarket } from '../data/market'
+import { fetchStats, useStats } from '../data/stats'
 import dynamic from 'next/dynamic'
 
 const MiniCoverageMap = dynamic(
@@ -15,19 +17,9 @@ const MiniCoverageMap = dynamic(
 
 const { Title } = Typography
 
-function Index(props) {
-  const {
-    price,
-    priceChange,
-    volume,
-    height,
-    circulatingSupply,
-    marketCap,
-    blockTime,
-    electionTime,
-    dataCredits,
-    totalHotspots,
-  } = props
+const Index = ({ market: initialMarket, stats: initialStats }) => {
+  const { market } = useMarket(initialMarket)
+  const { stats } = useStats(initialStats)
 
   return (
     <AppLayout>
@@ -76,23 +68,23 @@ function Index(props) {
                 </h3>
                 <p className="stat">
                   <span>Block Height:</span>
-                  {height.toLocaleString()}
+                  {stats.totalBlocks.toLocaleString()}
                 </p>
                 <p className="stat">
                   <span>Total Hotspots:</span>
-                  {totalHotspots.toLocaleString()}
+                  {stats.totalHotspots.toLocaleString()}
                 </p>
                 <p className="stat">
                   <span>LongFi data (30d):</span>
-                  {((dataCredits * 24) / 10e8).toLocaleString()} GB
+                  {((stats.dataCredits * 24) / 10e8).toLocaleString()} GB
                 </p>
                 <p className="stat">
                   <span>Avg Election Time (24hr):</span>
-                  {Math.floor(electionTime / 60)}m
+                  {Math.floor(stats.electionTime / 60)}m
                 </p>
                 <p className="stat">
                   <span>Avg Block Time (24hr):</span>
-                  {Math.round(blockTime * 10) / 10}s
+                  {Math.round(stats.blockTime * 10) / 10}s
                 </p>
               </Col>
 
@@ -108,18 +100,18 @@ function Index(props) {
                 </h3>
                 <p className="stat">
                   <span>Market Price</span>
-                  {price.toLocaleString('en-US', {
+                  {market.price.toLocaleString('en-US', {
                     style: 'currency',
                     currency: 'USD',
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 4,
                   })}{' '}
-                  ({priceChange > 0 ? '+' : ''}
-                  {priceChange.toLocaleString()}%)
+                  ({market.priceChange > 0 ? '+' : ''}
+                  {market.priceChange.toLocaleString()}%)
                 </p>
                 <p className="stat">
                   <span>Volume (24hr):</span>
-                  {volume.toLocaleString('en-US', {
+                  {market.volume.toLocaleString('en-US', {
                     style: 'currency',
                     currency: 'USD',
                     minimumFractionDigits: 0,
@@ -128,7 +120,7 @@ function Index(props) {
                 </p>
                 <p className="stat">
                   <span>Circulating Supply:</span>
-                  {circulatingSupply.toLocaleString('en-US', {
+                  {stats.circulatingSupply.toLocaleString('en-US', {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })}{' '}
@@ -140,16 +132,19 @@ function Index(props) {
                 </p>
                 <p className="stat">
                   <span>Data Credits spent (30d):</span>
-                  {dataCredits.toLocaleString()} DC
+                  {stats.dataCredits.toLocaleString()} DC
                 </p>
                 <p className="stat">
                   <span>Market Cap:</span>
-                  {marketCap.toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 2,
-                  })}
+                  {(market.price * stats.circulatingSupply).toLocaleString(
+                    'en-US',
+                    {
+                      style: 'currency',
+                      currency: 'USD',
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 2,
+                    },
+                  )}
                 </p>
               </Col>
             </Row>
@@ -199,45 +194,12 @@ function Index(props) {
 }
 
 export async function getStaticProps() {
-  let props = {}
-  await fetch('https://api.coingecko.com/api/v3/coins/helium')
-    .then((res) => res.json())
-    .then((marketData) => {
-      let newVolume = 0
-      marketData.tickers.forEach((t) => {
-        newVolume += t.converted_volume.usd
-      })
-      props = {
-        ...props,
-        volume: newVolume,
-        price: marketData.market_data.current_price.usd,
-        priceChange: marketData.market_data.price_change_percentage_24h,
-      }
-    })
-
-  await fetch('https://api.helium.io/v1/stats')
-    .then((res) => res.json())
-    .then((stats) => {
-      const realCap = props.price * stats.data.token_supply
-      props = {
-        ...props,
-        circulatingSupply: stats.data.token_supply,
-        blockTime: stats.data.block_times.last_day.avg,
-        electionTime: stats.data.election_times.last_day.avg,
-        packetsTransferred:
-          stats.data.state_channel_counts.last_month.num_packets,
-        dataCredits: stats.data.state_channel_counts.last_month.num_dcs,
-        totalHotspots: stats.data.counts.hotspots,
-        marketCap: realCap,
-      }
-    })
+  const [market, stats] = await Promise.all([fetchMarket(), fetchStats()])
 
   return {
     props: {
-      height: await fetch('https://api.helium.io/v1/blocks/height')
-        .then((res) => res.json())
-        .then((json) => json.data.height),
-      ...props,
+      market,
+      stats,
     },
     revalidate: 10,
   }

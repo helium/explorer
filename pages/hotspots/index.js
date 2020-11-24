@@ -7,6 +7,8 @@ import AppLayout, { Content } from '../../components/AppLayout'
 import HotspotChart from '../../components/Hotspots/HotspotChart'
 import LatestHotspotsTable from '../../components/Hotspots/LatestHotspotsTable'
 import { fetchStats, useStats } from '../../data/stats'
+import { sub, compareAsc, getUnixTime } from 'date-fns'
+import { useLatestHotspots } from '../../data/hotspots'
 
 const { Title } = Typography
 
@@ -15,11 +17,13 @@ function Hotspots({
   onlineHotspotCount,
   citiesCount,
   countriesCount,
-  latestHotspots,
+  latestHotspots: initialLatestHotspots,
   stats: initialStats,
 }) {
-  const { stats } = useStats(initialStats)
-  const { totalHotspots } = stats
+  const {
+    stats: { totalHotspots },
+  } = useStats(initialStats)
+  const { latestHotspots } = useLatestHotspots(initialLatestHotspots)
 
   return (
     <AppLayout>
@@ -161,14 +165,27 @@ export async function getStaticProps() {
   const hotspots = await (await client.hotspots.list()).take(100000)
   const cities = await (await client.cities.list()).take(100000)
 
+  const now = new Date()
+
   const hotspotGrowth = [
-    { block: stats.totalBlocks, count: stats.totalHotspots },
+    {
+      time: getUnixTime(now),
+      count: stats.totalHotspots,
+    },
   ]
 
   Array.from({ length: 39 }, (x, i) => {
-    const block = stats.totalBlocks - 10000 * (i + 1)
-    const count = countBy(hotspots, (h) => h.blockAdded <= block).true
-    hotspotGrowth.unshift({ block, count })
+    const date = sub(now, { weeks: i + 1 })
+    // count hotspots where the time added is earlier than the given date
+    const count = countBy(
+      hotspots,
+      (h) => compareAsc(new Date(h.timestampAdded), date) === -1,
+    ).true
+
+    hotspotGrowth.unshift({
+      time: getUnixTime(date),
+      count,
+    })
   })
 
   const countriesCount = Object.keys(countBy(cities, 'shortCountry')).length
@@ -178,9 +195,7 @@ export async function getStaticProps() {
     (h) => h.status.online === 'online',
   ).true
 
-  const latestHotspots = JSON.parse(
-    JSON.stringify(hotspots.slice(0, 20).filter((h) => !!h.location)),
-  )
+  const latestHotspots = JSON.parse(JSON.stringify(hotspots.slice(0, 20)))
 
   return {
     props: {

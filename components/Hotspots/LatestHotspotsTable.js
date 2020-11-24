@@ -3,6 +3,7 @@ import { Table } from 'antd'
 import Link from 'next/link'
 import { formatHotspotName, formatLocation } from './utils'
 import { StatusCircle } from './'
+import { formatDistanceToNow } from 'date-fns'
 
 const LatestHotspotsTable = ({ hotspots }) => (
   <Table
@@ -38,9 +39,12 @@ const hotspotColumns = [
     render: (data) => <span>{formatLocation(data)}</span>,
   },
   {
-    title: 'Added Block',
-    dataIndex: 'blockAdded',
-    key: 'blockAdded',
+    title: 'Added',
+    dataIndex: 'timestampAdded',
+    key: 'timestampAdded',
+    render: (data) => (
+      <span>{formatDistanceToNow(new Date(data), { addSuffix: true })}</span>
+    ),
   },
 ]
 

@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@helium/crypto": "^3.1.0",
-    "@helium/http": "^3.4.0",
+    "@helium/http": "^3.6.0",
     "@mapbox/mapbox-sdk": "^0.11.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -16,6 +16,7 @@
     "antd": "^4.8.0",
     "camelcase-keys": "^6.2.2",
     "classnames": "^2.2.6",
+    "date-fns": "^2.16.1",
     "export-to-csv": "^0.2.1",
     "geojson": "^0.5.0",
     "h3-js": "3.6.4",

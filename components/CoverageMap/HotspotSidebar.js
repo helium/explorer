@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import Sidebar, { SidebarHeader, SidebarScrollable } from './Sidebar'
 import Hotspot from './Hotspot'
-import animalHash from 'angry-purple-tiger'
-import lowerCase from 'lodash/lowerCase'
 import Link from 'next/link'
+import withSearchResults from '../SearchBar/withSearchResults'
 
-export default class HotspotSidebar extends Component {
-  state = {
-    filter: '',
-  }
+const hotspotToObj = (hotspot) => ({
+  ...hotspot,
+  location: hotspot.geocode.longCity + ', ' + hotspot.geocode.shortState,
+})
 
+class HotspotSidebar extends Component {
   updateFilter = (e) => {
-    this.setState({ filter: e.target.value })
+    this.props.updateSearchTerm(e.target.value)
   }
 
   render() {
@@ -22,26 +22,18 @@ export default class HotspotSidebar extends Component {
       selectHotspots,
       clearSelectedHotspots,
       fetchMoreHotspots,
+      searchResults,
+      searchTerm,
     } = this.props
 
-    const { filter } = this.state
-
-    const matchesFilter = (string) =>
-      lowerCase(string).includes(lowerCase(filter))
-
-    const hotspotsToFilter =
-      selectedHotspots.length > 0
-        ? selectedHotspots
-        : hotspots.length > 0
-        ? hotspots
-        : []
-
-    const filteredHotspots = hotspotsToFilter.filter(
-      (hotspot) =>
-        matchesFilter(hotspot.location) ||
-        matchesFilter(animalHash(hotspot.address)) ||
-        matchesFilter(hotspot.owner),
-    )
+    let hotspotsToShow = hotspots
+    if (selectedHotspots.length > 0) {
+      hotspotsToShow = selectedHotspots
+    } else if (searchTerm !== '') {
+      hotspotsToShow = (
+        searchResults.find((r) => r.category === 'Hotspots')?.results || []
+      ).map(hotspotToObj)
+    }
 
     let titleText = 'Hotspots'
     if (selectedHotspots.length > 0) {
@@ -51,9 +43,6 @@ export default class HotspotSidebar extends Component {
         titleText = 'Hotspot Selected'
       }
     }
-
-    const hotspotsToShow =
-      selectedHotspots.length > 0 ? selectedHotspots : filteredHotspots
 
     return (
       <span className="coverage-map-sidebar">
@@ -88,14 +77,14 @@ export default class HotspotSidebar extends Component {
                   type="search"
                   className="search"
                   placeholder="Hotspot Lookup"
-                  value={this.state.filter}
+                  value={searchTerm}
                   onChange={this.updateFilter}
                 />
               </div>
             )}
             <div className="header-title-section">
               <span className="header-title mono">
-                {selectedHotspots.length > 0 ? hotspotsToFilter.length : count}
+                {selectedHotspots.length > 0 ? hotspotsToShow.length : count}
               </span>
               <span className="header-subtitle mono">{titleText}</span>
             </div>
@@ -200,3 +189,5 @@ export default class HotspotSidebar extends Component {
     )
   }
 }
+
+export default withSearchResults(HotspotSidebar)

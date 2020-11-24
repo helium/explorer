@@ -8,6 +8,7 @@ Any and all contributions from the community are encouraged.
 
 - Guidelines for how to contribute to this repository [are here](https://github.com/helium/explorer/blob/master/CONTRIBUTING.md);
 - Discussion about the development and usage of the Helium Blockchain Explorer takes place in the [official Helium Discord Server](https://discord.gg/helium), specifically in the `#explorer-dev` channel. Join us!
+- For a list of issues and prioritization, please go to our [Project page](https://github.com/orgs/helium/projects/9).
 
 ## About
 

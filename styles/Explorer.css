@@ -215,7 +215,7 @@ hr {
   margin-right: 20px;
 }
 
-.block-height {
+.map-button {
   min-width: 127px;
   display: flex;
   align-items: center;
@@ -242,7 +242,7 @@ hr {
   padding: 60px 20px 30px 20px;
 }
 .content-container-hotspot-view {
-  padding: 0px 20px 50px 20px;
+  padding: 0px 20px 20px 20px;
 }
 .content-container-txn-view {
   padding: 60px 20px 30px 20px;
@@ -253,6 +253,61 @@ hr {
 .content-container-hotspot-view > .mapboxgl-map {
   height: 400px;
 }
+
+.unselectable-text {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.mini-coverage-map {
+  display: block;
+  border-radius: 0 0 10px 10px;
+}
+.mini-coverage-map-overlay {
+  display: block;
+  background-color: #3f416d;
+  opacity: 0;
+  border-radius: 0 0 10px 10px;
+  position: absolute;
+  z-index: 2;
+  height: 500px;
+  width: 100%;
+}
+.mini-coverage-map:hover > .mini-coverage-map-overlay {
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+.mini-coverage-map-interactive-text {
+  position: absolute;
+  top: calc(50% - 24px);
+  text-align: center;
+  width: 100%;
+  z-index: 3;
+  color: white;
+  opacity: 0;
+  font-size: 24px;
+  font-weight: 400;
+  text-shadow: 0 0 10px darkslategray;
+  display: block;
+}
+.mini-coverage-map:hover > .mini-coverage-map-interactive-text {
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.mini-coverage-map .mapboxgl-canvas {
+  border-radius: 0 0 10px 10px;
+}
+
+.interactive-coverage-map > .mapboxgl-map {
+  /* position: absolute; */
+  height: 100vh;
+}
+
 .hotspot-name > h1 {
   line-height: 0.7;
 }
@@ -294,6 +349,86 @@ hr {
   flex-direction: row;
 }
 
+.green-spin .ant-spin-dot-item {
+  background-color: #29d391;
+}
+
+.mapboxgl-ctrl-bottom-left,
+.mapboxgl-ctrl-bottom-right {
+  display: none !important;
+}
+.map-button {
+  min-width: 127px;
+}
+.map-button-text {
+  font-size: 14px;
+}
+
+@media screen and (max-width: 1200px) {
+  .map-button {
+    min-width: 0;
+    font-size: 14px;
+    margin-left: 12px;
+    flex-direction: column;
+    padding-left: 10px;
+  }
+
+  .map-button-text {
+    display: none;
+  }
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hotspot-checklist-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hotspot-checklist-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+#hotspot-checklist-container {
+  border-radius: 20px;
+}
+
+.hotspot-checklist-padding-container {
+  padding: 0 20px;
+}
+
+#hotspot-checklist-inner-shadow {
+  border-radius: 0 20px 20px 0;
+}
+
+.hotspot-checklist-progress-bar-container {
+  padding: 0 20px;
+}
+
+.hotspot-checklist-progress-bar-slice:hover {
+  cursor: pointer;
+}
+
+.hotspot-checklist-nav-button {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  top: 63.5px;
+  height: 40px;
+  min-width: 40px;
+  width: 40px;
+  border-radius: 30px;
+  outline: none;
+  border: none;
+  background-color: #35375c;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+}
+
+.hotspot-checklist-nav-button:hover {
+  cursor: pointer;
+}
+
 @media screen and (max-width: 890px) {
   .block-view-summary-info {
     flex-direction: column;
@@ -301,7 +436,12 @@ hr {
   .block-view-clock-icon {
     margin-left: 0px;
   }
+  .interactive-coverage-map > .mapboxgl-map {
+    position: absolute;
+    height: 50vh;
+  }
 }
+
 @media screen and (max-width: 640px) {
   .logo-container {
     margin-right: 12px;
@@ -312,13 +452,7 @@ hr {
   .logo-small {
     display: block;
   }
-  .block-height {
-    min-width: auto;
-    font-size: 14px;
-    height: 10px;
-    margin-left: 12px;
-    flex-direction: column;
-  }
+
   .summary-header {
     margin-bottom: 0px;
   }
@@ -337,6 +471,19 @@ hr {
   .content-container-hotspot-view > .mapboxgl-map {
     height: 200px;
   }
+  #hotspot-checklist-container {
+    border-radius: 0px;
+  }
+  .hotspot-checklist-padding-container {
+    padding: 0 0;
+  }
+  .hotspot-checklist-progress-bar-container {
+    padding: 0 15px;
+  }
+  #hotspot-checklist-inner-shadow {
+    border-radius: 0 0 0 0;
+  }
+
   .hotspot-name > h1 {
     line-height: 1;
   }

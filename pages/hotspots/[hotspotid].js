@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { Row, Typography, Checkbox, Tooltip } from 'antd'
 import Client from '@helium/http'
-import round from 'lodash/round'
 import algoliasearch from 'algoliasearch'
 import Fade from 'react-reveal/Fade'
+import Checklist from '../../components/Hotspots/Checklist/Checklist'
+
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import AppLayout, { Content } from '../../components/AppLayout'
@@ -27,7 +28,7 @@ const HotspotMapbox = dynamic(
 
 const { Title, Text } = Typography
 
-function HotspotView({ hotspot, witnesses, nearbyHotspots }) {
+function HotspotView({ hotspot, witnesses, nearbyHotspots, activity }) {
   const [showWitnesses, setShowWitnesses] = useState(true)
   const [showNearbyHotspots, setShowNearbyHotspots] = useState(true)
 
@@ -47,7 +48,13 @@ function HotspotView({ hotspot, witnesses, nearbyHotspots }) {
             nearbyHotspots={nearbyHotspots}
             showNearbyHotspots={showNearbyHotspots}
           />
-          <div style={{ textAlign: 'right', paddingTop: 6, color: 'white' }}>
+          <div
+            style={{
+              textAlign: 'right',
+              paddingTop: 10,
+              color: 'white',
+            }}
+          >
             <Checkbox
               onChange={(e) => setShowNearbyHotspots(e.target.checked)}
               checked={showNearbyHotspots}
@@ -78,26 +85,72 @@ function HotspotView({ hotspot, witnesses, nearbyHotspots }) {
               }}
             >
               <div style={{ width: '100%' }}>
-                <Fade delay={1000}>
-                  <Tooltip
-                    placement="bottom"
-                    title="The network score of this hotspot. From 0 to 1, with 1 being optimum performance."
+                <Fade delay={500}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      padding: '0 0 8px 0',
+                      width: 'auto',
+                    }}
                   >
-                    <h3
+                    <div
                       style={{
-                        color: '#27284B',
-                        background: '#BE73FF',
-                        padding: '1px 6px',
-                        borderRadius: 6,
-                        fontSize: 16,
-                        fontWeight: 600,
-                        display: 'inline-block',
-                        letterSpacing: -0.5,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '2px 10px',
+                        backgroundColor: '#1c1d3f',
+                        borderRadius: '20px',
                       }}
                     >
-                      {round(hotspot.score, 2)}
-                    </h3>
-                  </Tooltip>
+                      <Tooltip
+                        placement="top"
+                        title={`Hotspot is ${hotspot.status.online}`}
+                      >
+                        <div
+                          style={{
+                            height: 10,
+                            minWidth: 10,
+                            width: 10,
+                            // marginLeft: 15,
+                            backgroundColor:
+                              hotspot.status.online === 'online'
+                                ? '#32C48D'
+                                : '#fb6666',
+                            borderRadius: 20,
+                          }}
+                        ></div>
+                      </Tooltip>
+                      <Tooltip
+                        placement="top"
+                        title={`${
+                          hotspot.status.online === 'online'
+                            ? `Syncing block ${hotspot.status.height.toLocaleString()}. `
+                            : 'Hotspot is not syncing. '
+                        }Blocks remaining: ${(
+                          hotspot.block - hotspot.status.height
+                        ).toLocaleString()}`}
+                      >
+                        <p
+                          style={{
+                            marginBottom: 0,
+                            color: '#8283B2',
+                            marginLeft: 10,
+                          }}
+                        >
+                          {hotspot.status.online === 'offline'
+                            ? `Offline`
+                            : hotspot.block - hotspot.status.height >= 500
+                            ? `Syncing`
+                            : `Synced`}
+                        </p>
+                      </Tooltip>
+                    </div>
+                  </div>
                 </Fade>
                 <span className="hotspot-name">
                   <Title
@@ -138,7 +191,15 @@ function HotspotView({ hotspot, witnesses, nearbyHotspots }) {
             </div>
           </Row>
         </div>
-
+        <div
+          style={{ maxWidth: 850 + 40, margin: '0 auto', paddingBottom: 50 }}
+        >
+          <Checklist
+            hotspot={hotspot}
+            witnesses={witnesses}
+            activity={activity}
+          />
+        </div>
         <div className="bottombar">
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
             <p
@@ -209,6 +270,52 @@ export async function getStaticProps({ params }) {
   const { hotspotid } = params
   const hotspot = await client.hotspots.get(hotspotid)
 
+  // Get most recent challenger transaction
+  const challengerTxnList = await client.hotspot(hotspotid).activity.list({
+    filterTypes: ['poc_request_v1'],
+  })
+  const challengerTxn = await challengerTxnList.take(1)
+
+  // Get most recent challengee transaction
+  const challengeeTxnList = await client.hotspot(hotspotid).activity.list({
+    filterTypes: ['poc_receipts_v1'],
+  })
+  const challengeeTxn = await challengeeTxnList.take(1)
+
+  // Get most recent rewards transactions to search for...
+  const rewardTxnsList = await client.hotspot(hotspotid).activity.list({
+    filterTypes: ['rewards_v1'],
+  })
+  const rewardTxns = await rewardTxnsList.take(200)
+
+  let witnessTxn = null
+  // most recent witness transaction
+  rewardTxns.some(function (txn) {
+    return txn.rewards.some(function (txnReward) {
+      if (txnReward.type === 'poc_witnesses') {
+        witnessTxn = txn
+        return
+      }
+    })
+  })
+
+  let dataTransferTxn = null
+  // most recent data credit transaction
+  rewardTxns.some(function (txn) {
+    return txn.rewards.some(function (txnReward) {
+      if (txnReward.type === 'data_credits') {
+        dataTransferTxn = txn
+        return
+      }
+    })
+  })
+
+  const hotspotActivity = {
+    challengerTxn: challengerTxn.length === 1 ? challengerTxn[0] : null,
+    challengeeTxn: challengeeTxn.length === 1 ? challengeeTxn[0] : null,
+    witnessTxn: witnessTxn,
+    dataTransferTxn: dataTransferTxn,
+  }
   const algoliaClient = algoliasearch(
     process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
     process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY,
@@ -230,6 +337,7 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       hotspot: JSON.parse(JSON.stringify(hotspot)),
+      activity: JSON.parse(JSON.stringify(hotspotActivity)),
       nearbyHotspots,
       witnesses,
     },

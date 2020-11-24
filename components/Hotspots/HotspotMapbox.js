@@ -89,7 +89,6 @@ const HotspotMapbox = ({
         key={hotspot.address}
         style={styles.gatewayMarker}
         anchor="center"
-        symbol="yolo"
         coordinates={[
           hotspot.lng ? hotspot.lng : 0,
           hotspot.lat ? hotspot.lat : 0,

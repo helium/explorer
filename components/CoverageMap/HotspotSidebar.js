@@ -83,10 +83,10 @@ class HotspotSidebar extends Component {
               </div>
             )}
             <div className="header-title-section">
-              <span className="header-title mono">
+              <span className="header-title">
                 {selectedHotspots.length > 0 ? hotspotsToShow.length : count}
               </span>
-              <span className="header-subtitle mono">{titleText}</span>
+              <span className="header-subtitle">{titleText}</span>
             </div>
           </SidebarHeader>
 
@@ -112,14 +112,15 @@ class HotspotSidebar extends Component {
           }
 
           .search {
-            background: #263441;
+            background: #2e314d;
             width: 100%;
             padding: 8px 10px;
-            font-size: 12px;
+            font-size: 14px;
             color: #a0b0c2;
             -webkit-appearance: none;
             border-radius: 6px;
             border: none;
+            font-family: 'soleil', sans-serif;
           }
 
           @media screen and (max-width: 890px) {
@@ -146,14 +147,20 @@ class HotspotSidebar extends Component {
             font-weight: 500;
             margin-right: 10px;
             line-height: 48px;
+            font-family: 'soleil';
+            font-weight: 300;
+            letter-spacing: -2px;
           }
 
           .header-subtitle {
-            color: #a0b0c2;
+            color: #a3a8e4;
             font-size: 16px;
-            font-weight: 500;
             max-width: 200px;
             line-height: normal;
+            font-family: 'soleil';
+            font-weight: 300;
+            position: relative;
+            top: 4px;
           }
 
           .header-go-back {

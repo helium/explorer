@@ -11,13 +11,6 @@ const CoverageHeader = ({ activeNav }) => {
         alignItems: 'center',
       }}
     >
-      <Link href="/">
-        <a className="back-container">
-          <img src="/images/back.svg" className="back-image" />
-          <span className="back-text">Block Explorer</span>
-        </a>
-      </Link>
-
       <style jsx>{`
         header {
           position: fixed;

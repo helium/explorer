@@ -152,24 +152,6 @@ class CoverageMap extends React.Component {
 
     return (
       <span className="interactive-coverage-map">
-        <button
-          id="zoom-in"
-          className="map-zoom-button map-zoom-in-button"
-          onClick={this.handleMapZoomButtons}
-        >
-          <span id="zoom-in" className="unselectable-text">
-            +
-          </span>
-        </button>
-        <button
-          id="zoom-out"
-          className="map-zoom-button map-zoom-out-button"
-          onClick={this.handleMapZoomButtons}
-        >
-          <span id="zoom-out" className="unselectable-text">
-            -
-          </span>
-        </button>
         <Mapbox
           style="mapbox://styles/petermain/ckhtuzof73dpe19nydccv3zma"
           containerStyle={{

@@ -141,7 +141,7 @@ const Page = ({ children, backgroundColor = '#212E3A' }) => (
         margin: 0;
         font-family: 'soleil', Helvetica, Arial, sans-serif;
         font-size: 15px;
-        background: ${backgroundColor};
+        background: #1e203f;
         height: 100vh;
       }
       .mono {

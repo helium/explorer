@@ -198,7 +198,6 @@ const PocReceiptsV1 = ({ txn, h3exclusionCells, h3maxHopCells }) => (
                       {p.witnesses.length > 0 && (
                         <>
                           <Collapse
-                            // Uncomment below line to enable witness panel to be shown by default
                             defaultActiveKey={[idx]}
                             className="poc-witness-collapsable-panel"
                           >

@@ -357,13 +357,14 @@ const PocReceiptsV1 = ({ txn, h3exclusionCells, h3maxHopCells }) => (
                                         </Link>
                                         <span
                                           style={{
-                                            color: w.is_valid
-                                              ? '#F1C40F'
-                                              : 'grey',
+                                            color:
+                                              w.is_valid || w.isValid
+                                                ? '#F1C40F'
+                                                : 'grey',
                                             paddingLeft: 10,
                                           }}
                                         >
-                                          {w.is_valid
+                                          {w.is_valid || w.isValid
                                             ? '(Valid witness)'
                                             : '(Invalid witness)'}
                                         </span>

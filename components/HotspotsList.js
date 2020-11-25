@@ -44,10 +44,22 @@ const hotspotColumns = [
     render: (data) => <span>{formatLocation(data)}</span>,
   },
   {
-    title: 'Score',
-    dataIndex: 'score',
-    key: 'score',
-    render: (data) => round(data, 2),
+    title: 'Rewards (24h)',
+    dataIndex: 'rewards',
+    key: 'rewardsDay',
+    render: (data) => round(data.day, 2),
+  },
+  {
+    title: 'Rewards (7d)',
+    dataIndex: 'rewards',
+    key: 'rewardsWeek',
+    render: (data) => round(data.week, 2),
+  },
+  {
+    title: 'Rewards (30d)',
+    dataIndex: 'rewards',
+    key: 'rewardsMonth',
+    render: (data) => round(data.month, 2),
   },
 ]
 

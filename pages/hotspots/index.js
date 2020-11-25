@@ -112,7 +112,7 @@ function Hotspots({
                 title="Geography"
                 bodyStyle={{ padding: 20 }}
                 style={{ height: '100%' }}
-                extra={<a>more</a>}
+                // extra={<a>more</a>}
               >
                 <Row justify="space-around">
                   <Statistic

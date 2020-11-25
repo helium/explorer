@@ -9,6 +9,7 @@ import Fade from 'react-reveal/Fade'
 
 import { ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import AccountIcon from '../../components/AccountIcon'
+import { fetchRewardsSummary } from '../../data/hotspots'
 
 const { Title } = Typography
 
@@ -139,7 +140,7 @@ function AccountView({ account, hotspots }) {
       <Content
         style={{
           margin: '0 auto',
-          maxWidth: 850,
+          maxWidth: 1000,
           paddingBottom: 100,
           marginTop: 0,
         }}
@@ -172,6 +173,8 @@ export async function getStaticProps({ params }) {
   const hotspots = []
   for await (const hotspot of list) {
     hotspot.status.gpsText = gpsLocation(hotspot.status.gps)
+    hotspot.rewards = await fetchRewardsSummary(hotspot.address)
+    delete hotspot.client
     hotspots.push(JSON.parse(JSON.stringify(hotspot)))
   }
 

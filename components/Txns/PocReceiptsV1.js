@@ -1,7 +1,7 @@
 import React from 'react'
 import { Descriptions, Collapse, Table, Tooltip } from 'antd'
 
-import { h3Distance } from 'h3-js'
+import { h3Distance, h3GetResolution } from 'h3-js'
 import Link from 'next/link'
 import animalHash from 'angry-purple-tiger'
 import PocPath from './PocPath'
@@ -207,10 +207,26 @@ const PocReceiptsV1 = ({ txn, h3exclusionCells, h3maxHopCells }) => (
                             >
                               <div className="poc-witness-table">
                                 {p.witnesses.map((w, i) => {
+                                  const pDistance = p.challengeeLocation
+                                    ? p.challengeeLocation
+                                    : p.challengee_location
+                                    ? p.challengee_location
+                                    : ''
+
                                   const witnessDistInH3Res12Cells = h3Distance(
-                                    p.challengee_location,
+                                    pDistance,
                                     w.location,
                                   )
+
+                                  // console.log(
+                                  //   `h3 res p: ${h3GetResolution(pDistance)}`,
+                                  // )
+                                  // console.log(
+                                  //   `h3 res w: ${h3GetResolution(w.location)}`,
+                                  // )
+                                  // console.log(
+                                  //   `Witness distance in h3 res 12 cells: ${witnessDistInH3Res12Cells}`,
+                                  // )
 
                                   // We can assume the diameter of 1 hexagon is roughly equal to its edge length * 2
                                   // The average edge length of a resolution-12 hexagon in h3 is given in km here: https://h3geo.org/docs/core-library/restable

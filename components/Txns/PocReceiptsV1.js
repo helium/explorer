@@ -77,7 +77,11 @@ const PocReceiptsV1 = ({ txn }) => (
                                   } `
                                 : `${w.datarate !== null && `, ${w.datarate} `}`
                             }
-                                  (${w.is_valid ? 'valid' : 'invalid'})`}
+                                  (${
+                                    w.is_valid || w.isValid
+                                      ? 'valid'
+                                      : 'invalid'
+                                  })`}
                           </small>
                         </span>
                       </div>

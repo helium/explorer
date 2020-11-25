@@ -181,7 +181,7 @@ const PocMapbox = ({ path, showWitnesses }) => {
                     <Marker
                       key={w.address}
                       style={
-                        w.is_valid
+                        w.is_valid || w.isValid
                           ? styles.witnessMarkerValid
                           : styles.witnessMarkerInvalid
                       }
@@ -199,7 +199,7 @@ const PocMapbox = ({ path, showWitnesses }) => {
                         'line-join': 'round',
                       }}
                       paint={
-                        w.is_valid
+                        w.is_valid || w.isValid
                           ? styles.witnessLineValid
                           : styles.witnessLineInvalid
                       }

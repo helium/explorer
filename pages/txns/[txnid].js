@@ -19,6 +19,7 @@ import {
   RewardsV1,
   StateChannelCloseV1,
   PocRequestV1,
+  ConsensusGroupV1,
   TxnTag,
 } from '../../components/Txns'
 import Block from '../../public/images/block.svg'
@@ -115,6 +116,8 @@ class TxnView extends Component {
           return <RewardsV1 txn={txn} />
         case 'state_channel_close_v1':
           return <StateChannelCloseV1 txn={txn} />
+        case 'consensus_group_v1':
+          return <ConsensusGroupV1 txn={txn} />
 
         default:
           return <Fallback txn={txn} />

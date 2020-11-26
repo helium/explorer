@@ -28,6 +28,9 @@ export const useLatestHotspots = (initialData, count = 20) => {
 // TODO add this to helium-js
 export const fetchRewardsSummary = async (address) => {
   const now = new Date()
+  // The API is currently returning 0 for hotspots that just started earning rewards until the range is extended beyond "now"
+  // To temporarily account for what I assume is timezone / DST weirdness, I'm setting the date range 1 day into the future
+  now.setDate(now.getDate() + 1)
   const monthAgo = sub(now, { days: 30 })
   const params = qs.stringify({
     min_time: formatISO(monthAgo),

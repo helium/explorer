@@ -4,6 +4,7 @@ import Client from '@helium/http'
 import algoliasearch from 'algoliasearch'
 import Fade from 'react-reveal/Fade'
 import Checklist from '../../components/Hotspots/Checklist/Checklist'
+import RewardSummary from '../../components/Hotspots/RewardSummary'
 
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
@@ -18,6 +19,8 @@ import {
   formatLocation,
 } from '../../components/Hotspots/utils'
 
+import { fetchRewardsSummary } from '../../data/hotspots'
+
 const HotspotMapbox = dynamic(
   () => import('../../components/Hotspots/HotspotMapbox'),
   {
@@ -28,7 +31,13 @@ const HotspotMapbox = dynamic(
 
 const { Title, Text } = Typography
 
-function HotspotView({ hotspot, witnesses, nearbyHotspots, activity }) {
+function HotspotView({
+  hotspot,
+  witnesses,
+  nearbyHotspots,
+  activity,
+  rewards,
+}) {
   const [showWitnesses, setShowWitnesses] = useState(true)
   const [showNearbyHotspots, setShowNearbyHotspots] = useState(true)
 
@@ -240,6 +249,16 @@ function HotspotView({ hotspot, witnesses, nearbyHotspots, activity }) {
           marginTop: 0,
         }}
       >
+        <RewardSummary rewards={rewards} />
+      </Content>
+      <Content
+        style={{
+          margin: '0 auto',
+          maxWidth: 850,
+          paddingBottom: 20,
+          marginTop: 0,
+        }}
+      >
         <WitnessesList witnesses={witnesses} />
       </Content>
 
@@ -340,6 +359,8 @@ export async function getStaticProps({ params }) {
     filters: `NOT address:${hotspotid}`,
   })
 
+  const rewards = await fetchRewardsSummary(hotspotid)
+
   // TODO convert to use @helium/http
   const witnesses = await fetch(
     `https://api.helium.io/v1/hotspots/${hotspotid}/witnesses`,
@@ -353,6 +374,7 @@ export async function getStaticProps({ params }) {
       activity: JSON.parse(JSON.stringify(hotspotActivity)),
       nearbyHotspots,
       witnesses,
+      rewards,
     },
     revalidate: 10,
   }

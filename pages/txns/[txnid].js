@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+
 import { withRouter } from 'next/router'
 import Link from 'next/link'
 import { Typography, Card } from 'antd'
@@ -7,6 +8,9 @@ import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
 import AppLayout, { Content } from '../../components/AppLayout'
 import PieChart from '../../components/PieChart'
+import animalHash from 'angry-purple-tiger'
+import { Collapse } from 'antd'
+
 import {
   Fallback,
   PaymentV1,
@@ -19,12 +23,17 @@ import {
 } from '../../components/Txns'
 import Block from '../../public/images/block.svg'
 
+// import { Tooltip } from 'antd'
+
+const { Panel } = Collapse
 const { Title, Text } = Typography
 
 class TxnView extends Component {
   state = {
     txn: {},
     loading: true,
+    h3exclusionCells: 0,
+    h3maxHopCells: 99999999,
   }
 
   componentDidMount() {
@@ -32,6 +41,7 @@ class TxnView extends Component {
     const { txnid } = this.props.router.query
     if (txnid !== undefined) {
       this.loadTxn(txnid)
+      this.loadChainVars()
     }
   }
 
@@ -40,6 +50,7 @@ class TxnView extends Component {
       const { txnid } = this.props.router.query
       if (txnid !== undefined) {
         this.loadTxn(txnid)
+        this.loadChainVars()
       }
     }
   }
@@ -47,6 +58,19 @@ class TxnView extends Component {
   async loadTxn(txnid) {
     const txn = await this.client.transactions.get(txnid)
     this.setState({ txn, loading: false })
+  }
+
+  async loadChainVars() {
+    await fetch('https://api.helium.io/v1/vars/poc_v4_exclusion_cells')
+      .then((res) => res.json())
+      .then((min) => {
+        this.setState({ h3exclusionCells: min.data })
+      })
+    await fetch('https://api.helium.io/v1/vars/poc_max_hop_cells')
+      .then((res) => res.json())
+      .then((max) => {
+        this.setState({ h3maxHopCells: max.data })
+      })
   }
 
   rewardChart() {
@@ -80,7 +104,13 @@ class TxnView extends Component {
         case 'poc_request_v1':
           return <PocRequestV1 txn={txn} />
         case 'poc_receipts_v1':
-          return <PocReceiptsV1 txn={txn} />
+          return (
+            <PocReceiptsV1
+              txn={txn}
+              h3exclusionCells={this.state.h3exclusionCells}
+              h3maxHopCells={this.state.h3maxHopCells}
+            />
+          )
         case 'rewards_v1':
           return <RewardsV1 txn={txn} />
         case 'state_channel_close_v1':

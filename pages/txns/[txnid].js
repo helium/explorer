@@ -6,6 +6,9 @@ import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
 import AppLayout, { Content } from '../../components/AppLayout'
 import PieChart from '../../components/PieChart'
+import animalHash from 'angry-purple-tiger'
+import { Collapse } from 'antd'
+
 import {
   Fallback,
   PaymentV1,
@@ -18,6 +21,9 @@ import {
 } from '../../components/Txns'
 import Block from '../../public/images/block.svg'
 
+// import { Tooltip } from 'antd'
+
+const { Panel } = Collapse
 const { Title, Text } = Typography
 
 const txnView = (txn) => {

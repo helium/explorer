@@ -25,10 +25,20 @@ export const useLatestHotspots = (initialData, count = 20) => {
   }
 }
 
+const convertDateToUTC = (date) =>
+  new Date(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds(),
+  )
+
 // TODO add this to helium-js
 export const fetchRewardsSummary = async (address) => {
   const now = new Date()
-  const nowUTC = new Date(now.getTime() + now.getTimezoneOffset() * 60000)
+  const nowUTC = convertDateToUTC(now)
   // Use UTC version of current time so that the current day's rewards get included in the API response
 
   const monthAgo = sub(now, { days: 30 })

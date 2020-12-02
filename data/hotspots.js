@@ -41,7 +41,7 @@ export const fetchRewardsSummary = async (address) => {
   const nowUTC = convertDateToUTC(now)
   // Use UTC version of current time so that the current day's rewards get included in the API response
 
-  const monthAgo = sub(now, { days: 30 })
+  const monthAgo = sub(nowUTC, { days: 30 })
   const params = qs.stringify({
     min_time: formatISO(monthAgo),
     max_time: formatISO(nowUTC),

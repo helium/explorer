@@ -1,7 +1,6 @@
 import React from 'react'
-import { Row, Col } from 'antd'
+import { Row, Col, Typography } from 'antd'
 import AppLayout, { Content } from '../components/AppLayout'
-import { Typography } from 'antd'
 import { fetchMarket, useMarket } from '../data/market'
 import { fetchStats, useStats } from '../data/stats'
 import dynamic from 'next/dynamic'
@@ -9,6 +8,8 @@ import OraclePriceChart from '../components/Oracles/OraclePriceChart'
 import OracleImg from '../public/images/oracle.svg'
 import Widget from '../components/Home/Widget'
 import round from 'lodash/round'
+import TopChart from '../components/AppLayout/TopChart'
+import TopBanner from '../components/AppLayout/TopBanner'
 
 const MiniCoverageMap = dynamic(
   () => import('../components/CoverageMap/MiniCoverageMap'),
@@ -32,41 +33,26 @@ const Index = ({ market: initialMarket, stats: initialStats }) => {
           background: '#F4F5F7',
         }}
       >
-        <div style={{ backgroundColor: '#101725' }}>
-          <div style={{ padding: '40px 0px 40px 40px' }}>
-            <Title
-              style={{
-                margin: '0px 0 40px',
-                maxWidth: 550,
-                letterSpacing: '-2px',
-                fontSize: 38,
-                lineHeight: 1,
-                color: 'white',
-                fontWeight: 300,
-              }}
-            >
-              Welcome to
-              <br />
-              <span style={{ fontWeight: 600, color: '#32C48D' }}>
-                Helium Explorer
-              </span>
-            </Title>
-          </div>
-        </div>
-        <div style={{ backgroundColor: '#161E2E' }}>
-          <div style={{ padding: '40px 0 0 40px' }}>
-            <Row justify="middle" gutter={[0, 16]}>
-              <img src={OracleImg} style={{ marginRight: 4 }} />
-              <Title level={4} style={{ color: '#fff', margin: 0 }}>
-                Oracle Price (30d)
-              </Title>
-            </Row>
-            <Text style={{ color: '#717E98' }}>$1.42 USD</Text>
-          </div>
-          <OraclePriceChart
-            data={prices.map(([time, price]) => ({ time: time / 1000, price }))}
-          />
-        </div>
+        <TopBanner>
+          Welcome to
+          <br />
+          <span style={{ fontWeight: 600, color: '#32C48D' }}>
+            Helium Explorer
+          </span>
+        </TopBanner>
+        <TopChart
+          title="Oracle Price (30d)"
+          subtitle="$1.42 USD"
+          icon={OracleImg}
+          chart={
+            <OraclePriceChart
+              data={prices.map(([time, price]) => ({
+                time: time / 1000,
+                price,
+              }))}
+            />
+          }
+        />
         <div
           style={{ margin: '0 auto', maxWidth: 850 + 40 }}
           className="content-container"

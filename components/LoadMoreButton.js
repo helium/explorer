@@ -9,6 +9,7 @@ const LoadMoreButton = ({ onClick }) => (
       type="default"
       icon={<ArrowDownOutlined />}
       onClick={onClick}
+      style={{ backgroundColor: '#5850EB', color: 'white', borderRadius: 6 }}
     >
       Load More
     </Button>

@@ -32,11 +32,20 @@ const OraclePriceChart = ({ data }) => (
           tick={{ fill: '#fff' }}
           tickFormatter={(unixTime) => format(fromUnixTime(unixTime), 'd MMM')}
           minTickGap={80}
-          // interval="preserveStartEnd"
         />
         <Tooltip
-          labelFormatter={(label) => format(fromUnixTime(label), 'M/d/yyy')}
-          formatter={(value) => [`$${round(value, 2)}`, 'Oracle price']}
+          labelFormatter={(label) =>
+            format(fromUnixTime(label), 'M/d/yyy hh:mm a')
+          }
+          formatter={(value) => [
+            value.toLocaleString('en-US', {
+              style: 'currency',
+              currency: 'USD',
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }),
+            'Oracle price',
+          ]}
           animationDuration={150}
           animationEasing="ease"
           contentStyle={{

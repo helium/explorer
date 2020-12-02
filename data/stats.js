@@ -8,6 +8,7 @@ export const fetchStats = async () => {
   return {
     circulatingSupply: stats.tokenSupply,
     blockTime: stats.blockTimes.lastDay.avg,
+    blockTimes: stats.blockTimes,
     electionTime: stats.electionTimes.lastDay.avg,
     packetsTransferred: stats.stateChannelCounts.lastMonth.numPackets,
     dataCredits: stats.stateChannelCounts.lastMonth.numDcs,

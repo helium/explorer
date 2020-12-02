@@ -43,17 +43,19 @@ export const fetchRewardsSummary = async (address) => {
 
   const monthAgo = sub(nowUTC, { days: 30 })
   const params = qs.stringify({
-    min_time: formatISO(monthAgo),
-    max_time: formatISO(nowUTC),
-    bucket: 'day',
+    // since the ISO format of the dates will always be a known length, substr(0, 19) will lop off the offset from the end
+    // this should only have an effect locally in the dev environment, because doing new Date() on Heroku won't have an offset
+    min_time: formatISO(monthAgo).substr(0, 19),
+    max_time: formatISO(nowUTC).substr(0, 19),
+    bucket: 'hour',
   })
   const url = `https://api.helium.io/v1/hotspots/${address}/rewards/stats?${params}`
   const response = await fetch(url)
   const { data } = await response.json()
 
   return {
-    day: data[0].total,
-    week: sumBy(data.slice(0, 6), 'total'),
+    day: sumBy(data.slice(0, 23), 'total'),
+    week: sumBy(data.slice(0, 24 * 7 - 1), 'total'),
     month: sumBy(data, 'total'),
   }
 }

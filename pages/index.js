@@ -12,6 +12,7 @@ import round from 'lodash/round'
 import TopChart from '../components/AppLayout/TopChart'
 import TopBanner from '../components/AppLayout/TopBanner'
 import { getUnixTime, formatDistanceToNow } from 'date-fns'
+import HalveningCountdown from '../components/Home/HalvingCountdown'
 
 const MiniCoverageMap = dynamic(
   () => import('../components/CoverageMap/MiniCoverageMap'),
@@ -58,6 +59,7 @@ const Index = ({
             Helium Explorer
           </span>
         </TopBanner>
+
         <TopChart
           title="Oracle Price (30d)"
           subtitle={`${latestOraclePrice} (${formatDistanceToNow(
@@ -123,6 +125,12 @@ const Index = ({
                 footer="View Market Data"
                 href="/market"
               />
+            </Col>
+          </Row>
+
+          <Row gutter={[20, 20]}>
+            <Col xs={24} md={24}>
+              <HalveningCountdown />
             </Col>
           </Row>
 

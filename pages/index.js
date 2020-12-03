@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Typography } from 'antd'
+import { Row, Col, Typography, Card, Button } from 'antd'
 import AppLayout, { Content } from '../components/AppLayout'
 import { fetchMarket, useMarket } from '../data/market'
 import { fetchStats, useStats } from '../data/stats'
@@ -13,6 +13,8 @@ import TopChart from '../components/AppLayout/TopChart'
 import TopBanner from '../components/AppLayout/TopBanner'
 import { getUnixTime, formatDistanceToNow } from 'date-fns'
 import HalvingCountdown from '../components/Home/HalvingCountdown'
+import BlocksList from '../components/BlocksList'
+import Link from 'next/link'
 
 const MiniCoverageMap = dynamic(
   () => import('../components/CoverageMap/MiniCoverageMap'),
@@ -96,14 +98,14 @@ const Index = ({
             <Col xs={24} md={8}>
               <Widget
                 title="Block Time"
-                value={`${round(stats.blockTimes.lastHour.avg)} secs`}
+                value={`${round(stats.blockTimes.lastHour.avg)} sec`}
                 change={
                   round(stats.blockTimes.lastHour.avg) -
                   round(stats.blockTimes.lastDay.avg)
                 }
-                changeSuffix=" secs"
+                changeSuffix=" sec"
                 changeUpIsBad
-                tooltip="The target block time is 60 secs. The network will adjust up or down to maintain this target."
+                tooltip="The target block time is 60 sec. The network will adjust up or down to maintain this target."
                 footer="View Blocks"
                 href="/blocks"
               />
@@ -114,7 +116,7 @@ const Index = ({
                 value={market.price.toLocaleString('en-US', {
                   style: 'currency',
                   currency: 'USD',
-                  minimumFractionDigits: 0,
+                  minimumFractionDigits: 2,
                   maximumFractionDigits: 4,
                 })}
                 change={market.priceChange}
@@ -137,103 +139,10 @@ const Index = ({
             style={{
               background: '#3F416D',
               borderRadius: 10,
+              marginBottom: 20,
             }}
             className="summary-header"
           >
-            <Row>
-              <Col lg={12}>
-                <h3
-                  style={{
-                    marginBottom: 20,
-                    color: '#1890ff',
-                    fontSize: 14,
-                  }}
-                >
-                  Blockchain Stats
-                </h3>
-                <p className="stat">
-                  <span>Block Height:</span>
-                  {stats.totalBlocks.toLocaleString()}
-                </p>
-                <p className="stat">
-                  <span>Total Hotspots:</span>
-                  {stats.totalHotspots.toLocaleString()}
-                </p>
-                <p className="stat">
-                  <span>LongFi data (30d):</span>
-                  {((stats.dataCredits * 24) / 10e8).toLocaleString()} GB
-                </p>
-                <p className="stat">
-                  <span>Avg Election Time (24hr):</span>
-                  {Math.floor(stats.electionTime / 60)}m
-                </p>
-                <p className="stat">
-                  <span>Avg Block Time (24hr):</span>
-                  {Math.round(stats.blockTime * 10) / 10}s
-                </p>
-              </Col>
-
-              <Col lg={12}>
-                <h3
-                  style={{
-                    marginBottom: 20,
-                    color: '#1890ff',
-                    fontSize: 14,
-                  }}
-                >
-                  Market Stats
-                </h3>
-                <p className="stat">
-                  <span>Market Price</span>
-                  {market.price.toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 4,
-                  })}{' '}
-                  ({market.priceChange > 0 ? '+' : ''}
-                  {market.priceChange.toLocaleString()}%)
-                </p>
-                <p className="stat">
-                  <span>Volume (24hr):</span>
-                  {market.volume.toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 2,
-                  })}
-                </p>
-                <p className="stat">
-                  <span>Circulating Supply:</span>
-                  {stats.circulatingSupply.toLocaleString('en-US', {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0,
-                  })}{' '}
-                  HNT
-                </p>
-                <p className="stat">
-                  <span>Maximum Supply:</span>
-                  223,000,000 HNT
-                </p>
-                <p className="stat">
-                  <span>Data Credits spent (30d):</span>
-                  {stats.dataCredits.toLocaleString()} DC
-                </p>
-                <p className="stat">
-                  <span>Market Cap:</span>
-                  {(market.price * stats.circulatingSupply).toLocaleString(
-                    'en-US',
-                    {
-                      style: 'currency',
-                      currency: 'USD',
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 2,
-                    },
-                  )}
-                </p>
-              </Col>
-            </Row>
-            {/* <div className="flex-responsive"> */}
             <Row>
               <Col lg={12}>
                 <h3
@@ -255,6 +164,26 @@ const Index = ({
               </Col>
             </Row>
           </div>
+
+          <Card title="Latest Blocks" style={{ marginBottom: 60 }}>
+            <BlocksList pageSize={10} showButton={false} />
+            <Row justify="center" style={{ padding: '20px 0' }}>
+              <Link href="/blocks">
+                <a>
+                  <Button
+                    size="large"
+                    style={{
+                      backgroundColor: '#5850EB',
+                      color: 'white',
+                      borderRadius: 6,
+                    }}
+                  >
+                    View All Blocks
+                  </Button>
+                </a>
+              </Link>
+            </Row>
+          </Card>
         </div>
       </Content>
     </AppLayout>

@@ -8,6 +8,7 @@ const { Title, Text } = Typography
 
 const Widget = ({
   title,
+  subtitle,
   value,
   footer,
   href,
@@ -60,6 +61,11 @@ const Widget = ({
           </div>
         )}
       </Row>
+      {subtitle && (
+        <Text type="secondary" style={{ paddingLeft: 4 }}>
+          {subtitle}
+        </Text>
+      )}
     </div>
     {href && footer && (
       <Link href={href}>

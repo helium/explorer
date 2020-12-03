@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Card, Statistic, Row, Col, Tooltip } from 'antd'
+import { Typography, Card, Row, Col } from 'antd'
 import AppLayout, { Content } from '../../components/AppLayout'
 import { fetchStats, useStats } from '../../data/stats'
 import BlocksList from '../../components/BlocksList'
@@ -17,6 +17,8 @@ const { Title } = Typography
 function Blocks({ stats: initialStats, latestBlocks: initialLatestBlocks }) {
   const { stats } = useStats(initialStats)
   const { latestBlocks } = useLatestBlocks(initialLatestBlocks)
+
+  const txnRate = meanBy(latestBlocks, 'transactionCount')
 
   return (
     <AppLayout>
@@ -48,7 +50,7 @@ function Blocks({ stats: initialStats, latestBlocks: initialLatestBlocks }) {
 
       <TopChart
         title="Transaction Rate"
-        subtitle={`${meanBy(latestBlocks, 'transactionCount')} avg per block`}
+        subtitle={`${txnRate} avg per block`}
         chart={<BlocksBarChart data={latestBlocks} />}
       />
 
@@ -57,47 +59,79 @@ function Blocks({ stats: initialStats, latestBlocks: initialLatestBlocks }) {
           margin: '0 auto',
           maxWidth: 1150,
           paddingBottom: 100,
+          paddingTop: 20,
         }}
       >
-        <Row gutter={[20, 20]} style={{ marginTop: 20 }}>
+        <Row gutter={[20, 20]}>
+          <Col xs={24} md={6}>
+            <Widget
+              title="Transaction Rate"
+              value={`${txnRate}`}
+              tooltip="Average number of transactions per block"
+            />
+          </Col>
+          <Col xs={24} md={6}>
+            <Widget
+              title="Election Time (24h)"
+              value={`${round(stats.electionTime / 60, 1)} min`}
+              tooltip="The consensus group elects new members roughly every 30 min"
+            />
+          </Col>
+          <Col xs={24} md={6}>
+            <Widget
+              title="LongFi data (30d)"
+              value={`${((stats.dataCredits * 24) / 10e8).toLocaleString()} GB`}
+              tooltip="The amount of data transmitted over the Helium network in the past 30 days"
+            />
+          </Col>
+          <Col xs={24} md={6}>
+            <Widget
+              title="Block Height"
+              value={latestBlocks[0].height.toLocaleString()}
+              tooltip="The current height of the blocks in the blockchain"
+            />
+          </Col>
+        </Row>
+
+        <Row gutter={[20, 20]}>
           <Col xs={24} md={6}>
             <Widget
               title="Block Time (1h)"
-              value={`${round(stats.blockTimes.lastHour.avg, 1)} secs`}
-              tooltip={`standard deviation: ${round(
+              value={`${round(stats.blockTimes.lastHour.avg, 1)} sec`}
+              subtitle={`${round(
                 stats.blockTimes.lastHour.stddev,
                 1,
-              )} secs`}
+              )} sec std dev`}
             />
           </Col>
           <Col xs={24} md={6}>
             <Widget
               title="Block Time (24h)"
-              value={`${round(stats.blockTimes.lastDay.avg, 1)} secs`}
-              tooltip={`standard deviation: ${round(
+              value={`${round(stats.blockTimes.lastDay.avg, 1)} sec`}
+              subtitle={`${round(
                 stats.blockTimes.lastDay.stddev,
                 1,
-              )} secs`}
+              )} sec std dev`}
             />
           </Col>
           <Col xs={24} md={6}>
             <Widget
               title="Block Time (7d)"
-              value={`${round(stats.blockTimes.lastWeek.avg, 1)} secs`}
-              tooltip={`standard deviation: ${round(
+              value={`${round(stats.blockTimes.lastWeek.avg, 1)} sec`}
+              subtitle={`${round(
                 stats.blockTimes.lastWeek.stddev,
                 1,
-              )} secs`}
+              )} sec std dev`}
             />
           </Col>
           <Col xs={24} md={6}>
             <Widget
               title="Block Time (30d)"
-              value={`${round(stats.blockTimes.lastMonth.avg, 1)} secs`}
-              tooltip={`standard deviation: ${round(
+              value={`${round(stats.blockTimes.lastMonth.avg, 1)} sec`}
+              subtitle={`${round(
                 stats.blockTimes.lastMonth.stddev,
                 1,
-              )} secs`}
+              )} sec std dev`}
             />
           </Col>
         </Row>

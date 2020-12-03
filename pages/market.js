@@ -97,7 +97,7 @@ function Market({
               value={market.price.toLocaleString('en-US', {
                 style: 'currency',
                 currency: 'USD',
-                minimumFractionDigits: 0,
+                minimumFractionDigits: 2,
                 maximumFractionDigits: 4,
               })}
               change={market.priceChange}
@@ -112,6 +112,13 @@ function Market({
             <Widget
               title="Oracle Price"
               value={latestOraclePrice}
+              change={
+                ((oraclePrices[0].price - oraclePrices[1].price) /
+                  oraclePrices[1].price) *
+                100
+              }
+              changePrecision={2}
+              changeSuffix="%"
               tooltip="The Oracle price is used to determine how many DC are produced when burning HNT"
               footer="Learn more about Oracles"
               href="https://developer.helium.com/blockchain/hnt-price-oracles"
@@ -131,7 +138,11 @@ function Market({
           <Col xs={24} md={6}>
             <Widget
               title="DC per HNT"
-              value={oraclePrices[0].price / 100000000 / 0.00001}
+              value={(
+                oraclePrices[0].price /
+                100000000 /
+                0.00001
+              ).toLocaleString()}
               tooltip="DC are used to transmit or receive 24 bytes of data over the Helium Network"
               footer="Learn more about Devices"
               href="https://developer.helium.com/devices/introduction"

@@ -232,9 +232,6 @@ hr {
   word-break: break-all;
 }
 
-.summary-header {
-  margin-bottom: 100px;
-}
 .summary-header > .ant-row > .ant-col-lg-12 {
   padding: 16px 24px;
 }

@@ -16,6 +16,7 @@ const HalveningCountdown = () => {
           // }
         />
       }
+      subtitle="August 1st, 2021"
       tooltip="HIP 20 reduces HNT rewards every two years on the Network’s genesis anniversary"
       footer="View Blog Post on HIP 20"
       href="https://blog.helium.com/hip-20-on-hnt-max-supply-approved-by-the-community-fca15a161a80"

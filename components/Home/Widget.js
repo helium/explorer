@@ -15,6 +15,7 @@ const Widget = ({
   changeSuffix,
   changePrecision,
   changeUpIsBad,
+  changeIsAmbivalent,
   tooltip,
 }) => (
   <div
@@ -54,6 +55,7 @@ const Widget = ({
               suffix={changeSuffix}
               precision={changePrecision}
               upIsBad={changeUpIsBad}
+              isAmbivalent={changeIsAmbivalent}
             />
           </div>
         )}

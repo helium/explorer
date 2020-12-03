@@ -10,6 +10,7 @@ import BlocksBarChart from '../../components/Blocks/BlocksBarChart'
 import { useLatestBlocks, fetchLatestBlocks } from '../../data/blocks'
 import Widget from '../../components/Home/Widget'
 import round from 'lodash/round'
+import meanBy from 'lodash/meanBy'
 
 const { Title } = Typography
 
@@ -44,9 +45,10 @@ function Blocks({ stats: initialStats, latestBlocks: initialLatestBlocks }) {
           </Row>
         </TopBanner>
       </Content>
+
       <TopChart
-        title="Block Time"
-        subtitle="50 secs"
+        title="Transaction Rate"
+        subtitle={`${meanBy(latestBlocks, 'transactionCount')} avg per block`}
         chart={<BlocksBarChart data={latestBlocks} />}
       />
 
@@ -99,12 +101,10 @@ function Blocks({ stats: initialStats, latestBlocks: initialLatestBlocks }) {
             />
           </Col>
         </Row>
-        <div style={{ background: 'white', padding: 15 }}>
-          <Title level={4} style={{ padding: 10 }}>
-            Latest Blocks
-          </Title>
+
+        <Card title="Latest Blocks">
           <BlocksList />
-        </div>
+        </Card>
       </Content>
     </AppLayout>
   )

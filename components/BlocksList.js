@@ -67,6 +67,7 @@ class BlocksList extends Component {
           pagination={false}
           loading={loading}
           scroll={{ x: true }}
+          size="small"
         />
         <LoadMoreButton onClick={this.loadBlocks} />
       </>

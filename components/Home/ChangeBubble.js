@@ -8,11 +8,14 @@ const ChangeBubble = ({
   suffix = '',
   precision = 0,
   upIsBad = false,
+  isAmbivalent = false,
 }) => {
   const roundedValue = round(value, precision)
 
   let color = '#ACB3BF'
-  if (upIsBad) {
+  if (isAmbivalent) {
+    color = '#ACB3BF'
+  } else if (upIsBad) {
     if (roundedValue > 0) {
       color = '#FF6666'
     }
@@ -30,7 +33,10 @@ const ChangeBubble = ({
     }
   }
 
-  const prefix = value >= 0 ? '+' : ''
+  let prefix = ''
+  if (!isAmbivalent && value >= 0) {
+    prefix = '+'
+  }
 
   return (
     <span

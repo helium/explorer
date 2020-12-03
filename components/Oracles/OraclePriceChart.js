@@ -55,7 +55,13 @@ const OraclePriceChart = ({ data }) => (
           }}
           labelStyle={{ color: '#fff' }}
         />
-        <Line dataKey="price" stroke="#fff" strokeWidth="2" dot={false} />
+        <Line
+          type="stepAfter"
+          dataKey="price"
+          stroke="#fff"
+          strokeWidth="2"
+          dot={false}
+        />
       </LineChart>
     </ResponsiveContainer>
   </div>

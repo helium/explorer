@@ -26,12 +26,21 @@ const HotspotChart = ({ data }) => (
           type="number"
           scale="time"
           domain={['dataMin', 'dataMax']}
-          tickFormatter={(unixTime) => format(fromUnixTime(unixTime), 'M/d')}
+          tickFormatter={(unixTime) => format(fromUnixTime(unixTime), 'd MMM')}
+          axisLine={false}
+          tickLine={false}
+          tick={{ fill: '#fff' }}
+          minTickGap={80}
         />
-        <YAxis />
         <Tooltip
           labelFormatter={(label) => format(fromUnixTime(label), 'M/d/yyy')}
           formatter={(value) => [value.toLocaleString(), 'Hotspots']}
+          contentStyle={{
+            background: '#101725',
+            border: 'none',
+            borderRadius: 6,
+          }}
+          labelStyle={{ color: '#fff' }}
         />
         <Area
           dataKey="count"

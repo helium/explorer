@@ -1,3 +1,5 @@
+import RewardSummaryCard from './RewardSummaryCard'
+
 const RewardSummary = ({ rewards }) => {
   return (
     <div
@@ -9,34 +11,26 @@ const RewardSummary = ({ rewards }) => {
       <p style={{ fontFamily: 'soleil', fontSize: '16px', fontWeight: 500 }}>
         Rewards
       </p>
-      <div className="reward-summary-card-container">
-        <div className="reward-summary-card">
-          <p className="reward-summary-card-timeframe">24 hours</p>
-          <div className="reward-summary-card-amount-container">
-            <span className="reward-summary-number-amount">
-              {rewards.day.toFixed(2).toLocaleString()}
-            </span>
-            <span className="reward-summary-hnt-label">HNT</span>
-          </div>
-        </div>
-        <div className="reward-summary-card">
-          <p className="reward-summary-card-timeframe">7 days</p>
-          <div className="reward-summary-card-amount-container">
-            <span className="reward-summary-number-amount">
-              {rewards.week.toFixed(2).toLocaleString()}
-            </span>
-            <span className="reward-summary-hnt-label">HNT</span>
-          </div>
-        </div>
-        <div className="reward-summary-card">
-          <p className="reward-summary-card-timeframe">30 days</p>
-          <div className="reward-summary-card-amount-container">
-            <span className="reward-summary-number-amount">
-              {rewards.month.toFixed(2).toLocaleString()}
-            </span>
-            <span className="reward-summary-hnt-label">HNT</span>
-          </div>
-        </div>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          gridAutoRows: 'auto',
+          gridGap: '1rem',
+        }}
+      >
+        <RewardSummaryCard
+          timeframe="24 hours"
+          value={rewards.day.toFixed(2).toLocaleString()}
+        />
+        <RewardSummaryCard
+          timeframe="7 days"
+          value={rewards.week.toFixed(2).toLocaleString()}
+        />
+        <RewardSummaryCard
+          timeframe="30 days"
+          value={rewards.month.toFixed(2).toLocaleString()}
+        />
       </div>
     </div>
   )

@@ -10,32 +10,38 @@ const ChangeBubble = ({
   upIsBad = false,
   isAmbivalent = false,
 }) => {
-  const roundedValue = round(value, precision)
-
   let color = '#ACB3BF'
-  if (isAmbivalent) {
-    color = '#ACB3BF'
-  } else if (upIsBad) {
-    if (roundedValue > 0) {
-      color = '#FF6666'
-    }
-
-    if (roundedValue < 0) {
-      color = '#29D344'
-    }
-  } else {
-    if (roundedValue > 0) {
-      color = '#29D344'
-    }
-
-    if (roundedValue < 0) {
-      color = '#FF6666'
-    }
-  }
-
   let prefix = ''
-  if (!isAmbivalent && value >= 0) {
-    prefix = '+'
+  let displayValue = value
+
+  if (typeof value === 'number') {
+    displayValue = round(value, precision)
+
+    if (isAmbivalent) {
+      color = '#ACB3BF'
+    } else if (upIsBad) {
+      if (displayValue > 0) {
+        color = '#FF6666'
+      }
+
+      if (displayValue < 0) {
+        color = '#29D344'
+      }
+    } else {
+      if (displayValue > 0) {
+        color = '#29D344'
+      }
+
+      if (displayValue < 0) {
+        color = '#FF6666'
+      }
+    }
+
+    if (!isAmbivalent && value >= 0) {
+      prefix = '+'
+    }
+
+    displayValue = displayValue.toLocaleString()
   }
 
   return (
@@ -49,7 +55,7 @@ const ChangeBubble = ({
       }}
     >
       <Text style={{ color: 'white', fontWeight: 600 }}>
-        {[prefix, round(value, precision).toLocaleString(), suffix].join('')}
+        {[prefix, displayValue, suffix].join('')}
       </Text>
     </span>
   )

@@ -2,7 +2,7 @@ import useSWR from 'swr'
 import fetch from 'node-fetch'
 
 // TODO add price list to helium-js #yolo
-export const fetchLatestOraclePrices = async () => {
+export const fetchOraclePrices = async () => {
   const prices = []
   const response0 = await fetch('https://api.helium.io/v1/oracle/prices/')
   const { data: data0, cursor: cursor0 } = await response0.json()
@@ -30,14 +30,14 @@ export const fetchLatestOraclePrices = async () => {
   return prices
 }
 
-export const useLatestOraclePrices = (initialData) => {
-  const fetcher = () => fetchLatestOraclePrices()
+export const useOraclePrices = (initialData) => {
+  const fetcher = () => fetchOraclePrices()
   const { data, error } = useSWR('latestOraclePrices', fetcher, {
     initialData,
     refreshInterval: 10000,
   })
   return {
-    latestOraclePrices: data,
+    oraclePrices: data,
     isLoading: !error && !data,
     isError: error,
   }

@@ -3,7 +3,7 @@ import { Row, Col, Typography } from 'antd'
 import AppLayout, { Content } from '../components/AppLayout'
 import { fetchMarket, useMarket } from '../data/market'
 import { fetchStats, useStats } from '../data/stats'
-import { fetchLatestOraclePrices, useLatestOraclePrices } from '../data/oracles'
+import { fetchOraclePrices, useOraclePrices } from '../data/oracles'
 import dynamic from 'next/dynamic'
 import OraclePriceChart from '../components/Oracles/OraclePriceChart'
 import OracleImg from '../public/images/oracle.svg'
@@ -12,7 +12,7 @@ import round from 'lodash/round'
 import TopChart from '../components/AppLayout/TopChart'
 import TopBanner from '../components/AppLayout/TopBanner'
 import { getUnixTime, formatDistanceToNow } from 'date-fns'
-import HalveningCountdown from '../components/Home/HalvingCountdown'
+import HalvingCountdown from '../components/Home/HalvingCountdown'
 
 const MiniCoverageMap = dynamic(
   () => import('../components/CoverageMap/MiniCoverageMap'),
@@ -27,22 +27,21 @@ const { Title, Text } = Typography
 const Index = ({
   market: initialMarket,
   stats: initialStats,
-  latestOraclePrices: initialLatestOraclePrices,
+  oraclePrices: initialOraclePrices,
 }) => {
   const { market } = useMarket(initialMarket)
   const { stats } = useStats(initialStats)
-  const { latestOraclePrices } = useLatestOraclePrices(
-    initialLatestOraclePrices,
-  )
+  const { oraclePrices } = useOraclePrices(initialOraclePrices)
 
-  const latestOraclePrice = (
-    latestOraclePrices[0].price / 100000000
-  ).toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
+  const latestOraclePrice = (oraclePrices[0].price / 100000000).toLocaleString(
+    'en-US',
+    {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 4,
+    },
+  )
 
   return (
     <AppLayout>
@@ -63,7 +62,7 @@ const Index = ({
         <TopChart
           title="Oracle Price (30d)"
           subtitle={`${latestOraclePrice} (${formatDistanceToNow(
-            new Date(latestOraclePrices[0].timestamp),
+            new Date(oraclePrices[0].timestamp),
             {
               addSuffix: true,
             },
@@ -71,7 +70,7 @@ const Index = ({
           icon={OracleImg}
           chart={
             <OraclePriceChart
-              data={latestOraclePrices
+              data={oraclePrices
                 .map(({ timestamp, price }) => ({
                   time: getUnixTime(new Date(timestamp)),
                   price: price / 100000000,
@@ -130,7 +129,7 @@ const Index = ({
 
           <Row gutter={[20, 20]}>
             <Col xs={24} md={24}>
-              <HalveningCountdown />
+              <HalvingCountdown />
             </Col>
           </Row>
 
@@ -263,17 +262,17 @@ const Index = ({
 }
 
 export async function getStaticProps() {
-  const [market, stats, latestOraclePrices] = await Promise.all([
+  const [market, stats, oraclePrices] = await Promise.all([
     fetchMarket(),
     fetchStats(),
-    fetchLatestOraclePrices(),
+    fetchOraclePrices(),
   ])
 
   return {
     props: {
       market,
       stats,
-      latestOraclePrices,
+      oraclePrices,
     },
     revalidate: 10,
   }

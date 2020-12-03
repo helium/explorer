@@ -8,13 +8,13 @@ import TopChart from '../../components/AppLayout/TopChart'
 import TopBanner from '../../components/AppLayout/TopBanner'
 import BlocksBarChart from '../../components/Blocks/BlocksBarChart'
 import { useLatestBlocks, fetchLatestBlocks } from '../../data/blocks'
+import Widget from '../../components/Home/Widget'
+import round from 'lodash/round'
 
 const { Title } = Typography
 
 function Blocks({ stats: initialStats, latestBlocks: initialLatestBlocks }) {
-  const {
-    stats: { totalHotspots, totalCities, totalCountries },
-  } = useStats(initialStats)
+  const { stats } = useStats(initialStats)
   const { latestBlocks } = useLatestBlocks(initialLatestBlocks)
 
   return (
@@ -57,7 +57,52 @@ function Blocks({ stats: initialStats, latestBlocks: initialLatestBlocks }) {
           paddingBottom: 100,
         }}
       >
+        <Row gutter={[20, 20]} style={{ marginTop: 20 }}>
+          <Col xs={24} md={6}>
+            <Widget
+              title="Block Time (1h)"
+              value={`${round(stats.blockTimes.lastHour.avg, 1)} secs`}
+              tooltip={`standard deviation: ${round(
+                stats.blockTimes.lastHour.stddev,
+                1,
+              )} secs`}
+            />
+          </Col>
+          <Col xs={24} md={6}>
+            <Widget
+              title="Block Time (24h)"
+              value={`${round(stats.blockTimes.lastDay.avg, 1)} secs`}
+              tooltip={`standard deviation: ${round(
+                stats.blockTimes.lastDay.stddev,
+                1,
+              )} secs`}
+            />
+          </Col>
+          <Col xs={24} md={6}>
+            <Widget
+              title="Block Time (7d)"
+              value={`${round(stats.blockTimes.lastWeek.avg, 1)} secs`}
+              tooltip={`standard deviation: ${round(
+                stats.blockTimes.lastWeek.stddev,
+                1,
+              )} secs`}
+            />
+          </Col>
+          <Col xs={24} md={6}>
+            <Widget
+              title="Block Time (30d)"
+              value={`${round(stats.blockTimes.lastMonth.avg, 1)} secs`}
+              tooltip={`standard deviation: ${round(
+                stats.blockTimes.lastMonth.stddev,
+                1,
+              )} secs`}
+            />
+          </Col>
+        </Row>
         <div style={{ background: 'white', padding: 15 }}>
+          <Title level={4} style={{ padding: 10 }}>
+            Latest Blocks
+          </Title>
           <BlocksList />
         </div>
       </Content>

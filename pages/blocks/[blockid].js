@@ -78,7 +78,9 @@ const BlockView = ({ block, txns, height }) => {
         .utc(moment.unix(block.time))
         .format('MMMM Do, YYYY')} at ${moment
         .utc(moment.unix(block.time))
-        .format('HH:mm:ss')} UTC, with ${txns.length} transactions.`}
+        .format('h:mm A')} UTC, with ${txns.length} transaction${
+        txns.length === 1 ? '' : 's'
+      }.`}
     >
       <Content
         style={{

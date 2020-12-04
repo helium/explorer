@@ -36,31 +36,7 @@ function Market({
 
   return (
     <AppLayout>
-      <Content
-        style={{
-          marginTop: 0,
-          backgroundColor: '#101725',
-          padding: '60px 0 20px',
-        }}
-      >
-        <TopBanner>
-          <Row align="middle" gutter={[20, 50]}>
-            <img src={TokenImg} style={{ marginRight: 10, width: 50 }} />
-            <Title
-              style={{
-                margin: 0,
-                maxWidth: 550,
-                letterSpacing: '-2px',
-                fontSize: 38,
-                lineHeight: 1,
-                color: 'white',
-              }}
-            >
-              Market Data
-            </Title>
-          </Row>
-        </TopBanner>
-      </Content>
+      <TopBanner icon={TokenImg} title="Market Data" />
 
       <TopChart
         title="Oracle Price (30d)"
@@ -87,10 +63,10 @@ function Market({
         style={{
           margin: '0 auto',
           maxWidth: 1150,
-          paddingBottom: 100,
+          padding: '40px 10px 100px',
         }}
       >
-        <Row gutter={[20, 20]} style={{ marginTop: 20 }}>
+        <Row gutter={[20, 20]}>
           <Col xs={24} md={6}>
             <Widget
               title="Market Price"
@@ -104,7 +80,7 @@ function Market({
               changeSuffix="%"
               changePrecision={1}
               tooltip="Based on data provided by CoinGecko"
-              footer="View More"
+              footer="View more"
               href="https://www.coingecko.com/en/coins/helium"
             />
           </Col>
@@ -150,13 +126,18 @@ function Market({
           </Col>
         </Row>
 
-        <Row gutter={[20, 20]} style={{ marginTop: 20 }}>
+        <Row gutter={[20, 20]}>
           <Col xs={24} md={6}>
             <Widget
               title="Circulating Supply"
-              value={`${round(stats.circulatingSupply).toLocaleString()} HNT`}
+              value={`${round(
+                stats.circulatingSupply / 1000000,
+                1,
+              ).toLocaleString()}M HNT`}
+              tooltip={`${round(
+                stats.circulatingSupply,
+              ).toLocaleString()} HNT is currently in circulation`}
               changeIsAmbivalent
-              tooltip="The amount of HNT currently in circulation"
               footer="View more"
               href="https://www.coingecko.com/en/coins/helium"
             />
@@ -180,7 +161,7 @@ function Market({
                 maximumFractionDigits: 0,
               })}
               tooltip="Based on data provided by CoinGecko"
-              footer="View More"
+              footer="View more"
               href="https://www.coingecko.com/en/coins/helium"
             />
           </Col>
@@ -197,7 +178,7 @@ function Market({
                 },
               )}
               tooltip="Based on data provided by CoinGecko"
-              footer="View More"
+              footer="View more"
               href="https://www.coingecko.com/en/coins/helium"
             />
           </Col>

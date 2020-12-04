@@ -47,40 +47,43 @@ const Index = ({
 
   return (
     <AppLayout>
+      <TopBanner
+        title={
+          <span>
+            Welcome to
+            <br />
+            <span style={{ fontWeight: 600, color: '#32C48D' }}>
+              Helium Explorer
+            </span>
+          </span>
+        }
+      />
+      <TopChart
+        title="Oracle Price (30d)"
+        subtitle={`${latestOraclePrice} (${formatDistanceToNow(
+          new Date(oraclePrices[0].timestamp),
+          {
+            addSuffix: true,
+          },
+        )})`}
+        icon={OracleImg}
+        chart={
+          <OraclePriceChart
+            data={oraclePrices
+              .map(({ timestamp, price }) => ({
+                time: getUnixTime(new Date(timestamp)),
+                price: price / 100000000,
+              }))
+              .reverse()}
+          />
+        }
+      />
       <Content
         style={{
           marginTop: 0,
           background: '#F4F5F7',
         }}
       >
-        <TopBanner>
-          Welcome to
-          <br />
-          <span style={{ fontWeight: 600, color: '#32C48D' }}>
-            Helium Explorer
-          </span>
-        </TopBanner>
-
-        <TopChart
-          title="Oracle Price (30d)"
-          subtitle={`${latestOraclePrice} (${formatDistanceToNow(
-            new Date(oraclePrices[0].timestamp),
-            {
-              addSuffix: true,
-            },
-          )})`}
-          icon={OracleImg}
-          chart={
-            <OraclePriceChart
-              data={oraclePrices
-                .map(({ timestamp, price }) => ({
-                  time: getUnixTime(new Date(timestamp)),
-                  price: price / 100000000,
-                }))
-                .reverse()}
-            />
-          }
-        />
         <div
           style={{ margin: '0 auto', maxWidth: 850 + 40 }}
           className="content-container"
@@ -130,8 +133,26 @@ const Index = ({
           </Row>
 
           <Row gutter={[20, 20]}>
-            <Col xs={24} md={24}>
+            <Col xs={24} md={16}>
               <HalvingCountdown />
+            </Col>
+            <Col xs={24} md={8}>
+              <Widget
+                title="Data Credits Spent (30d)"
+                value={stats.dataCredits.toLocaleString()}
+                subtitle={(stats.dataCredits * 0.00001).toLocaleString(
+                  'en-US',
+                  {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  },
+                )}
+                tooltip="Data credits are spent to send and receive data over the Helium Network. HNT are burned to receive DC."
+                footer="View Market Data"
+                href="/market"
+              />
             </Col>
           </Row>
 

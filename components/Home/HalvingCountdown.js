@@ -11,9 +11,9 @@ const HalveningCountdown = () => {
       value={
         <Countdown
           date={new Date('2021-08-01')}
-          // renderer={({ days, hours, minutes, seconds }) =>
-          //   `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`
-          // }
+          renderer={({ days, hours, minutes, seconds }) =>
+            `${days}D ${hours}H ${minutes}M ${seconds}S`
+          }
         />
       }
       subtitle="August 1st, 2021"

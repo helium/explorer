@@ -35,6 +35,7 @@
     "react-infinite-scroller": "^1.2.4",
     "react-mapbox-gl": "^4.8.6",
     "react-qr-code": "^1.0.0",
+    "react-responsive": "^8.2.0",
     "react-reveal": "^1.2.2",
     "react-router-dom": "^5.1.2",
     "react-router-ga": "^1.2.3",

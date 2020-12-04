@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Card, Row, Col } from 'antd'
+import { Card, Row, Col } from 'antd'
 import Client from '@helium/http'
 import countBy from 'lodash/countBy'
 import AppLayout, { Content } from '../../components/AppLayout'
@@ -13,8 +13,6 @@ import TopChart from '../../components/AppLayout/TopChart'
 import HotspotsImg from '../../public/images/hotspots.svg'
 import Widget from '../../components/Home/Widget'
 import dynamic from 'next/dynamic'
-
-const { Title } = Typography
 
 const MiniCoverageMap = dynamic(
   () => import('../../components/CoverageMap/MiniCoverageMap'),
@@ -37,31 +35,7 @@ function Hotspots({
 
   return (
     <AppLayout>
-      <Content
-        style={{
-          marginTop: 0,
-          backgroundColor: '#101725',
-          padding: '60px 0 20px',
-        }}
-      >
-        <TopBanner>
-          <Row align="middle" gutter={[20, 50]}>
-            <img src={HotspotsImg} style={{ marginRight: 10, width: 50 }} />
-            <Title
-              style={{
-                margin: 0,
-                maxWidth: 550,
-                letterSpacing: '-2px',
-                fontSize: 38,
-                lineHeight: 1,
-                color: 'white',
-              }}
-            >
-              Hotspots
-            </Title>
-          </Row>
-        </TopBanner>
-      </Content>
+      <TopBanner icon={HotspotsImg} title="Hotspots" />
 
       <TopChart
         title="Hotspot Network Growth"
@@ -72,11 +46,11 @@ function Hotspots({
         style={{
           margin: '0 auto',
           maxWidth: 1150,
-          paddingBottom: 100,
+          padding: '20px 10px 100px',
         }}
       >
-        <Row gutter={[20, 20]} style={{ marginTop: 20 }}>
-          <Col xs={12} md={6}>
+        <Row gutter={[20, 20]}>
+          <Col xs={24} md={6}>
             <Widget
               title="Total Hotspots"
               value={totalHotspots.toLocaleString()}
@@ -88,7 +62,7 @@ function Hotspots({
               changeSuffix="%"
             />
           </Col>
-          <Col xs={12} md={6}>
+          <Col xs={24} md={6}>
             <Widget
               title="Hotspots Online"
               value={onlineHotspotCount.toLocaleString()}

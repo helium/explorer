@@ -8,8 +8,10 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { format, fromUnixTime } from 'date-fns'
+import useResponsive from '../AppLayout/useResponsive'
 
 const BlocksBarChart = ({ data }) => {
+  const { isMobile } = useResponsive()
   const [focusBar, setFocusBar] = useState(null)
   const handleMouseEvent = (state) => {
     if (state.isTooltipActive) {
@@ -19,19 +21,27 @@ const BlocksBarChart = ({ data }) => {
     }
   }
   return (
-    <div style={{ width: '100%', height: 200 }}>
+    <div style={{ width: '100%', height: isMobile ? 100 : 300 }}>
       <ResponsiveContainer>
         <BarChart
           data={data}
           onMouseEnter={handleMouseEvent}
           onMouseLeave={handleMouseEvent}
           onMouseMove={handleMouseEvent}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 20,
-          }}
+          margin={
+            isMobile
+              ? {
+                  top: 5,
+                  right: 10,
+                  left: 10,
+                }
+              : {
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 20,
+                }
+          }
         >
           <XAxis
             hide

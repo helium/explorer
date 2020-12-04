@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Card, Row, Col } from 'antd'
+import { Card, Row, Col } from 'antd'
 import AppLayout, { Content } from '../../components/AppLayout'
 import { fetchStats, useStats } from '../../data/stats'
 import BlocksList from '../../components/BlocksList'
@@ -11,55 +11,32 @@ import { useLatestBlocks, fetchLatestBlocks } from '../../data/blocks'
 import Widget from '../../components/Home/Widget'
 import round from 'lodash/round'
 import meanBy from 'lodash/meanBy'
-
-const { Title } = Typography
+import useResponsive from '../../components/AppLayout/useResponsive'
 
 function Blocks({ stats: initialStats, latestBlocks: initialLatestBlocks }) {
+  const { isMobile } = useResponsive()
+
   const { stats } = useStats(initialStats)
   const { latestBlocks } = useLatestBlocks(initialLatestBlocks)
+  const blocks = isMobile ? latestBlocks.slice(0, 40) : latestBlocks
 
   const txnRate = meanBy(latestBlocks, 'transactionCount')
 
   return (
     <AppLayout>
-      <Content
-        style={{
-          marginTop: 0,
-          backgroundColor: '#101725',
-          padding: '60px 0 20px',
-        }}
-      >
-        <TopBanner>
-          <Row align="middle" gutter={[20, 50]}>
-            <img src={BlocksImg} style={{ marginRight: 10, width: 50 }} />
-            <Title
-              style={{
-                margin: 0,
-                maxWidth: 550,
-                letterSpacing: '-2px',
-                fontSize: 38,
-                lineHeight: 1,
-                color: 'white',
-              }}
-            >
-              Blocks
-            </Title>
-          </Row>
-        </TopBanner>
-      </Content>
+      <TopBanner title="Blocks" icon={BlocksImg} />
 
       <TopChart
         title="Transaction Rate"
         subtitle={`${txnRate} avg per block`}
-        chart={<BlocksBarChart data={latestBlocks} />}
+        chart={<BlocksBarChart data={blocks} />}
       />
 
       <Content
         style={{
           margin: '0 auto',
           maxWidth: 1150,
-          paddingBottom: 100,
-          paddingTop: 20,
+          padding: '20px 10px 100px',
         }}
       >
         <Row gutter={[20, 20]}>

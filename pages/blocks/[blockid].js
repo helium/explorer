@@ -7,6 +7,7 @@ import PieChart from '../../components/PieChart'
 import withBlockHeight from '../../components/withBlockHeight'
 import { withRouter } from 'next/router'
 import Link from 'next/link'
+import moment from 'moment'
 
 import {
   BackwardOutlined,
@@ -65,8 +66,20 @@ const BlockView = ({ block, txns, height }) => {
     },
   ]
 
+  console.log(moment.unix(block.time))
+  console.log(moment.utc(moment.unix(block.time)))
+
   return (
-    <AppLayout>
+    <AppLayout
+      title={`Block ${block.height}`}
+      description={`Block ${
+        block.height
+      } of the Helium blockchain was produced on ${moment
+        .utc(moment.unix(block.time))
+        .format('MMMM Do, YYYY')} at ${moment
+        .utc(moment.unix(block.time))
+        .format('HH:mm:ss')} UTC, with ${txns.length} transactions.`}
+    >
       <Content
         style={{
           marginTop: 0,
@@ -223,7 +236,6 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       block: JSON.parse(JSON.stringify(block)),
-      height: JSON.parse(JSON.stringify(block.height)),
       txns,
     },
   }

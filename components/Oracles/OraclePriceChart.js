@@ -4,7 +4,11 @@ import { format, fromUnixTime } from 'date-fns'
 import useResponsive from '../AppLayout/useResponsive'
 
 const OraclePriceChart = ({ data }) => {
-  const { isMobile } = useResponsive()
+  const { isMobile, isClient } = useResponsive()
+
+  if (!isClient) {
+    return <div style={{ width: '100%', height: 300 }} />
+  }
 
   return (
     <div style={{ width: '100%', height: isMobile ? 140 : 300 }}>

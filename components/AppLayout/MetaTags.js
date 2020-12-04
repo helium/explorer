@@ -1,7 +1,14 @@
 import Head from 'next/head'
 
-const MetaTags = ({ title, description, openGraphImageFullUrl, url }) => {
+const MetaTags = ({
+  title,
+  description,
+  openGraphImageFullUrl,
+  url,
+  pageTitle,
+}) => {
   const metaTitle = title ? `${title} — Helium Explorer` : 'Helium Explorer'
+  const titleTag = pageTitle ? pageTitle : metaTitle
   const metaDescription = description
     ? description
     : 'Helium Explorer is an open source block explorer providing detailed blockchain data from the Helium network'

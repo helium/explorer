@@ -66,9 +66,6 @@ const BlockView = ({ block, txns, height }) => {
     },
   ]
 
-  console.log(moment.unix(block.time))
-  console.log(moment.utc(moment.unix(block.time)))
-
   return (
     <AppLayout
       title={`Block ${block.height}`}

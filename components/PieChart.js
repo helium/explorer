@@ -48,7 +48,7 @@ const renderActiveShape = (props) => {
         startAngle={startAngle}
         endAngle={endAngle}
         fill={fill}
-        stroke="#27284b"
+        stroke="rgb(16, 23, 37)"
         strokeWidth="3"
       />
     </g>
@@ -81,7 +81,7 @@ export default class Example extends PureComponent {
               innerRadius={75}
               outerRadius={110}
               fill="#8884d8"
-              stroke="#27284b"
+              stroke="rgb(16, 23, 37)"
               strokeWidth="3"
               dataKey="value"
               onMouseEnter={this.onPieEnter}

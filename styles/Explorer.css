@@ -49,13 +49,6 @@ p.stat span {
   display: inline-block;
 }
 
-.bottombar {
-  width: 100%;
-  background-color: #1c1d3f;
-  padding: 20px;
-  text-align: center;
-}
-
 .ant-table.ant-table-small .ant-table-title,
 .ant-table.ant-table-small .ant-table-footer,
 .ant-table.ant-table-small .ant-table-thead > tr > th,

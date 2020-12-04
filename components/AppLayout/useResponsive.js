@@ -11,7 +11,6 @@ const useResponsive = () => {
   useLayoutEffect(() => {
     if (typeof window !== 'undefined') setIsClient(true)
   }, [])
-  console.log('isClient', isClient)
 
   return {
     isMobile: isClient ? isMobile : false,

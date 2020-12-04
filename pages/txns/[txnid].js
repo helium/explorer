@@ -64,8 +64,43 @@ const rewardChart = (txn) => {
 }
 
 const TxnView = ({ txn }) => {
+  let metaDescriptionType = ''
+
+  switch (txn.type) {
+    case 'payment_v1':
+      metaDescriptionType = `Payment v1`
+      break
+    case 'payment_v2':
+      metaDescriptionType = `Payment v2`
+      break
+    case 'poc_request_v1':
+      metaDescriptionType = `PoC Request`
+      break
+    case 'poc_receipts_v1':
+      metaDescriptionType = `PoC Receipt`
+      break
+    case 'rewards_v1':
+      metaDescriptionType = `Rewards v1`
+      break
+    case 'state_channel_close_v1':
+      metaDescriptionType = `State Channel Close`
+      break
+    case 'assert_location_v1':
+      metaDescriptionType = `Location Assert`
+      break
+    default:
+      metaDescriptionType = ``
+      break
+  }
+
   return (
-    <AppLayout>
+    <AppLayout
+      title={`${
+        metaDescriptionType === ''
+          ? 'Transaction'
+          : `${metaDescriptionType} Transaction`
+      } (${txn.hash.substring(0, 5)}...)`}
+    >
       <Content
         style={{
           marginTop: 0,

@@ -14,7 +14,7 @@ const PaymentV2 = ({ txn }) => (
       </div>
     </Descriptions.Item>
     <Descriptions.Item label="Total HNT" span={3}>
-      {txn.totalAmount.toString()}
+      {txn.totalAmount.floatBalance.toString()} HNT
     </Descriptions.Item>
     {txn.payments.map((p, idx) => {
       return (
@@ -24,13 +24,15 @@ const PaymentV2 = ({ txn }) => (
             <Link href={`/accounts/${p.payee}`}>
               <a>{`${p.payee} `}</a>
             </Link>
-            <span style={{ marginLeft: 4 }}>({p.amount.toString()})</span>
+            <span style={{ marginLeft: 4 }}>
+              ({p.amount.floatBalance.toString()} HNT)
+            </span>
           </div>
         </Descriptions.Item>
       )
     })}
     <Descriptions.Item label="Fee" span={3}>
-      {txn.fee.toString()}
+      {txn.fee.floatBalance.toString()} DC
     </Descriptions.Item>
   </Descriptions>
 )

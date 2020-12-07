@@ -27,7 +27,7 @@ const PaymentV1 = ({ txn }) => {
         </div>
       </Descriptions.Item>
       <Descriptions.Item label="Amount" span={3}>
-        {txn.amount.toString()}
+        {txn.amount.floatBalance.toString()} HNT
       </Descriptions.Item>
       <Descriptions.Item label="Fee" span={3}>
         {txn.fee.toString()}

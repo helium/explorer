@@ -49,13 +49,6 @@ p.stat span {
   display: inline-block;
 }
 
-.bottombar {
-  width: 100%;
-  background-color: #1c1d3f;
-  padding: 20px;
-  text-align: center;
-}
-
 .ant-table.ant-table-small .ant-table-title,
 .ant-table.ant-table-small .ant-table-footer,
 .ant-table.ant-table-small .ant-table-thead > tr > th,
@@ -232,9 +225,6 @@ hr {
   word-break: break-all;
 }
 
-.summary-header {
-  margin-bottom: 100px;
-}
 .summary-header > .ant-row > .ant-col-lg-12 {
   padding: 16px 24px;
 }
@@ -264,6 +254,7 @@ hr {
 }
 
 .mini-coverage-map {
+  position: relative;
   display: block;
   border-radius: 0 0 10px 10px;
 }

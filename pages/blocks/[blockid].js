@@ -117,7 +117,7 @@ class BlockView extends Component {
         <Content
           style={{
             marginTop: 0,
-            background: '#27284B',
+            background: 'rgb(16, 23, 37)',
           }}
         >
           <div
@@ -162,7 +162,10 @@ class BlockView extends Component {
             <hr />
             <div className="block-view-summary-container">
               <Link href={`/blocks/${block.height - 1}`}>
-                <a className="button block-view-prev-button">
+                <a
+                  className="button block-view-prev-button"
+                  style={{ backgroundColor: '#232c42' }}
+                >
                   <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
                   Block
                 </a>
@@ -196,7 +199,10 @@ class BlockView extends Component {
               </span>
               {block.height < this.props.height ? (
                 <Link href={`/blocks/${block.height + 1}`}>
-                  <a className="button block-view-next-button">
+                  <a
+                    className="button block-view-next-button"
+                    style={{ backgroundColor: '#232c42' }}
+                  >
                     Next Block{' '}
                     <ForwardOutlined style={{ marginRight: '-6px' }} />
                   </a>

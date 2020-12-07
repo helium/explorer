@@ -44,7 +44,11 @@ function HotspotView({
   return (
     <AppLayout>
       <Content
-        style={{ marginTop: 0, background: '#27284B', padding: '0px 0 0px' }}
+        style={{
+          marginTop: 0,
+          background: 'rgb(16, 23, 37)',
+          padding: '0px 0 0px',
+        }}
       >
         <div
           style={{ margin: '0 auto', maxWidth: 850 + 40 }}
@@ -112,7 +116,7 @@ function HotspotView({
                         alignItems: 'center',
                         justifyContent: 'center',
                         padding: '2px 10px',
-                        backgroundColor: '#1c1d3f',
+                        backgroundColor: '#182035',
                         borderRadius: '20px',
                       }}
                     >
@@ -219,7 +223,14 @@ function HotspotView({
             activity={activity}
           />
         </div>
-        <div className="bottombar">
+        <div
+          style={{
+            width: '100%',
+            backgroundColor: '#2A344A',
+            padding: '20px',
+            textAlign: 'center',
+          }}
+        >
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
             <p
               style={{

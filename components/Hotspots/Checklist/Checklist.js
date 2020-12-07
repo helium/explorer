@@ -307,7 +307,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
           style={{
             position: 'relative',
             marginBottom: 10,
-            backgroundColor: '#1c1d3f',
+            backgroundColor: '#182035',
             borderRadius: 20,
             padding: 5,
             position: 'relative',
@@ -324,7 +324,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
                     style={{
                       backgroundColor: checklistItem.condition
                         ? '#32C48D'
-                        : '#242747',
+                        : '#323b55',
                       height: 8,
                       padding: 5,
                       borderRadius:
@@ -333,7 +333,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
                           : index + 1 === possibleChecklistItems.length
                           ? '0 10px 10px 0'
                           : '0',
-                      border: '2px solid #1c1d3f',
+                      border: '2px solid #182035',
                       width: `${(1 / possibleChecklistItems.length) * 100}%`,
                     }}
                   />
@@ -383,7 +383,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
               style={{
                 position: 'relative',
                 marginTop: 15,
-                backgroundColor: '#1c1d3f',
+                backgroundColor: '#182035',
                 overflowX: 'scroll',
                 padding: CARD_MARGIN,
                 position: 'relative',

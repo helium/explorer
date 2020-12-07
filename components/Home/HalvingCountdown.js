@@ -12,7 +12,7 @@ const HalveningCountdown = () => {
         <Countdown
           date={new Date('2021-08-01')}
           renderer={({ days, hours, minutes, seconds }) =>
-            `${days}D ${hours}H ${minutes}M ${seconds}S`
+            `${days}d ${hours}h ${minutes}m ${seconds}s`
           }
         />
       }

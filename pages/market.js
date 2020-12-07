@@ -47,6 +47,7 @@ function Market({
           },
         )})`}
         icon={OracleImg}
+        tooltip="The Oracle Price is the price used for on-chain burn transactions. Derived from the market price, Oracles submit prices periodically to stabilize market fluctuations"
         chart={
           <OraclePriceChart
             data={oraclePrices

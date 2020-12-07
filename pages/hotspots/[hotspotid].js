@@ -4,6 +4,7 @@ import Client from '@helium/http'
 import algoliasearch from 'algoliasearch'
 import Fade from 'react-reveal/Fade'
 import Checklist from '../../components/Hotspots/Checklist/Checklist'
+import RewardSummary from '../../components/Hotspots/RewardSummary'
 
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
@@ -18,6 +19,8 @@ import {
   formatLocation,
 } from '../../components/Hotspots/utils'
 
+import { fetchRewardsSummary } from '../../data/hotspots'
+
 const HotspotMapbox = dynamic(
   () => import('../../components/Hotspots/HotspotMapbox'),
   {
@@ -28,14 +31,24 @@ const HotspotMapbox = dynamic(
 
 const { Title, Text } = Typography
 
-function HotspotView({ hotspot, witnesses, nearbyHotspots, activity }) {
+function HotspotView({
+  hotspot,
+  witnesses,
+  nearbyHotspots,
+  activity,
+  rewards,
+}) {
   const [showWitnesses, setShowWitnesses] = useState(true)
   const [showNearbyHotspots, setShowNearbyHotspots] = useState(true)
 
   return (
     <AppLayout>
       <Content
-        style={{ marginTop: 0, background: '#27284B', padding: '0px 0 0px' }}
+        style={{
+          marginTop: 0,
+          background: 'rgb(16, 23, 37)',
+          padding: '0px 0 0px',
+        }}
       >
         <div
           style={{ margin: '0 auto', maxWidth: 850 + 40 }}
@@ -103,7 +116,7 @@ function HotspotView({ hotspot, witnesses, nearbyHotspots, activity }) {
                         alignItems: 'center',
                         justifyContent: 'center',
                         padding: '2px 10px',
-                        backgroundColor: '#1c1d3f',
+                        backgroundColor: '#182035',
                         borderRadius: '20px',
                       }}
                     >
@@ -210,7 +223,14 @@ function HotspotView({ hotspot, witnesses, nearbyHotspots, activity }) {
             activity={activity}
           />
         </div>
-        <div className="bottombar">
+        <div
+          style={{
+            width: '100%',
+            backgroundColor: '#2A344A',
+            padding: '20px',
+            textAlign: 'center',
+          }}
+        >
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
             <p
               style={{
@@ -232,6 +252,16 @@ function HotspotView({ hotspot, witnesses, nearbyHotspots, activity }) {
         </div>
       </Content>
 
+      <Content
+        style={{
+          margin: '0 auto',
+          maxWidth: 850,
+          paddingBottom: 20,
+          marginTop: 0,
+        }}
+      >
+        <RewardSummary rewards={rewards} />
+      </Content>
       <Content
         style={{
           margin: '0 auto',
@@ -340,6 +370,8 @@ export async function getStaticProps({ params }) {
     filters: `NOT address:${hotspotid}`,
   })
 
+  const rewards = await fetchRewardsSummary(hotspotid)
+
   // TODO convert to use @helium/http
   const witnesses = await fetch(
     `https://api.helium.io/v1/hotspots/${hotspotid}/witnesses`,
@@ -353,6 +385,7 @@ export async function getStaticProps({ params }) {
       activity: JSON.parse(JSON.stringify(hotspotActivity)),
       nearbyHotspots,
       witnesses,
+      rewards,
     },
     revalidate: 10,
   }

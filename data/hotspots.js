@@ -25,22 +25,37 @@ export const useLatestHotspots = (initialData, count = 20) => {
   }
 }
 
+const convertDateToUTC = (date) =>
+  new Date(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds(),
+  )
+
 // TODO add this to helium-js
 export const fetchRewardsSummary = async (address) => {
   const now = new Date()
-  const monthAgo = sub(now, { days: 30 })
+  const nowUTC = convertDateToUTC(now)
+  // Use UTC version of current time so that the current day's rewards get included in the API response
+
+  const monthAgo = sub(nowUTC, { days: 30 })
   const params = qs.stringify({
-    min_time: formatISO(monthAgo),
-    max_time: formatISO(now),
-    bucket: 'day',
+    // since the ISO format of the dates will always be a known length, substr(0, 19) will lop off the offset from the end
+    // this should only have an effect locally in the dev environment, because doing new Date() on Heroku won't have an offset
+    min_time: formatISO(monthAgo).substr(0, 19),
+    max_time: formatISO(nowUTC).substr(0, 19),
+    bucket: 'hour',
   })
   const url = `https://api.helium.io/v1/hotspots/${address}/rewards/stats?${params}`
   const response = await fetch(url)
   const { data } = await response.json()
 
   return {
-    day: data[0].total,
-    week: sumBy(data.slice(0, 6), 'total'),
+    day: sumBy(data.slice(0, 23), 'total'),
+    week: sumBy(data.slice(0, 24 * 7 - 1), 'total'),
     month: sumBy(data, 'total'),
   }
 }

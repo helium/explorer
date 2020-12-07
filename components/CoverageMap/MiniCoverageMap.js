@@ -15,7 +15,7 @@ class MiniCoverageMap extends React.Component {
   }
 
   render() {
-    const { zoomLevel } = this.props
+    const { zoomLevel, style } = this.props
 
     return (
       <span className="mini-coverage-map">

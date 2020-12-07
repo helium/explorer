@@ -19,14 +19,16 @@ class BlocksList extends Component {
   }
 
   loadBlocks = async () => {
+    const { pageSize = 20 } = this.props
     this.setState({ loading: true })
     const { blocks } = this.state
-    const newBlocks = await this.list.take(20)
+    const newBlocks = await this.list.take(pageSize)
     this.setState({ blocks: [...blocks, ...newBlocks], loading: false })
   }
 
   render() {
     const { blocks, loading } = this.state
+    const { showButton = true } = this.props
 
     const columns = [
       {
@@ -67,8 +69,9 @@ class BlocksList extends Component {
           pagination={false}
           loading={loading}
           scroll={{ x: true }}
+          size="small"
         />
-        <LoadMoreButton onClick={this.loadBlocks} />
+        {showButton && <LoadMoreButton onClick={this.loadBlocks} />}
       </>
     )
   }

@@ -1,11 +1,20 @@
 import React from 'react'
-import { Row, Col } from 'antd'
-import BlocksList from '../components/BlocksList'
+import { Row, Col, Typography, Card, Button } from 'antd'
 import AppLayout, { Content } from '../components/AppLayout'
-import { Typography } from 'antd'
 import { fetchMarket, useMarket } from '../data/market'
 import { fetchStats, useStats } from '../data/stats'
+import { fetchOraclePrices, useOraclePrices } from '../data/oracles'
 import dynamic from 'next/dynamic'
+import OraclePriceChart from '../components/Oracles/OraclePriceChart'
+import OracleImg from '../public/images/oracle.svg'
+import Widget from '../components/Home/Widget'
+import round from 'lodash/round'
+import TopChart from '../components/AppLayout/TopChart'
+import TopBanner from '../components/AppLayout/TopBanner'
+import { getUnixTime, formatDistanceToNow } from 'date-fns'
+import HalvingCountdown from '../components/Home/HalvingCountdown'
+import BlocksList from '../components/BlocksList'
+import Link from 'next/link'
 
 const MiniCoverageMap = dynamic(
   () => import('../components/CoverageMap/MiniCoverageMap'),
@@ -15,140 +24,147 @@ const MiniCoverageMap = dynamic(
   },
 )
 
-const { Title } = Typography
+const { Title, Text } = Typography
 
-const Index = ({ market: initialMarket, stats: initialStats }) => {
+const Index = ({
+  market: initialMarket,
+  stats: initialStats,
+  oraclePrices: initialOraclePrices,
+}) => {
   const { market } = useMarket(initialMarket)
   const { stats } = useStats(initialStats)
+  const { oraclePrices } = useOraclePrices(initialOraclePrices)
+
+  const latestOraclePrice = (oraclePrices[0].price / 100000000).toLocaleString(
+    'en-US',
+    {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 4,
+    },
+  )
 
   return (
     <AppLayout>
+      <TopBanner
+        title={
+          <span>
+            Welcome to
+            <br />
+            <span style={{ fontWeight: 600, color: '#32C48D' }}>
+              Helium Explorer
+            </span>
+          </span>
+        }
+      />
+      <TopChart
+        title="Oracle Price (30d)"
+        subtitle={`${latestOraclePrice} (${formatDistanceToNow(
+          new Date(oraclePrices[0].timestamp),
+          {
+            addSuffix: true,
+          },
+        )})`}
+        icon={OracleImg}
+        tooltip="The Oracle Price is the price used for on-chain burn transactions. Derived from the market price, Oracles submit prices periodically to stabilize market fluctuations"
+        chart={
+          <OraclePriceChart
+            data={oraclePrices
+              .map(({ timestamp, price }) => ({
+                time: getUnixTime(new Date(timestamp)),
+                price: price / 100000000,
+              }))
+              .reverse()}
+          />
+        }
+      />
       <Content
         style={{
           marginTop: 0,
-          background: '#27284B',
+          background: '#F4F5F7',
         }}
       >
         <div
           style={{ margin: '0 auto', maxWidth: 850 + 40 }}
           className="content-container"
         >
-          <div className="flex-responsive">
-            <Title
-              style={{
-                margin: '0px 0 40px',
-                maxWidth: 550,
-                letterSpacing: '-2px',
-                fontSize: 38,
-                lineHeight: 1,
-                color: 'white',
-              }}
-            >
-              Helium <span style={{ fontWeight: 300 }}>Explorer</span>
-            </Title>
-          </div>
+          <Row gutter={[20, 20]}>
+            <Col xs={24} md={8}>
+              <Widget
+                title="Total Hotspots"
+                value={stats.totalHotspots.toLocaleString()}
+                tooltip="The Helium network is made up of thousands of hotspots providing coverage around the globe"
+                footer="View Hotspots"
+                href="/hotspots"
+              />
+            </Col>
+            <Col xs={24} md={8}>
+              <Widget
+                title="Block Time"
+                value={`${round(stats.blockTimes.lastHour.avg)} sec`}
+                change={
+                  round(stats.blockTimes.lastHour.avg) -
+                  round(stats.blockTimes.lastDay.avg)
+                }
+                changeSuffix=" sec"
+                changeUpIsBad
+                tooltip="The target block time is 60 sec. The network will adjust up or down to maintain this target."
+                footer="View Blocks"
+                href="/blocks"
+              />
+            </Col>
+            <Col xs={24} md={8}>
+              <Widget
+                title="Current Price"
+                value={market.price.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 4,
+                })}
+                change={market.priceChange}
+                changeSuffix="%"
+                changePrecision={1}
+                tooltip="Based on data provided by CoinGecko"
+                footer="View Market Data"
+                href="/market"
+              />
+            </Col>
+          </Row>
+
+          <Row gutter={[20, 20]}>
+            <Col xs={24} md={16}>
+              <HalvingCountdown />
+            </Col>
+            <Col xs={24} md={8}>
+              <Widget
+                title="Data Credits Spent (30d)"
+                value={stats.dataCredits.toLocaleString()}
+                subtitle={(stats.dataCredits * 0.00001).toLocaleString(
+                  'en-US',
+                  {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  },
+                )}
+                tooltip="Data credits are spent to send and receive data over the Helium Network. HNT are burned to receive DC."
+                footer="View Market Data"
+                href="/market"
+              />
+            </Col>
+          </Row>
 
           <div
             style={{
               background: '#3F416D',
               borderRadius: 10,
+              marginBottom: 20,
             }}
             className="summary-header"
           >
-            <Row>
-              <Col lg={12}>
-                <h3
-                  style={{
-                    marginBottom: 20,
-                    color: '#1890ff',
-                    fontSize: 14,
-                  }}
-                >
-                  Blockchain Stats
-                </h3>
-                <p className="stat">
-                  <span>Block Height:</span>
-                  {stats.totalBlocks.toLocaleString()}
-                </p>
-                <p className="stat">
-                  <span>Total Hotspots:</span>
-                  {stats.totalHotspots.toLocaleString()}
-                </p>
-                <p className="stat">
-                  <span>LongFi data (30d):</span>
-                  {((stats.dataCredits * 24) / 10e8).toLocaleString()} GB
-                </p>
-                <p className="stat">
-                  <span>Avg Election Time (24hr):</span>
-                  {Math.floor(stats.electionTime / 60)}m
-                </p>
-                <p className="stat">
-                  <span>Avg Block Time (24hr):</span>
-                  {Math.round(stats.blockTime * 10) / 10}s
-                </p>
-              </Col>
-
-              <Col lg={12}>
-                <h3
-                  style={{
-                    marginBottom: 20,
-                    color: '#1890ff',
-                    fontSize: 14,
-                  }}
-                >
-                  Market Stats
-                </h3>
-                <p className="stat">
-                  <span>Market Price</span>
-                  {market.price.toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 4,
-                  })}{' '}
-                  ({market.priceChange > 0 ? '+' : ''}
-                  {market.priceChange.toLocaleString()}%)
-                </p>
-                <p className="stat">
-                  <span>Volume (24hr):</span>
-                  {market.volume.toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 2,
-                  })}
-                </p>
-                <p className="stat">
-                  <span>Circulating Supply:</span>
-                  {stats.circulatingSupply.toLocaleString('en-US', {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0,
-                  })}{' '}
-                  HNT
-                </p>
-                <p className="stat">
-                  <span>Maximum Supply:</span>
-                  223,000,000 HNT
-                </p>
-                <p className="stat">
-                  <span>Data Credits spent (30d):</span>
-                  {stats.dataCredits.toLocaleString()} DC
-                </p>
-                <p className="stat">
-                  <span>Market Cap:</span>
-                  {(market.price * stats.circulatingSupply).toLocaleString(
-                    'en-US',
-                    {
-                      style: 'currency',
-                      currency: 'USD',
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 2,
-                    },
-                  )}
-                </p>
-              </Col>
-            </Row>
-            {/* <div className="flex-responsive"> */}
             <Row>
               <Col lg={12}>
                 <h3
@@ -171,35 +187,43 @@ const Index = ({ market: initialMarket, stats: initialStats }) => {
             </Row>
           </div>
 
-          {/*<div style={{ position: 'relative', width: '100%' }}>
-            <BarChart />
-          </div>*/}
+          <Card title="Latest Blocks" style={{ marginBottom: 60 }}>
+            <BlocksList pageSize={10} showButton={false} />
+            <Row justify="center" style={{ padding: '20px 0' }}>
+              <Link href="/blocks">
+                <a>
+                  <Button
+                    size="large"
+                    style={{
+                      backgroundColor: '#5850EB',
+                      color: 'white',
+                      borderRadius: 6,
+                    }}
+                  >
+                    View All Blocks
+                  </Button>
+                </a>
+              </Link>
+            </Row>
+          </Card>
         </div>
-      </Content>
-
-      <Content
-        style={{
-          margin: '0 auto',
-          maxWidth: 850,
-          paddingBottom: 100,
-        }}
-      >
-        <div style={{ background: 'white', padding: 15 }}>
-          <h2 style={{ marginTop: 20 }}>Latest Blocks</h2>
-        </div>
-        <BlocksList />
       </Content>
     </AppLayout>
   )
 }
 
 export async function getStaticProps() {
-  const [market, stats] = await Promise.all([fetchMarket(), fetchStats()])
+  const [market, stats, oraclePrices] = await Promise.all([
+    fetchMarket(),
+    fetchStats(),
+    fetchOraclePrices(),
+  ])
 
   return {
     props: {
       market,
       stats,
+      oraclePrices,
     },
     revalidate: 10,
   }

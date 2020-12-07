@@ -15,7 +15,7 @@ const ChecklistCard = ({
     <div
       id={`hotspot-checklist-item-${index}`}
       style={{
-        backgroundColor: checked ? '#35375c' : '#242747',
+        backgroundColor: checked ? '#323b55' : '#232c42',
         // conditional styling for the currently selected card
         boxShadow: isCurrentCard ? '0 0 20px #00000046' : 'none',
         border: isCurrentCard ? '1px solid #ffffff44' : '1px solid transparent',

@@ -82,7 +82,7 @@ const BlockView = ({ block, txns, height }) => {
       <Content
         style={{
           marginTop: 0,
-          background: '#27284B',
+          background: 'rgb(16, 23, 37)',
         }}
       >
         <div
@@ -125,7 +125,10 @@ const BlockView = ({ block, txns, height }) => {
           <hr />
           <div className="block-view-summary-container">
             <Link href={`/blocks/${block.height - 1}`}>
-              <a className="button block-view-prev-button">
+              <a
+                className="button block-view-prev-button"
+                style={{ backgroundColor: '#232c42' }}
+              >
                 <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
                 Block
               </a>
@@ -158,7 +161,10 @@ const BlockView = ({ block, txns, height }) => {
             </span>
             {block.height < height ? (
               <Link href={`/blocks/${block.height + 1}`}>
-                <a className="button block-view-next-button">
+                <a
+                  className="button block-view-next-button"
+                  style={{ backgroundColor: '#232c42' }}
+                >
                   Next Block <ForwardOutlined style={{ marginRight: '-6px' }} />
                 </a>
               </Link>

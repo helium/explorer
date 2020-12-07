@@ -104,7 +104,7 @@ const TxnView = ({ txn }) => {
       <Content
         style={{
           marginTop: 0,
-          background: '#27284B',
+          background: 'rgb(16, 23, 37)',
         }}
       >
         <div

@@ -7,7 +7,10 @@ const PaymentV2 = ({ txn }) => (
   <Descriptions bordered>
     <Descriptions.Item label="Payer" span={3} style={{ overflow: 'ellipsis' }}>
       <div style={{ display: 'flex' }}>
-        <AccountIcon address={txn.payer} style={{ marginRight: 4 }} />
+        <AccountIcon
+          address={txn.payer}
+          style={{ marginRight: 4, maxHeight: 24 }}
+        />
         <Link href={`/accounts/${txn.payer}`}>
           <a>{txn.payer}</a>
         </Link>
@@ -20,7 +23,10 @@ const PaymentV2 = ({ txn }) => (
       return (
         <Descriptions.Item label={'Payee ' + Number(idx + 1)} span={3}>
           <div style={{ display: 'flex' }}>
-            <AccountIcon address={p.payee} style={{ marginRight: 4 }} />
+            <AccountIcon
+              address={p.payee}
+              style={{ marginRight: 4, maxHeight: 24 }}
+            />
             <Link href={`/accounts/${p.payee}`}>
               <a>{`${p.payee} `}</a>
             </Link>

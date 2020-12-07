@@ -100,7 +100,14 @@ function AccountView({ account, hotspots }) {
         </div>
       </Content>
 
-      <div className="bottombar">
+      <div
+        style={{
+          width: '100%',
+          backgroundColor: '#303C54',
+          padding: '20px',
+          textAlign: 'center',
+        }}
+      >
         <Fade bottom delay={1000}>
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
             <div className="flexwrapper" style={{ justifyContent: 'center' }}>

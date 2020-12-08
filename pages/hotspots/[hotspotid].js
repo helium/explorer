@@ -14,6 +14,7 @@ import ActivityList from '../../components/ActivityList'
 import WitnessesList from '../../components/WitnessesList'
 import HotspotImg from '../../public/images/hotspot.svg'
 import NearbyHotspotsList from '../../components/NearbyHotspotsList'
+import animalHash from 'angry-purple-tiger'
 import {
   formatHotspotName,
   formatLocation,
@@ -42,7 +43,16 @@ function HotspotView({
   const [showNearbyHotspots, setShowNearbyHotspots] = useState(true)
 
   return (
-    <AppLayout>
+    <AppLayout
+      title={`${animalHash(hotspot.address)} | Hotspot `}
+      description={`A Helium Hotspot ${
+        hotspot.location
+          ? `located in ${formatLocation(hotspot?.geocode)} with ${
+              witnesses.length
+            } witness${witnesses.length === 1 ? '' : 'es'}`
+          : `with no location asserted`
+      }, belonging to account ${hotspot.owner}`}
+    >
       <Content
         style={{
           marginTop: 0,

@@ -47,7 +47,12 @@ function RichList({ accounts }) {
   ]
 
   return (
-    <AppLayout>
+    <AppLayout
+      title={'Richest Accounts'}
+      description={
+        'The accounts on the Helium blockchain with the largest balances of HNT and HST'
+      }
+    >
       <Content
         style={{
           marginTop: 0,

@@ -34,7 +34,12 @@ function Hotspots({
   const { latestHotspots } = useLatestHotspots(initialLatestHotspots)
 
   return (
-    <AppLayout>
+    <AppLayout
+      title={'Hotspots'}
+      description={
+        'An overview of the Hotspots that make up the Helium network'
+      }
+    >
       <TopBanner icon={HotspotsImg} title="Hotspots" />
 
       <TopChart

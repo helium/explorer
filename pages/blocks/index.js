@@ -23,7 +23,12 @@ function Blocks({ stats: initialStats, latestBlocks: initialLatestBlocks }) {
   const txnRate = meanBy(latestBlocks, 'transactionCount')
 
   return (
-    <AppLayout>
+    <AppLayout
+      title="Blocks"
+      description={
+        'The current state of the Helium blockchain, including statistics about transaction rates, election time, and block times'
+      }
+    >
       <TopBanner title="Blocks" icon={BlocksImg} />
 
       <TopChart

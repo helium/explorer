@@ -74,8 +74,6 @@ const TxnView = ({ txn }) => {
     .format('h:mm A')} UTC`
   let blockString = `in block ${txn.height}`
 
-  console.log(txn)
-
   switch (txn.type) {
     case 'payment_v1':
       type = `Payment`
@@ -176,7 +174,6 @@ const TxnView = ({ txn }) => {
   return (
     <AppLayout
       title={`${type === '' ? 'Transaction' : `${type} Transaction`}`}
-      //  (${ txn.hash.substring(0, 5) }...)`}
       description={description}
     >
       <Content

@@ -68,7 +68,10 @@ const BlockView = ({ block, txns, height }) => {
 
   return (
     <AppLayout
-      title={`Block ${block.height}`}
+      title={`Block ${block.height.toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      })}`}
       description={`Block ${
         block.height
       } of the Helium blockchain was produced on ${moment
@@ -101,7 +104,10 @@ const BlockView = ({ block, txns, height }) => {
                   letterSpacing: '-2px',
                 }}
               >
-                {block.height}
+                {block.height.toLocaleString(undefined, {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}
               </Title>
               <div>
                 <Text

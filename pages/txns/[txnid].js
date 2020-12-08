@@ -173,7 +173,7 @@ const TxnView = ({ txn }) => {
 
   return (
     <AppLayout
-      title={`${type === '' ? 'Transaction' : `${type} Transaction`}`}
+      title={`${type === '' ? 'Transaction' : `${type} | Transaction`}`}
       description={description}
     >
       <Content

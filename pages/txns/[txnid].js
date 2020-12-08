@@ -167,7 +167,7 @@ const TxnView = ({ txn }) => {
       break
     default:
       type = ``
-      description = ``
+      description = `A transaction ${dateString} ${blockString}`
       break
   }
 

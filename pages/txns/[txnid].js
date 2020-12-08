@@ -7,7 +7,9 @@ import Timestamp from 'react-timestamp'
 import AppLayout, { Content } from '../../components/AppLayout'
 import PieChart from '../../components/PieChart'
 import animalHash from 'angry-purple-tiger'
+import moment from 'moment'
 import { Collapse } from 'antd'
+import { formatLocation } from '../../components/Hotspots/utils'
 
 import {
   Fallback,
@@ -65,34 +67,109 @@ const rewardChart = (txn) => {
 
 const TxnView = ({ txn }) => {
   let type = ''
+  let description = ''
+  let dateString = `on 
+  ${moment.utc(moment.unix(txn.time)).format('MMMM Do, YYYY')} at ${moment
+    .utc(moment.unix(txn.time))
+    .format('h:mm A')} UTC`
+  let blockString = `in block ${txn.height}`
+
+  console.log(txn)
 
   switch (txn.type) {
     case 'payment_v1':
-      type = `Payment v1`
+      type = `Payment`
+      description = `A payment of ${txn.amount.floatBalance
+        .toFixed(2)
+        .toString()} HNT from account ${txn.payer.substring(
+        0,
+        5,
+      )}... to account ${txn.payee.substring(
+        0,
+        5,
+      )}... ${dateString} ${blockString}`
       break
     case 'payment_v2':
-      type = `Payment v2`
+      type = `Payment`
+      description =
+        txn.payments.length !== 1
+          ? `A payment from account ${txn.payer.substring(0, 5)}... to ${
+              txn.payments.length
+            } accounts totaling ${txn.totalAmount.floatBalance.toFixed(
+              2,
+            )} HNT ${dateString} ${blockString}`
+          : `A payment of ${txn.payments[0].amount.floatBalance
+              .toFixed(2)
+              .toString()} HNT from account ${txn.payer.substring(
+              0,
+              5,
+            )}... to account ${txn.payments[0].payee.substring(
+              0,
+              5,
+            )}... ${dateString} ${blockString}`
       break
     case 'poc_request_v1':
       type = `PoC Request`
+      description = `A challenge constructed by ${animalHash(
+        txn.challenger,
+      )} ${dateString} ${blockString}`
       break
     case 'poc_receipts_v1':
       type = `PoC Receipt`
+      description = `A challenge constructed by ${animalHash(
+        txn.challenger,
+      )} for ${txn.path.length} other Hotspot${
+        txn.path.length === 1 ? '' : 's'
+      } ${dateString} ${blockString}`
       break
     case 'rewards_v1':
-      type = `Rewards v1`
+      type = `Rewards`
+      description = `A rewards transaction with ${txn.totalAmount.floatBalance
+        .toFixed(2)
+        .toString()} total HNT rewarded to ${
+        txn.rewards.length
+      } accounts ${dateString} ${blockString}`
       break
     case 'state_channel_close_v1':
       type = `State Channel Close`
+      description = `A state channel closed transaction ${dateString} ${blockString}`
       break
     case 'state_channel_open_v1':
       type = `State Channel Open`
+      description = `A state channel open transaction ${dateString} ${blockString}`
       break
     case 'assert_location_v1':
-      type = `Location Assert`
+      type = `Assert Location`
+      description = `${animalHash(
+        txn.gateway,
+      )} asserted its location ${dateString} ${blockString}`
+      break
+    case 'consensus_group_v1':
+      type = `Consensus Election`
+      description = `${txn.members.length} Hotspots were elected to a consensus group ${dateString} ${blockString}`
+      break
+    case 'add_gateway_v1':
+      type = `Add Gateway`
+      description = `${animalHash(
+        txn.gateway,
+      )} was added to the Helium blockchain ${dateString} ${blockString}`
+      break
+    case 'transfer_hotspot_v1':
+      type = `Transfer Hotspot`
+      description = `Ownership of ${animalHash(
+        txn.gateway,
+      )} was transferred from account ${txn.seller.substring(
+        0,
+        5,
+      )}... to account ${txn.buyer.substring(0, 5)}... for ${(
+        txn.amountToSeller / 100000000
+      )
+        .toFixed(2)
+        .toString()} HNT ${dateString} ${blockString}`
       break
     default:
       type = ``
+      description = ``
       break
   }
 
@@ -100,6 +177,7 @@ const TxnView = ({ txn }) => {
     <AppLayout
       title={`${type === '' ? 'Transaction' : `${type} Transaction`}`}
       //  (${ txn.hash.substring(0, 5) }...)`}
+      description={description}
     >
       <Content
         style={{

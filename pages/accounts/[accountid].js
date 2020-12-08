@@ -25,7 +25,29 @@ const AccountAddress = ({ address, truncate = false }) => {
 
 function AccountView({ account, hotspots }) {
   return (
-    <AppLayout>
+    <AppLayout
+      title={`${account.address.substring(0, 5)}... | Account`}
+      description={`An account on the Helium blockchain with ${account.balance.floatBalance.toLocaleString(
+        undefined,
+        { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+      )} HNT${
+        account.dcBalance.floatBalance > 0
+          ? `, ${account.dcBalance.floatBalance.toLocaleString(undefined, {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            })} DC`
+          : ''
+      }${
+        account.secBalance.floatBalance > 0
+          ? `, ${account.secBalance.floatBalance.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })} HST`
+          : ''
+      } and ${hotspots.length} Hotspot${
+        hotspots.length === 1 ? '' : 's'
+      }, with the address ${account.address}`}
+    >
       <Content
         style={{
           marginTop: 0,
@@ -103,7 +125,7 @@ function AccountView({ account, hotspots }) {
       <div
         style={{
           width: '100%',
-          backgroundColor: '#303C54',
+          backgroundColor: '#2A344A',
           padding: '20px',
           textAlign: 'center',
         }}

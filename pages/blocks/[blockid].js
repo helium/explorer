@@ -130,15 +130,24 @@ const BlockView = ({ block, txns, height }) => {
 
           <hr />
           <div className="block-view-summary-container">
-            <Link href={`/blocks/${block.height - 1}`}>
-              <a
-                className="button block-view-prev-button"
-                style={{ backgroundColor: '#232c42' }}
-              >
-                <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
-                Block
-              </a>
-            </Link>
+            {block.height !== 1 ? (
+              <Link href={`/blocks/${block.height - 1}`}>
+                <a
+                  className="button block-view-prev-button"
+                  style={{ backgroundColor: '#232c42' }}
+                >
+                  <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
+                  Block
+                </a>
+              </Link>
+            ) : (
+              <span
+                className="block-view-next-button"
+                style={{
+                  width: '139.5px', // the width the "Next block" button takes up
+                }}
+              />
+            )}
             <span className="block-view-summary-info">
               <h3>
                 <ClockCircleOutlined

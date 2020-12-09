@@ -72,14 +72,21 @@ const TxnView = ({ txn }) => {
   ${moment.utc(moment.unix(txn.time)).format('MMMM Do, YYYY')} at ${moment
     .utc(moment.unix(txn.time))
     .format('h:mm A')} UTC`
-  let blockString = `in block ${txn.height}`
+  let blockString = `in block ${txn.height.toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  })}`
 
   switch (txn.type) {
     case 'payment_v1':
       type = `Payment`
-      description = `A payment of ${txn.amount.floatBalance
-        .toFixed(2)
-        .toString()} HNT from account ${txn.payer.substring(
+      description = `A payment of ${txn.amount.floatBalance.toLocaleString(
+        undefined,
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        },
+      )} HNT from account ${txn.payer.substring(
         0,
         5,
       )}... to account ${txn.payee.substring(
@@ -93,12 +100,20 @@ const TxnView = ({ txn }) => {
         txn.payments.length !== 1
           ? `A payment from account ${txn.payer.substring(0, 5)}... to ${
               txn.payments.length
-            } accounts totaling ${txn.totalAmount.floatBalance.toFixed(
-              2,
+            } accounts totaling ${txn.totalAmount.floatBalance.toLocaleString(
+              undefined,
+              {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              },
             )} HNT ${dateString} ${blockString}`
-          : `A payment of ${txn.payments[0].amount.floatBalance
-              .toFixed(2)
-              .toString()} HNT from account ${txn.payer.substring(
+          : `A payment of ${txn.payments[0].amount.floatBalance.toLocaleString(
+              undefined,
+              {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              },
+            )} HNT from account ${txn.payer.substring(
               0,
               5,
             )}... to account ${txn.payments[0].payee.substring(
@@ -122,9 +137,13 @@ const TxnView = ({ txn }) => {
       break
     case 'rewards_v1':
       type = `Rewards`
-      description = `A rewards transaction with ${txn.totalAmount.floatBalance
-        .toFixed(2)
-        .toString()} total HNT rewarded to ${
+      description = `A rewards transaction with ${txn.totalAmount.floatBalance.toLocaleString(
+        undefined,
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        },
+      )} total HNT rewarded to ${
         txn.rewards.length
       } accounts ${dateString} ${blockString}`
       break
@@ -161,9 +180,10 @@ const TxnView = ({ txn }) => {
         5,
       )}... to account ${txn.buyer.substring(0, 5)}... for ${(
         txn.amountToSeller / 100000000
-      )
-        .toFixed(2)
-        .toString()} HNT ${dateString} ${blockString}`
+      ).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })} HNT ${dateString} ${blockString}`
       break
     default:
       type = ``

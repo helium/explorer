@@ -81,6 +81,8 @@ const BlockView = ({ block, txns, height }) => {
         .format('h:mm A')} UTC, with ${txns.length} transaction${
         txns.length === 1 ? '' : 's'
       }.`}
+      openGraphImageAbsoluteUrl={`https://explorer.helium.com/images/og/blocks.png`}
+      url={`https://explorer.helium.com/blocks/${block.height}`}
     >
       <Content
         style={{

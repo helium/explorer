@@ -52,6 +52,8 @@ function HotspotView({
             } witness${witnesses.length === 1 ? '' : 'es'}`
           : `with no location asserted`
       }, belonging to account ${hotspot.owner}`}
+      openGraphImageAbsoluteUrl={`https://explorer.helium.com/images/og/hotspots.png`}
+      url={`https://explorer.helium.com/hotspots/${hotspot.address}`}
     >
       <Content
         style={{

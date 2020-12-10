@@ -47,6 +47,8 @@ function AccountView({ account, hotspots }) {
       } and ${hotspots.length} Hotspot${
         hotspots.length === 1 ? '' : 's'
       }, with the address ${account.address}`}
+      openGraphImageAbsoluteUrl={`https://explorer.helium.com/images/og/accounts.png`}
+      url={`https://explorer.helium.com/accounts/accounts/${account.address}`}
     >
       <Content
         style={{

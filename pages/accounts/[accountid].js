@@ -25,11 +25,35 @@ const AccountAddress = ({ address, truncate = false }) => {
 
 function AccountView({ account, hotspots }) {
   return (
-    <AppLayout>
+    <AppLayout
+      title={`${account.address.substring(0, 5)}... | Account`}
+      description={`An account on the Helium blockchain with ${account.balance.floatBalance.toLocaleString(
+        undefined,
+        { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+      )} HNT${
+        account.dcBalance.floatBalance > 0
+          ? `, ${account.dcBalance.floatBalance.toLocaleString(undefined, {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            })} DC`
+          : ''
+      }${
+        account.secBalance.floatBalance > 0
+          ? `, ${account.secBalance.floatBalance.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })} HST`
+          : ''
+      } and ${hotspots.length} Hotspot${
+        hotspots.length === 1 ? '' : 's'
+      }, with the address ${account.address}`}
+      openGraphImageAbsoluteUrl={`https://explorer.helium.com/images/og/accounts.png`}
+      url={`https://explorer.helium.com/accounts/accounts/${account.address}`}
+    >
       <Content
         style={{
           marginTop: 0,
-          background: '#27284B',
+          background: 'rgb(16, 23, 37)',
           overflowX: 'hidden',
         }}
       >
@@ -100,7 +124,14 @@ function AccountView({ account, hotspots }) {
         </div>
       </Content>
 
-      <div className="bottombar">
+      <div
+        style={{
+          width: '100%',
+          backgroundColor: '#2A344A',
+          padding: '20px',
+          textAlign: 'center',
+        }}
+      >
         <Fade bottom delay={1000}>
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
             <div className="flexwrapper" style={{ justifyContent: 'center' }}>

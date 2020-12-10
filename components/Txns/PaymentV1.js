@@ -12,7 +12,10 @@ const PaymentV1 = ({ txn }) => {
         style={{ overflow: 'ellipsis' }}
       >
         <div style={{ display: 'flex' }}>
-          <AccountIcon address={txn.payer} style={{ marginRight: 4 }} />
+          <AccountIcon
+            address={txn.payer}
+            style={{ marginRight: 4, maxHeight: 24 }}
+          />
           <Link href={`/accounts/${txn.payer}`}>
             <a>{txn.payer}</a>
           </Link>
@@ -20,14 +23,17 @@ const PaymentV1 = ({ txn }) => {
       </Descriptions.Item>
       <Descriptions.Item label="Payee" span={3}>
         <div style={{ display: 'flex' }}>
-          <AccountIcon address={txn.payee} style={{ marginRight: 4 }} />
+          <AccountIcon
+            address={txn.payee}
+            style={{ marginRight: 4, maxHeight: 24 }}
+          />
           <Link href={`/accounts/${txn.payee}`}>
             <a>{txn.payee}</a>
           </Link>
         </div>
       </Descriptions.Item>
       <Descriptions.Item label="Amount" span={3}>
-        {txn.amount.toString()}
+        {txn.amount.floatBalance.toString()} HNT
       </Descriptions.Item>
       <Descriptions.Item label="Fee" span={3}>
         {txn.fee.toString()}

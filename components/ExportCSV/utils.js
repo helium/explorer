@@ -7,7 +7,7 @@ export const parseTxn = async (
   txn,
   opts = { convertFee: true },
 ) => {
-  const timestamp = moment.unix(txn.time).format('MM/DD/YYYY HH:mm:ss')
+  const timestamp = moment.unix(txn.time).toISOString()
   switch (txn.type) {
     case 'rewards_v1':
       return txn.rewards.map(({ type, gateway, amount }) => ({

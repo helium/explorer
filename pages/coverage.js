@@ -5,6 +5,7 @@ import Page from '../components/CoverageMap/Page'
 import dynamic from 'next/dynamic'
 import HotspotSidebar from '../components/CoverageMap/HotspotSidebar'
 import { Client } from '@helium/http'
+import MetaTags from '../components/AppLayout/MetaTags'
 
 const Map = dynamic(() => import('../components/CoverageMap/CoverageMap'), {
   ssr: false,
@@ -54,6 +55,14 @@ const Coverage = (props) => {
 
   return (
     <Page>
+      <MetaTags
+        title={'Coverage Map'}
+        description={`View an interactive map of the Helium network and all the hotspots currently active around the world`}
+        openGraphImageAbsoluteUrl={
+          'https://explorer.helium.com/images/og/coverage.png'
+        }
+        url={'https://explorer.helium.com/coverage'}
+      />
       <title>Helium Network - Coverage</title>
       <Header activeNav="coverage" />
       <HotspotSidebar

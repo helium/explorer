@@ -27,7 +27,7 @@ const columns = [
     title: 'Total HNT',
     dataIndex: 'amount',
     key: 'amount',
-    render: (amount) => <span>{amount.toLocaleString()}</span>,
+    render: (amount) => <span>{amount.toString()}</span>,
   },
 ]
 
@@ -41,7 +41,7 @@ const expandedColumns = [
     title: 'HNT mined',
     dataIndex: 'amount',
     key: 'amount',
-    render: (amount) => <span>{amount.toLocaleString()}</span>,
+    render: (amount) => <span>{amount.floatBalance.toString()} HNT</span>,
   },
 ]
 
@@ -102,6 +102,7 @@ class RewardsV1 extends Component {
             earned them.{' '}
           </p>
         </div>
+        {console.log(groupedRewards)}
         <Table
           dataSource={groupedRewards}
           columns={columns}

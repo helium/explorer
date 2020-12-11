@@ -1,5 +1,5 @@
-import React, { Component, useState } from 'react'
-import { Descriptions, Button } from 'antd'
+import React, { Component } from 'react'
+import { Descriptions } from 'antd'
 import Link from 'next/link'
 import animalHash from 'angry-purple-tiger'
 import TruncatedField from './TruncatedField'

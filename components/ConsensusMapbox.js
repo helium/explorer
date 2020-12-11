@@ -1,4 +1,5 @@
-import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
+import ReactMapboxGl, { Marker } from 'react-mapbox-gl'
+import { findMiddlePoint } from '../components/Txns/utils'
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
@@ -6,8 +7,8 @@ const Mapbox = ReactMapboxGl({
 
 const styles = {
   consensusMember: {
-    width: 14,
-    height: 14,
+    width: 20,
+    height: 20,
     borderRadius: '50%',
     backgroundColor: '#ff6666',
     display: 'flex',
@@ -20,27 +21,36 @@ const styles = {
 }
 
 const ConsensusMapbox = ({ members }) => {
+  const memberLocations = []
+  members.map((m) => memberLocations.push({ lng: m?.lng, lat: m?.lat }))
+
+  const middlePoint = findMiddlePoint(memberLocations)
+
+  const midPointLon = middlePoint[0]
+  const midPointLat = middlePoint[1]
+  const zoomLevel = middlePoint[2]
+
   return (
     <Mapbox
       style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
       container="map"
-      center={[0, 0]}
+      center={[midPointLon, midPointLat]}
       containerStyle={{
         height: '600px',
         width: '100%',
       }}
-      zoom={[11]}
+      zoom={[zoomLevel]}
       movingMethod="jumpTo"
     >
-      {members.map((m, idx) => {
+      {members?.map((m, idx) => {
         return (
           <Marker
             key={m.address}
             style={styles.consensusMember}
             anchor="center"
-            coordinates={[m.lat ? m.lat : 0, m.lon ? m.lon : 0]}
+            coordinates={[m?.lng, m?.lat]}
           >
-            <span style={{ color: 'white', fontSize: '8px' }}>{idx + 1}</span>
+            <span style={{ color: 'white', fontSize: '10px' }}>{idx + 1}</span>
           </Marker>
         )
       })}

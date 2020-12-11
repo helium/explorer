@@ -35,7 +35,7 @@ const ConsensusMapbox = ({ members }) => {
       }}
       fitBounds={mapBounds}
       fitBoundsOptions={{
-        padding: 50,
+        padding: 100,
         animate: false,
       }}
       movingMethod="jumpTo"

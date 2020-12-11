@@ -29,6 +29,26 @@ import Block from '../../public/images/block.svg'
 const { Panel } = Collapse
 const { Title, Text } = Typography
 
+const txnView = (txn) => {
+  switch (txn.type) {
+    case 'payment_v1':
+      return <PaymentV1 txn={txn} />
+    case 'payment_v2':
+      return <PaymentV2 txn={txn} />
+    case 'poc_request_v1':
+      return <PocRequestV1 txn={txn} />
+    case 'poc_receipts_v1':
+      return <PocReceiptsV1 txn={txn} />
+    case 'rewards_v1':
+      return <RewardsV1 txn={txn} />
+    case 'state_channel_close_v1':
+      return <StateChannelCloseV1 txn={txn} />
+    case 'consensus_group_v1':
+      return <ConsensusGroupV1 txn={txn} />
+    default:
+      return <Fallback txn={txn} />
+  }
+}
 class TxnView extends Component {
   state = {
     txn: {},
@@ -36,7 +56,6 @@ class TxnView extends Component {
     h3exclusionCells: 0,
     h3maxHopCells: 99999999,
   }
-
   componentDidMount() {
     this.client = new Client()
     const { txnid } = this.props.router.query

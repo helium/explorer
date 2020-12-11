@@ -1,5 +1,5 @@
 import ReactMapboxGl, { Marker } from 'react-mapbox-gl'
-import { findMiddlePoint } from '../components/Txns/utils'
+import { findBounds } from '../components/Txns/utils'
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
@@ -23,23 +23,21 @@ const styles = {
 const ConsensusMapbox = ({ members }) => {
   const memberLocations = []
   members.map((m) => memberLocations.push({ lng: m?.lng, lat: m?.lat }))
-
-  const middlePoint = findMiddlePoint(memberLocations)
-
-  const midPointLon = middlePoint[0]
-  const midPointLat = middlePoint[1]
-  const zoomLevel = middlePoint[2]
+  const mapBounds = findBounds(memberLocations)
 
   return (
     <Mapbox
       style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
       container="map"
-      center={[midPointLon, midPointLat]}
       containerStyle={{
         height: '600px',
         width: '100%',
       }}
-      zoom={[zoomLevel]}
+      fitBounds={mapBounds}
+      fitBoundsOptions={{
+        padding: 50,
+        animate: false,
+      }}
       movingMethod="jumpTo"
     >
       {members?.map((m, idx) => {

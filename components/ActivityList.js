@@ -113,6 +113,10 @@ class ActivityList extends Component {
                       { label: 'Add Hotspot', value: 'add_gateway_v1' },
                       { label: 'Assert Location', value: 'assert_location_v1' },
                       {
+                        label: 'Packets Transferred',
+                        value: 'state_channel_close_v1',
+                      },
+                      {
                         label: 'Transfer Hotspot',
                         value: 'transfer_hotspot_v1',
                       },

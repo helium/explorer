@@ -8,8 +8,6 @@ import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
 import AppLayout, { Content } from '../../components/AppLayout'
 import PieChart from '../../components/PieChart'
-import animalHash from 'angry-purple-tiger'
-import { Collapse } from 'antd'
 
 import {
   Fallback,
@@ -19,13 +17,13 @@ import {
   RewardsV1,
   StateChannelCloseV1,
   PocRequestV1,
+  TransferHotspotV1,
   TxnTag,
 } from '../../components/Txns'
 import Block from '../../public/images/block.svg'
 
 // import { Tooltip } from 'antd'
 
-const { Panel } = Collapse
 const { Title, Text } = Typography
 
 class TxnView extends Component {
@@ -115,7 +113,8 @@ class TxnView extends Component {
           return <RewardsV1 txn={txn} />
         case 'state_channel_close_v1':
           return <StateChannelCloseV1 txn={txn} />
-
+        case 'transfer_hotspot_v1':
+          return <TransferHotspotV1 txn={txn} />
         default:
           return <Fallback txn={txn} />
       }

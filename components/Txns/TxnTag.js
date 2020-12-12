@@ -41,7 +41,7 @@ const typeTag = (type) => {
           placement="bottom"
           title="Hotspot Transfer Confirmation Transaction"
         >
-          <Tag color="#FFC769">Transfer Hotspot</Tag>
+          <Tag color="#474DFF">Transfer Hotspot</Tag>
         </Tooltip>
       )
     case 'poc_challengers':

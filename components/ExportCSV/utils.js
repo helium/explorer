@@ -38,7 +38,7 @@ export const parseTxn = async (
           'Sent Currency': 'HNT',
           'Fee Amount': await getFee(txn, opts.convertFee),
           'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
-          Tag: '',
+          Tag: 'payment',
           Hotspot: '',
           'Reward Type': '',
           Block: txn.height,
@@ -54,7 +54,7 @@ export const parseTxn = async (
           'Sent Currency': '',
           'Fee Amount': 0,
           'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
-          Tag: '',
+          Tag: 'payment',
           Hotspot: '',
           'Reward Type': '',
           Block: txn.height,
@@ -73,7 +73,7 @@ export const parseTxn = async (
           'Sent Currency': 'HNT',
           'Fee Amount': await getFee(txn, opts.convertFee),
           'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
-          Tag: '',
+          Tag: 'payment',
           Hotspot: '',
           'Reward Type': '',
           Block: txn.height,
@@ -92,11 +92,83 @@ export const parseTxn = async (
           'Sent Currency': '',
           'Fee Amount': 0,
           'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
-          Tag: '',
+          Tag: 'payment',
           Hotspot: '',
           'Reward Type': '',
           Block: txn.height,
         }
+      }
+    case 'transfer_hotspot_v1':
+      if (ownerAddress === txn.buyer) {
+        return {
+          Date: timestamp,
+          'Received Quantity': '',
+          'Received From': '',
+          'Received Currency': '',
+          'Sent Quantity': txn.amountToSeller / 100000000,
+          'Sent To': txn.seller,
+          'Sent Currency': 'HNT',
+          'Fee Amount': await getFee(txn, opts.convertFee),
+          'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
+          Tag: 'gateway transfer payment',
+          Hotspot: txn.gateway ? animalHash(txn.gateway) : '',
+          'Reward Type': '',
+          Block: txn.height,
+        }
+      } else {
+        return {
+          Date: timestamp,
+          'Received Quantity': txn.amountToSeller / 100000000,
+          'Received From': txn.buyer,
+          'Received Currency': 'HNT',
+          'Sent Quantity': '',
+          'Sent To': '',
+          'Sent Currency': '',
+          'Fee Amount': 0,
+          'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
+          Tag: 'gateway transfer payment',
+          Hotspot: txn.gateway ? animalHash(txn.gateway) : '',
+          'Reward Type': '',
+          Block: txn.height,
+        }
+      }
+    case 'add_gateway_v1':
+      return {
+        Date: timestamp,
+        'Received Quantity': '',
+        'Received From': '',
+        'Received Currency': '',
+        // TODO: make helium-js return stakingFee like fee so it can be converted to HNT (with toNetworkTokens())
+        // 'Sent Quantity': txn.payer === null ? await getFee({ height: txn.height, fee: txn.stakingFee }, opts.convertFee) : 0,
+        'Sent Quantity': txn.payer === null ? txn.stakingFee : 0,
+        'Sent To': txn.payer === null ? 'Helium Network' : '',
+        'Sent Currency': 'DC',
+        'Fee Amount':
+          txn.payer === null ? await getFee(txn, opts.convertFee) : 0,
+        'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
+        Tag: 'add gateway payment',
+        Hotspot: txn.gateway ? animalHash(txn.gateway) : '',
+        'Reward Type': '',
+        Block: txn.height,
+      }
+    case 'assert_location_v1':
+      return {
+        Date: timestamp,
+        'Received Quantity': '',
+        'Received From': '',
+        'Received Currency': '',
+        // TODO: make helium-js return stakingFee like fee so it can be converted to HNT (with toNetworkTokens())
+        // 'Sent Quantity': txn.payer === null ? await getFee({ height: txn.height, fee: txn.stakingFee }, opts.convertFee) : 0,
+        'Sent Quantity': txn.payer === null ? txn.stakingFee : 0,
+        'Sent To': txn.payer === null ? 'Helium Network' : '',
+        'Sent Currency': 'DC',
+        'Fee Amount':
+          txn.payer === null ? await getFee(txn, opts.convertFee) : 0,
+        'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
+        Tag: 'assert location payment',
+        Hotspot: txn.gateway ? animalHash(txn.gateway) : '',
+        'Reward Type': '',
+        Block: txn.height,
       }
 
     default:

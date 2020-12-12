@@ -55,6 +55,9 @@ class ExportModal extends React.Component {
     const filterTypes = []
     if (txn.includes('payment')) filterTypes.push('payment_v1', 'payment_v2')
     if (txn.includes('reward')) filterTypes.push('rewards_v1')
+    if (txn.includes('transfer')) filterTypes.push('transfer_hotspot_v1')
+    if (txn.includes('assert')) filterTypes.push('assert_location_v1')
+    if (txn.includes('add')) filterTypes.push('add_gateway_v1')
 
     const list = await this.client.account(address).activity.list({
       filterTypes,
@@ -86,8 +89,8 @@ class ExportModal extends React.Component {
     }
 
     const csvExporter = new ExportToCsv(options)
-
-    csvExporter.generateCsv(data)
+    console.log(data)
+    if (data !== []) csvExporter.generateCsv(data)
   }
 
   render() {

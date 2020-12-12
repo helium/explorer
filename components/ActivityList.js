@@ -111,6 +111,10 @@ class ActivityList extends Component {
                       { label: 'Payment (v2)', value: 'payment_v2' },
                       { label: 'Add Hotspot', value: 'add_gateway_v1' },
                       { label: 'Assert Location', value: 'assert_location_v1' },
+                      {
+                        label: 'Transfer Hotspot',
+                        value: 'transfer_hotspot_v1',
+                      },
                     ]}
                     onChange={this.onFiltersChanged}
                   />
@@ -216,6 +220,26 @@ const columns = (ownerAddress) => {
         )
       case 'rewards_v1':
         return <span>{txn.totalAmount.toString(2)}</span>
+      case 'transfer_hotspot_v1':
+        if (txn.gateway === ownerAddress) {
+          // it's on the hotspot page, don't show + or -
+          return (
+            <span>{(txn.amountToSeller / 100000000).toLocaleString()} HNT</span>
+          )
+        } else if (txn.buyer === ownerAddress) {
+          return (
+            <span>
+              {'-' + (txn.amountToSeller / 100000000).toLocaleString()} HNT
+            </span>
+          )
+        } else {
+          // it must be on the seller's account page
+          return (
+            <span>
+              {'+' + (txn.amountToSeller / 100000000).toLocaleString()} HNT
+            </span>
+          )
+        }
       default:
         return <span>{txn.amount}</span>
     }

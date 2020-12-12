@@ -8,6 +8,7 @@ import LoadMoreButton from './LoadMoreButton'
 import { Content } from './AppLayout'
 import ExportCSV from './ExportCSV'
 import Link from 'next/link'
+import animalHash from 'angry-purple-tiger'
 
 const { Text } = Typography
 
@@ -178,9 +179,9 @@ const rewardColumns = (hotspots, type) => {
       key: 'gateway',
       render: (data) => (
         <span className="ant-table-cell-override">
-          <p>
-            {hotspots.find((hotspot) => hotspot.address === data)?.name ?? ''}
-          </p>
+          <Link href={`/hotspots/${data}`}>
+            <a>{animalHash(data)}</a>
+          </Link>
         </span>
       ),
     })

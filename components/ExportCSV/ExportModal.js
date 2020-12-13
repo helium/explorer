@@ -89,7 +89,6 @@ class ExportModal extends React.Component {
     }
 
     const csvExporter = new ExportToCsv(options)
-    console.log(data)
     if (data !== []) csvExporter.generateCsv(data)
   }
 

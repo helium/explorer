@@ -18,6 +18,7 @@ import {
   StateChannelCloseV1,
   PocRequestV1,
   TransferHotspotV1,
+  ConsensusGroupV1,
   TxnTag,
 } from '../../components/Txns'
 import Block from '../../public/images/block.svg'
@@ -33,7 +34,6 @@ class TxnView extends Component {
     h3exclusionCells: 0,
     h3maxHopCells: 99999999,
   }
-
   componentDidMount() {
     this.client = new Client()
     const { txnid } = this.props.router.query
@@ -115,6 +115,9 @@ class TxnView extends Component {
           return <StateChannelCloseV1 txn={txn} />
         case 'transfer_hotspot_v1':
           return <TransferHotspotV1 txn={txn} />
+        case 'consensus_group_v1':
+          return <ConsensusGroupV1 txn={txn} />
+
         default:
           return <Fallback txn={txn} />
       }

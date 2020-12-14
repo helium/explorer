@@ -48,6 +48,9 @@ const ExportForm = ({ onDateChange, onTxnChange, onFeeChange }) => {
             options={[
               { label: 'Payments', value: 'payment' },
               { label: 'Rewards', value: 'reward' },
+              { label: 'Hotspot Transfers', value: 'transfer' },
+              { label: 'Add Hotspots', value: 'add' },
+              { label: 'Location Asserts', value: 'assert' },
             ]}
             defaultValue={['payment', 'reward']}
             onChange={onTxnChange}

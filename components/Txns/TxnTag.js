@@ -35,6 +35,15 @@ const typeTag = (type) => {
           <Tag color="#FF6666">Consensus Election</Tag>
         </Tooltip>
       )
+    case 'transfer_hotspot_v1':
+      return (
+        <Tooltip
+          placement="bottom"
+          title="Hotspot Transfer Confirmation Transaction"
+        >
+          <Tag color="#474DFF">Transfer Hotspot</Tag>
+        </Tooltip>
+      )
     case 'poc_challengers':
       return (
         <Tooltip placement="bottom" title="Mining Reward for a PoC challenger">

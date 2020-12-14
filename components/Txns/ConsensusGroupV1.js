@@ -128,9 +128,10 @@ class ConsensusGroupV1 extends Component {
               <a>{txn.height}</a>
             </Link>
           </Descriptions.Item>
-        </Descriptions>
-        <Descriptions bordered>
-          <Descriptions.Item label="Proof">
+          <Descriptions.Item label="Delay" span={3}>
+            {txn.delay}
+          </Descriptions.Item>
+          <Descriptions.Item label="Proof" span={3}>
             <TruncatedField key={'proof'} value={txn.proof} />
           </Descriptions.Item>
         </Descriptions>

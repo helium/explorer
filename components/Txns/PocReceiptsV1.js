@@ -7,6 +7,56 @@ import animalHash from 'angry-purple-tiger'
 import PocPath from './PocPath'
 const { Panel } = Collapse
 
+const formatPocRadioInfo = (receipt) => {
+  const baseText = `— received ${
+    receipt?.signal ? `at RSSI ${receipt?.signal}dBm` : ``
+  }`
+  const snrText = `${
+    receipt?.snr ? `, with SNR ${receipt?.snr.toFixed(2)}.dB` : ``
+  }`
+  const dataRateText = ''
+
+  if (receipt !== null && receipt.datrate !== undefined) {
+    if (Array.isArray(receipt.datarate)) {
+      dataRateText = `${
+        receipt.datarate.length > 0
+          ? `, ${String.fromCharCode.apply(null, receipt.datarate)}`
+          : ``
+      }`
+    } else {
+      if (receipt.datarate !== null)
+        dataRateText = `${
+          receipt.datarate !== null && `, ${receipt.datarate} `
+        }`
+    }
+  }
+
+  // {`— received at RSSI ${
+  //   receipt?.signal
+  // }dBm, SNR ${
+  //   receipt.snr
+  //     ? `${receipt?.snr.toFixed(2)}dB`
+  //     : ''
+  // }${
+  //   receipt !== null &&
+  //   receipt.datarate !== undefined
+  //     ? Array.isArray(receipt.datarate)
+  //       ? `${
+  //         receipt.datarate.length > 0
+  //             ? `, ${String.fromCharCode.apply(
+  //                 null,
+  //                 receipt.datarate,
+  //               )}`
+  //             : ``
+  //         }`
+  //       : `${
+  //         receipt.datarate !== null &&
+  //           `, ${receipt.datarate} `
+  //         }`
+  //     : ``
+  // }`}
+}
+
 const PoCTableHeader = ({ tooltipText, title }) => {
   return (
     <div
@@ -143,30 +193,7 @@ const PocReceiptsV1 = ({ txn }) => {
                               className="poc-witness-receive-info"
                               style={{}}
                             >
-                              {`— received at RSSI ${
-                                p.receipt?.signal
-                              }dBm, SNR ${
-                                p.receipt.snr
-                                  ? `${p.receipt?.snr.toFixed(2)}dB`
-                                  : ''
-                              }${
-                                p.receipt !== null &&
-                                p.receipt.datarate !== undefined
-                                  ? Array.isArray(p.receipt.datarate)
-                                    ? `${
-                                        p.receipt.datarate.length > 0
-                                          ? `, ${String.fromCharCode.apply(
-                                              null,
-                                              p.receipt.datarate,
-                                            )}`
-                                          : ``
-                                      }`
-                                    : `${
-                                        p.receipt.datarate !== null &&
-                                        `, ${p.receipt.datarate} `
-                                      }`
-                                  : ``
-                              }`}
+                              {formatPocRadioInfo(p.receipt)}
                             </span>
                           )}
                         </div>

@@ -54,7 +54,7 @@ const TransferHotspotV1 = ({ txn }) => {
           </span>
         </Descriptions.Item>
         <Descriptions.Item label="Payment to Seller" span={3}>
-          {txn.amountToSeller.toString(2)}
+          {txn.amountToSeller.toString()}
         </Descriptions.Item>
         <Descriptions.Item label="Fee" span={3}>
           {txn.fee.toString()}

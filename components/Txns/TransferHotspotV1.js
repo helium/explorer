@@ -54,12 +54,7 @@ const TransferHotspotV1 = ({ txn }) => {
           </span>
         </Descriptions.Item>
         <Descriptions.Item label="Payment to Seller" span={3}>
-          {/* TODO: move this formatting logic to helium-js */}
-          {(txn.amountToSeller / 100000000).toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}{' '}
-          HNT
+          {txn.amountToSeller.toString(2)}
         </Descriptions.Item>
         <Descriptions.Item label="Fee" span={3}>
           {txn.fee.toString()}

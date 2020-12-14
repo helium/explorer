@@ -228,22 +228,12 @@ const columns = (ownerAddress) => {
       case 'transfer_hotspot_v1':
         if (txn.gateway === ownerAddress) {
           // it's on the hotspot page, don't show + or -
-          return (
-            <span>{(txn.amountToSeller / 100000000).toLocaleString()} HNT</span>
-          )
+          return <span>{txn.amountToSeller.toString(2)}</span>
         } else if (txn.buyer === ownerAddress) {
-          return (
-            <span>
-              {'-' + (txn.amountToSeller / 100000000).toLocaleString()} HNT
-            </span>
-          )
+          return <span>{'-' + txn.amountToSeller.toString(2)}</span>
         } else {
           // it must be on the seller's account page
-          return (
-            <span>
-              {'+' + (txn.amountToSeller / 100000000).toLocaleString()} HNT
-            </span>
-          )
+          return <span>{'+' + txn.amountToSeller.toString(2)}</span>
         }
       default:
         return <span>{txn.amount}</span>

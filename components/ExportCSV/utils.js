@@ -105,7 +105,7 @@ export const parseTxn = async (
           'Received Quantity': '',
           'Received From': '',
           'Received Currency': '',
-          'Sent Quantity': txn.amountToSeller.toString(),
+          'Sent Quantity': txn.amountToSeller.floatBalance,
           'Sent To': txn.seller,
           'Sent Currency': 'HNT',
           'Fee Amount': await getFee(txn, opts.convertFee),
@@ -118,7 +118,7 @@ export const parseTxn = async (
       } else {
         return {
           Date: timestamp,
-          'Received Quantity': txn.amountToSeller.toString(),
+          'Received Quantity': txn.amountToSeller.floatBalance,
           'Received From': txn.buyer,
           'Received Currency': 'HNT',
           'Sent Quantity': '',

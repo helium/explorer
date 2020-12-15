@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
 import { Typography, Card } from 'antd'
 import { ClockCircleOutlined, WalletOutlined } from '@ant-design/icons'
@@ -19,13 +19,14 @@ import {
   RewardsV1,
   StateChannelCloseV1,
   PocRequestV1,
+  TransferHotspotV1,
+  ConsensusGroupV1,
   TxnTag,
 } from '../../components/Txns'
 import Block from '../../public/images/block.svg'
 
 // import { Tooltip } from 'antd'
 
-const { Panel } = Collapse
 const { Title, Text } = Typography
 
 const txnView = (txn) => {
@@ -40,8 +41,12 @@ const txnView = (txn) => {
       return <PocReceiptsV1 txn={txn} />
     case 'rewards_v1':
       return <RewardsV1 txn={txn} />
+    case 'consensus_group_v1':
+      return <ConsensusGroupV1 txn={txn} />
     case 'state_channel_close_v1':
       return <StateChannelCloseV1 txn={txn} />
+    case 'transfer_hotspot_v1':
+      return <TransferHotspotV1 txn={txn} />
     default:
       return <Fallback txn={txn} />
   }
@@ -192,12 +197,10 @@ const TxnView = ({ txn }) => {
       )} was transferred from account ${txn.seller.substring(
         0,
         5,
-      )}... to account ${txn.buyer.substring(0, 5)}... for ${(
-        txn.amountToSeller / 100000000
-      ).toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })} HNT ${dateString} ${blockString}`
+      )}... to account ${txn.buyer.substring(
+        0,
+        5,
+      )}... for ${txn.amountToSeller.toString()} ${dateString} ${blockString}`
       ogImageUrl = `${ogImageUrlBase}/txn_transfer.png`
       break
     default:
@@ -340,7 +343,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const client = new Client()
   const { txnid } = params
-  const txn = await client.transactions.get(txnid)
+  let txn = await client.transactions.get(txnid)
 
   return {
     props: {

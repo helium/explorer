@@ -8,6 +8,7 @@ import LoadMoreButton from './LoadMoreButton'
 import { Content } from './AppLayout'
 import ExportCSV from './ExportCSV'
 import Link from 'next/link'
+import animalHash from 'angry-purple-tiger'
 
 const { Text } = Typography
 
@@ -111,6 +112,14 @@ class ActivityList extends Component {
                       { label: 'Payment (v2)', value: 'payment_v2' },
                       { label: 'Add Hotspot', value: 'add_gateway_v1' },
                       { label: 'Assert Location', value: 'assert_location_v1' },
+                      {
+                        label: 'Packets Transferred',
+                        value: 'state_channel_close_v1',
+                      },
+                      {
+                        label: 'Transfer Hotspot',
+                        value: 'transfer_hotspot_v1',
+                      },
                     ]}
                     onChange={this.onFiltersChanged}
                   />
@@ -174,9 +183,9 @@ const rewardColumns = (hotspots, type) => {
       key: 'gateway',
       render: (data) => (
         <span className="ant-table-cell-override">
-          <p>
-            {hotspots.find((hotspot) => hotspot.address === data)?.name ?? ''}
-          </p>
+          <Link href={`/hotspots/${data}`}>
+            <a>{animalHash(data)}</a>
+          </Link>
         </span>
       ),
     })
@@ -216,6 +225,16 @@ const columns = (ownerAddress) => {
         )
       case 'rewards_v1':
         return <span>{txn.totalAmount.toString(2)}</span>
+      case 'transfer_hotspot_v1':
+        if (txn.gateway === ownerAddress) {
+          // it's on the hotspot page, don't show + or -
+          return <span>{txn.amountToSeller.toString()}</span>
+        } else if (txn.buyer === ownerAddress) {
+          return <span>{'-' + txn.amountToSeller.toString()}</span>
+        } else {
+          // it must be on the seller's account page
+          return <span>{'+' + txn.amountToSeller.toString()}</span>
+        }
       default:
         return <span>{txn.amount}</span>
     }

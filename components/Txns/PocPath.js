@@ -11,7 +11,7 @@ const PocMapbox = dynamic(() => import('../PocMapbox'), {
 const initialState = {
   loading: true,
   loadingInitial: true,
-  showWitnesses: false,
+  showWitnesses: true,
 }
 
 class PocPath extends Component {

@@ -80,7 +80,18 @@ const styles = {
 const PocMapbox = ({ path, showWitnesses }) => {
   const locations = []
   path.map((p) =>
-    locations.push({ lng: p?.challengeeLon, lat: p?.challengeeLat }),
+    locations.push({
+      lng: p?.challengeeLon
+        ? p.challengeeLon
+        : p?.challengee_lon
+        ? p.challengee_lon
+        : 0,
+      lat: p?.challengeeLat
+        ? p.challengeeLat
+        : p?.challengee_lat
+        ? p.challengee_lat
+        : 0,
+    }),
   )
   const mapBounds = findBounds(locations)
   return (

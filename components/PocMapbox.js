@@ -1,5 +1,6 @@
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 import { h3ToGeo } from 'h3-js'
+import { findBounds } from '../components/Txns/utils'
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
@@ -77,27 +78,46 @@ const styles = {
 }
 
 const PocMapbox = ({ path, showWitnesses }) => {
+  const locations = []
+  if (path.length === 1) {
+    // after beaconing challenges
+    path[0].witnesses.map((w) =>
+      locations.push({
+        lng: h3ToGeo(w.location)[1],
+        lat: h3ToGeo(w.location)[0],
+      }),
+    )
+    locations.push({ lng: path[0].challengeeLon, lat: path[0].challengeeLat })
+  } else {
+    // before beaconing challenges
+    path.map((p) => {
+      // include all hotspots involved in the challenge
+      locations.push({ lng: p?.challengeeLon, lat: p?.challengeeLat })
+      // if witnesses are included, include them in finding the bounds
+      if (showWitnesses)
+        p.witnesses.map((w) =>
+          locations.push({
+            lng: h3ToGeo(w.location)[1],
+            lat: h3ToGeo(w.location)[0],
+          }),
+        )
+    })
+  }
+  const mapBounds = findBounds(locations)
+
   return (
     <Mapbox
       style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
       container="map"
-      center={[
-        path[0].challengee_lon
-          ? path[0].challengee_lon
-          : path[0].challengeeLon
-          ? path[0].challengeeLon
-          : 0,
-        path[0].challengee_lat
-          ? path[0].challengee_lat
-          : path[0].challengeeLat
-          ? path[0].challengeeLat
-          : 0,
-      ]}
+      fitBounds={mapBounds}
+      fitBoundsOptions={{
+        padding: 100,
+        animate: false,
+      }}
       containerStyle={{
         height: '600px',
         width: '100%',
       }}
-      zoom={[11]}
       movingMethod="jumpTo"
     >
       {path.map((p, idx) => {

@@ -1,5 +1,5 @@
 import ReactMapboxGl, { Marker } from 'react-mapbox-gl'
-import { findBounds } from '../components/Txns/utils'
+import { findBounds } from './utils'
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,

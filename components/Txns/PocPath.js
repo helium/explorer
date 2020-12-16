@@ -3,7 +3,7 @@ import { Checkbox } from 'antd'
 
 import dynamic from 'next/dynamic'
 
-const PocMapbox = dynamic(() => import('../PocMapbox'), {
+const PocMapbox = dynamic(() => import('./PocMapbox'), {
   ssr: false,
   loading: () => <div />,
 })

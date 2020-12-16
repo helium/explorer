@@ -7,7 +7,7 @@ import { formatLocation } from '../Hotspots/utils'
 
 import dynamic from 'next/dynamic'
 
-const ConsensusMapbox = dynamic(() => import('../ConsensusMapbox'), {
+const ConsensusMapbox = dynamic(() => import('./ConsensusMapbox'), {
   ssr: false,
   loading: () => <span style={{ height: '600px' }} />,
 })

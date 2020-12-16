@@ -1,5 +1,6 @@
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 import { h3ToGeo } from 'h3-js'
+import { findBounds } from './utils'
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
@@ -77,27 +78,25 @@ const styles = {
 }
 
 const PocMapbox = ({ path, showWitnesses }) => {
+  const locations = []
+  path.map((p) =>
+    locations.push({ lng: p?.challengeeLon, lat: p?.challengeeLat }),
+  )
+  const mapBounds = findBounds(locations)
   return (
     <Mapbox
       style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
       container="map"
-      center={[
-        path[0].challengee_lon
-          ? path[0].challengee_lon
-          : path[0].challengeeLon
-          ? path[0].challengeeLon
-          : 0,
-        path[0].challengee_lat
-          ? path[0].challengee_lat
-          : path[0].challengeeLat
-          ? path[0].challengeeLat
-          : 0,
-      ]}
+      fitBounds={mapBounds}
+      fitBoundsOptions={{
+        padding: 150,
+        animate: false,
+      }}
+      movingMethod="jumpTo"
       containerStyle={{
         height: '600px',
         width: '100%',
       }}
-      zoom={[11]}
       movingMethod="jumpTo"
     >
       {path.map((p, idx) => {

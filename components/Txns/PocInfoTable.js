@@ -46,7 +46,6 @@ const PocInfoTable = ({
   h3exclusionCells,
   h3maxHopCells,
 }) => {
-  console.log(witness)
   const pDistance = participant.challengeeLocation
     ? participant.challengeeLocation
     : participant.challengee_location

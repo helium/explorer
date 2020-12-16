@@ -7,7 +7,7 @@ import PocPath from './PocPath'
 
 const { Panel } = Collapse
 
-import PocWitnessInfoTable from './PocWitnessInfoTable'
+import PocInfoTable from './PocInfoTable'
 
 const formatPocRadioInfo = (receipt) => {
   const baseText = `received ${
@@ -194,7 +194,7 @@ const PocReceiptsV1 = ({ txn }) => {
                                   <div className="poc-witness-table">
                                     {participant.witnesses.map((w, i) => {
                                       return (
-                                        <PocWitnessInfoTable
+                                        <PocInfoTable
                                           participant={participant}
                                           witness={w}
                                           witnessIndex={i}

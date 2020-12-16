@@ -183,9 +183,11 @@ const rewardColumns = (hotspots, type) => {
       key: 'gateway',
       render: (data) => (
         <span className="ant-table-cell-override">
-          <Link href={`/hotspots/${data}`}>
-            <a>{animalHash(data)}</a>
-          </Link>
+          {data && (
+            <Link href={`/hotspots/${data}`}>
+              <a>{animalHash(data)}</a>
+            </Link>
+          )}
         </span>
       ),
     })

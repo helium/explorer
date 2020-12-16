@@ -24,13 +24,13 @@ export const findBounds = (arrayOfLatsAndLons) => {
 
 export const processTransactionInfo = (txn) => {
   let metaTags = {}
+  const urlBase = 'https://explorer.helium.com'
+  const ogImageUrlBase = `${urlBase}/images/og`
+  const url = `${urlBase}/txns/${txn.hash}`
 
   let type = ''
   let description = ''
-  const ogImageUrlBase = `https://explorer.helium.com/images/og`
   let ogImageUrl = ''
-  const urlBase = 'https://explorer.helium.com'
-  const url = `${urlBase}/txns/${txn.hash}`
 
   let dateString = `on 
   ${moment.utc(moment.unix(txn.time)).format('MMMM Do, YYYY')} at ${moment

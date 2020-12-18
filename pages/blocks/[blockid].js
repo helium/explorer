@@ -7,7 +7,7 @@ import PieChart from '../../components/PieChart'
 import withBlockHeight from '../../components/withBlockHeight'
 import { withRouter } from 'next/router'
 import Link from 'next/link'
-import moment from 'moment'
+import { generateFriendlyTimestampString } from '../../components/Txns/utils'
 
 import {
   BackwardOutlined,
@@ -68,19 +68,10 @@ const BlockView = ({ block, txns, height }) => {
 
   return (
     <AppLayout
-      title={`Block ${block.height.toLocaleString(undefined, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      })}`}
-      description={`Block ${
-        block.height
-      } of the Helium blockchain was produced on ${moment
-        .utc(moment.unix(block.time))
-        .format('MMMM Do, YYYY')} at ${moment
-        .utc(moment.unix(block.time))
-        .format('h:mm A')} UTC, with ${txns.length} transaction${
-        txns.length === 1 ? '' : 's'
-      }.`}
+      title={`Block ${block.height.toLocaleString()}`}
+      description={`Block ${block.height.toLocaleString()} of the Helium blockchain was produced ${generateFriendlyTimestampString(
+        block.time,
+      )}, with ${txns.length} transaction${txns.length !== 1 ? 's' : ''}`}
       openGraphImageAbsoluteUrl={`https://explorer.helium.com/images/og/blocks.png`}
       url={`https://explorer.helium.com/blocks/${block.height}`}
     >

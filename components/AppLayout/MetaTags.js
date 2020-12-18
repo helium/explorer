@@ -3,7 +3,7 @@ import Head from 'next/head'
 const MetaTags = ({
   title,
   description,
-  openGraphImageFullUrl,
+  openGraphImageAbsoluteUrl,
   url,
   pageTitle,
 }) => {

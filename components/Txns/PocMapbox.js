@@ -79,31 +79,41 @@ const styles = {
 
 const PocMapbox = ({ path, showWitnesses }) => {
   const locations = []
-  path.map((p) =>
-    locations.push({
-      lng: p?.challengeeLon
-        ? p.challengeeLon
-        : p?.challengee_lon
-        ? p.challengee_lon
-        : 0,
-      lat: p?.challengeeLat
-        ? p.challengeeLat
-        : p?.challengee_lat
-        ? p.challengee_lat
-        : 0,
-    }),
-  )
+  if (path.length === 1) {
+    // after beaconing challenges
+    path[0].witnesses.map((w) =>
+      locations.push({
+        lng: h3ToGeo(w.location)[1],
+        lat: h3ToGeo(w.location)[0],
+      }),
+    )
+    locations.push({ lng: path[0].challengeeLon, lat: path[0].challengeeLat })
+  } else {
+    // before beaconing challenges
+    path.map((p) => {
+      // include all hotspots involved in the challenge
+      locations.push({ lng: p?.challengeeLon, lat: p?.challengeeLat })
+      // if witnesses are included, include them in finding the bounds
+      if (showWitnesses)
+        p.witnesses.map((w) =>
+          locations.push({
+            lng: h3ToGeo(w.location)[1],
+            lat: h3ToGeo(w.location)[0],
+          }),
+        )
+    })
+  }
   const mapBounds = findBounds(locations)
+
   return (
     <Mapbox
       style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
       container="map"
       fitBounds={mapBounds}
       fitBoundsOptions={{
-        padding: 150,
+        padding: 100,
         animate: false,
       }}
-      movingMethod="jumpTo"
       containerStyle={{
         height: '600px',
         width: '100%',

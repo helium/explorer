@@ -102,7 +102,6 @@ const AccountView = ({ account, hotspots }) => {
                     value={account.address ? account.address : ''}
                     size={150}
                   />
-                  }
                 </div>
               </Fade>
               <Fade delay={1000}>

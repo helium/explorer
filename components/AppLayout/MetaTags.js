@@ -13,8 +13,8 @@ const MetaTags = ({
   const metaDescription = description
     ? description
     : 'Helium Explorer is an open source block explorer providing detailed blockchain data from the Helium network'
-  const metaImage = openGraphImageFullUrl
-    ? openGraphImageFullUrl
+  const metaImage = openGraphImageAbsoluteUrl
+    ? openGraphImageAbsoluteUrl
     : 'https://explorer.helium.com/images/og/explorer.png'
   const metaUrl = url ? url : 'https://explorer.helium.com'
 

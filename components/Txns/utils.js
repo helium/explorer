@@ -164,11 +164,11 @@ export const processTransactionInfo = (txn, isFallback) => {
         break
       }
       case 'add_gateway_v1': {
-        type = `Add Gateway`
+        type = `Add Hotspot`
         description = `${animalHash(
           txn.gateway,
         )} was added to the Helium blockchain ${dateString} ${blockString}`
-        ogImageUrl = `${ogImageUrlBase}/txn.png`
+        ogImageUrl = `${ogImageUrlBase}/txn_add_hotspot.png`
         url = `${urlBase}/txns/${txn.hash}`
         break
       }

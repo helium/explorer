@@ -46,20 +46,21 @@ const PocInfoTable = ({
   h3exclusionCells,
   h3maxHopCells,
 }) => {
-  const pDistance = participant.challengeeLocation
+  const pLocation = participant.challengeeLocation
     ? participant.challengeeLocation
     : participant.challengee_location
     ? participant.challengee_location
     : ''
 
-  const witnessDistInH3Res12Cells = h3Distance(pDistance, witness.location)
+  const witnessDistInH3Res12Cells = h3Distance(pLocation, witness.location)
 
   // We can assume the diameter of 1 hexagon is roughly equal to its edge length * 2
   // The average edge length of a resolution-12 hexagon in h3 is given in km here: https://h3geo.org/docs/core-library/restable
-  const avgRes12HexEdgeLengthInKm = 0.009415526
-  const avgRes12HexDiameterInKm = avgRes12HexEdgeLengthInKm * 2
+  const AVG_RES_12_HEX_EDGE_LENGTH_IN_KM = 0.009415526
+  const AVG_RES_12_HEX_DIAMETER_IN_KM = AVG_RES_12_HEX_EDGE_LENGTH_IN_KM * 2
 
-  const witnessDistInKm = avgRes12HexDiameterInKm * witnessDistInH3Res12Cells
+  const witnessDistInKm =
+    AVG_RES_12_HEX_DIAMETER_IN_KM * witnessDistInH3Res12Cells
 
   const h3DistanceMinValid = h3exclusionCells <= witnessDistInH3Res12Cells
   const h3DistanceMaxValid = witnessDistInH3Res12Cells < h3maxHopCells

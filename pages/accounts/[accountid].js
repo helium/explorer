@@ -45,11 +45,13 @@ function AccountView({ account, hotspots }) {
         2,
       )}${
         account.dcBalance.integerBalance > 0
-          ? `, ${dcBalanceWithFunctions.toString()}`
+          ? account.secBalance.integerBalance === 0
+            ? `, ${dcBalanceWithFunctions.toString()},`
+            : `, ${dcBalanceWithFunctions.toString()}`
           : ''
       }${
         account.secBalance.integerBalance > 0
-          ? `, ${hstBalance.toString()}`
+          ? `, ${hstBalance.toString()},`
           : ''
       } and ${hotspots.length} Hotspot${
         hotspots.length === 1 ? '' : 's'

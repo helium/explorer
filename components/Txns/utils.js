@@ -1,6 +1,7 @@
-import moment from 'moment'
 import animalHash from 'angry-purple-tiger'
 import { Balance, CurrencyType } from '@helium/currency'
+const { formatToTimeZone } = require('date-fns-timezone')
+import { fromUnixTime } from 'date-fns'
 
 export const findBounds = (arrayOfLatsAndLons) => {
   let minLon = arrayOfLatsAndLons[0].lng
@@ -23,6 +24,21 @@ export const findBounds = (arrayOfLatsAndLons) => {
   return mapBounds
 }
 
+export const generateFriendlyTimestampString = (txnTime) => {
+  const timestampInput = fromUnixTime(txnTime)
+  const date = formatToTimeZone(timestampInput, 'MMMM Do, YYYY', {
+    timeZone: 'Etc/UTC',
+    convertTimeZone: true,
+  })
+  const time = formatToTimeZone(timestampInput, 'h:mm A', {
+    timeZone: 'Etc/UTC',
+    convertTimeZone: true,
+  })
+
+  const timestampString = `on ${date} at ${time} UTC`
+  return timestampString
+}
+
 export const processTransactionInfo = (txn) => {
   let metaTags = {}
   const urlBase = 'https://explorer.helium.com'
@@ -33,14 +49,8 @@ export const processTransactionInfo = (txn) => {
   let description = ''
   let ogImageUrl = ''
 
-  let dateString = `on 
-  ${moment.utc(moment.unix(txn.time)).format('MMMM Do, YYYY')} at ${moment
-    .utc(moment.unix(txn.time))
-    .format('h:mm A')} UTC`
-  let blockString = `in block ${txn.height.toLocaleString(undefined, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  })}`
+  const dateString = generateFriendlyTimestampString(txn.time)
+  let blockString = `in block ${txn.height.toLocaleString()}`
 
   switch (txn.type) {
     case 'payment_v1': {

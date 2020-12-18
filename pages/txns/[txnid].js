@@ -23,8 +23,6 @@ import {
 } from '../../components/Txns'
 import Block from '../../public/images/block.svg'
 
-// import { Tooltip } from 'antd'
-
 const { Title, Text } = Typography
 
 const txnView = (txn) => {

@@ -132,7 +132,7 @@ class ConsensusGroupV1 extends Component {
             {txn.delay}
           </Descriptions.Item>
           <Descriptions.Item label="Proof" span={3}>
-            <TruncatedField key={'proof'} value={txn.proof} />
+            <TruncatedField value={txn.proof} />
           </Descriptions.Item>
         </Descriptions>
       </div>

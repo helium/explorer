@@ -3,6 +3,7 @@ import { Table } from 'antd'
 import { TxnTag } from '.'
 import Link from 'next/link'
 import AccountIcon from '../AccountIcon'
+import { Balance, CurrencyType } from '@helium/currency'
 
 const columns = [
   {
@@ -27,7 +28,7 @@ const columns = [
     title: 'Total HNT',
     dataIndex: 'amount',
     key: 'amount',
-    render: (amount) => <span>{amount.toString()}</span>,
+    render: (amount) => <span>{amount.toString()} HNT</span>,
   },
 ]
 
@@ -41,7 +42,13 @@ const expandedColumns = [
     title: 'HNT mined',
     dataIndex: 'amount',
     key: 'amount',
-    render: (amount) => <span>{amount.floatBalance.toString()} HNT</span>,
+    render: (amount) => {
+      const amountWithFunctions = new Balance(
+        amount.integerBalance,
+        CurrencyType.networkToken,
+      )
+      return <span>{amountWithFunctions.toString(2)}</span>
+    },
   },
 ]
 
@@ -79,7 +86,9 @@ class RewardsV1 extends Component {
         val.rewards.forEach((r) => {
           amount += r.amount.integerBalance / 100000000
         })
-        val['amount'] = amount
+        val['amount'] = amount.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })
         groupedRewards.push(val)
       }
     })
@@ -102,7 +111,6 @@ class RewardsV1 extends Component {
             earned them.{' '}
           </p>
         </div>
-        {console.log(groupedRewards)}
         <Table
           dataSource={groupedRewards}
           columns={columns}

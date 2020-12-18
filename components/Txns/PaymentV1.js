@@ -2,8 +2,15 @@ import React from 'react'
 import { Descriptions } from 'antd'
 import Link from 'next/link'
 import AccountIcon from '../AccountIcon'
+import { Balance, CurrencyType } from '@helium/currency'
 
 const PaymentV1 = ({ txn }) => {
+  const txnAmountWithFunctions = new Balance(
+    txn.amount.integerBalance,
+    CurrencyType.networkToken,
+  )
+  const txnFeeWithFunctions = new Balance(txn.fee, CurrencyType.dataCredit)
+
   return (
     <Descriptions bordered>
       <Descriptions.Item
@@ -33,10 +40,10 @@ const PaymentV1 = ({ txn }) => {
         </div>
       </Descriptions.Item>
       <Descriptions.Item label="Amount" span={3}>
-        {txn.amount.floatBalance.toString()} HNT
+        {txnAmountWithFunctions.toString(2)}
       </Descriptions.Item>
       <Descriptions.Item label="Fee" span={3}>
-        {txn.fee.toString()}
+        {txnFeeWithFunctions.toString()}
       </Descriptions.Item>
     </Descriptions>
   )

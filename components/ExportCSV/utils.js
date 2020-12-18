@@ -1,6 +1,7 @@
 import moment from 'moment'
 import animalHash from 'angry-purple-tiger'
 import Client from '@helium/http'
+import { Balance, CurrencyType } from '@helium/currency'
 
 export const parseTxn = async (
   ownerAddress,
@@ -9,31 +10,41 @@ export const parseTxn = async (
 ) => {
   const timestamp = moment.unix(txn.time).toISOString()
   switch (txn.type) {
-    case 'rewards_v1':
-      return txn.rewards.map(({ type, gateway, amount }) => ({
-        Date: timestamp,
-        'Received Quantity': amount.toString(8).slice(0, -4),
-        'Received From': 'Helium Network',
-        'Received Currency': 'HNT',
-        'Sent Quantity': '',
-        'Sent To': '',
-        'Sent Currency': '',
-        'Fee Amount': '',
-        'Fee Currency': '',
-        Tag: 'mined',
-        Hotspot: gateway ? animalHash(gateway) : '',
-        'Reward Type': type,
-        Block: txn.height,
-      }))
-
-    case 'payment_v1':
+    case 'rewards_v1': {
+      return txn.rewards.map(({ type, gateway, amount }) => {
+        const amountWithFunctions = new Balance(
+          amount.integerBalance,
+          CurrencyType.networkToken,
+        )
+        return {
+          Date: timestamp,
+          'Received Quantity': amountWithFunctions.toString(8).slice(0, -4),
+          'Received From': 'Helium Network',
+          'Received Currency': 'HNT',
+          'Sent Quantity': '',
+          'Sent To': '',
+          'Sent Currency': '',
+          'Fee Amount': '',
+          'Fee Currency': '',
+          Tag: 'mined',
+          Hotspot: gateway ? animalHash(gateway) : '',
+          'Reward Type': type,
+          Block: txn.height,
+        }
+      })
+    }
+    case 'payment_v1': {
+      const amountWithFunctions = new Balance(
+        txn.amount.integerBalance,
+        CurrencyType.networkToken,
+      )
       if (ownerAddress === txn.payer) {
         return {
           Date: timestamp,
           'Received Quantity': '',
           'Received From': '',
           'Received Currency': '',
-          'Sent Quantity': txn.amount.toString(8).slice(0, -4),
+          'Sent Quantity': amountWithFunctions.toString(8).slice(0, -4),
           'Sent To': txn.payee,
           'Sent Currency': 'HNT',
           'Fee Amount': await getFee(txn, opts.convertFee),
@@ -46,7 +57,7 @@ export const parseTxn = async (
       } else {
         return {
           Date: timestamp,
-          'Received Quantity': txn.amount.toString(8).slice(0, -4),
+          'Received Quantity': amountWithFunctions.toString(8).slice(0, -4),
           'Received From': txn.payer,
           'Received Currency': 'HNT',
           'Sent Quantity': '',
@@ -60,16 +71,30 @@ export const parseTxn = async (
           Block: txn.height,
         }
       }
-
-    case 'payment_v2':
+    }
+    case 'payment_v2': {
       if (ownerAddress === txn.payer) {
+        const formatMultiplePayeesString = (payments) => {
+          const multiplePayees = []
+          payments.map((p) => {
+            multiplePayees.push(p.payee)
+          })
+          return multiplePayees.join(', ')
+        }
+        const amountWithFunctions = new Balance(
+          txn.totalAmount.integerBalance,
+          CurrencyType.networkToken,
+        )
         return {
           Date: timestamp,
           'Received Quantity': '',
           'Received From': '',
           'Received Currency': '',
-          'Sent Quantity': txn.totalAmount.toString(8).slice(0, -4),
-          'Sent To': txn.payments[0].payee,
+          'Sent Quantity': amountWithFunctions.toString(8).slice(0, -4),
+          'Sent To':
+            txn.payments.length === 1
+              ? txn.payments[0].payee
+              : formatMultiplePayeesString(txn.payments),
           'Sent Currency': 'HNT',
           'Fee Amount': await getFee(txn, opts.convertFee),
           'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
@@ -79,12 +104,15 @@ export const parseTxn = async (
           Block: txn.height,
         }
       } else {
+        const amountWithFunctions = new Balance(
+          txn.payments.find(
+            (p) => p.payee === ownerAddress,
+          ).amount.integerBalance,
+          CurrencyType.networkToken,
+        )
         return {
           Date: timestamp,
-          'Received Quantity': txn.payments
-            .find((p) => p.payee === ownerAddress)
-            .amount.toString(8)
-            .slice(0, -4),
+          'Received Quantity': amountWithFunctions.toString(8).slice(0, -4),
           'Received From': txn.payer,
           'Received Currency': 'HNT',
           'Sent Quantity': '',
@@ -98,14 +126,19 @@ export const parseTxn = async (
           Block: txn.height,
         }
       }
-    case 'transfer_hotspot_v1':
+    }
+    case 'transfer_hotspot_v1': {
+      const amountToSellerWithFunctions = new Balance(
+        txn.amountToSeller.integerBalance,
+        CurrencyType.networkToken,
+      )
       if (ownerAddress === txn.buyer) {
         return {
           Date: timestamp,
           'Received Quantity': '',
           'Received From': '',
           'Received Currency': '',
-          'Sent Quantity': txn.amountToSeller.floatBalance,
+          'Sent Quantity': amountToSellerWithFunctions.toString().slice(0, -4),
           'Sent To': txn.seller,
           'Sent Currency': 'HNT',
           'Fee Amount': await getFee(txn, opts.convertFee),
@@ -118,7 +151,9 @@ export const parseTxn = async (
       } else {
         return {
           Date: timestamp,
-          'Received Quantity': txn.amountToSeller.floatBalance,
+          'Received Quantity': amountToSellerWithFunctions
+            .toString()
+            .slice(0, -4),
           'Received From': txn.buyer,
           'Received Currency': 'HNT',
           'Sent Quantity': '',
@@ -132,17 +167,27 @@ export const parseTxn = async (
           Block: txn.height,
         }
       }
-    case 'add_gateway_v1':
+    }
+    case 'add_gateway_v1': {
       return {
         Date: timestamp,
         'Received Quantity': '',
         'Received From': '',
         'Received Currency': '',
-        // TODO: make helium-js return stakingFee like fee so it can be converted to HNT (with toNetworkTokens())
-        // 'Sent Quantity': txn.payer === null ? await getFee({ height: txn.height, fee: txn.stakingFee }, opts.convertFee) : 0,
-        'Sent Quantity': txn.payer === null ? txn.stakingFee : 0,
+        'Sent Quantity':
+          txn.payer === null
+            ? await getFee(
+                {
+                  height: txn.height,
+                  fee: {
+                    integerBalance: txn.stakingFee,
+                  },
+                },
+                opts.convertFee,
+              )
+            : 0,
         'Sent To': txn.payer === null ? 'Helium Network' : '',
-        'Sent Currency': 'DC',
+        'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
         'Fee Amount':
           txn.payer === null ? await getFee(txn, opts.convertFee) : 0,
         'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
@@ -151,17 +196,27 @@ export const parseTxn = async (
         'Reward Type': '',
         Block: txn.height,
       }
-    case 'assert_location_v1':
+    }
+    case 'assert_location_v1': {
       return {
         Date: timestamp,
         'Received Quantity': '',
         'Received From': '',
         'Received Currency': '',
-        // TODO: make helium-js return stakingFee like fee so it can be converted to HNT (with toNetworkTokens())
-        // 'Sent Quantity': txn.payer === null ? await getFee({ height: txn.height, fee: txn.stakingFee }, opts.convertFee) : 0,
-        'Sent Quantity': txn.payer === null ? txn.stakingFee : 0,
+        'Sent Quantity':
+          txn.payer === null
+            ? await getFee(
+                {
+                  height: txn.height,
+                  fee: {
+                    integerBalance: txn.stakingFee,
+                  },
+                },
+                opts.convertFee,
+              )
+            : 0,
         'Sent To': txn.payer === null ? 'Helium Network' : '',
-        'Sent Currency': 'DC',
+        'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
         'Fee Amount':
           txn.payer === null ? await getFee(txn, opts.convertFee) : 0,
         'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
@@ -170,9 +225,10 @@ export const parseTxn = async (
         'Reward Type': '',
         Block: txn.height,
       }
-
-    default:
+    }
+    default: {
       return null
+    }
   }
 }
 
@@ -180,8 +236,13 @@ const getFee = async ({ height, fee }, convertFee) => {
   if (convertFee) {
     const client = new Client()
     const { price: oraclePrice } = await client.oracle.getPriceAtBlock(height)
-    return fee.toNetworkTokens(oraclePrice).toString(8).slice(0, -4)
+    const dcBalance = new Balance(fee.integerBalance, CurrencyType.dataCredit)
+    const output = dcBalance
+      .toNetworkTokens(oraclePrice)
+      .toString(8)
+      .slice(0, -4)
+    return output
   }
 
-  return fee === 0 ? 0 : fee.floatBalance
+  return fee === 0 ? 0 : fee.integerBalance
 }

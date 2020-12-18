@@ -6,6 +6,7 @@ import ActivityList from '../../components/ActivityList'
 import HotspotsList from '../../components/HotspotsList'
 import QRCode from 'react-qr-code'
 import Fade from 'react-reveal/Fade'
+import { Balance, CurrencyType } from '@helium/currency'
 
 import { ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import AccountIcon from '../../components/AccountIcon'
@@ -24,25 +25,31 @@ const AccountAddress = ({ address, truncate = false }) => {
 }
 
 function AccountView({ account, hotspots }) {
+  const dcBalanceWithFunctions = new Balance(
+    account.dcBalance.integerBalance,
+    CurrencyType.dataCredit,
+  )
+  const balanceWithFunctions = new Balance(
+    account.balance.integerBalance,
+    CurrencyType.networkToken,
+  )
+  const hstBalance = new Balance(
+    account.secBalance.integerBalance,
+    CurrencyType.security,
+  )
+
   return (
     <AppLayout
       title={`${account.address.substring(0, 5)}... | Account`}
-      description={`An account on the Helium blockchain with ${account.balance.floatBalance.toLocaleString(
-        undefined,
-        { minimumFractionDigits: 2, maximumFractionDigits: 2 },
-      )} HNT${
-        account.dcBalance.floatBalance > 0
-          ? `, ${account.dcBalance.floatBalance.toLocaleString(undefined, {
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 0,
-            })} DC`
+      description={`An account on the Helium blockchain with ${balanceWithFunctions.toString(
+        2,
+      )}${
+        account.dcBalance.integerBalance > 0
+          ? `, ${dcBalanceWithFunctions.toString()}`
           : ''
       }${
-        account.secBalance.floatBalance > 0
-          ? `, ${account.secBalance.floatBalance.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })} HST`
+        account.secBalance.integerBalance > 0
+          ? `, ${hstBalance.toString()}`
           : ''
       } and ${hotspots.length} Hotspot${
         hotspots.length === 1 ? '' : 's'
@@ -117,7 +124,7 @@ function AccountView({ account, hotspots }) {
               }}
             >
               <Descriptions.Item label="HNT">
-                {account.balance.floatBalance.toLocaleString()} HNT
+                {balanceWithFunctions.toString(2)}
               </Descriptions.Item>
             </Title>
           </Fade>
@@ -145,7 +152,7 @@ function AccountView({ account, hotspots }) {
                     style={{ color: '#FFC769', marginRight: 5 }}
                   />
                   <Descriptions.Item label="Data Credits">
-                    {account.dcBalance.floatBalance.toLocaleString()} DC
+                    {dcBalanceWithFunctions.toString()}
                   </Descriptions.Item>
                 </h3>
               </Tooltip>
@@ -159,7 +166,7 @@ function AccountView({ account, hotspots }) {
                     style={{ color: '#29D391', marginRight: 5 }}
                   />
                   <Descriptions.Item label="Security Tokens">
-                    {account.secBalance.floatBalance.toLocaleString()} HST
+                    {hstBalance.toString(2)}
                   </Descriptions.Item>
                 </h3>
               </Tooltip>

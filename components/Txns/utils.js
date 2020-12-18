@@ -1,5 +1,6 @@
 import moment from 'moment'
 import animalHash from 'angry-purple-tiger'
+import { Balance, CurrencyType } from '@helium/currency'
 
 export const findBounds = (arrayOfLatsAndLons) => {
   let minLon = arrayOfLatsAndLons[0].lng
@@ -42,15 +43,11 @@ export const processTransactionInfo = (txn) => {
   })}`
 
   switch (txn.type) {
-    case 'payment_v1':
+    case 'payment_v1': {
       type = `Payment`
-      description = `A payment of ${txn.amount.floatBalance.toLocaleString(
-        undefined,
-        {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        },
-      )} HNT from account ${txn.payer.substring(
+      description = `A payment of ${
+        txn.amountFormatted
+      } from account ${txn.payer.substring(
         0,
         5,
       )}... to account ${txn.payee.substring(
@@ -59,26 +56,24 @@ export const processTransactionInfo = (txn) => {
       )}... ${dateString} ${blockString}`
       ogImageUrl = `${ogImageUrlBase}/txn_payment.png`
       break
-    case 'payment_v2':
+    }
+    case 'payment_v2': {
+      const totalAmountWithFunctions = new Balance(
+        txn.totalAmount.integerBalance,
+        CurrencyType.networkToken,
+      )
+
       type = `Payment`
       description =
         txn.payments.length !== 1
           ? `A payment from account ${txn.payer.substring(0, 5)}... to ${
               txn.payments.length
-            } accounts totaling ${txn.totalAmount.floatBalance.toLocaleString(
-              undefined,
-              {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              },
-            )} HNT ${dateString} ${blockString}`
-          : `A payment of ${txn.payments[0].amount.floatBalance.toLocaleString(
-              undefined,
-              {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              },
-            )} HNT from account ${txn.payer.substring(
+            } accounts totaling ${totalAmountWithFunctions.toString(
+              2,
+            )} ${dateString} ${blockString}`
+          : `A payment of ${totalAmountWithFunctions.toString(
+              2,
+            )} from account ${txn.payer.substring(
               0,
               5,
             )}... to account ${txn.payments[0].payee.substring(
@@ -87,14 +82,16 @@ export const processTransactionInfo = (txn) => {
             )}... ${dateString} ${blockString}`
       ogImageUrl = `${ogImageUrlBase}/txn_payment.png`
       break
-    case 'poc_request_v1':
+    }
+    case 'poc_request_v1': {
       type = `PoC Request`
       description = `A challenge constructed by ${animalHash(
         txn.challenger,
       )} ${dateString} ${blockString}`
       ogImageUrl = `${ogImageUrlBase}/txn_poc_request.png`
       break
-    case 'poc_receipts_v1':
+    }
+    case 'poc_receipts_v1': {
       type = `PoC Receipt`
       description = `A challenge constructed by ${animalHash(
         txn.challenger,
@@ -103,48 +100,61 @@ export const processTransactionInfo = (txn) => {
       } ${dateString} ${blockString}`
       ogImageUrl = `${ogImageUrlBase}/txn_poc_receipt.png`
       break
-    case 'rewards_v1':
+    }
+    case 'rewards_v1': {
+      const totalAmountWithFunctions = new Balance(
+        txn.totalAmount.integerBalance,
+        CurrencyType.networkToken,
+      )
+
       type = `Rewards`
-      description = `A rewards transaction with ${txn.totalAmount.floatBalance.toLocaleString(
-        undefined,
-        {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        },
-      )} total HNT rewarded to ${
+      description = `A rewards transaction with ${totalAmountWithFunctions.toString(
+        2,
+      )} in total rewarded to ${
         txn.rewards.length
       } accounts ${dateString} ${blockString}`
       ogImageUrl = `${ogImageUrlBase}/txn_rewards.png`
       break
-    case 'state_channel_close_v1':
+    }
+    case 'state_channel_close_v1': {
       type = `State Channel Close`
       description = `A state channel closed transaction ${dateString} ${blockString}`
       ogImageUrl = `${ogImageUrlBase}/txn_state_channel_close.png`
       break
-    case 'state_channel_open_v1':
+    }
+    case 'state_channel_open_v1': {
       type = `State Channel Open`
       description = `A state channel open transaction ${dateString} ${blockString}`
       ogImageUrl = `${ogImageUrlBase}/txn_state_channel_open.png`
       break
-    case 'assert_location_v1':
+    }
+    case 'assert_location_v1': {
       type = `Assert Location`
       description = `${animalHash(
         txn.gateway,
       )} asserted its location ${dateString} ${blockString}`
       ogImageUrl = `${ogImageUrlBase}/txn_assert_location.png`
       break
-    case 'consensus_group_v1':
+    }
+    case 'consensus_group_v1': {
       type = `Consensus Election`
       description = `${txn.members.length} Hotspots were elected to a consensus group ${dateString} ${blockString}`
       break
-    case 'add_gateway_v1':
+    }
+    case 'add_gateway_v1': {
       type = `Add Gateway`
       description = `${animalHash(
         txn.gateway,
       )} was added to the Helium blockchain ${dateString} ${blockString}`
       ogImageUrl = `${ogImageUrlBase}/txn.png`
       break
-    case 'transfer_hotspot_v1':
+    }
+    case 'transfer_hotspot_v1': {
+      const amountToSellerWithFunctions = new Balance(
+        txn.amountToSeller.integerBalance,
+        CurrencyType.networkToken,
+      )
+
       type = `Transfer Hotspot`
       description = `Ownership of ${animalHash(
         txn.gateway,
@@ -154,14 +164,18 @@ export const processTransactionInfo = (txn) => {
       )}... to account ${txn.buyer.substring(
         0,
         5,
-      )}... for ${txn.amountToSeller.toString()} ${dateString} ${blockString}`
+      )}... for ${amountToSellerWithFunctions.toString(
+        2,
+      )} ${dateString} ${blockString}`
       ogImageUrl = `${ogImageUrlBase}/txn_transfer.png`
       break
-    default:
+    }
+    default: {
       type = `default`
       description = `A transaction ${dateString} ${blockString}`
       ogImageUrl = `${ogImageUrlBase}/txn.png`
       break
+    }
   }
 
   metaTags = {

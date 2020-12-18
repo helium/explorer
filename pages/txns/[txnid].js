@@ -7,6 +7,7 @@ import Timestamp from 'react-timestamp'
 import AppLayout, { Content } from '../../components/AppLayout'
 import PieChart from '../../components/PieChart'
 import { processTransactionInfo } from '../../components/Txns/utils'
+import { Balance, CurrencyType } from '@helium/currency'
 
 import {
   Fallback,
@@ -69,6 +70,11 @@ const rewardChart = (txn) => {
 
 const TxnView = ({ txn }) => {
   const processedTxnInfo = processTransactionInfo(txn)
+
+  const txnTotalAmountWithFunctions =
+    txn.type === 'rewards_v1'
+      ? new Balance(txn.totalAmount.integerBalance, CurrencyType.networkToken)
+      : 0
 
   return (
     <AppLayout
@@ -136,7 +142,7 @@ const TxnView = ({ txn }) => {
                   <WalletOutlined
                     style={{ color: '#FFC769', marginRight: 6 }}
                   />
-                  {txn.totalAmount.floatBalance.toLocaleString()} HNT
+                  {txnTotalAmountWithFunctions.toString(2)}
                 </p>
               )}
             </div>

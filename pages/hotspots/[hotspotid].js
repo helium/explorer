@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Row, Typography, Checkbox, Tooltip, Skeleton } from 'antd'
+import { Row, Typography, Checkbox, Tooltip } from 'antd'
 import Client from '@helium/http'
 import algoliasearch from 'algoliasearch'
 import Fade from 'react-reveal/Fade'
@@ -20,8 +20,6 @@ import {
   formatLocation,
 } from '../../components/Hotspots/utils'
 
-import { useRouter } from 'next/router'
-
 import { fetchRewardsSummary } from '../../data/hotspots'
 
 const HotspotMapbox = dynamic(
@@ -41,33 +39,21 @@ function HotspotView({
   activity,
   rewards,
 }) {
-  const { isFallback } = useRouter()
-
   const [showWitnesses, setShowWitnesses] = useState(true)
   const [showNearbyHotspots, setShowNearbyHotspots] = useState(true)
 
   return (
     <AppLayout
-      title={
-        !isFallback
-          ? `${animalHash(hotspot.address)} | Hotspot `
-          : 'Helium Hotspot'
-      }
-      description={
-        !isFallback
-          ? `A Helium Hotspot ${
-              hotspot.location
-                ? `located in ${formatLocation(hotspot?.geocode)} with ${
-                    witnesses.length
-                  } witness${witnesses.length === 1 ? '' : 'es'}`
-                : `with no location asserted`
-            }, belonging to account ${hotspot.owner}`
-          : `A Helium Hotspot on the Helium blockchain`
-      }
+      title={`${animalHash(hotspot.address)} | Hotspot `}
+      description={`A Helium Hotspot ${
+        hotspot.location
+          ? `located in ${formatLocation(hotspot?.geocode)} with ${
+              witnesses.length
+            } witness${witnesses.length === 1 ? '' : 'es'}`
+          : `with no location asserted`
+      }, belonging to account ${hotspot.owner}`}
       openGraphImageAbsoluteUrl={`https://explorer.helium.com/images/og/hotspots.png`}
-      url={
-        !isFallback && `https://explorer.helium.com/hotspots/${hotspot.address}`
-      }
+      url={`https://explorer.helium.com/hotspots/${hotspot.address}`}
     >
       <Content
         style={{
@@ -80,185 +66,177 @@ function HotspotView({
           style={{ margin: '0 auto', maxWidth: 850 + 40 }}
           className="content-container-hotspot-view"
         >
-          {!isFallback ? (
-            <>
-              <HotspotMapbox
-                hotspot={hotspot}
-                witnesses={witnesses}
-                showWitnesses={showWitnesses}
-                nearbyHotspots={nearbyHotspots}
-                showNearbyHotspots={showNearbyHotspots}
-              />
+          <>
+            <HotspotMapbox
+              hotspot={hotspot}
+              witnesses={witnesses}
+              showWitnesses={showWitnesses}
+              nearbyHotspots={nearbyHotspots}
+              showNearbyHotspots={showNearbyHotspots}
+            />
+            <div
+              style={{
+                textAlign: 'right',
+                paddingTop: 10,
+                color: 'white',
+              }}
+            >
+              <Checkbox
+                onChange={(e) => setShowNearbyHotspots(e.target.checked)}
+                checked={showNearbyHotspots}
+                style={{ color: 'white' }}
+              >
+                Show nearby hotspots
+              </Checkbox>
+              <Checkbox
+                onChange={(e) => setShowWitnesses(e.target.checked)}
+                checked={showWitnesses}
+                style={{ color: 'white' }}
+              >
+                Show witnesses
+              </Checkbox>
+              <p style={{ marginBottom: '-20px' }}>
+                {formatLocation(hotspot?.geocode)}
+              </p>
+            </div>
+
+            <Row style={{ paddingTop: 30 }}>
               <div
+                className="flexwrapper"
                 style={{
-                  textAlign: 'right',
-                  paddingTop: 10,
-                  color: 'white',
+                  width: '100%',
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-start',
+                  // marginBottom: 50,
+                  paddingRight: 20,
                 }}
               >
-                <Checkbox
-                  onChange={(e) => setShowNearbyHotspots(e.target.checked)}
-                  checked={showNearbyHotspots}
-                  style={{ color: 'white' }}
-                >
-                  Show nearby hotspots
-                </Checkbox>
-                <Checkbox
-                  onChange={(e) => setShowWitnesses(e.target.checked)}
-                  checked={showWitnesses}
-                  style={{ color: 'white' }}
-                >
-                  Show witnesses
-                </Checkbox>
-                <p style={{ marginBottom: '-20px' }}>
-                  {formatLocation(hotspot?.geocode)}
-                </p>
-              </div>
-
-              <Row style={{ paddingTop: 30 }}>
-                <div
-                  className="flexwrapper"
-                  style={{
-                    width: '100%',
-                    justifyContent: 'flex-start',
-                    alignItems: 'flex-start',
-                    // marginBottom: 50,
-                    paddingRight: 20,
-                  }}
-                >
-                  <div style={{ width: '100%' }}>
-                    <Fade delay={500}>
+                <div style={{ width: '100%' }}>
+                  <Fade delay={500}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                        padding: '0 0 8px 0',
+                        width: 'auto',
+                      }}
+                    >
                       <div
                         style={{
                           display: 'flex',
                           flexDirection: 'row',
                           alignItems: 'center',
-                          justifyContent: 'flex-start',
-                          padding: '0 0 8px 0',
-                          width: 'auto',
+                          justifyContent: 'center',
+                          padding: '2px 10px',
+                          backgroundColor: '#182035',
+                          borderRadius: '20px',
                         }}
                       >
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            padding: '2px 10px',
-                            backgroundColor: '#182035',
-                            borderRadius: '20px',
-                          }}
+                        <Tooltip
+                          placement="top"
+                          title={`Hotspot is ${hotspot.status.online}`}
                         >
-                          <Tooltip
-                            placement="top"
-                            title={`Hotspot is ${hotspot.status.online}`}
+                          <div
+                            style={{
+                              height: 10,
+                              minWidth: 10,
+                              width: 10,
+                              // marginLeft: 15,
+                              backgroundColor:
+                                hotspot.status.online === 'online'
+                                  ? '#32C48D'
+                                  : '#fb6666',
+                              borderRadius: 20,
+                            }}
+                          ></div>
+                        </Tooltip>
+                        <Tooltip
+                          placement="top"
+                          title={`${
+                            hotspot.status.online === 'online' &&
+                            hotspot.status.height === null
+                              ? 'Beginning to sync'
+                              : hotspot.status.online === 'online' &&
+                                hotspot.status.height !== null
+                              ? `Syncing block ${hotspot.status?.height.toLocaleString()}. `
+                              : 'Hotspot is not syncing. '
+                          }${
+                            hotspot.status.online === 'online' &&
+                            hotspot.status.height !== null
+                              ? `Blocks remaining: ${(
+                                  hotspot.block - hotspot.status?.height
+                                ).toLocaleString()}.`
+                              : ``
+                          }`}
+                        >
+                          <p
+                            style={{
+                              marginBottom: 0,
+                              color: '#8283B2',
+                              marginLeft: 10,
+                            }}
                           >
-                            <div
-                              style={{
-                                height: 10,
-                                minWidth: 10,
-                                width: 10,
-                                // marginLeft: 15,
-                                backgroundColor:
-                                  hotspot.status.online === 'online'
-                                    ? '#32C48D'
-                                    : '#fb6666',
-                                borderRadius: 20,
-                              }}
-                            ></div>
-                          </Tooltip>
-                          <Tooltip
-                            placement="top"
-                            title={`${
-                              hotspot.status.online === 'online' &&
-                              hotspot.status.height === null
-                                ? 'Beginning to sync'
-                                : hotspot.status.online === 'online' &&
-                                  hotspot.status.height !== null
-                                ? `Syncing block ${hotspot.status?.height.toLocaleString()}. `
-                                : 'Hotspot is not syncing. '
-                            }${
-                              hotspot.status.online === 'online' &&
-                              hotspot.status.height !== null
-                                ? `Blocks remaining: ${(
-                                    hotspot.block - hotspot.status?.height
-                                  ).toLocaleString()}.`
-                                : ``
-                            }`}
-                          >
-                            <p
-                              style={{
-                                marginBottom: 0,
-                                color: '#8283B2',
-                                marginLeft: 10,
-                              }}
-                            >
-                              {hotspot.status.online === 'offline'
-                                ? `Offline`
-                                : hotspot.block - hotspot.status?.height >=
-                                    500 || hotspot.status.height === null
-                                ? `Syncing`
-                                : `Synced`}
-                            </p>
-                          </Tooltip>
-                        </div>
+                            {hotspot.status.online === 'offline'
+                              ? `Offline`
+                              : hotspot.block - hotspot.status?.height >= 500 ||
+                                hotspot.status.height === null
+                              ? `Syncing`
+                              : `Synced`}
+                          </p>
+                        </Tooltip>
                       </div>
-                    </Fade>
-                    <span className="hotspot-name">
-                      <Title
-                        style={{
-                          color: 'white',
-                          fontSize: 52,
-                          marginTop: 0,
-                          letterSpacing: '-2px',
-                          marginBottom: 17,
-                        }}
-                      >
-                        {formatHotspotName(hotspot.name)}
-                      </Title>
-                    </span>
-                    <Tooltip placement="bottom" title="Hotspot Network Address">
-                      <img
-                        src={HotspotImg}
-                        style={{
-                          height: 15,
-                          marginRight: 5,
-                          position: 'relative',
-                          top: '-2px',
-                        }}
-                        alt="Hotspot Network Address"
-                      />
-                      <Text
-                        copyable
-                        style={{
-                          fontFamily: 'monospace',
-                          color: '#8283B2',
-                          wordBreak: 'break-all',
-                        }}
-                      >
-                        {hotspot.address}
-                      </Text>
-                    </Tooltip>
-                  </div>
+                    </div>
+                  </Fade>
+                  <span className="hotspot-name">
+                    <Title
+                      style={{
+                        color: 'white',
+                        fontSize: 52,
+                        marginTop: 0,
+                        letterSpacing: '-2px',
+                        marginBottom: 17,
+                      }}
+                    >
+                      {formatHotspotName(hotspot.name)}
+                    </Title>
+                  </span>
+                  <Tooltip placement="bottom" title="Hotspot Network Address">
+                    <img
+                      src={HotspotImg}
+                      style={{
+                        height: 15,
+                        marginRight: 5,
+                        position: 'relative',
+                        top: '-2px',
+                      }}
+                      alt="Hotspot Network Address"
+                    />
+                    <Text
+                      copyable
+                      style={{
+                        fontFamily: 'monospace',
+                        color: '#8283B2',
+                        wordBreak: 'break-all',
+                      }}
+                    >
+                      {hotspot.address}
+                    </Text>
+                  </Tooltip>
                 </div>
-              </Row>
-            </>
-          ) : (
-            <div style={{ paddingTop: 50, paddingBottom: 50 }}>
-              <Skeleton title active />
-            </div>
-          )}
+              </div>
+            </Row>
+          </>
         </div>
         <div
           style={{ maxWidth: 850 + 40, margin: '0 auto', paddingBottom: 50 }}
         >
-          {!isFallback && (
-            <Checklist
-              hotspot={hotspot}
-              witnesses={witnesses}
-              activity={activity}
-            />
-          )}
+          <Checklist
+            hotspot={hotspot}
+            witnesses={witnesses}
+            activity={activity}
+          />
         </div>
         <div
           style={{
@@ -268,26 +246,24 @@ function HotspotView({
             textAlign: 'center',
           }}
         >
-          {!isFallback && (
-            <Content style={{ maxWidth: 850, margin: '0 auto' }}>
-              <p
-                style={{
-                  color: 'white',
-                  margin: 0,
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                Owned by: <br className="line-break-only-at-small" />
-                <span style={{ width: 21, marginLeft: 8, marginRight: 2 }}>
-                  <AccountIcon address={hotspot.owner} size={18} />
-                </span>
-                <Link href={'/accounts/' + hotspot.owner}>
-                  <a style={{ wordBreak: 'break-all' }}>{hotspot.owner}</a>
-                </Link>
-              </p>
-            </Content>
-          )}
+          <Content style={{ maxWidth: 850, margin: '0 auto' }}>
+            <p
+              style={{
+                color: 'white',
+                margin: 0,
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              Owned by: <br className="line-break-only-at-small" />
+              <span style={{ width: 21, marginLeft: 8, marginRight: 2 }}>
+                <AccountIcon address={hotspot.owner} size={18} />
+              </span>
+              <Link href={'/accounts/' + hotspot.owner}>
+                <a style={{ wordBreak: 'break-all' }}>{hotspot.owner}</a>
+              </Link>
+            </p>
+          </Content>
         </div>
       </Content>
 
@@ -299,11 +275,7 @@ function HotspotView({
           marginTop: 0,
         }}
       >
-        {!isFallback ? (
-          <RewardSummary rewards={rewards} />
-        ) : (
-          <Skeleton active />
-        )}
+        <RewardSummary rewards={rewards} />
       </Content>
       <Content
         style={{
@@ -313,11 +285,7 @@ function HotspotView({
           marginTop: 0,
         }}
       >
-        {!isFallback ? (
-          <WitnessesList witnesses={witnesses} />
-        ) : (
-          <Skeleton active />
-        )}
+        <WitnessesList witnesses={witnesses} />
       </Content>
 
       <Content
@@ -328,11 +296,7 @@ function HotspotView({
           marginTop: 0,
         }}
       >
-        {!isFallback ? (
-          <NearbyHotspotsList nearbyHotspots={nearbyHotspots} />
-        ) : (
-          <Skeleton active />
-        )}
+        <NearbyHotspotsList nearbyHotspots={nearbyHotspots} />
       </Content>
       <Content
         style={{
@@ -342,24 +306,13 @@ function HotspotView({
           paddingBottom: 100,
         }}
       >
-        {!isFallback ? (
-          <ActivityList type="hotspot" address={hotspot.address} />
-        ) : (
-          <Skeleton active />
-        )}
+        <ActivityList type="hotspot" address={hotspot.address} />
       </Content>
     </AppLayout>
   )
 }
 
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: true,
-  }
-}
-
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   const client = new Client()
   const { hotspotid } = params
   const hotspot = await client.hotspots.get(hotspotid)
@@ -441,7 +394,6 @@ export async function getStaticProps({ params }) {
       witnesses,
       rewards,
     },
-    revalidate: 10,
   }
 }
 

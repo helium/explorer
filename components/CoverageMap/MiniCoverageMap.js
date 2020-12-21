@@ -57,13 +57,6 @@ class MiniCoverageMap extends React.Component {
               id="coverage"
               data={coverage}
               circlePaint={circleLayout}
-              circleOnClick={this.handleHotspotClick}
-              circlelOnMouseEnter={() =>
-                (this.state.map.getCanvas().style.cursor = 'pointer')
-              }
-              circleOnMouseLeave={() =>
-                (this.state.map.getCanvas().style.cursor = '')
-              }
             />
           )}
         </Mapbox>

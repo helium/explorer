@@ -22,6 +22,10 @@ const circleLayout = {
   'circle-blur': 0,
 }
 
+const emptyGeoJSON = geoJSON.parse([], {
+  Point: ['lat', 'lng'],
+})
+
 class CoverageMap extends React.Component {
   state = {
     map: null,
@@ -78,9 +82,10 @@ class CoverageMap extends React.Component {
     })
   }
 
-  handleHotspotClick = (map, e) => {
+  handleHotspotClick = (e) => {
+    const { map } = this.state
     const features = map.queryRenderedFeatures(e.point, {
-      layers: ['hotspots'],
+      layers: ['hotspots-circle'],
     })
     this.handleSelectHotspots(features)
     map.getCanvas().style.cursor = ''
@@ -97,7 +102,9 @@ class CoverageMap extends React.Component {
   }
 
   handleMouseMove = (map, e) => {
-    const h = map.queryRenderedFeatures(e.point, { layers: ['hotspots'] })
+    const h = map.queryRenderedFeatures(e.point, {
+      layers: ['hotspots-circle'],
+    })
     if (h.length > 0) {
       map.getCanvas().style.cursor = 'pointer'
     } else {
@@ -160,20 +167,12 @@ class CoverageMap extends React.Component {
           }}
         />
 
-        {coverage && (
-          <GeoJSONLayer
-            id="coverage"
-            data={coverage}
-            circlePaint={circleLayout}
-            circleOnClick={this.handleHotspotClick}
-            circlelOnMouseEnter={() =>
-              (this.state.map.getCanvas().style.cursor = 'pointer')
-            }
-            circleOnMouseLeave={() =>
-              (this.state.map.getCanvas().style.cursor = '')
-            }
-          />
-        )}
+        <GeoJSONLayer
+          id="hotspots"
+          data={coverage ? coverage : emptyGeoJSON}
+          circlePaint={circleLayout}
+          circleOnClick={this.handleHotspotClick}
+        />
       </>
     )
   }
@@ -216,7 +215,6 @@ class CoverageMap extends React.Component {
           ref={(e) => {
             this.map = e
           }}
-          onClick={this.handleHotspotClick}
           onMouseMove={this.handleMouseMove}
         >
           {this.renderOverviewMap()}

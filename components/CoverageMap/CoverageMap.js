@@ -2,6 +2,7 @@ import React from 'react'
 import ReactMapboxGl, { GeoJSONLayer, Image } from 'react-mapbox-gl'
 import geoJSON from 'geojson'
 import GeolocationButton from './GeolocationButton'
+import fetch from 'node-fetch'
 
 const maxZoom = 14
 const minZoom = 2
@@ -14,6 +15,17 @@ const Mapbox = ReactMapboxGl({
   minZoom: minZoom,
 })
 
+const circleLayout = {
+  'circle-color': '#29d391',
+  'circle-radius': 5,
+  'circle-opacity': 1,
+  'circle-blur': 0,
+}
+
+const emptyGeoJSON = geoJSON.parse([], {
+  Point: ['lat', 'lng'],
+})
+
 class CoverageMap extends React.Component {
   state = {
     map: null,
@@ -21,6 +33,13 @@ class CoverageMap extends React.Component {
     zoom: [2.2],
     hasGeolocation: false,
     flyingComplete: false,
+    coverage: null,
+  }
+
+  async componentDidMount() {
+    const response = await fetch('/api/coverage')
+    const coverage = await response.json()
+    this.setState({ coverage })
   }
 
   componentDidUpdate(prevProps) {
@@ -63,9 +82,10 @@ class CoverageMap extends React.Component {
     })
   }
 
-  handleHotspotClick = (map, e) => {
+  handleHotspotClick = (e) => {
+    const { map } = this.state
     const features = map.queryRenderedFeatures(e.point, {
-      layers: ['hotspots'],
+      layers: ['hotspots-circle'],
     })
     this.handleSelectHotspots(features)
     map.getCanvas().style.cursor = ''
@@ -82,7 +102,9 @@ class CoverageMap extends React.Component {
   }
 
   handleMouseMove = (map, e) => {
-    const h = map.queryRenderedFeatures(e.point, { layers: ['hotspots'] })
+    const h = map.queryRenderedFeatures(e.point, {
+      layers: ['hotspots-circle'],
+    })
     if (h.length > 0) {
       map.getCanvas().style.cursor = 'pointer'
     } else {
@@ -92,6 +114,7 @@ class CoverageMap extends React.Component {
 
   renderOverviewMap = () => {
     const { selectedHotspots } = this.props
+    const { coverage } = this.state
 
     const selectedData = geoJSON.parse(selectedHotspots[0] || [], {
       Point: ['lat', 'lng'],
@@ -143,6 +166,13 @@ class CoverageMap extends React.Component {
             'circle-blur': 1,
           }}
         />
+
+        <GeoJSONLayer
+          id="hotspots"
+          data={coverage ? coverage : emptyGeoJSON}
+          circlePaint={circleLayout}
+          circleOnClick={this.handleHotspotClick}
+        />
       </>
     )
   }
@@ -171,7 +201,7 @@ class CoverageMap extends React.Component {
           </span>
         </button>
         <Mapbox
-          style="mapbox://styles/petermain/ckhtuzof73dpe19nydccv3zma"
+          style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
           containerStyle={{
             position: 'relative',
             width: '100%',
@@ -185,7 +215,6 @@ class CoverageMap extends React.Component {
           ref={(e) => {
             this.map = e
           }}
-          onClick={this.handleHotspotClick}
           onMouseMove={this.handleMouseMove}
         >
           {this.renderOverviewMap()}

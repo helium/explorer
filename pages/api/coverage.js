@@ -18,9 +18,7 @@ const getCache = async (key, fallback) => {
   }
 
   const freshValue = await fallback()
-  if (redisClient) {
-    redisClient.set(key, JSON.stringify(freshValue), 'EX', TTL)
-  }
+
   return freshValue
 }
 

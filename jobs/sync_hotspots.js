@@ -30,6 +30,8 @@ const syncHotspots = async () => {
   })
 
   await index.saveObjects(hotspotJSON)
+
+  return process.exit(0)
 }
 
 syncHotspots()

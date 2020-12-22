@@ -1,36 +1,29 @@
 const { Client } = require('@helium/http')
 const geoJSON = require('geojson')
-const fs = require('fs').promises
+const Redis = require('ioredis')
 
-const API_KEY = process.env.MAPBOX_SECRET_DATASET_KEY
+const redisClient = new Redis(process.env.REDIS_URL)
+
+const setCache = async (key, value) => {
+  await redisClient.set(key, JSON.stringify(value))
+}
 
 const generateCoverage = async () => {
-  if (!API_KEY) {
-    console.error('Mapbox API key required')
-    return
-  }
-
-  console.log('generating coverage data...')
-
   const client = new Client()
-  const list = await client.hotspots.list()
-  const hotspotsList = await list.take(100000)
+  const allHotspots = await (await client.hotspots.list()).takeJSON(100000)
+  const hotspots = allHotspots.map((h) => ({
+    ...h,
+    location: [h.geocode.longCity, h.geocode.shortState].join(', '),
+  }))
 
-  const hotspots = hotspotsList
-    .map((h) => ({
-      location: h.geocode.longCity + ', ' + h.geocode.shortState,
-      address: h.address,
-      owner: h.owner,
-      lat: h.lat,
-      lng: h.lng,
-    }))
-    .filter((h) => !!h.lat && !!h.lng)
+  const coverage = geoJSON.parse(hotspots, {
+    Point: ['lat', 'lng'],
+    include: ['address', 'owner', 'location'],
+  })
 
-  const coverageData = geoJSON.parse(hotspots, { Point: ['lat', 'lng'] })
+  await setCache('coverage', coverage)
 
-  await fs.writeFile('hotspots.geojson', JSON.stringify(coverageData))
-
-  console.log('finished generating coverage data')
+  return process.exit(0)
 }
 
 generateCoverage()

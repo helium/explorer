@@ -194,6 +194,8 @@ const PocReceiptsV1 = ({ txn, h3exclusionCells, h3maxHopCells }) => (
                               >
                                 <div className="poc-witness-table">
                                   {p.witnesses.map((w, i) => {
+                                    console.log(p)
+                                    console.log(w)
                                     const pDistance = p.challengeeLocation
                                       ? p.challengeeLocation
                                       : p.challengee_location

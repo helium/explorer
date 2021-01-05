@@ -227,6 +227,24 @@ const columns = (ownerAddress) => {
         )
       case 'rewards_v1':
         return <span>{txn.totalAmount.toString(2)}</span>
+      case 'poc_receipts_v1':
+        let detailText = ''
+        if (txn.challenger === ownerAddress) {
+          detailText = 'Challenger'
+        } else {
+          txn.path.map((p) => {
+            if (p.challengee === ownerAddress) {
+              return (detailText = 'Challengee')
+            } else {
+              p.witnesses.map((w) => {
+                if (w.gateway === ownerAddress) {
+                  return (detailText = 'Witness')
+                }
+              })
+            }
+          })
+        }
+        return <span>{detailText}</span>
       case 'transfer_hotspot_v1':
         if (txn.gateway === ownerAddress) {
           // it's on the hotspot page, don't show + or -
@@ -260,7 +278,7 @@ const columns = (ownerAddress) => {
       ),
     },
     {
-      title: 'Amount',
+      title: 'Details',
       dataIndex: 'amount',
       key: 'amount',
       render: (txt, txn) => (

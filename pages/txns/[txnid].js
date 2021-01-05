@@ -11,6 +11,7 @@ import PieChart from '../../components/PieChart'
 
 import {
   Fallback,
+  AssertLocationV1,
   PaymentV1,
   PaymentV2,
   PocReceiptsV1,
@@ -117,6 +118,8 @@ class TxnView extends Component {
           return <TransferHotspotV1 txn={txn} />
         case 'consensus_group_v1':
           return <ConsensusGroupV1 txn={txn} />
+        case 'assert_location_v1':
+          return <AssertLocationV1 txn={txn} />
 
         default:
           return <Fallback txn={txn} />

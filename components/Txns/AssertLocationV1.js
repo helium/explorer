@@ -20,6 +20,7 @@ const AssertLocationV1 = ({ txn }) => {
 
   useEffect(async () => {
     // make a client-side call to get the location (city, state, country) of the hotspot
+    // TODO: make this call to the location endpoint (or equivalent helium-js function) instead for returning geo details for a given h3 index
     const client = new Client()
     const hotspotid = txn.gateway
     const hotspot = await client.hotspots.get(hotspotid)
@@ -65,6 +66,7 @@ const AssertLocationV1 = ({ txn }) => {
             </Link>
           </span>
         </Descriptions.Item>
+        {/* TODO: add nicely formatted location for every transaction once there is an endpoint for getting geo details from h3 index */}
         {hotspot.lat === txn.lat && hotspot.lng === txn.lng && (
           <Descriptions.Item label="Location" span={3}>
             <span

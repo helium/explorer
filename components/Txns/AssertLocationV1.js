@@ -65,18 +65,20 @@ const AssertLocationV1 = ({ txn }) => {
             </Link>
           </span>
         </Descriptions.Item>
-        <Descriptions.Item label="Location" span={3}>
-          <span
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-            }}
-          >
-            {formatLocation(hotspot.geocode)}
-          </span>
-        </Descriptions.Item>
+        {hotspot.lat === txn.lat && hotspot.lng === txn.lng && (
+          <Descriptions.Item label="Location" span={3}>
+            <span
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+              }}
+            >
+              {formatLocation(hotspot.geocode)}
+            </span>
+          </Descriptions.Item>
+        )}
         <Descriptions.Item label="Latitude" span={3}>
           <span
             style={{

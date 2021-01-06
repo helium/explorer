@@ -6,8 +6,8 @@ const Mapbox = ReactMapboxGl({
 
 const styles = {
   assertedHotspotLocation: {
-    width: 20,
-    height: 20,
+    width: 15,
+    height: 15,
     borderRadius: '50%',
     backgroundColor: '#16CEE8',
     display: 'flex',
@@ -29,7 +29,7 @@ const AssertLocationMapbox = ({ txn }) => {
         width: '100%',
       }}
       center={[txn?.lng, txn?.lat]}
-      zoom={[12]}
+      zoom={[10]}
       movingMethod="jumpTo"
     >
       <Marker

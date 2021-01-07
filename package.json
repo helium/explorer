@@ -26,6 +26,7 @@
     "next-ga": "^2.3.4",
     "next-images": "^1.6.0",
     "node-fetch": "^2.6.1",
+    "nprogress": "^0.2.0",
     "qs": "^6.9.4",
     "react": "^17.0.1",
     "react-countdown": "^2.3.1",

@@ -252,7 +252,7 @@ const BlockView = ({ block, txns, height }) => {
 export async function getStaticPaths() {
   return {
     paths: [],
-    fallback: true,
+    fallback: 'blocking',
   }
 }
 

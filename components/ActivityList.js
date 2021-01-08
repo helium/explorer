@@ -197,7 +197,7 @@ const rewardColumns = (hotspots, type) => {
 }
 
 const columns = (ownerAddress) => {
-  const activityAmount = (txn) => {
+  const activityDetails = (txn) => {
     switch (txn.type) {
       case 'state_channel_close_v1':
         let totalDcs = 0
@@ -231,14 +231,17 @@ const columns = (ownerAddress) => {
         let detailText = ''
         if (txn.challenger === ownerAddress) {
           detailText = 'Challenger'
+          return
         } else {
           txn.path.map((p) => {
             if (p.challengee === ownerAddress) {
-              return (detailText = 'Challengee')
+              detailText = 'Challengee'
+              return
             } else {
               p.witnesses.map((w) => {
                 if (w.gateway === ownerAddress) {
-                  return (detailText = 'Witness')
+                  detailText = 'Witness'
+                  return
                 }
               })
             }
@@ -265,25 +268,15 @@ const columns = (ownerAddress) => {
       title: 'Type',
       dataIndex: 'type',
       key: 'type',
-      render: (data) => <TxnTag type={data}></TxnTag>,
-    },
-    {
-      title: 'Hash',
-      dataIndex: 'hash',
-      key: 'hash',
-      render: (data) => (
-        <Link href={`/txns/${data}`}>
-          <a>{data.substring(0, 6)}...</a>
-        </Link>
-      ),
+      render: (data, txn) => <TxnTag type={data}></TxnTag>,
     },
     {
       title: 'Details',
-      dataIndex: 'amount',
-      key: 'amount',
+      dataIndex: 'details',
+      key: 'details',
       render: (txt, txn) => (
         <Link href={`/txns/${txn.hash}`}>
-          <a>{activityAmount(txn)}</a>
+          <a>{activityDetails(txn)}</a>
         </Link>
       ),
     },

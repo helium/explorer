@@ -31,8 +31,6 @@ const AssertLocationV1 = ({ txn }) => {
   const stakingFeePayer =
     txn.payer === txn.owner || txn.payer === null ? txn.owner : txn.payer
 
-  console.log(txn)
-
   return (
     <>
       <AssertLocationMapbox txn={txn} />

@@ -1,11 +1,49 @@
 import React from 'react'
 import { Descriptions, Collapse, Table, Tooltip } from 'antd'
 
-import { h3Distance } from 'h3-js'
+import { h3Distance, h3GetResolution, h3ToChildren, h3ToParent } from 'h3-js'
 import Link from 'next/link'
 import animalHash from 'angry-purple-tiger'
 import PocPath from './PocPath'
 const { Panel } = Collapse
+
+import { formatDistance } from '../Hotspots/utils'
+
+// these values are from this table: https://h3geo.org/docs/core-library/restable
+const AVG_H3_HEX_EDGE_LENGTHS_IN_KM = [
+  // 0
+  1107.712591,
+  // 1
+  418.6760055,
+  // 2
+  158.2446558,
+  // 3
+  59.81085794,
+  // 4
+  22.6063794,
+  // 5
+  8.544408276,
+  // 6
+  3.229482772,
+  // 7
+  1.220629759,
+  // 8
+  0.461354684,
+  // 9
+  0.174375668,
+  // 10
+  0.065907807,
+  // 11
+  0.024910561,
+  // 12
+  0.009415526,
+  // 13
+  0.003559893,
+  // 14
+  0.001348575,
+  // 15
+  0.000509713,
+]
 
 const PoCTableHeader = ({ tooltipText, title }) => {
   return (
@@ -42,7 +80,7 @@ const PoCTableHeader = ({ tooltipText, title }) => {
   )
 }
 
-const PocReceiptsV1 = ({ txn, h3exclusionCells, h3maxHopCells }) => (
+const PocReceiptsV1 = ({ txn, minValidH3Distance, pocH3CellResolution }) => (
   <div>
     <PocPath path={txn.path} />
     <Descriptions bordered>
@@ -194,35 +232,59 @@ const PocReceiptsV1 = ({ txn, h3exclusionCells, h3maxHopCells }) => (
                               >
                                 <div className="poc-witness-table">
                                   {p.witnesses.map((w, i) => {
-                                    const pDistance = p.challengeeLocation
+                                    let pLocation = p.challengeeLocation
                                       ? p.challengeeLocation
                                       : p.challengee_location
                                       ? p.challengee_location
                                       : ''
 
-                                    const witnessDistInH3Res12Cells = h3Distance(
-                                      pDistance,
-                                      w.location,
+                                    let wLocation = w.location
+
+                                    // convert witness h3 location and challenge participant h3 location to the correct h3 resolution as set by the poc_v4_parent_res chain var
+                                    if (
+                                      pocH3CellResolution <
+                                      h3GetResolution(pLocation)
+                                    ) {
+                                      // if the chain var is higher than what's returned, get the h3 parent
+                                      pLocation = h3ToParent(
+                                        pLocation,
+                                        pocH3CellResolution,
+                                      )
+                                      wLocation = h3ToParent(
+                                        wLocation,
+                                        pocH3CellResolution,
+                                      )
+                                    } else if (
+                                      pocH3CellResolution >
+                                      h3GetResolution(pLocation)
+                                    ) {
+                                      // if the chain var is lower than what's returned, get the h3 child
+                                      pLocation = h3ToChildren(
+                                        pLocation,
+                                        pocH3CellResolution,
+                                      )
+                                      wLocation = h3ToChildren(
+                                        wLocation,
+                                        pocH3CellResolution,
+                                      )
+                                    }
+
+                                    const witnessDistInH3Cells = h3Distance(
+                                      pLocation,
+                                      wLocation,
                                     )
 
-                                    // We can assume the diameter of 1 hexagon is roughly equal to its edge length * 2
-                                    // The average edge length of a resolution-12 hexagon in h3 is given in km here: https://h3geo.org/docs/core-library/restable
-                                    const avgRes12HexEdgeLengthInKm = 0.009415526
-                                    const avgRes12HexDiameterInKm =
-                                      avgRes12HexEdgeLengthInKm * 2
+                                    // for a rough approximation of distance, we can assume the diameter of 1 hexagon is roughly equal to (the average edge length of a hexagon at the given resolution) * 2
+                                    const averageCellDiameter =
+                                      AVG_H3_HEX_EDGE_LENGTHS_IN_KM[
+                                        pocH3CellResolution
+                                      ] * 2
 
                                     const witnessDistInKm =
-                                      avgRes12HexDiameterInKm *
-                                      witnessDistInH3Res12Cells
+                                      averageCellDiameter * witnessDistInH3Cells
 
-                                    const h3DistanceMinValid =
-                                      h3exclusionCells <=
-                                      witnessDistInH3Res12Cells
-                                    const h3DistanceMaxValid =
-                                      witnessDistInH3Res12Cells < h3maxHopCells
-
-                                    const h3DistanceIsValid =
-                                      h3DistanceMinValid && h3DistanceMaxValid
+                                    const witnessDistanceIsValid =
+                                      minValidH3Distance <= witnessDistInH3Cells
 
                                     const columns = []
 
@@ -272,7 +334,7 @@ const PocReceiptsV1 = ({ txn, h3exclusionCells, h3maxHopCells }) => (
                                       title: (
                                         <PoCTableHeader
                                           title="Distance"
-                                          tooltipText={`This value is an approximation of the distance between the hotspot that witnessed the challenge and the one that participated in it. Helium uses hexagons from the H3 library, so this distance is a rough approximation based on how many resolution 12 H3 cells the two hotspots are apart. E.g. if it says the distance is 0, it's because they are in the same cell.`}
+                                          tooltipText={`This value is an approximation of the distance between the hotspot that witnessed the challenge and the one that participated in it. The Helium blockchain uses hexagons from the H3 library, so this distance is a rough approximation based on how many H3 cells the two hotspots are apart. E.g. if it says the distance is 0, it's because they are in the same cell.`}
                                         />
                                       ),
                                       dataIndex: 'distance',
@@ -305,24 +367,16 @@ const PocReceiptsV1 = ({ txn, h3exclusionCells, h3maxHopCells }) => (
                                         distance: (
                                           <span
                                             style={
-                                              !h3DistanceIsValid
+                                              !witnessDistanceIsValid
                                                 ? { color: '#CA0926' }
                                                 : {}
                                             }
                                           >
-                                            {witnessDistInKm < 1
-                                              ? `${(
-                                                  witnessDistInKm * 1000
-                                                ).toFixed(2)}m`
-                                              : `${witnessDistInKm.toFixed(
-                                                  2,
-                                                )}km`}
-                                            {!h3DistanceIsValid &&
-                                              (!h3DistanceMinValid
-                                                ? ' (too close)'
-                                                : !h3DistanceMaxValid
-                                                ? ' (too far)'
-                                                : '')}
+                                            {formatDistance(
+                                              witnessDistInKm * 1000,
+                                            )}
+                                            {!witnessDistanceIsValid &&
+                                              ' (too close)'}
                                           </span>
                                         ),
                                         datarate:

@@ -6,7 +6,7 @@ export const formatHotspotName = (dashedName) =>
 
 export const formatDistance = (meters) => {
   if (meters < 1000) {
-    return meters.toLocaleString() + ' m'
+    return meters.toLocaleString(undefined, { maximumFractionDigits: 2 }) + ' m'
   }
 
   if (meters < 10000) {

@@ -31,15 +31,14 @@ class TxnView extends Component {
   state = {
     txn: {},
     loading: true,
-    h3exclusionCells: 0,
-    h3maxHopCells: 99999999,
+    minValidH3Distance: 0,
+    pocH3CellResolution: 11,
   }
   componentDidMount() {
     this.client = new Client()
     const { txnid } = this.props.router.query
     if (txnid !== undefined) {
       this.loadTxn(txnid)
-      this.loadChainVars()
     }
   }
 
@@ -48,7 +47,6 @@ class TxnView extends Component {
       const { txnid } = this.props.router.query
       if (txnid !== undefined) {
         this.loadTxn(txnid)
-        this.loadChainVars()
       }
     }
   }
@@ -56,18 +54,19 @@ class TxnView extends Component {
   async loadTxn(txnid) {
     const txn = await this.client.transactions.get(txnid)
     this.setState({ txn, loading: false })
+    if (txn.type === 'poc_receipts_v1') this.loadChainVars()
   }
 
   async loadChainVars() {
     await fetch('https://api.helium.io/v1/vars/poc_v4_exclusion_cells')
       .then((res) => res.json())
       .then((min) => {
-        this.setState({ h3exclusionCells: min.data })
+        this.setState({ minValidH3Distance: min.data })
       })
-    await fetch('https://api.helium.io/v1/vars/poc_max_hop_cells')
+    await fetch('https://api.helium.io/v1/vars/poc_v4_parent_res')
       .then((res) => res.json())
-      .then((max) => {
-        this.setState({ h3maxHopCells: max.data })
+      .then((res) => {
+        this.setState({ pocH3CellResolution: res.data })
       })
   }
 
@@ -105,8 +104,8 @@ class TxnView extends Component {
           return (
             <PocReceiptsV1
               txn={txn}
-              h3exclusionCells={this.state.h3exclusionCells}
-              h3maxHopCells={this.state.h3maxHopCells}
+              minValidH3Distance={this.state.minValidH3Distance}
+              pocH3CellResolution={this.state.pocH3CellResolution}
             />
           )
         case 'rewards_v1':

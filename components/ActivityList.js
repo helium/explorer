@@ -268,7 +268,13 @@ const columns = (ownerAddress) => {
       title: 'Type',
       dataIndex: 'type',
       key: 'type',
-      render: (data, txn) => <TxnTag type={data}></TxnTag>,
+      render: (data, txn) => (
+        <Link href={`/txns/${txn.hash}`}>
+          <a className="tag-link">
+            <TxnTag type={data}></TxnTag>
+          </a>
+        </Link>
+      ),
     },
     {
       title: 'Details',

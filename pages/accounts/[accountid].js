@@ -1,5 +1,5 @@
-import React from 'react'
-import { Typography, Descriptions, Tooltip, Skeleton } from 'antd'
+import { useState, useEffect } from 'react'
+import { Typography, Descriptions, Tooltip } from 'antd'
 import Client from '@helium/http'
 import AppLayout, { Content } from '../../components/AppLayout'
 import ActivityList from '../../components/ActivityList'
@@ -24,7 +24,7 @@ const AccountAddress = ({ address, truncate = false }) => {
   )
 }
 
-const AccountView = ({ account, hotspots }) => {
+const AccountView = ({ account }) => {
   const dcBalanceWithFunctions = new Balance(
     account.dcBalance.integerBalance,
     CurrencyType.dataCredit,
@@ -33,10 +33,33 @@ const AccountView = ({ account, hotspots }) => {
     account.balance.integerBalance,
     CurrencyType.networkToken,
   )
-  const hstBalance = new Balance(
+  const hstBalanceWithFunctions = new Balance(
     account.secBalance.integerBalance,
     CurrencyType.security,
   )
+
+  const [hotspots, setHotspots] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function getHotspots() {
+      const client = new Client()
+      const accountid = account.address
+
+      const list = await client.account(accountid).hotspots.list()
+
+      const hotspots = []
+      for await (const hotspot of list) {
+        hotspot.status.gpsText = gpsLocation(hotspot.status.gps)
+        hotspot.rewards = await fetchRewardsSummary(hotspot.address)
+        delete hotspot.client
+        hotspots.push(JSON.parse(JSON.stringify(hotspot)))
+      }
+      setHotspots(hotspots)
+      setLoading(false)
+    }
+    getHotspots()
+  }, [])
 
   return (
     <AppLayout
@@ -46,15 +69,15 @@ const AccountView = ({ account, hotspots }) => {
       )}${
         account.dcBalance.integerBalance > 0
           ? account.secBalance.integerBalance === 0
-            ? `, ${dcBalanceWithFunctions.toString()},`
+            ? ` and ${dcBalanceWithFunctions.toString()}`
             : `, ${dcBalanceWithFunctions.toString()}`
           : ''
       }${
         account.secBalance.integerBalance > 0
-          ? `, ${hstBalance.toString()},`
+          ? account.dcBalance.integerBalance === 0
+            ? ` and ${hstBalanceWithFunctions.toString()}`
+            : `, and ${hstBalanceWithFunctions.toString()}`
           : ''
-      } and ${hotspots.length} Hotspot${
-        hotspots.length === 1 ? '' : 's'
       }, with the address ${account.address}`}
       openGraphImageAbsoluteUrl={`https://explorer.helium.com/images/og/accounts.png`}
       url={`https://explorer.helium.com/accounts/accounts/${account.address}`}
@@ -185,7 +208,7 @@ const AccountView = ({ account, hotspots }) => {
           marginTop: 0,
         }}
       >
-        <HotspotsList hotspots={hotspots} />
+        <HotspotsList loading={loading} hotspots={hotspots} />
         <ActivityList
           type="account"
           address={account.address}
@@ -208,20 +231,9 @@ export async function getStaticProps({ params }) {
   const { accountid } = params
   const account = await client.accounts.get(accountid)
 
-  const list = await client.account(accountid).hotspots.list()
-
-  const hotspots = []
-  for await (const hotspot of list) {
-    hotspot.status.gpsText = gpsLocation(hotspot.status.gps)
-    hotspot.rewards = await fetchRewardsSummary(hotspot.address)
-    delete hotspot.client
-    hotspots.push(JSON.parse(JSON.stringify(hotspot)))
-  }
-
   return {
     props: {
       account: JSON.parse(JSON.stringify(account)),
-      hotspots,
     },
     revalidate: 10,
   }

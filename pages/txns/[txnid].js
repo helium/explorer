@@ -47,6 +47,8 @@ const txnView = (txn, isFallback) => {
         return <StateChannelCloseV1 txn={txn} />
       case 'transfer_hotspot_v1':
         return <TransferHotspotV1 txn={txn} />
+      case 'assert_location_v1':
+        return <AssertLocationV1 txn={txn} />
       default:
         return <Fallback txn={txn} />
     }

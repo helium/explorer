@@ -72,8 +72,9 @@ const rewardChart = (txn) => {
 const TxnView = ({ txn }) => {
   const processedTxnInfo = processTransactionInfo(txn)
 
-  const txnTotalAmountWithFunctions = txn.type === 'rewards_v1'
-  new Balance(txn.totalAmount.integerBalance, CurrencyType.networkToken)
+  const txnTotalAmountWithFunctions =
+    txn.type === 'rewards_v1' &&
+    new Balance(txn.totalAmount.integerBalance, CurrencyType.networkToken)
 
   return (
     <AppLayout

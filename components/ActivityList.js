@@ -231,17 +231,14 @@ const columns = (ownerAddress) => {
         let detailText = ''
         if (txn.challenger === ownerAddress) {
           detailText = 'Challenger'
-          return
         } else {
           txn.path.map((p) => {
             if (p.challengee === ownerAddress) {
               detailText = 'Challengee'
-              return
             } else {
               p.witnesses.map((w) => {
                 if (w.gateway === ownerAddress) {
                   detailText = 'Witness'
-                  return
                 }
               })
             }

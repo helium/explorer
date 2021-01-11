@@ -1,7 +1,44 @@
 import Link from 'next/link'
 import animalHash from 'angry-purple-tiger'
-import { h3Distance } from 'h3-js'
+import { h3Distance, h3GetResolution, h3ToChildren, h3ToParent } from 'h3-js'
 import { Table, Tooltip } from 'antd'
+import { formatDistance } from '../Hotspots/utils'
+
+// these values are from this table: https://h3geo.org/docs/core-library/restable
+const AVG_H3_HEX_EDGE_LENGTHS_IN_KM = [
+  // 0
+  1107.712591,
+  // 1
+  418.6760055,
+  // 2
+  158.2446558,
+  // 3
+  59.81085794,
+  // 4
+  22.6063794,
+  // 5
+  8.544408276,
+  // 6
+  3.229482772,
+  // 7
+  1.220629759,
+  // 8
+  0.461354684,
+  // 9
+  0.174375668,
+  // 10
+  0.065907807,
+  // 11
+  0.024910561,
+  // 12
+  0.009415526,
+  // 13
+  0.003559893,
+  // 14
+  0.001348575,
+  // 15
+  0.000509713,
+]
 
 const PoCTableHeader = ({ tooltipText, title }) => {
   return (
@@ -43,29 +80,37 @@ const PocInfoTable = ({
   witness,
   witnessIndex,
   participantIndex,
-  h3exclusionCells,
-  h3maxHopCells,
+  minValidH3Distance,
+  pocH3CellResolution,
 }) => {
-  const pLocation = participant.challengeeLocation
+  let pLocation = participant.challengeeLocation
     ? participant.challengeeLocation
     : participant.challengee_location
     ? participant.challengee_location
     : ''
 
-  const witnessDistInH3Res12Cells = h3Distance(pLocation, witness.location)
+  let wLocation = witness.location
 
-  // We can assume the diameter of 1 hexagon is roughly equal to its edge length * 2
-  // The average edge length of a resolution-12 hexagon in h3 is given in km here: https://h3geo.org/docs/core-library/restable
-  const AVG_RES_12_HEX_EDGE_LENGTH_IN_KM = 0.009415526
-  const AVG_RES_12_HEX_DIAMETER_IN_KM = AVG_RES_12_HEX_EDGE_LENGTH_IN_KM * 2
+  // convert witness h3 location and challenge participant h3 location to the correct h3 resolution as set by the poc_v4_parent_res chain var
+  if (pocH3CellResolution < h3GetResolution(pLocation)) {
+    // if the chain var is higher than what's returned, get the h3 parent
+    pLocation = h3ToParent(pLocation, pocH3CellResolution)
+    wLocation = h3ToParent(wLocation, pocH3CellResolution)
+  } else if (pocH3CellResolution > h3GetResolution(pLocation)) {
+    // if the chain var is lower than what's returned, get the h3 child
+    pLocation = h3ToChildren(pLocation, pocH3CellResolution)
+    wLocation = h3ToChildren(wLocation, pocH3CellResolution)
+  }
 
-  const witnessDistInKm =
-    AVG_RES_12_HEX_DIAMETER_IN_KM * witnessDistInH3Res12Cells
+  const witnessDistInH3Cells = h3Distance(pLocation, wLocation)
 
-  const h3DistanceMinValid = h3exclusionCells <= witnessDistInH3Res12Cells
-  const h3DistanceMaxValid = witnessDistInH3Res12Cells < h3maxHopCells
+  // for a rough approximation of distance, we can assume the diameter of 1 hexagon is roughly equal to (the average edge length of a hexagon at the given resolution) * 2
+  const averageCellDiameter =
+    AVG_H3_HEX_EDGE_LENGTHS_IN_KM[pocH3CellResolution] * 2
 
-  const h3DistanceIsValid = h3DistanceMinValid && h3DistanceMaxValid
+  const witnessDistInKm = averageCellDiameter * witnessDistInH3Cells
+
+  const witnessDistanceIsValid = minValidH3Distance <= witnessDistInH3Cells
 
   const columns = []
 
@@ -141,16 +186,9 @@ const PocInfoTable = ({
       rssi: `${witness?.signal}dBm`,
       snr: `${witness.snr?.toFixed(2)}dB`,
       distance: (
-        <span style={!h3DistanceIsValid ? { color: '#CA0926' } : {}}>
-          {witnessDistInKm < 1
-            ? `${(witnessDistInKm * 1000).toFixed(2)}m`
-            : `${witnessDistInKm.toFixed(2)}km`}
-          {!h3DistanceIsValid &&
-            (!h3DistanceMinValid
-              ? ' (too close)'
-              : !h3DistanceMaxValid
-              ? ' (too far)'
-              : '')}
+        <span style={!witnessDistanceIsValid ? { color: '#CA0926' } : {}}>
+          {formatDistance(witnessDistInKm * 1000)}
+          {!witnessDistanceIsValid && ' (too close)'}
         </span>
       ),
       datarate:

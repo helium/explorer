@@ -5,7 +5,7 @@ import { TxnTag } from '../../components/Txns'
 import AppLayout, { Content } from '../../components/AppLayout'
 import PieChart from '../../components/PieChart'
 import withBlockHeight from '../../components/withBlockHeight'
-import { withRouter, useRouter } from 'next/router'
+import { withRouter } from 'next/router'
 import Link from 'next/link'
 import { generateFriendlyTimestampString } from '../../components/Txns/utils'
 
@@ -19,8 +19,6 @@ import {
 const { Title, Text } = Typography
 
 const BlockView = ({ block, txns, height }) => {
-  const { isFallback } = useRouter()
-
   const filterTxns = () => {
     const res = []
     if (txns.length > 0) {
@@ -70,18 +68,12 @@ const BlockView = ({ block, txns, height }) => {
 
   return (
     <AppLayout
-      title={
-        !isFallback ? `Block ${block.height.toLocaleString()}` : `Block Details`
-      }
-      description={
-        !isFallback
-          ? `Block ${block.height.toLocaleString()} of the Helium blockchain was produced ${generateFriendlyTimestampString(
-              block.time,
-            )}, with ${txns.length} transaction${txns.length !== 1 ? 's' : ''}`
-          : `A block on the Helium blockchain`
-      }
+      title={`Block ${block.height.toLocaleString()}`}
+      description={`Block ${block.height.toLocaleString()} of the Helium blockchain was produced ${generateFriendlyTimestampString(
+        block.time,
+      )}, with ${txns.length} transaction${txns.length !== 1 ? 's' : ''}`}
       openGraphImageAbsoluteUrl={`https://explorer.helium.com/images/og/blocks.png`}
-      url={!isFallback && `https://explorer.helium.com/blocks/${block.height}`}
+      url={`https://explorer.helium.com/blocks/${block.height}`}
     >
       <Content
         style={{
@@ -95,114 +87,104 @@ const BlockView = ({ block, txns, height }) => {
         >
           <div className="flex-responsive">
             <div style={{ paddingBottom: 30, paddingRight: 30, width: '100%' }}>
-              {!isFallback ? (
-                <>
-                  <h3>Block</h3>
-                  <Title
-                    style={{
-                      color: 'white',
-                      fontSize: 52,
-                      marginTop: 0,
-                      lineHeight: 0.7,
-                      letterSpacing: '-2px',
-                    }}
-                  >
-                    {block.height.toLocaleString(undefined, {
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    })}
-                  </Title>
-                  <div>
-                    <Text
-                      copyable
-                      style={{
-                        color: '#6A6B93',
-                        fontFamily: 'monospace',
-                        wordBreak: 'break-all',
-                      }}
-                    >
-                      {block.hash}
-                    </Text>
-                  </div>
-                </>
-              ) : (
-                <Skeleton active title />
-              )}
+              <h3>Block</h3>
+              <Title
+                style={{
+                  color: 'white',
+                  fontSize: 52,
+                  marginTop: 0,
+                  lineHeight: 0.7,
+                  letterSpacing: '-2px',
+                }}
+              >
+                {block.height.toLocaleString(undefined, {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}
+              </Title>
+              <div>
+                <Text
+                  copyable
+                  style={{
+                    color: '#6A6B93',
+                    fontFamily: 'monospace',
+                    wordBreak: 'break-all',
+                  }}
+                >
+                  {block.hash}
+                </Text>
+              </div>
             </div>
 
-            <div>{!isFallback && <PieChart data={filterTxns()} />}</div>
+            <div>
+              <PieChart data={filterTxns()} />
+            </div>
           </div>
 
           <hr />
-          {!isFallback ? (
-            <div className="block-view-summary-container">
-              {block.height !== 1 ? (
-                <Link href={`/blocks/${block.height - 1}`}>
-                  <a
-                    className="button block-view-prev-button"
-                    style={{ backgroundColor: '#232c42' }}
-                  >
-                    <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
-                    Block
-                  </a>
-                </Link>
-              ) : (
-                <span
-                  className="block-view-next-button"
-                  style={{
-                    width: '139.5px', // the width the "Next block" button takes up
-                  }}
+          <div className="block-view-summary-container">
+            {block.height !== 1 ? (
+              <Link href={`/blocks/${block.height - 1}`}>
+                <a
+                  className="button block-view-prev-button"
+                  style={{ backgroundColor: '#232c42' }}
+                >
+                  <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
+                  Block
+                </a>
+              </Link>
+            ) : (
+              <span
+                className="block-view-next-button"
+                style={{
+                  width: '139.5px', // the width the "Next block" button takes up
+                }}
+              />
+            )}
+            <span className="block-view-summary-info">
+              <h3>
+                <ClockCircleOutlined
+                  style={{ color: '#FFC769', marginRight: 4 }}
+                />{' '}
+                <Timestamp
+                  date={
+                    block.hash === 'La6PuV80Ps9qTP0339Pwm64q3_deMTkv6JOo1251EJI'
+                      ? 1564436673
+                      : block.time
+                  }
                 />
-              )}
-              <span className="block-view-summary-info">
-                <h3>
-                  <ClockCircleOutlined
-                    style={{ color: '#FFC769', marginRight: 4 }}
-                  />{' '}
-                  <Timestamp
-                    date={
-                      block.hash ===
-                      'La6PuV80Ps9qTP0339Pwm64q3_deMTkv6JOo1251EJI'
-                        ? 1564436673
-                        : block.time
-                    }
-                  />
-                </h3>
+              </h3>
 
-                {txns.length > 0 && (
-                  <h3 className="block-view-clock-icon">
-                    <CheckCircleOutlined
-                      style={{
-                        color: '#29D391',
-                        marginRight: 8,
-                      }}
-                    />
-                    {block.transactionCount} transactions
-                  </h3>
-                )}
-              </span>
-              {block.height < height ? (
-                <Link href={`/blocks/${block.height + 1}`}>
-                  <a
-                    className="button block-view-next-button"
-                    style={{ backgroundColor: '#232c42' }}
-                  >
-                    Next Block{' '}
-                    <ForwardOutlined style={{ marginRight: '-6px' }} />
-                  </a>
-                </Link>
-              ) : (
-                <span
-                  className="block-view-next-button"
-                  style={{
-                    width: '139.5px', // the width the "Next block" button takes up
-                  }}
-                />
+              {txns.length > 0 && (
+                <h3 className="block-view-clock-icon">
+                  <CheckCircleOutlined
+                    style={{
+                      color: '#29D391',
+                      marginRight: 8,
+                    }}
+                  />
+                  {block.transactionCount} transactions
+                </h3>
               )}
-            </div>
-          ) : (
-            <div className="block-view-summary-container" />
-          )}
+            </span>
+            {block.height < height ? (
+              <Link href={`/blocks/${block.height + 1}`}>
+                <a
+                  className="button block-view-next-button"
+                  style={{ backgroundColor: '#232c42' }}
+                >
+                  Next Block <ForwardOutlined style={{ marginRight: '-6px' }} />
+                </a>
+              </Link>
+            ) : (
+              <span
+                className="block-view-next-button"
+                style={{
+                  width: '139.5px', // the width the "Next block" button takes up
+                }}
+              />
+            )}
+          </div>
         </div>
       </Content>
 
@@ -215,20 +197,14 @@ const BlockView = ({ block, txns, height }) => {
         }}
       >
         <Card title="Transaction List" style={{ paddingTop: 50 }}>
-          {!isFallback ? (
-            <Table
-              dataSource={txns}
-              columns={txnColumns}
-              size="small"
-              rowKey="hash"
-              pagination={false}
-              scroll={{ x: true }}
-            />
-          ) : (
-            <div style={{ padding: 30 }}>
-              <Skeleton active />
-            </div>
-          )}
+          <Table
+            dataSource={txns}
+            columns={txnColumns}
+            size="small"
+            rowKey="hash"
+            pagination={false}
+            scroll={{ x: true }}
+          />
         </Card>
       </Content>
       <style jsx="true">{`

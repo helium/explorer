@@ -56,6 +56,18 @@ const typeTag = (type) => {
           <Tag color="#595a9a">PoC Challengee</Tag>
         </Tooltip>
       )
+    case 'assert_location_v1':
+      return (
+        <Tooltip placement="bottom" title="Assert Location Transaction">
+          <Tag color="#16CEE8">Assert Location</Tag>
+        </Tooltip>
+      )
+    case 'add_gateway_v1':
+      return (
+        <Tooltip placement="bottom" title="Add Gateway Transaction">
+          <Tag color="#8597BB">Add Hotspot</Tag>
+        </Tooltip>
+      )
     case 'poc_witnesses':
       return (
         <Tooltip placement="bottom" title="Mining Reward for a PoC witness">

@@ -427,6 +427,13 @@ hr {
   line-height: 36px;
 }
 
+.tag-link {
+  font-family: soleil, sans-serif !important;
+}
+.tag-link > .ant-tag:hover {
+  cursor: pointer;
+}
+
 @media screen and (max-width: 1200px) {
   .map-button {
     min-width: 0;

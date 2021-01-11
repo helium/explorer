@@ -13,6 +13,7 @@ import { useRouter } from 'next/router'
 import {
   FallbackSkeleton,
   Fallback,
+  AssertLocationV1,
   PaymentV1,
   PaymentV2,
   PocReceiptsV1,

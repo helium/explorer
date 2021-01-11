@@ -191,7 +191,7 @@ const AccountView = ({ account }) => {
                     style={{ color: '#29D391', marginRight: 5 }}
                   />
                   <Descriptions.Item label="Security Tokens">
-                    {hstBalance.toString(2)}
+                    {hstBalanceWithFunctions.toString(2)}
                   </Descriptions.Item>
                 </h3>
               </Tooltip>

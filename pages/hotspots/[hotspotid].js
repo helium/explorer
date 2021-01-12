@@ -444,82 +444,9 @@ export async function getStaticProps({ params }) {
   const { hotspotid } = params
   const hotspot = await client.hotspots.get(hotspotid)
 
-  // // Get most recent challenger transaction
-  // const challengerTxnList = await client.hotspot(hotspotid).activity.list({
-  //   filterTypes: ['poc_request_v1'],
-  // })
-  // const challengerTxn = await challengerTxnList.take(1)
-
-  // // Get most recent challengee transaction
-  // const challengeeTxnList = await client.hotspot(hotspotid).activity.list({
-  //   filterTypes: ['poc_receipts_v1'],
-  // })
-  // const challengeeTxn = await challengeeTxnList.take(1)
-
-  // // Get most recent rewards transactions to search for...
-  // const rewardTxnsList = await client.hotspot(hotspotid).activity.list({
-  //   filterTypes: ['rewards_v1'],
-  // })
-  // const rewardTxns = await rewardTxnsList.take(200)
-
-  // let witnessTxn = null
-  // // most recent witness transaction
-  // rewardTxns.some(function (txn) {
-  //   return txn.rewards.some(function (txnReward) {
-  //     if (txnReward.type === 'poc_witnesses') {
-  //       witnessTxn = txn
-  //       return
-  //     }
-  //   })
-  // })
-
-  // let dataTransferTxn = null
-  // // most recent data credit transaction
-  // rewardTxns.some(function (txn) {
-  //   return txn.rewards.some(function (txnReward) {
-  //     if (txnReward.type === 'data_credits') {
-  //       dataTransferTxn = txn
-  //       return
-  //     }
-  //   })
-  // })
-
-  // const hotspotActivity = {
-  //   challengerTxn: challengerTxn.length === 1 ? challengerTxn[0] : null,
-  //   challengeeTxn: challengeeTxn.length === 1 ? challengeeTxn[0] : null,
-  //   witnessTxn: witnessTxn,
-  //   dataTransferTxn: dataTransferTxn,
-  // }
-  // const algoliaClient = algoliasearch(
-  //   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
-  //   process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY,
-  // )
-  // const hotspotsIndex = algoliaClient.initIndex('hotspots')
-  // const { hits: nearbyHotspots } = await hotspotsIndex.search('', {
-  //   aroundLatLng: [
-  //     hotspot.lat ? hotspot.lat : 0,
-  //     hotspot.lng ? hotspot.lng : 0,
-  //   ].join(', '),
-  //   getRankingInfo: true,
-  //   filters: `NOT address:${hotspotid}`,
-  // })
-
-  // const rewards = await fetchRewardsSummary(hotspotid)
-
-  // // TODO convert to use @helium/http
-  // const witnesses = await fetch(
-  //   `https://api.helium.io/v1/hotspots/${hotspotid}/witnesses`,
-  // )
-  //   .then((res) => res.json())
-  //   .then((json) => json.data.filter((w) => !(w.address === hotspotid)))
-
   return {
     props: {
       hotspot: JSON.parse(JSON.stringify(hotspot)),
-      // activity: JSON.parse(JSON.stringify(hotspotActivity)),
-      // nearbyHotspots,
-      // witnesses,
-      // rewards,
     },
     revalidate: 10,
   }

@@ -6,7 +6,7 @@ import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
 import AppLayout, { Content } from '../../components/AppLayout'
 import PieChart from '../../components/PieChart'
-import { processTransactionInfo } from '../../components/Txns/utils'
+import { getMetaTagsForTransaction } from '../../components/Txns/utils'
 import { Balance, CurrencyType } from '@helium/currency'
 
 import {
@@ -70,7 +70,7 @@ const rewardChart = (txn) => {
 }
 
 const TxnView = ({ txn }) => {
-  const processedTxnInfo = processTransactionInfo(txn)
+  const transactionMetaTags = getMetaTagsForTransaction(txn)
 
   const txnTotalAmountWithFunctions =
     txn.type === 'rewards_v1' &&
@@ -79,13 +79,13 @@ const TxnView = ({ txn }) => {
   return (
     <AppLayout
       title={`${
-        processedTxnInfo.type === 'default'
+        transactionMetaTags.type === 'default'
           ? 'Transaction'
-          : `${processedTxnInfo.type} | Transaction`
+          : `${transactionMetaTags.type} | Transaction`
       }`}
-      description={processedTxnInfo.description}
-      openGraphImageAbsoluteUrl={processedTxnInfo.ogImageUrl}
-      url={processedTxnInfo.url}
+      description={transactionMetaTags.description}
+      openGraphImageAbsoluteUrl={transactionMetaTags.ogImageUrl}
+      url={transactionMetaTags.url}
     >
       <Content
         style={{

@@ -57,10 +57,15 @@ export const processTransactionInfo = (txn, isFallback) => {
   if (!isFallback) {
     switch (txn.type) {
       case 'payment_v1': {
+        const amountWithFunctions = new Balance(
+          txn.amount.integerBalance,
+          CurrencyType.networkToken,
+        )
+
         type = `Payment`
-        description = `A payment of ${
-          txn.amountFormatted
-        } from account ${txn.payer.substring(
+        description = `A payment of ${amountWithFunctions.toString(
+          2,
+        )} from account ${txn.payer.substring(
           0,
           5,
         )}... to account ${txn.payee.substring(

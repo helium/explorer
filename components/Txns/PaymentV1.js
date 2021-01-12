@@ -9,7 +9,10 @@ const PaymentV1 = ({ txn }) => {
     txn.amount.integerBalance,
     CurrencyType.networkToken,
   )
-  const txnFeeWithFunctions = new Balance(txn.fee, CurrencyType.dataCredit)
+  const txnFeeWithFunctions = new Balance(
+    txn.fee.integerBalance,
+    CurrencyType.dataCredit,
+  )
 
   return (
     <Descriptions bordered>

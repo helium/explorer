@@ -157,9 +157,7 @@ const HotspotView = ({ hotspot }) => {
       title={`${animalHash(hotspot.address)} | Hotspot `}
       description={`A Helium Hotspot ${
         hotspot.location
-          ? `located in ${formatLocation(hotspot?.geocode)} with ${
-              witnesses.length
-            } witness${witnesses.length === 1 ? '' : 'es'}`
+          ? `located in ${formatLocation(hotspot?.geocode)}`
           : `with no location asserted`
       }, belonging to account ${hotspot.owner}`}
       openGraphImageAbsoluteUrl={`https://explorer.helium.com/images/og/hotspots.png`}

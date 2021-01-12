@@ -64,6 +64,7 @@ const HotspotView = ({ hotspot }) => {
     const hotspotid = hotspot.address
 
     async function getWitnesses() {
+      setWitnessesLoading(true)
       // // TODO convert to use @helium/http
       const witnesses = await fetch(
         `https://api.helium.io/v1/hotspots/${hotspotid}/witnesses`,
@@ -74,6 +75,7 @@ const HotspotView = ({ hotspot }) => {
       setWitnessesLoading(false)
     }
     async function getNearbyHotspots() {
+      setNearbyHotspotsLoading(true)
       const algoliaClient = algoliasearch(
         process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
         process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY,
@@ -92,6 +94,7 @@ const HotspotView = ({ hotspot }) => {
     }
 
     async function getHotspotActivity() {
+      setActivityLoading(true)
       // Get most recent challenger transaction
       const challengerTxnList = await client.hotspot(hotspotid).activity.list({
         filterTypes: ['poc_request_v1'],
@@ -141,6 +144,7 @@ const HotspotView = ({ hotspot }) => {
     }
 
     async function getHotspotRewards() {
+      setRewardsLoading(true)
       const rewards = await fetchRewardsSummary(hotspotid)
       setRewards(rewards)
       setRewardsLoading(false)

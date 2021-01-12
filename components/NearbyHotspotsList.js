@@ -40,12 +40,13 @@ const columns = [
   },
 ]
 
-const NearbyHotspotsList = ({ nearbyHotspots }) => (
+const NearbyHotspotsList = ({ nearbyHotspots, nearbyHotspotsLoading }) => (
   <Card title={'Nearby Hotspots'}>
     <Table
       dataSource={nearbyHotspots}
       columns={columns}
       size="small"
+      loading={nearbyHotspotsLoading}
       rowKey="name"
       pagination={{ pageSize: 5, hideOnSinglePage: true }}
       scroll={{ x: true }}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Row, Typography, Checkbox, Tooltip, Skeleton } from 'antd'
 import Client from '@helium/http'
 import algoliasearch from 'algoliasearch'
@@ -20,8 +20,6 @@ import {
   formatLocation,
 } from '../../components/Hotspots/utils'
 
-import { useRouter } from 'next/router'
-
 import { fetchRewardsSummary } from '../../data/hotspots'
 
 const HotspotMapbox = dynamic(
@@ -34,15 +32,125 @@ const HotspotMapbox = dynamic(
 
 const { Title, Text } = Typography
 
-function HotspotView({
-  hotspot,
-  witnesses,
-  nearbyHotspots,
-  activity,
-  rewards,
-}) {
+const HotspotView = ({ hotspot }) => {
   const [showWitnesses, setShowWitnesses] = useState(true)
   const [showNearbyHotspots, setShowNearbyHotspots] = useState(true)
+
+  const [witnesses, setWitnesses] = useState([])
+  const [activity, setActivity] = useState({})
+  const [rewards, setRewards] = useState([])
+  const [nearbyHotspots, setNearbyHotspots] = useState([])
+
+  const [witnessesLoading, setWitnessesLoading] = useState(true)
+  const [activityLoading, setActivityLoading] = useState(true)
+  const [rewardsLoading, setRewardsLoading] = useState(true)
+  const [nearbyHotspotsLoading, setNearbyHotspotsLoading] = useState(true)
+
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setLoading(
+      !(
+        !witnessesLoading &&
+        !activityLoading &&
+        !rewardsLoading &&
+        !nearbyHotspotsLoading
+      ),
+    )
+  }, [witnessesLoading, activityLoading, rewardsLoading, nearbyHotspotsLoading])
+
+  useEffect(() => {
+    const client = new Client()
+    const hotspotid = hotspot.address
+
+    async function getWitnesses() {
+      // // TODO convert to use @helium/http
+      const witnesses = await fetch(
+        `https://api.helium.io/v1/hotspots/${hotspotid}/witnesses`,
+      )
+        .then((res) => res.json())
+        .then((json) => json.data.filter((w) => !(w.address === hotspotid)))
+      setWitnesses(witnesses)
+      setWitnessesLoading(false)
+    }
+    async function getNearbyHotspots() {
+      const algoliaClient = algoliasearch(
+        process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+        process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY,
+      )
+      const hotspotsIndex = algoliaClient.initIndex('hotspots')
+      const { hits: nearbyHotspotsResults } = await hotspotsIndex.search('', {
+        aroundLatLng: [
+          hotspot.lat ? hotspot.lat : 0,
+          hotspot.lng ? hotspot.lng : 0,
+        ].join(', '),
+        getRankingInfo: true,
+        filters: `NOT address:${hotspotid}`,
+      })
+      setNearbyHotspots(nearbyHotspotsResults)
+      setNearbyHotspotsLoading(false)
+    }
+
+    async function getHotspotActivity() {
+      // Get most recent challenger transaction
+      const challengerTxnList = await client.hotspot(hotspotid).activity.list({
+        filterTypes: ['poc_request_v1'],
+      })
+      const challengerTxn = await challengerTxnList.take(1)
+
+      // Get most recent challengee transaction
+      const challengeeTxnList = await client.hotspot(hotspotid).activity.list({
+        filterTypes: ['poc_receipts_v1'],
+      })
+      const challengeeTxn = await challengeeTxnList.take(1)
+
+      // Get most recent rewards transactions to search for...
+      const rewardTxnsList = await client.hotspot(hotspotid).activity.list({
+        filterTypes: ['rewards_v1'],
+      })
+      const rewardTxns = await rewardTxnsList.take(200)
+
+      let witnessTxn = null
+      // most recent witness transaction
+      rewardTxns.some(function (txn) {
+        return txn.rewards.some(function (txnReward) {
+          if (txnReward.type === 'poc_witnesses') {
+            witnessTxn = txn
+            return
+          }
+        })
+      })
+      let dataTransferTxn = null
+      // most recent data credit transaction
+      rewardTxns.some(function (txn) {
+        return txn.rewards.some(function (txnReward) {
+          if (txnReward.type === 'data_credits') {
+            dataTransferTxn = txn
+            return
+          }
+        })
+      })
+      const hotspotActivity = {
+        challengerTxn: challengerTxn.length === 1 ? challengerTxn[0] : null,
+        challengeeTxn: challengeeTxn.length === 1 ? challengeeTxn[0] : null,
+        witnessTxn: witnessTxn,
+        dataTransferTxn: dataTransferTxn,
+      }
+      setActivity(hotspotActivity)
+      setActivityLoading(false)
+    }
+
+    async function getHotspotRewards() {
+      const rewards = await fetchRewardsSummary(hotspotid)
+      setRewards(rewards)
+      setRewardsLoading(false)
+    }
+
+    getWitnesses()
+    getNearbyHotspots()
+    getHotspotActivity()
+    getHotspotRewards()
+  }, [hotspot])
 
   return (
     <AppLayout
@@ -236,6 +344,10 @@ function HotspotView({
             hotspot={hotspot}
             witnesses={witnesses}
             activity={activity}
+            loading={loading}
+            rewardsLoading={rewardsLoading}
+            witnessesLoading={witnessesLoading}
+            activityLoading={activityLoading}
           />
         </div>
         <div
@@ -275,7 +387,7 @@ function HotspotView({
           marginTop: 0,
         }}
       >
-        <RewardSummary rewards={rewards} />
+        <RewardSummary rewardsLoading={rewardsLoading} rewards={rewards} />
       </Content>
       <Content
         style={{
@@ -285,7 +397,10 @@ function HotspotView({
           marginTop: 0,
         }}
       >
-        <WitnessesList witnesses={witnesses} />
+        <WitnessesList
+          witnessesLoading={witnessesLoading}
+          witnesses={witnesses}
+        />
       </Content>
 
       <Content
@@ -296,7 +411,10 @@ function HotspotView({
           marginTop: 0,
         }}
       >
-        <NearbyHotspotsList nearbyHotspots={nearbyHotspots} />
+        <NearbyHotspotsList
+          nearbyHotspotsLoading={nearbyHotspotsLoading}
+          nearbyHotspots={nearbyHotspots}
+        />
       </Content>
       <Content
         style={{
@@ -324,82 +442,82 @@ export async function getStaticProps({ params }) {
   const { hotspotid } = params
   const hotspot = await client.hotspots.get(hotspotid)
 
-  // Get most recent challenger transaction
-  const challengerTxnList = await client.hotspot(hotspotid).activity.list({
-    filterTypes: ['poc_request_v1'],
-  })
-  const challengerTxn = await challengerTxnList.take(1)
+  // // Get most recent challenger transaction
+  // const challengerTxnList = await client.hotspot(hotspotid).activity.list({
+  //   filterTypes: ['poc_request_v1'],
+  // })
+  // const challengerTxn = await challengerTxnList.take(1)
 
-  // Get most recent challengee transaction
-  const challengeeTxnList = await client.hotspot(hotspotid).activity.list({
-    filterTypes: ['poc_receipts_v1'],
-  })
-  const challengeeTxn = await challengeeTxnList.take(1)
+  // // Get most recent challengee transaction
+  // const challengeeTxnList = await client.hotspot(hotspotid).activity.list({
+  //   filterTypes: ['poc_receipts_v1'],
+  // })
+  // const challengeeTxn = await challengeeTxnList.take(1)
 
-  // Get most recent rewards transactions to search for...
-  const rewardTxnsList = await client.hotspot(hotspotid).activity.list({
-    filterTypes: ['rewards_v1'],
-  })
-  const rewardTxns = await rewardTxnsList.take(200)
+  // // Get most recent rewards transactions to search for...
+  // const rewardTxnsList = await client.hotspot(hotspotid).activity.list({
+  //   filterTypes: ['rewards_v1'],
+  // })
+  // const rewardTxns = await rewardTxnsList.take(200)
 
-  let witnessTxn = null
-  // most recent witness transaction
-  rewardTxns.some(function (txn) {
-    return txn.rewards.some(function (txnReward) {
-      if (txnReward.type === 'poc_witnesses') {
-        witnessTxn = txn
-        return
-      }
-    })
-  })
+  // let witnessTxn = null
+  // // most recent witness transaction
+  // rewardTxns.some(function (txn) {
+  //   return txn.rewards.some(function (txnReward) {
+  //     if (txnReward.type === 'poc_witnesses') {
+  //       witnessTxn = txn
+  //       return
+  //     }
+  //   })
+  // })
 
-  let dataTransferTxn = null
-  // most recent data credit transaction
-  rewardTxns.some(function (txn) {
-    return txn.rewards.some(function (txnReward) {
-      if (txnReward.type === 'data_credits') {
-        dataTransferTxn = txn
-        return
-      }
-    })
-  })
+  // let dataTransferTxn = null
+  // // most recent data credit transaction
+  // rewardTxns.some(function (txn) {
+  //   return txn.rewards.some(function (txnReward) {
+  //     if (txnReward.type === 'data_credits') {
+  //       dataTransferTxn = txn
+  //       return
+  //     }
+  //   })
+  // })
 
-  const hotspotActivity = {
-    challengerTxn: challengerTxn.length === 1 ? challengerTxn[0] : null,
-    challengeeTxn: challengeeTxn.length === 1 ? challengeeTxn[0] : null,
-    witnessTxn: witnessTxn,
-    dataTransferTxn: dataTransferTxn,
-  }
-  const algoliaClient = algoliasearch(
-    process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
-    process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY,
-  )
-  const hotspotsIndex = algoliaClient.initIndex('hotspots')
-  const { hits: nearbyHotspots } = await hotspotsIndex.search('', {
-    aroundLatLng: [
-      hotspot.lat ? hotspot.lat : 0,
-      hotspot.lng ? hotspot.lng : 0,
-    ].join(', '),
-    getRankingInfo: true,
-    filters: `NOT address:${hotspotid}`,
-  })
+  // const hotspotActivity = {
+  //   challengerTxn: challengerTxn.length === 1 ? challengerTxn[0] : null,
+  //   challengeeTxn: challengeeTxn.length === 1 ? challengeeTxn[0] : null,
+  //   witnessTxn: witnessTxn,
+  //   dataTransferTxn: dataTransferTxn,
+  // }
+  // const algoliaClient = algoliasearch(
+  //   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+  //   process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY,
+  // )
+  // const hotspotsIndex = algoliaClient.initIndex('hotspots')
+  // const { hits: nearbyHotspots } = await hotspotsIndex.search('', {
+  //   aroundLatLng: [
+  //     hotspot.lat ? hotspot.lat : 0,
+  //     hotspot.lng ? hotspot.lng : 0,
+  //   ].join(', '),
+  //   getRankingInfo: true,
+  //   filters: `NOT address:${hotspotid}`,
+  // })
 
-  const rewards = await fetchRewardsSummary(hotspotid)
+  // const rewards = await fetchRewardsSummary(hotspotid)
 
-  // TODO convert to use @helium/http
-  const witnesses = await fetch(
-    `https://api.helium.io/v1/hotspots/${hotspotid}/witnesses`,
-  )
-    .then((res) => res.json())
-    .then((json) => json.data.filter((w) => !(w.address === hotspotid)))
+  // // TODO convert to use @helium/http
+  // const witnesses = await fetch(
+  //   `https://api.helium.io/v1/hotspots/${hotspotid}/witnesses`,
+  // )
+  //   .then((res) => res.json())
+  //   .then((json) => json.data.filter((w) => !(w.address === hotspotid)))
 
   return {
     props: {
       hotspot: JSON.parse(JSON.stringify(hotspot)),
-      activity: JSON.parse(JSON.stringify(hotspotActivity)),
-      nearbyHotspots,
-      witnesses,
-      rewards,
+      // activity: JSON.parse(JSON.stringify(hotspotActivity)),
+      // nearbyHotspots,
+      // witnesses,
+      // rewards,
     },
     revalidate: 10,
   }

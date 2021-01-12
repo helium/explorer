@@ -1,6 +1,6 @@
 import RewardSummaryCard from './RewardSummaryCard'
 
-const RewardSummary = ({ rewards }) => {
+const RewardSummary = ({ rewards, rewardsLoading }) => {
   return (
     <div
       style={{
@@ -21,15 +21,18 @@ const RewardSummary = ({ rewards }) => {
       >
         <RewardSummaryCard
           timeframe="24 hours"
-          value={rewards.day.toFixed(2).toLocaleString()}
+          value={rewards.day?.toFixed(2).toLocaleString()}
+          rewardsLoading={rewardsLoading}
         />
         <RewardSummaryCard
           timeframe="7 days"
-          value={rewards.week.toFixed(2).toLocaleString()}
+          value={rewards.week?.toFixed(2).toLocaleString()}
+          rewardsLoading={rewardsLoading}
         />
         <RewardSummaryCard
           timeframe="30 days"
-          value={rewards.month.toFixed(2).toLocaleString()}
+          value={rewards.month?.toFixed(2).toLocaleString()}
+          rewardsLoading={rewardsLoading}
         />
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Table } from 'antd'
+import { Card, Table, Skeleton } from 'antd'
 import Link from 'next/link'
 import { formatHotspotName, formatLocation } from './Hotspots/utils'
 import { StatusCircle } from './Hotspots'
@@ -41,12 +41,13 @@ const columns = [
   },
 ]
 
-const WitnessesList = ({ witnesses }) => (
+const WitnessesList = ({ witnesses, witnessesLoading }) => (
   <Card title={'Witnesses'}>
     <Table
       dataSource={witnesses}
       columns={columns}
       size="small"
+      loading={witnessesLoading}
       rowKey="name"
       pagination={{ pageSize: 5, hideOnSinglePage: true }}
       scroll={{ x: true }}

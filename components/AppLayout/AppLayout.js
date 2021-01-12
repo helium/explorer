@@ -29,7 +29,9 @@ const AppLayout = (props) => (
     <Content style={{ padding: '0px' }}>{props.children}</Content>
 
     <Footer style={{ textAlign: 'center', backgroundColor: '#101725' }}>
-      <Text style={{ color: '#8182AB' }}>©2020 Helium Systems, Inc.</Text>
+      <Text style={{ color: '#8182AB' }}>
+        ©{new Date().getFullYear()} Helium Systems, Inc.
+      </Text>
     </Footer>
   </Layout>
 )

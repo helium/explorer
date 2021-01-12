@@ -34,7 +34,14 @@ function Hotspots({
   const { latestHotspots } = useLatestHotspots(initialLatestHotspots)
 
   return (
-    <AppLayout>
+    <AppLayout
+      title={'Hotspots'}
+      description={
+        'An overview of the Hotspots that make up the Helium network'
+      }
+      openGraphImageAbsoluteUrl={`https://explorer.helium.com/images/og/hotspots.png`}
+      url={`https://explorer.helium.com/accounts/hotspots`}
+    >
       <TopBanner icon={HotspotsImg} title="Hotspots" />
 
       <TopChart

@@ -35,7 +35,14 @@ function Market({
   )
 
   return (
-    <AppLayout>
+    <AppLayout
+      title={'Market Data'}
+      description={
+        'An overview of market data about the Helium Network Token (HNT) and Data Credits (DC)'
+      }
+      openGraphImageAbsoluteUrl={`https://explorer.helium.com/images/og/market.png`}
+      url={`https://explorer.helium.com/market`}
+    >
       <TopBanner icon={TokenImg} title="Market Data" />
 
       <TopChart

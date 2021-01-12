@@ -6,20 +6,23 @@ import Link from 'next/link'
 import { formatHotspotName, formatLocation } from './Hotspots/utils'
 import { StatusCircle } from './Hotspots'
 
-const HotspotsList = ({ hotspots, loading = false }) => (
-  <Content style={{ marginBottom: 20 }}>
-    <Card loading={loading} title={'Hotspots'}>
-      <Table
-        dataSource={hotspots}
-        columns={hotspotColumns}
-        size="small"
-        rowKey="name"
-        pagination={{ pageSize: 10, hideOnSinglePage: true }}
-        scroll={{ x: true }}
-      />
-    </Card>
-  </Content>
-)
+const HotspotsList = ({ hotspots, loading }) => {
+  return (
+    <Content style={{ marginBottom: 20 }}>
+      <Card loading={loading} title={'Hotspots'}>
+        <Table
+          dataSource={hotspots}
+          columns={hotspotColumns}
+          loading={loading}
+          size="small"
+          rowKey="name"
+          pagination={{ pageSize: 10, hideOnSinglePage: true }}
+          scroll={{ x: true }}
+        />
+      </Card>
+    </Content>
+  )
+}
 
 const hotspotColumns = [
   {

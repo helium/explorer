@@ -2,119 +2,121 @@ import { useState, useEffect } from 'react'
 import ChecklistCard from './ChecklistCard'
 import { Tooltip } from 'antd'
 
-const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
-  const possibleChecklistItems = [
-    {
-      sortOrder: 0,
-      title: 'Blockchain Sync',
-      infoTooltipText: `Hotspots must be fully synced before they can mine. New Hotspots can take up to 48 hours to sync.`,
-      detailText:
-        isNaN(hotspot.status.height) || isNaN(hotspot.block)
-          ? `Hotspot is not yet synced.`
-          : hotspot.block - hotspot.status.height < 100
-          ? `Hotspot is fully synced.`
-          : `Hotspot is ${(
-              hotspot.block - hotspot.status.height
-            ).toLocaleString()} block${
-              hotspot.block - hotspot.status.height === 1 ? '' : 's'
-            } behind the Helium blockchain and is roughly ${(
-              (hotspot.status.height / hotspot.block) *
-              100
-            )
-              .toFixed(2)
-              .toLocaleString()}% synced.`,
-      condition: hotspot.block - hotspot.status.height < 100,
-    },
-    {
-      sortOrder: 1,
-      title: 'Hotspot Status',
-      infoTooltipText: 'Hotspots must be online to sync and mine.',
-      detailText:
-        hotspot.status.online === 'online' ? (
-          `Hotspot is online.`
-        ) : (
-          <p>
-            Hotspot is offline.{' '}
-            <a
-              href="https://intercom.help/heliumnetwork/en/articles/3207912-troubleshooting-network-connection-issues"
-              target="_blank"
-              rel="noopener"
-              rel="noreferrer"
-            >
-              Read our troubleshooting guide.
-            </a>
-          </p>
-        ),
-      condition: hotspot.status.online === 'online',
-    },
-    {
-      sortOrder: 2,
-      title: 'Create a Challenge',
-      infoTooltipText:
-        'Hotspots that are synced and online create a challenge automatically, every 60 blocks.',
-      detailText:
-        activity.challengerTxn !== null
-          ? `Hotspot issued a challenge ${(
-              hotspot.block - activity.challengerTxn.height
-            ).toLocaleString()} block${
-              hotspot.block - activity.challengerTxn.height === 1 ? '' : 's'
-            } ago.`
-          : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically.`,
-      condition: activity.challengerTxn !== null,
-    },
-    {
-      sortOrder: 3,
-      title: 'Witness a Challenge',
-      detailText:
-        activity.witnessTxn !== null
-          ? // TODO: make this message more specific (e.g. add: "x blocks ago") once the API has been updated to make that number easier to get
-            `Hotspot has witnessed a challenge recently.`
-          : `Hotspot hasn't witnessed a challenge recently.`,
-      infoTooltipText:
-        'Hotspots that are synced and online automatically witness challenges if they’re in range of other Hotspots. If there are no Hotspots nearby, they will not be able to witness.',
-      condition: activity.witnessTxn !== null,
-    },
-    {
-      sortOrder: 4,
-      title: 'Witness List',
-      detailText:
-        witnesses.length > 0
-          ? `Hotspot has ${witnesses.length} Hotspot${
-              witnesses.length === 1 ? '' : 's'
-            } in its witness list.`
-          : `Hotspot doesn't currently have a witness list.`,
-      infoTooltipText:
-        'A Hotspot’s witness list is populated the more challenges it witnesses. Witness Lists refresh periodically to exclude offline Hotspots.',
-      condition: witnesses.length > 0,
-    },
-    {
-      sortOrder: 5,
-      title: 'Participate in a Challenge',
-      detailText:
-        activity.challengeeTxn !== null
-          ? `Hotspot last participated in a challenge ${(
-              hotspot.block - activity.challengeeTxn.height
-            ).toLocaleString()} block${
-              hotspot.block - activity.challengeeTxn.height === 1 ? '' : 's'
-            } ago.`
-          : `Hotspot hasn’t participated in a challenge yet.`,
-      infoTooltipText:
-        'Participation in a challenge depends on having a witness list. Use the checkbox to see Hotspots in your list. It can take a few hours for challenges to include this Hotspot once a witness list is built.',
-      condition: activity.challengeeTxn !== null,
-    },
-    {
-      sortOrder: 6,
-      title: 'Transferred Data',
-      detailText:
-        activity.dataTransferTxn !== null
-          ? // TODO: make this message more specific (e.g. add "x blocks ago") once the API has been updated to make that number easier to get
-            `Hotspot has transferred data packets recently.`
-          : `Hotspot hasn’t transfered data packets recently.`,
-      infoTooltipText:
-        'Hotspots transfer encryped data on behalf of devices using the network. Device usage is expanding, and it is normal to have a Hotspot that does not transfer data. This likely means there are no devices using the network in the area.',
-      condition: activity.dataTransferTxn !== null,
-    },
-  ]
+const HotspotChecklist = ({ hotspot, witnesses, activity, loading }) => {
+  const possibleChecklistItems = loading
+    ? [{ sortOrder: 0 }, { sortOrder: 1 }, { sortOrder: 2 }, { sortOrder: 3 }]
+    : [
+        {
+          sortOrder: 0,
+          title: 'Blockchain Sync',
+          infoTooltipText: `Hotspots must be fully synced before they can mine. New Hotspots can take up to 48 hours to sync.`,
+          detailText:
+            isNaN(hotspot.status.height) || isNaN(hotspot.block)
+              ? `Hotspot is not yet synced.`
+              : hotspot.block - hotspot.status.height < 100
+              ? `Hotspot is fully synced.`
+              : `Hotspot is ${(
+                  hotspot.block - hotspot.status.height
+                ).toLocaleString()} block${
+                  hotspot.block - hotspot.status.height === 1 ? '' : 's'
+                } behind the Helium blockchain and is roughly ${(
+                  (hotspot.status.height / hotspot.block) *
+                  100
+                )
+                  .toFixed(2)
+                  .toLocaleString()}% synced.`,
+          condition: hotspot.block - hotspot.status.height < 100,
+        },
+        {
+          sortOrder: 1,
+          title: 'Hotspot Status',
+          infoTooltipText: 'Hotspots must be online to sync and mine.',
+          detailText:
+            hotspot.status.online === 'online' ? (
+              `Hotspot is online.`
+            ) : (
+              <p>
+                Hotspot is offline.{' '}
+                <a
+                  href="https://intercom.help/heliumnetwork/en/articles/3207912-troubleshooting-network-connection-issues"
+                  target="_blank"
+                  rel="noopener"
+                  rel="noreferrer"
+                >
+                  Read our troubleshooting guide.
+                </a>
+              </p>
+            ),
+          condition: hotspot.status.online === 'online',
+        },
+        {
+          sortOrder: 2,
+          title: 'Create a Challenge',
+          infoTooltipText:
+            'Hotspots that are synced and online create a challenge automatically, every 60 blocks.',
+          detailText:
+            activity.challengerTxn !== null
+              ? `Hotspot issued a challenge ${(
+                  hotspot.block - activity.challengerTxn.height
+                ).toLocaleString()} block${
+                  hotspot.block - activity.challengerTxn.height === 1 ? '' : 's'
+                } ago.`
+              : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically.`,
+          condition: activity.challengerTxn !== null,
+        },
+        {
+          sortOrder: 3,
+          title: 'Witness a Challenge',
+          detailText:
+            activity.witnessTxn !== null
+              ? // TODO: make this message more specific (e.g. add: "x blocks ago") once the API has been updated to make that number easier to get
+                `Hotspot has witnessed a challenge recently.`
+              : `Hotspot hasn't witnessed a challenge recently.`,
+          infoTooltipText:
+            'Hotspots that are synced and online automatically witness challenges if they’re in range of other Hotspots. If there are no Hotspots nearby, they will not be able to witness.',
+          condition: activity.witnessTxn !== null,
+        },
+        {
+          sortOrder: 4,
+          title: 'Witness List',
+          detailText:
+            witnesses.length > 0
+              ? `Hotspot has ${witnesses.length} Hotspot${
+                  witnesses.length === 1 ? '' : 's'
+                } in its witness list.`
+              : `Hotspot doesn't currently have a witness list.`,
+          infoTooltipText:
+            'A Hotspot’s witness list is populated the more challenges it witnesses. Witness Lists refresh periodically to exclude offline Hotspots.',
+          condition: witnesses.length > 0,
+        },
+        {
+          sortOrder: 5,
+          title: 'Participate in a Challenge',
+          detailText:
+            activity.challengeeTxn !== null
+              ? `Hotspot last participated in a challenge ${(
+                  hotspot.block - activity.challengeeTxn.height
+                ).toLocaleString()} block${
+                  hotspot.block - activity.challengeeTxn.height === 1 ? '' : 's'
+                } ago.`
+              : `Hotspot hasn’t participated in a challenge yet.`,
+          infoTooltipText:
+            'Participation in a challenge depends on having a witness list. Use the checkbox to see Hotspots in your list. It can take a few hours for challenges to include this Hotspot once a witness list is built.',
+          condition: activity.challengeeTxn !== null,
+        },
+        {
+          sortOrder: 6,
+          title: 'Transferred Data',
+          detailText:
+            activity.dataTransferTxn !== null
+              ? // TODO: make this message more specific (e.g. add "x blocks ago") once the API has been updated to make that number easier to get
+                `Hotspot has transferred data packets recently.`
+              : `Hotspot hasn’t transfered data packets recently.`,
+          infoTooltipText:
+            'Hotspots transfer encryped data on behalf of devices using the network. Device usage is expanding, and it is normal to have a Hotspot that does not transfer data. This likely means there are no devices using the network in the area.',
+          condition: activity.dataTransferTxn !== null,
+        },
+      ]
 
   const CARD_WIDTH = 218
   const CARD_MARGIN = 20
@@ -348,7 +350,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
           style={{ position: 'relative' }}
           id="hotspot-checklist-outer-container"
         >
-          {currentIndex !== 0 && (
+          {currentIndex !== 0 && !loading && (
             <button
               onClick={handlePreviousCardClick}
               className="hotspot-checklist-nav-button"
@@ -395,6 +397,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
                   return (
                     <>
                       <ChecklistCard
+                        loading={loading}
                         isCurrentCard={index === currentIndex}
                         cardWidth={CARD_WIDTH}
                         index={index}
@@ -432,7 +435,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity }) => {
             />
           </div>
 
-          {!hideNextButton && (
+          {!hideNextButton && !loading && (
             <button
               onClick={handleNextCardClick}
               className="hotspot-checklist-nav-button"

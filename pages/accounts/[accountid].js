@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import { Typography, Descriptions, Tooltip } from 'antd'
 import Client from '@helium/http'
 import AppLayout, { Content } from '../../components/AppLayout'
@@ -6,6 +6,7 @@ import ActivityList from '../../components/ActivityList'
 import HotspotsList from '../../components/HotspotsList'
 import QRCode from 'react-qr-code'
 import Fade from 'react-reveal/Fade'
+import { Balance, CurrencyType } from '@helium/currency'
 
 import { ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import AccountIcon from '../../components/AccountIcon'
@@ -23,9 +24,64 @@ const AccountAddress = ({ address, truncate = false }) => {
   )
 }
 
-function AccountView({ account, hotspots }) {
+const AccountView = ({ account }) => {
+  const dcBalanceObject = new Balance(
+    account.dcBalance.integerBalance,
+    CurrencyType.dataCredit,
+  )
+  const balanceObject = new Balance(
+    account.balance.integerBalance,
+    CurrencyType.networkToken,
+  )
+  const hstBalanceObject = new Balance(
+    account.secBalance.integerBalance,
+    CurrencyType.security,
+  )
+
+  const [hotspots, setHotspots] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function getHotspots() {
+      const client = new Client()
+      const accountid = account.address
+
+      const list = await client.account(accountid).hotspots.list()
+
+      const hotspots = []
+      for await (const hotspot of list) {
+        hotspot.status.gpsText = gpsLocation(hotspot.status.gps)
+        hotspot.rewards = await fetchRewardsSummary(hotspot.address)
+        delete hotspot.client
+        hotspots.push(JSON.parse(JSON.stringify(hotspot)))
+      }
+      setHotspots(hotspots)
+      setLoading(false)
+    }
+    getHotspots()
+  }, [])
+
   return (
-    <AppLayout>
+    <AppLayout
+      title={`${account.address.substring(0, 5)}... | Account`}
+      description={`An account on the Helium blockchain with ${balanceObject.toString(
+        2,
+      )}${
+        account.dcBalance.integerBalance > 0
+          ? account.secBalance.integerBalance === 0
+            ? ` and ${dcBalanceObject.toString()}`
+            : `, ${dcBalanceObject.toString()}`
+          : ''
+      }${
+        account.secBalance.integerBalance > 0
+          ? account.dcBalance.integerBalance === 0
+            ? ` and ${hstBalanceObject.toString()}`
+            : `, and ${hstBalanceObject.toString()}`
+          : ''
+      }, with the address ${account.address}`}
+      openGraphImageAbsoluteUrl={`https://explorer.helium.com/images/og/accounts.png`}
+      url={`https://explorer.helium.com/accounts/accounts/${account.address}`}
+    >
       <Content
         style={{
           marginTop: 0,
@@ -93,7 +149,7 @@ function AccountView({ account, hotspots }) {
               }}
             >
               <Descriptions.Item label="HNT">
-                {account.balance.floatBalance.toLocaleString()} HNT
+                {balanceObject.toString(2)}
               </Descriptions.Item>
             </Title>
           </Fade>
@@ -121,7 +177,7 @@ function AccountView({ account, hotspots }) {
                     style={{ color: '#FFC769', marginRight: 5 }}
                   />
                   <Descriptions.Item label="Data Credits">
-                    {account.dcBalance.floatBalance.toLocaleString()} DC
+                    {dcBalanceObject.toString()}
                   </Descriptions.Item>
                 </h3>
               </Tooltip>
@@ -135,7 +191,7 @@ function AccountView({ account, hotspots }) {
                     style={{ color: '#29D391', marginRight: 5 }}
                   />
                   <Descriptions.Item label="Security Tokens">
-                    {account.secBalance.floatBalance.toLocaleString()} HST
+                    {hstBalanceObject.toString(2)}
                   </Descriptions.Item>
                 </h3>
               </Tooltip>
@@ -152,7 +208,7 @@ function AccountView({ account, hotspots }) {
           marginTop: 0,
         }}
       >
-        <HotspotsList hotspots={hotspots} />
+        <HotspotsList loading={loading} hotspots={hotspots} />
         <ActivityList
           type="account"
           address={account.address}
@@ -175,20 +231,9 @@ export async function getStaticProps({ params }) {
   const { accountid } = params
   const account = await client.accounts.get(accountid)
 
-  const list = await client.account(accountid).hotspots.list()
-
-  const hotspots = []
-  for await (const hotspot of list) {
-    hotspot.status.gpsText = gpsLocation(hotspot.status.gps)
-    hotspot.rewards = await fetchRewardsSummary(hotspot.address)
-    delete hotspot.client
-    hotspots.push(JSON.parse(JSON.stringify(hotspot)))
-  }
-
   return {
     props: {
       account: JSON.parse(JSON.stringify(account)),
-      hotspots,
     },
     revalidate: 10,
   }

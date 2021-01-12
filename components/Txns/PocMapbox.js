@@ -1,6 +1,6 @@
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 import { h3ToGeo } from 'h3-js'
-import { findBounds } from '../components/Txns/utils'
+import { findBounds } from './utils'
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,

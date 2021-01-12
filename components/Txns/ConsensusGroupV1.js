@@ -7,7 +7,7 @@ import { formatLocation } from '../Hotspots/utils'
 
 import dynamic from 'next/dynamic'
 
-const ConsensusMapbox = dynamic(() => import('../ConsensusMapbox'), {
+const ConsensusMapbox = dynamic(() => import('./ConsensusMapbox'), {
   ssr: false,
   loading: () => <span style={{ height: '600px' }} />,
 })
@@ -132,7 +132,7 @@ class ConsensusGroupV1 extends Component {
             {txn.delay}
           </Descriptions.Item>
           <Descriptions.Item label="Proof" span={3}>
-            <TruncatedField key={'proof'} value={txn.proof} />
+            <TruncatedField value={txn.proof} />
           </Descriptions.Item>
         </Descriptions>
       </div>

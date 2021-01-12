@@ -19,6 +19,7 @@ const AppLayout = (props) => (
     <Typekit kitId="bum5vme" />
     <MetaTags
       title={props.title}
+      pageTitle={props.pageTitle}
       description={props.description}
       openGraphImageAbsoluteUrl={props.openGraphImageAbsoluteUrl}
       url={props.url}

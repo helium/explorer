@@ -4,8 +4,15 @@ import AccountIcon from '../AccountIcon'
 
 import Link from 'next/link'
 import animalHash from 'angry-purple-tiger'
+import { Balance, CurrencyType } from '@helium/currency'
 
 const TransferHotspotV1 = ({ txn }) => {
+  const amountToSellerObject = new Balance(
+    txn.amountToSeller.integerBalance,
+    CurrencyType.networkToken,
+  )
+  const feeObject = new Balance(txn.fee.integerBalance, CurrencyType.dataCredit)
+
   return (
     <>
       <Descriptions bordered>
@@ -54,10 +61,10 @@ const TransferHotspotV1 = ({ txn }) => {
           </span>
         </Descriptions.Item>
         <Descriptions.Item label="Payment to Seller" span={3}>
-          {txn.amountToSeller.toString()}
+          {amountToSellerObject.toString(2)}
         </Descriptions.Item>
         <Descriptions.Item label="Fee" span={3}>
-          {txn.fee.toString()}
+          {feeObject.toString()}
         </Descriptions.Item>
       </Descriptions>
     </>

@@ -1,463 +1,230 @@
-import React from 'react'
-import { Descriptions, Collapse, Table, Tooltip } from 'antd'
+import React, { useState, useEffect } from 'react'
+import { Descriptions, Collapse } from 'antd'
 
-import { h3Distance, h3GetResolution, h3ToChildren, h3ToParent } from 'h3-js'
 import Link from 'next/link'
 import animalHash from 'angry-purple-tiger'
 import PocPath from './PocPath'
+
 const { Panel } = Collapse
 
-import { formatDistance } from '../Hotspots/utils'
+import PocInfoTable from './PocInfoTable'
 
-// these values are from this table: https://h3geo.org/docs/core-library/restable
-const AVG_H3_HEX_EDGE_LENGTHS_IN_KM = [
-  // 0
-  1107.712591,
-  // 1
-  418.6760055,
-  // 2
-  158.2446558,
-  // 3
-  59.81085794,
-  // 4
-  22.6063794,
-  // 5
-  8.544408276,
-  // 6
-  3.229482772,
-  // 7
-  1.220629759,
-  // 8
-  0.461354684,
-  // 9
-  0.174375668,
-  // 10
-  0.065907807,
-  // 11
-  0.024910561,
-  // 12
-  0.009415526,
-  // 13
-  0.003559893,
-  // 14
-  0.001348575,
-  // 15
-  0.000509713,
-]
+const formatPocRadioInfo = (receipt) => {
+  const baseText = `received ${
+    receipt?.signal ? `at RSSI ${receipt?.signal}dBm` : ``
+  }`
+  const snrText = `${
+    receipt?.snr ? `, with SNR ${receipt?.snr.toFixed(2)}.dB` : ``
+  }`
+  let dataRateText = ''
 
-const PoCTableHeader = ({ tooltipText, title }) => {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-      }}
-    >
-      <p className="poc-witness-info-header">{title}</p>
-      <Tooltip title={tooltipText}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          style={{
-            color: '#888',
-            height: 18,
-            width: 18,
-            marginLeft: 5,
-          }}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      </Tooltip>
-    </div>
-  )
+  if (receipt !== null && receipt.datarate !== undefined) {
+    if (Array.isArray(receipt.datarate)) {
+      dataRateText = `${
+        receipt.datarate.length > 0
+          ? `, ${String.fromCharCode.apply(null, receipt.datarate)}`
+          : ``
+      }`
+    } else {
+      if (receipt.datarate !== null) {
+        dataRateText = `, ${receipt.datarate} `
+      }
+    }
+  }
+
+  const pocRadioInfo = `${baseText}${snrText}${dataRateText}`
+  return pocRadioInfo
 }
 
-const PocReceiptsV1 = ({ txn, minValidH3Distance, pocH3CellResolution }) => (
-  <div>
-    <PocPath path={txn.path} />
-    <Descriptions bordered>
-      <Descriptions.Item label="Challenger" span={3}>
-        <Link href={'/hotspots/' + txn.challenger}>
-          <a>{animalHash(txn.challenger)}</a>
-        </Link>
-      </Descriptions.Item>
-      <Descriptions.Item label="Block Height" span={3}>
-        <Link href={'/blocks/' + txn.height}>
-          <a>{txn.height}</a>
-        </Link>
-      </Descriptions.Item>
-    </Descriptions>
-    <span className="poc-outer-container">
-      <Descriptions bordered layout="vertical">
-        <Descriptions.Item label="PoC Path" span={3}>
-          <ol style={{ margin: 0, padding: 0 }}>
-            {txn.path.map((p, idx, { length }) => {
-              return (
-                <>
-                  <div key={`${p.receipt}-${idx}`}>
-                    <div
-                      style={{
-                        marginBottom: '0px',
-                        paddingTop: '24px',
-                      }}
-                    >
-                      <div className="poc-participant-row">
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            position: 'relative',
-                          }}
-                        >
-                          {idx !== 0 && (
-                            <span
-                              className={`poc-path-line-above ${
-                                txn.path[idx - 1].receipt &&
-                                txn.path[idx - 1].receipt.origin === 'radio'
-                                  ? 'poc-path-line-above-2'
-                                  : ''
-                              }`}
+const PocReceiptsV1 = ({ txn }) => {
+  const [minValidH3Distance, setMinValidH3Distance] = useState()
+  const [pocH3CellResolution, setPocH3CellResolution] = useState()
+
+  useEffect(async () => {
+    await fetch('https://api.helium.io/v1/vars/poc_v4_exclusion_cells')
+      .then((res) => res.json())
+      .then((min) => {
+        setMinValidH3Distance(min.data)
+      })
+    await fetch('https://api.helium.io/v1/vars/poc_v4_parent_res')
+      .then((res) => res.json())
+      .then((resolution) => {
+        setPocH3CellResolution(resolution.data)
+      })
+  }, [])
+
+  return (
+    <div>
+      <PocPath path={txn.path} />
+      <Descriptions bordered>
+        <Descriptions.Item label="Challenger" span={3}>
+          <Link href={'/hotspots/' + txn.challenger}>
+            <a>{animalHash(txn.challenger)}</a>
+          </Link>
+        </Descriptions.Item>
+        <Descriptions.Item label="Block Height" span={3}>
+          <Link href={'/blocks/' + txn.height}>
+            <a>{txn.height}</a>
+          </Link>
+        </Descriptions.Item>
+      </Descriptions>
+      <span className="poc-outer-container">
+        <Descriptions bordered layout="vertical">
+          <Descriptions.Item label="PoC Path" span={3}>
+            <ol style={{ margin: 0, padding: 0 }}>
+              {txn.path.map((participant, participantIndex, { length }) => {
+                return (
+                  <>
+                    <div key={`${participant.receipt}-${participantIndex}`}>
+                      <div
+                        style={{
+                          marginBottom: '0px',
+                          paddingTop: '24px',
+                        }}
+                      >
+                        <div className="poc-participant-row">
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              position: 'relative',
+                            }}
+                          >
+                            {participantIndex !== 0 && (
+                              <span
+                                className={`poc-path-line-above ${
+                                  txn.path[participantIndex - 1].receipt &&
+                                  txn.path[participantIndex - 1].receipt
+                                    .origin === 'radio'
+                                    ? 'poc-path-line-above-2'
+                                    : ''
+                                }`}
+                                style={{
+                                  backgroundColor: `${
+                                    txn.path[participantIndex - 1].receipt ||
+                                    txn.path[participantIndex - 1].witnesses
+                                      .length > 0 ||
+                                    participant.receipt ||
+                                    participant.witnesses.length > 0
+                                      ? '#09B851'
+                                      : '#CA0926'
+                                  }`,
+                                }}
+                              />
+                            )}
+                            <p
                               style={{
                                 backgroundColor: `${
-                                  txn.path[idx - 1].receipt ||
-                                  txn.path[idx - 1].witnesses.length > 0 ||
-                                  p.receipt ||
-                                  p.witnesses.length > 0
+                                  participant.receipt ||
+                                  participant.witnesses.length > 0 ||
+                                  (txn.path[participantIndex + 1] &&
+                                    (txn.path[participantIndex + 1].receipt ||
+                                      txn.path[participantIndex + 1].witnesses
+                                        .length > 0))
                                     ? '#09B851'
                                     : '#CA0926'
                                 }`,
                               }}
-                            />
-                          )}
-                          <p
+                              className="poc-participant-number-circle"
+                            >
+                              {participantIndex + 1}
+                            </p>
+                            <Link href={'/hotspots/' + participant.challengee}>
+                              <a className="poc-participant-name">
+                                {animalHash(participant.challengee)}
+                              </a>
+                            </Link>
+                          </div>
+                          {participant.receipt &&
+                            participant.receipt.origin === 'radio' && (
+                              <span
+                                className="poc-witness-receive-info"
+                                style={{ marginLeft: 14 }}
+                              >
+                                {formatPocRadioInfo(participant.receipt)}
+                              </span>
+                            )}
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          flexFlow: 'row',
+                          alignItems: 'stretch',
+                          position: 'relative',
+                        }}
+                      >
+                        {participantIndex !== length - 1 && (
+                          <span
+                            className={`poc-path-line ${
+                              participant.receipt &&
+                              participant.receipt.origin === 'radio'
+                                ? 'poc-path-line-with-info'
+                                : ''
+                            }`}
                             style={{
                               backgroundColor: `${
-                                p.receipt ||
-                                p.witnesses.length > 0 ||
-                                (txn.path[idx + 1] &&
-                                  (txn.path[idx + 1].receipt ||
-                                    txn.path[idx + 1].witnesses.length > 0))
+                                participant.receipt ||
+                                participant.witnesses.length > 0 ||
+                                (txn.path[participantIndex + 1] &&
+                                  (txn.path[participantIndex + 1].receipt ||
+                                    txn.path[participantIndex + 1].witnesses
+                                      .length > 0))
                                   ? '#09B851'
                                   : '#CA0926'
                               }`,
                             }}
-                            className="poc-participant-number-circle"
-                          >
-                            {idx + 1}
-                          </p>
-                          <Link href={'/hotspots/' + p.challengee}>
-                            <a className="poc-participant-name">
-                              {animalHash(p.challengee)}
-                            </a>
-                          </Link>
-                        </div>
-                        {p.receipt && p.receipt.origin === 'radio' && (
-                          <span className="poc-witness-receive-info" style={{}}>
-                            {`— received at RSSI ${p.receipt?.signal}dBm, SNR ${
-                              p.receipt.snr
-                                ? `${p.receipt?.snr.toFixed(2)}dB`
-                                : ''
-                            }${
-                              p.receipt !== null &&
-                              p.receipt.datarate !== undefined
-                                ? Array.isArray(p.receipt.datarate)
-                                  ? `${
-                                      p.receipt.datarate.length > 0
-                                        ? `, ${String.fromCharCode.apply(
-                                            null,
-                                            p.receipt.datarate,
-                                          )}`
-                                        : ``
-                                    }`
-                                  : `${
-                                      p.receipt.datarate !== null &&
-                                      `, ${p.receipt.datarate} `
-                                    }`
-                                : ``
-                            }`}
-                          </span>
+                          />
                         )}
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        flexFlow: 'row',
-                        alignItems: 'stretch',
-                        position: 'relative',
-                      }}
-                    >
-                      {idx !== length - 1 && (
-                        <span
-                          className={`poc-path-line ${
-                            p.receipt && p.receipt.origin === 'radio'
-                              ? 'poc-path-line-with-info'
-                              : ''
-                          }`}
-                          style={{
-                            backgroundColor: `${
-                              p.receipt ||
-                              p.witnesses.length > 0 ||
-                              (txn.path[idx + 1] &&
-                                (txn.path[idx + 1].receipt ||
-                                  txn.path[idx + 1].witnesses.length > 0))
-                                ? '#09B851'
-                                : '#CA0926'
-                            }`,
-                          }}
-                        />
-                      )}
-                      <div
-                        className="poc-witness-table-container"
-                        style={{ flex: '1' }}
-                      >
-                        {p.witnesses.length > 0 && (
-                          <>
-                            <Collapse
-                              defaultActiveKey={[idx]}
-                              className="poc-witness-collapsable-panel"
-                            >
-                              <Panel
-                                header={`${p.witnesses.length} witnesses`}
-                                key={idx}
+                        <div
+                          className="poc-witness-table-container"
+                          style={{ flex: '1' }}
+                        >
+                          {participant.witnesses.length > 0 && (
+                            <>
+                              <Collapse
+                                defaultActiveKey={[participantIndex]}
+                                className="poc-witness-collapsable-panel"
                               >
-                                <div className="poc-witness-table">
-                                  {p.witnesses.map((w, i) => {
-                                    let pLocation = p.challengeeLocation
-                                      ? p.challengeeLocation
-                                      : p.challengee_location
-                                      ? p.challengee_location
-                                      : ''
-
-                                    let wLocation = w.location
-
-                                    // convert witness h3 location and challenge participant h3 location to the correct h3 resolution as set by the poc_v4_parent_res chain var
-                                    if (
-                                      pocH3CellResolution <
-                                      h3GetResolution(pLocation)
-                                    ) {
-                                      // if the chain var is higher than what's returned, get the h3 parent
-                                      pLocation = h3ToParent(
-                                        pLocation,
-                                        pocH3CellResolution,
-                                      )
-                                      wLocation = h3ToParent(
-                                        wLocation,
-                                        pocH3CellResolution,
-                                      )
-                                    } else if (
-                                      pocH3CellResolution >
-                                      h3GetResolution(pLocation)
-                                    ) {
-                                      // if the chain var is lower than what's returned, get the h3 child
-                                      pLocation = h3ToChildren(
-                                        pLocation,
-                                        pocH3CellResolution,
-                                      )
-                                      wLocation = h3ToChildren(
-                                        wLocation,
-                                        pocH3CellResolution,
-                                      )
-                                    }
-
-                                    const witnessDistInH3Cells = h3Distance(
-                                      pLocation,
-                                      wLocation,
-                                    )
-
-                                    // for a rough approximation of distance, we can assume the diameter of 1 hexagon is roughly equal to (the average edge length of a hexagon at the given resolution) * 2
-                                    const averageCellDiameter =
-                                      AVG_H3_HEX_EDGE_LENGTHS_IN_KM[
-                                        pocH3CellResolution
-                                      ] * 2
-
-                                    const witnessDistInKm =
-                                      averageCellDiameter * witnessDistInH3Cells
-
-                                    const witnessDistanceIsValid =
-                                      minValidH3Distance <= witnessDistInH3Cells
-
-                                    const columns = []
-
-                                    let columnCount = 2 // because RSSI and distance should always be there
-                                    const snrIncluded = w.snr
-                                    const dataRateIncluded =
-                                      w.datarate !== undefined &&
-                                      ((Array.isArray(w.datarate) &&
-                                        w.datarate.length > 0) ||
-                                        (!Array.isArray(w.datarate) &&
-                                          w.datarate !== null))
-
-                                    if (snrIncluded) columnCount++
-                                    if (dataRateIncluded) columnCount++
-
-                                    const columnWidth = `${
-                                      (1 / columnCount) * 100
-                                    }%`
-
-                                    const rssiColumn = {
-                                      title: (
-                                        <PoCTableHeader
-                                          title="RSSI"
-                                          tooltipText={
-                                            'RSSI stands for Received Signal Strength Indicator, and it represents the strength of the signal'
+                                <Panel
+                                  header={`${participant.witnesses.length} witnesses`}
+                                  key={participantIndex}
+                                >
+                                  <div className="poc-witness-table">
+                                    {participant.witnesses.map((w, i) => {
+                                      return (
+                                        <PocInfoTable
+                                          participant={participant}
+                                          witness={w}
+                                          witnessIndex={i}
+                                          participantIndex={participantIndex}
+                                          minValidH3Distance={
+                                            minValidH3Distance
+                                          }
+                                          pocH3CellResolution={
+                                            pocH3CellResolution
                                           }
                                         />
-                                      ),
-                                      dataIndex: 'rssi',
-                                      width: columnWidth,
-                                    }
-                                    const snrColumn = snrIncluded
-                                      ? {
-                                          title: (
-                                            <PoCTableHeader
-                                              title="SNR"
-                                              tooltipText={
-                                                'SNR stands for Signal-to-Noise Ratio, and it represents the quality of the signal'
-                                              }
-                                            />
-                                          ),
-                                          dataIndex: 'snr',
-                                          width: columnWidth,
-                                        }
-                                      : null
-                                    const distanceColumn = {
-                                      title: (
-                                        <PoCTableHeader
-                                          title="Distance"
-                                          tooltipText={`This value is an approximation of the distance between the hotspot that witnessed the challenge and the one that participated in it. The Helium blockchain uses hexagons from the H3 library, so this distance is a rough approximation based on how many H3 cells the two hotspots are apart. E.g. if it says the distance is 0, it's because they are in the same cell.`}
-                                        />
-                                      ),
-                                      dataIndex: 'distance',
-                                      width: columnWidth,
-                                    }
-                                    const dataRateColumn = dataRateIncluded
-                                      ? {
-                                          title: (
-                                            <PoCTableHeader
-                                              title="Data rate"
-                                              tooltipText={`The data rate at which the signal was received.`}
-                                            />
-                                          ),
-                                          dataIndex: 'datarate',
-                                          width: columnWidth,
-                                        }
-                                      : null
-
-                                    columns.push(rssiColumn)
-                                    if (snrIncluded) columns.push(snrColumn)
-                                    columns.push(distanceColumn)
-                                    if (dataRateIncluded)
-                                      columns.push(dataRateColumn)
-
-                                    const data = [
-                                      {
-                                        key: '1',
-                                        rssi: `${w?.signal}dBm`,
-                                        snr: `${w.snr?.toFixed(2)}dB`,
-                                        distance: (
-                                          <span
-                                            style={
-                                              !witnessDistanceIsValid
-                                                ? { color: '#CA0926' }
-                                                : {}
-                                            }
-                                          >
-                                            {formatDistance(
-                                              witnessDistInKm * 1000,
-                                            )}
-                                            {!witnessDistanceIsValid &&
-                                              ' (too close)'}
-                                          </span>
-                                        ),
-                                        datarate:
-                                          w.datarate !== undefined &&
-                                          ((Array.isArray(w.datarate) &&
-                                            w.datarate.length > 0) ||
-                                            (!Array.isArray(w.datarate) &&
-                                              w.datarate !== null)) &&
-                                          (Array.isArray(w.datarate)
-                                            ? `${
-                                                w.datarate.length > 0
-                                                  ? `${String.fromCharCode.apply(
-                                                      null,
-                                                      w.datarate,
-                                                    )}`
-                                                  : ``
-                                              } `
-                                            : `${
-                                                w.datarate !== null &&
-                                                `${w.datarate} `
-                                              }`),
-                                      },
-                                    ]
-
-                                    return (
-                                      <div
-                                        key={`${idx}-${i}`}
-                                        style={
-                                          i !== 0 ? { paddingTop: 16 } : {}
-                                        }
-                                      >
-                                        <span>
-                                          {/* <span>{i + 1} — </span> */}
-                                          <Link href={'/hotspots/' + w.gateway}>
-                                            <a className="poc-witness-name">
-                                              {animalHash(w.gateway)}
-                                            </a>
-                                          </Link>
-                                          <span
-                                            style={{
-                                              color:
-                                                w.is_valid || w.isValid
-                                                  ? '#F1C40F'
-                                                  : 'grey',
-                                              paddingLeft: 10,
-                                            }}
-                                          >
-                                            {w.is_valid || w.isValid
-                                              ? '(Valid witness)'
-                                              : '(Invalid witness)'}
-                                          </span>
-                                          <span className="poc-witness-info-table-container">
-                                            <Table
-                                              style={{ padding: '20px 0' }}
-                                              pagination={{
-                                                hideOnSinglePage: true,
-                                              }}
-                                              columns={columns}
-                                              dataSource={data}
-                                            />
-                                          </span>
-                                        </span>
-                                      </div>
-                                    )
-                                  })}
-                                </div>
-                              </Panel>
-                            </Collapse>
-                          </>
-                        )}
+                                      )
+                                    })}
+                                  </div>
+                                </Panel>
+                              </Collapse>
+                            </>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </>
-              )
-            })}
-          </ol>
-        </Descriptions.Item>
-      </Descriptions>
-    </span>
-  </div>
-)
+                  </>
+                )
+              })}
+            </ol>
+          </Descriptions.Item>
+        </Descriptions>
+      </span>
+    </div>
+  )
+}
 
 export default PocReceiptsV1

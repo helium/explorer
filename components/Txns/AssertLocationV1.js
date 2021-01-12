@@ -31,6 +31,8 @@ const AssertLocationV1 = ({ txn }) => {
   const stakingFeePayer =
     txn.payer === txn.owner || txn.payer === null ? txn.owner : txn.payer
 
+  const feeObject = new Balance(txn.fee.integerBalance, CurrencyType.dataCredit)
+
   return (
     <>
       <AssertLocationMapbox txn={txn} />
@@ -124,7 +126,7 @@ const AssertLocationV1 = ({ txn }) => {
               justifyContent: 'flex-start',
             }}
           >
-            {txn.fee.toString()}
+            {feeObject.toString()}
           </span>
         </Descriptions.Item>
         <Descriptions.Item label="Staking Fee" span={3}>

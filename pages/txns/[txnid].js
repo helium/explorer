@@ -72,7 +72,7 @@ const rewardChart = (txn) => {
 const TxnView = ({ txn }) => {
   const transactionMetaTags = getMetaTagsForTransaction(txn)
 
-  const txnTotalAmountWithFunctions =
+  const txnTotalAmountObject =
     txn.type === 'rewards_v1' &&
     new Balance(txn.totalAmount.integerBalance, CurrencyType.networkToken)
 
@@ -145,7 +145,7 @@ const TxnView = ({ txn }) => {
                   <WalletOutlined
                     style={{ color: '#FFC769', marginRight: 6 }}
                   />
-                  {txnTotalAmountWithFunctions.toString(2)}
+                  {txnTotalAmountObject.toString(2)}
                 </p>
               )}
             </div>

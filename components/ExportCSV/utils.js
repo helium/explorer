@@ -12,13 +12,13 @@ export const parseTxn = async (
   switch (txn.type) {
     case 'rewards_v1': {
       return txn.rewards.map(({ type, gateway, amount }) => {
-        const amountWithFunctions = new Balance(
+        const amountObject = new Balance(
           amount.integerBalance,
           CurrencyType.networkToken,
         )
         return {
           Date: timestamp,
-          'Received Quantity': amountWithFunctions.toString(8).slice(0, -4),
+          'Received Quantity': amountObject.toString(8).slice(0, -4),
           'Received From': 'Helium Network',
           'Received Currency': 'HNT',
           'Sent Quantity': '',
@@ -34,7 +34,7 @@ export const parseTxn = async (
       })
     }
     case 'payment_v1': {
-      const amountWithFunctions = new Balance(
+      const amountObject = new Balance(
         txn.amount.integerBalance,
         CurrencyType.networkToken,
       )
@@ -44,7 +44,7 @@ export const parseTxn = async (
           'Received Quantity': '',
           'Received From': '',
           'Received Currency': '',
-          'Sent Quantity': amountWithFunctions.toString(8).slice(0, -4),
+          'Sent Quantity': amountObject.toString(8).slice(0, -4),
           'Sent To': txn.payee,
           'Sent Currency': 'HNT',
           'Fee Amount': await getFee(txn, opts.convertFee),
@@ -57,7 +57,7 @@ export const parseTxn = async (
       } else {
         return {
           Date: timestamp,
-          'Received Quantity': amountWithFunctions.toString(8).slice(0, -4),
+          'Received Quantity': amountObject.toString(8).slice(0, -4),
           'Received From': txn.payer,
           'Received Currency': 'HNT',
           'Sent Quantity': '',
@@ -81,7 +81,7 @@ export const parseTxn = async (
           })
           return multiplePayees.join(', ')
         }
-        const amountWithFunctions = new Balance(
+        const amountObject = new Balance(
           txn.totalAmount.integerBalance,
           CurrencyType.networkToken,
         )
@@ -90,7 +90,7 @@ export const parseTxn = async (
           'Received Quantity': '',
           'Received From': '',
           'Received Currency': '',
-          'Sent Quantity': amountWithFunctions.toString(8).slice(0, -4),
+          'Sent Quantity': amountObject.toString(8).slice(0, -4),
           'Sent To':
             txn.payments.length === 1
               ? txn.payments[0].payee
@@ -104,7 +104,7 @@ export const parseTxn = async (
           Block: txn.height,
         }
       } else {
-        const amountWithFunctions = new Balance(
+        const amountObject = new Balance(
           txn.payments.find(
             (p) => p.payee === ownerAddress,
           ).amount.integerBalance,
@@ -112,7 +112,7 @@ export const parseTxn = async (
         )
         return {
           Date: timestamp,
-          'Received Quantity': amountWithFunctions.toString(8).slice(0, -4),
+          'Received Quantity': amountObject.toString(8).slice(0, -4),
           'Received From': txn.payer,
           'Received Currency': 'HNT',
           'Sent Quantity': '',
@@ -128,7 +128,7 @@ export const parseTxn = async (
       }
     }
     case 'transfer_hotspot_v1': {
-      const amountToSellerWithFunctions = new Balance(
+      const amountToSellerObject = new Balance(
         txn.amountToSeller.integerBalance,
         CurrencyType.networkToken,
       )
@@ -138,7 +138,7 @@ export const parseTxn = async (
           'Received Quantity': '',
           'Received From': '',
           'Received Currency': '',
-          'Sent Quantity': amountToSellerWithFunctions.toString().slice(0, -4),
+          'Sent Quantity': amountToSellerObject.toString().slice(0, -4),
           'Sent To': txn.seller,
           'Sent Currency': 'HNT',
           'Fee Amount': await getFee(txn, opts.convertFee),
@@ -151,9 +151,7 @@ export const parseTxn = async (
       } else {
         return {
           Date: timestamp,
-          'Received Quantity': amountToSellerWithFunctions
-            .toString()
-            .slice(0, -4),
+          'Received Quantity': amountToSellerObject.toString().slice(0, -4),
           'Received From': txn.buyer,
           'Received Currency': 'HNT',
           'Sent Quantity': '',

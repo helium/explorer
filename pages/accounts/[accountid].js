@@ -25,15 +25,15 @@ const AccountAddress = ({ address, truncate = false }) => {
 }
 
 const AccountView = ({ account }) => {
-  const dcBalanceWithFunctions = new Balance(
+  const dcBalanceObject = new Balance(
     account.dcBalance.integerBalance,
     CurrencyType.dataCredit,
   )
-  const balanceWithFunctions = new Balance(
+  const balanceObject = new Balance(
     account.balance.integerBalance,
     CurrencyType.networkToken,
   )
-  const hstBalanceWithFunctions = new Balance(
+  const hstBalanceObject = new Balance(
     account.secBalance.integerBalance,
     CurrencyType.security,
   )
@@ -64,19 +64,19 @@ const AccountView = ({ account }) => {
   return (
     <AppLayout
       title={`${account.address.substring(0, 5)}... | Account`}
-      description={`An account on the Helium blockchain with ${balanceWithFunctions.toString(
+      description={`An account on the Helium blockchain with ${balanceObject.toString(
         2,
       )}${
         account.dcBalance.integerBalance > 0
           ? account.secBalance.integerBalance === 0
-            ? ` and ${dcBalanceWithFunctions.toString()}`
-            : `, ${dcBalanceWithFunctions.toString()}`
+            ? ` and ${dcBalanceObject.toString()}`
+            : `, ${dcBalanceObject.toString()}`
           : ''
       }${
         account.secBalance.integerBalance > 0
           ? account.dcBalance.integerBalance === 0
-            ? ` and ${hstBalanceWithFunctions.toString()}`
-            : `, and ${hstBalanceWithFunctions.toString()}`
+            ? ` and ${hstBalanceObject.toString()}`
+            : `, and ${hstBalanceObject.toString()}`
           : ''
       }, with the address ${account.address}`}
       openGraphImageAbsoluteUrl={`https://explorer.helium.com/images/og/accounts.png`}
@@ -149,7 +149,7 @@ const AccountView = ({ account }) => {
               }}
             >
               <Descriptions.Item label="HNT">
-                {balanceWithFunctions.toString(2)}
+                {balanceObject.toString(2)}
               </Descriptions.Item>
             </Title>
           </Fade>
@@ -177,7 +177,7 @@ const AccountView = ({ account }) => {
                     style={{ color: '#FFC769', marginRight: 5 }}
                   />
                   <Descriptions.Item label="Data Credits">
-                    {dcBalanceWithFunctions.toString()}
+                    {dcBalanceObject.toString()}
                   </Descriptions.Item>
                 </h3>
               </Tooltip>
@@ -191,7 +191,7 @@ const AccountView = ({ account }) => {
                     style={{ color: '#29D391', marginRight: 5 }}
                   />
                   <Descriptions.Item label="Security Tokens">
-                    {hstBalanceWithFunctions.toString(2)}
+                    {hstBalanceObject.toString(2)}
                   </Descriptions.Item>
                 </h3>
               </Tooltip>

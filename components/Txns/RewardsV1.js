@@ -43,11 +43,11 @@ const expandedColumns = [
     dataIndex: 'amount',
     key: 'amount',
     render: (amount) => {
-      const amountWithFunctions = new Balance(
+      const amountObject = new Balance(
         amount.integerBalance,
         CurrencyType.networkToken,
       )
-      return <span>{amountWithFunctions.toString(2)}</span>
+      return <span>{amountObject.toString(2)}</span>
     },
   },
 ]

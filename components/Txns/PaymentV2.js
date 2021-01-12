@@ -5,14 +5,11 @@ import AccountIcon from '../AccountIcon'
 import { Balance, CurrencyType } from '@helium/currency'
 
 const PaymentV2 = ({ txn }) => {
-  const totalAmountWithFunctions = new Balance(
+  const totalAmountObject = new Balance(
     txn.totalAmount.integerBalance,
     CurrencyType.networkToken,
   )
-  const feeWithFunctions = new Balance(
-    txn.fee.integerBalance,
-    CurrencyType.dataCredit,
-  )
+  const feeObject = new Balance(txn.fee.integerBalance, CurrencyType.dataCredit)
   return (
     <Descriptions bordered>
       <Descriptions.Item
@@ -31,10 +28,10 @@ const PaymentV2 = ({ txn }) => {
         </div>
       </Descriptions.Item>
       <Descriptions.Item label="Total HNT" span={3}>
-        {totalAmountWithFunctions.toString(2)}
+        {totalAmountObject.toString(2)}
       </Descriptions.Item>
       {txn.payments.map((p, idx) => {
-        const paymentAmountWithFunctions = new Balance(
+        const paymentAmountObject = new Balance(
           p.amount.integerBalance,
           CurrencyType.networkToken,
         )
@@ -49,14 +46,14 @@ const PaymentV2 = ({ txn }) => {
                 <a>{`${p.payee} `}</a>
               </Link>
               <span style={{ marginLeft: 4 }}>
-                ({paymentAmountWithFunctions.toString(2)})
+                ({paymentAmountObject.toString(2)})
               </span>
             </div>
           </Descriptions.Item>
         )
       })}
       <Descriptions.Item label="Fee" span={3}>
-        {feeWithFunctions.toString()}
+        {feeObject.toString()}
       </Descriptions.Item>
     </Descriptions>
   )

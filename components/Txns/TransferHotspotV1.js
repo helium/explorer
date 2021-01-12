@@ -7,14 +7,11 @@ import animalHash from 'angry-purple-tiger'
 import { Balance, CurrencyType } from '@helium/currency'
 
 const TransferHotspotV1 = ({ txn }) => {
-  const amountToSellerWithFunctions = new Balance(
+  const amountToSellerObject = new Balance(
     txn.amountToSeller.integerBalance,
     CurrencyType.networkToken,
   )
-  const feeWithFunctions = new Balance(
-    txn.fee.integerBalance,
-    CurrencyType.dataCredit,
-  )
+  const feeObject = new Balance(txn.fee.integerBalance, CurrencyType.dataCredit)
 
   return (
     <>
@@ -64,10 +61,10 @@ const TransferHotspotV1 = ({ txn }) => {
           </span>
         </Descriptions.Item>
         <Descriptions.Item label="Payment to Seller" span={3}>
-          {amountToSellerWithFunctions.toString(2)}
+          {amountToSellerObject.toString(2)}
         </Descriptions.Item>
         <Descriptions.Item label="Fee" span={3}>
-          {feeWithFunctions.toString()}
+          {feeObject.toString()}
         </Descriptions.Item>
       </Descriptions>
     </>

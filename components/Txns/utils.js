@@ -57,13 +57,13 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
   if (!isFallback) {
     switch (txn.type) {
       case 'payment_v1': {
-        const amountWithFunctions = new Balance(
+        const amountObject = new Balance(
           txn.amount.integerBalance,
           CurrencyType.networkToken,
         )
 
         type = `Payment`
-        description = `A payment of ${amountWithFunctions.toString(
+        description = `A payment of ${amountObject.toString(
           2,
         )} from account ${txn.payer.substring(
           0,
@@ -77,7 +77,7 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
         break
       }
       case 'payment_v2': {
-        const totalAmountWithFunctions = new Balance(
+        const totalAmountObject = new Balance(
           txn.totalAmount.integerBalance,
           CurrencyType.networkToken,
         )
@@ -87,10 +87,10 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
           txn.payments.length !== 1
             ? `A payment from account ${txn.payer.substring(0, 5)}... to ${
                 txn.payments.length
-              } accounts totaling ${totalAmountWithFunctions.toString(
+              } accounts totaling ${totalAmountObject.toString(
                 2,
               )} ${dateString} ${blockString}`
-            : `A payment of ${totalAmountWithFunctions.toString(
+            : `A payment of ${totalAmountObject.toString(
                 2,
               )} from account ${txn.payer.substring(
                 0,
@@ -124,13 +124,13 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
         break
       }
       case 'rewards_v1': {
-        const totalAmountWithFunctions = new Balance(
+        const totalAmountObject = new Balance(
           txn.totalAmount.integerBalance,
           CurrencyType.networkToken,
         )
 
         type = `Rewards`
-        description = `A rewards transaction with ${totalAmountWithFunctions.toString(
+        description = `A rewards transaction with ${totalAmountObject.toString(
           2,
         )} in total rewarded to ${
           txn.rewards.length
@@ -178,7 +178,7 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
         break
       }
       case 'transfer_hotspot_v1': {
-        const amountToSellerWithFunctions = new Balance(
+        const amountToSellerObject = new Balance(
           txn.amountToSeller.integerBalance,
           CurrencyType.networkToken,
         )
@@ -192,7 +192,7 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
         )}... to account ${txn.buyer.substring(
           0,
           5,
-        )}... for ${amountToSellerWithFunctions.toString(
+        )}... for ${amountToSellerObject.toString(
           2,
         )} ${dateString} ${blockString}`
         ogImageUrl = `${ogImageUrlBase}/txn_transfer.png`

@@ -31,10 +31,7 @@ const AssertLocationV1 = ({ txn }) => {
   const stakingFeePayer =
     txn.payer === txn.owner || txn.payer === null ? txn.owner : txn.payer
 
-  const feeWithFunctions = new Balance(
-    txn.fee.integerBalance,
-    CurrencyType.dataCredit,
-  )
+  const feeObject = new Balance(txn.fee.integerBalance, CurrencyType.dataCredit)
 
   return (
     <>
@@ -129,7 +126,7 @@ const AssertLocationV1 = ({ txn }) => {
               justifyContent: 'flex-start',
             }}
           >
-            {feeWithFunctions.toString()}
+            {feeObject.toString()}
           </span>
         </Descriptions.Item>
         <Descriptions.Item label="Staking Fee" span={3}>

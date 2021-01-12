@@ -19,7 +19,7 @@ const ChecklistCard = ({
           backgroundColor: '#232c42',
           boxShadow: 'none',
           border: '1px solid transparent',
-          minHeight: '108px',
+          minHeight: '132px',
           marginRight: '20px',
           minWidth: `${cardWidth}px`,
           width: `${cardWidth}px`,
@@ -28,7 +28,7 @@ const ChecklistCard = ({
           padding: '0 10px 0 10px',
         }}
       >
-        <Skeleton active size="small" />
+        <Skeleton active paragraph={{ rows: 2 }} size="small" />
       </div>
     )
   } else {

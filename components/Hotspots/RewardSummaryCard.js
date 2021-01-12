@@ -6,14 +6,14 @@ const RewardSummaryCard = ({ timeframe, value, rewardsLoading }) => {
       style={{
         backgroundColor: '#f7f7fc',
         borderRadius: '12px',
-        minHeight: '78px',
-        padding: '12px',
+        minHeight: '92px',
+        padding: rewardsLoading ? '0px 12px' : '12px',
         display: 'flex',
         flexDirection: 'column',
       }}
     >
       {rewardsLoading ? (
-        <Skeleton active />
+        <Skeleton active paragraph={{ rows: 1 }} size="small" />
       ) : (
         <>
           <p

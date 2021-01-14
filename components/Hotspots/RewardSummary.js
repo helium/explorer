@@ -21,17 +21,36 @@ const RewardSummary = ({ rewards, rewardsLoading }) => {
       >
         <RewardSummaryCard
           timeframe="24 hours"
-          value={rewards.day?.toFixed(2).toLocaleString()}
+          value={rewards.day}
+          previousValue={rewards.lastDay}
+          percentChange={
+            rewards.day === 0 && rewards.lastDay === 0
+              ? // if both the period and the previous period rewards were 0, set percent change to 0
+                0
+              : ((rewards.day - rewards.lastDay) / rewards.lastDay) * 100
+          }
           rewardsLoading={rewardsLoading}
         />
         <RewardSummaryCard
           timeframe="7 days"
-          value={rewards.week?.toFixed(2).toLocaleString()}
+          value={rewards.week}
+          previousValue={rewards.lastWeek}
+          percentChange={
+            rewards.week === 0 && rewards.lastWeek === 0
+              ? 0
+              : ((rewards.week - rewards.lastWeek) / rewards.lastWeek) * 100
+          }
           rewardsLoading={rewardsLoading}
         />
         <RewardSummaryCard
           timeframe="30 days"
-          value={rewards.month?.toFixed(2).toLocaleString()}
+          value={rewards.month}
+          previousValue={rewards.lastMonth}
+          percentChange={
+            rewards.month === 0 && rewards.lastMonth === 0
+              ? 0
+              : ((rewards.month - rewards.lastMonth) / rewards.lastMonth) * 100
+          }
           rewardsLoading={rewardsLoading}
         />
       </div>

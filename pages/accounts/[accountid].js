@@ -10,19 +10,10 @@ import { Balance, CurrencyType } from '@helium/currency'
 
 import { ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import AccountIcon from '../../components/AccountIcon'
+import AccountAddress from '../../components/AccountAddress'
 import { fetchRewardsSummary } from '../../data/hotspots'
 
 const { Title } = Typography
-
-const AccountAddress = ({ address, truncate = false }) => {
-  return (
-    <Tooltip title={address}>
-      <span style={{ cursor: 'pointer' }}>
-        {truncate ? `${address.slice(0, 10)}...${address.slice(-10)}` : address}
-      </span>
-    </Tooltip>
-  )
-}
 
 const AccountView = ({ account }) => {
   const dcBalanceObject = new Balance(

@@ -60,7 +60,9 @@ const RewardSummaryCard = ({
             >
               {timeframe}
             </p>
-            <Tooltip title={`Previous ${timeframe}: ${previousValueString}`}>
+            <Tooltip
+              title={`Previous ${timeframe}: ${previousValueString} HNT`}
+            >
               <div
                 style={{
                   borderRadius: 5,

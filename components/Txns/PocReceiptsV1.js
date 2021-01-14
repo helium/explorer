@@ -63,7 +63,7 @@ const PocReceiptsV1 = ({ txn }) => {
           </Link>
         </Descriptions.Item>
         <Descriptions.Item label="Block Height" span={3}>
-          <Link href={'/blocks/' + txn.height}>
+          <Link href={'/blocks/' + txn.height} prefetch={false}>
             <a>{txn.height}</a>
           </Link>
         </Descriptions.Item>

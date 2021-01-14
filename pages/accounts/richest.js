@@ -23,7 +23,7 @@ function RichList({ accounts }) {
       dataIndex: 'address',
       key: 'address',
       render: (address) => (
-        <Link href={`/accounts/${address}`}>
+        <Link href={`/accounts/${address}`} prefetch={false}>
           <a style={{ fontWeight: '600' }}>{address}</a>
         </Link>
       ),

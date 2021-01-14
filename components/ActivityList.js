@@ -184,7 +184,7 @@ const rewardColumns = (hotspots, type) => {
       render: (data) => (
         <span className="ant-table-cell-override">
           {data && (
-            <Link href={`/hotspots/${data}`}>
+            <Link href={`/hotspots/${data}`} prefetch={false}>
               <a>{animalHash(data)}</a>
             </Link>
           )}
@@ -266,7 +266,7 @@ const columns = (ownerAddress) => {
       dataIndex: 'type',
       key: 'type',
       render: (data, txn) => (
-        <Link href={`/txns/${txn.hash}`}>
+        <Link href={`/txns/${txn.hash}`} prefetch={false}>
           <a className="tag-link">
             <TxnTag type={data}></TxnTag>
           </a>
@@ -278,7 +278,7 @@ const columns = (ownerAddress) => {
       dataIndex: 'details',
       key: 'details',
       render: (txt, txn) => (
-        <Link href={`/txns/${txn.hash}`}>
+        <Link href={`/txns/${txn.hash}`} prefetch={false}>
           <a>{activityDetails(txn)}</a>
         </Link>
       ),
@@ -288,7 +288,7 @@ const columns = (ownerAddress) => {
       dataIndex: 'height',
       key: 'height',
       render: (height) => (
-        <Link href={`/blocks/${height}`}>
+        <Link href={`/blocks/${height}`} prefetch={false}>
           <a>{height}</a>
         </Link>
       ),

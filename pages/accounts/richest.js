@@ -73,7 +73,7 @@ function RichList({ accounts }) {
       <Content
         style={{
           marginTop: 0,
-          background: '#27284B',
+          background: 'rgb(16, 23, 37)',
           padding: '60px 0 20px',
         }}
       >

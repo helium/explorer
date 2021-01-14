@@ -22,34 +22,38 @@ const RewardSummary = ({ rewards, rewardsLoading }) => {
         <RewardSummaryCard
           timeframe="24 hours"
           value={rewards.day}
-          previousValue={rewards.lastDay}
+          previousValue={rewards.previousDay}
           percentChange={
-            rewards.day === 0 && rewards.lastDay === 0
+            rewards.day === 0 && rewards.previousDay === 0
               ? // if both the period and the previous period rewards were 0, set percent change to 0
                 0
-              : ((rewards.day - rewards.lastDay) / rewards.lastDay) * 100
+              : ((rewards.day - rewards.previousDay) / rewards.previousDay) *
+                100
           }
           rewardsLoading={rewardsLoading}
         />
         <RewardSummaryCard
           timeframe="7 days"
           value={rewards.week}
-          previousValue={rewards.lastWeek}
+          previousValue={rewards.previousWeek}
           percentChange={
-            rewards.week === 0 && rewards.lastWeek === 0
+            rewards.week === 0 && rewards.previousWeek === 0
               ? 0
-              : ((rewards.week - rewards.lastWeek) / rewards.lastWeek) * 100
+              : ((rewards.week - rewards.previousWeek) / rewards.previousWeek) *
+                100
           }
           rewardsLoading={rewardsLoading}
         />
         <RewardSummaryCard
           timeframe="30 days"
           value={rewards.month}
-          previousValue={rewards.lastMonth}
+          previousValue={rewards.previousMonth}
           percentChange={
-            rewards.month === 0 && rewards.lastMonth === 0
+            rewards.month === 0 && rewards.previousMonth === 0
               ? 0
-              : ((rewards.month - rewards.lastMonth) / rewards.lastMonth) * 100
+              : ((rewards.month - rewards.previousMonth) /
+                  rewards.previousMonth) *
+                100
           }
           rewardsLoading={rewardsLoading}
         />

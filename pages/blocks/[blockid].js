@@ -47,7 +47,7 @@ const BlockView = ({ block, txns, height }) => {
       dataIndex: 'hash',
       key: 'hash',
       render: (hash) => (
-        <Link href={'/txns/' + hash}>
+        <Link href={'/txns/' + hash} prefetch={false}>
           <a>{hash}</a>
         </Link>
       ),

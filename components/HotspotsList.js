@@ -32,7 +32,7 @@ const hotspotColumns = [
     render: (data, row) => (
       <>
         <StatusCircle status={row.status} />
-        <Link href={'/hotspots/' + row.address}>
+        <Link href={'/hotspots/' + row.address} prefetch={false}>
           <a style={{ fontFamily: 'soleil, sans-serif' }}>
             {formatHotspotName(data)}
           </a>

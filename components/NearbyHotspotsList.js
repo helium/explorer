@@ -16,7 +16,7 @@ const columns = [
     render: (name, row) => (
       <>
         <StatusCircle status={row.status} />
-        <Link href={'/hotspots/' + row.address}>
+        <Link href={'/hotspots/' + row.address} prefetch={false}>
           <a style={{ fontFamily: 'soleil, sans-serif' }}>
             {formatHotspotName(name)}
           </a>

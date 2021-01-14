@@ -1,4 +1,5 @@
 import { Tooltip, Skeleton } from 'antd'
+import { formatPercentChangeString } from './utils'
 
 const RewardSummaryCard = ({
   timeframe,
@@ -16,17 +17,7 @@ const RewardSummaryCard = ({
     maximumFractionDigits: 2,
   })
 
-  const percentChangeString =
-    percentChange === 0
-      ? // if there wasn't a percentage change (both value and previousValue are 0), don't show the indicator
-        ''
-      : `${percentChange > 0 ? '+' : ''}${percentChange?.toLocaleString(
-          undefined,
-          {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          },
-        )}%`
+  const percentChangeString = formatPercentChangeString(percentChange)
 
   return (
     <div
@@ -74,7 +65,7 @@ const RewardSummaryCard = ({
                 <span
                   style={{
                     fontFamily: 'soleil',
-                    color: percentChange >= 0 ? '#32C48D' : '#CA0926',
+                    color: percentChange > 0 ? '#32C48D' : '#CA0926',
                     fontWeight: 400,
                     fontSize: '12px',
                     whiteSpace: 'nowrap',

@@ -39,3 +39,26 @@ export const formatLocation = (geocode0) => {
 
   return locationTerms.join(', ')
 }
+
+export const formatPercentChangeString = (percentChangeNumber) => {
+  const percentChangeString =
+    percentChangeNumber === 0
+      ? // if there wasn't a percentage change (both value and previousValue are 0), don't show the indicator
+        ``
+      : `${
+          percentChangeNumber > 0 ? '+' : ''
+        }${percentChangeNumber?.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}%`
+  return percentChangeString
+}
+
+export const calculatePercentChange = (value, previousValue) => {
+  const percentChangeValue =
+    value === 0 && previousValue === 0
+      ? // if both the period and the previous period rewards were 0, set percent change to 0
+        0
+      : ((value - previousValue) / previousValue) * 100
+  return percentChangeValue
+}

@@ -43,34 +43,28 @@ const RewardSummaryCard = ({
         <Skeleton active paragraph={{ rows: 1 }} size="small" />
       ) : (
         <>
-          <p
+          <div
             style={{
-              margin: 0,
-              textTransform: 'uppercase',
-              fontSize: '12px',
-              color: '#6d6ea0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
             }}
           >
-            {timeframe}
-          </p>
-          <div>
-            <span
+            <p
               style={{
-                fontFamily: 'soleil',
-                color: '#262625',
-                fontWeight: 400,
-                fontSize: '32px',
+                margin: 0,
+                textTransform: 'uppercase',
+                fontSize: '12px',
+                color: '#6d6ea0',
               }}
             >
-              {valueString}
-            </span>
-            <span style={{ fontSize: '12px', marginLeft: '4px' }}>HNT</span>
+              {timeframe}
+            </p>
             <Tooltip title={`Previous ${timeframe}: ${previousValueString}`}>
               <div
                 style={{
                   borderRadius: 5,
                   marginLeft: 10,
-                  padding: '5px 8px',
                   display: 'inline',
                   height: 'auto',
                 }}
@@ -88,6 +82,19 @@ const RewardSummaryCard = ({
                 </span>
               </div>
             </Tooltip>
+          </div>
+          <div>
+            <span
+              style={{
+                fontFamily: 'soleil',
+                color: '#262625',
+                fontWeight: 400,
+                fontSize: '32px',
+              }}
+            >
+              {valueString}
+            </span>
+            <span style={{ fontSize: '12px', marginLeft: '4px' }}>HNT</span>
           </div>
         </>
       )}

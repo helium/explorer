@@ -8,6 +8,7 @@ import withBlockHeight from '../../components/withBlockHeight'
 import { withRouter } from 'next/router'
 import Link from 'next/link'
 import { generateFriendlyTimestampString } from '../../components/Txns/utils'
+import animalHash from 'angry-purple-tiger'
 
 import {
   BackwardOutlined,
@@ -17,6 +18,30 @@ import {
 } from '@ant-design/icons'
 
 const { Title, Text } = Typography
+
+const generateDetails = (txn) => {
+  let details = ''
+
+  switch (txn.type) {
+    case 'poc_receipts_v1': {
+      if (txn.path.length === 1) {
+        return (
+          <span>
+            {`${txn.path.length === 1 ? 'Beacon challenge' : 'Challenge'} for ${
+              txn.path.length === 1
+                ? animalHash(txn.path[0].challengee)
+                : `${txn.path.length} hotspots`
+            }`}
+          </span>
+        )
+      }
+    }
+    case 'poc_request_v1': {
+      return <span>{`Challenge by ${animalHash(txn.challenger)}`}</span>
+    }
+  }
+  return details
+}
 
 const BlockView = ({ block, txns, height }) => {
   const filterTxns = () => {
@@ -40,17 +65,22 @@ const BlockView = ({ block, txns, height }) => {
       title: 'Type',
       dataIndex: 'type',
       key: 'type',
-      render: (data) => <TxnTag type={data}></TxnTag>,
+      render: (data, txn) => (
+        <Link href={`/txns/${txn.hash}`}>
+          <a className="tag-link">
+            <TxnTag type={data}></TxnTag>
+          </a>
+        </Link>
+      ),
     },
     {
       title: 'Hash',
       dataIndex: 'hash',
       key: 'hash',
-      render: (hash) => (
-        <Link href={'/txns/' + hash} prefetch={false}>
-          <a>{hash}</a>
-        </Link>
-      ),
+      render: (hash, txn) => {
+        console.log(txn)
+        return <span>{generateDetails(txn)}</span>
+      },
     },
     {
       title: 'Fee (DC)',

@@ -56,8 +56,8 @@ export const formatPercentChangeString = (percentChangeNumber) => {
 
 export const calculatePercentChange = (value, previousValue) => {
   const percentChangeValue =
-    value === 0 && previousValue === 0
-      ? // if both the period and the previous period rewards were 0, set percent change to 0
+    (value === 0 && previousValue === 0) || previousValue === 0
+      ? // if both the period and the previous period rewards were 0, or the previous value is 0, set percent change to 0
         0
       : ((value - previousValue) / previousValue) * 100
   return percentChangeValue

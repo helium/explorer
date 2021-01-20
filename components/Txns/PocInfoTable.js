@@ -80,7 +80,6 @@ const PocInfoTable = ({
   witness,
   witnessIndex,
   participantIndex,
-  minValidH3Distance,
   pocH3CellResolution,
 }) => {
   let pLocation = participant.challengeeLocation

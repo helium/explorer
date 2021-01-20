@@ -1,4 +1,5 @@
 import RewardSummaryCard from './RewardSummaryCard'
+import { calculatePercentChange } from './utils'
 
 const RewardSummary = ({ rewards, rewardsLoading }) => {
   return (
@@ -21,17 +22,32 @@ const RewardSummary = ({ rewards, rewardsLoading }) => {
       >
         <RewardSummaryCard
           timeframe="24 hours"
-          value={rewards.day?.toFixed(2).toLocaleString()}
+          value={rewards.day}
+          previousValue={rewards.previousDay}
+          percentChange={calculatePercentChange(
+            rewards.day,
+            rewards.previousDay,
+          )}
           rewardsLoading={rewardsLoading}
         />
         <RewardSummaryCard
           timeframe="7 days"
-          value={rewards.week?.toFixed(2).toLocaleString()}
+          value={rewards.week}
+          previousValue={rewards.previousWeek}
+          percentChange={calculatePercentChange(
+            rewards.week,
+            rewards.previousWeek,
+          )}
           rewardsLoading={rewardsLoading}
         />
         <RewardSummaryCard
           timeframe="30 days"
-          value={rewards.month?.toFixed(2).toLocaleString()}
+          value={rewards.month}
+          previousValue={rewards.previousMonth}
+          percentChange={calculatePercentChange(
+            rewards.month,
+            rewards.previousMonth,
+          )}
           rewardsLoading={rewardsLoading}
         />
       </div>

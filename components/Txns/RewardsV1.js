@@ -13,7 +13,7 @@ const columns = [
     render: (address) => (
       <div style={{ display: 'flex' }}>
         <AccountIcon address={address} style={{ marginRight: 4 }} />
-        <Link href={'/accounts/' + address}>
+        <Link href={'/accounts/' + address} prefetch={false}>
           <a>{address}</a>
         </Link>
       </div>

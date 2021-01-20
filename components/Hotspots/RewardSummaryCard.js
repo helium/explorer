@@ -1,6 +1,24 @@
-import { Skeleton } from 'antd'
+import { Tooltip, Skeleton } from 'antd'
+import { formatPercentChangeString } from './utils'
 
-const RewardSummaryCard = ({ timeframe, value, rewardsLoading }) => {
+const RewardSummaryCard = ({
+  timeframe,
+  value,
+  previousValue,
+  rewardsLoading,
+  percentChange,
+}) => {
+  const valueString = value?.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+  const previousValueString = previousValue?.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+
+  const percentChangeString = formatPercentChangeString(percentChange)
+
   return (
     <div
       style={{
@@ -16,16 +34,48 @@ const RewardSummaryCard = ({ timeframe, value, rewardsLoading }) => {
         <Skeleton active paragraph={{ rows: 1 }} size="small" />
       ) : (
         <>
-          <p
+          <div
             style={{
-              margin: 0,
-              textTransform: 'uppercase',
-              fontSize: '12px',
-              color: '#6d6ea0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
             }}
           >
-            {timeframe}
-          </p>
+            <p
+              style={{
+                margin: 0,
+                textTransform: 'uppercase',
+                fontSize: '12px',
+                color: '#6d6ea0',
+              }}
+            >
+              {timeframe}
+            </p>
+            <Tooltip
+              title={`Previous ${timeframe}: ${previousValueString} HNT`}
+            >
+              <div
+                style={{
+                  borderRadius: 5,
+                  marginLeft: 10,
+                  display: 'inline',
+                  height: 'auto',
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: 'soleil',
+                    color: percentChange > 0 ? '#32C48D' : '#CA0926',
+                    fontWeight: 400,
+                    fontSize: '12px',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {percentChangeString}
+                </span>
+              </div>
+            </Tooltip>
+          </div>
           <div>
             <span
               style={{
@@ -35,7 +85,7 @@ const RewardSummaryCard = ({ timeframe, value, rewardsLoading }) => {
                 fontSize: '32px',
               }}
             >
-              {value}
+              {valueString}
             </span>
             <span style={{ fontSize: '12px', marginLeft: '4px' }}>HNT</span>
           </div>

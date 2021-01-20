@@ -23,7 +23,7 @@ class StateChannelCloseV1 extends Component {
         key: 'client',
         render: (data) => (
           <span>
-            <Link href={'/hotspots/' + data}>
+            <Link href={'/hotspots/' + data} prefetch={false}>
               <a>{animalHash(data)}</a>
             </Link>
           </span>

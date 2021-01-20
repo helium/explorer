@@ -1,8 +1,16 @@
 import { useState, useEffect } from 'react'
 import ChecklistCard from './ChecklistCard'
 import { Tooltip } from 'antd'
+import withBlockHeight from '../../withBlockHeight'
 
-const HotspotChecklist = ({ hotspot, witnesses, activity, loading }) => {
+const HotspotChecklist = ({
+  hotspot,
+  witnesses,
+  activity,
+  loading,
+  height,
+  heightLoading,
+}) => {
   const possibleChecklistItems = loading
     ? [{ sortOrder: 0 }, { sortOrder: 1 }, { sortOrder: 2 }, { sortOrder: 3 }]
     : [
@@ -11,21 +19,21 @@ const HotspotChecklist = ({ hotspot, witnesses, activity, loading }) => {
           title: 'Blockchain Sync',
           infoTooltipText: `Hotspots must be fully synced before they can mine. New Hotspots can take up to 48 hours to sync.`,
           detailText:
-            isNaN(hotspot.status.height) || isNaN(hotspot.block)
+            isNaN(hotspot.status.height) || isNaN(height)
               ? `Hotspot is not yet synced.`
-              : hotspot.block - hotspot.status.height < 100
+              : height - hotspot.status.height < 100
               ? `Hotspot is fully synced.`
               : `Hotspot is ${(
-                  hotspot.block - hotspot.status.height
+                  height - hotspot.status.height
                 ).toLocaleString()} block${
-                  hotspot.block - hotspot.status.height === 1 ? '' : 's'
+                  height - hotspot.status.height === 1 ? '' : 's'
                 } behind the Helium blockchain and is roughly ${(
-                  (hotspot.status.height / hotspot.block) *
+                  (hotspot.status.height / height) *
                   100
                 )
                   .toFixed(2)
                   .toLocaleString()}% synced.`,
-          condition: hotspot.block - hotspot.status.height < 100,
+          condition: height - hotspot.status.height < 100,
         },
         {
           sortOrder: 1,
@@ -57,9 +65,9 @@ const HotspotChecklist = ({ hotspot, witnesses, activity, loading }) => {
           detailText:
             activity.challengerTxn !== null
               ? `Hotspot issued a challenge ${(
-                  hotspot.block - activity.challengerTxn.height
+                  height - activity.challengerTxn.height
                 ).toLocaleString()} block${
-                  hotspot.block - activity.challengerTxn.height === 1 ? '' : 's'
+                  height - activity.challengerTxn.height === 1 ? '' : 's'
                 } ago.`
               : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically.`,
           condition: activity.challengerTxn !== null,
@@ -95,9 +103,9 @@ const HotspotChecklist = ({ hotspot, witnesses, activity, loading }) => {
           detailText:
             activity.challengeeTxn !== null
               ? `Hotspot last participated in a challenge ${(
-                  hotspot.block - activity.challengeeTxn.height
+                  height - activity.challengeeTxn.height
                 ).toLocaleString()} block${
-                  hotspot.block - activity.challengeeTxn.height === 1 ? '' : 's'
+                  height - activity.challengeeTxn.height === 1 ? '' : 's'
                 } ago.`
               : `Hotspot hasn’t participated in a challenge yet.`,
           infoTooltipText:
@@ -397,7 +405,7 @@ const HotspotChecklist = ({ hotspot, witnesses, activity, loading }) => {
                   return (
                     <>
                       <ChecklistCard
-                        loading={loading}
+                        loading={loading || heightLoading}
                         isCurrentCard={index === currentIndex}
                         cardWidth={CARD_WIDTH}
                         index={index}
@@ -466,4 +474,4 @@ const HotspotChecklist = ({ hotspot, witnesses, activity, loading }) => {
   )
 }
 
-export default HotspotChecklist
+export default withBlockHeight(HotspotChecklist)

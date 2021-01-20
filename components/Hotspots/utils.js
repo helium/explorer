@@ -40,6 +40,26 @@ export const formatLocation = (geocode0) => {
   return locationTerms.join(', ')
 }
 
+export const formatWitnessInvalidReason = (rawInvalidReason) => {
+  switch (rawInvalidReason) {
+    case 'witness_too_close': {
+      return 'Witness too close'
+    }
+    case 'witness_rssi_too_high': {
+      return 'Witness RSSI too high'
+    }
+    case 'witness_on_incorrect_channel': {
+      return 'Witness on incorrect channel'
+    }
+    case 'witness_rssi_below_lower_bound': {
+      return 'Witness RSSI below lower bound'
+    }
+    default: {
+      return ''
+    }
+  }
+}
+
 export const formatPercentChangeString = (percentChangeNumber) => {
   const percentChangeString =
     percentChangeNumber === 0

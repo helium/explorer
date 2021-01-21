@@ -5,6 +5,7 @@ import algoliasearch from 'algoliasearch'
 import Fade from 'react-reveal/Fade'
 import Checklist from '../../components/Hotspots/Checklist/Checklist'
 import RewardSummary from '../../components/Hotspots/RewardSummary'
+import EarningsChart from '../../components/Hotspots/EarningsChart'
 
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
@@ -145,8 +146,8 @@ const HotspotView = ({ hotspot }) => {
 
     async function getHotspotRewards() {
       setRewardsLoading(true)
-      const rewards = await fetchRewardsSummary(hotspotid)
-      setRewards(rewards)
+      const rewardsResponse = await fetchRewardsSummary(hotspotid)
+      setRewards(rewardsResponse)
       setRewardsLoading(false)
     }
 
@@ -154,7 +155,7 @@ const HotspotView = ({ hotspot }) => {
     getNearbyHotspots()
     getHotspotActivity()
     getHotspotRewards()
-  }, [hotspot])
+  }, [hotspot.address])
 
   return (
     <AppLayout
@@ -350,6 +351,14 @@ const HotspotView = ({ hotspot }) => {
             rewardsLoading={rewardsLoading}
             witnessesLoading={witnessesLoading}
             activityLoading={activityLoading}
+          />
+        </div>
+        <div
+          style={{ maxWidth: 850 + 40, margin: '0 auto', paddingBottom: 50 }}
+        >
+          <EarningsChart
+            firstMonth={rewards.firstMonth}
+            secondMonth={rewards.secondMonth}
           />
         </div>
         <div

@@ -1,4 +1,6 @@
 import React from 'react'
+import { Tooltip } from 'antd'
+import animalHash from 'angry-purple-tiger'
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 import { withRouter } from 'next/router'
 
@@ -76,13 +78,15 @@ const HotspotMapbox = ({
     >
       {showNearbyHotspots &&
         nearbyHotspots.map((h) => (
-          <Marker
-            key={`nearby-${h.address}`}
-            style={styles.nearbyMarker}
-            anchor="center"
-            coordinates={[h.lng, h.lat]}
-            onClick={() => router.push(`/hotspots/${h.address}`)}
-          />
+          <Tooltip title={animalHash(h.address)}>
+            <Marker
+              key={`nearby-${h.address}`}
+              style={styles.nearbyMarker}
+              anchor="center"
+              coordinates={[h.lng, h.lat]}
+              onClick={() => router.push(`/hotspots/${h.address}`)}
+            />
+          </Tooltip>
         ))}
 
       <Marker
@@ -98,13 +102,15 @@ const HotspotMapbox = ({
       {showWitnesses &&
         witnesses.map((w) => (
           <>
-            <Marker
-              key={w.address}
-              style={styles.witnessMarker}
-              anchor="center"
-              coordinates={[w.lng, w.lat]}
-              onClick={() => router.push(`/hotspots/${w.address}`)}
-            ></Marker>
+            <Tooltip title={animalHash(w.address)}>
+              <Marker
+                key={w.address}
+                style={styles.witnessMarker}
+                anchor="center"
+                coordinates={[w.lng, w.lat]}
+                onClick={() => router.push(`/hotspots/${w.address}`)}
+              ></Marker>
+            </Tooltip>
             <Layer
               key={'line-' + w.address}
               type="line"

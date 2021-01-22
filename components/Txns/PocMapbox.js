@@ -1,5 +1,8 @@
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 import { h3ToGeo } from 'h3-js'
+import { Tooltip } from 'antd'
+import Link from 'next/link'
+import animalHash from 'angry-purple-tiger'
 import { findBounds } from './utils'
 
 const Mapbox = ReactMapboxGl({
@@ -123,32 +126,41 @@ const PocMapbox = ({ path, showWitnesses }) => {
       {path.map((p, idx) => {
         return (
           <span key={`${p}-${idx}`}>
-            <Marker
-              key={p.challengee}
-              style={
-                p.receipt ||
-                p.witnesses.length > 0 ||
-                (path[idx + 1] &&
-                  (path[idx + 1].receipt || path[idx + 1].witnesses.length > 0))
-                  ? styles.gatewaySuccess
-                  : styles.gatewayFailed
-              }
-              anchor="center"
-              coordinates={[
-                p.challengee_lon
-                  ? p.challengee_lon
-                  : p.challengeeLon
-                  ? p.challengeeLon
-                  : 0,
-                p.challengee_lat
-                  ? p.challengee_lat
-                  : p.challengeeLat
-                  ? p.challengeeLat
-                  : 0,
-              ]}
-            >
-              <span style={{ color: 'white', fontSize: '8px' }}>{idx + 1}</span>
-            </Marker>
+            <Link href={`/hotspots/${p.challengee}`} prefetch={false}>
+              <a>
+                <Tooltip title={animalHash(p.challengee)}>
+                  <Marker
+                    key={p.challengee}
+                    style={
+                      p.receipt ||
+                      p.witnesses.length > 0 ||
+                      (path[idx + 1] &&
+                        (path[idx + 1].receipt ||
+                          path[idx + 1].witnesses.length > 0))
+                        ? styles.gatewaySuccess
+                        : styles.gatewayFailed
+                    }
+                    anchor="center"
+                    coordinates={[
+                      p.challengee_lon
+                        ? p.challengee_lon
+                        : p.challengeeLon
+                        ? p.challengeeLon
+                        : 0,
+                      p.challengee_lat
+                        ? p.challengee_lat
+                        : p.challengeeLat
+                        ? p.challengeeLat
+                        : 0,
+                    ]}
+                  >
+                    <span style={{ color: 'white', fontSize: '8px' }}>
+                      {idx + 1}
+                    </span>
+                  </Marker>
+                </Tooltip>
+              </a>
+            </Link>
             <Layer
               key={'line-' + p.challengee}
               type="line"
@@ -198,19 +210,25 @@ const PocMapbox = ({ path, showWitnesses }) => {
               p.witnesses.map((w) => {
                 return (
                   <span>
-                    <Marker
-                      key={w.address}
-                      style={
-                        w.is_valid || w.isValid
-                          ? styles.witnessMarkerValid
-                          : styles.witnessMarkerInvalid
-                      }
-                      anchor="center"
-                      coordinates={[
-                        h3ToGeo(w.location)[1],
-                        h3ToGeo(w.location)[0],
-                      ]}
-                    ></Marker>
+                    <Link href={`/hotspots/${w.gateway}`} prefetch={false}>
+                      <a>
+                        <Tooltip title={animalHash(w.gateway)}>
+                          <Marker
+                            key={w.gateway}
+                            style={
+                              w.is_valid || w.isValid
+                                ? styles.witnessMarkerValid
+                                : styles.witnessMarkerInvalid
+                            }
+                            anchor="center"
+                            coordinates={[
+                              h3ToGeo(w.location)[1],
+                              h3ToGeo(w.location)[0],
+                            ]}
+                          ></Marker>
+                        </Tooltip>
+                      </a>
+                    </Link>
                     <Layer
                       key={'line-' + w.address}
                       type="line"

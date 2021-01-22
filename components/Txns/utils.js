@@ -4,24 +4,31 @@ const { formatToTimeZone } = require('date-fns-timezone')
 import { fromUnixTime } from 'date-fns'
 
 export const findBounds = (arrayOfLatsAndLons) => {
-  let minLon = arrayOfLatsAndLons[0].lng
-  let maxLon = arrayOfLatsAndLons[0].lng
-  let minLat = arrayOfLatsAndLons[0].lat
-  let maxLat = arrayOfLatsAndLons[0].lat
+  if (arrayOfLatsAndLons.length === 0) {
+    return [
+      [0, 0],
+      [0, 0],
+    ]
+  } else {
+    let minLon = arrayOfLatsAndLons[0].lng
+    let maxLon = arrayOfLatsAndLons[0].lng
+    let minLat = arrayOfLatsAndLons[0].lat
+    let maxLat = arrayOfLatsAndLons[0].lat
 
-  arrayOfLatsAndLons.map((m) => {
-    if (m.lng < minLon) minLon = m.lng
-    if (m.lng > maxLon) maxLon = m.lng
-    if (m.lat < minLat) minLat = m.lat
-    if (m.lat > maxLat) maxLat = m.lat
-  })
+    arrayOfLatsAndLons.map((m) => {
+      if (m.lng < minLon) minLon = m.lng
+      if (m.lng > maxLon) maxLon = m.lng
+      if (m.lat < minLat) minLat = m.lat
+      if (m.lat > maxLat) maxLat = m.lat
+    })
 
-  const mapBounds = [
-    [maxLon, maxLat],
-    [minLon, minLat],
-  ]
+    const mapBounds = [
+      [maxLon, maxLat],
+      [minLon, minLat],
+    ]
 
-  return mapBounds
+    return mapBounds
+  }
 }
 
 export const generateFriendlyTimestampString = (txnTime) => {

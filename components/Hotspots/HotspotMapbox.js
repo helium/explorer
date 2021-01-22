@@ -65,16 +65,45 @@ const HotspotMapbox = ({
   showNearbyHotspots,
   router,
 }) => {
+  const boundsLocations = []
+  // include hotspot in centering / zooming logic
+  boundsLocations.push({ lng: hotspot?.lng, lat: hotspot?.lat })
+
+  // include witnesses in centering / zooming logic
+  witnesses.map((w) => boundsLocations.push({ lng: w?.lng, lat: w?.lat }))
+
+  // include nearby hotspots in centering / zooming logic
+  nearbyHotspots.map((h) =>
+    boundsLocations.push({ lng: h?._geoloc.lng, lat: h?._geoloc.lat }),
+  )
+
+  // calculate map bounds
+  const mapBounds = findBounds(boundsLocations)
+
+  const mapProps = {}
+
+  if (boundsLocations.length === 1) {
+    // if the hotspot doesn't have any witnesses or nearby hotspots, centre on the hotspot by itself, at a decent zoom level
+    mapProps.zoom = [12]
+    mapProps.center = [
+      hotspot?.lng ? hotspot.lng : 0,
+      hotspot?.lat ? hotspot.lat : 0,
+    ]
+  } else {
+    mapProps.fitBounds = mapBounds
+    mapProps.fitBoundsOptions = { padding: 100, animate: false }
+  }
+
+  if (hotspot.lng !== undefined && hotspot.lat !== undefined) {
   return (
     <Mapbox
       style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
       container="map"
-      center={[hotspot.lng ? hotspot.lng : 0, hotspot.lat ? hotspot.lat : 0]}
       containerStyle={{
         width: '100%',
       }}
-      zoom={[11]}
       movingMethod="jumpTo"
+        {...mapProps}
     >
       {showNearbyHotspots &&
         nearbyHotspots.map((h) => (
@@ -135,5 +164,37 @@ const HotspotMapbox = ({
         ))}
     </Mapbox>
   )
+  } else {
+    return (
+      <div
+        className="no-location-set"
+        style={{
+          backgroundColor: '#324b61',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div
+          style={{
+            width: 18,
+            height: 18,
+            borderRadius: '50%',
+            backgroundColor: '#A984FF',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            border: '3px solid #8B62EA',
+            boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
+            marginBottom: 14,
+          }}
+        />
+        <p style={{ fontFamily: 'soleil', fontSize: '18px', color: 'white' }}>
+          No location set
+        </p>
+      </div>
+    )
+  }
 }
 export default withRouter(HotspotMapbox)

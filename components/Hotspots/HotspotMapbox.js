@@ -107,15 +107,18 @@ const HotspotMapbox = ({
     >
       {showNearbyHotspots &&
         nearbyHotspots.map((h) => (
+            <Link href={`/hotspots/${h.address}`} prefetch={false}>
+              <a>
           <Tooltip title={animalHash(h.address)}>
             <Marker
               key={`nearby-${h.address}`}
               style={styles.nearbyMarker}
               anchor="center"
               coordinates={[h.lng, h.lat]}
-              onClick={() => router.push(`/hotspots/${h.address}`)}
             />
           </Tooltip>
+              </a>
+            </Link>
         ))}
 
       <Marker

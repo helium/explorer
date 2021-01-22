@@ -30,7 +30,8 @@ const AccountView = ({ account }) => {
   )
 
   const [hotspots, setHotspots] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [hotspotsLoading, setLoadingHotspots] = useState(true)
+  const [rewardsLoading, setLoadingRewards] = useState(true)
 
   useEffect(() => {
     async function getHotspots() {
@@ -41,15 +42,31 @@ const AccountView = ({ account }) => {
 
       const hotspots = []
       for await (const hotspot of list) {
-        hotspot.status.gpsText = gpsLocation(hotspot.status.gps)
-        hotspot.rewards = await fetchRewardsSummary(hotspot.address)
         delete hotspot.client
         hotspots.push(JSON.parse(JSON.stringify(hotspot)))
       }
       setHotspots(hotspots)
-      setLoading(false)
+      setLoadingHotspots(false)
+    }
+
+    async function getRewards() {
+      const client = new Client()
+      const accountid = account.address
+
+      const list = await client.account(accountid).hotspots.list()
+
+      const hotspots = []
+      for await (const hotspot of list) {
+        hotspot.rewardsSummary = await fetchRewardsSummary(hotspot.address)
+        delete hotspot.client
+        hotspots.push(JSON.parse(JSON.stringify(hotspot)))
+      }
+      // overwrite hotspots with a version that includes rewards
+      setHotspots(hotspots)
+      setLoadingRewards(false)
     }
     getHotspots()
+    getRewards()
   }, [])
 
   return (
@@ -199,7 +216,11 @@ const AccountView = ({ account }) => {
           marginTop: 0,
         }}
       >
-        <HotspotsList loading={loading} hotspots={hotspots} />
+        <HotspotsList
+          rewardsLoading={rewardsLoading}
+          hotspotsLoading={hotspotsLoading}
+          hotspots={hotspots}
+        />
         <ActivityList
           type="account"
           address={account.address}
@@ -227,19 +248,6 @@ export async function getStaticProps({ params }) {
       account: JSON.parse(JSON.stringify(account)),
     },
     revalidate: 10,
-  }
-}
-
-function gpsLocation(text) {
-  switch (text) {
-    case 'bad_assert':
-      return 'Bad GPS Location'
-    case 'good_fix':
-      return 'Good GPS Location'
-    case 'no_fix':
-      return 'No GPS Fix'
-    default:
-      return false
   }
 }
 

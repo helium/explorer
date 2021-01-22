@@ -434,6 +434,10 @@ hr {
   cursor: pointer;
 }
 
+.no-location-set {
+  height: 400px;
+}
+
 @media screen and (max-width: 1200px) {
   .map-button {
     min-width: 0;
@@ -539,6 +543,9 @@ hr {
     padding: 20px;
   }
   .content-container-hotspot-view > .mapboxgl-map {
+    height: 200px;
+  }
+  .no-location-set {
     height: 200px;
   }
   #hotspot-checklist-container {

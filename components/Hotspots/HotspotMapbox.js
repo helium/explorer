@@ -1,5 +1,7 @@
 import React from 'react'
 import { Tooltip } from 'antd'
+import Link from 'next/link'
+import { findBounds } from '../Txns/utils'
 import animalHash from 'angry-purple-tiger'
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 import { withRouter } from 'next/router'
@@ -95,78 +97,78 @@ const HotspotMapbox = ({
   }
 
   if (hotspot.lng !== undefined && hotspot.lat !== undefined) {
-  return (
-    <Mapbox
-      style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
-      container="map"
-      containerStyle={{
-        width: '100%',
-      }}
-      movingMethod="jumpTo"
+    return (
+      <Mapbox
+        style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
+        container="map"
+        containerStyle={{
+          width: '100%',
+        }}
+        movingMethod="jumpTo"
         {...mapProps}
-    >
-      {showNearbyHotspots &&
-        nearbyHotspots.map((h) => (
+      >
+        {showNearbyHotspots &&
+          nearbyHotspots.map((h) => (
             <Link href={`/hotspots/${h.address}`} prefetch={false}>
               <a>
-          <Tooltip title={animalHash(h.address)}>
-            <Marker
-              key={`nearby-${h.address}`}
-              style={styles.nearbyMarker}
-              anchor="center"
-              coordinates={[h.lng, h.lat]}
-            />
-          </Tooltip>
+                <Tooltip title={animalHash(h.address)}>
+                  <Marker
+                    key={`nearby-${h.address}`}
+                    style={styles.nearbyMarker}
+                    anchor="center"
+                    coordinates={[h.lng, h.lat]}
+                  />
+                </Tooltip>
               </a>
             </Link>
-        ))}
+          ))}
 
-      <Marker
-        key={hotspot.address}
-        style={styles.gatewayMarker}
-        anchor="center"
-        coordinates={[
-          hotspot.lng ? hotspot.lng : 0,
-          hotspot.lat ? hotspot.lat : 0,
-        ]}
-      />
+        <Marker
+          key={hotspot.address}
+          style={styles.gatewayMarker}
+          anchor="center"
+          coordinates={[
+            hotspot.lng ? hotspot.lng : 0,
+            hotspot.lat ? hotspot.lat : 0,
+          ]}
+        />
 
-      {showWitnesses &&
-        witnesses.map((w) => (
-          <>
-            <Tooltip title={animalHash(w.address)}>
-              <Marker
-                key={w.address}
-                style={styles.witnessMarker}
-                anchor="center"
-                coordinates={[w.lng, w.lat]}
-                onClick={() => router.push(`/hotspots/${w.address}`)}
-              ></Marker>
-            </Tooltip>
-            <Layer
-              key={'line-' + w.address}
-              type="line"
-              layout={{
-                'line-cap': 'round',
-                'line-join': 'round',
-              }}
-              paint={{
-                'line-color': '#F1C40F',
-                'line-width': 2,
-                'line-opacity': 0.3,
-              }}
-            >
-              <Feature
-                coordinates={[
-                  [w.lng, w.lat],
-                  [hotspot.lng, hotspot.lat],
-                ]}
-              />
-            </Layer>
-          </>
-        ))}
-    </Mapbox>
-  )
+        {showWitnesses &&
+          witnesses.map((w) => (
+            <>
+              <Tooltip title={animalHash(w.address)}>
+                <Marker
+                  key={w.address}
+                  style={styles.witnessMarker}
+                  anchor="center"
+                  coordinates={[w.lng, w.lat]}
+                  onClick={() => router.push(`/hotspots/${w.address}`)}
+                ></Marker>
+              </Tooltip>
+              <Layer
+                key={'line-' + w.address}
+                type="line"
+                layout={{
+                  'line-cap': 'round',
+                  'line-join': 'round',
+                }}
+                paint={{
+                  'line-color': '#F1C40F',
+                  'line-width': 2,
+                  'line-opacity': 0.3,
+                }}
+              >
+                <Feature
+                  coordinates={[
+                    [w.lng, w.lat],
+                    [hotspot.lng, hotspot.lat],
+                  ]}
+                />
+              </Layer>
+            </>
+          ))}
+      </Mapbox>
+    )
   } else {
     return (
       <div

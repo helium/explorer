@@ -51,7 +51,7 @@ const AccountView = ({ account }) => {
       const hotspots = []
       for await (const hotspot of list) {
         hotspot.status.gpsText = gpsLocation(hotspot.status.gps)
-        hotspot.rewards = await fetchRewardsSummary(hotspot.address)
+        hotspot.rewardsSummary = await fetchRewardsSummary(hotspot.address)
         delete hotspot.client
         hotspots.push(JSON.parse(JSON.stringify(hotspot)))
       }

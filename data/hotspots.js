@@ -54,18 +54,26 @@ export const fetchRewardsSummary = async (address) => {
   const response = await fetch(url)
   const { data } = await response.json()
 
-  const half = Math.ceil(data.length / 2)
-  const firstMonth = data.splice(0, half)
-  const secondMonth = data.splice(-half)
+  const day = sumBy(data.slice(0, 23), 'total')
+  const previousDay = sumBy(data.slice(23, 47), 'total')
+  const week = sumBy(data.slice(0, 24 * 7 - 1), 'total')
+  const previousWeek = sumBy(data.slice(24 * 7 - 1, 24 * 7 * 2), 'total')
+  const month = sumBy(data.slice(0, 24 * 30 - 1), 'total')
+  const previousMonth = sumBy(data.slice(24 * 30 - 1, 24 * 30 * 2), 'total')
+
+  const dataToSplit = data
+  const half = Math.ceil(dataToSplit.length / 2)
+  const firstMonthHours = dataToSplit.splice(0, half)
+  const secondMonthHours = dataToSplit.splice(-half)
 
   return {
-    day: sumBy(data.slice(0, 23), 'total'),
-    previousDay: sumBy(data.slice(23, 47), 'total'),
-    week: sumBy(data.slice(0, 24 * 7 - 1), 'total'),
-    previousWeek: sumBy(data.slice(24 * 7 - 1, 24 * 7 * 2), 'total'),
-    month: sumBy(data.slice(0, 24 * 30 - 1), 'total'),
-    previousMonth: sumBy(data.slice(24 * 30 - 1, 24 * 30 * 2), 'total'),
-    firstMonth,
-    secondMonth,
+    day,
+    previousDay,
+    week,
+    previousWeek,
+    month,
+    previousMonth,
+    firstMonthHours,
+    secondMonthHours,
   }
 }

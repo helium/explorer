@@ -53,7 +53,7 @@ const hotspotColumns = [
   },
   {
     title: 'Rewards (24h)',
-    dataIndex: 'rewards',
+    dataIndex: 'rewardsSummary',
     key: 'rewardsDay',
     render: (data) => {
       const percentChange = calculatePercentChange(data.day, data.previousDay)
@@ -76,7 +76,7 @@ const hotspotColumns = [
   },
   {
     title: 'Rewards (7d)',
-    dataIndex: 'rewards',
+    dataIndex: 'rewardsSummary',
     key: 'rewardsWeek',
     render: (data) => {
       const percentChange = calculatePercentChange(data.week, data.previousWeek)
@@ -99,7 +99,7 @@ const hotspotColumns = [
   },
   {
     title: 'Rewards (30d)',
-    dataIndex: 'rewards',
+    dataIndex: 'rewardsSummary',
     key: 'rewardsMonth',
     render: (data) => {
       const percentChange = calculatePercentChange(

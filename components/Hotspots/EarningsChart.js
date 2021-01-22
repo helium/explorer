@@ -11,8 +11,8 @@ import {
 import { format, fromUnixTime, getUnixTime } from 'date-fns'
 import useResponsive from '../AppLayout/useResponsive'
 
-const EarningsChart = ({ firstMonth, secondMonth }) => {
-  const firstMonthRewards = firstMonth
+const EarningsChart = ({ firstMonthHours, secondMonthHours }) => {
+  const firstMonthRewards = firstMonthHours
     ?.map(({ timestamp, total }) => ({
       timestamp: getUnixTime(new Date(timestamp)),
       total: total,

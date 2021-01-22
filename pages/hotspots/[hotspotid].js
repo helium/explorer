@@ -357,8 +357,8 @@ const HotspotView = ({ hotspot }) => {
           style={{ maxWidth: 850 + 40, margin: '0 auto', paddingBottom: 50 }}
         >
           <EarningsChart
-            firstMonth={rewards.firstMonth}
-            secondMonth={rewards.secondMonth}
+            firstMonthHours={rewards.firstMonthHours}
+            secondMonthHours={rewards.secondMonthHours}
           />
         </div>
         <div

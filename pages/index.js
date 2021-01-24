@@ -57,28 +57,23 @@ const Index = ({
             </span>
           </span>
         }
+        contain
       />
-      <TopChart
-        title="Oracle Price (30d)"
-        subtitle={`${latestOraclePrice} (${formatDistanceToNow(
-          new Date(oraclePrices[0].timestamp),
-          {
-            addSuffix: true,
-          },
-        )})`}
-        icon={OracleImg}
-        tooltip="The Oracle Price is the price used for on-chain burn transactions. Derived from the market price, Oracles submit prices periodically to stabilize market fluctuations"
-        chart={
-          <OraclePriceChart
-            data={oraclePrices
-              .map(({ timestamp, price }) => ({
-                time: getUnixTime(new Date(timestamp)),
-                price: price / 100000000,
-              }))
-              .reverse()}
-          />
-        }
-      />
+      <div
+        style={{
+          background: 'rgb(16, 23, 37)',
+        }}
+        className="summary-header"
+      >
+        <Row>
+          <Col span={24}>
+            <a href="/coverage">
+              <MiniCoverageMap zoomLevel={2} />
+            </a>
+          </Col>
+        </Row>
+      </div>
+
       <Content
         style={{
           marginTop: 0,
@@ -157,35 +152,28 @@ const Index = ({
             </Col>
           </Row>
 
-          <div
-            style={{
-              background: '#3F416D',
-              borderRadius: 10,
-              marginBottom: 20,
-            }}
-            className="summary-header"
-          >
-            <Row>
-              <Col lg={12}>
-                <h3
-                  style={{
-                    marginBottom: 0,
-                    color: '#1890ff',
-                    fontSize: 14,
-                  }}
-                >
-                  Coverage Map
-                </h3>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={24}>
-                <a href="/coverage">
-                  <MiniCoverageMap zoomLevel={0.65} />
-                </a>
-              </Col>
-            </Row>
-          </div>
+          <TopChart
+            title="Oracle Price (30d)"
+            subtitle={`${latestOraclePrice} (${formatDistanceToNow(
+              new Date(oraclePrices[0].timestamp),
+              {
+                addSuffix: true,
+              },
+            )})`}
+            icon={OracleImg}
+            tooltip="The Oracle Price is the price used for on-chain burn transactions. Derived from the market price, Oracles submit prices periodically to stabilize market fluctuations"
+            chart={
+              <OraclePriceChart
+                data={oraclePrices
+                  .map(({ timestamp, price }) => ({
+                    time: getUnixTime(new Date(timestamp)),
+                    price: price / 100000000,
+                  }))
+                  .reverse()}
+              />
+            }
+            radius
+          />
 
           <Card title="Latest Blocks" style={{ marginBottom: 60 }}>
             <BlocksList pageSize={10} showButton={false} />

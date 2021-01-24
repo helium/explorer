@@ -88,17 +88,9 @@ function Hotspots({
 
         <Row gutter={[16, 16]}>
           <Col span={24}>
-            <div
-              style={{
-                backgroundColor: '#1d1f40',
-                paddingTop: 10,
-                borderRadius: 10,
-              }}
-            >
-              <a href="/coverage">
-                <MiniCoverageMap zoomLevel={0.9} />
-              </a>
-            </div>
+            <a href="/coverage">
+              <MiniCoverageMap />
+            </a>
           </Col>
         </Row>
 

@@ -4,11 +4,11 @@ import { InfoCircleOutlined } from '@ant-design/icons'
 import useResponsive from './useResponsive'
 const { Title, Text } = Typography
 
-const TopChart = ({ title, subtitle, icon, tooltip, chart }) => {
+const TopChart = ({ title, subtitle, icon, tooltip, chart, radius }) => {
   const { isMobile } = useResponsive()
 
   return (
-    <div style={{ backgroundColor: '#161E2E' }}>
+    <div style={{ backgroundColor: '#161E2E', borderRadius: radius ? 10 : 0 }}>
       <div
         style={{ padding: isMobile ? '20px 20px 0 20px' : '40px 40px 0 40px' }}
       >

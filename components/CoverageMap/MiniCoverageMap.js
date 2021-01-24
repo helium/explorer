@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactMapboxGl, { GeoJSONLayer } from 'react-mapbox-gl'
 import fetch from 'node-fetch'
+import { Button } from 'antd'
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
@@ -12,9 +13,9 @@ const Mapbox = ReactMapboxGl({
 
 const circleLayout = {
   'circle-color': '#29d391',
-  'circle-radius': 5,
-  'circle-opacity': 1,
-  'circle-blur': 0,
+  'circle-radius': 3,
+  'circle-opacity': 0.9,
+  'circle-blur': 5,
 }
 
 class MiniCoverageMap extends React.Component {
@@ -30,15 +31,14 @@ class MiniCoverageMap extends React.Component {
   }
 
   render() {
-    const { zoomLevel } = this.props
     const { coverage } = this.state
 
     return (
       <span className="mini-coverage-map">
         <p className="mini-coverage-map-interactive-text unselectable-text">
-          Click to open full-screen interactive map
+          Open full-screen interactive map
         </p>
-        <span className="mini-coverage-map-overlay" />
+        <span className="mini-coverage-map-overlay"></span>
         <Mapbox
           style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
           containerStyle={{
@@ -50,7 +50,14 @@ class MiniCoverageMap extends React.Component {
             alignItems: 'center',
             justifyContent: 'center',
           }}
-          zoom={[zoomLevel]}
+          fitBounds={[
+            [164.63912, 9.751857],
+            [-166.658409, 69.818137],
+          ]}
+          fitBoundsOptions={{
+            padding: 50,
+            animate: false,
+          }}
         >
           {coverage && (
             <GeoJSONLayer

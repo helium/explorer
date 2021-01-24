@@ -256,21 +256,19 @@ hr {
 .mini-coverage-map {
   position: relative;
   display: block;
-  border-radius: 0 0 10px 10px;
 }
 .mini-coverage-map-overlay {
   display: block;
-  background-color: #3f416d;
+  background-color: rgba(16, 23, 37);
   opacity: 0;
-  border-radius: 0 0 10px 10px;
   position: absolute;
   z-index: 2;
   height: 500px;
   width: 100%;
+  transition: opacity 0.2s ease;
 }
 .mini-coverage-map:hover > .mini-coverage-map-overlay {
   opacity: 0.5;
-  transition: opacity 0.2s ease;
 }
 .mini-coverage-map-interactive-text {
   position: absolute;
@@ -278,20 +276,17 @@ hr {
   text-align: center;
   width: 100%;
   z-index: 3;
-  color: white;
+  color: #ddd;
   opacity: 0;
   font-size: 24px;
   font-weight: 400;
   text-shadow: 0 0 10px darkslategray;
   display: block;
+  transition: all 0.2s ease;
 }
 .mini-coverage-map:hover > .mini-coverage-map-interactive-text {
+  transform: translateY(-15px);
   opacity: 1;
-  transition: opacity 0.2s ease;
-}
-
-.mini-coverage-map .mapboxgl-canvas {
-  border-radius: 0 0 10px 10px;
 }
 
 .interactive-coverage-map > .mapboxgl-map {

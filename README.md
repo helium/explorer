@@ -32,7 +32,7 @@ NEXT_PUBLIC_MAPBOX_KEY=pk.ey[...the rest of your access token...]
 ```
 - Rename the file "`.env`" (delete "`.sample`" from the file name)
 
-3. Then run the development server:
+4. Then run the development server:
 
 ```bash
 yarn dev
@@ -44,12 +44,12 @@ And open [http://localhost:3000](http://localhost:3000) with your browser to see
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file and save your changes.
 
-4. Create a new logically-named branch. For example:
+5. Create a new logically-named branch. For example:
 ```bash
 git checkout -b witness-list-enhancements
 ```
 
-5. Push your changes to GitHub and create a PR against the master branch, linking the PR to any relevant issues.
+6. Push your changes to GitHub and create a PR against the master branch, linking the PR to any relevant issues.
 
 ## Questions
 

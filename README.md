@@ -24,11 +24,11 @@ yarn
 ```
 
 3. Edit your environment variables
-- Open the `/.sample.env` file
-- [Create a Mapbox account](http://mapbox.com/auth/signup) and [get your public access token](https://account.mapbox.com/access-tokens/)
-- Paste it in place of `123` for the `NEXT_PUBLIC_MAPBOX_KEY` variable, so that line looks like this:
+- Open the `.sample.env` file located at the root of the project
+- [Create a Mapbox account](http://mapbox.com/auth/signup) and [copy your public access token](https://account.mapbox.com/access-tokens/)
+- Paste it in place of `123` for the `NEXT_PUBLIC_MAPBOX_KEY` variable. That line should now look like this:
 ```
-NEXT_PUBLIC_MAPBOX_KEY=pk.ey[...]
+NEXT_PUBLIC_MAPBOX_KEY=pk.ey[...the rest of your access token...]
 ```
 - Rename the file "`.env`" (delete "`.sample`" from the file name)
 

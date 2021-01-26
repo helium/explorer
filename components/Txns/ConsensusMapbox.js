@@ -1,6 +1,5 @@
 import ReactMapboxGl, { Marker } from 'react-mapbox-gl'
 import { findBounds } from './utils'
-import Link from 'next/link'
 import animalHash from 'angry-purple-tiger'
 import { Tooltip } from 'antd'
 
@@ -45,22 +44,19 @@ const ConsensusMapbox = ({ members }) => {
     >
       {members?.map((m, idx) => {
         return (
-          <Link href={`/hotspots/${m.address}`} prefetch={false}>
-            <a>
-              <Tooltip title={animalHash(m.address)}>
-                <Marker
-                  key={m.address}
-                  style={styles.consensusMember}
-                  anchor="center"
-                  coordinates={[m?.lng, m?.lat]}
-                >
-                  <span style={{ color: 'white', fontSize: '10px' }}>
-                    {idx + 1}
-                  </span>
-                </Marker>
-              </Tooltip>
-            </a>
-          </Link>
+          <Tooltip title={animalHash(m.address)}>
+            <Marker
+              key={m.address}
+              style={styles.consensusMember}
+              anchor="center"
+              coordinates={[m?.lng, m?.lat]}
+              onClick={() => router.push(`/hotspots/${m.address}`)}
+            >
+              <span style={{ color: 'white', fontSize: '10px' }}>
+                {idx + 1}
+              </span>
+            </Marker>
+          </Tooltip>
         )
       })}
     </Mapbox>

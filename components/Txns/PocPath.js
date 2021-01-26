@@ -35,13 +35,15 @@ class PocPath extends Component {
       return (
         <span>
           <PocMapbox path={path} showWitnesses={showWitnesses} />
-          <Checkbox
-            onChange={this.toggleWitnesses}
-            checked={showWitnesses}
-            style={{ color: 'black', float: 'right' }}
-          >
-            Show witnesses
-          </Checkbox>
+          {path.length > 0 && path[0].challengeeLon && path[0].challengeeLat && (
+            <Checkbox
+              onChange={this.toggleWitnesses}
+              checked={showWitnesses}
+              style={{ color: 'black', float: 'right' }}
+            >
+              Show witnesses
+            </Checkbox>
+          )}
         </span>
       )
     } else {

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Tooltip } from 'antd'
-import Link from 'next/link'
 import { findBounds } from '../Txns/utils'
 import animalHash from 'angry-purple-tiger'
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
@@ -109,18 +108,15 @@ const HotspotMapbox = ({
       >
         {showNearbyHotspots &&
           nearbyHotspots.map((h) => (
-            <Link href={`/hotspots/${h.address}`} prefetch={false}>
-              <a>
-                <Tooltip title={animalHash(h.address)}>
-                  <Marker
-                    key={`nearby-${h.address}`}
-                    style={styles.nearbyMarker}
-                    anchor="center"
-                    coordinates={[h.lng, h.lat]}
-                  />
-                </Tooltip>
-              </a>
-            </Link>
+            <Tooltip title={animalHash(h.address)}>
+              <Marker
+                key={`nearby-${h.address}`}
+                style={styles.nearbyMarker}
+                anchor="center"
+                coordinates={[h.lng, h.lat]}
+                onClick={() => router.push(`/hotspots/${h.address}`)}
+              />
+            </Tooltip>
           ))}
 
         <Marker

@@ -83,6 +83,8 @@ const typeTag = (type) => {
           <Tag color="#9AE8C9">Security Token Reward</Tag>
         </Tooltip>
       )
+    case 'token_burn_v1':
+      return <Tag color="#FF1A00">Token Burn</Tag>
     default:
       return <Tag color="blue">{type}</Tag>
   }

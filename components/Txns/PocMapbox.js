@@ -1,5 +1,7 @@
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 import { h3ToGeo } from 'h3-js'
+import { Tooltip } from 'antd'
+import animalHash from 'angry-purple-tiger'
 import { findBounds } from './utils'
 
 const Mapbox = ReactMapboxGl({
@@ -79,176 +81,168 @@ const styles = {
 
 const PocMapbox = ({ path, showWitnesses }) => {
   const locations = []
-  if (path.length === 1) {
-    // after beaconing challenges
-    path[0].witnesses.map((w) =>
-      locations.push({
-        lng: h3ToGeo(w.location)[1],
-        lat: h3ToGeo(w.location)[0],
-      }),
-    )
-    locations.push({ lng: path[0].challengeeLon, lat: path[0].challengeeLat })
-  } else {
-    // before beaconing challenges
-    path.map((p) => {
-      // include all hotspots involved in the challenge
-      locations.push({ lng: p?.challengeeLon, lat: p?.challengeeLat })
-      // if witnesses are included, include them in finding the bounds
-      if (showWitnesses)
-        p.witnesses.map((w) =>
-          locations.push({
-            lng: h3ToGeo(w.location)[1],
-            lat: h3ToGeo(w.location)[0],
-          }),
-        )
-    })
+
+  const pathHasLocations =
+    path.length > 0 && path[0].challengeeLon && path[0].challengeeLat
+
+  if (pathHasLocations) {
+    if (path.length === 1) {
+      // after beaconing challenges
+      path[0].witnesses.map((w) =>
+        locations.push({
+          lng: h3ToGeo(w.location)[1],
+          lat: h3ToGeo(w.location)[0],
+        }),
+      )
+      locations.push({ lng: path[0].challengeeLon, lat: path[0].challengeeLat })
+    } else {
+      // before beaconing challenges
+      path.map((p) => {
+        // include all hotspots involved in the challenge
+        locations.push({ lng: p?.challengeeLon, lat: p?.challengeeLat })
+        // if witnesses are included, include them in finding the bounds
+        if (showWitnesses)
+          p.witnesses.map((w) =>
+            locations.push({
+              lng: h3ToGeo(w.location)[1],
+              lat: h3ToGeo(w.location)[0],
+            }),
+          )
+      })
+    }
   }
+
   const mapBounds = findBounds(locations)
 
-  return (
-    <Mapbox
-      style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
-      container="map"
-      fitBounds={mapBounds}
-      fitBoundsOptions={{
-        padding: 100,
-        animate: false,
-      }}
-      containerStyle={{
-        height: '600px',
-        width: '100%',
-      }}
-      movingMethod="jumpTo"
-    >
-      {path.map((p, idx) => {
-        return (
-          <span key={`${p}-${idx}`}>
-            <Marker
-              key={p.challengee}
-              style={
-                p.receipt ||
-                p.witnesses.length > 0 ||
-                (path[idx + 1] &&
-                  (path[idx + 1].receipt || path[idx + 1].witnesses.length > 0))
-                  ? styles.gatewaySuccess
-                  : styles.gatewayFailed
-              }
-              anchor="center"
-              coordinates={[
-                p.challengee_lon
-                  ? p.challengee_lon
-                  : p.challengeeLon
-                  ? p.challengeeLon
-                  : 0,
-                p.challengee_lat
-                  ? p.challengee_lat
-                  : p.challengeeLat
-                  ? p.challengeeLat
-                  : 0,
-              ]}
-            >
-              <span style={{ color: 'white', fontSize: '8px' }}>{idx + 1}</span>
-            </Marker>
-            <Layer
-              key={'line-' + p.challengee}
-              type="line"
-              layout={{ 'line-cap': 'round', 'line-join': 'round' }}
-              paint={
-                p.receipt ||
-                p.witnesses.length > 0 ||
-                (path[idx + 1] &&
-                  (path[idx + 1].receipt || path[idx + 1].witnesses.length > 0))
-                  ? styles.lineSuccess
-                  : styles.lineFailure
-              }
-            >
-              <Feature
-                coordinates={[
-                  [
-                    p.challengee_lon
-                      ? p.challengee_lon
-                      : p.challengeeLon
-                      ? p.challengeeLon
-                      : 0,
-                    p.challengee_lat
-                      ? p.challengee_lat
-                      : p.challengeeLat
-                      ? p.challengeeLat
-                      : 0,
-                  ],
-                  path[idx + 1]
-                    ? [
-                        path[idx + 1].challengee_lon
-                          ? path[idx + 1].challengee_lon
-                          : path[idx + 1].challengeeLon
-                          ? path[idx + 1].challengeeLon
-                          : 0,
-                        path[idx + 1].challengee_lat
-                          ? path[idx + 1].challengee_lat
-                          : path[idx + 1].challengeeLat
-                          ? path[idx + 1].challengeeLat
-                          : 0,
-                      ]
-                    : [false],
-                ]}
-              />
-            </Layer>
-            {p.witnesses.length > 0 &&
-              showWitnesses &&
-              p.witnesses.map((w) => {
-                return (
-                  <span>
-                    <Marker
-                      key={w.address}
-                      style={
-                        w.is_valid || w.isValid
-                          ? styles.witnessMarkerValid
-                          : styles.witnessMarkerInvalid
-                      }
-                      anchor="center"
-                      coordinates={[
-                        h3ToGeo(w.location)[1],
-                        h3ToGeo(w.location)[0],
-                      ]}
-                    ></Marker>
-                    <Layer
-                      key={'line-' + w.address}
-                      type="line"
-                      layout={{
-                        'line-cap': 'round',
-                        'line-join': 'round',
-                      }}
-                      paint={
-                        w.is_valid || w.isValid
-                          ? styles.witnessLineValid
-                          : styles.witnessLineInvalid
-                      }
-                    >
-                      <Feature
-                        coordinates={[
-                          [h3ToGeo(w.location)[1], h3ToGeo(w.location)[0]],
-                          [
-                            p.challengee_lon
-                              ? p.challengee_lon
-                              : p.challengeeLon
-                              ? p.challengeeLon
-                              : 0,
-                            p.challengee_lat
-                              ? p.challengee_lat
-                              : p.challengeeLat
-                              ? p.challengeeLat
-                              : 0,
-                          ],
-                        ]}
-                      />
-                    </Layer>
+  if (pathHasLocations) {
+    return (
+      <Mapbox
+        style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
+        container="map"
+        fitBounds={mapBounds}
+        fitBoundsOptions={{
+          padding: 100,
+          animate: false,
+        }}
+        containerStyle={{
+          height: '600px',
+          width: '100%',
+        }}
+        movingMethod="jumpTo"
+      >
+        {path.map((p, idx) => {
+          return (
+            <span key={`${p}-${idx}`}>
+              <Tooltip title={animalHash(p.challengee)}>
+                <Marker
+                  key={p.challengee}
+                  style={
+                    p.receipt ||
+                    p.witnesses.length > 0 ||
+                    (path[idx + 1] &&
+                      (path[idx + 1].receipt ||
+                        path[idx + 1].witnesses.length > 0))
+                      ? styles.gatewaySuccess
+                      : styles.gatewayFailed
+                  }
+                  anchor="center"
+                  coordinates={[
+                    p.challengeeLon ? p.challengeeLon : 0,
+                    p.challengeeLat ? p.challengeeLat : 0,
+                  ]}
+                  onClick={() => router.push(`/hotspots/${p.challengee}`)}
+                >
+                  <span style={{ color: 'white', fontSize: '8px' }}>
+                    {idx + 1}
                   </span>
-                )
-              })}
-          </span>
-        )
-      })}
-    </Mapbox>
-  )
+                </Marker>
+              </Tooltip>
+              <Layer
+                key={'line-' + p.challengee}
+                type="line"
+                layout={{ 'line-cap': 'round', 'line-join': 'round' }}
+                paint={
+                  p.receipt ||
+                  p.witnesses.length > 0 ||
+                  (path[idx + 1] &&
+                    (path[idx + 1].receipt ||
+                      path[idx + 1].witnesses.length > 0))
+                    ? styles.lineSuccess
+                    : styles.lineFailure
+                }
+              >
+                <Feature
+                  coordinates={[
+                    [
+                      p.challengeeLon ? p.challengeeLon : 0,
+                      p.challengeeLat ? p.challengeeLat : 0,
+                    ],
+                    path[idx + 1]
+                      ? [
+                          path[idx + 1].challengeeLon
+                            ? path[idx + 1].challengeeLon
+                            : 0,
+                          path[idx + 1].challengeeLat
+                            ? path[idx + 1].challengeeLat
+                            : 0,
+                        ]
+                      : [false],
+                  ]}
+                />
+              </Layer>
+              {p.witnesses.length > 0 &&
+                showWitnesses &&
+                p.witnesses.map((w) => {
+                  return (
+                    <span>
+                      <Tooltip title={animalHash(w.gateway)}>
+                        <Marker
+                          key={w.gateway}
+                          style={
+                            w.is_valid || w.isValid
+                              ? styles.witnessMarkerValid
+                              : styles.witnessMarkerInvalid
+                          }
+                          anchor="center"
+                          coordinates={[
+                            h3ToGeo(w.location)[1],
+                            h3ToGeo(w.location)[0],
+                          ]}
+                          onClick={() => router.push(`/hotspots/${w.gateway}`)}
+                        ></Marker>
+                      </Tooltip>
+                      <Layer
+                        key={'line-' + w.address}
+                        type="line"
+                        layout={{
+                          'line-cap': 'round',
+                          'line-join': 'round',
+                        }}
+                        paint={
+                          w.is_valid || w.isValid
+                            ? styles.witnessLineValid
+                            : styles.witnessLineInvalid
+                        }
+                      >
+                        <Feature
+                          coordinates={[
+                            [h3ToGeo(w.location)[1], h3ToGeo(w.location)[0]],
+                            [
+                              p.challengeeLon ? p.challengeeLon : 0,
+                              p.challengeeLat ? p.challengeeLat : 0,
+                            ],
+                          ]}
+                        />
+                      </Layer>
+                    </span>
+                  )
+                })}
+            </span>
+          )
+        })}
+      </Mapbox>
+    )
+  } else return null
 }
+
 export default PocMapbox

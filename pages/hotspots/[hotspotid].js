@@ -185,31 +185,33 @@ const HotspotView = ({ hotspot }) => {
             nearbyHotspots={nearbyHotspots}
             showNearbyHotspots={showNearbyHotspots}
           />
-          <div
-            style={{
-              textAlign: 'right',
-              paddingTop: 10,
-              color: 'white',
-            }}
-          >
-            <Checkbox
-              onChange={(e) => setShowNearbyHotspots(e.target.checked)}
-              checked={showNearbyHotspots}
-              style={{ color: 'white' }}
+          {hotspot.lng !== undefined && hotspot.lat !== undefined && (
+            <div
+              style={{
+                textAlign: 'right',
+                paddingTop: 10,
+                color: 'white',
+              }}
             >
-              Show nearby hotspots
-            </Checkbox>
-            <Checkbox
-              onChange={(e) => setShowWitnesses(e.target.checked)}
-              checked={showWitnesses}
-              style={{ color: 'white' }}
-            >
-              Show witnesses
-            </Checkbox>
-            <p style={{ marginBottom: '-20px' }}>
-              {formatLocation(hotspot?.geocode)}
-            </p>
-          </div>
+              <Checkbox
+                onChange={(e) => setShowNearbyHotspots(e.target.checked)}
+                checked={showNearbyHotspots}
+                style={{ color: 'white' }}
+              >
+                Show nearby hotspots
+              </Checkbox>
+              <Checkbox
+                onChange={(e) => setShowWitnesses(e.target.checked)}
+                checked={showWitnesses}
+                style={{ color: 'white' }}
+              >
+                Show witnesses
+              </Checkbox>
+              <p style={{ marginBottom: '-20px' }}>
+                {formatLocation(hotspot?.geocode)}
+              </p>
+            </div>
+          )}
 
           <Row style={{ paddingTop: 30 }}>
             <div

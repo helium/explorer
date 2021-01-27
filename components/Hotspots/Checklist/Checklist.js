@@ -21,7 +21,7 @@ const HotspotChecklist = ({
           detailText:
             isNaN(hotspot.status.height) || isNaN(height)
               ? `Hotspot is not yet synced.`
-              : height - hotspot.status.height < 100
+              : height - hotspot.status.height < 500
               ? `Hotspot is fully synced.`
               : `Hotspot is ${(
                   height - hotspot.status.height
@@ -33,7 +33,7 @@ const HotspotChecklist = ({
                 )
                   .toFixed(2)
                   .toLocaleString()}% synced.`,
-          condition: height - hotspot.status.height < 100,
+          condition: height - hotspot.status.height < 500,
         },
         {
           sortOrder: 1,

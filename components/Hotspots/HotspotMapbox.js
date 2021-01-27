@@ -74,9 +74,9 @@ const HotspotMapbox = ({
   witnesses.map((w) => boundsLocations.push({ lng: w?.lng, lat: w?.lat }))
 
   // include nearby hotspots in centering / zooming logic
-  nearbyHotspots.map((h) =>
-    boundsLocations.push({ lng: h?._geoloc.lng, lat: h?._geoloc.lat }),
-  )
+  nearbyHotspots.map((h) => {
+    boundsLocations.push({ lng: h?._geoloc.lng, lat: h?._geoloc.lat })
+  })
 
   // calculate map bounds
   const mapBounds = findBounds(boundsLocations)
@@ -92,7 +92,7 @@ const HotspotMapbox = ({
     ]
   } else {
     mapProps.fitBounds = mapBounds
-    mapProps.fitBoundsOptions = { padding: 100, animate: false }
+    mapProps.fitBoundsOptions = { padding: 25, animate: false }
   }
 
   if (hotspot.lng !== undefined && hotspot.lat !== undefined) {

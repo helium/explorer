@@ -183,7 +183,7 @@ const PocInfoTable = ({
       rssi: (
         <span
           style={
-            !witness.isValid && witness.invalidReason.includes('rssi')
+            !witness.isValid && witness?.invalidReason?.includes('rssi')
               ? { color: '#CA0926' }
               : {}
           }
@@ -193,7 +193,7 @@ const PocInfoTable = ({
       distance: (
         <span
           style={
-            !witness.isValid && witness.invalidReason === 'witness_too_close'
+            !witness.isValid && witness?.invalidReason === 'witness_too_close'
               ? { color: '#CA0926' }
               : {}
           }
@@ -221,7 +221,6 @@ const PocInfoTable = ({
       style={witnessIndex !== 0 ? { paddingTop: 16 } : {}}
     >
       <span>
-        {/* <span>{witnessIndex + 1} — </span> */}
         <Link href={'/hotspots/' + witness.gateway}>
           <a className="poc-witness-name">{animalHash(witness.gateway)}</a>
         </Link>
@@ -233,9 +232,11 @@ const PocInfoTable = ({
         >
           {witness.is_valid || witness.isValid
             ? 'Valid witness'
-            : `Invalid witness — (${formatWitnessInvalidReason(
-                witness.invalidReason,
-              )})`}
+            : `Invalid witness${
+                witness.invalidReason !== undefined
+                  ? ` — (${formatWitnessInvalidReason(witness.invalidReason)})`
+                  : ''
+              }`}
         </span>
         <span className="poc-witness-info-table-container">
           <Table

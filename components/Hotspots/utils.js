@@ -55,7 +55,7 @@ export const formatWitnessInvalidReason = (rawInvalidReason) => {
       return 'Witness RSSI below lower bound'
     }
     default: {
-      return ''
+      return `${rawInvalidReason}`
     }
   }
 }

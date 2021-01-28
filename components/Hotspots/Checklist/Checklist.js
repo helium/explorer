@@ -92,7 +92,7 @@ const HotspotChecklist = ({
               ? `Hotspot has ${witnesses.length} Hotspot${
                   witnesses.length === 1 ? '' : 's'
                 }.`
-              : `Hotspot doesn't currently have a witnesses.`,
+              : `Hotspot has no witnesses.`,
           infoTooltipText:
             'The number of witnesses for a Hotspot is based on a rolling 5-day window.',
           condition: witnesses.length > 0,

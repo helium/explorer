@@ -159,23 +159,16 @@ const Index = ({
 
           <div
             style={{
-              background: '#3F416D',
+              background: '#fff',
               borderRadius: 10,
               marginBottom: 20,
+              paddingBottom: 30,
             }}
-            className="summary-header"
+            className="ant-card-head"
           >
             <Row>
               <Col lg={12}>
-                <h3
-                  style={{
-                    marginBottom: 0,
-                    color: '#1890ff',
-                    fontSize: 14,
-                  }}
-                >
-                  Coverage Map
-                </h3>
+                <div class="ant-card-head-title">Hotspot Map</div>
               </Col>
             </Row>
             <Row>

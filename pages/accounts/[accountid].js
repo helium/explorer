@@ -76,7 +76,7 @@ const AccountView = ({ account }) => {
       <Content
         style={{
           marginTop: 0,
-          background: 'rgb(16, 23, 37)',
+          background: '#222e46',
           overflowX: 'hidden',
         }}
       >

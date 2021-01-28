@@ -64,7 +64,6 @@ const RewardSummaryCard = ({
               >
                 <span
                   style={{
-                    fontFamily: 'soleil',
                     color: percentChange > 0 ? '#32C48D' : '#CA0926',
                     fontWeight: 400,
                     fontSize: '12px',
@@ -79,7 +78,6 @@ const RewardSummaryCard = ({
           <div>
             <span
               style={{
-                fontFamily: 'soleil',
                 color: '#262625',
                 fontWeight: 400,
                 fontSize: '32px',

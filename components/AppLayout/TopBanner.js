@@ -10,7 +10,7 @@ const TopBanner = ({ title, icon }) => {
   return (
     <Content
       style={{
-        backgroundColor: '#101725',
+        backgroundColor: '#1c263b',
         padding: isMobile ? '30px 0 30px 20px' : '60px 0px 60px 50px',
       }}
     >
@@ -19,7 +19,7 @@ const TopBanner = ({ title, icon }) => {
         <Title
           style={{
             margin: 0,
-            letterSpacing: '-2px',
+            letterSpacing: '-1px',
             fontSize: 38,
             lineHeight: 1,
             color: 'white',

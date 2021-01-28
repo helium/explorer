@@ -191,9 +191,7 @@ const HotspotMapbox = ({
             marginBottom: 14,
           }}
         />
-        <p style={{ fontFamily: 'soleil', fontSize: '18px', color: 'white' }}>
-          No location set
-        </p>
+        <p style={{ fontSize: '18px', color: 'white' }}>No location set</p>
       </div>
     )
   }

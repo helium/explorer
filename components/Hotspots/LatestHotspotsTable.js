@@ -25,7 +25,7 @@ const hotspotColumns = [
       <>
         <StatusCircle status={row.status} />
         <Link href={'/hotspots/' + row.address}>
-          <a style={{ fontFamily: 'soleil, sans-serif' }}>
+          <a style={{ fontFamily: "'Inter', sans-serif" }}>
             {formatHotspotName(data)}
           </a>
         </Link>

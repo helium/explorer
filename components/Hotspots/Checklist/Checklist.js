@@ -61,7 +61,7 @@ const HotspotChecklist = ({
           sortOrder: 2,
           title: 'Create a Challenge',
           infoTooltipText:
-            'Hotspots that are synced and online create a challenge automatically, every 60 blocks.',
+            'Hotspots that are synced and online create a challenge automatically, every 120 blocks.',
           detailText:
             activity.challengerTxn !== null
               ? `Hotspot issued a challenge ${(
@@ -86,15 +86,15 @@ const HotspotChecklist = ({
         },
         {
           sortOrder: 4,
-          title: 'Witness List',
+          title: 'Witnesses',
           detailText:
             witnesses.length > 0
-              ? `Hotspot has ${witnesses.length} Hotspot${
+              ? `Hotspot has been witnessed by ${witnesses.length} Hotspot${
                   witnesses.length === 1 ? '' : 's'
-                } in its witness list.`
-              : `Hotspot doesn't currently have a witness list.`,
+                }.`
+              : `Hotspot has no witnesses.`,
           infoTooltipText:
-            'A Hotspot’s witness list is populated the more challenges it witnesses. Witness Lists refresh periodically to exclude offline Hotspots.',
+            'The number of witnesses for a Hotspot is based on a rolling 5-day window.',
           condition: witnesses.length > 0,
         },
         {
@@ -109,7 +109,7 @@ const HotspotChecklist = ({
                 } ago.`
               : `Hotspot hasn’t participated in a challenge yet.`,
           infoTooltipText:
-            'Participation in a challenge depends on having a witness list. Use the checkbox to see Hotspots in your list. It can take a few hours for challenges to include this Hotspot once a witness list is built.',
+            'Participation in a challenge depends on having witnesses. Use the checkbox to see Hotspots in your list. It can take a few hours for challenges to include this Hotspot once a witness list is built.',
           condition: activity.challengeeTxn !== null,
         },
         {

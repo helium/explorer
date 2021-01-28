@@ -258,7 +258,7 @@ const columns = (ownerAddress) => {
           return <span>{'+' + txn.amountToSeller.toString()}</span>
         }
       default:
-        return <span>{txn.amount.toString(2)}</span>
+        return
     }
   }
 

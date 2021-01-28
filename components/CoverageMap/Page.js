@@ -4,8 +4,6 @@ import Head from 'next/head'
 const Page = ({ children, backgroundColor = '#212E3A' }) => (
   <article>
     <Head>
-      <link rel="stylesheet" href="https://use.typekit.net/qfu3tzp.css"></link>
-      <link rel="stylesheet" href="https://use.typekit.net/bum5vme.css"></link>
       <link rel="icon" type="image/png" href="static/img/favicon.png" />
     </Head>
 
@@ -139,7 +137,7 @@ const Page = ({ children, backgroundColor = '#212E3A' }) => (
       }
       body {
         margin: 0;
-        font-family: 'soleil', Helvetica, Arial, sans-serif;
+        font-family: 'Inter', Helvetica, Arial, sans-serif;
         font-size: 15px;
         background: ${backgroundColor};
         height: 100vh;

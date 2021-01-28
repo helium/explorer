@@ -9,7 +9,7 @@ const RewardSummary = ({ rewards, rewardsLoading }) => {
         padding: '36px 36px 40px 36px',
       }}
     >
-      <p style={{ fontFamily: 'soleil', fontSize: '16px', fontWeight: 500 }}>
+      <p style={{ fontFamily: 'Inter', fontSize: '16px', fontWeight: 500 }}>
         Rewards
       </p>
       <div

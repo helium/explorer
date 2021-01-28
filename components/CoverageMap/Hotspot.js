@@ -60,7 +60,6 @@ export default class Hotspot extends Component {
           }
 
           .hotspot-name {
-            font-family: 'soleil';
             font-size: 18px;
             color: #a0b0c2;
             margin-top: 10px;

@@ -8,7 +8,7 @@ const { Content, Footer } = Layout
 const { Text } = Typography
 
 const layoutStyle = {
-  fontFamily: 'soleil, sans-serif',
+  fontFamily: 'Inter, sans-serif',
   fontStyle: 'normal',
   minHeight: '100vh',
   marginTop: '64px',
@@ -16,7 +16,6 @@ const layoutStyle = {
 
 const AppLayout = (props) => (
   <Layout style={layoutStyle}>
-    <Typekit kitId="bum5vme" />
     <MetaTags
       title={props.title}
       pageTitle={props.pageTitle}

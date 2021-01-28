@@ -13,7 +13,7 @@ const columns = [
       <>
         <StatusCircle status={row.status} />
         <Link href={'/hotspots/' + row.address} prefetch={false}>
-          <a style={{ fontFamily: 'soleil, sans-serif' }}>
+          <a style={{ fontFamily: "'inter', sans-serif" }}>
             {formatHotspotName(name)}
           </a>
         </Link>

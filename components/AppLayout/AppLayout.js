@@ -8,7 +8,7 @@ const { Content, Footer } = Layout
 const { Text } = Typography
 
 const layoutStyle = {
-  fontFamily: "Inter', sans-serif",
+  fontFamily: 'Inter, sans-serif',
   fontStyle: 'normal',
   minHeight: '100vh',
   marginTop: '64px',

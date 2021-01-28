@@ -225,6 +225,8 @@ const columns = (ownerAddress) => {
                 .amount.toString(2)}
           </span>
         )
+      case 'token_burn_v1':
+        return <span>{txn.amount.toString(2)}</span>
       case 'rewards_v1':
         return <span>{txn.totalAmount.toString(2)}</span>
       case 'poc_receipts_v1':
@@ -256,7 +258,7 @@ const columns = (ownerAddress) => {
           return <span>{'+' + txn.amountToSeller.toString()}</span>
         }
       default:
-        return <span>{txn.amount}</span>
+        return <span>{txn.amount.toString(2)}</span>
     }
   }
 

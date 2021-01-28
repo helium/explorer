@@ -89,7 +89,7 @@ const HotspotChecklist = ({
           title: 'Witnesses',
           detailText:
             witnesses.length > 0
-              ? `Hotspot has ${witnesses.length} Hotspot${
+              ? `Hotspot has been witnessed by ${witnesses.length} Hotspot${
                   witnesses.length === 1 ? '' : 's'
                 }.`
               : `Hotspot has no witnesses.`,

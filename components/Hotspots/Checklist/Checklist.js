@@ -109,7 +109,7 @@ const HotspotChecklist = ({
                 } ago.`
               : `Hotspot hasn’t participated in a challenge yet.`,
           infoTooltipText:
-            'Participation in a challenge depends on having a witnesses. Use the checkbox to see Hotspots in your list. It can take a few hours for challenges to include this Hotspot once a witness list is built.',
+            'Participation in a challenge depends on having witnesses. Use the checkbox to see Hotspots in your list. It can take a few hours for challenges to include this Hotspot once a witness list is built.',
           condition: activity.challengeeTxn !== null,
         },
         {

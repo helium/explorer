@@ -86,7 +86,7 @@ const findPreviousAndNext = async (transactions, hash) => {
 
     if (transaction.hash === hash) {
       const { value } = await generator.next()
-      next = value && value.hash
+      next = value?.hash
       break
     }
 

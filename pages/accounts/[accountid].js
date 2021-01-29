@@ -40,11 +40,13 @@ const AccountView = ({ account }) => {
 
       const list = await client.account(accountid).hotspots.list()
 
-      const hotspots = []
-      for await (const hotspot of list) {
-        delete hotspot.client
-        hotspots.push(JSON.parse(JSON.stringify(hotspot)))
-      }
+      const hotspots = await Promise.all(
+        list.data.map(async (hotspot) => {
+          // hotspot.rewardsSummary = await fetchRewardsSummary(hotspot.address)
+          delete hotspot.client
+          return JSON.parse(JSON.stringify(hotspot))
+        }),
+      )
       setHotspots(hotspots)
       setLoadingHotspots(false)
     }
@@ -55,12 +57,13 @@ const AccountView = ({ account }) => {
 
       const list = await client.account(accountid).hotspots.list()
 
-      const hotspots = []
-      for await (const hotspot of list) {
-        hotspot.rewardsSummary = await fetchRewardsSummary(hotspot.address)
-        delete hotspot.client
-        hotspots.push(JSON.parse(JSON.stringify(hotspot)))
-      }
+      const hotspots = await Promise.all(
+        list.data.map(async (hotspot) => {
+          hotspot.rewardsSummary = await fetchRewardsSummary(hotspot.address)
+          delete hotspot.client
+          return hotspot
+        }),
+      )
       // overwrite hotspots with a version that includes rewards
       setHotspots(hotspots)
       setLoadingRewards(false)

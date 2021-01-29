@@ -1,38 +1,59 @@
 import React from 'react'
-import { Tag, Tooltip } from 'antd'
+import { Tag as AntdTag, Tooltip } from 'antd'
 
 const TxnTag = ({ type }) => typeTag(type)
 
+export const COLORS = {
+  state_channel_close_v1: 'teal',
+  payment_v1: 'green',
+  payment_v2: 'cyan',
+  poc_request_v1: '#29D391',
+  poc_receipts_v1: '#38A2FF',
+  rewards_v1: '#E68B00',
+  consensus_group_v1: '#FF6666',
+  transfer_hotspot_v1: '#474DFF',
+  poc_challengers: '#BE73FF',
+  assert_location_v1: '#595a9a',
+  add_gateway_v1: '#16CEE8',
+  poc_witnesses: '#8597BB',
+  securities: '#FFC769',
+  default: 'blue',
+}
+
 const typeTag = (type) => {
+  const Tag = ({ children }) => (
+    <AntdTag color={COLORS[type]}>{children}</AntdTag>
+  )
+
   switch (type) {
     case 'state_channel_close_v1':
-      return <Tag color="teal">Packets Transferred</Tag>
+      return <Tag>Packets Transferred</Tag>
     case 'payment_v1':
-      return <Tag color="green">Payment</Tag>
+      return <Tag>Payment</Tag>
     case 'payment_v2':
-      return <Tag color="cyan">Payment</Tag>
+      return <Tag>Payment</Tag>
     case 'poc_request_v1':
       return (
         <Tooltip placement="bottom" title="Proof of Coverage Challenge">
-          <Tag color="#29D391">PoC Challenge</Tag>
+          <Tag>PoC Challenge</Tag>
         </Tooltip>
       )
     case 'poc_receipts_v1':
       return (
         <Tooltip placement="bottom" title="Proof of Coverage Receipt">
-          <Tag color="#38A2FF">PoC Receipt</Tag>
+          <Tag>PoC Receipt</Tag>
         </Tooltip>
       )
     case 'rewards_v1':
       return (
         <Tooltip placement="bottom" title="Mining Reward">
-          <Tag color="#E68B00">Mining Reward</Tag>
+          <Tag>Mining Reward</Tag>
         </Tooltip>
       )
     case 'consensus_group_v1':
       return (
         <Tooltip placement="bottom" title="Consensus Election">
-          <Tag color="#FF6666">Consensus Election</Tag>
+          <Tag>Consensus Election</Tag>
         </Tooltip>
       )
     case 'transfer_hotspot_v1':
@@ -47,31 +68,31 @@ const typeTag = (type) => {
     case 'poc_challengers':
       return (
         <Tooltip placement="bottom" title="Mining Reward for a PoC challenger">
-          <Tag color="#BE73FF">PoC Challenger</Tag>
+          <Tag>PoC Challenger</Tag>
         </Tooltip>
       )
     case 'poc_challengees':
       return (
         <Tooltip placement="bottom" title="Mining Reward for a PoC challengee">
-          <Tag color="#595a9a">PoC Challengee</Tag>
+          <Tag>PoC Challengee</Tag>
         </Tooltip>
       )
     case 'assert_location_v1':
       return (
         <Tooltip placement="bottom" title="Assert Location Transaction">
-          <Tag color="#16CEE8">Assert Location</Tag>
+          <Tag>Assert Location</Tag>
         </Tooltip>
       )
     case 'add_gateway_v1':
       return (
         <Tooltip placement="bottom" title="Add Gateway Transaction">
-          <Tag color="#8597BB">Add Hotspot</Tag>
+          <Tag>Add Hotspot</Tag>
         </Tooltip>
       )
     case 'poc_witnesses':
       return (
         <Tooltip placement="bottom" title="Mining Reward for a PoC witness">
-          <Tag color="#FFC769">PoC Witness</Tag>
+          <Tag>PoC Witness</Tag>
         </Tooltip>
       )
     case 'securities':
@@ -80,13 +101,13 @@ const typeTag = (type) => {
           placement="bottom"
           title="Mining Reward for Security Token holders"
         >
-          <Tag color="#9AE8C9">Security Token Reward</Tag>
+          <Tag>Security Token Reward</Tag>
         </Tooltip>
       )
     case 'token_burn_v1':
       return <Tag color="#E86161">Token Burn</Tag>
     default:
-      return <Tag color="blue">{type}</Tag>
+      return <Tag>{type}</Tag>
   }
 }
 

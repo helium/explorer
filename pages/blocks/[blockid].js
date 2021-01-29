@@ -1,3 +1,4 @@
+import React from 'react'
 import { Typography, Table, Card } from 'antd'
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
@@ -8,6 +9,7 @@ import withBlockHeight from '../../components/withBlockHeight'
 import { withRouter } from 'next/router'
 import Link from 'next/link'
 import { generateFriendlyTimestampString } from '../../components/Txns/utils'
+import { COLORS } from '../../components/Txns/TxnTag'
 
 import {
   LeftOutlined,
@@ -27,7 +29,7 @@ const BlockView = ({ block, txns, height }) => {
         if (f) {
           f.value++
         } else {
-          let n = { name: t.type, value: 1 }
+          let n = { name: t.type, value: 1, color: COLORS[t.type] }
           res.push(n)
         }
       })

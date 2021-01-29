@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Card, Statistic, Row, Col, Tooltip } from 'antd'
+import { Row, Col } from 'antd'
 import AppLayout, { Content } from '../components/AppLayout'
 import { fetchMarket, useMarket } from '../data/market'
 import { fetchStats, useStats } from '../data/stats'
@@ -12,8 +12,6 @@ import Widget from '../components/Home/Widget'
 import TokenImg from '../public/images/token.svg'
 import round from 'lodash/round'
 import { getUnixTime, formatDistanceToNow } from 'date-fns'
-
-const { Title } = Typography
 
 function Market({
   market: initialMarket,

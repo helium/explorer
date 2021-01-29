@@ -1,11 +1,6 @@
 import React, { Component } from 'react'
-import { Table, Typography, Tooltip } from 'antd'
-import Timestamp from 'react-timestamp'
+import { Table, Tooltip } from 'antd'
 import Client from '@helium/http'
-import LoadMoreButton from './LoadMoreButton'
-import classNames from 'classnames'
-
-const { Text } = Typography
 
 class BlocksList extends Component {
   state = {

@@ -1,15 +1,5 @@
 import React, { PureComponent } from 'react'
-import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from 'recharts'
+import { ResponsiveContainer, BarChart, Bar, Tooltip } from 'recharts'
 
 const data = [
   {

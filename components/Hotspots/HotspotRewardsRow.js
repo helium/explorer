@@ -3,10 +3,16 @@ import round from 'lodash/round'
 import { calculatePercentChange, formatPercentChangeString } from './utils'
 
 const HotspotRewardsRow = ({ rewardsLoading, data, period }) => {
-  let currentPeriod = 0
-  let previousPeriod = 0
+  if (rewardsLoading) {
+    return (
+      <span className="inline-skeleton-override">
+        <Skeleton active paragraph={{ rows: 0 }} size="small" />
+      </span>
+    )
+  } else {
+    let currentPeriod = 0
+    let previousPeriod = 0
 
-  if (!rewardsLoading) {
     if (period === 'day') {
       currentPeriod = data.day
       previousPeriod = data.previousDay
@@ -17,16 +23,9 @@ const HotspotRewardsRow = ({ rewardsLoading, data, period }) => {
       currentPeriod = data.month
       previousPeriod = data.previousMonth
     }
-  }
 
-  if (rewardsLoading) {
-    return (
-      <span className="inline-skeleton-override">
-        <Skeleton active paragraph={{ rows: 0 }} size="small" />
-      </span>
-    )
-  } else {
     const percentChange = calculatePercentChange(currentPeriod, previousPeriod)
+
     return (
       <span>
         {round(currentPeriod, 2)}

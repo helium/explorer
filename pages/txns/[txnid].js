@@ -76,14 +76,9 @@ const rewardChart = (txn) => {
 
 const findPreviousAndNext = async (transactions, hash) => {
   let previous, next
-  let result = { done: false }
-
   const generator = transactions[Symbol.asyncIterator]()
 
-  while (!result.done) {
-    result = await generator.next()
-    const { value: transaction } = result
-
+  for await (const transaction of generator) {
     if (transaction.hash === hash) {
       const { value } = await generator.next()
       next = value?.hash

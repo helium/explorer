@@ -38,9 +38,10 @@ const AccountView = ({ account }) => {
       const client = new Client()
       const accountid = account.address
 
-      const list = await client.account(accountid).hotspots.list(1000)
+      const list = await client.account(accountid).hotspots.list()
+      const hotspotList = await list.take(1000)
 
-      const hotspots = list.data.map((hotspot) => {
+      const hotspots = hotspotList.map((hotspot) => {
         delete hotspot.client
         return JSON.parse(JSON.stringify(hotspot))
       })
@@ -53,10 +54,11 @@ const AccountView = ({ account }) => {
       const client = new Client()
       const accountid = account.address
 
-      const list = await client.account(accountid).hotspots.list(1000)
+      const list = await client.account(accountid).hotspots.list()
+      const hotspots = await list.take(1000)
 
-      const hotspots = await Promise.all(
-        list.data.map(async (hotspot) => {
+      await Promise.all(
+        hotspots.map(async (hotspot) => {
           hotspot.rewardsSummary = await fetchRewardsSummary(hotspot.address)
           delete hotspot.client
           return hotspot

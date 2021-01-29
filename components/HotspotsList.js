@@ -15,15 +15,21 @@ const HotspotsList = ({ hotspots, loading }) => {
   return (
     <Content style={{ marginBottom: 20 }}>
       <Card loading={loading} title={'Hotspots'}>
-        <Table
-          dataSource={hotspots}
-          columns={hotspotColumns}
-          loading={loading}
-          size="small"
-          rowKey="name"
-          pagination={{ pageSize: 10, hideOnSinglePage: true }}
-          scroll={{ x: true }}
-        />
+        {hotspots.length == 0 ? (
+          <h2 style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+            Account has no hotspots
+          </h2>
+        ) : (
+          <Table
+            dataSource={hotspots}
+            columns={hotspotColumns}
+            loading={loading}
+            size="small"
+            rowKey="name"
+            pagination={{ pageSize: 10, hideOnSinglePage: true }}
+            scroll={{ x: true }}
+          />
+        )}
       </Card>
     </Content>
   )

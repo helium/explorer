@@ -40,8 +40,8 @@ const ChecklistCard = ({
           // conditional styling for the currently selected card
           boxShadow: isCurrentCard ? '0 0 20px #00000046' : 'none',
           border: isCurrentCard
-            ? '1px solid #ffffff44'
-            : '1px solid transparent',
+            ? '2px solid #ffffff33'
+            : '2px solid transparent',
           minHeight: '108px',
           // for the last card, we use a spacer div instead of margin
           marginRight: index + 1 === maxIndex ? '0px' : '20px',
@@ -49,6 +49,7 @@ const ChecklistCard = ({
           width: `${cardWidth}px`,
           borderRadius: '10px',
           display: 'block',
+          color: checked ? 'rgb(157, 159, 202)' : 'rgb(157, 159, 202, 0.6)',
         }}
       >
         <div
@@ -70,8 +71,7 @@ const ChecklistCard = ({
             >
               <h2
                 style={{
-                  fontFamily: 'soleil',
-                  fontWeight: 700,
+                  fontWeight: 600,
                   color: 'white',
                   fontSize: '14px',
                   lineHeight: '19.05px',
@@ -104,8 +104,6 @@ const ChecklistCard = ({
             </div>
             <p
               style={{
-                color: '#9D9FCA',
-                fontFamily: 'soleil',
                 fontSize: '14px',
                 lineHeight: '17.78px',
                 fontWeight: 400,

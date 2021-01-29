@@ -2,7 +2,7 @@ import Link from 'next/link'
 import animalHash from 'angry-purple-tiger'
 import { h3Distance, h3GetResolution, h3ToChildren, h3ToParent } from 'h3-js'
 import { Table, Tooltip } from 'antd'
-import { formatDistance } from '../Hotspots/utils'
+import { formatDistance, formatWitnessInvalidReason } from '../Hotspots/utils'
 
 // these values are from this table: https://h3geo.org/docs/core-library/restable
 const AVG_H3_HEX_EDGE_LENGTHS_IN_KM = [
@@ -80,7 +80,6 @@ const PocInfoTable = ({
   witness,
   witnessIndex,
   participantIndex,
-  minValidH3Distance,
   pocH3CellResolution,
 }) => {
   let pLocation = participant.challengeeLocation
@@ -109,8 +108,6 @@ const PocInfoTable = ({
     AVG_H3_HEX_EDGE_LENGTHS_IN_KM[pocH3CellResolution] * 2
 
   const witnessDistInKm = averageCellDiameter * witnessDistInH3Cells
-
-  const witnessDistanceIsValid = minValidH3Distance <= witnessDistInH3Cells
 
   const columns = []
 
@@ -183,12 +180,25 @@ const PocInfoTable = ({
   const data = [
     {
       key: '1',
-      rssi: `${witness?.signal}dBm`,
+      rssi: (
+        <span
+          style={
+            !witness.isValid && witness?.invalidReason?.includes('rssi')
+              ? { color: '#CA0926' }
+              : {}
+          }
+        >{`${witness.signal}dBm`}</span>
+      ),
       snr: `${witness.snr?.toFixed(2)}dB`,
       distance: (
-        <span style={!witnessDistanceIsValid ? { color: '#CA0926' } : {}}>
+        <span
+          style={
+            !witness.isValid && witness?.invalidReason === 'witness_too_close'
+              ? { color: '#CA0926' }
+              : {}
+          }
+        >
           {formatDistance(witnessDistInKm * 1000)}
-          {!witnessDistanceIsValid && ' (too close)'}
         </span>
       ),
       datarate:
@@ -211,7 +221,6 @@ const PocInfoTable = ({
       style={witnessIndex !== 0 ? { paddingTop: 16 } : {}}
     >
       <span>
-        {/* <span>{witnessIndex + 1} — </span> */}
         <Link href={'/hotspots/' + witness.gateway}>
           <a className="poc-witness-name">{animalHash(witness.gateway)}</a>
         </Link>
@@ -222,8 +231,12 @@ const PocInfoTable = ({
           }}
         >
           {witness.is_valid || witness.isValid
-            ? '(Valid witness)'
-            : '(Invalid witness)'}
+            ? 'Valid witness'
+            : `Invalid witness${
+                witness.invalidReason !== undefined
+                  ? ` — (${formatWitnessInvalidReason(witness.invalidReason)})`
+                  : ''
+              }`}
         </span>
         <span className="poc-witness-info-table-container">
           <Table

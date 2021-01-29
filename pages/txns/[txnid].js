@@ -103,12 +103,19 @@ const TxnView = ({ txn }) => {
     txn.type === 'rewards_v1' &&
     new Balance(txn.totalAmount.integerBalance, CurrencyType.networkToken)
 
+  const [transactions, setTransactions] = useState()
   const [navigation, setNavigation] = useState()
+
   useEffect(async () => {
     const client = new Client()
-    const transactions = await client.block(txn.height).transactions.list()
-    setNavigation(await findPreviousAndNext(transactions, txn.hash))
-  }, [txn.hash])
+    setTransactions(await client.block(txn.height).transactions.list())
+  }, [txn.height])
+
+  useEffect(async () => {
+    if (transactions) {
+      setNavigation(await findPreviousAndNext(transactions, txn.hash))
+    }
+  }, [transactions, txn.hash])
 
   return (
     <AppLayout

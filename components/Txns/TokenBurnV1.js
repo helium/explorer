@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Descriptions } from 'antd'
+import { Descriptions, Skeleton } from 'antd'
 import Link from 'next/link'
 import AccountIcon from '../AccountIcon'
 import { Balance, CurrencyType } from '@helium/currency'
 import Client from '@helium/http'
+
+const InlineSkeleton = () => (
+  <span className="inline-skeleton-override">
+    <Skeleton active paragraph={{ rows: 0 }} size="small" />
+  </span>
+)
 
 const TokenBurnV1 = ({ txn }) => {
   const txnAmountObject = new Balance(txn.amount, CurrencyType.networkToken)
@@ -51,10 +57,14 @@ const TokenBurnV1 = ({ txn }) => {
         {txnAmountObject.toString(2)}
       </Descriptions.Item>
       <Descriptions.Item label="Oracle Price" span={3}>
-        {oraclePrice && oraclePrice.toString(2)}
+        {oraclePrice ? oraclePrice.toString(2) : <InlineSkeleton />}
       </Descriptions.Item>
       <Descriptions.Item label="Value" span={3}>
-        {oraclePrice && txnAmountObject.toUsd(oraclePrice).toString(2)}
+        {oraclePrice ? (
+          txnAmountObject.toUsd(oraclePrice).toString(2)
+        ) : (
+          <InlineSkeleton />
+        )}
       </Descriptions.Item>
       <Descriptions.Item label="Fee" span={3}>
         {txnFeeObject.toString()}

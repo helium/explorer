@@ -38,14 +38,13 @@ const AccountView = ({ account }) => {
       const client = new Client()
       const accountid = account.address
 
-      const list = await client.account(accountid).hotspots.list()
+      const list = await client.account(accountid).hotspots.list(1000)
 
-      const hotspots = await Promise.all(
-        list.data.map(async (hotspot) => {
-          delete hotspot.client
-          return JSON.parse(JSON.stringify(hotspot))
-        }),
-      )
+      const hotspots = list.data.map((hotspot) => {
+        delete hotspot.client
+        return JSON.parse(JSON.stringify(hotspot))
+      })
+
       setHotspots(hotspots)
       setLoadingHotspots(false)
     }
@@ -54,7 +53,7 @@ const AccountView = ({ account }) => {
       const client = new Client()
       const accountid = account.address
 
-      const list = await client.account(accountid).hotspots.list()
+      const list = await client.account(accountid).hotspots.list(1000)
 
       const hotspots = await Promise.all(
         list.data.map(async (hotspot) => {

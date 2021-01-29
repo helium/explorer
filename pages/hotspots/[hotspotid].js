@@ -344,6 +344,7 @@ const HotspotView = ({ hotspot }) => {
                           }}
                         >
                           {hotspot.rewardScale.toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })}
                         </p>

@@ -10,6 +10,7 @@ import {
   formatPercentChangeString,
 } from './Hotspots/utils'
 import { StatusCircle } from './Hotspots'
+import HotspotRewardsRow from './Hotspots/HotspotRewardsRow'
 
 const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
   const hotspotColumns = [
@@ -38,109 +39,37 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
       title: 'Rewards (24h)',
       dataIndex: 'rewardsSummary',
       key: 'rewardsDay',
-      render: (data) => {
-        if (rewardsLoading) {
-          return (
-            <span className="inline-skeleton-override">
-              <Skeleton active paragraph={{ rows: 0 }} size="small" />
-            </span>
-          )
-        } else {
-          const percentChange = calculatePercentChange(
-            data.day,
-            data.previousDay,
-          )
-          return (
-            <span>
-              {round(data.day, 2)}
-              <Tooltip
-                title={`Previous day: ${round(data.previousDay, 2)} HNT`}
-              >
-                <span
-                  style={{
-                    marginLeft: 5,
-                    color: percentChange > 0 ? '#32C48D' : '#CA0926',
-                  }}
-                >
-                  {formatPercentChangeString(percentChange)}
-                </span>
-              </Tooltip>
-            </span>
-          )
-        }
-      },
+      render: (data) => (
+        <HotspotRewardsRow
+          data={data}
+          rewardsLoading={rewardsLoading}
+          period="day"
+        />
+      ),
     },
     {
       title: 'Rewards (7d)',
       dataIndex: 'rewardsSummary',
       key: 'rewardsWeek',
-      render: (data) => {
-        if (rewardsLoading) {
-          return (
-            <span className="inline-skeleton-override">
-              <Skeleton active paragraph={{ rows: 0 }} size="small" />
-            </span>
-          )
-        } else {
-          const percentChange = calculatePercentChange(
-            data.week,
-            data.previousWeek,
-          )
-          return (
-            <span>
-              {round(data.week, 2)}
-              <Tooltip
-                title={`Previous week: ${round(data.previousWeek, 2)} HNT`}
-              >
-                <span
-                  style={{
-                    marginLeft: 5,
-                    color: percentChange > 0 ? '#32C48D' : '#CA0926',
-                  }}
-                >
-                  {formatPercentChangeString(percentChange)}
-                </span>
-              </Tooltip>
-            </span>
-          )
-        }
-      },
+      render: (data) => (
+        <HotspotRewardsRow
+          data={data}
+          rewardsLoading={rewardsLoading}
+          period="week"
+        />
+      ),
     },
     {
       title: 'Rewards (30d)',
       dataIndex: 'rewardsSummary',
       key: 'rewardsMonth',
-      render: (data) => {
-        if (rewardsLoading) {
-          return (
-            <span className="inline-skeleton-override">
-              <Skeleton active paragraph={{ rows: 0 }} size="small" />
-            </span>
-          )
-        } else {
-          const percentChange = calculatePercentChange(
-            data.month,
-            data.previousMonth,
-          )
-          return (
-            <span>
-              {round(data.month, 2)}
-              <Tooltip
-                title={`Previous month: ${round(data.previousMonth, 2)} HNT`}
-              >
-                <span
-                  style={{
-                    marginLeft: 5,
-                    color: percentChange > 0 ? '#32C48D' : '#CA0926',
-                  }}
-                >
-                  {formatPercentChangeString(percentChange)}
-                </span>
-              </Tooltip>
-            </span>
-          )
-        }
-      },
+      render: (data) => (
+        <HotspotRewardsRow
+          data={data}
+          rewardsLoading={rewardsLoading}
+          period="month"
+        />
+      ),
     },
   ]
 

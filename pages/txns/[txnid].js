@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Typography, Card } from 'antd'
-import { ClockCircleOutlined, WalletOutlined } from '@ant-design/icons'
+import {
+  ClockCircleOutlined,
+  WalletOutlined,
+  BackwardOutlined,
+  ForwardOutlined,
+} from '@ant-design/icons'
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
 import AppLayout, { Content } from '../../components/AppLayout'
@@ -69,12 +74,41 @@ const rewardChart = (txn) => {
   }
 }
 
+const findPreviousAndNext = async (transactions, hash) => {
+  let previous, next
+  let result = { done: false }
+
+  const generator = transactions[Symbol.asyncIterator]()
+
+  while (!result.done) {
+    result = await generator.next()
+    const { value: transaction } = result
+
+    if (transaction.hash === hash) {
+      const { value } = await generator.next()
+      next = value && value.hash
+      break
+    }
+
+    previous = transaction.hash
+  }
+
+  return { previous, next }
+}
+
 const TxnView = ({ txn }) => {
   const transactionMetaTags = getMetaTagsForTransaction(txn)
 
   const txnTotalAmountObject =
     txn.type === 'rewards_v1' &&
     new Balance(txn.totalAmount.integerBalance, CurrencyType.networkToken)
+
+  const [navigation, setNavigation] = useState()
+  useEffect(async () => {
+    const client = new Client()
+    const transactions = await client.block(txn.height).transactions.list()
+    setNavigation(await findPreviousAndNext(transactions, txn.hash))
+  }, [txn.hash])
 
   return (
     <AppLayout
@@ -157,22 +191,15 @@ const TxnView = ({ txn }) => {
             )}
           </div>
           <hr />
-          <div
-            //className="flexwrapper"
-            // Temporary styling to center timestamp until next / prev transaction buttons work
-            // at which point the flexwrapper class can be turned back on instead
-            style={{
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            {/* TODO: efficiently determine next transaction and previous transaction */}
-            {/* <a className="button">
-                <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
-                Transaction
-              </a> */}
+          <div className="flexwrapper">
+            {navigation?.previous && (
+              <Link href={'/txns/' + navigation.previous}>
+                <a className="button">
+                  <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
+                  Transaction
+                </a>
+              </Link>
+            )}
 
             <h3>
               <ClockCircleOutlined
@@ -181,10 +208,14 @@ const TxnView = ({ txn }) => {
               <Timestamp date={txn.time} />
             </h3>
 
-            {/* <a className="button">
-                Next Transaction{' '}
-                <ForwardOutlined style={{ marginRight: '-6px' }} />
-              </a> */}
+            {navigation?.next && (
+              <Link href={'/txns/' + navigation.next}>
+                <a className="button">
+                  Next Transaction{' '}
+                  <ForwardOutlined style={{ marginRight: '-6px' }} />
+                </a>
+              </Link>
+            )}
           </div>
         </div>
       </Content>

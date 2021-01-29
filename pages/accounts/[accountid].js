@@ -42,7 +42,6 @@ const AccountView = ({ account }) => {
 
       const hotspots = await Promise.all(
         list.data.map(async (hotspot) => {
-          // hotspot.rewardsSummary = await fetchRewardsSummary(hotspot.address)
           delete hotspot.client
           return JSON.parse(JSON.stringify(hotspot))
         }),

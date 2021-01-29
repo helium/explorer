@@ -91,6 +91,28 @@ const findPreviousAndNext = async (transactions, hash) => {
   return { previous, next }
 }
 
+const ButtonPrevious = (props) => (
+  <a className="button" {...props}>
+    <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous Transaction
+  </a>
+)
+
+const ButtonNext = (props) => (
+  <a className="button" {...props}>
+    Next Transaction <ForwardOutlined style={{ marginRight: '-6px' }} />
+  </a>
+)
+
+const Navigation = ({ Button, hash }) => {
+  return hash ? (
+    <Link href={'/txns/' + hash}>
+      <Button />
+    </Link>
+  ) : (
+    <Button style={{ visibility: 'hidden' }} />
+  )
+}
+
 const TxnView = ({ txn }) => {
   const transactionMetaTags = getMetaTagsForTransaction(txn)
 
@@ -194,14 +216,7 @@ const TxnView = ({ txn }) => {
           </div>
           <hr />
           <div className="flexwrapper">
-            {navigation?.previous && (
-              <Link href={'/txns/' + navigation.previous}>
-                <a className="button">
-                  <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
-                  Transaction
-                </a>
-              </Link>
-            )}
+            <Navigation Button={ButtonPrevious} hash={navigation?.previous} />
 
             <h3>
               <ClockCircleOutlined
@@ -210,14 +225,7 @@ const TxnView = ({ txn }) => {
               <Timestamp date={txn.time} />
             </h3>
 
-            {navigation?.next && (
-              <Link href={'/txns/' + navigation.next}>
-                <a className="button">
-                  Next Transaction{' '}
-                  <ForwardOutlined style={{ marginRight: '-6px' }} />
-                </a>
-              </Link>
-            )}
+            <Navigation Button={ButtonNext} hash={navigation?.next} />
           </div>
         </div>
       </Content>

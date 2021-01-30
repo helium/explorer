@@ -59,11 +59,11 @@ const AccountView = ({ account }) => {
           hotspot.rewardsSummary = await fetchRewardsSummary(hotspot.address)
           return hotspot
         }),
-      ).then(() => {
-        // add rewardsSummary to hotspots state array
-        setHotspots(hotspotsWithRewards)
-        setLoadingRewards(false)
-      })
+      )
+
+      // add rewardsSummary to hotspots state array
+      setHotspots(hotspotsWithRewards)
+      setLoadingRewards(false)
     }
     getHotspots()
   }, [])

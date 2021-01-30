@@ -9,7 +9,6 @@ import { Content } from './AppLayout'
 import ExportCSV from './ExportCSV'
 import Link from 'next/link'
 import animalHash from 'angry-purple-tiger'
-import { Balance, CurrencyType } from '@helium/currency'
 
 const { Text } = Typography
 

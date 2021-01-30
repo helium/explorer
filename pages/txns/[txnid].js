@@ -21,6 +21,7 @@ import {
   TransferHotspotV1,
   ConsensusGroupV1,
   TxnTag,
+  TokenBurnV1,
 } from '../../components/Txns'
 import Block from '../../public/images/block.svg'
 
@@ -46,6 +47,8 @@ const txnView = (txn) => {
       return <TransferHotspotV1 txn={txn} />
     case 'assert_location_v1':
       return <AssertLocationV1 txn={txn} />
+    case 'token_burn_v1':
+      return <TokenBurnV1 txn={txn} />
     default:
       return <Fallback txn={txn} />
   }

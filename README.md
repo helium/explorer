@@ -13,23 +13,28 @@ Any and all contributions from the community are encouraged.
 ## Getting Started
 
 1. First, clone the repository to your local machine and navigate into the folder. For example:
+
 ```bash
 git clone https://github.com/helium/explorer.git
 cd explorer
 ```
 
 2. Second, install all the dependencies:
+
 ```bash
 yarn
 ```
 
 3. Edit your environment variables
+
 - Open the `.sample.env` file located at the root of the project
 - [Create a Mapbox account](https://account.mapbox.com/auth/signup/) and [copy your public access token](https://account.mapbox.com/access-tokens/)
 - Paste it in place of `123` for the `NEXT_PUBLIC_MAPBOX_KEY` variable. That line should now look like this:
+
 ```
 NEXT_PUBLIC_MAPBOX_KEY=pk.ey[...the rest of your access token...]
 ```
+
 - Rename the file "`.env`" (delete "`.sample`" from the file name)
 
 4. Then run the development server:
@@ -45,6 +50,7 @@ And open [http://localhost:3000](http://localhost:3000) with your browser to see
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file and save your changes.
 
 5. Create a new logically-named branch. For example:
+
 ```bash
 git checkout -b witness-list-enhancements
 ```

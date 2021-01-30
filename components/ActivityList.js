@@ -9,7 +9,6 @@ import { Content } from './AppLayout'
 import ExportCSV from './ExportCSV'
 import Link from 'next/link'
 import animalHash from 'angry-purple-tiger'
-import { Balance, CurrencyType } from '@helium/currency'
 
 const { Text } = Typography
 
@@ -227,8 +226,7 @@ const columns = (ownerAddress) => {
           </span>
         )
       case 'token_burn_v1':
-        const amountObject = new Balance(txn.amount, CurrencyType.networkToken)
-        return <span>{amountObject.toString(2)}</span>
+        return <span>{txn.amount.toString(2)}</span>
 
       case 'rewards_v1':
         return <span>{txn.totalAmount.toString(2)}</span>

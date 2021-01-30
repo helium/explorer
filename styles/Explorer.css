@@ -431,6 +431,13 @@ hr {
   cursor: pointer;
 }
 
+.inline-skeleton-override .ant-skeleton-title {
+  margin: 0 !important;
+  width: 100% !important;
+}
+.inline-skeleton-override .ant-skeleton-paragraph {
+  margin: 0 !important;
+}
 .no-location-set {
   height: 400px;
 }

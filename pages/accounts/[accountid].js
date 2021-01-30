@@ -35,6 +35,9 @@ const AccountView = ({ account }) => {
 
   useEffect(() => {
     async function getHotspots() {
+      setLoadingHotspots(true)
+      setLoadingRewards(true)
+
       const client = new Client()
       const accountid = account.address
 
@@ -48,28 +51,21 @@ const AccountView = ({ account }) => {
 
       setHotspots(hotspots)
       setLoadingHotspots(false)
-    }
 
-    async function getRewards() {
-      const client = new Client()
-      const accountid = account.address
-
-      const list = await client.account(accountid).hotspots.list()
-      const hotspots = await list.take(1000)
+      const hotspotsWithRewards = hotspots
 
       await Promise.all(
-        hotspots.map(async (hotspot) => {
+        hotspotsWithRewards.map(async (hotspot) => {
           hotspot.rewardsSummary = await fetchRewardsSummary(hotspot.address)
-          delete hotspot.client
           return hotspot
         }),
-      )
-      // overwrite hotspots with a version that includes rewards
-      setHotspots(hotspots)
-      setLoadingRewards(false)
+      ).then(() => {
+        // add rewardsSummary to hotspots state array
+        setHotspots(hotspotsWithRewards)
+        setLoadingRewards(false)
+      })
     }
     getHotspots()
-    getRewards()
   }, [])
 
   return (

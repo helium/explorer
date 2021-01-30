@@ -12,7 +12,10 @@ const InlineSkeleton = () => (
 )
 
 const TokenBurnV1 = ({ txn }) => {
-  const txnAmountObject = new Balance(txn.amount, CurrencyType.networkToken)
+  const txnAmountObject = new Balance(
+    txn.amount.integerBalance,
+    CurrencyType.networkToken,
+  )
   const txnFeeObject = new Balance(
     txn.fee.integerBalance,
     CurrencyType.dataCredit,

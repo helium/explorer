@@ -52,6 +52,19 @@ const hotspotColumns = [
     render: (data) => <span>{formatLocation(data)}</span>,
   },
   {
+    title: 'Reward Scale',
+    dataIndex: 'rewardScale',
+    key: 'rewardScale',
+    render: (data) => (
+      <span>
+        {data.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+          minimumFractionDigits: 2,
+        })}
+      </span>
+    ),
+  },
+  {
     title: 'Rewards (24h)',
     dataIndex: 'rewards',
     key: 'rewardsDay',

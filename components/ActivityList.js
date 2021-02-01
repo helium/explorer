@@ -120,6 +120,7 @@ class ActivityList extends Component {
                         label: 'Transfer Hotspot',
                         value: 'transfer_hotspot_v1',
                       },
+                      { label: 'Token Burn', value: 'token_burn_v1' },
                     ]}
                     onChange={this.onFiltersChanged}
                   />

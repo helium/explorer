@@ -16,7 +16,15 @@ const HotspotsList = ({ hotspots, loading }) => {
     <Content style={{ marginBottom: 20 }}>
       <Card loading={loading} title={'Hotspots'}>
         {hotspots.length == 0 ? (
-          <h2 style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+          <h2
+            style={{
+              textAlign: 'center',
+              marginTop: '0.5rem',
+              fontSize: '14px',
+              color: 'rgba(0, 0, 0, 0.25)',
+              padding: '20px',
+            }}
+          >
             Account has no hotspots
           </h2>
         ) : (

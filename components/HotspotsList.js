@@ -75,16 +75,30 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
 
   return (
     <Content style={{ marginBottom: 20 }}>
-      <Card title={'Hotspots'}>
-        <Table
-          dataSource={hotspots}
-          columns={hotspotColumns}
-          loading={hotspotsLoading}
-          size="small"
-          rowKey="name"
-          pagination={{ pageSize: 10, hideOnSinglePage: true }}
-          scroll={{ x: true }}
-        />
+      <Card loading={hotspotsLoading} title={'Hotspots'}>
+        {hotspots.length == 0 ? (
+          <h2
+            style={{
+              textAlign: 'center',
+              marginTop: '0.5rem',
+              fontSize: '14px',
+              color: 'rgba(0, 0, 0, 0.25)',
+              padding: '20px',
+            }}
+          >
+            Account has no hotspots
+          </h2>
+        ) : (
+          <Table
+            dataSource={hotspots}
+            columns={hotspotColumns}
+            loading={hotspotsLoading}
+            size="small"
+            rowKey="name"
+            pagination={{ pageSize: 10, hideOnSinglePage: true }}
+            scroll={{ x: true }}
+          />
+        )}
       </Card>
     </Content>
   )

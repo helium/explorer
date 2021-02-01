@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Tag, Icon, Tooltip } from 'antd'
+import React from 'react'
+import { Tooltip } from 'antd'
 
 const GpsTag = ({ type }) => typeTag(type)
 

@@ -16,7 +16,7 @@ const NavHeader = () => (
       position: 'fixed',
       zIndex: 10,
       width: '100%',
-      marginTop: '-64px',
+      top: 0,
       justifyContent: 'space-between',
     }}
   >

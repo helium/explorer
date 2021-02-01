@@ -10,8 +10,8 @@ import Link from 'next/link'
 import { generateFriendlyTimestampString } from '../../components/Txns/utils'
 
 import {
-  BackwardOutlined,
-  ForwardOutlined,
+  LeftOutlined,
+  RightOutlined,
   ClockCircleOutlined,
   CheckCircleOutlined,
 } from '@ant-design/icons'
@@ -78,7 +78,7 @@ const BlockView = ({ block, txns, height }) => {
       <Content
         style={{
           marginTop: 0,
-          background: 'rgb(16, 23, 37)',
+          background: '#222e46',
         }}
       >
         <div
@@ -92,9 +92,9 @@ const BlockView = ({ block, txns, height }) => {
                 style={{
                   color: 'white',
                   fontSize: 52,
-                  marginTop: 0,
                   lineHeight: 0.7,
                   letterSpacing: '-2px',
+                  marginTop: 20,
                 }}
               >
                 {block.height.toLocaleString(undefined, {
@@ -107,7 +107,6 @@ const BlockView = ({ block, txns, height }) => {
                   copyable
                   style={{
                     color: '#6A6B93',
-                    fontFamily: 'monospace',
                     wordBreak: 'break-all',
                   }}
                 >
@@ -121,16 +120,14 @@ const BlockView = ({ block, txns, height }) => {
             </div>
           </div>
 
-          <hr />
           <div className="block-view-summary-container">
             {block.height !== 1 ? (
               <Link href={`/blocks/${block.height - 1}`}>
                 <a
                   className="button block-view-prev-button"
-                  style={{ backgroundColor: '#232c42' }}
+                  style={{ backgroundColor: '#35405b' }}
                 >
-                  <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
-                  Block
+                  <LeftOutlined style={{ marginleft: '-6px' }} /> Previous Block
                 </a>
               </Link>
             ) : (
@@ -171,9 +168,9 @@ const BlockView = ({ block, txns, height }) => {
               <Link href={`/blocks/${block.height + 1}`}>
                 <a
                   className="button block-view-next-button"
-                  style={{ backgroundColor: '#232c42' }}
+                  style={{ backgroundColor: '#35405b' }}
                 >
-                  Next Block <ForwardOutlined style={{ marginRight: '-6px' }} />
+                  Next Block <RightOutlined style={{ marginRight: '-6px' }} />
                 </a>
               </Link>
             ) : (
@@ -213,6 +210,14 @@ const BlockView = ({ block, txns, height }) => {
           width: 100%;
           border-top: 1px solid #494b7b;
           margin: 40px 0;
+        }
+
+        .block-view-summary-container {
+          margin-top: 100px;
+        }
+
+        .block-view-summary-info {
+          flex-grow: 1;
         }
         .chartplaceholder {
           width: 350px;

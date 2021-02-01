@@ -90,11 +90,14 @@ function Hotspots({
           <Col span={24}>
             <div
               style={{
-                backgroundColor: '#1d1f40',
-                paddingTop: 10,
+                backgroundColor: '#fff',
                 borderRadius: 10,
+                paddingBottom: 25,
               }}
+              className="ant-card-head"
             >
+              <div class="ant-card-head-title">Hotspot Map</div>
+
               <a href="/coverage">
                 <MiniCoverageMap zoomLevel={0.9} />
               </a>

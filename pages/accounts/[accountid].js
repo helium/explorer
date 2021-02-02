@@ -210,7 +210,7 @@ const AccountView = ({ account }) => {
       <Content
         style={{
           margin: '0 auto',
-          maxWidth: 1000,
+          maxWidth: 1150,
           paddingBottom: 100,
           marginTop: 0,
         }}

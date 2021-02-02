@@ -19,7 +19,7 @@ const ChecklistCard = ({
           backgroundColor: '#232c42',
           boxShadow: 'none',
           border: '1px solid transparent',
-          minHeight: '132px',
+          minHeight: '151px',
           marginRight: '20px',
           minWidth: `${cardWidth}px`,
           width: `${cardWidth}px`,

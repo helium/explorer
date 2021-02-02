@@ -1,6 +1,6 @@
 import React from 'react'
 import Client from '@helium/http'
-import { Button, Modal } from 'antd'
+import { Button, Modal, notification } from 'antd'
 import { ExportToCsv } from 'export-to-csv'
 import moment from 'moment'
 import { parseTxn } from './utils'
@@ -49,7 +49,7 @@ class ExportModal extends React.Component {
   onFeeChange = (e) => this.setState({ fee: e.target.value })
 
   handleExportCsv = async () => {
-    const { address } = this.props
+    const { address, type } = this.props
     const { startDate, endDate, txn, fee } = this.state
 
     const filterTypes = []
@@ -59,9 +59,28 @@ class ExportModal extends React.Component {
     if (txn.includes('assert')) filterTypes.push('assert_location_v1')
     if (txn.includes('add')) filterTypes.push('add_gateway_v1')
 
-    const list = await this.client.account(address).activity.list({
-      filterTypes,
-    })
+    let service = null
+    let list
+
+    switch (type) {
+      case 'account':
+        service = this.client.account
+        break
+      case 'hotspot':
+        service = this.client.hotspot
+        break
+      default:
+        break
+    }
+
+    if (service !== null) {
+      list = await service(address).activity.list({
+        filterTypes,
+      })
+    } else {
+      console.error(`A service for export type ${type} needs to be defined.`)
+      return
+    }
 
     let data = []
 
@@ -89,7 +108,14 @@ class ExportModal extends React.Component {
     }
 
     const csvExporter = new ExportToCsv(options)
-    if (data !== []) csvExporter.generateCsv(data)
+
+    if (data.length) {
+      csvExporter.generateCsv(data)
+    } else {
+      notification.info({
+        message: 'No data to export',
+      })
+    }
   }
 
   render() {
@@ -117,6 +143,7 @@ class ExportModal extends React.Component {
             <ExportProgress percent={percent} />
           ) : (
             <ExportForm
+              type={this.props.type}
               onDateChange={this.onDateChange}
               onTxnChange={this.onTxnChange}
               onFeeChange={this.onFeeChange}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Typography, Descriptions, Tooltip } from 'antd'
 import Client from '@helium/http'
 import AppLayout, { Content } from '../../components/AppLayout'
@@ -10,19 +10,10 @@ import { Balance, CurrencyType } from '@helium/currency'
 
 import { ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import AccountIcon from '../../components/AccountIcon'
+import AccountAddress from '../../components/AccountAddress'
 import { fetchRewardsSummary } from '../../data/hotspots'
 
 const { Title } = Typography
-
-const AccountAddress = ({ address, truncate = false }) => {
-  return (
-    <Tooltip title={address}>
-      <span style={{ cursor: 'pointer' }}>
-        {truncate ? `${address.slice(0, 10)}...${address.slice(-10)}` : address}
-      </span>
-    </Tooltip>
-  )
-}
 
 const AccountView = ({ account }) => {
   const dcBalanceObject = new Balance(
@@ -39,24 +30,40 @@ const AccountView = ({ account }) => {
   )
 
   const [hotspots, setHotspots] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [hotspotsLoading, setLoadingHotspots] = useState(true)
+  const [rewardsLoading, setLoadingRewards] = useState(true)
 
   useEffect(() => {
     async function getHotspots() {
+      setLoadingHotspots(true)
+      setLoadingRewards(true)
+
       const client = new Client()
       const accountid = account.address
 
       const list = await client.account(accountid).hotspots.list()
+      const hotspotList = await list.take(1000)
 
-      const hotspots = []
-      for await (const hotspot of list) {
-        hotspot.status.gpsText = gpsLocation(hotspot.status.gps)
-        hotspot.rewardsSummary = await fetchRewardsSummary(hotspot.address)
+      const hotspots = hotspotList.map((hotspot) => {
         delete hotspot.client
-        hotspots.push(JSON.parse(JSON.stringify(hotspot)))
-      }
+        return JSON.parse(JSON.stringify(hotspot))
+      })
+
       setHotspots(hotspots)
-      setLoading(false)
+      setLoadingHotspots(false)
+
+      const hotspotsWithRewards = hotspots
+
+      await Promise.all(
+        hotspotsWithRewards.map(async (hotspot) => {
+          hotspot.rewardsSummary = await fetchRewardsSummary(hotspot.address)
+          return hotspot
+        }),
+      )
+
+      // add rewardsSummary to hotspots state array
+      setHotspots(hotspotsWithRewards)
+      setLoadingRewards(false)
     }
     getHotspots()
   }, [])
@@ -85,7 +92,7 @@ const AccountView = ({ account }) => {
       <Content
         style={{
           marginTop: 0,
-          background: 'rgb(16, 23, 37)',
+          background: '#222e46',
           overflowX: 'hidden',
         }}
       >
@@ -208,7 +215,11 @@ const AccountView = ({ account }) => {
           marginTop: 0,
         }}
       >
-        <HotspotsList loading={loading} hotspots={hotspots} />
+        <HotspotsList
+          rewardsLoading={rewardsLoading}
+          hotspotsLoading={hotspotsLoading}
+          hotspots={hotspots}
+        />
         <ActivityList
           type="account"
           address={account.address}
@@ -236,19 +247,6 @@ export async function getStaticProps({ params }) {
       account: JSON.parse(JSON.stringify(account)),
     },
     revalidate: 10,
-  }
-}
-
-function gpsLocation(text) {
-  switch (text) {
-    case 'bad_assert':
-      return 'Bad GPS Location'
-    case 'good_fix':
-      return 'Good GPS Location'
-    case 'no_fix':
-      return 'No GPS Fix'
-    default:
-      return false
   }
 }
 

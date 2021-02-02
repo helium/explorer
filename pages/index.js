@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Typography, Card, Button } from 'antd'
+import { Row, Col, Card, Button } from 'antd'
 import AppLayout, { Content } from '../components/AppLayout'
 import { fetchMarket, useMarket } from '../data/market'
 import { fetchStats, useStats } from '../data/stats'
@@ -23,8 +23,6 @@ const MiniCoverageMap = dynamic(
     loading: () => <div style={{ height: '500px' }} />,
   },
 )
-
-const { Title, Text } = Typography
 
 const Index = ({
   market: initialMarket,
@@ -159,23 +157,16 @@ const Index = ({
 
           <div
             style={{
-              background: '#3F416D',
+              background: '#fff',
               borderRadius: 10,
               marginBottom: 20,
+              paddingBottom: 30,
             }}
-            className="summary-header"
+            className="ant-card-head"
           >
             <Row>
               <Col lg={12}>
-                <h3
-                  style={{
-                    marginBottom: 0,
-                    color: '#1890ff',
-                    fontSize: 14,
-                  }}
-                >
-                  Coverage Map
-                </h3>
+                <div class="ant-card-head-title">Hotspot Map</div>
               </Col>
             </Row>
             <Row>

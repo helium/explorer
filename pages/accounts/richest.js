@@ -1,21 +1,20 @@
-import React, { Component } from 'react'
+import React from 'react'
 import AppLayout, { Content } from '../../components/AppLayout'
 import { Typography, Table } from 'antd'
 import Link from 'next/link'
 import AccountIcon from '../../components/AccountIcon'
+import AccountAddress from '../../components/AccountAddress'
 
 const { Title } = Typography
 
 function RichList({ accounts }) {
   const columns = [
     {
-      title: '',
-      dataIndex: 'address',
-      key: 'icon',
-      render: (address) => (
-        <span style={{ display: 'flex' }}>
-          <AccountIcon address={address} size={24} />
-        </span>
+      title: 'Rank',
+      dataIndex: 'rank',
+      key: 'rank',
+      render: (rank) => (
+        <span style={{ display: 'block', textAlign: 'center' }}>{rank}</span>
       ),
     },
     {
@@ -24,7 +23,12 @@ function RichList({ accounts }) {
       key: 'address',
       render: (address) => (
         <Link href={`/accounts/${address}`} prefetch={false}>
-          <a style={{ fontWeight: '600' }}>{address}</a>
+          <span style={{ display: 'flex' }}>
+            <AccountIcon address={address} size={24} />
+            <a style={{ fontWeight: '600', marginLeft: 6 }}>
+              <AccountAddress address={address} truncate />
+            </a>
+          </span>
         </Link>
       ),
     },
@@ -37,12 +41,24 @@ function RichList({ accounts }) {
       ),
     },
     {
+      title: 'HNT Ratio',
+      dataIndex: 'hntPercent',
+      key: 'hntPercent',
+      render: (hntPercent) => <span>{hntPercent.toLocaleString(2)}%</span>,
+    },
+    {
       title: 'HST Balance',
       dataIndex: 'sec_balance',
       key: 'sec_balance',
       render: (sec_balance) => (
         <span>{(sec_balance / 100000000).toLocaleString(2)} HST</span>
       ),
+    },
+    {
+      title: 'HST Ratio',
+      dataIndex: 'hstPercent',
+      key: 'hstPercent',
+      render: (hstPercent) => <span>{hstPercent.toLocaleString(2)}%</span>,
     },
   ]
 
@@ -57,7 +73,7 @@ function RichList({ accounts }) {
       <Content
         style={{
           marginTop: 0,
-          background: '#27284B',
+          background: 'rgb(16, 23, 37)',
           padding: '60px 0 20px',
         }}
       >
@@ -102,11 +118,27 @@ function RichList({ accounts }) {
 }
 
 export async function getStaticProps() {
+  const [accounts, stats] = await Promise.all([
+    fetch('https://api.helium.io/v1/accounts/rich')
+      .then((res) => res.json())
+      .then(($) => $.data),
+    fetch('https://api.helium.io/v1/stats')
+      .then((res) => res.json())
+      .then(($) => $.data),
+  ])
+
+  const augmentedAccounts = accounts.map((a, i) => {
+    return {
+      rank: i + 1,
+      hntPercent: (a.balance / 100000000 / stats.token_supply) * 100,
+      hstPercent: (a.sec_balance / 1000000000000) * 100,
+      ...a,
+    }
+  })
+
   return {
     props: {
-      accounts: await fetch('https://api.helium.io/v1/accounts/rich')
-        .then((res) => res.json())
-        .then(($) => $.data),
+      accounts: augmentedAccounts,
     },
     revalidate: 10,
   }

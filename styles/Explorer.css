@@ -59,7 +59,7 @@ p.stat span {
 }
 
 .ant-table-tbody > tr > td {
-  border-bottom: 2px solid #e9eaf2;
+  border-bottom: 1px solid #e9eaf2;
 }
 
 .barchart {
@@ -120,15 +120,12 @@ p.stat span {
   align-items: center;
 }
 
-.ant-table.ant-table-small td a {
-  font-family: monospace;
-}
-
 .ant-table-small .ant-table-thead > tr > th {
   background-color: white;
   text-transform: uppercase;
-  font-weight: 400;
-  letter-spacing: 1px;
+  font-weight: 600;
+  letter-spacing: 0px;
+  font-size: 12px;
 }
 
 a.button {
@@ -166,7 +163,7 @@ h3 {
 }
 
 .ant-table-container table > thead {
-  font-family: soleil, sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .ant-descriptions-bordered .ant-descriptions-view > table {
@@ -178,7 +175,7 @@ h3 {
 }
 
 .ant-table-thead > tr > th {
-  border-bottom: 2px solid #e9eaf2;
+  border-bottom: 1px solid #e9eaf2;
 }
 
 .ant-table-override
@@ -256,20 +253,20 @@ hr {
 .mini-coverage-map {
   position: relative;
   display: block;
-  border-radius: 0 0 10px 10px;
+  border-radius: 6px;
 }
 .mini-coverage-map-overlay {
   display: block;
-  background-color: #3f416d;
+  background-color: #fff;
   opacity: 0;
-  border-radius: 0 0 10px 10px;
+  border-radius: 6px;
   position: absolute;
   z-index: 2;
   height: 500px;
   width: 100%;
 }
 .mini-coverage-map:hover > .mini-coverage-map-overlay {
-  opacity: 0.5;
+  opacity: 0.1;
   transition: opacity 0.2s ease;
 }
 .mini-coverage-map-interactive-text {
@@ -291,7 +288,7 @@ hr {
 }
 
 .mini-coverage-map .mapboxgl-canvas {
-  border-radius: 0 0 10px 10px;
+  border-radius: 6px;
 }
 
 .interactive-coverage-map > .mapboxgl-map {
@@ -428,10 +425,30 @@ hr {
 }
 
 .tag-link {
-  font-family: soleil, sans-serif !important;
+  font-family: 'Inter', sans-serif !important;
 }
 .tag-link > .ant-tag:hover {
   cursor: pointer;
+}
+
+.inline-skeleton-override .ant-skeleton-title {
+  margin: 0 !important;
+  width: 100% !important;
+}
+.inline-skeleton-override .ant-skeleton-paragraph {
+  margin: 0 !important;
+}
+.no-location-set {
+  height: 400px;
+}
+
+.inline-skeleton-override .ant-skeleton-title {
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+.inline-skeleton-override .ant-skeleton-paragraph {
+  margin: 0 !important;
 }
 
 @media screen and (max-width: 1200px) {
@@ -541,6 +558,9 @@ hr {
   .content-container-hotspot-view > .mapboxgl-map {
     height: 200px;
   }
+  .no-location-set {
+    height: 200px;
+  }
   #hotspot-checklist-container {
     border-radius: 0px;
   }
@@ -566,7 +586,7 @@ hr {
   .block-view-summary-info {
     width: 100%;
     order: 1;
-    padding-bottom: 30px;
+    padding-bottom: 0px;
   }
   .block-view-prev-button {
     order: 2;

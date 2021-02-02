@@ -37,15 +37,9 @@ const formatPocRadioInfo = (receipt) => {
 }
 
 const PocReceiptsV1 = ({ txn }) => {
-  const [minValidH3Distance, setMinValidH3Distance] = useState()
-  const [pocH3CellResolution, setPocH3CellResolution] = useState()
+  const [pocH3CellResolution, setPocH3CellResolution] = useState(11)
 
   useEffect(async () => {
-    await fetch('https://api.helium.io/v1/vars/poc_v4_exclusion_cells')
-      .then((res) => res.json())
-      .then((min) => {
-        setMinValidH3Distance(min.data)
-      })
     await fetch('https://api.helium.io/v1/vars/poc_v4_parent_res')
       .then((res) => res.json())
       .then((resolution) => {
@@ -199,9 +193,6 @@ const PocReceiptsV1 = ({ txn }) => {
                                           witness={w}
                                           witnessIndex={i}
                                           participantIndex={participantIndex}
-                                          minValidH3Distance={
-                                            minValidH3Distance
-                                          }
                                           pocH3CellResolution={
                                             pocH3CellResolution
                                           }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Row, Typography, Checkbox, Tooltip, Skeleton } from 'antd'
+import { Row, Typography, Checkbox, Tooltip } from 'antd'
 import Client from '@helium/http'
 import algoliasearch from 'algoliasearch'
 import Fade from 'react-reveal/Fade'
@@ -171,7 +171,7 @@ const HotspotView = ({ hotspot }) => {
       <Content
         style={{
           marginTop: 0,
-          background: 'rgb(16, 23, 37)',
+          background: '#222e46',
           padding: '0px 0 0px',
         }}
       >
@@ -186,31 +186,37 @@ const HotspotView = ({ hotspot }) => {
             nearbyHotspots={nearbyHotspots}
             showNearbyHotspots={showNearbyHotspots}
           />
-          <div
-            style={{
-              textAlign: 'right',
-              paddingTop: 10,
-              color: 'white',
-            }}
-          >
-            <Checkbox
-              onChange={(e) => setShowNearbyHotspots(e.target.checked)}
-              checked={showNearbyHotspots}
-              style={{ color: 'white' }}
+          {hotspot.lng !== undefined && hotspot.lat !== undefined && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                paddingTop: 10,
+                color: 'white',
+                width: '100%',
+              }}
             >
-              Show nearby hotspots
-            </Checkbox>
-            <Checkbox
-              onChange={(e) => setShowWitnesses(e.target.checked)}
-              checked={showWitnesses}
-              style={{ color: 'white' }}
-            >
-              Show witnesses
-            </Checkbox>
-            <p style={{ marginBottom: '-20px' }}>
-              {formatLocation(hotspot?.geocode)}
-            </p>
-          </div>
+              <p style={{ marginBottom: '-20px', fontWeight: 600 }}>
+                {formatLocation(hotspot?.geocode)}
+              </p>
+              <div>
+                <Checkbox
+                  onChange={(e) => setShowNearbyHotspots(e.target.checked)}
+                  checked={showNearbyHotspots}
+                  style={{ color: 'white' }}
+                >
+                  Show nearby hotspots
+                </Checkbox>
+                <Checkbox
+                  onChange={(e) => setShowWitnesses(e.target.checked)}
+                  checked={showWitnesses}
+                  style={{ color: 'white' }}
+                >
+                  Show witnesses
+                </Checkbox>
+              </div>
+            </div>
+          )}
 
           <Row style={{ paddingTop: 30 }}>
             <div
@@ -306,7 +312,7 @@ const HotspotView = ({ hotspot }) => {
                     style={{
                       color: 'white',
                       fontSize: 52,
-                      marginTop: 0,
+                      marginTop: 10,
                       letterSpacing: '-2px',
                       marginBottom: 17,
                     }}
@@ -328,7 +334,6 @@ const HotspotView = ({ hotspot }) => {
                   <Text
                     copyable
                     style={{
-                      fontFamily: 'monospace',
                       color: '#8283B2',
                       wordBreak: 'break-all',
                     }}
@@ -341,7 +346,12 @@ const HotspotView = ({ hotspot }) => {
           </Row>
         </div>
         <div
-          style={{ maxWidth: 850 + 40, margin: '0 auto', paddingBottom: 50 }}
+          style={{
+            maxWidth: 850 + 40,
+            margin: '0 auto',
+            paddingBottom: 50,
+            marginTop: 40,
+          }}
         >
           <Checklist
             hotspot={hotspot}
@@ -356,15 +366,12 @@ const HotspotView = ({ hotspot }) => {
         <div
           style={{ maxWidth: 850 + 40, margin: '0 auto', paddingBottom: 50 }}
         >
-          <EarningsChart
-            firstMonthHours={rewards.firstMonthHours}
-            secondMonthHours={rewards.secondMonthHours}
-          />
+          <EarningsChart rewardsLoading={rewardsLoading} rewards={rewards} />
         </div>
         <div
           style={{
             width: '100%',
-            backgroundColor: '#2A344A',
+            backgroundColor: 'rgb(24, 32, 53)',
             padding: '20px',
             textAlign: 'center',
           }}

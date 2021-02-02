@@ -48,32 +48,19 @@ export const fetchRewardsSummary = async (address) => {
     // this should only have an effect locally in the dev environment, because doing new Date() on Heroku won't have an offset
     min_time: formatISO(twoMonthsAgo).substr(0, 19),
     max_time: formatISO(nowUTC).substr(0, 19),
-    bucket: 'hour',
+    bucket: 'day',
   })
-  const url = `https://api.helium.io/v1/hotspots/${address}/rewards/stats?${params}`
+  const url = `https://api.helium.io/v1/hotspots/${address}/rewards/sum?${params}`
   const response = await fetch(url)
   const { data } = await response.json()
 
-  const day = sumBy(data.slice(0, 23), 'total')
-  const previousDay = sumBy(data.slice(23, 47), 'total')
-  const week = sumBy(data.slice(0, 24 * 7 - 1), 'total')
-  const previousWeek = sumBy(data.slice(24 * 7 - 1, 24 * 7 * 2), 'total')
-  const month = sumBy(data.slice(0, 24 * 30 - 1), 'total')
-  const previousMonth = sumBy(data.slice(24 * 30 - 1, 24 * 30 * 2), 'total')
-
-  const dataToSplit = data
-  const half = Math.ceil(dataToSplit.length / 2)
-  const firstMonthHours = dataToSplit.splice(0, half)
-  const secondMonthHours = dataToSplit.splice(-half)
-
   return {
-    day,
-    previousDay,
-    week,
-    previousWeek,
-    month,
-    previousMonth,
-    firstMonthHours,
-    secondMonthHours,
+    buckets: data,
+    day: data[0].total,
+    previousDay: data[1].total,
+    week: sumBy(data.slice(0, 6), 'total'),
+    previousWeek: sumBy(data.slice(6, 13), 'total'),
+    month: sumBy(data.slice(0, 29), 'total'),
+    previousMonth: sumBy(data.slice(29, 59), 'total'),
   }
 }

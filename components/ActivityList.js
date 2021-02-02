@@ -120,6 +120,7 @@ class ActivityList extends Component {
                         label: 'Transfer Hotspot',
                         value: 'transfer_hotspot_v1',
                       },
+                      { label: 'Token Burn', value: 'token_burn_v1' },
                     ]}
                     onChange={this.onFiltersChanged}
                   />
@@ -225,6 +226,9 @@ const columns = (ownerAddress) => {
                 .amount.toString(2)}
           </span>
         )
+      case 'token_burn_v1':
+        return <span>{txn.amount.toString(2)}</span>
+
       case 'rewards_v1':
         return <span>{txn.totalAmount.toString(2)}</span>
       case 'poc_receipts_v1':
@@ -256,7 +260,7 @@ const columns = (ownerAddress) => {
           return <span>{'+' + txn.amountToSeller.toString()}</span>
         }
       default:
-        return <span>{txn.amount}</span>
+        return
     }
   }
 

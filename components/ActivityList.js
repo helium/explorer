@@ -19,6 +19,8 @@ const initialState = {
   filtersOpen: false,
 }
 
+const exportableEntities = ['account', 'hotspot']
+
 class ActivityList extends Component {
   state = initialState
 
@@ -85,8 +87,12 @@ class ActivityList extends Component {
           title="Activity"
           extra={
             <>
-              {type === 'account' && (
-                <ExportCSV address={address} style={{ marginRight: 10 }} />
+              {exportableEntities.includes(type) && (
+                <ExportCSV
+                  type={type}
+                  address={address}
+                  style={{ marginRight: 10 }}
+                />
               )}
               <Tooltip title="Toggle Filters">
                 <Button

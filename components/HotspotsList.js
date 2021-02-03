@@ -1,14 +1,8 @@
 import React from 'react'
-import { Table, Card, Tooltip, Skeleton } from 'antd'
-import round from 'lodash/round'
+import { Table, Card } from 'antd'
 import { Content } from './AppLayout'
 import Link from 'next/link'
-import {
-  formatHotspotName,
-  formatLocation,
-  calculatePercentChange,
-  formatPercentChangeString,
-} from './Hotspots/utils'
+import { formatHotspotName, formatLocation } from './Hotspots/utils'
 import { StatusCircle } from './Hotspots'
 import HotspotRewardsRow from './Hotspots/HotspotRewardsRow'
 
@@ -34,6 +28,19 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
       dataIndex: 'geocode',
       key: 'location',
       render: (data) => <span>{formatLocation(data)}</span>,
+    },
+    {
+      title: 'Reward Scale',
+      dataIndex: 'rewardScale',
+      key: 'rewardScale',
+      render: (data) => (
+        <span>
+          {data.toLocaleString(undefined, {
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2,
+          })}
+        </span>
+      ),
     },
     {
       title: 'Rewards (24h)',

@@ -21,6 +21,8 @@ import {
 } from '../../components/Hotspots/utils'
 
 import { fetchRewardsSummary } from '../../data/hotspots'
+import Hex from '../../components/Hex'
+import { generateRewardScaleColor } from '../../components/Hotspots/utils'
 
 const HotspotMapbox = dynamic(
   () => import('../../components/Hotspots/HotspotMapbox'),
@@ -292,7 +294,7 @@ const HotspotView = ({ hotspot }) => {
                           style={{
                             marginBottom: 0,
                             color: '#8283B2',
-                            marginLeft: 10,
+                            marginLeft: 8,
                           }}
                         >
                           {hotspot.status.online === 'offline'
@@ -301,6 +303,58 @@ const HotspotView = ({ hotspot }) => {
                               hotspot.status.height === null
                             ? `Syncing`
                             : `Synced`}
+                        </p>
+                      </Tooltip>
+                    </div>
+
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        marginLeft: '10px',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '2px 10px',
+                        backgroundColor: '#182035',
+                        borderRadius: '20px',
+                      }}
+                    >
+                      <Tooltip
+                        placement="top"
+                        title={`Reward scale: ${hotspot.rewardScale}`}
+                      >
+                        <span
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <Hex
+                            width={10.5}
+                            height={12}
+                            fillColor={generateRewardScaleColor(
+                              hotspot.rewardScale,
+                            )}
+                          />
+                        </span>
+                      </Tooltip>
+
+                      <Tooltip
+                        placement="top"
+                        title={`A Hotspot's own reward scale does not impact its earnings. Hotspots witnessing this Hotspot will see their rewards scaled up or down according to this Hotspot's reward scale.`}
+                      >
+                        <p
+                          style={{
+                            marginBottom: 0,
+                            color: '#8283B2',
+                            marginLeft: 8,
+                          }}
+                        >
+                          {hotspot.rewardScale.toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
                         </p>
                       </Tooltip>
                     </div>

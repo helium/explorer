@@ -2,7 +2,6 @@ import React from 'react'
 import { Layout, Typography } from 'antd'
 import NavHeader from './NavHeader'
 import MetaTags from './MetaTags'
-import Typekit from 'react-typekit'
 
 const { Content, Footer } = Layout
 const { Text } = Typography

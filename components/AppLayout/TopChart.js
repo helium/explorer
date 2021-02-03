@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Typography, Tooltip } from 'antd'
+import { Row, Typography, Tooltip } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
 import useResponsive from './useResponsive'
 const { Title, Text } = Typography

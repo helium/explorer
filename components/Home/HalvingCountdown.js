@@ -1,8 +1,6 @@
 import React from 'react'
-import { Row, Col, Typography } from 'antd'
 import Widget from './Widget'
 import Countdown from 'react-countdown'
-const { Title, Text } = Typography
 
 const HalveningCountdown = () => {
   return (

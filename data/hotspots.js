@@ -54,13 +54,24 @@ export const fetchRewardsSummary = async (address) => {
   const response = await fetch(url)
   const { data } = await response.json()
 
-  return {
-    buckets: data,
-    day: data[0].total,
-    previousDay: data[1].total,
-    week: sumBy(data.slice(0, 6), 'total'),
-    previousWeek: sumBy(data.slice(6, 13), 'total'),
-    month: sumBy(data.slice(0, 29), 'total'),
-    previousMonth: sumBy(data.slice(29, 59), 'total'),
+  if (data) {
+    return {
+      buckets: data,
+      day: data[0].total,
+      previousDay: data[1].total,
+      week: sumBy(data.slice(0, 6), 'total'),
+      previousWeek: sumBy(data.slice(6, 13), 'total'),
+      month: sumBy(data.slice(0, 29), 'total'),
+      previousMonth: sumBy(data.slice(29, 59), 'total'),
+    }
+  } else {
+    return {
+      day: 0,
+      previousDay: 0,
+      week: 0,
+      previousWeek: 0,
+      month: 0,
+      previousMonth: 0,
+    }
   }
 }

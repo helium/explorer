@@ -90,11 +90,38 @@ const Index = ({
           <Row gutter={[20, 20]}>
             <Col xs={24} md={8}>
               <Widget
-                title="Total Hotspots"
+                title="Hotspots"
                 value={stats.totalHotspots.toLocaleString()}
                 tooltip="The Helium network is made up of thousands of hotspots providing coverage around the globe"
                 footer="View Hotspots"
                 href="/hotspots"
+              />
+            </Col>
+            <Col xs={24} md={8}>
+              <Widget
+                title="Challenges"
+                value={stats.challenges.toLocaleString()}
+                tooltip=""
+                footer="View Challenges"
+                href="/challenges"
+              />
+            </Col>
+            <Col xs={24} md={8}>
+              <Widget
+                title="Consensus Groups"
+                value={stats.consensusGroups.toLocaleString()}
+                tooltip=""
+                footer="View Consensus Groups"
+                href="/consensus"
+              />
+            </Col>
+            <Col xs={24} md={8}>
+              <Widget
+                title="Blocks"
+                value={stats.totalBlocks.toLocaleString()}
+                tooltip=""
+                footer="View Blocks"
+                href="/blocks"
               />
             </Col>
             <Col xs={24} md={8}>

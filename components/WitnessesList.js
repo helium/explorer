@@ -27,6 +27,19 @@ const columns = [
     render: (data) => <span>{formatLocation(data)}</span>,
   },
   {
+    title: 'Reward Scale',
+    dataIndex: 'reward_scale',
+    key: 'reward_scale',
+    render: (data) => (
+      <span>
+        {data.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+          minimumFractionDigits: 2,
+        })}
+      </span>
+    ),
+  },
+  {
     title: 'RSSI',
     dataIndex: 'witness_info',
     key: 'rssi',

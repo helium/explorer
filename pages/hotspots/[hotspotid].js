@@ -323,13 +323,21 @@ const HotspotView = ({ hotspot }) => {
                         placement="top"
                         title={`Reward scale: ${hotspot.rewardScale}`}
                       >
-                        <Hex
-                          width={10.5}
-                          height={12}
-                          fillColor={generateRewardScaleColor(
-                            hotspot.rewardScale,
-                          )}
-                        />
+                        <span
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <Hex
+                            width={10.5}
+                            height={12}
+                            fillColor={generateRewardScaleColor(
+                              hotspot.rewardScale,
+                            )}
+                          />
+                        </span>
                       </Tooltip>
 
                       <Tooltip

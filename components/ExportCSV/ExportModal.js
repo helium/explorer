@@ -97,7 +97,7 @@ class ExportModal extends React.Component {
     }
 
     const options = {
-      filename: 'helium',
+      filename: `${type === 'account' ? 'Account' : 'Hotspot'} ${address}`,
       fieldSeparator: ',',
       quoteStrings: '"',
       decimalSeparator: '.',

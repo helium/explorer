@@ -329,7 +329,7 @@ const HotspotView = ({ hotspot }) => {
                           fillColor={generateRewardScaleColor(
                             hotspot.rewardScale,
                           )}
-                        />{' '}
+                        />
                       </Tooltip>
 
                       <Tooltip

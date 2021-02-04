@@ -1,12 +1,9 @@
 import React from 'react'
-import ReactMapboxGl, {
-  GeoJSONLayer,
-  Image,
-  ScaleControl,
-} from 'react-mapbox-gl'
+import ReactMapboxGl, { GeoJSONLayer, Image } from 'react-mapbox-gl'
 import geoJSON from 'geojson'
 import GeolocationButton from './GeolocationButton'
 import fetch from 'node-fetch'
+import ScaleControl from '../ScaleControl'
 
 const maxZoom = 14
 const minZoom = 2
@@ -225,12 +222,7 @@ class CoverageMap extends React.Component {
           {hasGeolocation && (
             <GeolocationButton onClick={this.handleGeolocationButtonClick} />
           )}
-          <ScaleControl
-            style={{
-              backgroundColor: '#334B61',
-              borderRadius: 3,
-            }}
-          />
+          <ScaleControl />
         </Mapbox>
         <style jsx>{`
           .map-zoom-button {

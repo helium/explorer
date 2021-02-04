@@ -9,7 +9,7 @@ import withBlockHeight from '../../components/withBlockHeight'
 import { withRouter } from 'next/router'
 import Link from 'next/link'
 import { generateFriendlyTimestampString } from '../../components/Txns/utils'
-import { COLORS } from '../../components/Txns/TxnTag'
+import { getColor } from '../../components/Txns/TxnTag'
 
 import {
   LeftOutlined,
@@ -29,7 +29,7 @@ const BlockView = ({ block, txns, height }) => {
         if (f) {
           f.value++
         } else {
-          let n = { name: t.type, value: 1, color: COLORS[t.type] }
+          let n = { name: t.type, value: 1, color: getColor(t.type) }
           res.push(n)
         }
       })

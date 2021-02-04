@@ -1,116 +1,92 @@
 import React from 'react'
-import { Tag as AntdTag, Tooltip } from 'antd'
+import { Tag, Tooltip } from 'antd'
 
-const TxnTag = ({ type }) => typeTag(type)
-
-export const COLORS = {
-  state_channel_close_v1: 'teal',
-  payment_v1: 'green',
-  payment_v2: 'cyan',
-  poc_request_v1: '#29D391',
-  poc_receipts_v1: '#38A2FF',
-  rewards_v1: '#E68B00',
-  consensus_group_v1: '#FF6666',
-  transfer_hotspot_v1: '#474DFF',
-  poc_challengers: '#BE73FF',
-  poc_challengees: '#595A9A',
-  assert_location_v1: '#16CEE8',
-  add_gateway_v1: '#8597BB',
-  poc_witnesses: '#FFC769',
-  securities: '#9AE8C9',
-  token_burn_v1: '#E86161',
-  default: 'blue',
+const CONFIG = {
+  state_channel_close_v1: { color: 'teal', name: 'Packets Transferred' },
+  payment_v1: { color: 'green', name: 'Payment' },
+  payment_v2: { color: 'cyan', name: 'Payment' },
+  poc_request_v1: {
+    color: '#29D391',
+    name: 'PoC Challenge',
+    tooltip: 'Proof of Coverage Challenge',
+  },
+  poc_receipts_v1: {
+    color: '#38A2FF',
+    name: 'PoC Receipt',
+    tooltip: 'Proof of Coverage Receipt',
+  },
+  rewards_v1: {
+    color: '#E68B00',
+    name: 'Mining Reward',
+    tooltip: 'Mining Reward',
+  },
+  consensus_group_v1: {
+    color: '#FF6666',
+    name: 'Consensus Election',
+    tooltip: 'Consensus Election',
+  },
+  transfer_hotspot_v1: {
+    color: '#474DFF',
+    name: 'Transfer Hotspot',
+    tooltip: 'Hotspot Transfer Confirmation Transaction',
+  },
+  poc_challengers: {
+    color: '#BE73FF',
+    name: 'PoC Challenger',
+    tooltip: 'Mining Reward for a PoC challenger',
+  },
+  poc_challengees: {
+    color: '#595A9A',
+    name: 'PoC Challengee',
+    tooltip: 'Mining Reward for a PoC challengee',
+  },
+  assert_location_v1: {
+    color: '#16CEE8',
+    name: 'Assert Location',
+    tooltip: 'Assert Location Transaction',
+  },
+  add_gateway_v1: {
+    color: '#8597BB',
+    name: 'Add Hotspot',
+    tooltip: 'Add Gateway Transaction',
+  },
+  poc_witnesses: {
+    color: '#FFC769',
+    name: 'PoC Witness',
+    tooltip: 'Mining Reward for a PoC witness',
+  },
+  securities: {
+    color: '#9AE8C9',
+    name: 'Security Token Reward',
+    tooltip: 'Mining Reward for Security Token holders',
+  },
+  token_burn_v1: { color: '#E86161', name: 'Token Burn' },
+  default: { color: 'blue' },
 }
 
-const typeTag = (type) => {
-  const Tag = ({ children }) => (
-    <AntdTag color={COLORS[type] || COLORS.default}>{children}</AntdTag>
-  )
+export const getName = (id) => {
+  return CONFIG[id]?.name || id
+}
 
-  switch (type) {
-    case 'state_channel_close_v1':
-      return <Tag>Packets Transferred</Tag>
-    case 'payment_v1':
-      return <Tag>Payment</Tag>
-    case 'payment_v2':
-      return <Tag>Payment</Tag>
-    case 'poc_request_v1':
-      return (
-        <Tooltip placement="bottom" title="Proof of Coverage Challenge">
-          <Tag>PoC Challenge</Tag>
-        </Tooltip>
-      )
-    case 'poc_receipts_v1':
-      return (
-        <Tooltip placement="bottom" title="Proof of Coverage Receipt">
-          <Tag>PoC Receipt</Tag>
-        </Tooltip>
-      )
-    case 'rewards_v1':
-      return (
-        <Tooltip placement="bottom" title="Mining Reward">
-          <Tag>Mining Reward</Tag>
-        </Tooltip>
-      )
-    case 'consensus_group_v1':
-      return (
-        <Tooltip placement="bottom" title="Consensus Election">
-          <Tag>Consensus Election</Tag>
-        </Tooltip>
-      )
-    case 'transfer_hotspot_v1':
-      return (
-        <Tooltip
-          placement="bottom"
-          title="Hotspot Transfer Confirmation Transaction"
-        >
-          <Tag>Transfer Hotspot</Tag>
-        </Tooltip>
-      )
-    case 'poc_challengers':
-      return (
-        <Tooltip placement="bottom" title="Mining Reward for a PoC challenger">
-          <Tag>PoC Challenger</Tag>
-        </Tooltip>
-      )
-    case 'poc_challengees':
-      return (
-        <Tooltip placement="bottom" title="Mining Reward for a PoC challengee">
-          <Tag>PoC Challengee</Tag>
-        </Tooltip>
-      )
-    case 'assert_location_v1':
-      return (
-        <Tooltip placement="bottom" title="Assert Location Transaction">
-          <Tag>Assert Location</Tag>
-        </Tooltip>
-      )
-    case 'add_gateway_v1':
-      return (
-        <Tooltip placement="bottom" title="Add Gateway Transaction">
-          <Tag>Add Hotspot</Tag>
-        </Tooltip>
-      )
-    case 'poc_witnesses':
-      return (
-        <Tooltip placement="bottom" title="Mining Reward for a PoC witness">
-          <Tag>PoC Witness</Tag>
-        </Tooltip>
-      )
-    case 'securities':
-      return (
-        <Tooltip
-          placement="bottom"
-          title="Mining Reward for Security Token holders"
-        >
-          <Tag>Security Token Reward</Tag>
-        </Tooltip>
-      )
-    case 'token_burn_v1':
-      return <Tag>Token Burn</Tag>
-    default:
-      return <Tag>{type}</Tag>
-  }
+export const getColor = (id) => {
+  return (CONFIG[id] || CONFIG.default).color
+}
+
+export const getTooltip = (id) => {
+  return CONFIG[id]?.tooltip
+}
+
+const TxnTag = ({ type }) => {
+  const tag = <Tag color={getColor(type)}>{getName(type)}</Tag>
+  const tooltip = getTooltip(type)
+
+  return tooltip ? (
+    <Tooltip placement="bottom" title={tooltip}>
+      {tag}
+    </Tooltip>
+  ) : (
+    tag
+  )
 }
 
 export default TxnTag

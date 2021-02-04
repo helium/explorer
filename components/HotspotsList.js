@@ -33,14 +33,20 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
       title: 'Reward Scale',
       dataIndex: 'rewardScale',
       key: 'rewardScale',
-      render: (data) => (
-        <span>
-          {data.toLocaleString(undefined, {
-            maximumFractionDigits: 2,
-            minimumFractionDigits: 2,
-          })}
-        </span>
-      ),
+      render: (data) => {
+        if (data) {
+          return (
+            <span>
+              {data.toLocaleString(undefined, {
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2,
+              })}
+            </span>
+          )
+        } else {
+          return <span>Not set</span>
+        }
+      },
     },
     {
       title: 'Rewards (24h)',

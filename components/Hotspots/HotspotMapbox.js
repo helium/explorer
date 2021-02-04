@@ -110,9 +110,8 @@ const HotspotMapbox = ({
         <ScaleControl />
         {showNearbyHotspots &&
           nearbyHotspots.map((h) => (
-            <Tooltip title={animalHash(h.address)}>
+            <Tooltip title={animalHash(h.address)} key={`nearby-${h.address}`}>
               <Marker
-                key={`nearby-${h.address}`}
                 style={styles.nearbyMarker}
                 anchor="center"
                 coordinates={[h.lng, h.lat]}

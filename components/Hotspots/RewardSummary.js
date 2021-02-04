@@ -1,5 +1,6 @@
 import RewardSummaryCard from './RewardSummaryCard'
 import { calculatePercentChange } from './utils'
+import EarningsChart from './EarningsChart'
 
 const RewardSummary = ({ rewards, rewardsLoading }) => {
   return (
@@ -50,6 +51,9 @@ const RewardSummary = ({ rewards, rewardsLoading }) => {
           )}
           rewardsLoading={rewardsLoading}
         />
+      </div>
+      <div style={{ maxWidth: 850 + 40, margin: '0 auto', paddingBottom: 50 }}>
+        <EarningsChart rewardsLoading={rewardsLoading} rewards={rewards} />
       </div>
     </div>
   )

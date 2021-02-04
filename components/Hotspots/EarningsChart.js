@@ -37,16 +37,33 @@ const EarningsChart = ({ rewards, rewardsLoading }) => {
               tickLine={false}
               tick={{ fill: '#fff' }}
               tickFormatter={(unixTime) =>
-                format(fromUnixTime(unixTime), 'd MMM h a')
+                format(fromUnixTime(unixTime), 'd MMM')
               }
-              minTickGap={80}
+              minTickGap={10}
             />
             <YAxis />
-            <Tooltip />
+            <Tooltip
+              labelFormatter={(label) => format(fromUnixTime(label), 'M/d/yyy')}
+              formatter={(value) => [
+                value.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }),
+                'HNT',
+              ]}
+              animationDuration={150}
+              animationEasing="ease"
+              contentStyle={{
+                background: '#101725',
+                border: 'none',
+                borderRadius: 6,
+              }}
+              labelStyle={{ color: '#fff' }}
+            />
             <Line
-              type="stepAfter"
+              // type="stepAfter"
               dataKey="total"
-              stroke="#8884d8"
+              stroke="rgb(50, 196, 141)"
               activeDot={{ r: 8 }}
             />
           </LineChart>

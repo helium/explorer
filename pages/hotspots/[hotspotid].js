@@ -5,8 +5,6 @@ import algoliasearch from 'algoliasearch'
 import Fade from 'react-reveal/Fade'
 import Checklist from '../../components/Hotspots/Checklist/Checklist'
 import RewardSummary from '../../components/Hotspots/RewardSummary'
-import EarningsChart from '../../components/Hotspots/EarningsChart'
-
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import AppLayout, { Content } from '../../components/AppLayout'
@@ -418,11 +416,6 @@ const HotspotView = ({ hotspot }) => {
             witnessesLoading={witnessesLoading}
             activityLoading={activityLoading}
           />
-        </div>
-        <div
-          style={{ maxWidth: 850 + 40, margin: '0 auto', paddingBottom: 50 }}
-        >
-          <EarningsChart rewardsLoading={rewardsLoading} rewards={rewards} />
         </div>
         <div
           style={{

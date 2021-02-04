@@ -1,17 +1,16 @@
-import React from 'react'
 import { ScaleControl as BaseScaleControl } from 'react-mapbox-gl'
 
-class ScaleControl extends React.Component {
-  render() {
-    return (
-      <BaseScaleControl
-        style={{
-          backgroundColor: '#263441',
-          borderRadius: 3,
-        }}
-      />
-    )
-  }
-}
+const ScaleControl = () => (
+  <BaseScaleControl
+    style={{
+      backgroundColor: 'transparent',
+      color: 'white',
+      fontFamily: 'Inter',
+      fontSize: 14,
+      boxShadow: 'none',
+      border: 'none',
+    }}
+  />
+)
 
 export default ScaleControl

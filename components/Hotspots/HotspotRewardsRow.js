@@ -32,7 +32,8 @@ const HotspotRewardsRow = ({ rewardsLoading, data, period }) => {
         <Tooltip title={`Previous ${period}: ${round(previousPeriod, 2)} HNT`}>
           <span
             style={{
-              marginLeft: 5,
+              marginLeft: 4,
+              fontSize: 10,
               color: percentChange > 0 ? '#32C48D' : '#CA0926',
             }}
           >

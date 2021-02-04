@@ -13,16 +13,18 @@ export const COLORS = {
   consensus_group_v1: '#FF6666',
   transfer_hotspot_v1: '#474DFF',
   poc_challengers: '#BE73FF',
-  assert_location_v1: '#595a9a',
-  add_gateway_v1: '#16CEE8',
-  poc_witnesses: '#8597BB',
-  securities: '#FFC769',
+  poc_challengees: '#595A9A',
+  assert_location_v1: '#16CEE8',
+  add_gateway_v1: '#8597BB',
+  poc_witnesses: '#FFC769',
+  securities: '#9AE8C9',
+  token_burn_v1: '#E86161',
   default: 'blue',
 }
 
 const typeTag = (type) => {
   const Tag = ({ children }) => (
-    <AntdTag color={COLORS[type]}>{children}</AntdTag>
+    <AntdTag color={COLORS[type] || COLORS.default}>{children}</AntdTag>
   )
 
   switch (type) {
@@ -62,7 +64,7 @@ const typeTag = (type) => {
           placement="bottom"
           title="Hotspot Transfer Confirmation Transaction"
         >
-          <Tag color="#474DFF">Transfer Hotspot</Tag>
+          <Tag>Transfer Hotspot</Tag>
         </Tooltip>
       )
     case 'poc_challengers':
@@ -105,7 +107,7 @@ const typeTag = (type) => {
         </Tooltip>
       )
     case 'token_burn_v1':
-      return <Tag color="#E86161">Token Burn</Tag>
+      return <Tag>Token Burn</Tag>
     default:
       return <Tag>{type}</Tag>
   }

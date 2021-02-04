@@ -111,7 +111,12 @@ const HotspotMapbox = ({
         movingMethod="jumpTo"
         {...mapProps}
       >
-        <ScaleControl />
+        <ScaleControl
+          style={{
+            backgroundColor: '#334B61',
+            borderRadius: 3,
+          }}
+        />
         {showNearbyHotspots &&
           nearbyHotspots.map((h) => (
             <Tooltip title={animalHash(h.address)}>

@@ -225,7 +225,12 @@ class CoverageMap extends React.Component {
           {hasGeolocation && (
             <GeolocationButton onClick={this.handleGeolocationButtonClick} />
           )}
-          <ScaleControl />
+          <ScaleControl
+            style={{
+              backgroundColor: '#334B61',
+              borderRadius: 3,
+            }}
+          />
         </Mapbox>
         <style jsx>{`
           .map-zoom-button {

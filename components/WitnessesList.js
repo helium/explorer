@@ -91,15 +91,29 @@ const WitnessesList = ({ witnesses, witnessesLoading }) => (
       </span>
     }
   >
-    <Table
-      dataSource={witnesses}
-      columns={columns}
-      size="small"
-      loading={witnessesLoading}
-      rowKey="name"
-      pagination={{ pageSize: 5, hideOnSinglePage: true }}
-      scroll={{ x: true }}
-    />
+    {witnesses.length === 0 ? (
+      <h2
+        style={{
+          textAlign: 'center',
+          marginTop: '0.5rem',
+          fontSize: '14px',
+          color: 'rgba(0, 0, 0, 0.25)',
+          padding: '20px',
+        }}
+      >
+        Hotspot has no recent witnesses
+      </h2>
+    ) : (
+      <Table
+        dataSource={witnesses}
+        columns={columns}
+        size="small"
+        loading={witnessesLoading}
+        rowKey="name"
+        pagination={{ pageSize: 5, hideOnSinglePage: true }}
+        scroll={{ x: true }}
+      />
+    )}
   </Card>
 )
 

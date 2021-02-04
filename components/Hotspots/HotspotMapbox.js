@@ -4,6 +4,7 @@ import { findBounds } from '../Txns/utils'
 import animalHash from 'angry-purple-tiger'
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 import { withRouter } from 'next/router'
+import ScaleControl from '../ScaleControl'
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
@@ -106,6 +107,7 @@ const HotspotMapbox = ({
         movingMethod="jumpTo"
         {...mapProps}
       >
+        <ScaleControl />
         {showNearbyHotspots &&
           nearbyHotspots.map((h) => (
             <Tooltip title={animalHash(h.address)} key={`nearby-${h.address}`}>

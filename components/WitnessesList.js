@@ -32,10 +32,12 @@ const columns = [
     key: 'reward_scale',
     render: (data) => (
       <span>
-        {data.toLocaleString(undefined, {
-          maximumFractionDigits: 2,
-          minimumFractionDigits: 2,
-        })}
+        {data
+          ? data.toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            })
+          : ''}
       </span>
     ),
   },

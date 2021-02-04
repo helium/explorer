@@ -13,6 +13,7 @@ import AppLayout, { Content } from '../../components/AppLayout'
 import PieChart from '../../components/PieChart'
 import { getMetaTagsForTransaction } from '../../components/Txns/utils'
 import { Balance, CurrencyType } from '@helium/currency'
+import classNames from 'classnames'
 
 import {
   Fallback,
@@ -91,14 +92,20 @@ const findPreviousAndNext = async (transactions, hash) => {
   return { previous, next }
 }
 
-const ButtonPrevious = (props) => (
-  <a className="button" {...props}>
+const ButtonPrevious = ({ className, ...props }) => (
+  <a
+    className={classNames('button block-view-prev-button', className)}
+    {...props}
+  >
     <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous Transaction
   </a>
 )
 
-const ButtonNext = (props) => (
-  <a className="button" {...props}>
+const ButtonNext = ({ className, ...props }) => (
+  <a
+    className={classNames('button block-view-prev-button', className)}
+    {...props}
+  >
     Next Transaction <ForwardOutlined style={{ marginRight: '-6px' }} />
   </a>
 )
@@ -109,7 +116,7 @@ const Navigation = ({ Button, hash }) => {
       <Button />
     </Link>
   ) : (
-    <Button style={{ visibility: 'hidden' }} />
+    <Button className="hidden-width" />
   )
 }
 
@@ -215,15 +222,17 @@ const TxnView = ({ txn }) => {
             )}
           </div>
           <hr />
-          <div className="flexwrapper">
+          <div className="block-view-summary-container">
             <Navigation Button={ButtonPrevious} hash={navigation?.previous} />
 
-            <h3>
-              <ClockCircleOutlined
-                style={{ color: '#FFC769', marginRight: 4 }}
-              />
-              <Timestamp date={txn.time} />
-            </h3>
+            <span className="block-view-summary-info">
+              <h3>
+                <ClockCircleOutlined
+                  style={{ color: '#FFC769', marginRight: 4 }}
+                />
+                <Timestamp date={txn.time} />
+              </h3>
+            </span>
 
             <Navigation Button={ButtonNext} hash={navigation?.next} />
           </div>

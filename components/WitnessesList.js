@@ -92,7 +92,7 @@ const WitnessesList = ({ witnesses, witnessesLoading }) => (
     }
   >
     {witnesses.length === 0 ? (
-      <h2
+      <p
         style={{
           textAlign: 'center',
           marginTop: '0.5rem',
@@ -102,7 +102,7 @@ const WitnessesList = ({ witnesses, witnessesLoading }) => (
         }}
       >
         Hotspot has no recent witnesses
-      </h2>
+      </p>
     ) : (
       <Table
         dataSource={witnesses}

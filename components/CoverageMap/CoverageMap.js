@@ -476,7 +476,7 @@ class CoverageMap extends React.Component {
 
             @media screen and (max-width: 890px) {
               .map-measure-toggle-button {
-                display: none;
+                bottom: calc(50vh + 160px);
               }
               .map-zoom-button {
                 right: 10px;

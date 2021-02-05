@@ -4,8 +4,8 @@ import { Typography, Card } from 'antd'
 import {
   ClockCircleOutlined,
   WalletOutlined,
-  BackwardOutlined,
-  ForwardOutlined,
+  LeftOutlined,
+  RightOutlined,
 } from '@ant-design/icons'
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
@@ -95,18 +95,20 @@ const findPreviousAndNext = async (transactions, hash) => {
 const ButtonPrevious = ({ className, ...props }) => (
   <a
     className={classNames('button block-view-prev-button', className)}
+    style={{ backgroundColor: '#35405b' }}
     {...props}
   >
-    <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous Transaction
+    <LeftOutlined style={{ marginleft: '-6px' }} /> Previous Transaction
   </a>
 )
 
 const ButtonNext = ({ className, ...props }) => (
   <a
     className={classNames('button block-view-next-button', className)}
+    style={{ backgroundColor: '#35405b' }}
     {...props}
   >
-    Next Transaction <ForwardOutlined style={{ marginRight: '-6px' }} />
+    Next Transaction <RightOutlined style={{ marginRight: '-6px' }} />
   </a>
 )
 

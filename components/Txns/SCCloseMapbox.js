@@ -1,4 +1,5 @@
 import ReactMapboxGl, { Marker } from 'react-mapbox-gl'
+import { findBounds } from './utils'
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
@@ -40,19 +41,31 @@ const styles = {
 }
 
 const HotspotMapbox = ({ hotspots, txn }) => {
+  const hotspotLocations = []
+  txn.stateChannel.summaries.map((s) => {
+    const hotspot = hotspots.find((e) => e.address === s.client)
+    if (hotspot && hotspot.lng && hotspot.lat) {
+      return hotspotLocations.push({ lng: hotspot.lng, lat: hotspot.lat })
+    }
+  })
+  const mapBounds = findBounds(hotspotLocations)
+
   return (
     <Mapbox
       style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
       container="map"
-      center={[-95.712891, 37.09024]}
+      fitBounds={mapBounds}
+      fitBoundsOptions={{
+        padding: 100,
+        animate: false,
+      }}
       containerStyle={{
         height: '600px',
         width: '100%',
       }}
-      zoom={[3]}
       movingMethod="jumpTo"
     >
-      {txn.stateChannel.summaries.forEach((s) => {
+      {txn.stateChannel.summaries.map((s) => {
         const hotspot = hotspots.find((e) => e.address === s.client)
         if (hotspot && hotspot.lng && hotspot.lat) {
           return (

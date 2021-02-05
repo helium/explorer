@@ -4,9 +4,15 @@ import geoJSON from 'geojson'
 import GeolocationButton from './GeolocationButton'
 import fetch from 'node-fetch'
 import ScaleControl from '../ScaleControl'
+import classNames from 'classnames'
+import { HotKeys } from 'react-hotkeys'
+import Ruler from '../../public/images/ruler-light.svg'
+import { distance as turfDistance, point as turfPoint } from '@turf/turf'
 
 const maxZoom = 14
 const minZoom = 2
+
+const measuringColor = '#5850EB'
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
@@ -35,6 +41,12 @@ class CoverageMap extends React.Component {
     hasGeolocation: false,
     flyingComplete: false,
     coverage: null,
+    measuring: false,
+    measurements: {
+      from: null,
+      to: null,
+    },
+    distance: '',
   }
 
   async componentDidMount() {
@@ -76,6 +88,35 @@ class CoverageMap extends React.Component {
     }
   }
 
+  handleMeasureToggle = () => {
+    const measuring = !this.state.measuring
+    const newState = {
+      measuring,
+    }
+
+    if (!measuring) {
+      newState.distance = ''
+      newState.measurements = {
+        from: null,
+        to: null,
+      }
+    }
+
+    this.setState(newState)
+  }
+
+  handleMeasureCancel = () => {
+    if (this.state.measuring) {
+      this.setState({
+        distance: '',
+        measurements: {
+          from: null,
+          to: null,
+        },
+      })
+    }
+  }
+
   handleGeolocationButtonClick = () => {
     this.setState({
       center: [this.props.coords.longitude, this.props.coords.latitude],
@@ -83,7 +124,53 @@ class CoverageMap extends React.Component {
     })
   }
 
+  handleClick = (_, e) => {
+    if (this.state.measuring) {
+      const coordinates = {
+        lat: e.lngLat.lat,
+        lng: e.lngLat.lng,
+      }
+
+      let measurements
+      let distance
+
+      if (!this.state.measurements.from) {
+        measurements = {
+          from: coordinates,
+          to: null,
+        }
+        distance = ''
+      } else if (!this.state.measurements.to) {
+        measurements = {
+          from: this.state.measurements.from,
+          to: coordinates,
+        }
+        const from = turfPoint([
+          this.state.measurements.from.lng,
+          this.state.measurements.from.lat,
+        ])
+        const to = turfPoint([coordinates.lng, coordinates.lat])
+        distance = turfDistance(from, to, { units: 'meters' })
+      } else {
+        measurements = {
+          from: null,
+          to: null,
+        }
+        distance = ''
+      }
+
+      this.setState({
+        distance,
+        measurements,
+      })
+    }
+  }
+
   handleHotspotClick = (e) => {
+    if (this.state.measuring) {
+      return
+    }
+
     const { map } = this.state
     const features = map.queryRenderedFeatures(e.point, {
       layers: ['hotspots-circle'],
@@ -106,11 +193,89 @@ class CoverageMap extends React.Component {
     const h = map.queryRenderedFeatures(e.point, {
       layers: ['hotspots-circle'],
     })
-    if (h.length > 0) {
+    if (this.state.measuring) {
+      map.getCanvas().style.cursor = 'crosshair'
+    } else if (h.length > 0) {
       map.getCanvas().style.cursor = 'pointer'
     } else {
       map.getCanvas().style.cursor = ''
     }
+  }
+
+  renderDistance = () => {
+    if (this.state.distance > 1000) {
+      return `${Math.round(this.state.distance / 1000)} km`
+    } else {
+      return `${Math.round(this.state.distance)} m`
+    }
+  }
+
+  renderMeasureMap = () => {
+    let line = null
+    let points = []
+
+    if (this.state.measurements.from) {
+      points.push({
+        ...this.state.measurements.from,
+      })
+    }
+
+    if (this.state.measurements.to) {
+      points.push({
+        ...this.state.measurements.to,
+      })
+    }
+
+    if (this.state.measurements.from && this.state.measurements.to) {
+      line = {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            geometry: {
+              type: 'LineString',
+              coordinates: [
+                [
+                  this.state.measurements.from.lng,
+                  this.state.measurements.from.lat,
+                ],
+                [
+                  this.state.measurements.to.lng,
+                  this.state.measurements.to.lat,
+                ],
+              ],
+            },
+          },
+        ],
+      }
+    } else {
+      line = null
+    }
+
+    const pointData = geoJSON.parse(points, {
+      Point: ['lat', 'lng'],
+    })
+
+    return (
+      <>
+        {line && (
+          <GeoJSONLayer
+            data={line}
+            linePaint={{
+              'line-color': measuringColor,
+              'line-width': 3,
+            }}
+          />
+        )}
+        <GeoJSONLayer
+          data={pointData}
+          circlePaint={{
+            'circle-color': measuringColor,
+            'circle-radius': 8,
+          }}
+        />
+      </>
+    )
   }
 
   renderOverviewMap = () => {
@@ -181,94 +346,148 @@ class CoverageMap extends React.Component {
   render() {
     const { hasGeolocation } = this.state
 
+    const keyMap = {
+      measuringCancel: 'escape',
+      measuringToggle: 'd',
+    }
+
+    const handlers = {
+      measuringCancel: this.handleMeasureCancel,
+      measuringToggle: this.handleMeasureToggle,
+    }
+
     return (
-      <span className="interactive-coverage-map">
-        <button
-          id="zoom-in"
-          className="map-zoom-button map-zoom-in-button"
-          onClick={this.handleMapZoomButtons}
-        >
-          <span id="zoom-in" className="unselectable-text">
-            +
-          </span>
-        </button>
-        <button
-          id="zoom-out"
-          className="map-zoom-button map-zoom-out-button"
-          onClick={this.handleMapZoomButtons}
-        >
-          <span id="zoom-out" className="unselectable-text">
-            -
-          </span>
-        </button>
-        <Mapbox
-          style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
-          containerStyle={{
-            position: 'relative',
-            width: '100%',
-            overflow: 'visible',
-          }}
-          center={this.state.center}
-          zoom={this.state.zoom}
-          onStyleLoad={(map) => {
-            this.setState({ map })
-          }}
-          ref={(e) => {
-            this.map = e
-          }}
-          onMouseMove={this.handleMouseMove}
-        >
-          {this.renderOverviewMap()}
-          {hasGeolocation && (
-            <GeolocationButton onClick={this.handleGeolocationButtonClick} />
+      <HotKeys keyMap={keyMap} handlers={handlers}>
+        <span className="interactive-coverage-map">
+          {this.state.distance && (
+            <div className="distance">{this.renderDistance()}</div>
           )}
-          <ScaleControl />
-        </Mapbox>
-        <style jsx>{`
-          .map-zoom-button {
-            position: absolute;
-            height: 50px;
-            width: 50px;
-            font-size: 24px;
-            text-align: center;
-            border-radius: 50px;
-            right: 20px;
-            z-index: 3;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgb(12, 21, 30);
-            color: white;
-            transition: all 0.3s;
-          }
-          .map-zoom-button:hover {
-            transform: scale(1.1, 1.1);
-          }
 
-          .map-zoom-in-button {
-            bottom: 110px;
-          }
-          .map-zoom-out-button {
-            bottom: 50px;
-          }
-          .map-zoom-button:focus {
-            outline: none;
-          }
-
-          @media screen and (max-width: 890px) {
+          <button
+            id="measure"
+            className={classNames({
+              'map-zoom-button': true,
+              'map-measure-toggle-button': true,
+              active: this.state.measuring,
+            })}
+            onClick={this.handleMeasureToggle}
+          >
+            <img
+              src={Ruler}
+              alt="Ruler"
+              style={{
+                width: 24,
+              }}
+            />
+          </button>
+          <button
+            id="zoom-in"
+            className="map-zoom-button map-zoom-in-button"
+            onClick={this.handleMapZoomButtons}
+          >
+            <span id="zoom-in" className="unselectable-text">
+              +
+            </span>
+          </button>
+          <button
+            id="zoom-out"
+            className="map-zoom-button map-zoom-out-button"
+            onClick={this.handleMapZoomButtons}
+          >
+            <span id="zoom-out" className="unselectable-text">
+              -
+            </span>
+          </button>
+          <Mapbox
+            style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
+            containerStyle={{
+              position: 'relative',
+              width: '100%',
+              overflow: 'visible',
+            }}
+            center={this.state.center}
+            zoom={this.state.zoom}
+            onStyleLoad={(map) => {
+              this.setState({ map })
+            }}
+            ref={(e) => {
+              this.map = e
+            }}
+            onClick={this.handleClick}
+            onMouseMove={this.handleMouseMove}
+          >
+            {this.renderOverviewMap()}
+            {this.renderMeasureMap()}
+            {hasGeolocation && (
+              <GeolocationButton onClick={this.handleGeolocationButtonClick} />
+            )}
+            <ScaleControl />
+          </Mapbox>
+          <style jsx>{`
             .map-zoom-button {
-              right: 10px;
+              position: absolute;
+              height: 50px;
+              width: 50px;
+              font-size: 24px;
+              text-align: center;
+              border-radius: 50px;
+              right: 20px;
+              z-index: 3;
+              border: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background-color: rgb(12, 21, 30);
+              color: white;
+              transition: all 0.3s;
             }
+            .map-zoom-button:hover {
+              transform: scale(1.1, 1.1);
+            }
+
+            .distance {
+              background: ${measuringColor};
+              color: white;
+              border-radius: 3px;
+              padding: 5px 10px;
+              position: absolute;
+              right: 20px;
+              top: 20px;
+              z-index: 3;
+            }
+
+            .map-measure-toggle-button {
+              bottom: 170px;
+            }
+
+            .map-zoom-button.map-measure-toggle-button.active {
+              background: ${measuringColor};
+            }
+
             .map-zoom-in-button {
-              bottom: calc(50vh + 70px);
+              bottom: 110px;
             }
             .map-zoom-out-button {
-              bottom: calc(50vh + 10px);
+              bottom: 50px;
             }
-          }
-        `}</style>
-      </span>
+            .map-zoom-button:focus {
+              outline: none;
+            }
+
+            @media screen and (max-width: 890px) {
+              .map-zoom-button {
+                right: 10px;
+              }
+              .map-zoom-in-button {
+                bottom: calc(50vh + 70px);
+              }
+              .map-zoom-out-button {
+                bottom: calc(50vh + 10px);
+              }
+            }
+          `}</style>
+        </span>
+      </HotKeys>
     )
   }
 }

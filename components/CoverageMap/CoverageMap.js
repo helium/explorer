@@ -475,14 +475,17 @@ class CoverageMap extends React.Component {
             }
 
             @media screen and (max-width: 890px) {
+              .map-measure-toggle-button {
+                display: none;
+              }
               .map-zoom-button {
                 right: 10px;
               }
               .map-zoom-in-button {
-                bottom: calc(50vh + 70px);
+                bottom: calc(50vh + 100px);
               }
               .map-zoom-out-button {
-                bottom: calc(50vh + 10px);
+                bottom: calc(50vh + 40px);
               }
             }
           `}</style>

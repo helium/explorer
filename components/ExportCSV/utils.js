@@ -99,7 +99,6 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
           'Sent To': txn.seller,
           'Sent Currency': 'HNT',
           Tag: 'gateway transfer payment',
-          Hotspot: txn.gateway ? animalHash(txn.gateway) : '',
         }
       } else {
         return {
@@ -107,7 +106,6 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
           'Received From': txn.buyer,
           'Received Currency': 'HNT',
           Tag: 'gateway transfer payment',
-          Hotspot: txn.gateway ? animalHash(txn.gateway) : '',
         }
       }
     }
@@ -128,7 +126,6 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
         'Sent To': txn.payer === null ? 'Helium Network' : '',
         'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
         Tag: 'add gateway payment',
-        Hotspot: txn.gateway ? animalHash(txn.gateway) : '',
       }
     }
     case 'assert_location_v1': {
@@ -148,7 +145,6 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
         'Sent To': txn.payer === null ? 'Helium Network' : '',
         'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
         Tag: 'assert location payment',
-        Hotspot: txn.gateway ? animalHash(txn.gateway) : '',
       }
     }
     default: {
@@ -179,7 +175,7 @@ export const parseTxn = async (
     'Fee Amount': await getFee(txn, opts.convertFee),
     'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
     Tag: '',
-    Hotspot: '',
+    Hotspot: txn.gateway ? animalHash(txn.gateway) : '',
     'Reward Type': '',
     Block: txn.height,
     Hash: txn.hash,

@@ -103,7 +103,7 @@ const ButtonPrevious = ({ className, ...props }) => (
 
 const ButtonNext = ({ className, ...props }) => (
   <a
-    className={classNames('button block-view-prev-button', className)}
+    className={classNames('button block-view-next-button', className)}
     {...props}
   >
     Next Transaction <ForwardOutlined style={{ marginRight: '-6px' }} />

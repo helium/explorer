@@ -56,6 +56,7 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
         [`${type} ${fromMe ? 'To' : 'From'}`]: txn.payee,
         [`${type} Currency`]: 'HNT',
         Tag: 'payment',
+        feePaid: fromMe,
       }
     }
     case 'payment_v2': {
@@ -72,6 +73,7 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
               : formatMultiplePayeesString(txn.payments),
           'Sent Currency': 'HNT',
           Tag: 'payment',
+          feePaid: true,
         }
       } else {
         const amountObject = new Balance(
@@ -99,6 +101,7 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
           'Sent To': txn.seller,
           'Sent Currency': 'HNT',
           Tag: 'gateway transfer payment',
+          feePaid: true,
         }
       } else {
         return {
@@ -126,6 +129,7 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
         'Sent To': txn.payer === null ? 'Helium Network' : '',
         'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
         Tag: 'add gateway payment',
+        feePaid: txn.payer === null,
       }
     }
     case 'assert_location_v1': {
@@ -145,6 +149,7 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
         'Sent To': txn.payer === null ? 'Helium Network' : '',
         'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
         Tag: 'assert location payment',
+        feePaid: txn.payer === null,
       }
     }
     default: {
@@ -158,11 +163,12 @@ export const parseTxn = async (
   txn,
   opts = { convertFee: true },
 ) => {
-  const parsed = await parse(ownerAddress, txn, opts)
-  if (!parsed) {
-    return parsed
+  const data = await parse(ownerAddress, txn, opts)
+  if (!data) {
+    return data
   }
 
+  const { feePaid = false, ...parsed } = data
   const timestamp = moment.unix(txn.time).toISOString()
   const addDefaults = async (parsed) => ({
     Date: timestamp,
@@ -172,7 +178,7 @@ export const parseTxn = async (
     'Sent Quantity': '',
     'Sent To': '',
     'Sent Currency': '',
-    'Fee Amount': await getFee(txn, opts.convertFee),
+    'Fee Amount': feePaid ? await getFee(txn, opts.convertFee) : 0,
     'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
     Tag: '',
     Hotspot: txn.gateway ? animalHash(txn.gateway) : '',

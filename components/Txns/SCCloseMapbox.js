@@ -45,7 +45,11 @@ const HotspotMapbox = ({ hotspots, txn }) => {
   txn.stateChannel.summaries.map((s) => {
     const hotspot = hotspots.find((e) => e.address === s.client)
     if (hotspot && hotspot.lng && hotspot.lat) {
-      return hotspotLocations.push({ lng: hotspot.lng, lat: hotspot.lat })
+      return hotspotLocations.push({
+        lng: hotspot.lng,
+        lat: hotspot.lat,
+        address: hotspot.address,
+      })
     }
   })
   const mapBounds = findBounds(hotspotLocations)
@@ -65,16 +69,15 @@ const HotspotMapbox = ({ hotspots, txn }) => {
       }}
       movingMethod="jumpTo"
     >
-      {txn.stateChannel.summaries.map((s) => {
-        const hotspot = hotspots.find((e) => e.address === s.client)
-        if (hotspot && hotspot.lng && hotspot.lat) {
+      {hotspotLocations.map((h) => {
+        if (h && h.lng && h.lat) {
           return (
             // TODO: see if there's a better way to do this than pulling all hotspots
             <Marker
-              key={hotspot.address}
+              key={h.address}
               style={styles.gatewayMarker}
               anchor="center"
-              coordinates={[hotspot.lng, hotspot.lat]}
+              coordinates={[h.lng, h.lat]}
             />
           )
         }

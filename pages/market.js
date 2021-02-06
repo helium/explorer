@@ -144,7 +144,7 @@ function Market({
                 stats.circulatingSupply,
               ).toLocaleString()} HNT is currently in circulation`}
               changeIsAmbivalent
-              footer="View external source"
+              footer="View more"
               href="https://www.coingecko.com/en/coins/helium"
             />
           </Col>

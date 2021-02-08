@@ -19,7 +19,6 @@
     "camelcase-keys": "^6.2.2",
     "classnames": "^2.2.6",
     "date-fns": "^2.16.1",
-    "date-fns-timezone": "^0.1.4",
     "export-to-csv": "^0.2.1",
     "geojson": "^0.5.0",
     "h3-js": "3.6.4",

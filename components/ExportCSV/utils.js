@@ -168,9 +168,8 @@ export const parseTxn = async (
     return data
   }
 
-  const { feePaid = false, ...parsed } = data
   const timestamp = moment.unix(txn.time).toISOString()
-  const addDefaults = async (parsed) => ({
+  const addDefaults = async ({ feePaid = false, ...parsed }) => ({
     Date: timestamp,
     'Received Quantity': '',
     'Received From': '',
@@ -188,7 +187,7 @@ export const parseTxn = async (
     ...parsed,
   })
 
-  return Array.isArray(parsed)
-    ? Promise.all(parsed.map(addDefaults))
-    : addDefaults(parsed)
+  return Array.isArray(data)
+    ? Promise.all(data.map(addDefaults))
+    : addDefaults(data)
 }

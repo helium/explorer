@@ -86,10 +86,10 @@ export default class Example extends PureComponent {
               dataKey="value"
               onMouseEnter={this.onPieEnter}
             >
-              {data.map((entry, index) => (
+              {data.map(({ color }, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
+                  fill={color || COLORS[index % COLORS.length]}
                 />
               ))}
             </Pie>

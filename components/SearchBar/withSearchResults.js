@@ -68,10 +68,18 @@ const withSearchResults = (WrappedComponent) => {
       }
     }
 
-    algoliaSearch = async (term) => {
-      const { hits: hotspotResults } = await this.hotspotsIndex.search(term)
-      this.setState({ hotspotResults })
-    }
+    algoliaSearch = debounce(
+      async (term) => {
+        if (!term) {
+          this.setState({ hotspotResults: [] })
+          return
+        }
+        const { hits: hotspotResults } = await this.hotspotsIndex.search(term)
+        this.setState({ hotspotResults })
+      },
+      200,
+      { trailing: true },
+    )
 
     searchBlock = debounce(
       async (term) => {

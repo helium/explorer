@@ -1,13 +1,19 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Typography, Card } from 'antd'
-import { ClockCircleOutlined, WalletOutlined } from '@ant-design/icons'
+import {
+  ClockCircleOutlined,
+  WalletOutlined,
+  LeftOutlined,
+  RightOutlined,
+} from '@ant-design/icons'
 import Client from '@helium/http'
 import Timestamp from 'react-timestamp'
 import AppLayout, { Content } from '../../components/AppLayout'
 import PieChart from '../../components/PieChart'
 import { getMetaTagsForTransaction } from '../../components/Txns/utils'
 import { Balance, CurrencyType } from '@helium/currency'
+import classNames from 'classnames'
 
 import {
   Fallback,
@@ -72,12 +78,73 @@ const rewardChart = (txn) => {
   }
 }
 
+const findPreviousAndNext = async (transactions, hash) => {
+  let previous, next
+  const generator = transactions[Symbol.asyncIterator]()
+
+  for await (const transaction of generator) {
+    if (transaction.hash === hash) {
+      const { value } = await generator.next()
+      next = value?.hash
+      break
+    }
+
+    previous = transaction.hash
+  }
+
+  return { previous, next }
+}
+
+const ButtonPrevious = ({ className, ...props }) => (
+  <a
+    className={classNames('button block-view-prev-button', className)}
+    style={{ backgroundColor: '#35405b' }}
+    {...props}
+  >
+    <LeftOutlined style={{ marginleft: '-6px' }} /> Previous Transaction
+  </a>
+)
+
+const ButtonNext = ({ className, ...props }) => (
+  <a
+    className={classNames('button block-view-next-button', className)}
+    style={{ backgroundColor: '#35405b' }}
+    {...props}
+  >
+    Next Transaction <RightOutlined style={{ marginRight: '-6px' }} />
+  </a>
+)
+
+const Navigation = ({ Button, hash }) => {
+  return hash ? (
+    <Link href={'/txns/' + hash}>
+      <Button />
+    </Link>
+  ) : (
+    <Button className="hidden-width" />
+  )
+}
+
 const TxnView = ({ txn }) => {
   const transactionMetaTags = getMetaTagsForTransaction(txn)
 
   const txnTotalAmountObject =
     txn.type === 'rewards_v1' &&
     new Balance(txn.totalAmount.integerBalance, CurrencyType.networkToken)
+
+  const [transactions, setTransactions] = useState()
+  const [navigation, setNavigation] = useState()
+
+  useEffect(async () => {
+    const client = new Client()
+    setTransactions(await client.block(txn.height).transactions.list())
+  }, [txn.height])
+
+  useEffect(async () => {
+    if (transactions) {
+      setNavigation(await findPreviousAndNext(transactions, txn.hash))
+    }
+  }, [transactions, txn.hash])
 
   return (
     <AppLayout
@@ -160,34 +227,19 @@ const TxnView = ({ txn }) => {
             )}
           </div>
           <hr />
-          <div
-            //className="flexwrapper"
-            // Temporary styling to center timestamp until next / prev transaction buttons work
-            // at which point the flexwrapper class can be turned back on instead
-            style={{
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            {/* TODO: efficiently determine next transaction and previous transaction */}
-            {/* <a className="button">
-                <BackwardOutlined style={{ marginleft: '-6px' }} /> Previous
-                Transaction
-              </a> */}
+          <div className="block-view-summary-container">
+            <Navigation Button={ButtonPrevious} hash={navigation?.previous} />
 
-            <h3>
-              <ClockCircleOutlined
-                style={{ color: '#FFC769', marginRight: 4 }}
-              />
-              <Timestamp date={txn.time} />
-            </h3>
+            <span className="block-view-summary-info">
+              <h3>
+                <ClockCircleOutlined
+                  style={{ color: '#FFC769', marginRight: 4 }}
+                />
+                <Timestamp date={txn.time} />
+              </h3>
+            </span>
 
-            {/* <a className="button">
-                Next Transaction{' '}
-                <ForwardOutlined style={{ marginRight: '-6px' }} />
-              </a> */}
+            <Navigation Button={ButtonNext} hash={navigation?.next} />
           </div>
         </div>
       </Content>

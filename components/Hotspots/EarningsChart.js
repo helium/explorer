@@ -73,7 +73,6 @@ const EarningsChart = ({ rewards, rewardsLoading }) => {
               radius={[10, 10, 10, 10]}
             >
               {rewardsToChart.map((entry, index) => {
-                console.log(entry)
                 return (
                   <Cell
                     key={`cell-${index}`}

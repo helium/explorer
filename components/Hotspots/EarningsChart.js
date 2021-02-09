@@ -1,30 +1,41 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
+  Cell,
   XAxis,
-  YAxis,
   Tooltip,
   ResponsiveContainer,
-  Legend,
 } from 'recharts'
 import { format, fromUnixTime, getUnixTime } from 'date-fns'
-import useResponsive from '../AppLayout/useResponsive'
 
 const EarningsChart = ({ rewards, rewardsLoading }) => {
+  const [focusBar, setFocusBar] = useState(null)
+  const handleMouseEvent = (state) => {
+    if (state.isTooltipActive) {
+      setFocusBar(state.activeTooltipIndex)
+    } else {
+      setFocusBar(null)
+    }
+  }
   if (!rewardsLoading) {
     const rewardsToChart = rewards.buckets
       ?.map(({ timestamp, total }) => ({
         timestamp: getUnixTime(new Date(timestamp)),
         total: total,
       }))
+      .slice(0, 30)
       .reverse()
 
     return (
-      <div style={{ width: '100%', height: false ? 140 : 300 }}>
+      <div style={{ width: '100%', height: 120 }}>
         <ResponsiveContainer>
-          <LineChart
-            height={300}
+          <BarChart
+            onMouseEnter={handleMouseEvent}
+            onMouseLeave={handleMouseEvent}
+            onMouseMove={handleMouseEvent}
+            height={100}
+            barGap={6}
             data={rewardsToChart}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
           >
@@ -35,24 +46,17 @@ const EarningsChart = ({ rewards, rewardsLoading }) => {
               domain={['dataMin', 'dataMax']}
               axisLine={false}
               tickLine={false}
-              tick={{ fill: '#fff' }}
-              tickFormatter={(unixTime) =>
-                format(fromUnixTime(unixTime), 'd MMM')
-              }
-              minTickGap={10}
+              height={0}
             />
-            <YAxis />
             <Tooltip
               labelFormatter={(label) => format(fromUnixTime(label), 'M/d/yyy')}
               formatter={(value) => [
-                value.toLocaleString(undefined, {
+                `${value.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
-                }),
-                'HNT',
+                })} HNT`,
               ]}
-              animationDuration={150}
-              animationEasing="ease"
+              isAnimationActive={false}
               contentStyle={{
                 background: '#101725',
                 border: 'none',
@@ -60,13 +64,32 @@ const EarningsChart = ({ rewards, rewardsLoading }) => {
               }}
               labelStyle={{ color: '#fff' }}
             />
-            <Line
-              // type="stepAfter"
+            <Bar
+              minPointSize={8}
               dataKey="total"
-              stroke="rgb(50, 196, 141)"
-              activeDot={{ r: 8 }}
-            />
-          </LineChart>
+              isAnimationActive={false}
+              fill="#A6A6D0"
+              barSize={8}
+              radius={[10, 10, 10, 10]}
+            >
+              {rewardsToChart.map((entry, index) => {
+                console.log(entry)
+                return (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={
+                      focusBar === index
+                        ? '#474DFF'
+                        : entry.total === 0
+                        ? '#d5d4ea'
+                        : '#A6A6D0'
+                    }
+                    background={false}
+                  />
+                )
+              })}
+            </Bar>
+          </BarChart>
         </ResponsiveContainer>
       </div>
     )

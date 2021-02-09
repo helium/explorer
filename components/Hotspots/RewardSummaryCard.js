@@ -64,7 +64,7 @@ const RewardSummaryCard = ({
               >
                 <span
                   style={{
-                    color: percentChange > 0 ? '#32C48D' : '#CA0926',
+                    color: percentChange > 0 ? '#32C48D' : '#474DFF',
                     fontWeight: 400,
                     fontSize: '12px',
                     whiteSpace: 'nowrap',

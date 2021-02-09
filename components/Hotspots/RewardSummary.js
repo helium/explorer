@@ -1,13 +1,17 @@
 import RewardSummaryCard from './RewardSummaryCard'
-import { calculatePercentChange } from './utils'
+import { calculatePercentChange, formatPercentChangeString } from './utils'
+import { Tooltip } from 'antd'
 import EarningsChart from './EarningsChart'
+import useResponsive from '../AppLayout/useResponsive'
 
 const RewardSummary = ({ rewards, rewardsLoading }) => {
+  const { isMobile } = useResponsive()
+
   return (
     <div
       style={{
         backgroundColor: 'white',
-        padding: '36px 36px 40px 36px',
+        padding: isMobile ? '24px' : '36px 36px 40px 36px',
       }}
     >
       <p style={{ fontFamily: 'Inter', fontSize: '16px', fontWeight: 500 }}>
@@ -16,7 +20,7 @@ const RewardSummary = ({ rewards, rewardsLoading }) => {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
           gridAutoRows: 'auto',
           gridGap: '1rem',
         }}
@@ -41,19 +45,109 @@ const RewardSummary = ({ rewards, rewardsLoading }) => {
           )}
           rewardsLoading={rewardsLoading}
         />
-        <RewardSummaryCard
-          timeframe="30 days"
-          value={rewards.month}
-          previousValue={rewards.previousMonth}
-          percentChange={calculatePercentChange(
-            rewards.month,
-            rewards.previousMonth,
-          )}
-          rewardsLoading={rewardsLoading}
-        />
       </div>
-      <div style={{ maxWidth: 850 + 40, margin: '0 auto', paddingBottom: 50 }}>
-        <EarningsChart rewardsLoading={rewardsLoading} rewards={rewards} />
+      <div style={{ maxWidth: 850 + 40, margin: '0 auto' }}>
+        <div
+          style={{
+            backgroundColor: '#F6F7FC',
+            borderRadius: 14,
+            marginTop: 20,
+            padding: 32,
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            justifyContent: 'space-between',
+          }}
+        >
+          {!rewardsLoading && (
+            <>
+              <div>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                  }}
+                >
+                  <p
+                    style={{
+                      margin: 0,
+                      textTransform: 'uppercase',
+                      fontSize: '12px',
+                      color: '#6d6ea0',
+                    }}
+                  >
+                    30 DAYS
+                  </p>
+                </div>
+                <div>
+                  <span
+                    style={{
+                      color: '#262625',
+                      fontWeight: 300,
+                      fontSize: '46px',
+                    }}
+                  >
+                    {rewards.month.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </span>
+                  <span style={{ fontSize: '14px', marginLeft: '4px' }}>
+                    HNT
+                  </span>
+                </div>
+                <Tooltip
+                  title={`Previous 30 days: ${rewards.previousMonth} HNT`}
+                  placement={'bottom'}
+                >
+                  <div
+                    style={{
+                      borderRadius: 7,
+                      color:
+                        calculatePercentChange(
+                          rewards.month,
+                          rewards.previousMonth,
+                        ) > 0
+                          ? '#29D391'
+                          : '#474DFF',
+                      padding: 8,
+                      marginTop: 30,
+                      display: 'inline',
+                      height: 'auto',
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontWeight: 600,
+                        fontSize: '14px',
+                        color: 'white',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {formatPercentChangeString(
+                        calculatePercentChange(
+                          rewards.month,
+                          rewards.previousMonth,
+                        ),
+                      )}
+                    </span>
+                  </div>
+                </Tooltip>
+              </div>
+              <div
+                style={{
+                  width: '100%',
+                  padding: isMobile ? '24px 0 0 0' : '0 0 0 24px',
+                }}
+              >
+                <EarningsChart
+                  rewardsLoading={rewardsLoading}
+                  rewards={rewards}
+                />
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   )

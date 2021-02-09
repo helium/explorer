@@ -14,7 +14,13 @@ const InputGroup = ({ children }) => (
   <div style={{ margin: '0 0 12px 0' }}>{children}</div>
 )
 
-const ExportForm = ({ onDateChange, onTxnChange, onFeeChange, type }) => {
+const ExportForm = ({
+  onDateChange,
+  onTxnChange,
+  onFeeChange,
+  onIncludeOraclePriceChange,
+  type,
+}) => {
   let options
 
   switch (type) {
@@ -85,6 +91,19 @@ const ExportForm = ({ onDateChange, onTxnChange, onFeeChange, type }) => {
           </div>
         </InputGroup>
       )}
+      <InputGroup>
+        <Text strong>Include Oracle Price for each transaction</Text>
+        <div>
+          <Radio.Group onChange={onIncludeOraclePriceChange} defaultValue="no">
+            <Radio style={radioStyle} value="no">
+              No
+            </Radio>
+            <Radio style={radioStyle} value="yes">
+              Yes (CSV will take longer to generate)
+            </Radio>
+          </Radio.Group>
+        </div>
+      </InputGroup>
     </div>
   )
 }

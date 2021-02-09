@@ -26,7 +26,11 @@ const formatMultiplePayeesString = (payments) => {
   return payments.map((p) => p.payee).join(', ')
 }
 
-const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
+const parse = async (
+  ownerAddress,
+  txn,
+  opts = { convertFee: true, includeOraclePrice: false },
+) => {
   switch (txn.type) {
     case 'rewards_v1': {
       return txn.rewards.map(({ type, gateway, amount }) => {
@@ -161,7 +165,7 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
 export const parseTxn = async (
   ownerAddress,
   txn,
-  opts = { convertFee: true },
+  opts = { convertFee: true, includeOraclePrice: false },
 ) => {
   const data = await parse(ownerAddress, txn, opts)
   if (!data) {
@@ -169,6 +173,15 @@ export const parseTxn = async (
   }
 
   const timestamp = moment.unix(txn.time).toISOString()
+
+  let oraclePrice = ''
+
+  if (opts.includeOraclePrice) {
+    const client = new Client()
+    const { price } = await client.oracle.getPriceAtBlock(txn.height)
+    oraclePrice = price.toString().slice(0, -4)
+  }
+
   const addDefaults = async ({ feePaid = false, ...parsed }) => ({
     Date: timestamp,
     'Received Quantity': '',
@@ -183,6 +196,9 @@ export const parseTxn = async (
     Hotspot: txn.gateway ? animalHash(txn.gateway) : '',
     'Reward Type': '',
     Block: txn.height,
+    ...(opts.includeOraclePrice && {
+      'Oracle Price (USD) at Block Height': oraclePrice,
+    }),
     Hash: txn.hash,
     ...parsed,
   })

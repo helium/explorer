@@ -15,6 +15,7 @@ const initialState = {
   endDate: moment().startOf('day'),
   txn: ['payment', 'reward'],
   fee: 'dc',
+  includeOraclePrice: 'no',
   lastTxnTime: moment().unix(),
 }
 
@@ -47,10 +48,12 @@ class ExportModal extends React.Component {
 
   onTxnChange = (txn) => this.setState({ txn })
   onFeeChange = (e) => this.setState({ fee: e.target.value })
+  onIncludeOraclePriceChange = (e) =>
+    this.setState({ includeOraclePrice: e.target.value })
 
   handleExportCsv = async () => {
     const { address, type } = this.props
-    const { startDate, endDate, txn, fee } = this.state
+    const { startDate, endDate, txn, fee, includeOraclePrice } = this.state
 
     const filterTypes = []
     if (txn.includes('payment')) filterTypes.push('payment_v1', 'payment_v2')
@@ -89,7 +92,10 @@ class ExportModal extends React.Component {
       if (txn.time <= endDate.unix()) {
         data.push(
           ...[].concat(
-            await parseTxn(address, txn, { convertFee: fee === 'hnt' }),
+            await parseTxn(address, txn, {
+              convertFee: fee === 'hnt',
+              includeOraclePrice: includeOraclePrice === 'yes',
+            }),
           ),
         )
       }
@@ -147,6 +153,7 @@ class ExportModal extends React.Component {
               onDateChange={this.onDateChange}
               onTxnChange={this.onTxnChange}
               onFeeChange={this.onFeeChange}
+              onIncludeOraclePriceChange={this.onIncludeOraclePriceChange}
             />
           )}
         </Modal>

@@ -37,7 +37,7 @@ const EarningsChart = ({ rewards, rewardsLoading }) => {
             height={100}
             barGap={6}
             data={rewardsToChart}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            // margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
           >
             <XAxis
               dataKey="timestamp"

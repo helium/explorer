@@ -6,7 +6,10 @@ import useResponsive from '../AppLayout/useResponsive'
 
 const RewardSummary = ({ rewards, rewardsLoading }) => {
   const { isMobile } = useResponsive()
-
+  const chartPercentChange = calculatePercentChange(
+    rewards.month,
+    rewards.previousMonth,
+  )
   return (
     <div
       style={{
@@ -100,38 +103,30 @@ const RewardSummary = ({ rewards, rewardsLoading }) => {
                   title={`Previous 30 days: ${rewards.previousMonth} HNT`}
                   placement={'bottom'}
                 >
-                  <div
-                    style={{
-                      borderRadius: 7,
-                      color:
-                        calculatePercentChange(
-                          rewards.month,
-                          rewards.previousMonth,
-                        ) > 0
-                          ? '#29D391'
-                          : '#474DFF',
-                      padding: 8,
-                      marginTop: 30,
-                      display: 'inline',
-                      height: 'auto',
-                    }}
-                  >
-                    <span
+                  {chartPercentChange !== 0 && (
+                    <div
                       style={{
-                        fontWeight: 600,
-                        fontSize: '14px',
-                        color: 'white',
-                        whiteSpace: 'nowrap',
+                        borderRadius: 7,
+                        backgroundColor:
+                          chartPercentChange > 0 ? '#29D391' : '#474DFF',
+                        padding: 8,
+                        marginTop: 30,
+                        display: 'inline',
+                        height: 'auto',
                       }}
                     >
-                      {formatPercentChangeString(
-                        calculatePercentChange(
-                          rewards.month,
-                          rewards.previousMonth,
-                        ),
-                      )}
-                    </span>
-                  </div>
+                      <span
+                        style={{
+                          fontWeight: 600,
+                          fontSize: '14px',
+                          color: 'white',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {formatPercentChangeString(chartPercentChange)}
+                      </span>
+                    </div>
+                  )}
                 </Tooltip>
               </div>
               <div

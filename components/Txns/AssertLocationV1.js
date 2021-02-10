@@ -27,7 +27,10 @@ const AssertLocationV1 = ({ txn }) => {
     setHotspot(hotspot)
   }, [])
 
-  const stakingFee = new Balance(txn.stakingFee, CurrencyType.dataCredit)
+  const stakingFee = new Balance(
+    txn.stakingFee.integerBalance,
+    CurrencyType.dataCredit,
+  )
   const stakingFeePayer =
     txn.payer === txn.owner || txn.payer === null ? txn.owner : txn.payer
 

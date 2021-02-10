@@ -34,7 +34,7 @@ const convertToUtc = (date) => addMinutes(date, date.getTimezoneOffset())
 
 export const generateFriendlyTimestampString = (txnTime) => {
   const timestampInput = convertToUtc(fromUnixTime(txnTime))
-  const date = format(timestampInput, 'MMMM Do, yyyy')
+  const date = format(timestampInput, 'MMMM do, yyyy')
   const time = format(timestampInput, 'h:mm a')
 
   return `on ${date} at ${time} UTC`

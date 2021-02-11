@@ -90,7 +90,7 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
     <Content style={{ marginBottom: 20 }}>
       <Card loading={hotspotsLoading} title={'Hotspots'}>
         {hotspots.length == 0 ? (
-          <h2
+          <p
             style={{
               textAlign: 'center',
               marginTop: '0.5rem',
@@ -100,7 +100,7 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
             }}
           >
             Account has no hotspots
-          </h2>
+          </p>
         ) : (
           <Table
             dataSource={hotspots}

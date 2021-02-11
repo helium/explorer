@@ -1,8 +1,7 @@
 FROM node:lts-alpine
 
 ENV NEXT_PUBLIC_MAPBOX_KEY $NEXT_PUBLIC_MAPBOX_KEY
-RUN apk update && \
-    apk add --no-cache git
+RUN apk add --no-cache git
 
 COPY package*.json ./
 RUN yarn

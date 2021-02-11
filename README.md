@@ -68,7 +68,7 @@ You need to adapt your *NEXT_PUBLIC_MAPBOX_KEY* to run this container
 
 ## Questions
 
-If you run into any issues or you have any questions about how to get started contributing, feel free to reach out on the #explorer-dev channel in [the official Helium Community Discord server](http://discord.gg/helium)!
+If you run into any issues or you have any questions about how to get started contributing, feel free to reach out on the `#explorer-dev` channel in [the official Helium Community Discord server](http://discord.gg/helium)!
 
 ## Learn More
 

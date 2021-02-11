@@ -27,7 +27,7 @@ const AssertLocationV1 = ({ txn }) => {
     setHotspot(hotspot)
   }, [])
 
-  const stakingFee = new Balance(
+  const stakingFeeObject = new Balance(
     txn.stakingFee.integerBalance,
     CurrencyType.dataCredit,
   )
@@ -141,7 +141,7 @@ const AssertLocationV1 = ({ txn }) => {
               justifyContent: 'flex-start',
             }}
           >
-            {stakingFee.toString()}
+            {stakingFeeObject.toString()}
           </span>
         </Descriptions.Item>
         <Descriptions.Item label="Staking Fee Payer" span={3}>

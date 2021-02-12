@@ -12,9 +12,9 @@ const Mapbox = ReactMapboxGl({
 
 const circleLayout = {
   'circle-color': '#29d391',
-  'circle-radius': 5,
-  'circle-opacity': 1,
-  'circle-blur': 0,
+  'circle-radius': 3,
+  'circle-opacity': 0.9,
+  'circle-blur': 5,
 }
 
 class MiniCoverageMap extends React.Component {

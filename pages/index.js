@@ -99,11 +99,11 @@ const Index = ({
             </Col>
             <Col xs={24} md={8}>
               <Widget
-                title="Challenges"
-                value={stats.challenges.toLocaleString()}
+                title="Blocks"
+                value={stats.totalBlocks.toLocaleString()}
                 tooltip=""
-                footer="View Challenges"
-                href="/challenges"
+                footer="View Blocks"
+                href="/blocks"
               />
             </Col>
             <Col xs={24} md={8}>
@@ -115,13 +115,42 @@ const Index = ({
                 href="/consensus"
               />
             </Col>
+          </Row>
+          <div
+            style={{
+              background: '#fff',
+              borderRadius: 10,
+              marginBottom: 20,
+              paddingBottom: 30,
+            }}
+            className="ant-card-head"
+          >
+            <Row>
+              <Col lg={12}>
+                <div class="ant-card-head-title">Hotspot Map</div>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={24}>
+                <a href="/coverage">
+                  <MiniCoverageMap zoomLevel={0.65} />
+                </a>
+              </Col>
+            </Row>
+          </div>
+          <Row gutter={[20, 20]}>
             <Col xs={24} md={8}>
               <Widget
-                title="Blocks"
-                value={stats.totalBlocks.toLocaleString()}
-                tooltip=""
-                footer="View Blocks"
-                href="/blocks"
+                title="Election Times (24h)"
+                value={`${round(stats.electionTimes.lastDay.avg / 60, 1)} min`}
+                change={
+                  round(stats.electionTimes.lastHour.avg) -
+                  round(stats.electionTimes.lastDay.avg)
+                }
+                changeSuffix=" sec"
+                changeUpIsBad
+                footer="View Consensus Groups"
+                href="/consensus"
               />
             </Col>
             <Col xs={24} md={8}>
@@ -156,9 +185,6 @@ const Index = ({
                 href="/market"
               />
             </Col>
-          </Row>
-
-          <Row gutter={[20, 20]}>
             <Col xs={24} md={16}>
               <HalvingCountdown />
             </Col>
@@ -181,30 +207,6 @@ const Index = ({
               />
             </Col>
           </Row>
-
-          <div
-            style={{
-              background: '#fff',
-              borderRadius: 10,
-              marginBottom: 20,
-              paddingBottom: 30,
-            }}
-            className="ant-card-head"
-          >
-            <Row>
-              <Col lg={12}>
-                <div class="ant-card-head-title">Hotspot Map</div>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={24}>
-                <a href="/coverage">
-                  <MiniCoverageMap zoomLevel={0.65} />
-                </a>
-              </Col>
-            </Row>
-          </div>
-
           <Card title="Latest Blocks" style={{ marginBottom: 60 }}>
             <BlocksList pageSize={10} showButton={false} />
             <Row justify="center" style={{ padding: '20px 0' }}>

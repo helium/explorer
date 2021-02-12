@@ -57,7 +57,8 @@ const columns = [
 ]
 
 const WitnessesList = ({ witnesses, witnessesLoading }) => {
-  const [pageSize, setPageSize] = useState(5)
+  const PAGE_SIZE_DEFAULT = 5
+  const [pageSize, setPageSize] = useState(PAGE_SIZE_DEFAULT)
 
   const handleTableChange = (pagination, filter, sorter) => {
     setPageSize(pagination.pageSize)
@@ -73,7 +74,7 @@ const WitnessesList = ({ witnesses, witnessesLoading }) => {
             justifyContent: 'flex-start',
           }}
         >
-          Recent Witnesses
+          Recent Witnesses{!witnessesLoading ? ` (${witnesses.length})` : ''}
           <Tooltip placement="top" title={'Witnesses from the last 5 days'}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -98,16 +99,23 @@ const WitnessesList = ({ witnesses, witnessesLoading }) => {
         </span>
       }
     >
-      <Table
-        dataSource={witnesses}
-        columns={columns}
-        size="small"
-        loading={witnessesLoading}
-        rowKey="name"
-        pagination={{ pageSize }}
-        scroll={{ x: true }}
-        onChange={handleTableChange}
-      />
+      <span className="ant-table-styling-override">
+        <Table
+          dataSource={witnesses}
+          columns={columns}
+          size="small"
+          loading={witnessesLoading}
+          rowKey="name"
+          pagination={{
+            pageSize,
+            showSizeChanger: witnesses.length > PAGE_SIZE_DEFAULT,
+            hideOnSinglePage: witnesses.length <= PAGE_SIZE_DEFAULT,
+            pageSizeOptions: [5, 10, 20, 50, 100],
+          }}
+          scroll={{ x: true }}
+          onChange={handleTableChange}
+        />
+      </span>
     </Card>
   )
 }

@@ -41,23 +41,35 @@ const columns = [
 ]
 
 const NearbyHotspotsList = ({ nearbyHotspots, nearbyHotspotsLoading }) => {
-  const [pageSize, setPageSize] = useState(5)
+  const PAGE_SIZE_DEFAULT = 5
+  const [pageSize, setPageSize] = useState(PAGE_SIZE_DEFAULT)
 
   const handleTableChange = (pagination, filter, sorter) => {
     setPageSize(pagination.pageSize)
   }
   return (
-    <Card title={'Nearby Hotspots'}>
-      <Table
-        dataSource={nearbyHotspots}
-        columns={columns}
-        size="small"
-        loading={nearbyHotspotsLoading}
-        rowKey="name"
-        pagination={{ pageSize }}
-        scroll={{ x: true }}
-        onChange={handleTableChange}
-      />
+    <Card
+      title={`Nearby Hotspots${
+        !nearbyHotspotsLoading ? ` (${nearbyHotspots.length})` : ''
+      }`}
+    >
+      <span className="ant-table-styling-override">
+        <Table
+          dataSource={nearbyHotspots}
+          columns={columns}
+          size="small"
+          loading={nearbyHotspotsLoading}
+          rowKey="name"
+          pagination={{
+            pageSize,
+            showSizeChanger: nearbyHotspots.length > PAGE_SIZE_DEFAULT,
+            hideOnSinglePage: nearbyHotspots.length <= PAGE_SIZE_DEFAULT,
+            pageSizeOptions: [5, 10, 20, 50, 100],
+          }}
+          scroll={{ x: true }}
+          onChange={handleTableChange}
+        />
+      </span>
     </Card>
   )
 }

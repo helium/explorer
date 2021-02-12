@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Card, Table } from 'antd'
 import Link from 'next/link'
 import { StatusCircle } from './Hotspots'
@@ -40,18 +40,26 @@ const columns = [
   },
 ]
 
-const NearbyHotspotsList = ({ nearbyHotspots, nearbyHotspotsLoading }) => (
-  <Card title={'Nearby Hotspots'}>
-    <Table
-      dataSource={nearbyHotspots}
-      columns={columns}
-      size="small"
-      loading={nearbyHotspotsLoading}
-      rowKey="name"
-      pagination={{ pageSize: 5, hideOnSinglePage: true }}
-      scroll={{ x: true }}
-    />
-  </Card>
-)
+const NearbyHotspotsList = ({ nearbyHotspots, nearbyHotspotsLoading }) => {
+  const [pageSize, setPageSize] = useState(5)
+
+  const handleTableChange = (pagination, filter, sorter) => {
+    setPageSize(pagination.pageSize)
+  }
+  return (
+    <Card title={'Nearby Hotspots'}>
+      <Table
+        dataSource={nearbyHotspots}
+        columns={columns}
+        size="small"
+        loading={nearbyHotspotsLoading}
+        rowKey="name"
+        pagination={{ pageSize }}
+        scroll={{ x: true }}
+        onChange={handleTableChange}
+      />
+    </Card>
+  )
+}
 
 export default NearbyHotspotsList

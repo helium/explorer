@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Table, Card } from 'antd'
 import { Content } from './AppLayout'
 import Link from 'next/link'
@@ -86,6 +86,11 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
     },
   ]
 
+  const [pageSize, setPageSize] = useState(5)
+  const handleTableChange = (pagination, filter, sorter) => {
+    setPageSize(pagination.pageSize)
+  }
+
   return (
     <Content style={{ marginBottom: 20 }}>
       <Card loading={hotspotsLoading} title={'Hotspots'}>
@@ -108,8 +113,9 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
             loading={hotspotsLoading}
             size="small"
             rowKey="name"
-            pagination={{ pageSize: 10, hideOnSinglePage: true }}
+            pagination={{ pageSize }}
             scroll={{ x: true }}
+            onChange={handleTableChange}
           />
         )}
       </Card>

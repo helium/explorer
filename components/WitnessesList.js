@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Card, Table, Tooltip } from 'antd'
 import Link from 'next/link'
 import { formatHotspotName, formatLocation } from './Hotspots/utils'
@@ -56,51 +56,60 @@ const columns = [
   },
 ]
 
-const WitnessesList = ({ witnesses, witnessesLoading }) => (
-  <Card
-    title={
-      <span
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-        }}
-      >
-        Recent Witnesses
-        <Tooltip placement="top" title={'Witnesses from the last 5 days'}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            style={{
-              color: '#999',
-              height: 18,
-              width: 18,
-              marginLeft: 10,
-            }}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-        </Tooltip>
-      </span>
-    }
-  >
-    <Table
-      dataSource={witnesses}
-      columns={columns}
-      size="small"
-      loading={witnessesLoading}
-      rowKey="name"
-      pagination={{ pageSize: 5, hideOnSinglePage: true }}
-      scroll={{ x: true }}
-    />
-  </Card>
-)
+const WitnessesList = ({ witnesses, witnessesLoading }) => {
+  const [pageSize, setPageSize] = useState(5)
+
+  const handleTableChange = (pagination, filter, sorter) => {
+    setPageSize(pagination.pageSize)
+  }
+
+  return (
+    <Card
+      title={
+        <span
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+          }}
+        >
+          Recent Witnesses
+          <Tooltip placement="top" title={'Witnesses from the last 5 days'}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              style={{
+                color: '#999',
+                height: 18,
+                width: 18,
+                marginLeft: 10,
+              }}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </Tooltip>
+        </span>
+      }
+    >
+      <Table
+        dataSource={witnesses}
+        columns={columns}
+        size="small"
+        loading={witnessesLoading}
+        rowKey="name"
+        pagination={{ pageSize }}
+        scroll={{ x: true }}
+        onChange={handleTableChange}
+      />
+    </Card>
+  )
+}
 
 export default WitnessesList

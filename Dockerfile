@@ -4,6 +4,7 @@ ENV NEXT_PUBLIC_MAPBOX_KEY $NEXT_PUBLIC_MAPBOX_KEY
 RUN apk add --no-cache git
 
 COPY package*.json ./
+COPY yarn.lock
 
 RUN yarn --frozen-lockfile
 COPY . .

@@ -1,7 +1,7 @@
-import moment from 'moment'
 import animalHash from 'angry-purple-tiger'
 import Client from '@helium/http'
 import { Balance, CurrencyType } from '@helium/currency'
+import { fromUnixTime } from 'date-fns'
 
 const getFee = async ({ height, fee }, convertFee) => {
   if (!fee) {
@@ -168,7 +168,7 @@ export const parseTxn = async (
     return data
   }
 
-  const timestamp = moment.unix(txn.time).toISOString()
+  const timestamp = fromUnixTime(txn.time).toISOString()
   const addDefaults = async ({ feePaid = false, ...parsed }) => ({
     Date: timestamp,
     'Received Quantity': '',

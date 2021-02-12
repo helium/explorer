@@ -1,6 +1,16 @@
 import React from 'react'
-import { DatePicker, Typography, Radio, Checkbox } from 'antd'
-import moment from 'moment'
+import { Typography, Radio, Checkbox } from 'antd'
+import { DatePicker } from '../../components/Antd'
+import {
+  startOfDay,
+  startOfMonth,
+  startOfYear,
+  endOfMonth,
+  endOfYear,
+  subMonths,
+  subYears,
+} from 'date-fns'
+
 const { RangePicker } = DatePicker
 const { Text } = Typography
 
@@ -33,6 +43,8 @@ const ExportForm = ({ onDateChange, onTxnChange, onFeeChange, type }) => {
       break
   }
 
+  const now = new Date()
+
   return (
     <div>
       <InputGroup>
@@ -42,16 +54,16 @@ const ExportForm = ({ onDateChange, onTxnChange, onFeeChange, type }) => {
         <div>
           <RangePicker
             ranges={{
-              Today: [moment().startOf('day'), moment()],
-              'This Month': [moment().startOf('month'), moment()],
+              Today: [startOfDay(now), now],
+              'This Month': [startOfMonth(now), now],
               'Last Month': [
-                moment().subtract(1, 'months').startOf('month'),
-                moment().subtract(1, 'months').endOf('month'),
+                startOfMonth(subMonths(now, 1)),
+                endOfMonth(subMonths(now, 1)),
               ],
-              'This Year': [moment().startOf('year'), moment()],
+              'This Year': [startOfYear(now), now],
               'Last Year': [
-                moment().subtract(1, 'years').startOf('year'),
-                moment().subtract(1, 'years').endOf('year'),
+                startOfYear(subYears(now, 1)),
+                endOfYear(subYears(now, 1)),
               ],
             }}
             onChange={onDateChange}

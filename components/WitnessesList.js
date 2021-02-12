@@ -99,23 +99,37 @@ const WitnessesList = ({ witnesses, witnessesLoading }) => {
         </span>
       }
     >
-      <span className="ant-table-styling-override">
-        <Table
-          dataSource={witnesses}
-          columns={columns}
-          size="small"
-          loading={witnessesLoading}
-          rowKey="name"
-          pagination={{
-            pageSize,
-            showSizeChanger: witnesses.length > PAGE_SIZE_DEFAULT,
-            hideOnSinglePage: witnesses.length <= PAGE_SIZE_DEFAULT,
-            pageSizeOptions: [5, 10, 20, 50, 100],
+      {witnesses.length === 0 ? (
+        <p
+          style={{
+            textAlign: 'center',
+            marginTop: '0.5rem',
+            fontSize: '14px',
+            color: 'rgba(0, 0, 0, 0.25)',
+            padding: '20px',
           }}
-          scroll={{ x: true }}
-          onChange={handleTableChange}
-        />
-      </span>
+        >
+          Hotspot has no recent witnesses
+        </p>
+      ) : (
+        <span className="ant-table-styling-override">
+          <Table
+            dataSource={witnesses}
+            columns={columns}
+            size="small"
+            loading={witnessesLoading}
+            rowKey="name"
+            pagination={{
+              pageSize,
+              showSizeChanger: witnesses.length > PAGE_SIZE_DEFAULT,
+              hideOnSinglePage: witnesses.length <= PAGE_SIZE_DEFAULT,
+              pageSizeOptions: [5, 10, 20, 50, 100],
+            }}
+            scroll={{ x: true }}
+            onChange={handleTableChange}
+          />
+        </span>
+      )}
     </Card>
   )
 }

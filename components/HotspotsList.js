@@ -99,7 +99,7 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
         title={`Hotspots${!hotspotsLoading ? ` (${hotspots.length})` : ''}`}
       >
         {hotspots.length == 0 ? (
-          <h2
+          <p
             style={{
               textAlign: 'center',
               marginTop: '0.5rem',
@@ -109,7 +109,7 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
             }}
           >
             Account has no hotspots
-          </h2>
+          </p>
         ) : (
           <span className="ant-table-styling-override">
             <Table

@@ -9,7 +9,7 @@ import withBlockHeight from '../../components/withBlockHeight'
 import { withRouter } from 'next/router'
 import Link from 'next/link'
 import { generateFriendlyTimestampString } from '../../components/Txns/utils'
-import { getColor } from '../../components/Txns/TxnTag'
+import { getColor, getName } from '../../components/Txns/TxnTag'
 
 import {
   LeftOutlined,
@@ -25,11 +25,16 @@ const BlockView = ({ block, txns, height }) => {
     const res = []
     if (txns.length > 0) {
       txns.forEach((t) => {
-        let f = res.find((x) => x.name === t.type)
+        let f = res.find((x) => x.type === t.type)
         if (f) {
           f.value++
         } else {
-          let n = { name: t.type, value: 1, color: getColor(t.type) }
+          let n = {
+            name: getName(t.type),
+            type: t.type,
+            value: 1,
+            color: getColor(t.type),
+          }
           res.push(n)
         }
       })

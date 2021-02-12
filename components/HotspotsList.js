@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Table, Card } from 'antd'
 import { Content } from './AppLayout'
 import Link from 'next/link'
@@ -86,9 +86,18 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
     },
   ]
 
+  const PAGE_SIZE_DEFAULT = 10
+  const [pageSize, setPageSize] = useState(PAGE_SIZE_DEFAULT)
+  const handleTableChange = (pagination, filter, sorter) => {
+    setPageSize(pagination.pageSize)
+  }
+
   return (
     <Content style={{ marginBottom: 20 }}>
-      <Card loading={hotspotsLoading} title={'Hotspots'}>
+      <Card
+        loading={hotspotsLoading}
+        title={`Hotspots${!hotspotsLoading ? ` (${hotspots.length})` : ''}`}
+      >
         {hotspots.length == 0 ? (
           <p
             style={{
@@ -102,15 +111,23 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
             Account has no hotspots
           </p>
         ) : (
-          <Table
-            dataSource={hotspots}
-            columns={hotspotColumns}
-            loading={hotspotsLoading}
-            size="small"
-            rowKey="name"
-            pagination={{ pageSize: 10, hideOnSinglePage: true }}
-            scroll={{ x: true }}
-          />
+          <span className="ant-table-styling-override">
+            <Table
+              dataSource={hotspots}
+              columns={hotspotColumns}
+              loading={hotspotsLoading}
+              size="small"
+              rowKey="name"
+              pagination={{
+                pageSize,
+                showSizeChanger: hotspots.length > PAGE_SIZE_DEFAULT,
+                hideOnSinglePage: hotspots.length <= PAGE_SIZE_DEFAULT,
+                pageSizeOptions: [5, 10, 20, 50, 100],
+              }}
+              scroll={{ x: true }}
+              onChange={handleTableChange}
+            />
+          </span>
         )}
       </Card>
     </Content>

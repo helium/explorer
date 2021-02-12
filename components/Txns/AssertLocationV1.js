@@ -27,7 +27,10 @@ const AssertLocationV1 = ({ txn }) => {
     setHotspot(hotspot)
   }, [])
 
-  const stakingFee = new Balance(txn.stakingFee, CurrencyType.dataCredit)
+  const stakingFeeObject = new Balance(
+    txn.stakingFee.integerBalance,
+    CurrencyType.dataCredit,
+  )
   const stakingFeePayer =
     txn.payer === txn.owner || txn.payer === null ? txn.owner : txn.payer
 
@@ -138,7 +141,7 @@ const AssertLocationV1 = ({ txn }) => {
               justifyContent: 'flex-start',
             }}
           >
-            {stakingFee.toString()}
+            {stakingFeeObject.toString()}
           </span>
         </Descriptions.Item>
         <Descriptions.Item label="Staking Fee Payer" span={3}>

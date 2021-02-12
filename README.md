@@ -60,7 +60,8 @@ git checkout -b witness-list-enhancements
 ## Deploy with Docker
 
 ```bash
-docker run -e NEXT_PUBLIC_MAPBOX_KEY="CHANGE_ME" -p 3000:3000 ftx514/helium-explorer:latest
+docker build -t helium-explorer .
+docker run -e NEXT_PUBLIC_MAPBOX_KEY="CHANGE_ME" -p 3000:3000 helium-explorer
 ```
 
 You need to adapt your *NEXT_PUBLIC_MAPBOX_KEY* to run this container

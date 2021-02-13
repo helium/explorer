@@ -144,10 +144,10 @@ const Index = ({
                 title="Election Times (24h)"
                 value={`${round(stats.electionTimes.lastDay.avg / 60, 1)} min`}
                 change={
-                  round(stats.electionTimes.lastHour.avg) -
-                  round(stats.electionTimes.lastDay.avg)
+                  round(stats.electionTimes.lastHour.avg / 60) -
+                  round(stats.electionTimes.lastDay.avg / 60)
                 }
-                changeSuffix=" sec"
+                changeSuffix=" min"
                 changeUpIsBad
                 footer="View Consensus Groups"
                 href="/consensus"

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Row, Col } from 'antd'
+import { Card, Row, Col, Tooltip, Typography } from 'antd'
 import AppLayout, { Content } from '../components/AppLayout'
 import { fetchStats, useStats } from '../data/stats'
 import { fetchOraclePrices, useOraclePrices } from '../data/oracles'
@@ -15,6 +15,8 @@ import ConsensusImg from '../public/images/consensus.svg'
 import animalHash from 'angry-purple-tiger'
 import round from 'lodash/round'
 import ReactCountryFlag from 'react-country-flag'
+
+const { Text } = Typography
 
 const ConsensusMapbox = dynamic(
   () => import('../components/Txns/ConsensusMapbox'),
@@ -35,22 +37,32 @@ const Consensus = ({
 
   const FlagSection = ({ group }) => {
     const uniqueFlagShortcodes = []
-    group?.map((member, index) => {
-      if (!uniqueFlagShortcodes.includes(member.geocode.short_country))
-        uniqueFlagShortcodes.push(member.geocode.short_country)
+    group?.map((member) => {
+      if (
+        !uniqueFlagShortcodes.filter(
+          (f) => f.id === member.geocode.short_country,
+        ).length > 0
+      )
+        uniqueFlagShortcodes.push({
+          id: member.geocode.short_country,
+          fullCountryName: member.geocode.long_country,
+          count: 1,
+        })
     })
     return (
       <div style={{ display: 'flex', paddingTop: 5 }}>
         {uniqueFlagShortcodes.map((flagId, flagIndex) => {
           return (
-            <ReactCountryFlag
-              countryCode={flagId}
-              style={{
-                fontSize: '1.5em',
-                marginLeft: '6px',
-                lineHeight: '1.5em',
-              }}
-            />
+            <Tooltip title={flagId.fullCountryName} placement={'bottom'}>
+              <ReactCountryFlag
+                countryCode={flagId.id}
+                style={{
+                  fontSize: '1.5em',
+                  marginLeft: '6px',
+                  lineHeight: '1.5em',
+                }}
+              />
+            </Tooltip>
           )
         })}
       </div>
@@ -90,9 +102,14 @@ const Consensus = ({
             style={{ display: 'flex', flexDirection: 'column', padding: 24 }}
           >
             <Link href={`/blocks/${consensusGroups.recentElections[0].height}`}>
-              <a style={{ fontSize: 18, fontWeight: 600, paddingBottom: 36 }}>
+              <a style={{ fontSize: 18, fontWeight: 600, paddingBottom: 12 }}>
                 Block{' '}
                 {consensusGroups.recentElections[0].height.toLocaleString()}
+              </a>
+            </Link>
+            <Link href={`/txns/${consensusGroups.recentElections[0].hash}`}>
+              <a style={{ fontSize: 14, fontWeight: 400, paddingBottom: 36 }}>
+                {consensusGroups.recentElections[0].hash}
               </a>
             </Link>
             <ul style={{ listStyle: 'none', marginLeft: 0, paddingLeft: 0 }}>
@@ -137,6 +154,13 @@ const Consensus = ({
                         </a>
                       </Link>
                     </div>
+                    <Text
+                      type="secondary"
+                      copyable
+                      style={{ paddingLeft: 'calc(36px + 10px)' }}
+                    >
+                      {m.address}
+                    </Text>
                     <p
                       style={{
                         color: '#555',
@@ -254,12 +278,23 @@ const Consensus = ({
                       <Link href={`/blocks/${e.height}`}>
                         <a
                           style={{
-                            paddingBottom: 20,
+                            paddingBottom: 12,
                             fontSize: 16,
                             display: 'block',
                           }}
                         >
                           Block {e.height.toLocaleString()}
+                        </a>
+                      </Link>
+                      <Link href={`/txns/${e.hash}`}>
+                        <a
+                          style={{
+                            paddingBottom: 20,
+                            fontSize: 12,
+                            display: 'block',
+                          }}
+                        >
+                          {e.hash}
                         </a>
                       </Link>
                       <div
@@ -279,7 +314,7 @@ const Consensus = ({
                                 style={{
                                   display: 'flex',
                                   flexDirection: 'row',
-                                  alignItems: 'center',
+                                  alignItems: 'flex-start',
                                   justifyContent: 'flex-start',
                                 }}
                               >
@@ -303,12 +338,27 @@ const Consensus = ({
                                 >
                                   {memberIndex + 1}
                                 </span>
-
-                                <Link href={`/hotspots/${m}`}>
-                                  <a style={{ paddingLeft: 8 }}>
-                                    {animalHash(m)}
-                                  </a>
-                                </Link>
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'flex-start',
+                                    justifyContent: 'flex-end',
+                                  }}
+                                >
+                                  <Link href={`/hotspots/${m}`}>
+                                    <a style={{ paddingLeft: 8 }}>
+                                      {animalHash(m)}
+                                    </a>
+                                  </Link>
+                                  <Text
+                                    style={{ paddingLeft: 8 }}
+                                    type="secondary"
+                                    copyable
+                                  >
+                                    {m}
+                                  </Text>
+                                </div>
                               </div>
                             </li>
                           )
@@ -335,7 +385,7 @@ const Consensus = ({
   )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const [stats, oraclePrices, consensusGroups] = await Promise.all([
     fetchStats(),
     fetchOraclePrices(),
@@ -348,7 +398,6 @@ export async function getStaticProps() {
       oraclePrices,
       consensusGroups: JSON.parse(JSON.stringify(consensusGroups)),
     },
-    revalidate: 10,
   }
 }
 

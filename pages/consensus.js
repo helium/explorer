@@ -7,7 +7,6 @@ import { fetchElections, useElections } from '../data/consensus'
 import { formatLocation } from '../components/Hotspots/utils'
 import withBlockHeight from '../components/withBlockHeight'
 import { formatDistanceToNow, formatDuration, format } from 'date-fns'
-import { withRouter } from 'next/router'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import TopBanner from '../components/AppLayout/TopBanner'
@@ -15,6 +14,7 @@ import Widget from '../components/Home/Widget'
 import ConsensusImg from '../public/images/consensus.svg'
 import animalHash from 'angry-purple-tiger'
 import round from 'lodash/round'
+import ReactCountryFlag from 'react-country-flag'
 
 const ConsensusMapbox = dynamic(
   () => import('../components/Txns/ConsensusMapbox'),
@@ -29,9 +29,34 @@ const Consensus = ({
   consensusGroups: initialElections,
   height,
   heightLoading,
+  router,
 }) => {
   const { stats } = useStats(initialStats)
   const { consensusGroups } = useElections(initialElections)
+
+  const FlagSection = ({ group }) => {
+    const uniqueFlagShortcodes = []
+    group?.map((member, index) => {
+      if (!uniqueFlagShortcodes.includes(member.geocode.short_country))
+        uniqueFlagShortcodes.push(member.geocode.short_country)
+    })
+    return (
+      <div style={{ display: 'flex', paddingTop: 5 }}>
+        {uniqueFlagShortcodes.map((flagId, flagIndex) => {
+          return (
+            <ReactCountryFlag
+              countryCode={flagId}
+              style={{
+                fontSize: '1.5em',
+                marginLeft: '6px',
+                lineHeight: '1.5em',
+              }}
+            />
+          )
+        })}
+      </div>
+    )
+  }
 
   return (
     <AppLayout
@@ -53,7 +78,15 @@ const Consensus = ({
           padding: '40px 20px 100px',
         }}
       >
-        <Card title={`Currently Elected Hotspots`} style={{ marginBottom: 24 }}>
+        <Card
+          title={
+            <>
+              Currently Elected Hotspots
+              <FlagSection group={consensusGroups.currentElection} />
+            </>
+          }
+          style={{ marginBottom: 24 }}
+        >
           <div
             style={{ display: 'flex', flexDirection: 'column', padding: 24 }}
           >
@@ -111,6 +144,14 @@ const Consensus = ({
                         paddingLeft: 'calc(36px + 10px)',
                       }}
                     >
+                      <ReactCountryFlag
+                        countryCode={m.geocode.short_country}
+                        style={{
+                          fontSize: '1.5em',
+                          marginRight: '6px',
+                          lineHeight: '1.5em',
+                        }}
+                      />
                       {formatLocation(m.geocode)}
                     </p>
                   </li>
@@ -312,4 +353,4 @@ export async function getStaticProps() {
   }
 }
 
-export default withBlockHeight(withRouter(Consensus))
+export default withBlockHeight(Consensus)

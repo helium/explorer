@@ -2,6 +2,8 @@ import ReactMapboxGl, { Marker } from 'react-mapbox-gl'
 import { findBounds } from './utils'
 import animalHash from 'angry-purple-tiger'
 import { Tooltip } from 'antd'
+import ReactCountryFlag from 'react-country-flag'
+import { useRouter } from 'next/router'
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
@@ -23,6 +25,8 @@ const styles = {
 }
 
 const ConsensusMapbox = ({ members }) => {
+  const router = useRouter()
+
   const memberLocations = []
   members.map((m) => memberLocations.push({ lng: m?.lng, lat: m?.lat }))
   const mapBounds = findBounds(memberLocations)
@@ -44,7 +48,21 @@ const ConsensusMapbox = ({ members }) => {
     >
       {members?.map((m, idx) => {
         return (
-          <Tooltip title={animalHash(m.address)}>
+          <Tooltip
+            title={
+              <>
+                {animalHash(m.address)}{' '}
+                <ReactCountryFlag
+                  countryCode={m.geocode.short_country}
+                  style={{
+                    fontSize: '1.5em',
+                    marginLeft: '0 4px',
+                    lineHeight: '1.5em',
+                  }}
+                />
+              </>
+            }
+          >
             <Marker
               key={m.address}
               style={styles.consensusMember}

@@ -101,7 +101,6 @@ const Index = ({
               <Widget
                 title="Blocks"
                 value={stats.totalBlocks.toLocaleString()}
-                tooltip=""
                 footer="View Blocks"
                 href="/blocks"
               />
@@ -110,7 +109,6 @@ const Index = ({
               <Widget
                 title="Consensus Groups"
                 value={stats.consensusGroups.toLocaleString()}
-                tooltip=""
                 footer="View Consensus Groups"
                 href="/consensus"
               />

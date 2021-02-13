@@ -29,7 +29,6 @@ const Consensus = ({
   consensusGroups: initialElections,
   height,
   heightLoading,
-  router,
 }) => {
   const { stats } = useStats(initialStats)
   const { consensusGroups } = useElections(initialElections)

@@ -1,9 +1,12 @@
 import ReactMapboxGl, { Marker } from 'react-mapbox-gl'
 import { findBounds } from './utils'
 import animalHash from 'angry-purple-tiger'
-import { Tooltip } from 'antd'
+import { Tooltip, Button } from 'antd'
 import ReactCountryFlag from 'react-country-flag'
 import { useRouter } from 'next/router'
+import useDeepCompareEffect from 'use-deep-compare-effect'
+import { useState } from 'react'
+import { ReloadOutlined } from '@ant-design/icons'
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
@@ -27,9 +30,21 @@ const styles = {
 const ConsensusMapbox = ({ members }) => {
   const router = useRouter()
 
-  const memberLocations = []
-  members.map((m) => memberLocations.push({ lng: m?.lng, lat: m?.lat }))
-  const mapBounds = findBounds(memberLocations)
+  const [mapBounds, setMapBounds] = useState(
+    findBounds(members.map((m) => ({ lng: m?.lng, lat: m?.lat }))),
+  )
+
+  const calculateBounds = () => {
+    const memberLocations = []
+    members.map((m) => memberLocations.push({ lng: m?.lng, lat: m?.lat }))
+    setMapBounds(findBounds(memberLocations))
+  }
+
+  useDeepCompareEffect(() => {
+    // only recalculate bounds if the consensus group changes (requires looking deeply at–i.e. comparing each item in—the dependency array)
+    // otherwise (with a regular useEffect()) this would recalculate every time the data refreshes, resetting the user's zoom and pan every 10 seconds
+    calculateBounds()
+  }, [members])
 
   return (
     <Mapbox
@@ -77,6 +92,22 @@ const ConsensusMapbox = ({ members }) => {
           </Tooltip>
         )
       })}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '10px',
+          right: '10px',
+        }}
+      >
+        <Tooltip title={`Reset zoom and pan`} placement={'topRight'}>
+          <Button
+            type="secondary"
+            shape="circle"
+            onClick={() => calculateBounds()}
+            icon={<ReloadOutlined />}
+          ></Button>
+        </Tooltip>
+      </div>
     </Mapbox>
   )
 }

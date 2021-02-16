@@ -103,7 +103,7 @@ function Market({
               changeSuffix="%"
               tooltip="The Oracle price is used to determine how many DC are produced when burning HNT"
               footer="Learn more about Oracles"
-              href="https://developer.helium.com/blockchain/hnt-price-oracles"
+              href="https://docs.helium.com/blockchain/oracles"
             />
           </Col>
           <Col xs={24} md={6}>
@@ -114,7 +114,7 @@ function Market({
               changeIsAmbivalent
               tooltip="Data Credits are fixed at $0.00001 USD. The Oracle price is used to compute how much HNT to burn."
               footer="Learn more about DC"
-              href="https://developer.helium.com/longfi/data-credits"
+              href="https://docs.helium.com/blockchain/helium-token/#data-credits-and-burn-and-mint-economics"
             />
           </Col>
           <Col xs={24} md={6}>
@@ -127,7 +127,7 @@ function Market({
               ).toLocaleString()}
               tooltip="DC are used to transmit or receive 24 bytes of data over the Helium Network"
               footer="Learn more about Devices"
-              href="https://developer.helium.com/devices/introduction"
+              href="https://docs.helium.com/use-the-network/devices"
             />
           </Col>
         </Row>
@@ -144,7 +144,7 @@ function Market({
                 stats.circulatingSupply,
               ).toLocaleString()} HNT is currently in circulation`}
               changeIsAmbivalent
-              footer="View more"
+              footer="View external source"
               href="https://www.coingecko.com/en/coins/helium"
             />
           </Col>

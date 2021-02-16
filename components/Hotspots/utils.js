@@ -82,3 +82,15 @@ export const calculatePercentChange = (value, previousValue) => {
       : ((value - previousValue) / previousValue) * 100
   return percentChangeValue
 }
+
+export const generateRewardScaleColor = (rewardScale) => {
+  if (rewardScale >= 0.75) {
+    return '#32C48D'
+  } else if (rewardScale >= 0.5) {
+    return '#FCC945'
+  } else if (rewardScale >= 0.25) {
+    return '#FEA053'
+  } else {
+    return '#E86161'
+  }
+}

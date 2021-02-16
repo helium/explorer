@@ -60,9 +60,10 @@ const TokenBurnV1 = ({ txn }) => {
         {txnAmountObject.toString(2)}
       </Descriptions.Item>
       <Descriptions.Item label="Oracle Price" span={3}>
-        {oraclePrice ? oraclePrice.toString(2) : <InlineSkeleton />}
+        ${oraclePrice ? oraclePrice.toString(2) : <InlineSkeleton />}
       </Descriptions.Item>
       <Descriptions.Item label="Value" span={3}>
+        $
         {oraclePrice ? (
           txnAmountObject.toUsd(oraclePrice).toString(2)
         ) : (

@@ -1,14 +1,8 @@
-import React from 'react'
-import { Table, Card, Tooltip, Skeleton } from 'antd'
-import round from 'lodash/round'
+import React, { useState } from 'react'
+import { Table, Card } from 'antd'
 import { Content } from './AppLayout'
 import Link from 'next/link'
-import {
-  formatHotspotName,
-  formatLocation,
-  calculatePercentChange,
-  formatPercentChangeString,
-} from './Hotspots/utils'
+import { formatHotspotName, formatLocation } from './Hotspots/utils'
 import { StatusCircle } from './Hotspots'
 import HotspotRewardsRow from './Hotspots/HotspotRewardsRow'
 
@@ -34,6 +28,25 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
       dataIndex: 'geocode',
       key: 'location',
       render: (data) => <span>{formatLocation(data)}</span>,
+    },
+    {
+      title: 'Reward Scale',
+      dataIndex: 'rewardScale',
+      key: 'rewardScale',
+      render: (data) => {
+        if (data) {
+          return (
+            <span>
+              {data.toLocaleString(undefined, {
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2,
+              })}
+            </span>
+          )
+        } else {
+          return <span>Not set</span>
+        }
+      },
     },
     {
       title: 'Rewards (24h)',
@@ -73,11 +86,20 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
     },
   ]
 
+  const PAGE_SIZE_DEFAULT = 10
+  const [pageSize, setPageSize] = useState(PAGE_SIZE_DEFAULT)
+  const handleTableChange = (pagination, filter, sorter) => {
+    setPageSize(pagination.pageSize)
+  }
+
   return (
     <Content style={{ marginBottom: 20 }}>
-      <Card loading={hotspotsLoading} title={'Hotspots'}>
+      <Card
+        loading={hotspotsLoading}
+        title={`Hotspots${!hotspotsLoading ? ` (${hotspots.length})` : ''}`}
+      >
         {hotspots.length == 0 ? (
-          <h2
+          <p
             style={{
               textAlign: 'center',
               marginTop: '0.5rem',
@@ -87,17 +109,25 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
             }}
           >
             Account has no hotspots
-          </h2>
+          </p>
         ) : (
-          <Table
-            dataSource={hotspots}
-            columns={hotspotColumns}
-            loading={hotspotsLoading}
-            size="small"
-            rowKey="name"
-            pagination={{ pageSize: 10, hideOnSinglePage: true }}
-            scroll={{ x: true }}
-          />
+          <span className="ant-table-styling-override">
+            <Table
+              dataSource={hotspots}
+              columns={hotspotColumns}
+              loading={hotspotsLoading}
+              size="small"
+              rowKey="name"
+              pagination={{
+                pageSize,
+                showSizeChanger: hotspots.length > PAGE_SIZE_DEFAULT,
+                hideOnSinglePage: hotspots.length <= PAGE_SIZE_DEFAULT,
+                pageSizeOptions: [5, 10, 20, 50, 100],
+              }}
+              scroll={{ x: true }}
+              onChange={handleTableChange}
+            />
+          </span>
         )}
       </Card>
     </Content>

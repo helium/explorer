@@ -22,7 +22,9 @@ const ConsensusMapbox = dynamic(
   () => import('../components/Txns/ConsensusMapbox'),
   {
     ssr: false,
-    loading: () => <span style={{ height: '600px' }} />,
+    loading: () => (
+      <span style={{ minHeight: 600, backgroundColor: '#324b61' }} />
+    ),
   },
 )
 
@@ -79,9 +81,13 @@ const Consensus = ({
       url={`https://explorer.helium.com/consensus`}
     >
       <TopBanner icon={ConsensusImg} title="Consensus" />
-      {consensusGroups.currentElection && (
-        <ConsensusMapbox members={consensusGroups.currentElection} />
-      )}
+      <div
+        style={{ minHeight: 600, width: '100%', backgroundColor: '#324b61' }}
+      >
+        {consensusGroups.currentElection && (
+          <ConsensusMapbox members={consensusGroups.currentElection} />
+        )}
+      </div>
       <Content
         style={{
           margin: '0 auto',

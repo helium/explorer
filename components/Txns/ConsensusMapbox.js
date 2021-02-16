@@ -97,14 +97,15 @@ const ConsensusMapbox = ({ members }) => {
       <div
         style={{
           position: 'absolute',
-          bottom: '10px',
-          right: '10px',
+          top: '70px',
+          right: '12px',
         }}
       >
-        <Tooltip title={`Reset zoom and pan`} placement={'topRight'}>
+        <Tooltip title={`Reset zoom and pan`} placement={'bottomRight'}>
           <Button
             type="secondary"
             shape="circle"
+            size={'small'}
             onClick={() => calculateBounds()}
             icon={<ReloadOutlined />}
           ></Button>

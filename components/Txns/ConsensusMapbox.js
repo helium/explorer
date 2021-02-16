@@ -1,4 +1,4 @@
-import ReactMapboxGl, { Marker } from 'react-mapbox-gl'
+import ReactMapboxGl, { Marker, ZoomControl } from 'react-mapbox-gl'
 import { findBounds } from './utils'
 import animalHash from 'angry-purple-tiger'
 import { Tooltip, Button } from 'antd'
@@ -10,6 +10,7 @@ import { ReloadOutlined } from '@ant-design/icons'
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
+  scrollZoom: false,
 })
 
 const styles = {
@@ -61,6 +62,7 @@ const ConsensusMapbox = ({ members }) => {
       }}
       movingMethod="jumpTo"
     >
+      <ZoomControl />
       {members?.map((m, idx) => {
         return (
           <Tooltip

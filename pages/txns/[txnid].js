@@ -30,6 +30,7 @@ import {
   TokenBurnV1,
 } from '../../components/Txns'
 import Block from '../../public/images/block.svg'
+import { getColor, getName } from '../../components/Txns/TxnTag'
 
 const { Title, Text } = Typography
 
@@ -65,11 +66,16 @@ const rewardChart = (txn) => {
     const res = []
     if (txn.rewards.length > 0) {
       txn.rewards.forEach((t) => {
-        let f = res.find((x) => x.name === t.type)
+        let f = res.find((x) => x.type === t.type)
         if (f) {
           f.value++
         } else {
-          let n = { name: t.type, value: 1 }
+          let n = {
+            name: getName(t.type),
+            type: t.type,
+            value: 1,
+            color: getColor(t.type),
+          }
           res.push(n)
         }
       })

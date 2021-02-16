@@ -101,7 +101,7 @@ class ExportModal extends React.Component {
       filename: `${type === 'account' ? 'Account' : 'Hotspot'} ${address}`,
       fieldSeparator: ',',
       quoteStrings: '"',
-      decimalSeparator: '.',
+      decimalSeparator: 'locale',
       showLabels: true,
       useTextFile: false,
       useBom: true,

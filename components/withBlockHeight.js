@@ -11,7 +11,7 @@ const withBlockHeight = (WrappedComponent) => {
     componentDidMount() {
       this.client = new Client()
       this.loadBlockHeight()
-      window.setInterval(this.loadBlockHeight, 30000)
+      window.setInterval(this.loadBlockHeight, 5000)
     }
 
     loadBlockHeight = async () => {

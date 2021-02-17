@@ -15,6 +15,10 @@ import ConsensusImg from '../public/images/consensus.svg'
 import animalHash from 'angry-purple-tiger'
 import round from 'lodash/round'
 import ReactCountryFlag from 'react-country-flag'
+import ConsensusTable, {
+  makeArrayWorkWithAntTable,
+  generateColumns,
+} from '../components/ConsensusTable'
 
 const { Text } = Typography
 const { Panel } = Collapse
@@ -70,63 +74,6 @@ const Consensus = ({
         })}
       </div>
     )
-  }
-  const transformArray = (incomingArray) => {
-    return incomingArray.map((item, index) => ({ index, address: item }))
-  }
-
-  const generateColumns = (columnType) => {
-    const columns = [
-      {
-        title: 'Number',
-        dataIndex: 'index',
-        key: 'index',
-        render: (name, row, index) => index + 1,
-      },
-      {
-        title: 'Hotspot Name',
-        dataIndex: 'address',
-        key: 'address',
-        render: (address) => (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <Link href={`/hotspots/${address}`}>
-              <a style={{}}>{animalHash(address)}</a>
-            </Link>
-            {columnType === 'recent' && (
-              <Text type="secondary" copyable>
-                {address}
-              </Text>
-            )}
-          </div>
-        ),
-      },
-    ]
-
-    const locationColumn = {
-      title: 'Location',
-      dataIndex: 'geocode',
-      key: 'geocode',
-      render: (geocode) => (
-        <p
-          style={{
-            color: '#555',
-          }}
-        >
-          <ReactCountryFlag
-            countryCode={geocode.short_country}
-            style={{
-              fontSize: '1.5em',
-              marginRight: '6px',
-              lineHeight: '1.5em',
-            }}
-          />
-          {formatLocation(geocode)}
-        </p>
-      ),
-    }
-    if (columnType === 'current') columns.push(locationColumn)
-
-    return columns
   }
 
   return (
@@ -190,15 +137,9 @@ const Consensus = ({
           }
           style={{ marginBottom: 24 }}
         >
-          <Table
+          <ConsensusTable
             dataSource={consensusGroups.currentElection}
             columns={generateColumns('current')}
-            pagination={{
-              pageSize: 16,
-              showSizeChanger: false,
-              hideOnSinglePage: true,
-            }}
-            scroll={{ x: true }}
           />
         </Card>
         <Row gutter={[20, 20]}>
@@ -313,15 +254,9 @@ const Consensus = ({
                         {e.hash}
                       </a>
                     </Link>
-                    <Table
-                      dataSource={transformArray(e.members)}
+                    <ConsensusTable
+                      dataSource={makeArrayWorkWithAntTable(e.members)}
                       columns={generateColumns('recent')}
-                      pagination={{
-                        pageSize: 16,
-                        showSizeChanger: false,
-                        hideOnSinglePage: true,
-                      }}
-                      scroll={{ x: true }}
                     />
                   </Panel>
                 )

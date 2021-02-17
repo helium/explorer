@@ -22,7 +22,6 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    // border: '3px solid #363abf',
     boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
     cursor: 'pointer',
   },

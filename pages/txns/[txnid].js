@@ -23,6 +23,7 @@ import {
   PocReceiptsV1,
   RewardsV1,
   StateChannelCloseV1,
+  StateChannelOpenV1,
   PocRequestV1,
   TransferHotspotV1,
   ConsensusGroupV1,
@@ -50,6 +51,8 @@ const txnView = (txn) => {
       return <ConsensusGroupV1 txn={txn} />
     case 'state_channel_close_v1':
       return <StateChannelCloseV1 txn={txn} />
+    case 'state_channel_open_v1':
+      return <StateChannelOpenV1 txn={txn} />
     case 'transfer_hotspot_v1':
       return <TransferHotspotV1 txn={txn} />
     case 'assert_location_v1':

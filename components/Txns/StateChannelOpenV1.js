@@ -2,33 +2,36 @@ import React from 'react'
 import { Descriptions } from 'antd'
 import Link from 'next/link'
 
+import AccountIcon from '../AccountIcon'
+
 const StateChannelOpenV1 = ({ txn }) => (
   <Descriptions bordered>
-    <Descriptions.Item label="type" span={3}>
-      {txn.type}
+    <Descriptions.Item label="Owner" span={3}>
+      <div style={{ display: 'flex' }}>
+        <AccountIcon
+          address={txn.payer}
+          style={{ marginRight: 4, maxHeight: 24 }}
+        />
+        <Link href={'/accounts/' + txn.owner}>{txn.owner}</Link>
+      </div>
     </Descriptions.Item>
-    <Descriptions.Item label="owner" span={3}>
-      <Link href={'/accounts/' + txn.owner}>{txn.owner}</Link>
-    </Descriptions.Item>
-    <Descriptions.Item label="oui" span={3}>
+    <Descriptions.Item label="OUI" span={3}>
       {txn.oui}
     </Descriptions.Item>
-    <Descriptions.Item label="nonce" span={3}>
+    <Descriptions.Item label="Nonce" span={3}>
       {txn.nonce}
     </Descriptions.Item>
-    <Descriptions.Item label="id" span={3}>
+    <Descriptions.Item label="ID" span={3}>
       {txn.id}
     </Descriptions.Item>
-    <Descriptions.Item label="hash" span={3}>
-      <Link href={'/txns/' + txn.hash}>{txn.hash}</Link>
-    </Descriptions.Item>
-    <Descriptions.Item label="fee" span={3}>
+
+    <Descriptions.Item label="Fee" span={3}>
       {txn.fee.floatBalance.toString()} DC
     </Descriptions.Item>
-    <Descriptions.Item label="expireWithin" span={3}>
-      {txn.expireWithin}
+    <Descriptions.Item label="Expire within" span={3}>
+      {txn.expireWithin} Blocks
     </Descriptions.Item>
-    <Descriptions.Item label="amount" span={3}>
+    <Descriptions.Item label="Amount" span={3}>
       {txn.amount.floatBalance.toString()} HNT
     </Descriptions.Item>
   </Descriptions>

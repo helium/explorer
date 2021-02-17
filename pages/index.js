@@ -90,11 +90,65 @@ const Index = ({
           <Row gutter={[20, 20]}>
             <Col xs={24} md={8}>
               <Widget
-                title="Total Hotspots"
+                title="Hotspots"
                 value={stats.totalHotspots.toLocaleString()}
                 tooltip="The Helium network is made up of thousands of hotspots providing coverage around the globe"
                 footer="View Hotspots"
                 href="/hotspots"
+              />
+            </Col>
+            <Col xs={24} md={8}>
+              <Widget
+                title="Blocks"
+                value={stats.totalBlocks.toLocaleString()}
+                footer="View Blocks"
+                href="/blocks"
+              />
+            </Col>
+            <Col xs={24} md={8}>
+              <Widget
+                title="Consensus Groups"
+                value={stats.consensusGroups.toLocaleString()}
+                footer="View Consensus Groups"
+                href="/consensus"
+              />
+            </Col>
+          </Row>
+          <div
+            style={{
+              background: '#fff',
+              borderRadius: 10,
+              marginBottom: 20,
+              paddingBottom: 30,
+            }}
+            className="ant-card-head"
+          >
+            <Row>
+              <Col lg={12}>
+                <div class="ant-card-head-title">Hotspot Map</div>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={24}>
+                <a href="/coverage">
+                  <MiniCoverageMap zoomLevel={0.65} />
+                </a>
+              </Col>
+            </Row>
+          </div>
+          <Row gutter={[20, 20]}>
+            <Col xs={24} md={8}>
+              <Widget
+                title="Election Times (24h)"
+                value={`${round(stats.electionTimes.lastDay.avg / 60, 1)} min`}
+                change={
+                  round(stats.electionTimes.lastHour.avg / 60) -
+                  round(stats.electionTimes.lastDay.avg / 60)
+                }
+                changeSuffix=" min"
+                changeUpIsBad
+                footer="View Consensus Groups"
+                href="/consensus"
               />
             </Col>
             <Col xs={24} md={8}>
@@ -129,9 +183,6 @@ const Index = ({
                 href="/market"
               />
             </Col>
-          </Row>
-
-          <Row gutter={[20, 20]}>
             <Col xs={24} md={16}>
               <HalvingCountdown />
             </Col>
@@ -154,30 +205,6 @@ const Index = ({
               />
             </Col>
           </Row>
-
-          <div
-            style={{
-              background: '#fff',
-              borderRadius: 10,
-              marginBottom: 20,
-              paddingBottom: 30,
-            }}
-            className="ant-card-head"
-          >
-            <Row>
-              <Col lg={12}>
-                <div class="ant-card-head-title">Hotspot Map</div>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={24}>
-                <a href="/coverage">
-                  <MiniCoverageMap zoomLevel={0.65} />
-                </a>
-              </Col>
-            </Row>
-          </div>
-
           <Card title="Latest Blocks" style={{ marginBottom: 60 }}>
             <BlocksList pageSize={10} showButton={false} />
             <Row justify="center" style={{ padding: '20px 0' }}>

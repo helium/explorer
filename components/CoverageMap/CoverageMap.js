@@ -7,7 +7,8 @@ import ScaleControl from '../ScaleControl'
 import classNames from 'classnames'
 import { HotKeys } from 'react-hotkeys'
 import Ruler from '../../public/images/ruler-light.svg'
-import { distance as turfDistance, point as turfPoint } from '@turf/turf'
+import turfDistance from '@turf/distance'
+import { point as turfPoint } from '@turf/helpers'
 
 const maxZoom = 14
 const minZoom = 2

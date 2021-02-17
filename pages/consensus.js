@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Row, Col, Tooltip, Typography } from 'antd'
+import { Card, Row, Col, Tooltip, Typography, Table, Collapse } from 'antd'
 import AppLayout, { Content } from '../components/AppLayout'
 import { fetchStats, useStats } from '../data/stats'
 import { fetchOraclePrices, useOraclePrices } from '../data/oracles'
@@ -17,6 +17,7 @@ import round from 'lodash/round'
 import ReactCountryFlag from 'react-country-flag'
 
 const { Text } = Typography
+const { Panel } = Collapse
 
 const ConsensusMapbox = dynamic(
   () => import('../components/Txns/ConsensusMapbox'),
@@ -52,16 +53,16 @@ const Consensus = ({
         })
     })
     return (
-      <div style={{ display: 'flex', paddingTop: 5 }}>
+      <div style={{ display: 'flex' }}>
         {uniqueFlagShortcodes.map((flagId, flagIndex) => {
           return (
-            <Tooltip title={flagId.fullCountryName} placement={'bottom'}>
+            <Tooltip title={flagId.fullCountryName} placement={'top'}>
               <ReactCountryFlag
                 countryCode={flagId.id}
                 style={{
-                  fontSize: '1.5em',
-                  marginLeft: '6px',
-                  lineHeight: '1.5em',
+                  fontSize: '2em',
+                  marginLeft: flagIndex === 0 ? '0' : '6px',
+                  lineHeight: '2em',
                 }}
               />
             </Tooltip>
@@ -69,6 +70,63 @@ const Consensus = ({
         })}
       </div>
     )
+  }
+  const transformArray = (incomingArray) => {
+    return incomingArray.map((item, index) => ({ index, address: item }))
+  }
+
+  const generateColumns = (columnType) => {
+    const columns = [
+      {
+        title: 'Number',
+        dataIndex: 'index',
+        key: 'index',
+        render: (name, row, index) => index + 1,
+      },
+      {
+        title: 'Hotspot Name',
+        dataIndex: 'address',
+        key: 'address',
+        render: (address) => (
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <Link href={`/hotspots/${address}`}>
+              <a style={{}}>{animalHash(address)}</a>
+            </Link>
+            {columnType === 'recent' && (
+              <Text type="secondary" copyable>
+                {address}
+              </Text>
+            )}
+          </div>
+        ),
+      },
+    ]
+
+    const locationColumn = {
+      title: 'Location',
+      dataIndex: 'geocode',
+      key: 'geocode',
+      render: (geocode) => (
+        <p
+          style={{
+            color: '#555',
+          }}
+        >
+          <ReactCountryFlag
+            countryCode={geocode.short_country}
+            style={{
+              fontSize: '1.5em',
+              marginRight: '6px',
+              lineHeight: '1.5em',
+            }}
+          />
+          {formatLocation(geocode)}
+        </p>
+      ),
+    }
+    if (columnType === 'current') columns.push(locationColumn)
+
+    return columns
   }
 
   return (
@@ -88,6 +146,18 @@ const Consensus = ({
           <ConsensusMapbox members={consensusGroups.currentElection} />
         )}
       </div>
+      <div
+        style={{
+          width: '100%',
+          padding: '0px 0',
+          backgroundColor: 'rgb(24, 32, 53)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <FlagSection group={consensusGroups.currentElection} />
+      </div>
       <Content
         style={{
           margin: '0 auto',
@@ -98,96 +168,38 @@ const Consensus = ({
         <Card
           title={
             <>
-              Currently Elected Hotspots
-              <FlagSection group={consensusGroups.currentElection} />
+              <h1 style={{ fontSize: 24, padding: '12px 0 0 0', margin: 0 }}>
+                Current Consensus Group
+              </h1>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <Link
+                  href={`/blocks/${consensusGroups.recentElections[0].height}`}
+                >
+                  <a style={{ paddingBottom: 12 }}>
+                    Block{' '}
+                    {consensusGroups.recentElections[0].height.toLocaleString()}
+                  </a>
+                </Link>
+                <Link href={`/txns/${consensusGroups.recentElections[0].hash}`}>
+                  <a style={{ paddingBottom: 12, fontSize: 12, color: '#bbb' }}>
+                    {consensusGroups.recentElections[0].hash}
+                  </a>
+                </Link>
+              </div>
             </>
           }
           style={{ marginBottom: 24 }}
         >
-          <div
-            style={{ display: 'flex', flexDirection: 'column', padding: 24 }}
-          >
-            <Link href={`/blocks/${consensusGroups.recentElections[0].height}`}>
-              <a style={{ fontSize: 18, fontWeight: 600, paddingBottom: 12 }}>
-                Block{' '}
-                {consensusGroups.recentElections[0].height.toLocaleString()}
-              </a>
-            </Link>
-            <Link href={`/txns/${consensusGroups.recentElections[0].hash}`}>
-              <a style={{ fontSize: 14, fontWeight: 400, paddingBottom: 36 }}>
-                {consensusGroups.recentElections[0].hash}
-              </a>
-            </Link>
-            <ul style={{ listStyle: 'none', marginLeft: 0, paddingLeft: 0 }}>
-              {consensusGroups.currentElection.map((m, mIndex) => {
-                return (
-                  <li
-                    style={{
-                      paddingBottom: '18px',
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'flex-start',
-                      }}
-                    >
-                      <span
-                        style={{
-                          backgroundColor: '#ff6666',
-                          color: 'white',
-                          minHeight: '36px',
-                          height: '36px',
-                          minWidth: '36px',
-                          width: '36px',
-                          borderRadius: '36px',
-                          textAlign: 'center',
-                          boxShadow: '0 0 5px #cccccc',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '18px',
-                          marginBottom: '0px',
-                        }}
-                      >
-                        {mIndex + 1}
-                      </span>
-                      <Link href={`/hotspots/${m.address}`}>
-                        <a style={{ paddingLeft: '10px', fontSize: '18px' }}>
-                          {animalHash(m.address)}
-                        </a>
-                      </Link>
-                    </div>
-                    <Text
-                      type="secondary"
-                      copyable
-                      style={{ paddingLeft: 'calc(36px + 10px)' }}
-                    >
-                      {m.address}
-                    </Text>
-                    <p
-                      style={{
-                        color: '#555',
-                        paddingLeft: 'calc(36px + 10px)',
-                      }}
-                    >
-                      <ReactCountryFlag
-                        countryCode={m.geocode.short_country}
-                        style={{
-                          fontSize: '1.5em',
-                          marginRight: '6px',
-                          lineHeight: '1.5em',
-                        }}
-                      />
-                      {formatLocation(m.geocode)}
-                    </p>
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
+          <Table
+            dataSource={consensusGroups.currentElection}
+            columns={generateColumns('current')}
+            pagination={{
+              pageSize: 16,
+              showSizeChanger: false,
+              hideOnSinglePage: true,
+            }}
+            scroll={{ x: true }}
+          />
         </Card>
         <Row gutter={[20, 20]}>
           <Col xs={24} md={12} lg={8}>
@@ -271,120 +283,51 @@ const Consensus = ({
           </Col>
         </Row>
         <Card title="Recent Consensus Groups">
-          <ul style={{ listStyle: 'none', marginLeft: 0, paddingLeft: 0 }}>
+          <Collapse>
             {consensusGroups.recentElections?.map((e, i, { length }) => {
               if (i !== 0) {
                 return (
-                  <>
-                    <div
-                      style={{
-                        padding: 24,
-                      }}
-                    >
-                      <Link href={`/blocks/${e.height}`}>
-                        <a
-                          style={{
-                            paddingBottom: 12,
-                            fontSize: 16,
-                            display: 'block',
-                          }}
-                        >
-                          Block {e.height.toLocaleString()}
-                        </a>
-                      </Link>
-                      <Link href={`/txns/${e.hash}`}>
-                        <a
-                          style={{
-                            paddingBottom: 20,
-                            fontSize: 12,
-                            display: 'block',
-                          }}
-                        >
-                          {e.hash}
-                        </a>
-                      </Link>
-                      <div
+                  <Panel
+                    key={`${i}-${e.hash}`}
+                    header={`Block ${e.height.toLocaleString()}`}
+                  >
+                    <Link href={`/blocks/${e.height}`}>
+                      <a
                         style={{
-                          display: 'flex',
-                          flexDirection: 'column',
+                          paddingBottom: 12,
+                          fontSize: 16,
+                          display: 'block',
                         }}
                       >
-                        {e.members.map((m, memberIndex) => {
-                          return (
-                            <li
-                              style={{
-                                paddingBottom: '18px',
-                              }}
-                            >
-                              <div
-                                style={{
-                                  display: 'flex',
-                                  flexDirection: 'row',
-                                  alignItems: 'flex-start',
-                                  justifyContent: 'flex-start',
-                                }}
-                              >
-                                <span
-                                  style={{
-                                    backgroundColor: '#ff6666',
-                                    color: 'white',
-                                    minHeight: '24px',
-                                    height: '24px',
-                                    minWidth: '24px',
-                                    width: '24px',
-                                    borderRadius: '24px',
-                                    textAlign: 'center',
-                                    boxShadow: '0 0 5px #cccccc',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    fontSize: '12px',
-                                    marginBottom: '0px',
-                                  }}
-                                >
-                                  {memberIndex + 1}
-                                </span>
-                                <div
-                                  style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'flex-start',
-                                    justifyContent: 'flex-end',
-                                  }}
-                                >
-                                  <Link href={`/hotspots/${m}`}>
-                                    <a style={{ paddingLeft: 8 }}>
-                                      {animalHash(m)}
-                                    </a>
-                                  </Link>
-                                  <Text
-                                    style={{ paddingLeft: 8 }}
-                                    type="secondary"
-                                    copyable
-                                  >
-                                    {m}
-                                  </Text>
-                                </div>
-                              </div>
-                            </li>
-                          )
-                        })}
-                      </div>
-                    </div>
-                    {i !== length - 1 && (
-                      <div
+                        Block {e.height.toLocaleString()}
+                      </a>
+                    </Link>
+                    <Link href={`/txns/${e.hash}`}>
+                      <a
                         style={{
-                          height: 1,
-                          backgroundColor: '#ddd',
-                          width: '100%',
+                          paddingBottom: 20,
+                          fontSize: 12,
+                          display: 'block',
                         }}
-                      />
-                    )}
-                  </>
+                      >
+                        {e.hash}
+                      </a>
+                    </Link>
+                    <Table
+                      dataSource={transformArray(e.members)}
+                      columns={generateColumns('recent')}
+                      pagination={{
+                        pageSize: 16,
+                        showSizeChanger: false,
+                        hideOnSinglePage: true,
+                      }}
+                      scroll={{ x: true }}
+                    />
+                  </Panel>
                 )
               }
             })}
-          </ul>
+          </Collapse>
         </Card>
       </Content>
     </AppLayout>

@@ -15,14 +15,14 @@ const Mapbox = ReactMapboxGl({
 
 const styles = {
   consensusMember: {
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24,
     borderRadius: '50%',
-    backgroundColor: '#ff6666',
+    backgroundColor: '#474DFF',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    border: '3px solid #c94f4f',
+    // border: '3px solid #363abf',
     boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
     cursor: 'pointer',
   },
@@ -62,7 +62,7 @@ const ConsensusMapbox = ({ members }) => {
       }}
       movingMethod="jumpTo"
     >
-      <ZoomControl />
+      <ZoomControl style={{ zIndex: 5 }} />
       {members?.map((m, idx) => {
         return (
           <Tooltip
@@ -84,12 +84,21 @@ const ConsensusMapbox = ({ members }) => {
               key={m.address}
               style={styles.consensusMember}
               anchor="center"
+              className="consensus-mapbox-marker"
               coordinates={[m?.lng, m?.lat]}
               onClick={() => router.push(`/hotspots/${m.address}`)}
             >
-              <span style={{ color: 'white', fontSize: '10px' }}>
+              <p
+                className="consensus-mapbox-hover-text"
+                style={{
+                  color: 'white',
+                  textShadow: '0px 2px rgba(0,0,0,0.5)',
+                  fontFamily: 'Inter',
+                  fontWeight: 800,
+                }}
+              >
                 {idx + 1}
-              </span>
+              </p>
             </Marker>
           </Tooltip>
         )

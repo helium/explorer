@@ -21,3 +21,13 @@ Conduct](http://contributor-covenant.org/).
 
 Above all, thank you for taking the time to be a part of the Helium
 community.
+
+### Notes
+
+To analyze bundle sizes and make sure you're not adding too much to
+the overall bundle size of the project, you can analyze what is
+included in the bundle by running:
+
+```bash
+$ ANALYZE=true yarn build
+```

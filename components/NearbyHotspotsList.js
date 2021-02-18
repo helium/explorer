@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Card, Table } from 'antd'
 import Link from 'next/link'
 import { StatusCircle } from './Hotspots'
@@ -40,18 +40,38 @@ const columns = [
   },
 ]
 
-const NearbyHotspotsList = ({ nearbyHotspots, nearbyHotspotsLoading }) => (
-  <Card title={'Nearby Hotspots'}>
-    <Table
-      dataSource={nearbyHotspots}
-      columns={columns}
-      size="small"
-      loading={nearbyHotspotsLoading}
-      rowKey="name"
-      pagination={{ pageSize: 5, hideOnSinglePage: true }}
-      scroll={{ x: true }}
-    />
-  </Card>
-)
+const NearbyHotspotsList = ({ nearbyHotspots, nearbyHotspotsLoading }) => {
+  const PAGE_SIZE_DEFAULT = 5
+  const [pageSize, setPageSize] = useState(PAGE_SIZE_DEFAULT)
+
+  const handleTableChange = (pagination, filter, sorter) => {
+    setPageSize(pagination.pageSize)
+  }
+  return (
+    <Card
+      title={`Nearby Hotspots${
+        !nearbyHotspotsLoading ? ` (${nearbyHotspots.length})` : ''
+      }`}
+    >
+      <span className="ant-table-styling-override">
+        <Table
+          dataSource={nearbyHotspots}
+          columns={columns}
+          size="small"
+          loading={nearbyHotspotsLoading}
+          rowKey="name"
+          pagination={{
+            pageSize,
+            showSizeChanger: nearbyHotspots.length > PAGE_SIZE_DEFAULT,
+            hideOnSinglePage: nearbyHotspots.length <= PAGE_SIZE_DEFAULT,
+            pageSizeOptions: [5, 10, 20, 50, 100],
+          }}
+          scroll={{ x: true }}
+          onChange={handleTableChange}
+        />
+      </span>
+    </Card>
+  )
+}
 
 export default NearbyHotspotsList

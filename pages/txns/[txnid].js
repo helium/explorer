@@ -23,6 +23,7 @@ import {
   PocReceiptsV1,
   RewardsV1,
   StateChannelCloseV1,
+  StateChannelOpenV1,
   PocRequestV1,
   TransferHotspotV1,
   ConsensusGroupV1,
@@ -30,6 +31,7 @@ import {
   TokenBurnV1,
 } from '../../components/Txns'
 import Block from '../../public/images/block.svg'
+import { getColor, getName } from '../../components/Txns/TxnTag'
 
 const { Title, Text } = Typography
 
@@ -49,6 +51,8 @@ const txnView = (txn) => {
       return <ConsensusGroupV1 txn={txn} />
     case 'state_channel_close_v1':
       return <StateChannelCloseV1 txn={txn} />
+    case 'state_channel_open_v1':
+      return <StateChannelOpenV1 txn={txn} />
     case 'transfer_hotspot_v1':
       return <TransferHotspotV1 txn={txn} />
     case 'assert_location_v1':
@@ -65,11 +69,16 @@ const rewardChart = (txn) => {
     const res = []
     if (txn.rewards.length > 0) {
       txn.rewards.forEach((t) => {
-        let f = res.find((x) => x.name === t.type)
+        let f = res.find((x) => x.type === t.type)
         if (f) {
           f.value++
         } else {
-          let n = { name: t.type, value: 1 }
+          let n = {
+            name: getName(t.type),
+            type: t.type,
+            value: 1,
+            color: getColor(t.type),
+          }
           res.push(n)
         }
       })

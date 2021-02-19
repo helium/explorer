@@ -63,7 +63,7 @@ const RewardSummary = ({ rewards, rewardsLoading }) => {
         >
           {!rewardsLoading && (
             <>
-              <div>
+              <div style={{ width: '50%' }}>
                 <div
                   style={{
                     display: 'flex',
@@ -131,7 +131,7 @@ const RewardSummary = ({ rewards, rewardsLoading }) => {
               </div>
               <div
                 style={{
-                  width: '100%',
+                  width: isMobile ? '100%' : '50%',
                   padding: isMobile ? '24px 0 0 0' : '0 0 0 24px',
                 }}
               >

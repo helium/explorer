@@ -28,7 +28,7 @@ const EarningsChart = ({ rewards, rewardsLoading }) => {
       .reverse()
 
     return (
-      <div style={{ width: '100%', height: 120 }}>
+      <div style={{ width: '100%', height: '100%' }}>
         <ResponsiveContainer>
           <BarChart
             onMouseEnter={handleMouseEvent}

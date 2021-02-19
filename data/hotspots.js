@@ -1,9 +1,5 @@
 import useSWR from 'swr'
 import Client from '@helium/http'
-import fetch from 'node-fetch'
-import { sub, formatISO } from 'date-fns'
-import qs from 'qs'
-import sumBy from 'lodash/sumBy'
 
 export const fetchLatestHotspots = async (count = 20) => {
   const client = new Client()
@@ -25,53 +21,25 @@ export const useLatestHotspots = (initialData, count = 20) => {
   }
 }
 
-const convertDateToUTC = (date) =>
-  new Date(
-    date.getUTCFullYear(),
-    date.getUTCMonth(),
-    date.getUTCDate(),
-    date.getUTCHours(),
-    date.getUTCMinutes(),
-    date.getUTCSeconds(),
-  )
+const MAX = 100000
+const client = new Client()
 
-// TODO add this to helium-js
-export const fetchRewardsSummary = async (address) => {
-  const now = new Date()
-  const nowUTC = convertDateToUTC(now)
-  // Use UTC version of current time so that the current day's rewards get included in the API response
+export const getHotspotRewardsSum = async (address, numDaysBack) => {
+  const initialDate = new Date()
+  const endDate = new Date()
+  endDate.setDate(initialDate.getDate() - numDaysBack)
+  return client.hotspot(address).rewards.sum.get(endDate, initialDate)
+}
 
-  const monthAgo = sub(nowUTC, { days: 30 })
-  const twoMonthsAgo = sub(monthAgo, { days: 30 })
-  const params = qs.stringify({
-    // since the ISO format of the dates will always be a known length, substr(0, 19) will lop off the offset from the end
-    // this should only have an effect locally in the dev environment, because doing new Date() on Heroku won't have an offset
-    min_time: formatISO(twoMonthsAgo).substr(0, 19),
-    max_time: formatISO(nowUTC).substr(0, 19),
-    bucket: 'day',
+export const getHotspotRewardsBuckets = async (
+  address,
+  numBack,
+  bucketType,
+) => {
+  const list = await client.hotspot(address).rewards.sum.list({
+    minTime: `-${numBack} ${bucketType}`,
+    maxTime: new Date(),
+    bucket: bucketType,
   })
-  const url = `https://api.helium.io/v1/hotspots/${address}/rewards/sum?${params}`
-  const response = await fetch(url)
-  const { data } = await response.json()
-
-  if (data) {
-    return {
-      buckets: data,
-      day: data[0].total,
-      previousDay: data[1].total,
-      week: sumBy(data.slice(0, 6), 'total'),
-      previousWeek: sumBy(data.slice(6, 13), 'total'),
-      month: sumBy(data.slice(0, 29), 'total'),
-      previousMonth: sumBy(data.slice(29, 59), 'total'),
-    }
-  } else {
-    return {
-      day: 0,
-      previousDay: 0,
-      week: 0,
-      previousWeek: 0,
-      month: 0,
-      previousMonth: 0,
-    }
-  }
+  return await list.take(MAX)
 }

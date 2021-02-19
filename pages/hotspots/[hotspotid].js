@@ -18,8 +18,13 @@ import {
   formatHotspotName,
   formatLocation,
 } from '../../components/Hotspots/utils'
+import sumBy from 'lodash/sumBy'
 
-import { fetchRewardsSummary } from '../../data/hotspots'
+import {
+  fetchRewardsSummary,
+  getHotspotRewardsBuckets,
+  getHotspotRewardsSum,
+} from '../../data/hotspots'
 import Hex from '../../components/Hex'
 import { generateRewardScaleColor } from '../../components/Hotspots/utils'
 
@@ -146,8 +151,21 @@ const HotspotView = ({ hotspot }) => {
 
     async function getHotspotRewards() {
       setRewardsLoading(true)
-      const rewardsResponse = await fetchRewardsSummary(hotspotid)
-      setRewards(rewardsResponse)
+      const sixtyDays = await getHotspotRewardsBuckets(hotspotid, 60, 'day')
+      // const fourtyEightHours = await getHotspotRewardsBuckets(
+      //   hotspotid,
+      //   48,
+      //   'hour',
+      // )
+      setRewards({
+        buckets: sixtyDays,
+        day: sumBy(sixtyDays.slice(0, 1), 'total'),
+        previousDay: sumBy(sixtyDays.slice(1, 2), 'total'),
+        week: sumBy(sixtyDays.slice(0, 7), 'total'),
+        previousWeek: sumBy(sixtyDays.slice(7, 14), 'total'),
+        month: sumBy(sixtyDays.slice(0, 30), 'total'),
+        previousMonth: sumBy(sixtyDays.slice(30, 60), 'total'),
+      })
       setRewardsLoading(false)
     }
 

@@ -8,6 +8,7 @@ const { Title, Text } = Typography
 
 const Widget = ({
   title,
+  titleTextSize,
   subtitle,
   value,
   footer,
@@ -48,7 +49,19 @@ const Widget = ({
           )}
         </Row>
         <Row align="middle">
-          <Text style={{ color: '#171E2D', fontSize: 32, fontWeight: 500 }}>
+          <Text
+            style={{
+              wordBreak: 'break-all',
+              color: '#171E2D',
+              fontSize:
+                titleTextSize === 'small'
+                  ? 18
+                  : titleTextSize === 'medium'
+                  ? 24
+                  : 32,
+              fontWeight: 500,
+            }}
+          >
             {value}
           </Text>
           {change !== undefined && (

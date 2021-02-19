@@ -15,6 +15,8 @@ export const fetchStats = async () => {
     electionTimes: stats.electionTimes,
     packetsTransferred: stats.stateChannelCounts.lastMonth.numPackets,
     dataCredits: stats.stateChannelCounts.lastMonth.numDcs,
+    transactionFees: stats.fees.lastMonth.transaction,
+    stakingFees: stats.fees.lastMonth.staking,
     totalHotspots: stats.counts.hotspots,
     totalBlocks: stats.counts.blocks,
     totalCities: stats.counts.cities,

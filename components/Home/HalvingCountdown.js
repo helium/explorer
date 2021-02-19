@@ -5,7 +5,8 @@ import Countdown from 'react-countdown'
 const HalveningCountdown = () => {
   return (
     <Widget
-      title="Countdown to Rewards Halving"
+      title="Time Until Rewards Halving"
+      titleTextSize={'small'}
       value={
         <Countdown
           date={new Date('2021-08-01')}

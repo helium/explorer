@@ -137,7 +137,7 @@ const Index = ({
             </Row>
           </div>
           <Row gutter={[20, 20]}>
-            <Col xs={24} md={8}>
+            <Col xs={24} lg={8}>
               <Widget
                 title="Election Times (24h)"
                 value={`${round(stats.electionTimes.lastDay.avg / 60, 1)} min`}
@@ -151,7 +151,7 @@ const Index = ({
                 href="/consensus"
               />
             </Col>
-            <Col xs={24} md={8}>
+            <Col xs={24} lg={8}>
               <Widget
                 title="Block Time"
                 value={`${round(stats.blockTimes.lastHour.avg)} sec`}
@@ -166,7 +166,7 @@ const Index = ({
                 href="/blocks"
               />
             </Col>
-            <Col xs={24} md={8}>
+            <Col xs={24} lg={8}>
               <Widget
                 title="Current Price"
                 value={market.price.toLocaleString('en-US', {
@@ -183,11 +183,12 @@ const Index = ({
                 href="/market"
               />
             </Col>
-            <Col xs={24} md={16}>
+            <Col xs={24} lg={8}>
               <HalvingCountdown />
             </Col>
-            <Col xs={24} md={8}>
+            <Col xs={24} lg={8}>
               <Widget
+                titleTextSize={'small'}
                 title="Data Credits Spent (30d)"
                 value={stats.dataCredits.toLocaleString()}
                 subtitle={(stats.dataCredits * 0.00001).toLocaleString(
@@ -200,6 +201,25 @@ const Index = ({
                   },
                 )}
                 tooltip="Data credits are spent to send and receive data over the Helium Network. HNT are burned to receive DC."
+                footer="View Market Data"
+                href="/market"
+              />
+            </Col>
+            <Col xs={24} lg={8}>
+              <Widget
+                titleTextSize={'small'}
+                title="Onboarding Fees (30d)"
+                value={stats.stakingFees.toLocaleString()}
+                subtitle={(stats.stakingFees * 0.00001).toLocaleString(
+                  'en-US',
+                  {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  },
+                )}
+                tooltip="Onboarding fees are paid in Data Credits and are incurred when adding a new Hotspot to the blockchain or asserting the location of a Hotspot."
                 footer="View Market Data"
                 href="/market"
               />

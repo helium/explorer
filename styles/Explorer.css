@@ -468,6 +468,18 @@ hr {
   transform: translateY(-5px);
 }
 
+.earnings-chart-period-container {
+  padding: 36px 36px 40px 36px;
+}
+.earnings-chart-container {
+  display: flex;
+  flex-direction: row;
+}
+.earnings-chart-content {
+  width: 50%;
+  padding: 0 0 0 24px;
+}
+
 @media screen and (max-width: 1200px) {
   .map-button {
     min-width: 0;
@@ -543,6 +555,16 @@ hr {
   .interactive-coverage-map > .mapboxgl-map {
     position: absolute;
     height: 50vh;
+  }
+  .earnings-chart-period-container {
+    padding: 24px;
+  }
+  .earnings-chart-container {
+    flex-direction: column;
+  }
+  .earnings-chart-content {
+    width: 100%;
+    padding: 24px 0 0 0;
   }
 }
 

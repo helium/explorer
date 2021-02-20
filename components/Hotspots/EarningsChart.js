@@ -9,7 +9,7 @@ import {
 } from 'recharts'
 import { format, fromUnixTime, getUnixTime } from 'date-fns'
 
-const EarningsChart = ({ rewards, rewardsLoading }) => {
+const EarningsChart = ({ value, valueLoading, slices, buckets }) => {
   const [focusBar, setFocusBar] = useState(null)
   const handleMouseEvent = (state) => {
     if (state.isTooltipActive) {
@@ -18,26 +18,26 @@ const EarningsChart = ({ rewards, rewardsLoading }) => {
       setFocusBar(null)
     }
   }
-  if (!rewardsLoading) {
-    const rewardsToChart = rewards.buckets
-      ?.map(({ timestamp, total }) => ({
+  if (!valueLoading) {
+    let rewardBuckets = buckets
+    const valueToChart = rewardBuckets
+      .map(({ timestamp, total }) => ({
         timestamp: getUnixTime(new Date(timestamp)),
         total: total,
       }))
-      .slice(0, 30)
-      .reverse()
+      .slice(-slices, rewardBuckets.length)
+
+    // .reverse()
 
     return (
-      <div style={{ width: '100%', height: '100%' }}>
+      <div style={{ height: '100%' }}>
         <ResponsiveContainer>
           <BarChart
             onMouseEnter={handleMouseEvent}
             onMouseLeave={handleMouseEvent}
             onMouseMove={handleMouseEvent}
-            height={100}
             barGap={6}
-            data={rewardsToChart}
-            // margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            data={valueToChart}
           >
             <XAxis
               dataKey="timestamp"
@@ -72,7 +72,7 @@ const EarningsChart = ({ rewards, rewardsLoading }) => {
               barSize={8}
               radius={[10, 10, 10, 10]}
             >
-              {rewardsToChart.map((entry, index) => {
+              {valueToChart.map((entry, index) => {
                 return (
                   <Cell
                     key={`cell-${index}`}

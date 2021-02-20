@@ -41,5 +41,6 @@ export const getHotspotRewardsBuckets = async (
     maxTime: new Date(),
     bucket: bucketType,
   })
-  return await list.take(MAX)
+  const rewards = await list.take(MAX)
+  return rewards
 }

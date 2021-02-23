@@ -46,7 +46,12 @@ const EarningsChart = ({ loading, slices, buckets, width, scale }) => {
           justifyContent: 'flex-end',
         }}
       >
-        <ResponsiveContainer {...chartProps} style={{ marginRight: 12 }}>
+        <ResponsiveContainer
+          {...chartProps}
+          // anything relative (height='100%') doesn't work on mobile, it won't render the chart without a fixed height
+          height={120}
+          style={{ marginRight: 12 }}
+        >
           <BarChart
             onMouseEnter={handleMouseEvent}
             onMouseLeave={handleMouseEvent}

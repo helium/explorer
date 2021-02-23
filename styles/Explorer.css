@@ -471,6 +471,11 @@ hr {
 .earnings-chart-period-container {
   padding: 36px 36px 40px 36px;
 }
+.earnings-chart-period-wrapper {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
 .earnings-chart-container {
   display: flex;
   flex-direction: row;
@@ -555,16 +560,6 @@ hr {
   .interactive-coverage-map > .mapboxgl-map {
     position: absolute;
     height: 50vh;
-  }
-  .earnings-chart-period-container {
-    padding: 24px;
-  }
-  .earnings-chart-container {
-    flex-direction: column;
-  }
-  .earnings-chart-content {
-    width: 100%;
-    padding: 24px 0 0 0;
   }
 }
 
@@ -693,6 +688,17 @@ hr {
   }
   .poc-participant-name {
     padding-left: 18px;
+  }
+
+  .earnings-chart-period-container {
+    padding: 24px;
+  }
+  .earnings-chart-container {
+    flex-direction: column;
+  }
+  .earnings-chart-content {
+    width: 100%;
+    padding: 24px 0 0 0;
   }
 }
 

@@ -9,7 +9,7 @@ import {
 } from 'recharts'
 import { format, fromUnixTime, getUnixTime } from 'date-fns'
 
-const EarningsChart = ({ value, valueLoading, slices, buckets }) => {
+const EarningsChart = ({ loading, slices, buckets, width, scale }) => {
   const [focusBar, setFocusBar] = useState(null)
   const handleMouseEvent = (state) => {
     if (state.isTooltipActive) {
@@ -18,20 +18,28 @@ const EarningsChart = ({ value, valueLoading, slices, buckets }) => {
       setFocusBar(null)
     }
   }
-  if (!valueLoading) {
+
+  if (!loading) {
     let rewardBuckets = buckets
     const valueToChart = rewardBuckets
       .map(({ timestamp, total }) => ({
         timestamp: getUnixTime(new Date(timestamp)),
         total: total,
       }))
-      .slice(-slices, rewardBuckets.length)
+      .slice(0, slices)
 
-    // .reverse()
+    let chartProps = {}
+    if (width) chartProps.width = width
 
     return (
-      <div style={{ height: '100%' }}>
-        <ResponsiveContainer>
+      <div
+        style={{
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'flex-end',
+        }}
+      >
+        <ResponsiveContainer {...chartProps} style={{ paddingRight: 12 }}>
           <BarChart
             onMouseEnter={handleMouseEvent}
             onMouseLeave={handleMouseEvent}
@@ -49,7 +57,11 @@ const EarningsChart = ({ value, valueLoading, slices, buckets }) => {
               height={0}
             />
             <Tooltip
-              labelFormatter={(label) => format(fromUnixTime(label), 'M/d/yyy')}
+              labelFormatter={(label) =>
+                scale === 'hours'
+                  ? `${format(fromUnixTime(label), 'h:mm a')}`
+                  : format(fromUnixTime(label), 'M/d/yyy')
+              }
               formatter={(value) => [
                 `${value.toLocaleString(undefined, {
                   minimumFractionDigits: 2,

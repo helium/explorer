@@ -7,11 +7,12 @@ import HotspotsList from '../../components/HotspotsList'
 import QRCode from 'react-qr-code'
 import Fade from 'react-reveal/Fade'
 import { Balance, CurrencyType } from '@helium/currency'
+import sumBy from 'lodash/sumBy'
 
 import { ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import AccountIcon from '../../components/AccountIcon'
 import AccountAddress from '../../components/AccountAddress'
-import { fetchRewardsSummary } from '../../data/hotspots'
+import { getHotspotRewardsBuckets } from '../../data/hotspots'
 
 const { Title } = Typography
 
@@ -56,7 +57,19 @@ const AccountView = ({ account }) => {
 
       await Promise.all(
         hotspotsWithRewards.map(async (hotspot) => {
-          hotspot.rewardsSummary = await fetchRewardsSummary(hotspot.address)
+          const rewards = await getHotspotRewardsBuckets(
+            hotspot.address,
+            60,
+            'day',
+          )
+          hotspot.rewardsSummary = {
+            day: sumBy(rewards.slice(0, 1), 'total'),
+            previousDay: sumBy(rewards.slice(1, 2), 'total'),
+            week: sumBy(rewards.slice(0, 7), 'total'),
+            previousWeek: sumBy(rewards.slice(7, 14), 'total'),
+            month: sumBy(rewards.slice(0, 30), 'total'),
+            previousMonth: sumBy(rewards.slice(30, 60), 'total'),
+          }
           return hotspot
         }),
       )

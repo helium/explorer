@@ -23,8 +23,15 @@ const Mapbox = ReactMapboxGl({
   minZoom: minZoom,
 })
 
-const circleLayout = {
+const onlineCircleLayout = {
   'circle-color': '#29d391',
+  'circle-radius': 5,
+  'circle-opacity': 1,
+  'circle-blur': 0,
+}
+
+const offlineCircleLayout = {
+  'circle-color': '#e86161',
   'circle-radius': 5,
   'circle-opacity': 1,
   'circle-blur': 0,
@@ -41,7 +48,8 @@ class CoverageMap extends React.Component {
     zoom: [2.2],
     hasGeolocation: false,
     flyingComplete: false,
-    coverage: null,
+    online: null,
+    offline: null,
     measuring: false,
     measurements: {
       from: null,
@@ -53,7 +61,7 @@ class CoverageMap extends React.Component {
   async componentDidMount() {
     const response = await fetch('/api/coverage')
     const coverage = await response.json()
-    this.setState({ coverage })
+    this.setState(coverage)
   }
 
   componentDidUpdate(prevProps) {
@@ -174,7 +182,7 @@ class CoverageMap extends React.Component {
 
     const { map } = this.state
     const features = map.queryRenderedFeatures(e.point, {
-      layers: ['hotspots-circle'],
+      layers: ['online-hotspots-circle', 'offline-hotspots-circle'],
     })
     this.handleSelectHotspots(features)
     map.getCanvas().style.cursor = ''
@@ -192,7 +200,7 @@ class CoverageMap extends React.Component {
 
   handleMouseMove = (map, e) => {
     const h = map.queryRenderedFeatures(e.point, {
-      layers: ['hotspots-circle'],
+      layers: ['online-hotspots-circle', 'offline-hotspots-circle'],
     })
     if (this.state.measuring) {
       map.getCanvas().style.cursor = 'crosshair'
@@ -281,7 +289,7 @@ class CoverageMap extends React.Component {
 
   renderOverviewMap = () => {
     const { selectedHotspots } = this.props
-    const { coverage } = this.state
+    const { online, offline } = this.state
 
     const selectedData = geoJSON.parse(selectedHotspots[0] || [], {
       Point: ['lat', 'lng'],
@@ -335,9 +343,16 @@ class CoverageMap extends React.Component {
         />
 
         <GeoJSONLayer
-          id="hotspots"
-          data={coverage ? coverage : emptyGeoJSON}
-          circlePaint={circleLayout}
+          id="offline-hotspots"
+          data={offline || emptyGeoJSON}
+          circlePaint={offlineCircleLayout}
+          circleOnClick={this.handleHotspotClick}
+        />
+
+        <GeoJSONLayer
+          id="online-hotspots"
+          data={online || emptyGeoJSON}
+          circlePaint={onlineCircleLayout}
           circleOnClick={this.handleHotspotClick}
         />
       </>

@@ -71,7 +71,7 @@ const RewardSummary = ({ rewards, rewardsLoading }) => {
           buckets={monthBucketsForYear}
           rewardsLoading={rewardsLoading}
           timeframeString="1 Year"
-          scale="years"
+          scale="year"
           slices={12}
         />
       </div>

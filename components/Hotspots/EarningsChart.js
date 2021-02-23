@@ -7,7 +7,14 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts'
-import { format, fromUnixTime, getUnixTime } from 'date-fns'
+import {
+  format,
+  fromUnixTime,
+  getUnixTime,
+  subDays,
+  addHours,
+  addDays,
+} from 'date-fns'
 
 const EarningsChart = ({ loading, slices, buckets, width, scale }) => {
   const [focusBar, setFocusBar] = useState(null)
@@ -39,7 +46,7 @@ const EarningsChart = ({ loading, slices, buckets, width, scale }) => {
           justifyContent: 'flex-end',
         }}
       >
-        <ResponsiveContainer {...chartProps} style={{ paddingRight: 12 }}>
+        <ResponsiveContainer {...chartProps} style={{ marginRight: 12 }}>
           <BarChart
             onMouseEnter={handleMouseEvent}
             onMouseLeave={handleMouseEvent}
@@ -57,11 +64,31 @@ const EarningsChart = ({ loading, slices, buckets, width, scale }) => {
               height={0}
             />
             <Tooltip
-              labelFormatter={(label) =>
-                scale === 'hours'
-                  ? `${format(fromUnixTime(label), 'h:mm a')}`
-                  : format(fromUnixTime(label), 'M/d/yyy')
-              }
+              labelFormatter={(label) => {
+                if (scale === 'hours') {
+                  // API returns previous hour as the timestamp, so add 1 hour to show "[1 hour ago] – [now]" and make it clear what range each bar is showing
+                  return `${format(
+                    fromUnixTime(label),
+                    'h:mm a, MMM do',
+                  )} – ${format(
+                    addHours(fromUnixTime(label), 1),
+                    'h:mm a, MMM do',
+                  )}`
+                } else if (scale === 'year') {
+                  // go back 28 days, 30 - 1 to make range offset from previous bar by 1 day, and - 1 more because we're adding 1 day to the upper limit to make the range read "[30 days ago] - [today]"
+                  return `${format(
+                    subDays(fromUnixTime(label), 28),
+                    'MMM do, y',
+                  )} – ${format(addDays(fromUnixTime(label), 1), 'MMM do, y')}`
+                } else {
+                  // scale is days
+                  // API returns previous day as the timestamp for previous 24 hours, so add 1 day to show "[yesterday] – [today]" and make it clear what range each bar is showing
+                  return `${format(
+                    fromUnixTime(label),
+                    'MMM do, y',
+                  )} – ${format(addDays(fromUnixTime(label), 1), 'MMM do, y')}`
+                }
+              }}
               formatter={(value) => [
                 `${value.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
@@ -79,7 +106,6 @@ const EarningsChart = ({ loading, slices, buckets, width, scale }) => {
             <Bar
               minPointSize={8}
               dataKey="total"
-              isAnimationActive={false}
               fill="#A6A6D0"
               barSize={8}
               radius={[10, 10, 10, 10]}

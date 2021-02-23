@@ -63,36 +63,38 @@ const RewardSummaryCard = ({
                   <Skeleton active paragraph={{ rows: 1 }} size="large" />
                 )}
               </div>
-              {previousValue !== undefined && previousValue !== 0 && (
-                <Tooltip
-                  title={`Previous period: ${previousValue} HNT`}
-                  placement={'bottom'}
-                >
-                  {chartPercentChange !== 0 && (
-                    <div
-                      style={{
-                        borderRadius: 7,
-                        backgroundColor:
-                          chartPercentChange > 0 ? '#29D391' : '#474DFF',
-                        padding: '4px 8px',
-                        display: 'inline',
-                        height: 'auto',
-                      }}
-                    >
-                      <span
+              {previousValue !== undefined &&
+                previousValue !== 0 &&
+                !rewardsLoading && (
+                  <Tooltip
+                    title={`Previous period: ${previousValue} HNT`}
+                    placement={'bottom'}
+                  >
+                    {chartPercentChange !== 0 && (
+                      <div
                         style={{
-                          fontWeight: 600,
-                          fontSize: '14px',
-                          color: 'white',
-                          whiteSpace: 'nowrap',
+                          borderRadius: 7,
+                          backgroundColor:
+                            chartPercentChange > 0 ? '#29D391' : '#474DFF',
+                          padding: '4px 8px',
+                          display: 'inline',
+                          height: 'auto',
                         }}
                       >
-                        {formatPercentChangeString(chartPercentChange)}
-                      </span>
-                    </div>
-                  )}
-                </Tooltip>
-              )}
+                        <span
+                          style={{
+                            fontWeight: 600,
+                            fontSize: '14px',
+                            color: 'white',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {formatPercentChangeString(chartPercentChange)}
+                        </span>
+                      </div>
+                    )}
+                  </Tooltip>
+                )}
             </div>
             <div className="earnings-chart-content">
               {!rewardsLoading ? (
@@ -100,7 +102,7 @@ const RewardSummaryCard = ({
                   buckets={
                     scale === 'hours'
                       ? buckets.hours
-                      : scale === 'years'
+                      : scale === 'year'
                       ? buckets
                       : buckets.days
                   }

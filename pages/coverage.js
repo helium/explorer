@@ -22,6 +22,7 @@ const Coverage = (props) => {
   const [hotspotList, setHotspotList] = useState(null)
   const [hotspots, setHotspots] = useState([])
   const [selectedHotspots, setSelectedHotspots] = useState([])
+  const [showOffline, setShowOffline] = useState(true)
 
   useEffect(() => {
     const setupHotspotList = async () => {
@@ -72,11 +73,14 @@ const Coverage = (props) => {
         selectHotspots={selectHotspots}
         clearSelectedHotspots={clearSelectedHotspots}
         fetchMoreHotspots={fetchMoreHotspots}
+        setShowOffline={setShowOffline}
+        showOffline={showOffline}
       />
       <Map
         selectedHotspots={selectedHotspots}
         selectHotspots={selectHotspots}
         clearSelectedHotspots={clearSelectedHotspots}
+        showOffline={showOffline}
       />
     </Page>
   )

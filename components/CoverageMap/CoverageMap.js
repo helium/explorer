@@ -288,7 +288,7 @@ class CoverageMap extends React.Component {
   }
 
   renderOverviewMap = () => {
-    const { selectedHotspots } = this.props
+    const { selectedHotspots, showOffline } = this.props
     const { online, offline } = this.state
 
     const selectedData = geoJSON.parse(selectedHotspots[0] || [], {
@@ -352,7 +352,7 @@ class CoverageMap extends React.Component {
 
         <GeoJSONLayer
           id="offline-hotspots"
-          data={offline || emptyGeoJSON}
+          data={(showOffline && offline) || emptyGeoJSON}
           circlePaint={offlineCircleLayout}
           circleOnClick={this.handleHotspotClick}
         />

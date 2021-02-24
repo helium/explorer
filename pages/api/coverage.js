@@ -1,8 +1,5 @@
-const { Client } = require('@helium/http')
-const geoJSON = require('geojson')
-const Redis = require('ioredis')
-
-const TTL = process.env.REDIS_TTL || 60 // seconds
+import { getCoverage } from '../../commonjs/coverage'
+import Redis from 'ioredis'
 
 let redisClient
 if (process.env.REDIS_URL) {
@@ -17,49 +14,7 @@ const getCache = async (key, fallback) => {
     }
   }
 
-  const freshValue = await fallback()
-
-  return freshValue
-}
-
-const toGeoJSON = (hotspots) =>
-  geoJSON.parse(hotspots, {
-    Point: ['lat', 'lng'],
-    include: ['address', 'owner', 'location', 'status'],
-  })
-
-export const getCoverage = async () => {
-  const client = new Client()
-  const hotspots = await client.hotspots.list()
-  const result = {
-    unset: 0,
-    online: [],
-    offline: [],
-  }
-
-  for await (const { data } of hotspots) {
-    const hotspot = {
-      ...data,
-      location: [data.geocode.longCity, data.geocode.shortState]
-        .filter(Boolean)
-        .join(', '),
-      status: data.status.online,
-    }
-
-    if (!hotspot.lng || !hotspot.lat) {
-      result.unset++
-      continue
-    }
-
-    const isOnline = hotspot.status === 'online'
-    result[isOnline ? 'online' : 'offline'].push(hotspot)
-  }
-
-  return {
-    ...result,
-    online: toGeoJSON(result.online),
-    offline: toGeoJSON(result.offline),
-  }
+  return fallback()
 }
 
 export default async function handler(req, res) {

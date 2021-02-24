@@ -1,5 +1,5 @@
 const Redis = require('ioredis')
-const { getCoverage } = require('../pages/api/coverage')
+const { getCoverage } = require('../commonjs/coverage.js')
 
 const redisClient = new Redis(process.env.REDIS_URL)
 

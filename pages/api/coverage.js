@@ -28,14 +28,29 @@ const getCoverage = async () => {
   const hotspots = allHotspots.map((h) => ({
     ...h,
     location: [h.geocode.longCity, h.geocode.shortState].join(', '),
+    status: h.status.online,
   }))
 
-  const coverage = geoJSON.parse(hotspots, {
+  const [onlineHotspots, offlineHotspots] = hotspots.reduce(
+    ([online, offline], hotspot) => {
+      return hotspot.status === 'online'
+        ? [[...online, hotspot], offline]
+        : [online, [...offline, hotspot]]
+    },
+    [[], []],
+  )
+
+  const online = geoJSON.parse(onlineHotspots, {
     Point: ['lat', 'lng'],
-    include: ['address', 'owner', 'location'],
+    include: ['address', 'owner', 'location', 'status'],
   })
 
-  return coverage
+  const offline = geoJSON.parse(offlineHotspots, {
+    Point: ['lat', 'lng'],
+    include: ['address', 'owner', 'location', 'status'],
+  })
+
+  return { online, offline }
 }
 
 export default async function handler(req, res) {

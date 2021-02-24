@@ -20,18 +20,18 @@ const circleLayout = {
 class MiniCoverageMap extends React.Component {
   state = {
     zoom: [3],
-    coverage: null,
+    online: null,
   }
 
   async componentDidMount() {
     const response = await fetch('/api/coverage')
-    const coverage = await response.json()
-    this.setState({ coverage })
+    const { online } = await response.json()
+    this.setState({ online })
   }
 
   render() {
     const { zoomLevel } = this.props
-    const { coverage } = this.state
+    const { online } = this.state
 
     return (
       <span className="mini-coverage-map">
@@ -52,10 +52,10 @@ class MiniCoverageMap extends React.Component {
           }}
           zoom={[zoomLevel]}
         >
-          {coverage && (
+          {online && (
             <GeoJSONLayer
               id="coverage"
-              data={coverage}
+              data={online}
               circlePaint={circleLayout}
             />
           )}

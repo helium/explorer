@@ -51,23 +51,37 @@ const NearbyHotspotsList = ({ nearbyHotspots, nearbyHotspotsLoading }) => {
         !nearbyHotspotsLoading ? ` (${nearbyHotspots.length})` : ''
       }`}
     >
-      <span className="ant-table-styling-override">
-        <Table
-          dataSource={nearbyHotspots}
-          columns={columns}
-          size="small"
-          loading={nearbyHotspotsLoading}
-          rowKey="name"
-          pagination={{
-            pageSize,
-            showSizeChanger: nearbyHotspots.length > PAGE_SIZE_DEFAULT,
-            hideOnSinglePage: nearbyHotspots.length <= PAGE_SIZE_DEFAULT,
-            pageSizeOptions: [5, 10, 20, 50, 100],
+      {nearbyHotspots.length === 0 ? (
+        <p
+          style={{
+            textAlign: 'center',
+            marginTop: '0.5rem',
+            fontSize: '14px',
+            color: 'rgba(0, 0, 0, 0.25)',
+            padding: '20px',
           }}
-          scroll={{ x: true }}
-          onChange={handleTableChange}
-        />
-      </span>
+        >
+          Hotspot has no nearby hotspots (within 2km)
+        </p>
+      ) : (
+        <span className="ant-table-styling-override">
+          <Table
+            dataSource={nearbyHotspots}
+            columns={columns}
+            size="small"
+            loading={nearbyHotspotsLoading}
+            rowKey="name"
+            pagination={{
+              pageSize,
+              showSizeChanger: nearbyHotspots.length > PAGE_SIZE_DEFAULT,
+              hideOnSinglePage: nearbyHotspots.length <= PAGE_SIZE_DEFAULT,
+              pageSizeOptions: [5, 10, 20, 50, 100],
+            }}
+            scroll={{ x: true }}
+            onChange={handleTableChange}
+          />
+        </span>
+      )}
     </Card>
   )
 }

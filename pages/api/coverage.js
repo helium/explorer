@@ -22,35 +22,44 @@ const getCache = async (key, fallback) => {
   return freshValue
 }
 
+const toGeoJSON = (hotspots) =>
+  geoJSON.parse(hotspots, {
+    Point: ['lat', 'lng'],
+    include: ['address', 'owner', 'location', 'status'],
+  })
+
 const getCoverage = async () => {
   const client = new Client()
-  const allHotspots = await (await client.hotspots.list()).takeJSON(100000)
-  const hotspots = allHotspots.map((h) => ({
-    ...h,
-    location: [h.geocode.longCity, h.geocode.shortState].join(', '),
-    status: h.status.online,
-  }))
+  const hotspots = await client.hotspots.list()
+  const result = {
+    unset: 0,
+    online: [],
+    offline: [],
+  }
 
-  const [onlineHotspots, offlineHotspots] = hotspots.reduce(
-    ([online, offline], hotspot) => {
-      return hotspot.status === 'online'
-        ? [[...online, hotspot], offline]
-        : [online, [...offline, hotspot]]
-    },
-    [[], []],
-  )
+  for await (const { data } of hotspots) {
+    const hotspot = {
+      ...data,
+      location: [data.geocode.longCity, data.geocode.shortState]
+        .filter(Boolean)
+        .join(', '),
+      status: data.status.online,
+    }
 
-  const online = geoJSON.parse(onlineHotspots, {
-    Point: ['lat', 'lng'],
-    include: ['address', 'owner', 'location', 'status'],
-  })
+    if (!hotspot.lng || !hotspot.lat) {
+      result.unset++
+      continue
+    }
 
-  const offline = geoJSON.parse(offlineHotspots, {
-    Point: ['lat', 'lng'],
-    include: ['address', 'owner', 'location', 'status'],
-  })
+    const isOnline = hotspot.status === 'online'
+    result[isOnline ? 'online' : 'offline'].push(hotspot)
+  }
 
-  return { online, offline }
+  return {
+    ...result,
+    online: toGeoJSON(result.online),
+    offline: toGeoJSON(result.offline),
+  }
 }
 
 export default async function handler(req, res) {

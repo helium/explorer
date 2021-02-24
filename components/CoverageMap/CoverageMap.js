@@ -295,6 +295,14 @@ class CoverageMap extends React.Component {
       Point: ['lat', 'lng'],
     })
 
+    // If any of the selected hotspots is online, then the displayed color will be green,
+    // as online hotspots are displayed one layer above offline ones.
+    const blurColor = (selectedHotspots.some(
+      (hotspot) => hotspot.status === 'online',
+    )
+      ? onlineCircleLayout
+      : offlineCircleLayout)['circle-color']
+
     let flying = false
 
     if (selectedHotspots.length > 0) {
@@ -335,7 +343,7 @@ class CoverageMap extends React.Component {
           id="selected-hotspots-glow"
           data={selectedData}
           circlePaint={{
-            'circle-color': '#29d391',
+            'circle-color': blurColor,
             'circle-radius': 70,
             'circle-opacity': 0.3,
             'circle-blur': 1,

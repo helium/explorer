@@ -28,7 +28,7 @@ const toGeoJSON = (hotspots) =>
     include: ['address', 'owner', 'location', 'status'],
   })
 
-const getCoverage = async () => {
+export const getCoverage = async () => {
   const client = new Client()
   const hotspots = await client.hotspots.list()
   const result = {

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Row, Typography, Checkbox, Tooltip } from 'antd'
 import Client from '@helium/http'
-import algoliasearch from 'algoliasearch'
 import Fade from 'react-reveal/Fade'
 import Checklist from '../../components/Hotspots/Checklist/Checklist'
 import RewardSummary from '../../components/Hotspots/RewardSummary'
@@ -21,9 +20,8 @@ import {
 import sumBy from 'lodash/sumBy'
 
 import {
-  fetchRewardsSummary,
+  fetchNearbyHotspots,
   getHotspotRewardsBuckets,
-  getHotspotRewardsSum,
 } from '../../data/hotspots'
 import Hex from '../../components/Hex'
 import { generateRewardScaleColor } from '../../components/Hotspots/utils'
@@ -82,20 +80,8 @@ const HotspotView = ({ hotspot }) => {
     }
     async function getNearbyHotspots() {
       setNearbyHotspotsLoading(true)
-      const algoliaClient = algoliasearch(
-        process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
-        process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY,
-      )
-      const hotspotsIndex = algoliaClient.initIndex('hotspots')
-      const { hits: nearbyHotspotsResults } = await hotspotsIndex.search('', {
-        aroundLatLng: [
-          hotspot.lat ? hotspot.lat : 0,
-          hotspot.lng ? hotspot.lng : 0,
-        ].join(', '),
-        getRankingInfo: true,
-        filters: `NOT address:${hotspotid}`,
-      })
-      setNearbyHotspots(nearbyHotspotsResults)
+      const hotspots = await fetchNearbyHotspots(hotspot.lat, hotspot.lng, 2000)
+      setNearbyHotspots(hotspots.filter((h) => h.address !== hotspotid))
       setNearbyHotspotsLoading(false)
     }
 

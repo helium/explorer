@@ -32,11 +32,9 @@ const columns = [
   },
   {
     title: 'Distance',
-    dataIndex: '_rankingInfo',
-    key: 'distance',
-    render: ({ geoDistance: distance }) => (
-      <span>{formatDistance(distance)}</span>
-    ),
+    dataIndex: 'dist',
+    key: 'dist',
+    render: (dist) => <span>{formatDistance(dist)}</span>,
   },
 ]
 

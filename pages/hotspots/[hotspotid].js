@@ -196,8 +196,11 @@ const HotspotView = ({ hotspot }) => {
         }}
       >
         <div
-          style={{ margin: '0 auto', maxWidth: 850 + 40 }}
-          className="content-container-hotspot-view"
+          style={{
+            margin: '0 auto',
+            // maxWidth: 850 + 40
+          }}
+          className="content-container-hotspot-view max-w-4xl"
         >
           <HotspotMapbox
             hotspot={hotspot}

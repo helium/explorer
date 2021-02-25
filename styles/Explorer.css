@@ -485,6 +485,14 @@ hr {
   padding: 0 0 0 24px;
 }
 
+.ant-checkbox-override .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #1e5b50;
+  border-color: #1e5b50;
+}
+.ant-checkbox-override .ant-checkbox-checked::after {
+  border: 1px solid #29d391;
+}
+
 @media screen and (max-width: 1200px) {
   .map-button {
     min-width: 0;

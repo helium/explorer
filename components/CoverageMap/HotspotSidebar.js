@@ -88,13 +88,15 @@ const HotspotSidebar = ({
             </span>
             <span className="header-subtitle mono">{titleText}</span>
           </div>
-          <Checkbox
-            onChange={updateShowOffline}
-            checked={showOffline}
-            style={{ color: 'white', marginTop: '10px' }}
-          >
-            Show offline hotspots
-          </Checkbox>
+          <span className="ant-checkbox-override">
+            <Checkbox
+              onChange={updateShowOffline}
+              checked={showOffline}
+              style={{ color: '#aaa', marginLeft: '5px', marginTop: '14px' }}
+            >
+              Show offline hotspots
+            </Checkbox>
+          </span>
         </SidebarHeader>
 
         <SidebarScrollable loadMore={fetchMoreHotspots}>

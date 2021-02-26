@@ -1,33 +1,7 @@
 @import '~antd/dist/antd.css';
 
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .ant-card-loading-content {
   margin: 24px;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .ant-card-body {
@@ -60,48 +34,6 @@ p.stat span {
 
 .ant-table-tbody > tr > td {
   border-bottom: 1px solid #e9eaf2;
-}
-
-.barchart {
-  transform: rotate(90deg);
-  margin: 0px 0;
-  display: inline-block;
-  width: 100%;
-  transform-origin: bottom right;
-  position: absolute;
-  margin-top: -100%;
-  left: -200px;
-  height: 850px;
-  background: none;
-  bottom: 0;
-  max-width: 200px;
-}
-
-.barchart .ant-table-tbody > tr > td {
-  background: none !important;
-  padding: 2px 0 !important;
-  border: none !important;
-}
-
-.barchart thead {
-  display: none;
-}
-
-.barchart .ant-table {
-  background: none;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 .ant-layout-header {

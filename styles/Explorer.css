@@ -231,9 +231,6 @@ hr {
 .hotspot-name > h1 {
   line-height: 0.7;
 }
-.line-break-only-at-small {
-  display: none;
-}
 
 .flex-responsive {
   display: flex;
@@ -542,9 +539,6 @@ hr {
 
   .hotspot-name > h1 {
     line-height: 1;
-  }
-  .line-break-only-at-small {
-    display: block;
   }
   .flex-responsive {
     flex-direction: column;

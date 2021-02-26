@@ -19,6 +19,7 @@ import {
   formatLocation,
 } from '../../components/Hotspots/utils'
 import sumBy from 'lodash/sumBy'
+import ReactCountryFlag from 'react-country-flag'
 
 import {
   fetchRewardsSummary,
@@ -188,20 +189,8 @@ const HotspotView = ({ hotspot }) => {
       openGraphImageAbsoluteUrl={`https://explorer.helium.com/images/og/hotspots.png`}
       url={`https://explorer.helium.com/hotspots/${hotspot.address}`}
     >
-      <Content
-        style={{
-          marginTop: 0,
-          background: '#222e46',
-          padding: '0px 0 0px',
-        }}
-      >
-        <div
-          style={{
-            margin: '0 auto',
-            // maxWidth: 850 + 40
-          }}
-          className="content-container-hotspot-view max-w-4xl"
-        >
+      <div className="bg-navy-500 mt-0 p-0">
+        <div className="content-container-hotspot-view my-0 mx-auto max-w-4xl">
           <HotspotMapbox
             hotspot={hotspot}
             witnesses={witnesses}
@@ -210,16 +199,14 @@ const HotspotView = ({ hotspot }) => {
             showNearbyHotspots={showNearbyHotspots}
           />
           {hotspot.lng !== undefined && hotspot.lat !== undefined && (
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                paddingTop: 10,
-                color: 'white',
-                width: '100%',
-              }}
-            >
-              <p style={{ marginBottom: '-20px', fontWeight: 600 }}>
+            <div className="flex justify-between pt-3 text-white w-full">
+              <p className="text-white -mb-5 font-bold">
+                {hotspot.geocode.shortCountry && (
+                  <ReactCountryFlag
+                    countryCode={hotspot.geocode.shortCountry}
+                    className="mr-3"
+                  />
+                )}
                 {formatLocation(hotspot?.geocode)}
               </p>
               <div>
@@ -395,19 +382,21 @@ const HotspotView = ({ hotspot }) => {
                     }}
                   >
                     {formatHotspotName(hotspot.name)}
+                    <button className="ml-2 px-2 py-2">
+                      <img
+                        src={'/images/kebab.svg'}
+                        style={{
+                          height: 15,
+                          marginRight: 5,
+                          position: 'relative',
+                          top: '-2px',
+                        }}
+                        alt="Hotspot Network Address"
+                      />
+                    </button>
                   </Title>
                 </span>
                 <Tooltip placement="bottom" title="Hotspot Network Address">
-                  <img
-                    src={HotspotImg}
-                    style={{
-                      height: 15,
-                      marginRight: 5,
-                      position: 'relative',
-                      top: '-2px',
-                    }}
-                    alt="Hotspot Network Address"
-                  />
                   <Text
                     copyable
                     style={{
@@ -440,34 +429,30 @@ const HotspotView = ({ hotspot }) => {
             activityLoading={activityLoading}
           />
         </div>
-        <div
-          style={{
-            width: '100%',
-            backgroundColor: 'rgb(24, 32, 53)',
-            padding: '20px',
-            textAlign: 'center',
-          }}
-        >
+        <div className="w-full bg-navy-600 p-5 text-center">
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
-            <p
-              style={{
-                color: 'white',
-                margin: 0,
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              Owned by: <br className="line-break-only-at-small" />
-              <span style={{ width: 21, marginLeft: 8, marginRight: 2 }}>
-                <AccountIcon address={hotspot.owner} size={18} />
-              </span>
-              <Link href={'/accounts/' + hotspot.owner}>
-                <a style={{ wordBreak: 'break-all' }}>{hotspot.owner}</a>
-              </Link>
-            </p>
+            <div className="flex flex-col md:flex-row justify-center items-center m-0 w-full">
+              <p className="text-white m-0">Owned by:</p>
+              <div className="flex flex-row justify-center items-center">
+                <span className="ml-0 sm:ml-3 mr-1 mt-1">
+                  <AccountIcon address={hotspot.owner} size={18} />
+                </span>
+                <Link href={'/accounts/' + hotspot.owner}>
+                  {/* Show non-truncated version of owner address on larger than mobile screen sizes */}
+                  <a className="break-all hidden sm:block">{hotspot.owner}</a>
+                </Link>
+                <Link href={'/accounts/' + hotspot.owner}>
+                  {/* Show truncated version of owner address on mobile screen sizes */}
+                  <a className="break-all block sm:hidden">
+                    {hotspot.owner.substr(0, 10)}...
+                    {hotspot.owner.substr(-10)}
+                  </a>
+                </Link>
+              </div>
+            </div>
           </Content>
         </div>
-      </Content>
+      </div>
 
       <Content
         style={{

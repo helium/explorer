@@ -17,6 +17,7 @@ const initialState = {
   loading: true,
   loadingInitial: true,
   filtersOpen: false,
+  showLoadMoreButton: false,
 }
 
 const exportableEntities = ['account', 'hotspot']
@@ -58,10 +59,13 @@ class ActivityList extends Component {
     this.setState({ loading: true })
     const { txns } = this.state
     const nextTxns = await this.list.take(20)
+    const nextPage = await this.list.nextPage()
+
     this.setState({
       txns: [...txns, ...nextTxns],
       loading: false,
       loadingInitial: false,
+      showLoadMoreButton: nextPage.hasMore,
     })
   }
 
@@ -77,7 +81,13 @@ class ActivityList extends Component {
   }
 
   render() {
-    const { txns, loading, loadingInitial, filtersOpen } = this.state
+    const {
+      txns,
+      loading,
+      loadingInitial,
+      filtersOpen,
+      showLoadMoreButton,
+    } = this.state
     const { address, hotspots, type } = this.props
 
     return (
@@ -134,29 +144,43 @@ class ActivityList extends Component {
               </div>
             </>
           )}
-          <Table
-            dataSource={txns}
-            columns={columns(address)}
-            size="small"
-            rowKey="hash"
-            pagination={false}
-            loading={loading}
-            scroll={{ x: true }}
-            expandable={{
-              expandedRowRender: (record) => (
-                <span className="ant-table-override">
-                  <Table
-                    dataSource={record.rewards}
-                    columns={rewardColumns(hotspots, type)}
-                    size="small"
-                    rowKey={(r) => `${r.type}-${r.gateway}`}
-                  />
-                </span>
-              ),
-              rowExpandable: (record) => record.type === 'rewards_v1',
-            }}
-          />
-          <LoadMoreButton onClick={this.loadMore} />
+          {txns.length == 0 ? (
+            <h2
+              style={{
+                textAlign: 'center',
+                marginTop: '0.5rem',
+                fontSize: '14px',
+                color: 'rgba(0, 0, 0, 0.25)',
+                padding: '20px',
+              }}
+            >
+              Account has no activity
+            </h2>
+          ) : (
+            <Table
+              dataSource={txns}
+              columns={columns(address)}
+              size="small"
+              rowKey="hash"
+              pagination={false}
+              loading={loading}
+              scroll={{ x: true }}
+              expandable={{
+                expandedRowRender: (record) => (
+                  <span className="ant-table-override">
+                    <Table
+                      dataSource={record.rewards}
+                      columns={rewardColumns(hotspots, type)}
+                      size="small"
+                      rowKey={(r) => `${r.type}-${r.gateway}`}
+                    />
+                  </span>
+                ),
+                rowExpandable: (record) => record.type === 'rewards_v1',
+              }}
+            />
+          )}
+          {showLoadMoreButton && <LoadMoreButton onClick={this.loadMore} />}
         </Card>
       </Content>
     )

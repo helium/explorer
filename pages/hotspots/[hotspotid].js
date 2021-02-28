@@ -33,16 +33,13 @@ const HotspotMapbox = dynamic(
   () => import('../../components/Hotspots/HotspotMapbox'),
   {
     ssr: false,
-    loading: () => <div style={{ height: 400, width: '100%' }} />,
+    loading: () => <div className="h-80 md:h-96" />,
   },
 )
 
 const { Title, Text } = Typography
 
 const HotspotView = ({ hotspot }) => {
-  const [showWitnesses, setShowWitnesses] = useState(true)
-  const [showNearbyHotspots, setShowNearbyHotspots] = useState(true)
-
   const [witnesses, setWitnesses] = useState([])
   const [activity, setActivity] = useState({})
   const [rewards, setRewards] = useState([])
@@ -190,17 +187,18 @@ const HotspotView = ({ hotspot }) => {
       url={`https://explorer.helium.com/hotspots/${hotspot.address}`}
     >
       <div className="bg-navy-500 mt-0 p-0">
-        <div className="content-container-hotspot-view my-0 mx-auto max-w-4xl">
+        <div className="zcontent-container-hotspot-view md:px-5 my-0 mx-auto max-w-4xl">
           <HotspotMapbox
+            classes={'h-80 md:h-96'}
             hotspot={hotspot}
             witnesses={witnesses}
-            showWitnesses={showWitnesses}
+            // showWitnesses={showWitnesses}
             nearbyHotspots={nearbyHotspots}
-            showNearbyHotspots={showNearbyHotspots}
+            // showNearbyHotspots={showNearbyHotspots}
           />
           {hotspot.lng !== undefined && hotspot.lat !== undefined && (
-            <div className="flex justify-between pt-3 text-white w-full">
-              <p className="text-white -mb-5 font-bold">
+            <div className="flex justify-between pt-3 w-full px-5">
+              <p className="text-white z-mb-5 font-bold">
                 {hotspot.geocode.shortCountry && (
                   <ReactCountryFlag
                     countryCode={hotspot.geocode.shortCountry}
@@ -212,14 +210,14 @@ const HotspotView = ({ hotspot }) => {
               <div>
                 <Checkbox
                   onChange={(e) => setShowNearbyHotspots(e.target.checked)}
-                  checked={showNearbyHotspots}
+                  // checked={showNearbyHotspots}
                   style={{ color: 'white' }}
                 >
                   Show nearby hotspots
                 </Checkbox>
                 <Checkbox
                   onChange={(e) => setShowWitnesses(e.target.checked)}
-                  checked={showWitnesses}
+                  // checked={showWitnesses}
                   style={{ color: 'white' }}
                 >
                   Show witnesses

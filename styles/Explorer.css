@@ -59,7 +59,7 @@ p.stat span {
 }
 
 .ant-table-tbody > tr > td {
-  border-bottom: 1px solid #e9eaf2;
+  border-bottom: 2px solid #e9eaf2;
 }
 
 .barchart {
@@ -120,12 +120,15 @@ p.stat span {
   align-items: center;
 }
 
+.ant-table.ant-table-small td a {
+  font-family: monospace;
+}
+
 .ant-table-small .ant-table-thead > tr > th {
   background-color: white;
   text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: 0px;
-  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 1px;
 }
 
 a.button {
@@ -163,7 +166,7 @@ h3 {
 }
 
 .ant-table-container table > thead {
-  font-family: 'Inter', sans-serif;
+  font-family: soleil, sans-serif;
 }
 
 .ant-descriptions-bordered .ant-descriptions-view > table {
@@ -175,7 +178,7 @@ h3 {
 }
 
 .ant-table-thead > tr > th {
-  border-bottom: 1px solid #e9eaf2;
+  border-bottom: 2px solid #e9eaf2;
 }
 
 .ant-table-override
@@ -253,20 +256,20 @@ hr {
 .mini-coverage-map {
   position: relative;
   display: block;
-  border-radius: 6px;
+  border-radius: 0 0 10px 10px;
 }
 .mini-coverage-map-overlay {
   display: block;
-  background-color: #fff;
+  background-color: #3f416d;
   opacity: 0;
-  border-radius: 6px;
+  border-radius: 0 0 10px 10px;
   position: absolute;
   z-index: 2;
   height: 500px;
   width: 100%;
 }
 .mini-coverage-map:hover > .mini-coverage-map-overlay {
-  opacity: 0.1;
+  opacity: 0.5;
   transition: opacity 0.2s ease;
 }
 .mini-coverage-map-interactive-text {
@@ -288,7 +291,7 @@ hr {
 }
 
 .mini-coverage-map .mapboxgl-canvas {
-  border-radius: 6px;
+  border-radius: 0 0 10px 10px;
 }
 
 .interactive-coverage-map > .mapboxgl-map {
@@ -425,72 +428,101 @@ hr {
 }
 
 .tag-link {
-  font-family: 'Inter', sans-serif !important;
+  font-family: soleil, sans-serif !important;
 }
 .tag-link > .ant-tag:hover {
   cursor: pointer;
 }
 
-.inline-skeleton-override .ant-skeleton-title {
-  margin: 0 !important;
-  width: 100% !important;
-}
-.inline-skeleton-override .ant-skeleton-paragraph {
-  margin: 0 !important;
-}
-.no-location-set {
-  height: 400px;
+.logo-banner {
+  background: #3c41cf;
+  padding: 0.6% 0.6%;
+  align-items: center;
+  box-shadow: 0 4px 2px -20px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
 }
 
-.inline-skeleton-override .ant-skeleton-title {
-  margin: 0 !important;
-  width: 100% !important;
+.links-list {
+  background-color: #e9eaf2;
+  min-height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 2vmin;
+  color: #29d391;
+  font-size: calc(10px + 1vmin);
 }
 
-.inline-skeleton-override .ant-skeleton-paragraph {
-  margin: 0 !important;
+.links-list ul {
+  text-align: center;
+  list-style: inside;
+  list-style: none;
+  text-align: center;
+  padding: 0;
+  position: relative;
 }
 
-.ant-table-styling-override .ant-pagination-options {
-  margin-right: 20px;
+.App-header-green {
+  text-align: center;
 }
-.consensus-mapbox-marker {
-  border: 3px solid #363abf;
-}
-.consensus-mapbox-hover-text {
+
+.App-header-white {
+  background-color: #e9eaf2;
+  min-height: 15vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 5.5vmin);
+  color: #171e2d;
   margin: 0;
   padding: 0;
-  font-size: 12px;
-  transition: all 150ms ease-in-out;
+  padding-top: 6%;
+  overflow: hidden;
 }
 
-.consensus-mapbox-marker:hover .consensus-mapbox-hover-text {
-  transform: translateY(-5px);
+body.errorpage-body {
+  height: 100%;
+  overflow: hidden;
+  background-color: #e9eaf2;
 }
 
-.earnings-chart-period-container {
-  padding: 36px 36px 40px 36px;
-}
-.earnings-chart-period-wrapper {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-.earnings-chart-container {
+.App-header-white-2 {
+  background-color: #e9eaf2;
+  max-height: 20vh;
+  min-height: 15vh;
   display: flex;
-  flex-direction: row;
-}
-.earnings-chart-content {
-  width: 50%;
-  padding: 0 0 0 24px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  font-size: calc(10px + 1.5vmin);
+  color: #29d391;
+  margin: 0;
+  padding: 0;
+  padding-top: 4%;
+  position: relative;
 }
 
-.ant-checkbox-override .ant-checkbox-checked .ant-checkbox-inner {
-  background-color: #1e5b50;
-  border-color: #1e5b50;
+.App-header-white-3 {
+  background-color: #e9eaf2;
+  max-height: 20vh;
+  min-height: 15vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #171e2d;
+  margin: 0;
+  padding: 0;
+  padding-left: 2%;
 }
-.ant-checkbox-override .ant-checkbox-checked::after {
-  border: 1px solid #29d391;
+
+.errorpage-layout {
+  background: #282c34;
 }
 
 @media screen and (max-width: 1200px) {
@@ -600,9 +632,6 @@ hr {
   .content-container-hotspot-view > .mapboxgl-map {
     height: 200px;
   }
-  .no-location-set {
-    height: 200px;
-  }
   #hotspot-checklist-container {
     border-radius: 0px;
   }
@@ -628,7 +657,7 @@ hr {
   .block-view-summary-info {
     width: 100%;
     order: 1;
-    padding-bottom: 0px;
+    padding-bottom: 30px;
   }
   .block-view-prev-button {
     order: 2;
@@ -697,22 +726,4 @@ hr {
   .poc-participant-name {
     padding-left: 18px;
   }
-
-  .earnings-chart-period-container {
-    padding: 24px;
-  }
-  .earnings-chart-container {
-    flex-direction: column;
-  }
-  .earnings-chart-content {
-    width: 100%;
-    padding: 24px 0 0 0;
-  }
-}
-
-.hidden-width {
-  visibility: hidden;
-  height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
 }

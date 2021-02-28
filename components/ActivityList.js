@@ -154,7 +154,7 @@ class ActivityList extends Component {
                 padding: '20px',
               }}
             >
-              Account has no activity
+              {type === 'account' ? 'Account' : 'Hotspot'} has no activity
             </h2>
           ) : (
             <Table

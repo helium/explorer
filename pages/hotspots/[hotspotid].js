@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Row, Typography, Checkbox, Tooltip } from 'antd'
 import Client from '@helium/http'
-import algoliasearch from 'algoliasearch'
 import Fade from 'react-reveal/Fade'
 import Checklist from '../../components/Hotspots/Checklist/Checklist'
 import RewardSummary from '../../components/Hotspots/RewardSummary'
-
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import AppLayout, { Content } from '../../components/AppLayout'
@@ -19,8 +17,12 @@ import {
   formatHotspotName,
   formatLocation,
 } from '../../components/Hotspots/utils'
+import sumBy from 'lodash/sumBy'
 
-import { fetchRewardsSummary } from '../../data/hotspots'
+import {
+  fetchNearbyHotspots,
+  getHotspotRewardsBuckets,
+} from '../../data/hotspots'
 import Hex from '../../components/Hex'
 import { generateRewardScaleColor } from '../../components/Hotspots/utils'
 
@@ -78,20 +80,8 @@ const HotspotView = ({ hotspot }) => {
     }
     async function getNearbyHotspots() {
       setNearbyHotspotsLoading(true)
-      const algoliaClient = algoliasearch(
-        process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
-        process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY,
-      )
-      const hotspotsIndex = algoliaClient.initIndex('hotspots')
-      const { hits: nearbyHotspotsResults } = await hotspotsIndex.search('', {
-        aroundLatLng: [
-          hotspot.lat ? hotspot.lat : 0,
-          hotspot.lng ? hotspot.lng : 0,
-        ].join(', '),
-        getRankingInfo: true,
-        filters: `NOT address:${hotspotid}`,
-      })
-      setNearbyHotspots(nearbyHotspotsResults)
+      const hotspots = await fetchNearbyHotspots(hotspot.lat, hotspot.lng, 2000)
+      setNearbyHotspots(hotspots.filter((h) => h.address !== hotspotid))
       setNearbyHotspotsLoading(false)
     }
 
@@ -147,8 +137,23 @@ const HotspotView = ({ hotspot }) => {
 
     async function getHotspotRewards() {
       setRewardsLoading(true)
-      const rewards = await fetchRewardsSummary(hotspotid)
-      setRewards(rewards)
+      const sixtyDays = await getHotspotRewardsBuckets(hotspotid, 60, 'day')
+      const fourtyEightHours = await getHotspotRewardsBuckets(
+        hotspotid,
+        48,
+        'hour',
+      )
+      const oneYear = await getHotspotRewardsBuckets(hotspotid, 365, 'day')
+      setRewards({
+        buckets: { days: sixtyDays, hours: fourtyEightHours, year: oneYear },
+        day: sumBy(sixtyDays.slice(0, 1), 'total'),
+        previousDay: sumBy(sixtyDays.slice(1, 2), 'total'),
+        week: sumBy(sixtyDays.slice(0, 7), 'total'),
+        previousWeek: sumBy(sixtyDays.slice(7, 14), 'total'),
+        month: sumBy(sixtyDays.slice(0, 30), 'total'),
+        previousMonth: sumBy(sixtyDays.slice(30, 60), 'total'),
+        oneYear: sumBy(oneYear, 'total'),
+      })
       setRewardsLoading(false)
     }
 
@@ -156,7 +161,7 @@ const HotspotView = ({ hotspot }) => {
     getNearbyHotspots()
     getHotspotActivity()
     getHotspotRewards()
-  }, [hotspot])
+  }, [hotspot.address])
 
   return (
     <AppLayout

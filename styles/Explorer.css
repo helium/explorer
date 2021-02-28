@@ -451,6 +451,48 @@ hr {
   margin: 0 !important;
 }
 
+.ant-table-styling-override .ant-pagination-options {
+  margin-right: 20px;
+}
+.consensus-mapbox-marker {
+  border: 3px solid #363abf;
+}
+.consensus-mapbox-hover-text {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  transition: all 150ms ease-in-out;
+}
+
+.consensus-mapbox-marker:hover .consensus-mapbox-hover-text {
+  transform: translateY(-5px);
+}
+
+.earnings-chart-period-container {
+  padding: 36px 36px 40px 36px;
+}
+.earnings-chart-period-wrapper {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.earnings-chart-container {
+  display: flex;
+  flex-direction: row;
+}
+.earnings-chart-content {
+  width: 50%;
+  padding: 0 0 0 24px;
+}
+
+.ant-checkbox-override .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #1e5b50;
+  border-color: #1e5b50;
+}
+.ant-checkbox-override .ant-checkbox-checked::after {
+  border: 1px solid #29d391;
+}
+
 @media screen and (max-width: 1200px) {
   .map-button {
     min-width: 0;
@@ -654,6 +696,17 @@ hr {
   }
   .poc-participant-name {
     padding-left: 18px;
+  }
+
+  .earnings-chart-period-container {
+    padding: 24px;
+  }
+  .earnings-chart-container {
+    flex-direction: column;
+  }
+  .earnings-chart-content {
+    width: 100%;
+    padding: 24px 0 0 0;
   }
 }
 

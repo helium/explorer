@@ -114,21 +114,26 @@ const PocMapbox = ({ path, showWitnesses }) => {
 
   const mapBounds = findBounds(locations)
 
+  const mapProps = {}
+  if (locations.length == 1) {
+    mapProps.center = [locations[0].lng, locations[0].lat]
+    mapProps.zoom = [10]
+  } else {
+    mapProps.fitBounds = mapBounds
+    mapProps.fitBoundsOptions = { padding: 100, animate: false }
+  }
+
   if (pathHasLocations) {
     return (
       <Mapbox
         style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
         container="map"
-        fitBounds={mapBounds}
-        fitBoundsOptions={{
-          padding: 100,
-          animate: false,
-        }}
         containerStyle={{
           height: '600px',
           width: '100%',
         }}
         movingMethod="jumpTo"
+        {...mapProps}
       >
         {path.map((p, idx) => {
           return (

@@ -7,7 +7,8 @@ import ScaleControl from '../ScaleControl'
 import classNames from 'classnames'
 import { HotKeys } from 'react-hotkeys'
 import Ruler from '../../public/images/ruler-light.svg'
-import { distance as turfDistance, point as turfPoint } from '@turf/turf'
+import turfDistance from '@turf/distance'
+import { point as turfPoint } from '@turf/helpers'
 
 const maxZoom = 14
 const minZoom = 2
@@ -22,8 +23,15 @@ const Mapbox = ReactMapboxGl({
   minZoom: minZoom,
 })
 
-const circleLayout = {
+const onlineCircleLayout = {
   'circle-color': '#29d391',
+  'circle-radius': 5,
+  'circle-opacity': 1,
+  'circle-blur': 0,
+}
+
+const offlineCircleLayout = {
+  'circle-color': '#e86161',
   'circle-radius': 5,
   'circle-opacity': 1,
   'circle-blur': 0,
@@ -40,7 +48,8 @@ class CoverageMap extends React.Component {
     zoom: [2.2],
     hasGeolocation: false,
     flyingComplete: false,
-    coverage: null,
+    online: null,
+    offline: null,
     measuring: false,
     measurements: {
       from: null,
@@ -52,7 +61,7 @@ class CoverageMap extends React.Component {
   async componentDidMount() {
     const response = await fetch('/api/coverage')
     const coverage = await response.json()
-    this.setState({ coverage })
+    this.setState(coverage)
   }
 
   componentDidUpdate(prevProps) {
@@ -173,7 +182,7 @@ class CoverageMap extends React.Component {
 
     const { map } = this.state
     const features = map.queryRenderedFeatures(e.point, {
-      layers: ['hotspots-circle'],
+      layers: ['online-hotspots-circle', 'offline-hotspots-circle'],
     })
     this.handleSelectHotspots(features)
     map.getCanvas().style.cursor = ''
@@ -191,7 +200,7 @@ class CoverageMap extends React.Component {
 
   handleMouseMove = (map, e) => {
     const h = map.queryRenderedFeatures(e.point, {
-      layers: ['hotspots-circle'],
+      layers: ['online-hotspots-circle', 'offline-hotspots-circle'],
     })
     if (this.state.measuring) {
       map.getCanvas().style.cursor = 'crosshair'
@@ -279,12 +288,20 @@ class CoverageMap extends React.Component {
   }
 
   renderOverviewMap = () => {
-    const { selectedHotspots } = this.props
-    const { coverage } = this.state
+    const { selectedHotspots, showOffline } = this.props
+    const { online, offline } = this.state
 
     const selectedData = geoJSON.parse(selectedHotspots[0] || [], {
       Point: ['lat', 'lng'],
     })
+
+    // If any of the selected hotspots is online, then the displayed color will be green,
+    // as online hotspots are displayed one layer above offline ones.
+    const blurColor = (selectedHotspots.some(
+      (hotspot) => hotspot.status === 'online',
+    )
+      ? onlineCircleLayout
+      : offlineCircleLayout)['circle-color']
 
     let flying = false
 
@@ -326,7 +343,7 @@ class CoverageMap extends React.Component {
           id="selected-hotspots-glow"
           data={selectedData}
           circlePaint={{
-            'circle-color': '#29d391',
+            'circle-color': blurColor,
             'circle-radius': 70,
             'circle-opacity': 0.3,
             'circle-blur': 1,
@@ -334,9 +351,16 @@ class CoverageMap extends React.Component {
         />
 
         <GeoJSONLayer
-          id="hotspots"
-          data={coverage ? coverage : emptyGeoJSON}
-          circlePaint={circleLayout}
+          id="offline-hotspots"
+          data={(showOffline && offline) || emptyGeoJSON}
+          circlePaint={offlineCircleLayout}
+          circleOnClick={this.handleHotspotClick}
+        />
+
+        <GeoJSONLayer
+          id="online-hotspots"
+          data={online || emptyGeoJSON}
+          circlePaint={onlineCircleLayout}
           circleOnClick={this.handleHotspotClick}
         />
       </>

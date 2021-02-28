@@ -4,15 +4,18 @@
   "private": true,
   "license": "Apache-2.0",
   "dependencies": {
+    "@ensdomains/address-encoder": "^0.2.6",
+    "@ensdomains/ensjs": "^2.0.0",
     "@helium/crypto": "^3.1.0",
     "@helium/currency": "^3.0.0",
-    "@helium/http": "^3.18.0",
+    "@helium/http": "^3.22.0",
     "@mapbox/mapbox-sdk": "^0.11.0",
     "@next/bundle-analyzer": "^10.0.6",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "@turf/turf": "^6.3.0",
+    "@turf/distance": "^6.3.0",
+    "@turf/helpers": "^6.3.0",
     "@zeit/next-css": "^1.0.1",
     "algoliasearch": "^4.5.1",
     "angry-purple-tiger": "1.0.5",
@@ -50,7 +53,8 @@
     "react-timestamp": "^5.1.0",
     "react-typekit": "^1.1.4",
     "recharts": "^1.8.5",
-    "swr": "^0.3.9"
+    "swr": "^0.3.9",
+    "use-deep-compare-effect": "^1.6.1"
   },
   "scripts": {
     "dev": "next dev",

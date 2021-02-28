@@ -2,20 +2,21 @@ import React from 'react'
 import Client from '@helium/http'
 import { Button, Modal, notification } from 'antd'
 import { ExportToCsv } from 'export-to-csv'
-import moment from 'moment'
 import { parseTxn } from './utils'
 import ExportProgress from './ExportProgress'
 import ExportForm from './ExportForm'
+import { getUnixTime, startOfDay } from 'date-fns'
 
+const now = new Date()
 const initialState = {
   open: false,
   loading: false,
   done: false,
-  startDate: moment(),
-  endDate: moment().startOf('day'),
+  startDate: getUnixTime(now),
+  endDate: getUnixTime(startOfDay(now)),
   txn: ['payment', 'reward'],
   fee: 'dc',
-  lastTxnTime: moment().unix(),
+  lastTxnTime: getUnixTime(now),
 }
 
 class ExportModal extends React.Component {
@@ -40,8 +41,8 @@ class ExportModal extends React.Component {
 
   onDateChange = (dates) => {
     this.setState({
-      startDate: dates[0],
-      endDate: dates[1],
+      startDate: getUnixTime(dates[0]),
+      endDate: getUnixTime(dates[1]),
     })
   }
 
@@ -85,8 +86,8 @@ class ExportModal extends React.Component {
     let data = []
 
     for await (const txn of list) {
-      if (txn.time < startDate.unix()) break
-      if (txn.time <= endDate.unix()) {
+      if (txn.time < startDate) break
+      if (txn.time <= endDate) {
         data.push(
           ...[].concat(
             await parseTxn(address, txn, { convertFee: fee === 'hnt' }),
@@ -120,12 +121,13 @@ class ExportModal extends React.Component {
 
   render() {
     const { loading, startDate, lastTxnTime, done } = this.state
-    const startTime = startDate.unix()
 
     const percent = done
       ? 100
       : Math.floor(
-          (1 - (lastTxnTime - startTime) / (moment().unix() - startTime)) * 100,
+          (1 -
+            (lastTxnTime - startDate) / (getUnixTime(new Date()) - startDate)) *
+            100,
         )
 
     return (

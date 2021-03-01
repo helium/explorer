@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Row, Typography, Checkbox, Tooltip } from 'antd'
+import { Row, Typography, Checkbox, Tooltip, Tabs } from 'antd'
 import Client from '@helium/http'
 import Fade from 'react-reveal/Fade'
 import Checklist from '../../components/Hotspots/Checklist/Checklist'
@@ -35,6 +35,7 @@ const HotspotMapbox = dynamic(
 )
 
 const { Title, Text } = Typography
+const { TabPane } = Tabs
 
 const HotspotView = ({ hotspot }) => {
   const [showWitnesses, setShowWitnesses] = useState(true)
@@ -198,11 +199,12 @@ const HotspotView = ({ hotspot }) => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 paddingTop: 10,
+                paddingBottom: 30,
                 color: 'white',
                 width: '100%',
               }}
             >
-              <p style={{ marginBottom: '-20px', fontWeight: 600 }}>
+              <p className="padding20xs" style={{ fontWeight: 600 }}>
                 {formatLocation(hotspot?.geocode)}
               </p>
               <div>
@@ -210,6 +212,7 @@ const HotspotView = ({ hotspot }) => {
                   onChange={(e) => setShowNearbyHotspots(e.target.checked)}
                   checked={showNearbyHotspots}
                   style={{ color: 'white' }}
+                  className="hidden-xs"
                 >
                   Show nearby hotspots
                 </Checkbox>
@@ -217,6 +220,7 @@ const HotspotView = ({ hotspot }) => {
                   onChange={(e) => setShowWitnesses(e.target.checked)}
                   checked={showWitnesses}
                   style={{ color: 'white' }}
+                  className="hidden-xs"
                 >
                   Show witnesses
                 </Checkbox>
@@ -224,7 +228,7 @@ const HotspotView = ({ hotspot }) => {
             </div>
           )}
 
-          <Row style={{ paddingTop: 30 }}>
+          <Row className="padding20xs">
             <div
               className="flexwrapper"
               style={{
@@ -371,16 +375,19 @@ const HotspotView = ({ hotspot }) => {
                   <Title
                     style={{
                       color: 'white',
-                      fontSize: 52,
                       marginTop: 10,
-                      letterSpacing: '-2px',
+                      letterSpacing: '-1px',
                       marginBottom: 17,
                     }}
                   >
                     {formatHotspotName(hotspot.name)}
                   </Title>
                 </span>
-                <Tooltip placement="bottom" title="Hotspot Network Address">
+                <Tooltip
+                  placement="bottom"
+                  title="Hotspot Network Address"
+                  className="hidden-xs"
+                >
                   <img
                     src={HotspotImg}
                     style={{
@@ -397,8 +404,9 @@ const HotspotView = ({ hotspot }) => {
                       color: '#8283B2',
                       wordBreak: 'break-all',
                     }}
+                    className=""
                   >
-                    {hotspot.address}
+                    <span className="truncated200xs">{hotspot.address}</span>
                   </Text>
                 </Tooltip>
               </div>
@@ -412,6 +420,7 @@ const HotspotView = ({ hotspot }) => {
             paddingBottom: 50,
             marginTop: 40,
           }}
+          className="hidden-xs"
         >
           <Checklist
             hotspot={hotspot}
@@ -432,22 +441,34 @@ const HotspotView = ({ hotspot }) => {
           }}
         >
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
-            <p
-              style={{
-                color: 'white',
-                margin: 0,
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              Owned by: <br className="line-break-only-at-small" />
-              <span style={{ width: 21, marginLeft: 8, marginRight: 2 }}>
-                <AccountIcon address={hotspot.owner} size={18} />
-              </span>
-              <Link href={'/accounts/' + hotspot.owner}>
-                <a style={{ wordBreak: 'break-all' }}>{hotspot.owner}</a>
-              </Link>
-            </p>
+            <div className="flex-responsive flexid">
+              <p
+                style={{
+                  color: 'white',
+                  display: 'inline-block',
+                  marginBottom: 0,
+                }}
+              >
+                Owned by:
+              </p>
+              <div
+                style={{
+                  flexGrow: 1,
+                  alignItems: 'center',
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <AccountIcon
+                  address={hotspot.owner}
+                  size={18}
+                  style={{ marginRight: 10 }}
+                />
+                <Link href={'/accounts/' + hotspot.owner}>
+                  <a className="truncated200xs">{hotspot.owner}</a>
+                </Link>
+              </div>
+            </div>
           </Content>
         </div>
       </Content>
@@ -462,33 +483,38 @@ const HotspotView = ({ hotspot }) => {
       >
         <RewardSummary rewardsLoading={rewardsLoading} rewards={rewards} />
       </Content>
-      <Content
-        style={{
-          margin: '0 auto',
-          maxWidth: 850,
-          paddingBottom: 20,
-          marginTop: 0,
-        }}
-      >
-        <WitnessesList
-          witnessesLoading={witnessesLoading}
-          witnesses={witnesses}
-        />
-      </Content>
+      <div className="hidden-xs">
+        <Content
+          style={{
+            margin: '0 auto',
+            maxWidth: 850,
+            paddingBottom: 20,
+            marginTop: 0,
+          }}
+        >
+          <WitnessesList
+            witnessesLoading={witnessesLoading}
+            witnesses={witnesses}
+          />
+        </Content>
 
-      <Content
-        style={{
-          margin: '0 auto',
-          maxWidth: 850,
-          paddingBottom: 20,
-          marginTop: 0,
-        }}
-      >
-        <NearbyHotspotsList
-          nearbyHotspotsLoading={nearbyHotspotsLoading}
-          nearbyHotspots={nearbyHotspots}
-        />
-      </Content>
+        <Content
+          style={{
+            margin: '0 auto',
+            maxWidth: 850,
+            paddingBottom: 20,
+            marginTop: 0,
+          }}
+        >
+          <NearbyHotspotsList
+            nearbyHotspotsLoading={nearbyHotspotsLoading}
+            nearbyHotspots={nearbyHotspots}
+          />
+
+          <ActivityList type="hotspot" address={hotspot.address} />
+        </Content>
+      </div>
+
       <Content
         style={{
           marginTop: '20px',
@@ -497,7 +523,29 @@ const HotspotView = ({ hotspot }) => {
           paddingBottom: 100,
         }}
       >
-        <ActivityList type="hotspot" address={hotspot.address} />
+        <Tabs
+          className="show-xs"
+          centered
+          style={{
+            background: 'white',
+          }}
+        >
+          <TabPane tab="Activity" key="1">
+            <ActivityList type="hotspot" address={hotspot.address} />
+          </TabPane>
+          <TabPane tab="Witnesses" key="2">
+            <WitnessesList
+              witnessesLoading={witnessesLoading}
+              witnesses={witnesses}
+            />
+          </TabPane>
+          <TabPane tab="Nearby Hotspots" key="3">
+            <NearbyHotspotsList
+              nearbyHotspotsLoading={nearbyHotspotsLoading}
+              nearbyHotspots={nearbyHotspots}
+            />
+          </TabPane>
+        </Tabs>
       </Content>
     </AppLayout>
   )

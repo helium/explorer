@@ -62,6 +62,13 @@ p.stat span {
   border-bottom: 1px solid #e9eaf2;
 }
 
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-table tfoot > tr > th,
+.ant-table tfoot > tr > td {
+  white-space: nowrap;
+}
+
 .barchart {
   transform: rotate(90deg);
   margin: 0px 0;
@@ -166,6 +173,15 @@ h3 {
   font-family: 'Inter', sans-serif;
 }
 
+.ant-table table {
+  width: 100% !important;
+  min-width: 685px !important;
+}
+
+.show-xs {
+  display: none;
+}
+
 .ant-descriptions-bordered .ant-descriptions-view > table {
   table-layout: fixed;
 }
@@ -213,6 +229,10 @@ hr {
   font-size: 17px;
 }
 
+tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
+  padding: 0 !important;
+}
+
 .ant-descriptions-item-content p {
   display: table-cell;
 }
@@ -220,6 +240,23 @@ hr {
 .proof {
   padding-bottom: 12px;
   word-break: break-all;
+}
+
+.sumamrycardmaintitle {
+  font-weight: 300;
+  font-size: 46px;
+  color: #262625;
+}
+
+.summarycardheader {
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #6d6ea0;
+  margin: 0;
+}
+
+.block-view-summary-container {
+  margin-top: 100px;
 }
 
 .summary-header > .ant-row > .ant-col-lg-12 {
@@ -300,7 +337,18 @@ hr {
   line-height: 0.7;
 }
 .line-break-only-at-small {
-  display: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.truncated {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: auto;
+  padding-left: 10px;
 }
 
 .flex-responsive {
@@ -308,6 +356,11 @@ hr {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
+.flex-responsive.flexID {
+  justify-content: center;
+  flex-wrap: nowrap;
 }
 
 .block-view-clock-icon {
@@ -411,6 +464,7 @@ hr {
   padding: 0;
   margin: 0;
 }
+
 .poc-witness-table {
   padding-left: 0px;
 }
@@ -471,6 +525,7 @@ hr {
 .earnings-chart-period-container {
   padding: 36px 36px 40px 36px;
 }
+
 .earnings-chart-period-wrapper {
   display: grid;
   gap: 20px;
@@ -479,6 +534,10 @@ hr {
 .earnings-chart-container {
   display: flex;
   flex-direction: row;
+  background-color: #f6f7fc;
+  border-radius: 14px;
+  padding: 32px;
+  justify-content: space-between;
 }
 .earnings-chart-content {
   width: 50%;
@@ -558,9 +617,13 @@ hr {
   cursor: pointer;
 }
 
-@media screen and (max-width: 890px) {
+@media screen and (max-width: 768px) {
   .block-view-summary-info {
     flex-direction: column;
+  }
+
+  .hidden-xs {
+    display: none;
   }
   .block-view-clock-icon {
     margin-left: 0px;
@@ -571,9 +634,93 @@ hr {
   }
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 576px) {
   .logo-container {
     margin-right: 12px;
+  }
+
+  .show-xs {
+    display: block;
+  }
+
+  .block-view-summary-container {
+    margin-top: 0px;
+  }
+  .block-view-summary-info {
+    align-items: flex-start;
+    order: -1;
+    margin-bottom: 20px;
+  }
+
+  .ant-select-item-option-grouped {
+    padding-left: 12px;
+  }
+
+  .earnings-chart-container {
+    padding: 10px 20px 0px 20px;
+    border-radius: 6px;
+  }
+
+  .flexwhensm {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
+
+  .summarycardmaintitle {
+    font-weight: 300;
+    font-size: 26px;
+    color: #262625;
+  }
+
+  .summarycardheader {
+    display: inline-block;
+  }
+
+  .earnings-chart-period-wrapper {
+    gap: 6px;
+  }
+
+  .truncated200xs {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    word-break: normal;
+    display: inline-block;
+    position: relative;
+    top: 2px;
+  }
+
+  .truncated100xs {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+    word-break: normal;
+    display: inline-block;
+    position: relative;
+    top: 2px;
+  }
+
+  .hotspot-name {
+    margin-bottom: 30px;
+    display: block;
+  }
+
+  .padding20xs {
+    padding: 0px 20px 0px 20px;
+
+    box-sizing: border-box;
+  }
+
+  .mini-coverage-map-overlay {
+    height: 200px;
+  }
+
+  .mapboxgl-map {
+    height: 200px !important;
   }
   .logo-full {
     display: none;
@@ -595,7 +742,7 @@ hr {
     padding: 50px 20px 20px 20px;
   }
   .content-container-hotspot-view {
-    padding: 20px;
+    padding: 0px;
   }
   .content-container-hotspot-view > .mapboxgl-map {
     height: 200px;
@@ -619,9 +766,7 @@ hr {
   .hotspot-name > h1 {
     line-height: 1;
   }
-  .line-break-only-at-small {
-    display: block;
-  }
+
   .flex-responsive {
     flex-direction: column;
   }
@@ -632,14 +777,21 @@ hr {
   }
   .block-view-prev-button {
     order: 2;
-    min-width: 49%;
+    max-width: 49%;
     padding: 6px;
   }
+
   .block-view-next-button {
     min-width: 170px;
     min-width: 49%;
     order: 3;
   }
+
+  .block-view-prev-button,
+  .block-view-next-button {
+    min-width: 45%;
+  }
+
   .ant-input-suffix {
     display: none;
   }
@@ -696,6 +848,15 @@ hr {
   }
   .poc-participant-name {
     padding-left: 18px;
+  }
+
+  .ant-table.ant-table-small .ant-table-title,
+  .ant-table.ant-table-small .ant-table-footer,
+  .ant-table.ant-table-small .ant-table-thead > tr > th,
+  .ant-table.ant-table-small .ant-table-tbody > tr > td,
+  .ant-table.ant-table-small tfoot > tr > th,
+  .ant-table.ant-table-small tfoot > tr > td {
+    padding: 4px 10px;
   }
 
   .earnings-chart-period-container {

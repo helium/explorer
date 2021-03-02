@@ -64,6 +64,7 @@ p.stat span {
 .ant-table.ant-table-small tfoot > tr > th,
 .ant-table.ant-table-small tfoot > tr > td {
   padding: 12px 24px;
+  white-space: nowrap;
 }
 
 .ant-table-tbody > tr > td {

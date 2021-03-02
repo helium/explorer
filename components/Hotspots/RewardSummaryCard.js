@@ -41,42 +41,44 @@ const RewardSummaryCard = ({
                 )}
               </div>
 
-              {previousValue !== undefined &&
-                previousValue !== 0 &&
-                !rewardsLoading && (
-                  <div className="hidden-xs">
-                    <Skeleton active paragraph={{ rows: 0 }} size="large" />
-
-                    <Tooltip
-                      title={`Previous period: ${previousValue} HNT`}
-                      placement={'bottom'}
-                    >
-                      {chartPercentChange !== 0 && (
-                        <div
-                          style={{
-                            borderRadius: 7,
-                            backgroundColor:
-                              chartPercentChange > 0 ? '#29D391' : '#474DFF',
-                            padding: '4px 8px',
-                            display: 'inline',
-                            height: 'auto',
-                          }}
-                        >
-                          <span
+              {previousValue !== undefined && previousValue !== 0 && (
+                <>
+                  {!rewardsLoading ? (
+                    <div className="hidden-xs">
+                      <Tooltip
+                        title={`Previous period: ${previousValue} HNT`}
+                        placement={'bottom'}
+                      >
+                        {chartPercentChange !== 0 && (
+                          <div
                             style={{
-                              fontWeight: 600,
-                              fontSize: '14px',
-                              color: 'white',
-                              whiteSpace: 'nowrap',
+                              borderRadius: 7,
+                              backgroundColor:
+                                chartPercentChange > 0 ? '#29D391' : '#474DFF',
+                              padding: '4px 8px',
+                              display: 'inline',
+                              height: 'auto',
                             }}
                           >
-                            {formatPercentChangeString(chartPercentChange)}
-                          </span>
-                        </div>
-                      )}
-                    </Tooltip>
-                  </div>
-                )}
+                            <span
+                              style={{
+                                fontWeight: 600,
+                                fontSize: '14px',
+                                color: 'white',
+                                whiteSpace: 'nowrap',
+                              }}
+                            >
+                              {formatPercentChangeString(chartPercentChange)}
+                            </span>
+                          </div>
+                        )}
+                      </Tooltip>
+                    </div>
+                  ) : (
+                    <Skeleton active paragraph={{ rows: 0 }} size="large" />
+                  )}
+                </>
+              )}
             </div>
             <div className="earnings-chart-content hidden-xs">
               {!rewardsLoading ? (

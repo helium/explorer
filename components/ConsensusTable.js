@@ -13,7 +13,7 @@ export const makeArrayWorkWithAntTable = (incomingArray) => {
 export const generateColumns = (columnType) => {
   const columns = [
     {
-      title: 'Number',
+      title: '#',
       dataIndex: 'index',
       key: 'index',
       render: (name, row, index) => index + 1,

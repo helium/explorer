@@ -76,7 +76,7 @@ const HotspotMapbox = ({
 
   // include nearby hotspots in centering / zooming logic
   nearbyHotspots.map((h) => {
-    boundsLocations.push({ lng: h?.lng, lat: h?.lat })
+    boundsLocations.push({ lng: parseFloat(h?.lng), lat: parseFloat(h?.lat) })
   })
 
   // calculate map bounds

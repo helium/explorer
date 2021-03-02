@@ -510,7 +510,15 @@ const HotspotView = ({ hotspot }) => {
             nearbyHotspotsLoading={nearbyHotspotsLoading}
             nearbyHotspots={nearbyHotspots}
           />
-
+        </Content>
+        <Content
+          style={{
+            margin: '0 auto',
+            maxWidth: 850,
+            paddingBottom: 20,
+            marginTop: 0,
+          }}
+        >
           <ActivityList type="hotspot" address={hotspot.address} />
         </Content>
       </div>

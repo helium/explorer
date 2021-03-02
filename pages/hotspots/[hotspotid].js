@@ -530,16 +530,16 @@ const HotspotView = ({ hotspot }) => {
             background: 'white',
           }}
         >
-          <TabPane tab="Activity" key="1">
+          <TabPane tab="Activity" key="1" style={{ paddingBottom: 50 }}>
             <ActivityList type="hotspot" address={hotspot.address} />
           </TabPane>
-          <TabPane tab="Witnesses" key="2">
+          <TabPane tab="Witnesses" key="2" style={{ paddingBottom: 50 }}>
             <WitnessesList
               witnessesLoading={witnessesLoading}
               witnesses={witnesses}
             />
           </TabPane>
-          <TabPane tab="Nearby Hotspots" key="3">
+          <TabPane tab="Nearby Hotspots" key="3" style={{ paddingBottom: 50 }}>
             <NearbyHotspotsList
               nearbyHotspotsLoading={nearbyHotspotsLoading}
               nearbyHotspots={nearbyHotspots}

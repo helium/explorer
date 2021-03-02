@@ -30,6 +30,10 @@
   color: white;
 }
 
+.minicoveragemap {
+  height: 900px;
+}
+
 .ant-card-body {
   padding: 0;
 }
@@ -39,6 +43,10 @@ p.stat {
   margin: 0;
   margin-bottom: 3px;
   font-weight: 500;
+}
+
+.ant-tabs-tab {
+  margin: 0 16px 0 16px;
 }
 
 p.stat span {
@@ -299,9 +307,17 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   border-radius: 6px;
   position: absolute;
   z-index: 2;
-  height: 500px;
+  height: 100%;
   width: 100%;
 }
+
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-table tfoot > tr > th,
+.ant-table tfoot > tr > td {
+  padding: 6px 16px;
+}
+
 .mini-coverage-map:hover > .mini-coverage-map-overlay {
   opacity: 0.1;
   transition: opacity 0.2s ease;
@@ -313,8 +329,9 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   width: 100%;
   z-index: 3;
   color: white;
+  line-height: 1.1;
   opacity: 0;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 400;
   text-shadow: 0 0 10px darkslategray;
   display: block;
@@ -639,6 +656,10 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
     margin-right: 12px;
   }
 
+  .mini-coverage-map-interactive-text {
+    opacity: 1;
+  }
+
   .show-xs {
     display: block;
   }
@@ -689,8 +710,6 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
     max-width: 200px;
     word-break: normal;
     display: inline-block;
-    position: relative;
-    top: 2px;
   }
 
   .truncated100xs {
@@ -715,12 +734,8 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
     box-sizing: border-box;
   }
 
-  .mini-coverage-map-overlay {
-    height: 200px;
-  }
-
   .mapboxgl-map {
-    height: 200px !important;
+    height: 80vw !important;
   }
   .logo-full {
     display: none;
@@ -767,9 +782,6 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
     line-height: 1;
   }
 
-  .flex-responsive {
-    flex-direction: column;
-  }
   .block-view-summary-info {
     width: 100%;
     order: 1;
@@ -856,7 +868,7 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   .ant-table.ant-table-small .ant-table-tbody > tr > td,
   .ant-table.ant-table-small tfoot > tr > th,
   .ant-table.ant-table-small tfoot > tr > td {
-    padding: 4px 10px;
+    padding: 6px 10px;
   }
 
   .earnings-chart-period-container {

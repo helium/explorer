@@ -318,6 +318,12 @@ const columns = (ownerAddress) => {
       ),
     },
     {
+      title: 'Time',
+      dataIndex: 'time',
+      key: 'time',
+      render: (time) => <Timestamp date={time} />,
+    },
+    {
       title: 'Block Height',
       dataIndex: 'height',
       key: 'height',
@@ -326,12 +332,6 @@ const columns = (ownerAddress) => {
           <a>{height}</a>
         </Link>
       ),
-    },
-    {
-      title: 'Time',
-      dataIndex: 'time',
-      key: 'time',
-      render: (time) => <Timestamp date={time} />,
     },
   ]
 }

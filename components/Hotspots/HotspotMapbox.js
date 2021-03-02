@@ -25,36 +25,32 @@ const styles = {
     width: 14,
     height: 14,
     borderRadius: '50%',
-    backgroundColor: '#A984FF',
+    backgroundColor: '#fff',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    border: '3px solid #8B62EA',
-    boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
+    boxShadow:
+      '0px 0px 0px 20px rgba(255,255,255,0.15), 0px 0px 0px 10px rgba(255,255,255,0.15)',
     cursor: 'pointer',
   },
   witnessMarker: {
-    width: 14,
-    height: 14,
+    width: 10,
+    height: 10,
     borderRadius: '50%',
     backgroundColor: '#F1C40F',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    border: '3px solid #B7950B',
-    boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
     cursor: 'pointer',
   },
   nearbyMarker: {
-    width: 14,
-    height: 14,
+    width: 10,
+    height: 10,
     borderRadius: '50%',
-    backgroundColor: '#1a90ff',
+    backgroundColor: '#7C88BB',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    border: '3px solid #0177E6',
-    boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
     cursor: 'pointer',
   },
 }
@@ -93,7 +89,7 @@ const HotspotMapbox = ({
     ]
   } else {
     mapProps.fitBounds = mapBounds
-    mapProps.fitBoundsOptions = { padding: 25, animate: false }
+    mapProps.fitBoundsOptions = { padding: 50, animate: false }
   }
 
   if (hotspot.lng !== undefined && hotspot.lat !== undefined) {

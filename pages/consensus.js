@@ -86,9 +86,7 @@ const Consensus = ({
       url={`https://explorer.helium.com/consensus`}
     >
       <TopBanner icon={ConsensusImg} title="Consensus" />
-      <div
-        style={{ minHeight: 600, width: '100%', backgroundColor: '#324b61' }}
-      >
+      <div style={{ width: '100%', backgroundColor: '#324b61' }}>
         {consensusGroups.currentElection && (
           <ConsensusMapbox members={consensusGroups.currentElection} />
         )}

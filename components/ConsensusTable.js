@@ -45,6 +45,7 @@ export const generateColumns = (columnType) => {
       <p
         style={{
           color: '#555',
+          marginBottom: 0,
         }}
       >
         <ReactCountryFlag

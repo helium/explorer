@@ -76,6 +76,7 @@ const NearbyHotspotsList = ({ nearbyHotspots, nearbyHotspotsLoading }) => {
               showSizeChanger: nearbyHotspots.length > PAGE_SIZE_DEFAULT,
               hideOnSinglePage: nearbyHotspots.length <= PAGE_SIZE_DEFAULT,
               pageSizeOptions: [5, 10, 20, 50, 100],
+              position: 'bottomCenter',
             }}
             scroll={{ x: true }}
             onChange={handleTableChange}

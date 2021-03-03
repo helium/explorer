@@ -1,5 +1,50 @@
 @import '~antd/dist/antd.css';
 
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+#nprogress .spinner {
+  display: block !important;
+  position: absolute !important;
+  z-index: 1031;
+  left: calc(50% - 60px) !important;
+  top: calc(50% - 75px) !important;
+  background: rgba(95, 107, 131, 0.7) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  width: 120px !important;
+  height: 150px !important;
+  border-radius: 20px !important;
+}
+
+#nprogress .spinner-icon {
+  width: 60px !important;
+  position: absolute !important;
+  height: 60px !important;
+  box-sizing: border-box !important;
+  left: calc(50% - 30px) !important;
+  top: calc(50% - 30px) !important;
+  border: solid 7px transparent !important;
+  border-top-color: #fff !important;
+  border-left-color: #fff !important;
+  border-radius: 50% !important;
+
+  -webkit-animation: nprogress-spinner 600ms linear infinite !important;
+  animation: nprogress-spinner 600ms linear infinite !important;
+}
+
 .ant-card-loading-content {
   margin: 24px;
 }

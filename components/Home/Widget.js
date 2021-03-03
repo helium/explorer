@@ -52,7 +52,7 @@ const Widget = ({
             {value}
           </Text>
           {change !== undefined && (
-            <div style={{ marginTop: 5 }}>
+            <div className="hidden-xs" style={{ marginTop: 5 }}>
               <ChangeBubble
                 value={change}
                 suffix={changeSuffix}

@@ -18,8 +18,9 @@ const styles = {
     width: 24,
     height: 24,
     borderRadius: '50%',
-    backgroundColor: '#474DFF',
+    backgroundColor: '#A667F6',
     display: 'flex',
+    border: 'none',
     justifyContent: 'center',
     alignItems: 'center',
     boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
@@ -91,9 +92,8 @@ const ConsensusMapbox = ({ members }) => {
                 className="consensus-mapbox-hover-text"
                 style={{
                   color: 'white',
-                  textShadow: '0px 2px rgba(0,0,0,0.5)',
                   fontFamily: 'Inter',
-                  fontWeight: 800,
+                  fontWeight: 600,
                 }}
               >
                 {idx + 1}

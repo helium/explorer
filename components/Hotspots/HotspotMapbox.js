@@ -26,36 +26,32 @@ const styles = {
     width: 14,
     height: 14,
     borderRadius: '50%',
-    backgroundColor: '#A984FF',
+    backgroundColor: '#fff',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    border: '3px solid #8B62EA',
-    boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
+    boxShadow:
+      '0px 0px 0px 20px rgba(255,255,255,0.15), 0px 0px 0px 10px rgba(255,255,255,0.15)',
     cursor: 'pointer',
   },
   witnessMarker: {
-    width: 14,
-    height: 14,
+    width: 10,
+    height: 10,
     borderRadius: '50%',
     backgroundColor: '#F1C40F',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    border: '3px solid #B7950B',
-    boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
     cursor: 'pointer',
   },
   nearbyMarker: {
-    width: 14,
-    height: 14,
+    width: 10,
+    height: 10,
     borderRadius: '50%',
-    backgroundColor: '#1a90ff',
+    backgroundColor: '#7C88BB',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    border: '3px solid #0177E6',
-    boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
     cursor: 'pointer',
   },
 }
@@ -81,7 +77,7 @@ const HotspotMapbox = ({
 
   // include nearby hotspots in centering / zooming logic
   nearbyHotspots.map((h) => {
-    boundsLocations.push({ lng: h?.lng, lat: h?.lat })
+    boundsLocations.push({ lng: parseFloat(h?.lng), lat: parseFloat(h?.lat) })
   })
 
   // calculate map bounds
@@ -98,13 +94,13 @@ const HotspotMapbox = ({
     ]
   } else {
     mapProps.fitBounds = mapBounds
-    mapProps.fitBoundsOptions = { padding: 25, animate: false }
+    mapProps.fitBoundsOptions = { padding: 50, animate: false }
   }
 
   if (hotspot.lng !== undefined && hotspot.lat !== undefined) {
     return (
       <div className="relative">
-        <MapButton
+        {/* <MapButton
           classes="left-5 bottom-5"
           checked={showWitnesses}
           handleToggle={(e) => setShowWitnesses(e.target.checked)}
@@ -123,18 +119,7 @@ const HotspotMapbox = ({
               fill="white"
             />
           </svg>
-        </MapButton>
-        <button
-          id="show-nearby"
-          className="left-20 bottom-5 absolute w-11 h-11 shadow-md rounded-full z-10 flex items-center justify-center bg-navy-500 map-zoom-out-button"
-          onClick={() => console.log('firstbutton')}
-          onChange={(e) => setShowNearbyHotspots(e.target.checked)}
-          checked={showNearbyHotspots}
-        >
-          <span id="zoom-out" className="unselectable-text">
-            {/* <img src="/images/nearby-icon.svg" className="w-5 h-5" /> */}
-          </span>
-        </button>
+        </MapButton> */}
         <Mapbox
           style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
           container="map"

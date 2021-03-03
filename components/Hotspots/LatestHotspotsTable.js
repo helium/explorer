@@ -11,7 +11,11 @@ const LatestHotspotsTable = ({ hotspots }) => (
     columns={hotspotColumns}
     size="small"
     rowKey="name"
-    pagination={{ pageSize: 5, hideOnSinglePage: true }}
+    pagination={{
+      pageSize: 5,
+      hideOnSinglePage: true,
+      position: ['bottomCenter'],
+    }}
     scroll={{ x: true }}
   />
 )

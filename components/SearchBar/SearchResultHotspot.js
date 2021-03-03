@@ -19,13 +19,16 @@ const SearchResultHotspot = ({ name, geocode, status }) => (
       style={{
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'space-between',
       }}
     >
       {geocode.shortCountry && (
         <>
-          {[geocode.longCity, geocode.shortState, geocode.shortCountry].join(
-            ', ',
-          )}
+          <span className="truncated100xs" style={{ fontSize: '0.75em' }}>
+            {[geocode.longCity, geocode.shortState, geocode.shortCountry].join(
+              ', ',
+            )}
+          </span>
           <ReactCountryFlag
             countryCode={geocode.shortCountry}
             style={{

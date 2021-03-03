@@ -109,7 +109,7 @@ const BlockView = ({ block, txns, height }) => {
                   maximumFractionDigits: 0,
                 })}
               </Title>
-              <div>
+              <div className="hidden-xs">
                 <Text
                   copyable
                   style={{
@@ -122,7 +122,7 @@ const BlockView = ({ block, txns, height }) => {
               </div>
             </div>
 
-            <div>
+            <div className="hidden-xs">
               <PieChart data={filterTxns()} />
             </div>
           </div>
@@ -217,10 +217,6 @@ const BlockView = ({ block, txns, height }) => {
           width: 100%;
           border-top: 1px solid #494b7b;
           margin: 40px 0;
-        }
-
-        .block-view-summary-container {
-          margin-top: 100px;
         }
 
         .block-view-summary-info {

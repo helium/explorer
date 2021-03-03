@@ -4,6 +4,21 @@
   margin: 24px;
 }
 
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.minicoveragemap {
+  height: 900px;
+}
+
 .ant-card-body {
   padding: 0;
 }
@@ -13,6 +28,10 @@ p.stat {
   margin: 0;
   margin-bottom: 3px;
   font-weight: 500;
+}
+
+.ant-tabs-tab {
+  margin: 0 16px 0 16px;
 }
 
 p.stat span {
@@ -30,10 +49,60 @@ p.stat span {
 .ant-table.ant-table-small tfoot > tr > th,
 .ant-table.ant-table-small tfoot > tr > td {
   padding: 12px 24px;
+  white-space: nowrap;
 }
 
 .ant-table-tbody > tr > td {
   border-bottom: 1px solid #e9eaf2;
+}
+
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-table tfoot > tr > th,
+.ant-table tfoot > tr > td {
+  white-space: nowrap;
+}
+
+.barchart {
+  transform: rotate(90deg);
+  margin: 0px 0;
+  display: inline-block;
+  width: 100%;
+  transform-origin: bottom right;
+  position: absolute;
+  margin-top: -100%;
+  left: -200px;
+  height: 850px;
+  background: none;
+  bottom: 0;
+  max-width: 200px;
+}
+
+.barchart .ant-table-tbody > tr > td {
+  background: none !important;
+  padding: 2px 0 !important;
+  border: none !important;
+}
+
+.barchart thead {
+  display: none;
+}
+
+.barchart .ant-table {
+  background: none;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .ant-layout-header {
@@ -98,6 +167,15 @@ h3 {
   font-family: 'Inter', sans-serif;
 }
 
+.ant-table table {
+  width: 100% !important;
+  min-width: 685px !important;
+}
+
+.show-xs {
+  display: none;
+}
+
 .ant-descriptions-bordered .ant-descriptions-view > table {
   table-layout: fixed;
 }
@@ -145,6 +223,10 @@ hr {
   font-size: 17px;
 }
 
+tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
+  padding: 0 !important;
+}
+
 .ant-descriptions-item-content p {
   display: table-cell;
 }
@@ -152,6 +234,23 @@ hr {
 .proof {
   padding-bottom: 12px;
   word-break: break-all;
+}
+
+.summarycardmaintitle {
+  font-weight: 300;
+  font-size: 46px;
+  color: #262625;
+}
+
+.summarycardheader {
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #6d6ea0;
+  margin: 0;
+}
+
+.block-view-summary-container {
+  margin-top: 100px;
 }
 
 .summary-header > .ant-row > .ant-col-lg-12 {
@@ -194,9 +293,17 @@ hr {
   border-radius: 6px;
   position: absolute;
   z-index: 2;
-  height: 500px;
+  height: 100%;
   width: 100%;
 }
+
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-table tfoot > tr > th,
+.ant-table tfoot > tr > td {
+  padding: 6px 16px;
+}
+
 .mini-coverage-map:hover > .mini-coverage-map-overlay {
   opacity: 0.1;
   transition: opacity 0.2s ease;
@@ -208,8 +315,9 @@ hr {
   width: 100%;
   z-index: 3;
   color: white;
+  line-height: 1.1;
   opacity: 0;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 400;
   text-shadow: 0 0 10px darkslategray;
   display: block;
@@ -231,12 +339,31 @@ hr {
 .hotspot-name > h1 {
   line-height: 0.7;
 }
+.line-break-only-at-small {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.truncated {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: auto;
+  padding-left: 10px;
+}
 
 .flex-responsive {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
+.flex-responsive.flexID {
+  justify-content: center;
+  flex-wrap: nowrap;
 }
 
 .block-view-clock-icon {
@@ -340,6 +467,7 @@ hr {
   padding: 0;
   margin: 0;
 }
+
 .poc-witness-table {
   padding-left: 0px;
 }
@@ -400,6 +528,7 @@ hr {
 .earnings-chart-period-container {
   padding: 36px 36px 40px 36px;
 }
+
 .earnings-chart-period-wrapper {
   display: grid;
   gap: 20px;
@@ -408,6 +537,10 @@ hr {
 .earnings-chart-container {
   display: flex;
   flex-direction: row;
+  background-color: #f6f7fc;
+  border-radius: 14px;
+  padding: 32px;
+  justify-content: space-between;
 }
 .earnings-chart-content {
   width: 50%;
@@ -487,9 +620,13 @@ hr {
   cursor: pointer;
 }
 
-@media screen and (max-width: 890px) {
+@media screen and (max-width: 768px) {
   .block-view-summary-info {
     flex-direction: column;
+  }
+
+  .hidden-xs {
+    display: none;
   }
   .block-view-clock-icon {
     margin-left: 0px;
@@ -500,9 +637,86 @@ hr {
   }
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 576px) {
   .logo-container {
     margin-right: 12px;
+  }
+
+  .mini-coverage-map-interactive-text {
+    opacity: 1;
+  }
+
+  .show-xs {
+    display: block;
+  }
+
+  .block-view-summary-container {
+    margin-top: 0px;
+  }
+  .block-view-summary-info {
+    align-items: flex-start;
+    order: -1;
+    margin-bottom: 20px;
+  }
+
+  .ant-select-item-option-grouped {
+    padding-left: 12px;
+  }
+
+  .earnings-chart-container {
+    padding: 10px 20px 0px 20px;
+    border-radius: 6px;
+  }
+
+  .flexwhensm {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
+
+  .summarycardmaintitle {
+    font-weight: 300;
+    font-size: 26px;
+    color: #262625;
+  }
+
+  .summarycardheader {
+    display: inline-block;
+  }
+
+  .earnings-chart-period-wrapper {
+    gap: 6px;
+  }
+
+  .truncated200xs {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    word-break: normal;
+    display: inline-block;
+  }
+
+  .truncated100xs {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+    word-break: normal;
+    display: inline-block;
+    position: relative;
+    top: 2px;
+  }
+
+  .padding20xs {
+    padding: 0px 20px 0px 20px;
+
+    box-sizing: border-box;
+  }
+
+  .mapboxgl-map {
+    height: 80vw !important;
   }
   .logo-full {
     display: none;
@@ -524,7 +738,7 @@ hr {
     padding: 50px 20px 20px 20px;
   }
   .content-container-hotspot-view {
-    padding: 20px;
+    padding: 0px;
   }
   .content-container-hotspot-view > .mapboxgl-map {
     height: 200px;
@@ -558,14 +772,21 @@ hr {
   }
   .block-view-prev-button {
     order: 2;
-    min-width: 49%;
+    max-width: 49%;
     padding: 6px;
   }
+
   .block-view-next-button {
     min-width: 170px;
     min-width: 49%;
     order: 3;
   }
+
+  .block-view-prev-button,
+  .block-view-next-button {
+    min-width: 45%;
+  }
+
   .ant-input-suffix {
     display: none;
   }
@@ -622,6 +843,15 @@ hr {
   }
   .poc-participant-name {
     padding-left: 18px;
+  }
+
+  .ant-table.ant-table-small .ant-table-title,
+  .ant-table.ant-table-small .ant-table-footer,
+  .ant-table.ant-table-small .ant-table-thead > tr > th,
+  .ant-table.ant-table-small .ant-table-tbody > tr > td,
+  .ant-table.ant-table-small tfoot > tr > th,
+  .ant-table.ant-table-small tfoot > tr > td {
+    padding: 6px 10px;
   }
 
   .earnings-chart-period-container {

@@ -142,10 +142,9 @@ const AccountView = ({ account }) => {
                 alignItems: 'center',
               }}
             >
-              <AccountIcon address={account.address} size={48} />
+              <AccountIcon address={account.address} size={30} />
               <Title
-                code
-                level={2}
+                level={5}
                 copyable={{ text: account.address }}
                 style={{
                   color: 'white',

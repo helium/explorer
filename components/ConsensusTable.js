@@ -13,7 +13,7 @@ export const makeArrayWorkWithAntTable = (incomingArray) => {
 export const generateColumns = (columnType) => {
   const columns = [
     {
-      title: 'Number',
+      title: '#',
       dataIndex: 'index',
       key: 'index',
       render: (name, row, index) => index + 1,
@@ -45,6 +45,7 @@ export const generateColumns = (columnType) => {
       <p
         style={{
           color: '#555',
+          marginBottom: 0,
         }}
       >
         <ReactCountryFlag

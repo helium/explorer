@@ -5,7 +5,6 @@ import animalHash from 'angry-purple-tiger'
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 import { withRouter } from 'next/router'
 import ScaleControl from '../ScaleControl'
-import MapButton from '../../components/MapButton'
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
@@ -60,20 +59,21 @@ const HotspotMapbox = ({
   classes,
   hotspot,
   witnesses,
-  // showWitnesses,
   nearbyHotspots = [],
-  // showNearbyHotspots,
   router,
 }) => {
   const [showWitnesses, setShowWitnesses] = useState(true)
   const [showNearbyHotspots, setShowNearbyHotspots] = useState(true)
 
   const boundsLocations = []
+
   // include hotspot in centering / zooming logic
   boundsLocations.push({ lng: hotspot?.lng, lat: hotspot?.lat })
 
   // include witnesses in centering / zooming logic
-  witnesses.map((w) => boundsLocations.push({ lng: w?.lng, lat: w?.lat }))
+  witnesses.map((w) => {
+    if (showWitnesses) boundsLocations.push({ lng: w?.lng, lat: w?.lat })
+  })
 
   // include nearby hotspots in centering / zooming logic
   nearbyHotspots.map((h) => {
@@ -92,18 +92,24 @@ const HotspotMapbox = ({
       hotspot?.lng ? hotspot.lng : 0,
       hotspot?.lat ? hotspot.lat : 0,
     ]
+    mapProps.fitBoundsOptions = { padding: 50, animate: true }
   } else {
     mapProps.fitBounds = mapBounds
-    mapProps.fitBoundsOptions = { padding: 50, animate: false }
+    mapProps.fitBoundsOptions = { padding: 50, animate: true }
+    // mapProps.center = [
+    //   hotspot?.lng ? hotspot.lng : 0,
+    //   hotspot?.lat ? hotspot.lat : 0,
+    // ]
   }
 
   if (hotspot.lng !== undefined && hotspot.lat !== undefined) {
     return (
       <div className="relative">
-        {/* <MapButton
-          classes="left-5 bottom-5"
-          checked={showWitnesses}
-          handleToggle={(e) => setShowWitnesses(e.target.checked)}
+        <button
+          className={`left-5 bottom-5 focus:ring focus:outline-none absolute w-11 h-11 shadow-md rounded-full z-10 flex items-center justify-center ${
+            showWitnesses ? 'bg-yellow-400' : 'bg-navy-500'
+          }`}
+          onClick={() => setShowWitnesses((prevValue) => !prevValue)}
         >
           <svg
             width="26"
@@ -119,7 +125,7 @@ const HotspotMapbox = ({
               fill="white"
             />
           </svg>
-        </MapButton> */}
+        </button>
         <Mapbox
           style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
           container="map"

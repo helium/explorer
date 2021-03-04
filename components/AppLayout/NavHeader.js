@@ -9,12 +9,11 @@ const { Header } = Layout
 
 const NavHeader = () => (
   <Header
-    // className="header"
     style={{
       backgroundColor: '#101725',
       display: 'flex',
       position: 'fixed',
-      zIndex: 10,
+      zIndex: 100,
       width: '100%',
       top: 0,
       justifyContent: 'space-between',

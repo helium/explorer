@@ -28,6 +28,7 @@ module.exports = {
         500: '#E86161',
       },
       yellow: {
+        400: '#f4cb5e',
         500: '#FCC945',
       },
     },

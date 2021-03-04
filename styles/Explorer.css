@@ -734,15 +734,6 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
     gap: 6px;
   }
 
-  .truncated200xs {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px;
-    word-break: normal;
-    display: inline-block;
-  }
-
   .truncated100xs {
     white-space: nowrap;
     overflow: hidden;
@@ -752,12 +743,6 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
     display: inline-block;
     position: relative;
     top: 2px;
-  }
-
-  .padding20xs {
-    padding: 0px 20px 0px 20px;
-
-    box-sizing: border-box;
   }
 
   .mapboxgl-map {

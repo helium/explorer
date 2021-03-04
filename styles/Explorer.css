@@ -716,3 +716,43 @@ hr {
   padding-top: 0;
   padding-bottom: 0;
 }
+
+.consensus_map__zoom_buttons {
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.consensus_map__zoom_buttons button,
+.reset-zoom-button button {
+  height: 50px !important;
+  width: 50px !important;
+  font-size: 24px !important;
+  text-align: center !important;
+  border-radius: 50px !important;
+  right: 20px !important;
+  z-index: 3 !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: rgb(12, 21, 30) !important;
+  color: white !important;
+  transition: all 0.3s !important;
+  background-size: 50px 500px !important;
+  background-image: none !important;
+  opacity: 1 !important;
+  margin-bottom: 1rem;
+}
+
+.consensus_map__zoom_buttons #zoomIn::after {
+  content: '+';
+}
+
+.consensus_map__zoom_buttons #zoomOut::after {
+  content: '-';
+}
+
+.consensus_map__zoom_buttons button:hover,
+.reset-zoom-button button:hover {
+  transform: scale(1.1, 1.1);
+}

@@ -1,4 +1,7 @@
 module.exports = {
+  corePlugins: {
+    preflight: false,
+  },
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
@@ -25,11 +28,15 @@ module.exports = {
         500: '#32C48D',
       },
       red: {
+        400: '#fb6666',
         500: '#E86161',
       },
       yellow: {
         400: '#f4cb5e',
         500: '#FCC945',
+      },
+      gray: {
+        300: '#8283B2',
       },
     },
   },
@@ -37,4 +44,5 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  important: '#app',
 }

@@ -7,13 +7,13 @@ const Logo = () => (
     <img
       src={logo}
       className="logo-full"
-      style={{ height: 44 }}
+      style={{ height: 30 }}
       alt="Helium logo"
     />
     <img
       src={logoMobile}
       className="logo-small"
-      style={{ height: 44 }}
+      style={{ height: 30 }}
       alt="Helium logo"
     />
   </div>

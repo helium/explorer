@@ -190,7 +190,7 @@ const HotspotView = ({ hotspot }) => {
                 {hotspot.geocode.shortCountry && (
                   <ReactCountryFlag
                     countryCode={hotspot.geocode.shortCountry}
-                    className="mr-3"
+                    className="mr-2"
                   />
                 )}
                 {formatLocation(hotspot?.geocode)}
@@ -199,56 +199,22 @@ const HotspotView = ({ hotspot }) => {
           )}
 
           <Row className="px-5 sm:px-0 pb-4 sm:pb-8">
-            <div
-              className="flexwrapper"
-              style={{
-                width: '100%',
-                justifyContent: 'flex-start',
-                alignItems: 'flex-start',
-                // marginBottom: 50,
-                paddingRight: 20,
-              }}
-            >
-              <div style={{ width: '100%' }}>
+            <div className="flex justify-start items-start pr-5">
+              <div className="w-full">
                 <Fade delay={500}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'flex-start',
-                      padding: '0 0 8px 0',
-                      width: 'auto',
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: '2px 10px',
-                        backgroundColor: '#182035',
-                        borderRadius: '20px',
-                      }}
-                    >
+                  <div className="flex flex-row items-center justify-start p-0 pb-2 w-auto">
+                    <div className="flex flex-row items-center justify-center py-0.5 px-2.5 bg-navy-600 rounded-full">
                       <Tooltip
                         placement="top"
                         title={`Hotspot is ${hotspot.status.online}`}
                       >
                         <div
-                          style={{
-                            height: 10,
-                            minWidth: 10,
-                            width: 10,
-                            // marginLeft: 15,
-                            backgroundColor:
-                              hotspot.status.online === 'online'
-                                ? '#32C48D'
-                                : '#fb6666',
-                            borderRadius: 20,
-                          }}
-                        ></div>
+                          className={`h-2.5 w-2.5 rounded-full ${
+                            hotspot.status.online
+                              ? 'bg-green-500'
+                              : 'bg-red-400'
+                          }`}
+                        />
                       </Tooltip>
                       <Tooltip
                         placement="top"
@@ -269,13 +235,7 @@ const HotspotView = ({ hotspot }) => {
                             : ``
                         }`}
                       >
-                        <p
-                          style={{
-                            marginBottom: 0,
-                            color: '#8283B2',
-                            marginLeft: 8,
-                          }}
-                        >
+                        <p className="text-gray-300 ml-2 mb-0">
                           {hotspot.status.online === 'offline'
                             ? `Offline`
                             : hotspot.block - hotspot.status?.height >= 500 ||
@@ -287,29 +247,12 @@ const HotspotView = ({ hotspot }) => {
                     </div>
 
                     {hotspot.rewardScale && (
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          marginLeft: '10px',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          padding: '2px 10px',
-                          backgroundColor: '#182035',
-                          borderRadius: '20px',
-                        }}
-                      >
+                      <div className="flex flex-row ml-2.5 items-center justify-center py-0.5 px-2.5 bg-navy-600 rounded-full">
                         <Tooltip
                           placement="top"
                           title={`Reward scale: ${hotspot.rewardScale}`}
                         >
-                          <span
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}
-                          >
+                          <span className="flex items-center justify-center">
                             <Hex
                               width={10.5}
                               height={12}
@@ -324,13 +267,7 @@ const HotspotView = ({ hotspot }) => {
                           placement="top"
                           title={`A Hotspot's own reward scale does not impact its earnings. Hotspots witnessing this Hotspot will see their rewards scaled up or down according to this Hotspot's reward scale.`}
                         >
-                          <p
-                            style={{
-                              marginBottom: 0,
-                              color: '#8283B2',
-                              marginLeft: 8,
-                            }}
-                          >
+                          <p className="mb-0 text-gray-300 ml-2">
                             {hotspot.rewardScale.toLocaleString(undefined, {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
@@ -357,43 +294,31 @@ const HotspotView = ({ hotspot }) => {
                   title="Hotspot Network Address"
                   className="hidden-xs"
                 >
-                  <div className="flex flex-row items-center justify-start">
-                    <img
-                      src={HotspotImg}
-                      style={{
-                        height: 15,
-                        marginRight: 5,
-                        position: 'relative',
-                        top: '-2px',
-                      }}
-                      alt="Hotspot Network Address"
-                    />
-                    <Text
-                      copyable
-                      style={{
-                        color: '#8283B2',
-                        wordBreak: 'break-all',
-                        height: 17,
-                      }}
-                      className=""
-                    >
-                      {hotspot.address}
-                    </Text>
-                  </div>
+                  <img
+                    src={HotspotImg}
+                    style={{
+                      height: 15,
+                      marginRight: 5,
+                      position: 'relative',
+                      top: '-2px',
+                    }}
+                    alt="Hotspot Network Address"
+                  />
+                  <Text
+                    copyable
+                    style={{
+                      color: '#8283B2',
+                      wordBreak: 'break-all',
+                    }}
+                  >
+                    {hotspot.address}
+                  </Text>
                 </Tooltip>
               </div>
             </div>
           </Row>
         </div>
-        <div
-          style={{
-            maxWidth: 850 + 40,
-            margin: '0 auto',
-            paddingBottom: 50,
-            marginTop: 40,
-          }}
-          className="hidden-xs"
-        >
+        <div className="hidden md:block max-w-4xl mt-10 pb-12 mx-auto ">
           <Checklist
             hotspot={hotspot}
             witnesses={witnesses}
@@ -404,7 +329,7 @@ const HotspotView = ({ hotspot }) => {
             activityLoading={activityLoading}
           />
         </div>
-        <div className="w-full bg-navy-600 p-5 text-center">
+        <div className="w-full bg-navy-600 px-5 md:px-8 py-5 text-center">
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
             <div className="flex flex-row justify-between items-center m-0 w-full">
               <p className="text-white m-0">Owned by:</p>
@@ -429,22 +354,18 @@ const HotspotView = ({ hotspot }) => {
 
       <Content
         style={{
-          margin: '0 auto',
           maxWidth: 850,
-          paddingBottom: 20,
-          marginTop: 0,
         }}
+        classes="mx-auto pb-5 mt-0"
       >
         <RewardSummary rewardsLoading={rewardsLoading} rewards={rewards} />
       </Content>
-      <div className="hidden-xs">
+      <div className="hidden sm:block">
         <Content
           style={{
-            margin: '0 auto',
             maxWidth: 850,
-            paddingBottom: 20,
-            marginTop: 0,
           }}
+          classes="mx-auto pb-5 mt-0"
         >
           <WitnessesList
             witnessesLoading={witnessesLoading}
@@ -454,11 +375,9 @@ const HotspotView = ({ hotspot }) => {
 
         <Content
           style={{
-            margin: '0 auto',
             maxWidth: 850,
-            paddingBottom: 20,
-            marginTop: 0,
           }}
+          classes="mx-auto pb-5 mt-0"
         >
           <NearbyHotspotsList
             nearbyHotspotsLoading={nearbyHotspotsLoading}
@@ -467,11 +386,9 @@ const HotspotView = ({ hotspot }) => {
         </Content>
         <Content
           style={{
-            margin: '0 auto',
             maxWidth: 850,
-            paddingBottom: 20,
-            marginTop: 0,
           }}
+          classes="mx-auto pb-5 mt-0"
         >
           <ActivityList type="hotspot" address={hotspot.address} />
         </Content>
@@ -479,14 +396,12 @@ const HotspotView = ({ hotspot }) => {
 
       <Content
         style={{
-          marginTop: '20px',
-          margin: '0 auto',
           maxWidth: 850,
-          paddingBottom: 100,
         }}
+        classes="mx-auto mt-5 pb-24 block sm:hidden"
       >
         <Tabs
-          className="show-xs"
+          className=""
           centered
           style={{
             background: 'white',

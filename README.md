@@ -145,7 +145,7 @@ In the first code snippet above, to make the styling different between screen si
 and then add some CSS code like this:
 
 ```css
-... .container {
+.container {
   flex-direction: row;
 }
 

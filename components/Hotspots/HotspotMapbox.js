@@ -96,17 +96,13 @@ const HotspotMapbox = ({
   } else {
     mapProps.fitBounds = mapBounds
     mapProps.fitBoundsOptions = { padding: 50, animate: true }
-    // mapProps.center = [
-    //   hotspot?.lng ? hotspot.lng : 0,
-    //   hotspot?.lat ? hotspot.lat : 0,
-    // ]
   }
 
   if (hotspot.lng !== undefined && hotspot.lat !== undefined) {
     return (
       <div className="relative">
         <button
-          className={`left-5 bottom-5 focus:ring focus:outline-none absolute w-11 h-11 shadow-md rounded-full z-10 flex items-center justify-center ${
+          className={`left-5 bottom-5 border-none focus:ring cursor-pointer focus:outline-none absolute w-11 h-11 shadow-md rounded-full z-10 flex items-center justify-center ${
             showWitnesses ? 'bg-yellow-400' : 'bg-navy-500'
           }`}
           onClick={() => setShowWitnesses((prevValue) => !prevValue)}

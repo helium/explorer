@@ -242,14 +242,7 @@ const AccountView = ({ account }) => {
   )
 }
 
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: 'blocking',
-  }
-}
-
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   const client = new Client()
   const { accountid } = params
   const account = await client.accounts.get(accountid)
@@ -258,7 +251,6 @@ export async function getStaticProps({ params }) {
     props: {
       account: JSON.parse(JSON.stringify(account)),
     },
-    revalidate: 10,
   }
 }
 

@@ -190,15 +190,9 @@ const Index = ({
               <Widget
                 title="Data Credits Spent (30d)"
                 value={stats.dataCredits.toLocaleString()}
-                subtitle={(stats.dataCredits * 0.00001).toLocaleString(
-                  'en-US',
-                  {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  },
-                )}
+                subtitle={
+                  ((stats.dataCredits * 24) / 1073741824).toFixed(3) + ' GB'
+                }
                 tooltip="Data credits are spent to send and receive data over the Helium Network. HNT are burned to receive DC."
                 footer="View Market Data"
                 href="/market"

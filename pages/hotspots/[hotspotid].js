@@ -19,7 +19,7 @@ import {
 } from '../../components/Hotspots/utils'
 import sumBy from 'lodash/sumBy'
 import ReactCountryFlag from 'react-country-flag'
-
+import classNames from 'classnames'
 import {
   fetchNearbyHotspots,
   getHotspotRewardsBuckets,
@@ -209,11 +209,18 @@ const HotspotView = ({ hotspot }) => {
                         title={`Hotspot is ${hotspot.status.online}`}
                       >
                         <div
-                          className={`h-2.5 w-2.5 rounded-full ${
-                            hotspot.status.online
-                              ? 'bg-green-500'
-                              : 'bg-red-400'
-                          }`}
+                          className={classNames(
+                            'h-2.5',
+                            'w-2.5',
+                            'rounded-full',
+                            {
+                              'bg-green-500':
+                                hotspot.status.online === 'online',
+                            },
+                            {
+                              'bg-red-400': hotspot.status.online === 'offline',
+                            },
+                          )}
                         />
                       </Tooltip>
                       <Tooltip

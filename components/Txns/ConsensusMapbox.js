@@ -62,7 +62,12 @@ const ConsensusMapbox = ({ members }) => {
       }}
       movingMethod="jumpTo"
     >
-      <ZoomControl style={{ zIndex: 5 }} />
+      <ZoomControl
+        style={{ zIndex: 5 }}
+        position="bottom-right"
+        className="consensus_map__zoom_buttons"
+      />
+
       {members?.map((m, idx) => {
         return (
           <Tooltip
@@ -103,10 +108,11 @@ const ConsensusMapbox = ({ members }) => {
         )
       })}
       <div
+        className="reset-zoom-button"
         style={{
           position: 'absolute',
-          top: '70px',
-          right: '12px',
+          bottom: '10rem',
+          right: '-0.5rem',
         }}
       >
         <Tooltip title={`Reset zoom and pan`} placement={'bottomRight'}>

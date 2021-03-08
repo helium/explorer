@@ -216,8 +216,6 @@ const HotspotView = ({ hotspot }) => {
                             {
                               'bg-green-500':
                                 hotspot.status.online === 'online',
-                            },
-                            {
                               'bg-red-400': hotspot.status.online === 'offline',
                             },
                           )}

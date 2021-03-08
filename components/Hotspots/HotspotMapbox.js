@@ -8,10 +8,6 @@ import ScaleControl from '../ScaleControl'
 import MapButton from './MapButton'
 import WitnessIcon from './WitnessIcon'
 
-const Mapbox = ReactMapboxGl({
-  accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
-})
-
 const styles = {
   selectedMarker: {
     width: 14,
@@ -64,22 +60,27 @@ const HotspotMapbox = ({
   nearbyHotspots = [],
   router,
 }) => {
+  const Mapbox = ReactMapboxGl({
+    accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
+    center: [hotspot.lat, hotspot.lng],
+  })
+
   const [showWitnesses, setShowWitnesses] = useState(true)
   const [showNearbyHotspots, setShowNearbyHotspots] = useState(true)
 
   const boundsLocations = []
 
   // include hotspot in centering / zooming logic
-  boundsLocations.push({ lng: hotspot?.lng, lat: hotspot?.lat })
+  boundsLocations.push({ lng: hotspot.lng, lat: hotspot.lat })
 
   // include witnesses in centering / zooming logic
   witnesses.map((w) => {
-    if (showWitnesses) boundsLocations.push({ lng: w?.lng, lat: w?.lat })
+    if (showWitnesses) boundsLocations.push({ lng: w.lng, lat: w.lat })
   })
 
   // include nearby hotspots in centering / zooming logic
   nearbyHotspots.map((h) => {
-    boundsLocations.push({ lng: parseFloat(h?.lng), lat: parseFloat(h?.lat) })
+    boundsLocations.push({ lng: parseFloat(h.lng), lat: parseFloat(h.lat) })
   })
 
   // calculate map bounds
@@ -87,16 +88,13 @@ const HotspotMapbox = ({
 
   const mapProps = {}
 
-  if (boundsLocations.length === 1) {
-    // if the hotspot doesn't have any witnesses or nearby hotspots, centre on the hotspot by itself, at a decent zoom level
-    mapProps.zoom = [12]
-    mapProps.center = [
-      hotspot?.lng ? hotspot.lng : 0,
-      hotspot?.lat ? hotspot.lat : 0,
-    ]
+  if (boundsLocations.length > 1) {
+    mapProps.fitBounds = mapBounds
     mapProps.fitBoundsOptions = { padding: 50, animate: true }
   } else {
-    mapProps.fitBounds = mapBounds
+    // if the hotspot doesn't have any witnesses or nearby hotspots, centre on the hotspot by itself, at a decent zoom level
+    mapProps.zoom = [12]
+    mapProps.center = [hotspot.lng, hotspot.lat]
     mapProps.fitBoundsOptions = { padding: 50, animate: true }
   }
 

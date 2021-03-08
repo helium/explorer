@@ -17,7 +17,7 @@ const initialState = {
   loading: true,
   loadingInitial: true,
   filtersOpen: false,
-  showLoadMoreButton: false,
+  showLoadMoreButton: true,
 }
 
 const exportableEntities = ['account', 'hotspot']
@@ -60,11 +60,14 @@ class ActivityList extends Component {
     const { txns } = this.state
     const nextTxns = await this.list.take(20)
 
+    if (nextTxns.length < 20) {
+      this.setState({ showLoadMoreButton: false })
+    }
+
     this.setState({
       txns: [...txns, ...nextTxns],
       loading: false,
       loadingInitial: false,
-      showLoadMoreButton: nextTxns.hasMore,
     })
   }
 
@@ -179,7 +182,7 @@ class ActivityList extends Component {
               }}
             />
           )}
-          <LoadMoreButton onClick={this.loadMore} />
+          {showLoadMoreButton && <LoadMoreButton onClick={this.loadMore} />}
         </Card>
       </Content>
     )

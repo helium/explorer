@@ -224,3 +224,16 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
 
   return metaTags
 }
+
+export const getMakerName = async (accountAddress) => {
+  if (!accountAddress || accountAddress === undefined) return ''
+
+  const url = `https://onboarding.dewi.org/api/v2/makers`
+  const response = await fetch(url)
+  const makersResponse = await response.json()
+  const makers = makersResponse.data
+  const makerMatchIndex = makers.findIndex((m) => m.address === accountAddress)
+  const makerName =
+    makerMatchIndex !== -1 ? makers[makerMatchIndex].name : 'Unknown Maker'
+  return makerName
+}

@@ -8,6 +8,7 @@ import animalHash from 'angry-purple-tiger'
 import Client from '@helium/http'
 
 import { formatLocation } from '../Hotspots/utils'
+import { getMakerName } from '../Txns/utils'
 import { Balance, CurrencyType } from '@helium/currency'
 
 const AssertLocationMapbox = dynamic(() => import('../AssertLocationMapbox'), {
@@ -17,14 +18,31 @@ const AssertLocationMapbox = dynamic(() => import('../AssertLocationMapbox'), {
 
 const AssertLocationV1 = ({ txn }) => {
   const [hotspot, setHotspot] = useState({})
+  const [makerName, setMakerName] = useState('')
+  const [makerNameLoading, setMakerNameLoading] = useState(true)
 
-  useEffect(async () => {
+  const getHotspot = async () => {
     // make a client-side call to get the location (city, state, country) of the hotspot
     // TODO: make this call to the location endpoint (or equivalent helium-js function) instead for returning geo details for a given h3 index
     const client = new Client()
     const hotspotid = txn.gateway
     const hotspot = await client.hotspots.get(hotspotid)
     setHotspot(hotspot)
+  }
+  const getMakerInfo = async (payerAddress) => {
+    if (payerAddress === txn.owner || payerAddress === null) {
+      setMakerNameLoading(false)
+      return '(Hotspot owner)'
+    } else {
+      setMakerNameLoading(true)
+      const makerName = await getMakerName(payerAddress)
+      setMakerNameLoading(false)
+      return makerName
+    }
+  }
+  useEffect(() => {
+    getHotspot()
+    getMakerInfo(txn.payer)
   }, [])
 
   const stakingFeeObject = new Balance(
@@ -170,9 +188,7 @@ const AssertLocationV1 = ({ txn }) => {
               </Link>
             </span>
             <span style={{ paddingTop: 10 }}>
-              {txn.payer === txn.owner || txn.payer === null
-                ? '(Hotspot owner)'
-                : '(Staking server)'}
+              {makerNameLoading ? 'Loading...' : makerName}
             </span>
           </span>
         </Descriptions.Item>

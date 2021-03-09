@@ -29,6 +29,7 @@ import {
   ConsensusGroupV1,
   TxnTag,
   TokenBurnV1,
+  AddHotspotV1,
 } from '../../components/Txns'
 import Block from '../../public/images/block.svg'
 import { getColor, getName } from '../../components/Txns/TxnTag'
@@ -55,6 +56,8 @@ const txnView = (txn) => {
       return <StateChannelOpenV1 txn={txn} />
     case 'transfer_hotspot_v1':
       return <TransferHotspotV1 txn={txn} />
+    case 'add_gateway_v1':
+      return <AddHotspotV1 txn={txn} />
     case 'assert_location_v1':
       return <AssertLocationV1 txn={txn} />
     case 'token_burn_v1':

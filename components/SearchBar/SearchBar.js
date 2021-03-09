@@ -85,6 +85,7 @@ const SearchBar = ({ router, searchResults, searchTerm, updateSearchTerm }) => {
       onSelect={handleSelect}
       onSearch={updateSearchTerm}
       value={searchTerm}
+      defaultActiveFirstOption
     >
       <Search
         ref={input}

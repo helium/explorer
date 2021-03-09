@@ -94,7 +94,7 @@ const HotspotSidebar = ({
               checked={showOffline}
               style={{ color: '#aaa', marginLeft: '5px', marginTop: '14px' }}
             >
-              Show offline hotspots
+              Show Offline Hotspots
             </Checkbox>
           </span>
         </SidebarHeader>

@@ -57,7 +57,7 @@ function Hotspots({
         }}
       >
         <Row gutter={[20, 20]}>
-          <Col xs={24} md={6}>
+          <Col xs={12} md={6}>
             <Widget
               title="Total Hotspots"
               value={totalHotspots.toLocaleString()}
@@ -69,7 +69,7 @@ function Hotspots({
               changeSuffix="%"
             />
           </Col>
-          <Col xs={24} md={6}>
+          <Col xs={12} md={6}>
             <Widget
               title="Hotspots Online"
               value={onlineHotspotCount.toLocaleString()}
@@ -78,10 +78,10 @@ function Hotspots({
               changeIsAmbivalent
             />
           </Col>
-          <Col xs={12} md={6}>
+          <Col xs={12} md={6} className="hidden-xs">
             <Widget title="Cities" value={totalCities.toLocaleString()} />
           </Col>
-          <Col xs={12} md={6}>
+          <Col xs={12} md={6} className="hidden-xs">
             <Widget title="Countries" value={totalCountries.toLocaleString()} />
           </Col>
         </Row>

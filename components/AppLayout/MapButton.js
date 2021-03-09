@@ -19,8 +19,7 @@ class MapButton extends Component {
               style={{
                 marginRight: 10,
                 position: 'relative',
-                height: 17,
-                width: 15,
+                fontSize: 23,
               }}
             />
             <span className="map-button-text">Coverage Map</span>

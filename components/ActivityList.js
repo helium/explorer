@@ -17,7 +17,7 @@ const initialState = {
   loading: true,
   loadingInitial: true,
   filtersOpen: false,
-  showLoadMoreButton: false,
+  showLoadMoreButton: true,
 }
 
 const exportableEntities = ['account', 'hotspot']
@@ -59,13 +59,15 @@ class ActivityList extends Component {
     this.setState({ loading: true })
     const { txns } = this.state
     const nextTxns = await this.list.take(20)
-    const nextPage = await this.list.nextPage()
+
+    if (nextTxns.length < 20) {
+      this.setState({ showLoadMoreButton: false })
+    }
 
     this.setState({
       txns: [...txns, ...nextTxns],
       loading: false,
       loadingInitial: false,
-      showLoadMoreButton: nextPage.hasMore,
     })
   }
 
@@ -318,6 +320,12 @@ const columns = (ownerAddress) => {
       ),
     },
     {
+      title: 'Time',
+      dataIndex: 'time',
+      key: 'time',
+      render: (time) => <Timestamp date={time} />,
+    },
+    {
       title: 'Block Height',
       dataIndex: 'height',
       key: 'height',
@@ -326,12 +334,6 @@ const columns = (ownerAddress) => {
           <a>{height}</a>
         </Link>
       ),
-    },
-    {
-      title: 'Time',
-      dataIndex: 'time',
-      key: 'time',
-      render: (time) => <Timestamp date={time} />,
     },
   ]
 }

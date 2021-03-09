@@ -85,8 +85,12 @@
     ]
   },
   "devDependencies": {
+    "@tailwindcss/postcss7-compat": "^2.0.3",
+    "autoprefixer": "^9",
     "husky": "^4.2.5",
+    "postcss": "^7",
     "prettier": "2.0.5",
-    "pretty-quick": "^2.0.1"
+    "pretty-quick": "^2.0.1",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   }
 }

@@ -15,7 +15,8 @@ const columns = [
     key: 'name',
     render: (name, row) => (
       <>
-        <StatusCircle status={row.status} />
+        {/* hiding status for now until status is something that comes back in nearby API response */}
+        {/* <StatusCircle status={row.status} /> */}
         <Link href={'/hotspots/' + row.address} prefetch={false}>
           <a style={{ fontFamily: "'Inter', sans-serif" }}>
             {formatHotspotName(name)}
@@ -76,6 +77,7 @@ const NearbyHotspotsList = ({ nearbyHotspots, nearbyHotspotsLoading }) => {
               showSizeChanger: nearbyHotspots.length > PAGE_SIZE_DEFAULT,
               hideOnSinglePage: nearbyHotspots.length <= PAGE_SIZE_DEFAULT,
               pageSizeOptions: [5, 10, 20, 50, 100],
+              position: 'bottomCenter',
             }}
             scroll={{ x: true }}
             onChange={handleTableChange}

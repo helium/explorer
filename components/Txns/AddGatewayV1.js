@@ -6,7 +6,7 @@ import animalHash from 'angry-purple-tiger'
 
 import { Balance, CurrencyType } from '@helium/currency'
 
-const AddHotspotV1 = ({ txn }) => {
+const AddGatewayV1 = ({ txn }) => {
   const stakingFeeObject = new Balance(
     txn.stakingFee.integerBalance,
     CurrencyType.dataCredit,
@@ -62,4 +62,4 @@ const AddHotspotV1 = ({ txn }) => {
   )
 }
 
-export default AddHotspotV1
+export default AddGatewayV1

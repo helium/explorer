@@ -591,169 +591,234 @@ body.errorpage-body {
   border-radius: 0 20px 20px 0;
 }
 
-.hotspot-checklist-progress-bar-container {
-  padding: 0 20px;
+.App-header-white-2 {
+  background-color: #e9eaf2;
+  max-height: 20vh;
+  min-height: 15vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  font-size: calc(10px + 1.5vmin);
+  color: #29d391;
+  margin: 0;
+  padding: 0;
+  padding-top: 4%;
+  position: relative;
+}
+.earnings-chart-period-container {
+  padding: 36px 36px 40px 36px;
 }
 
-.hotspot-checklist-progress-bar-slice:hover {
-  cursor: pointer;
+.earnings-chart-period-wrapper {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
 }
-
-.hotspot-checklist-nav-button {
-  position: absolute;
+.earnings-chart-container {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  top: 63.5px;
-  height: 40px;
-  min-width: 40px;
-  width: 40px;
-  border-radius: 30px;
-  outline: none;
-  border: none;
-  background-color: #35375c;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+  background-color: #f6f7fc;
+  border-radius: 14px;
+  padding: 32px;
+  justify-content: space-between;
 }
+.earnings-chart-content {
+  width: 50%;
+  padding: 0 0 0 24px;
 
-.hotspot-checklist-nav-button:hover {
-  cursor: pointer;
-}
-
-@media screen and (max-width: 890px) {
-  .block-view-summary-info {
-    flex-direction: column;
-  }
-  .block-view-clock-icon {
-    margin-left: 0px;
-  }
-  .interactive-coverage-map > .mapboxgl-map {
-    position: absolute;
-    height: 50vh;
-  }
-}
-
-@media screen and (max-width: 640px) {
-  .logo-container {
-    margin-right: 12px;
-  }
-  .logo-full {
-    display: none;
-  }
-  .logo-small {
-    display: block;
-  }
-
-  .summary-header {
-    margin-bottom: 0px;
-  }
-  .header {
-    padding: 12px;
-  }
-  .content-container {
-    padding: 30px 12px 30px 12px;
-  }
-  .content-container-account-view {
-    padding: 50px 20px 20px 20px;
-  }
-  .content-container-hotspot-view {
-    padding: 20px;
-  }
-  .content-container-hotspot-view > .mapboxgl-map {
-    height: 200px;
-  }
-  #hotspot-checklist-container {
-    border-radius: 0px;
-  }
-  .hotspot-checklist-padding-container {
-    padding: 0 0;
-  }
   .hotspot-checklist-progress-bar-container {
-    padding: 0 15px;
-  }
-  #hotspot-checklist-inner-shadow {
-    border-radius: 0 0 0 0;
+    padding: 0 20px;
   }
 
-  .hotspot-name > h1 {
-    line-height: 1;
-  }
-  .line-break-only-at-small {
-    display: block;
-  }
-  .flex-responsive {
-    flex-direction: column;
-  }
-  .block-view-summary-info {
-    width: 100%;
-    order: 1;
-    padding-bottom: 30px;
-  }
-  .block-view-prev-button {
-    order: 2;
-    min-width: 49%;
-    padding: 6px;
-  }
-  .block-view-next-button {
-    min-width: 170px;
-    min-width: 49%;
-    order: 3;
-  }
-  .ant-input-suffix {
-    display: none;
-  }
-  .poc-participant-row {
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-  }
-  .poc-witness-receive-info {
-    padding-left: 40px;
-    color: #777;
-    line-height: 24px;
-    padding-bottom: 10px;
-  }
-  .poc-path-line {
-    height: 24px;
+  .hotspot-checklist-progress-bar-slice:hover {
+    cursor: pointer;
   }
 
-  .poc-path-line-with-info {
-    height: 58px !important;
-    margin-top: -58px !important;
-  }
-  .poc-path-line-above {
-    display: block;
+  .hotspot-checklist-nav-button {
     position: absolute;
-    height: 48px;
-    min-width: 3px;
-    margin-left: 17px;
-    width: 3px;
-    margin-top: -48px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    top: 63.5px;
+    height: 40px;
+    min-width: 40px;
+    width: 40px;
+    border-radius: 30px;
+    outline: none;
+    border: none;
+    background-color: #35375c;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
   }
-  .poc-witness-table-container {
-    margin-left: 0px;
+
+  .hotspot-checklist-nav-button:hover {
+    cursor: pointer;
   }
-  .poc-witness-table {
-    padding-left: 0px;
+
+  @media screen and (max-width: 890px) {
+    .block-view-summary-info {
+      flex-direction: column;
+    }
+    .block-view-clock-icon {
+      margin-left: 0px;
+    }
+    .interactive-coverage-map > .mapboxgl-map {
+      position: absolute;
+      height: 50vh;
+    }
   }
-  .poc-witness-collapsable-panel {
-    margin-bottom: 24px;
-    margin-left: 0px;
+
+  @media screen and (max-width: 640px) {
+    .logo-container {
+      margin-right: 12px;
+    }
+    .logo-full {
+      display: none;
+    }
+    .logo-small {
+      display: block;
+    }
+
+    .summary-header {
+      margin-bottom: 0px;
+    }
+    .header {
+      padding: 12px;
+    }
+    .content-container {
+      padding: 30px 12px 30px 12px;
+    }
+    .content-container-account-view {
+      padding: 50px 20px 20px 20px;
+    }
+    .content-container-hotspot-view {
+      padding: 20px;
+    }
+    .content-container-hotspot-view > .mapboxgl-map {
+      height: 200px;
+    }
+    #hotspot-checklist-container {
+      border-radius: 0px;
+    }
+    .hotspot-checklist-padding-container {
+      padding: 0 0;
+    }
+    .hotspot-checklist-progress-bar-container {
+      padding: 0 15px;
+    }
+    #hotspot-checklist-inner-shadow {
+      border-radius: 0 0 0 0;
+    }
+
+    .hotspot-name > h1 {
+      line-height: 1;
+    }
+    .line-break-only-at-small {
+      display: block;
+    }
+    .flex-responsive {
+      flex-direction: column;
+    }
+    .block-view-summary-info {
+      width: 100%;
+      order: 1;
+      padding-bottom: 30px;
+    }
+    .block-view-prev-button {
+      order: 2;
+      min-width: 49%;
+      padding: 6px;
+    }
+    .block-view-next-button {
+      min-width: 170px;
+      min-width: 49%;
+      order: 3;
+    }
+    .ant-input-suffix {
+      display: none;
+    }
+    .poc-participant-row {
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .poc-witness-receive-info {
+      padding-left: 40px;
+      color: #777;
+      line-height: 24px;
+      padding-bottom: 10px;
+    }
+    .poc-path-line {
+      height: 24px;
+    }
+
+    .poc-path-line-with-info {
+      height: 58px !important;
+      margin-top: -58px !important;
+    }
+    .poc-path-line-above {
+      display: block;
+      position: absolute;
+      height: 48px;
+      min-width: 3px;
+      margin-left: 17px;
+      width: 3px;
+      margin-top: -48px;
+    }
+    .poc-witness-table-container {
+      margin-left: 0px;
+    }
+    .poc-witness-table {
+      padding-left: 0px;
+    }
+    .poc-witness-collapsable-panel {
+      margin-bottom: 24px;
+      margin-left: 0px;
+    }
+    .poc-witness-name {
+      padding-left: 12px;
+    }
+    .poc-witness-collapsable-panel .ant-table-cell {
+      padding-left: 12px;
+      padding-right: 0px;
+    }
+    .poc-witness-info-header {
+      font-size: 10px;
+    }
+    .poc-witness-info-table-container .ant-table-cell {
+      font-size: 10px;
+    }
+    .poc-participant-name {
+      padding-left: 18px;
+    }
   }
-  .poc-witness-name {
-    padding-left: 12px;
+
+  .ant-table.ant-table-small .ant-table-title,
+  .ant-table.ant-table-small .ant-table-footer,
+  .ant-table.ant-table-small .ant-table-thead > tr > th,
+  .ant-table.ant-table-small .ant-table-tbody > tr > td,
+  .ant-table.ant-table-small tfoot > tr > th,
+  .ant-table.ant-table-small tfoot > tr > td {
+    padding: 6px 10px;
   }
-  .poc-witness-collapsable-panel .ant-table-cell {
-    padding-left: 12px;
-    padding-right: 0px;
+
+  .earnings-chart-period-container {
+    padding: 24px;
   }
-  .poc-witness-info-header {
-    font-size: 10px;
+  .earnings-chart-container {
+    flex-direction: column;
   }
-  .poc-witness-info-table-container .ant-table-cell {
-    font-size: 10px;
+  .earnings-chart-content {
+    width: 100%;
+    padding: 24px 0 0 0;
   }
-  .poc-participant-name {
-    padding-left: 18px;
-  }
+}
+
+.hidden-width {
+  visibility: hidden;
+  height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }

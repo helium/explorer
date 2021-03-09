@@ -31,13 +31,13 @@ const AssertLocationV1 = ({ txn }) => {
   }
   const getMakerInfo = async (payerAddress) => {
     if (payerAddress === txn.owner || payerAddress === null) {
+      setMakerName('Hotspot owner')
       setMakerNameLoading(false)
-      return '(Hotspot owner)'
     } else {
       setMakerNameLoading(true)
       const makerName = await getMakerName(payerAddress)
+      setMakerName(makerName)
       setMakerNameLoading(false)
-      return makerName
     }
   }
   useEffect(() => {
@@ -162,23 +162,9 @@ const AssertLocationV1 = ({ txn }) => {
             {stakingFeeObject.toString()}
           </span>
         </Descriptions.Item>
-        <Descriptions.Item label="Staking Fee Payer" span={3}>
-          <span
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              justifyContent: 'center',
-            }}
-          >
-            <span
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-              }}
-            >
+        <Descriptions.Item label="Staking Fee Payer Address" span={3}>
+          <span className="flex flex-col items-start justify-center">
+            <span className="flex flex-row items-center justify-start">
               <AccountIcon
                 address={stakingFeePayer}
                 style={{ marginRight: 8 }}
@@ -187,10 +173,10 @@ const AssertLocationV1 = ({ txn }) => {
                 <a>{stakingFeePayer}</a>
               </Link>
             </span>
-            <span style={{ paddingTop: 10 }}>
-              {makerNameLoading ? 'Loading...' : makerName}
-            </span>
           </span>
+        </Descriptions.Item>
+        <Descriptions.Item label="Staking Fee Payer" span={3}>
+          {makerNameLoading ? 'Loading...' : makerName}
         </Descriptions.Item>
       </Descriptions>
     </>

@@ -59,116 +59,43 @@ const AssertLocationV1 = ({ txn }) => {
       <AssertLocationMapbox txn={txn} />
       <Descriptions bordered>
         <Descriptions.Item label="Hotspot" span={3}>
-          <span
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-            }}
-          >
-            <Link href={`/hotspots/${txn.gateway}`}>
-              <a>{animalHash(txn.gateway)}</a>
-            </Link>
-          </span>
+          <Link href={`/hotspots/${txn.gateway}`}>
+            <a>{animalHash(txn.gateway)}</a>
+          </Link>
         </Descriptions.Item>
         <Descriptions.Item label="Owner" span={3}>
-          <span
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-            }}
-          >
-            <AccountIcon address={txn.owner} style={{ marginRight: 8 }} />
+          <div className="flex flex-row items-center justify-start">
+            <AccountIcon address={txn.owner} className="mr-2" />
             <Link href={`/accounts/${txn.owner}`}>
               <a>{txn.owner}</a>
             </Link>
-          </span>
+          </div>
         </Descriptions.Item>
         {/* TODO: add nicely formatted location for every transaction once there is an endpoint for getting geo details from h3 index */}
         {hotspot.lat === txn.lat && hotspot.lng === txn.lng && (
           <Descriptions.Item label="Location" span={3}>
-            <span
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-              }}
-            >
-              {formatLocation(hotspot.geocode)}
-            </span>
+            {formatLocation(hotspot.geocode)}
           </Descriptions.Item>
         )}
         <Descriptions.Item label="Latitude" span={3}>
-          <span
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-            }}
-          >
-            {txn.lat}
-          </span>
+          {txn.lat}
         </Descriptions.Item>
         <Descriptions.Item label="Longitude" span={3}>
-          <span
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-            }}
-          >
-            {txn.lng}
-          </span>
+          {txn.lng}
         </Descriptions.Item>
         <Descriptions.Item label="Nonce" span={3}>
-          <span
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-            }}
-          >
-            {txn.nonce}
-          </span>
+          {txn.nonce}
         </Descriptions.Item>
         <Descriptions.Item label="Fee" span={3}>
-          <span
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-            }}
-          >
-            {feeObject.toString()}
-          </span>
+          {feeObject.toString()}
         </Descriptions.Item>
         <Descriptions.Item label="Staking Fee" span={3}>
-          <span
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-            }}
-          >
-            {stakingFeeObject.toString()}
-          </span>
+          {stakingFeeObject.toString()}
         </Descriptions.Item>
         <Descriptions.Item label="Staking Fee Payer Address" span={3}>
           <span className="flex flex-col items-start justify-center">
             <span className="flex flex-row items-center justify-start">
-              <AccountIcon
-                address={stakingFeePayer}
-                style={{ marginRight: 8 }}
-              />
+              <AccountIcon className="mr-2" address={stakingFeePayer} />
               <Link href={`/accounts/${stakingFeePayer}`}>
                 <a>{stakingFeePayer}</a>
               </Link>

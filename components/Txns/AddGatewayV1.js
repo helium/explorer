@@ -1,12 +1,32 @@
+import { useState, useEffect } from 'react'
 import { Descriptions } from 'antd'
 import AccountIcon from '../AccountIcon'
 
 import Link from 'next/link'
 import animalHash from 'angry-purple-tiger'
+import { getMakerName } from '../Txns/utils'
 
 import { Balance, CurrencyType } from '@helium/currency'
 
 const AddGatewayV1 = ({ txn }) => {
+  const [makerName, setMakerName] = useState('')
+  const [makerNameLoading, setMakerNameLoading] = useState(true)
+
+  const getMakerInfo = async (payerAddress) => {
+    if (payerAddress === txn.owner || payerAddress === null) {
+      setMakerName('Hotspot owner')
+      setMakerNameLoading(false)
+    } else {
+      setMakerNameLoading(true)
+      const makerName = await getMakerName(payerAddress)
+      setMakerName(makerName)
+      setMakerNameLoading(false)
+    }
+  }
+  useEffect(() => {
+    getMakerInfo(txn.payer)
+  }, [])
+
   const stakingFeeObject = new Balance(
     txn.stakingFee.integerBalance,
     CurrencyType.dataCredit,
@@ -43,20 +63,18 @@ const AddGatewayV1 = ({ txn }) => {
           {stakingFeeObject.toString()}
         </div>
       </Descriptions.Item>
-      <Descriptions.Item label="Staking Fee Payer" span={3}>
-        <div className="flex flex-col items-start justify-center">
-          <div className="flex flex-row items-center justify-start">
-            <AccountIcon address={stakingFeePayer} className="mr-2" />
+      <Descriptions.Item label="Staking Fee Payer Address" span={3}>
+        <span className="flex flex-col items-start justify-center">
+          <span className="flex flex-row items-center justify-start">
+            <AccountIcon address={stakingFeePayer} style={{ marginRight: 8 }} />
             <Link href={`/accounts/${stakingFeePayer}`}>
               <a>{stakingFeePayer}</a>
             </Link>
-          </div>
-          <span className="pt-2">
-            {txn.payer === txn.owner || txn.payer === null
-              ? '(Hotspot owner)'
-              : '(Staking server)'}
           </span>
-        </div>
+        </span>
+      </Descriptions.Item>
+      <Descriptions.Item label="Staking Fee Payer" span={3}>
+        {makerNameLoading ? 'Loading...' : makerName}
       </Descriptions.Item>
     </Descriptions>
   )

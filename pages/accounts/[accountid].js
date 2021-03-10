@@ -9,14 +9,18 @@ import Fade from 'react-reveal/Fade'
 import { Balance, CurrencyType } from '@helium/currency'
 import sumBy from 'lodash/sumBy'
 
-import { ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons'
+import {
+  ClockCircleOutlined,
+  CheckCircleOutlined,
+  ToolOutlined,
+} from '@ant-design/icons'
 import AccountIcon from '../../components/AccountIcon'
 import AccountAddress from '../../components/AccountAddress'
 import { getHotspotRewardsBuckets } from '../../data/hotspots'
 
 const { Title } = Typography
 
-const AccountView = ({ account }) => {
+const AccountView = ({ account, makers }) => {
   const dcBalanceObject = new Balance(
     account.dcBalance.integerBalance,
     CurrencyType.dataCredit,
@@ -33,6 +37,10 @@ const AccountView = ({ account }) => {
   const [hotspots, setHotspots] = useState([])
   const [hotspotsLoading, setLoadingHotspots] = useState(true)
   const [rewardsLoading, setLoadingRewards] = useState(true)
+
+  const makerIndex = makers.findIndex((m) => m.address === account.address)
+  const isMakerAccount = makerIndex !== -1
+  let makerAccountName = isMakerAccount ? makers[makerIndex].name : ''
 
   useEffect(() => {
     async function getHotspots() {
@@ -175,23 +183,27 @@ const AccountView = ({ account }) => {
         </div>
       </Content>
 
-      <div
-        style={{
-          width: '100%',
-          backgroundColor: '#2A344A',
-          padding: '20px',
-          textAlign: 'center',
-        }}
-      >
+      <div className="w-full bg-navy-600 p-5 text-center">
         <Fade bottom delay={1000}>
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
-            <div className="flexwrapper" style={{ justifyContent: 'center' }}>
+            <div className="flex flex-col md:flex-row items-center justify-center">
+              {isMakerAccount && (
+                <Tooltip placement="bottom" title="This is a Maker Account">
+                  <div className="mb-4 md:mb-0 mr-2 flex flex-row items-center justify-start">
+                    <ToolOutlined
+                      style={{ color: '#A667F6', marginRight: 5 }}
+                    />
+                    <p className="m-0 text-white font-bold">
+                      {makerAccountName}
+                    </p>
+                  </div>
+                </Tooltip>
+              )}
               <Tooltip
                 placement="bottom"
                 title="The amount of Data Credits this account owns."
               >
-                <h3 style={{ margin: '0 20px' }}>
-                  {' '}
+                <h3 className="mb-4 md:mb-0 md:mx-5">
                   <ClockCircleOutlined
                     style={{ color: '#FFC769', marginRight: 5 }}
                   />
@@ -205,7 +217,7 @@ const AccountView = ({ account }) => {
                 placement="bottom"
                 title="The amount of Security Tokens this account owns."
               >
-                <h3 style={{ margin: '0 20px' }}>
+                <h3 className="mb-0 md:mx-5">
                   <CheckCircleOutlined
                     style={{ color: '#29D391', marginRight: 5 }}
                   />
@@ -247,9 +259,15 @@ export async function getServerSideProps({ params }) {
   const { accountid } = params
   const account = await client.accounts.get(accountid)
 
+  const makersResponse = await fetch(
+    `https://onboarding.dewi.org/api/v2/makers`,
+  )
+  const makers = await makersResponse.json()
+
   return {
     props: {
       account: JSON.parse(JSON.stringify(account)),
+      makers: JSON.parse(JSON.stringify(makers.data)),
     },
   }
 }

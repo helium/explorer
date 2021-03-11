@@ -8,6 +8,8 @@ import QRCode from 'react-qr-code'
 import Fade from 'react-reveal/Fade'
 import { Balance, CurrencyType } from '@helium/currency'
 import sumBy from 'lodash/sumBy'
+import HSTIcon from '../../components/Icons/HST'
+import DCIcon from '../../components/Icons/DC'
 
 import {
   ClockCircleOutlined,
@@ -189,7 +191,7 @@ const AccountView = ({ account, makers }) => {
             <div className="flex flex-col md:flex-row items-center justify-center">
               {isMakerAccount && (
                 <Tooltip placement="bottom" title="This is a Maker Account">
-                  <div className="mb-4 md:mb-0 mr-2 flex flex-row items-center justify-start">
+                  <div className="mb-4 md:mb-0 mr-0 md:mr-5 flex flex-row items-center justify-start">
                     <ToolOutlined
                       style={{ color: '#A667F6', marginRight: 5 }}
                     />
@@ -203,28 +205,22 @@ const AccountView = ({ account, makers }) => {
                 placement="bottom"
                 title="The amount of Data Credits this account owns."
               >
-                <h3 className="mb-4 md:mb-0 md:mx-5">
-                  <ClockCircleOutlined
-                    style={{ color: '#FFC769', marginRight: 5 }}
-                  />
-                  <Descriptions.Item label="Data Credits">
-                    {dcBalanceObject.toString()}
-                  </Descriptions.Item>
-                </h3>
+                <div className="mb-4 md:mb-0 mr-0 md:mr-5 flex flex-row items-center justify-start">
+                  <DCIcon className="h-3 w-auto mr-1" />
+                  <p className="text-white m-0">{dcBalanceObject.toString()}</p>
+                </div>
               </Tooltip>
 
               <Tooltip
                 placement="bottom"
                 title="The amount of Security Tokens this account owns."
               >
-                <h3 className="mb-0 md:mx-5">
-                  <CheckCircleOutlined
-                    style={{ color: '#29D391', marginRight: 5 }}
-                  />
-                  <Descriptions.Item label="Security Tokens">
+                <div className="mb-0 flex flex-row items-center justify-start">
+                  <HSTIcon className="text-pink-500 h-4 w-auto mr-1" />
+                  <p className="text-white m-0">
                     {hstBalanceObject.toString(2)}
-                  </Descriptions.Item>
-                </h3>
+                  </p>
+                </div>
               </Tooltip>
             </div>
           </Content>

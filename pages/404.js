@@ -3,7 +3,7 @@ import AppLayout from '../components/AppLayout'
 import ExternalLinkIcon from '../components/Icons/ExternalLink'
 import InternalLinkIcon from '../components/Icons/InternalLink'
 
-const HelpLinkList = ({ children }) => (
+export const HelpLinkList = ({ children }) => (
   <div className="max-w-sm mx-auto">
     <ul
       role="list"
@@ -13,7 +13,7 @@ const HelpLinkList = ({ children }) => (
     </ul>
   </div>
 )
-const HelpLink = ({ children, href, external }) => {
+export const HelpLink = ({ children, href, external }) => {
   if (external) {
     return (
       <a
@@ -94,7 +94,6 @@ const Custom404 = () => {
             </HelpLinkList>
           </div>
         </div>
-        <div className="errorFiller"></div>
       </AppLayout>
     </>
   )

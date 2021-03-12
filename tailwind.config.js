@@ -11,6 +11,9 @@ module.exports = {
       lg: '984px',
       xl: '1200px',
     },
+    fontFamily: {
+      sans: ['Inter', 'sans-serif'],
+    },
     colors: {
       transparent: 'transparent',
       white: '#FFFFFF',
@@ -22,6 +25,7 @@ module.exports = {
         700: '#171E2D',
         800: '#161E2E',
         900: '#101725',
+        1000: '#1c1d3f',
       },
       green: {
         100: '#474DFF',
@@ -37,6 +41,9 @@ module.exports = {
       },
       gray: {
         300: '#8283B2',
+      },
+      bluegray: {
+        100: '#E9EAFF2',
       },
     },
   },

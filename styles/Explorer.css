@@ -565,10 +565,6 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   position: relative;
 }
 
-.App-header-green {
-  text-align: center;
-}
-
 .App-header-white {
   background-color: #e9eaf2;
   min-height: 15vh;
@@ -590,7 +586,6 @@ body.errorpage-body {
   background-color: #e9eaf2;
 }
 
-
 .App-header-white-2 {
   background-color: #e9eaf2;
   max-height: 20vh;
@@ -606,7 +601,7 @@ body.errorpage-body {
   padding: 0;
   padding-top: 4%;
   position: relative;
-
+}
 .earnings-chart-period-container {
   padding: 36px 36px 40px 36px;
 }
@@ -627,7 +622,6 @@ body.errorpage-body {
 .earnings-chart-content {
   width: 50%;
   padding: 0 0 0 24px;
-
 }
 
 .App-header-white-3 {
@@ -706,12 +700,11 @@ body.errorpage-body {
   padding: 36px 36px 40px 36px;
 }
 
-
 .earnings-chart-period-wrapper {
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-
+}
 @media screen and (max-width: 768px) {
   .block-view-summary-info {
     flex-direction: column;
@@ -727,7 +720,6 @@ body.errorpage-body {
     position: absolute;
     height: 50vh;
   }
-
 }
 .earnings-chart-container {
   display: flex;
@@ -740,7 +732,7 @@ body.errorpage-body {
 .earnings-chart-content {
   width: 50%;
   padding: 0 0 0 24px;
-
+}
 
 @media screen and (max-width: 576px) {
   .logo-container {
@@ -847,10 +839,9 @@ body.errorpage-body {
     padding: 0 20px;
   }
 
-
   .hotspot-checklist-progress-bar-slice:hover {
     cursor: pointer;
-
+  }
   .hotspot-name > h1 {
     line-height: 1;
   }
@@ -895,7 +886,6 @@ body.errorpage-body {
   }
   .poc-path-line {
     height: 24px;
-
   }
 
   .hotspot-checklist-nav-button {

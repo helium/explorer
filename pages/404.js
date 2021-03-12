@@ -1,30 +1,33 @@
 import Link from 'next/link'
-import AppLayout, { Content } from '../components/AppLayout'
-import { Row, Col, Typography, Card, Button } from 'antd'
+import AppLayout from '../components/AppLayout'
 
-export default function Custom404() {
+const Custom404 = () => {
   return (
     <>
       <AppLayout>
-        <Content class="errorpage-body">
-          <main class="ant-layout">
-            <div class="App-header-white">
-              <h1 class="App-header-white">404</h1>
-              <h2 class="App-header-white-3">
-                Sorry, we can't find the page you're looking for ¯\_(ツ)_/¯
+        <div className="h-full bg-bluegray-100 w-full">
+          <main className="pt-10 md:pt-20 w-full mx-auto max-w-3xl px-10 md:px-20">
+            <div className="flex flex-col items-center justify-start text-center">
+              <h1 className="font-sans font-semibold text-4xl md:text-6xl">
+                404
+              </h1>
+              <h2 className="font-sans text-lg md:text-2xl">
+                Sorry, we can't find the page you're looking for.
               </h2>
             </div>
-            <div class="links-list">
-              <h3 class="App-header-white-2">Useful links:</h3>
-              <ul>
+            <div className="">
+              <h3 className="text-gray-300">
+                Maybe one of these links will get you where you're going?
+              </h3>
+              <ul className="list-none">
                 <li>
                   <Link href="https://www.helium.com/">
-                    <a>Home</a>
+                    <a>helium.com</a>
                   </Link>
                 </li>
                 <li>
-                  <Link href="https://www.helium.com/about">
-                    <a>About</a>
+                  <Link href="/coverage">
+                    <a>Coverage Map</a>
                   </Link>
                 </li>
                 <li>
@@ -32,32 +35,30 @@ export default function Custom404() {
                     <a>Mine</a>
                   </Link>
                 </li>
+              </ul>
+              <h3 className="App-header-white-2">
+                Or if you think you shouldn't be seeing this error, please feel
+                free to:
+              </h3>
+              <ul>
                 <li>
-                  <Link href="https://shop.helium.com/">
-                    <a>Shop</a>
+                  <Link href="https://github.com/helium/explorer/issues/new">
+                    <a>Create a GitHub issue</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="https://discord.com/invite/helium">
+                    <a>Report the issue in the #explorer channel on Discord</a>
                   </Link>
                 </li>
               </ul>
-              <div class="App-header-green">
-                <p1>
-                  Join our
-                  <span>
-                    <a href="https://discord.com/invite/helium" target="_blank">
-                      <img
-                        src="https://cdn.worldvectorlogo.com/logos/discord-logo-color-wordmark-1.svg"
-                        width="6%"
-                        height="6%"
-                      ></img>
-                    </a>
-                  </span>
-                  for help!
-                </p1>
-              </div>
             </div>
-            <div class="errorFiller"></div>
+            <div className="errorFiller"></div>
           </main>
-        </Content>
+        </div>
       </AppLayout>
     </>
   )
 }
+
+export default Custom404

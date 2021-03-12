@@ -119,12 +119,7 @@ const Hotspots = ({
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
-                              className="text-gray-500"
-                              style={{
-                                height: 18,
-                                width: 18,
-                                marginLeft: 6,
-                              }}
+                              className="text-gray-500 h-4 w-4 ml-2"
                             >
                               <path
                                 strokeLinecap="round"
@@ -145,8 +140,8 @@ const Hotspots = ({
                           height="51"
                           viewBox="0 0 53 51"
                           fill="none"
-                          className="h-3 w-auto mr-2"
                           xmlns="http://www.w3.org/2000/svg"
+                          className="h-3 w-auto mr-2"
                         >
                           <path
                             fill-rule="evenodd"
@@ -194,10 +189,10 @@ const Hotspots = ({
                         <svg
                           width="26"
                           height="31"
-                          className="text-pink-500 w-3 h-auto"
                           viewBox="0 0 26 31"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
+                          className="text-pink-500 w-3 h-auto"
                         >
                           <path
                             fill-rule="evenodd"
@@ -210,7 +205,7 @@ const Hotspots = ({
                         <p className="text-sm ml-1 font-semibold m-0 text-gray-700">
                           {m.txns.assertLocationTxns.toLocaleString()}
                           <span className="ml-1 font-light text-gray-600">
-                            Hotspots Asserted
+                            Locations Asserted
                           </span>
                         </p>
                       </div>
@@ -275,7 +270,7 @@ export async function getStaticProps() {
     name: 'Helium Inc (Old)',
     genesisHotspots: 47,
   }
-  makersArray.unshift(deprecatedHeliumMaker)
+  makersArray.push(deprecatedHeliumMaker)
 
   // Hide maker integration test address
   const makers = makersArray.filter(

@@ -13020,10 +13020,9 @@ react-hotkeys@^2.0.0:
   dependencies:
     prop-types "^15.6.1"
 
-react-identicon-variety-pack@^0.2.1:
+"react-identicon-variety-pack@https://github.com/allenan/react-identicon-variety-pack.git":
   version "0.2.1"
-  resolved "https://registry.yarnpkg.com/react-identicon-variety-pack/-/react-identicon-variety-pack-0.2.1.tgz#c8388d498bb37df21cfbaa9547e5d66f8521368a"
-  integrity sha512-6NzezSzZ+BJfMzpXgFZoP0i6Vzv1HY8yiew4BfP8w/rRwCKTQFt+QRN3iJ186aLoKQJiz1TFQCCf6pwW2fKgtw==
+  resolved "https://github.com/allenan/react-identicon-variety-pack.git#7861d73a1029314ea977519f69bd71a5750ec06f"
   dependencies:
     lodash "^4.17.15"
 

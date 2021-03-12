@@ -70,7 +70,7 @@ const Custom404 = () => {
             </h3>
             <HelpLinkList>
               <HelpLink
-                href="https://github.com/helium/explorer/issues/new"
+                href="https://github.com/helium/explorer/issues/new?labels=bug&title=Unexpected+404+error"
                 external
               >
                 Create an issue on GitHub
@@ -84,7 +84,7 @@ const Custom404 = () => {
             </h3>
             <HelpLinkList>
               <HelpLink href="/hotspots">Hotspots</HelpLink>
-              <HelpLink href="/hotspots">Blocks</HelpLink>
+              <HelpLink href="/blocks">Blocks</HelpLink>
               <HelpLink href="/market">Market Data</HelpLink>
               <HelpLink href="/consensus">Consensus</HelpLink>
               <HelpLink href="/coverage">Coverage Map</HelpLink>

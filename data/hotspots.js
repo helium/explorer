@@ -54,3 +54,9 @@ export const fetchNearbyHotspots = async (lat, lng, dist = 1000) => {
   const hotspots = await response.json()
   return hotspots
 }
+
+export const fetchHotspot = async (address) => {
+  const client = new Client()
+  const hotspot = await client.hotspots.get(address)
+  return JSON.parse(JSON.stringify(hotspot))
+}

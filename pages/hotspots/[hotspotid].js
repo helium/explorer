@@ -24,8 +24,7 @@ import {
   fetchNearbyHotspots,
   getHotspotRewardsBuckets,
 } from '../../data/hotspots'
-import Hex from '../../components/Hex'
-import { generateRewardScaleColor } from '../../components/Hotspots/utils'
+import RewardScalePill from '../../components/Hotspots/RewardScalePill'
 
 const HotspotMapbox = dynamic(
   () => import('../../components/Hotspots/HotspotMapbox'),
@@ -252,34 +251,7 @@ const HotspotView = ({ hotspot }) => {
                     </div>
 
                     {hotspot.rewardScale && (
-                      <div className="flex flex-row ml-2.5 items-center justify-center py-0.5 px-2.5 bg-navy-600 rounded-full">
-                        <Tooltip
-                          placement="top"
-                          title={`Reward scale: ${hotspot.rewardScale}`}
-                        >
-                          <span className="flex items-center justify-center">
-                            <Hex
-                              width={10.5}
-                              height={12}
-                              fillColor={generateRewardScaleColor(
-                                hotspot.rewardScale,
-                              )}
-                            />
-                          </span>
-                        </Tooltip>
-
-                        <Tooltip
-                          placement="top"
-                          title={`A Hotspot's own reward scale does not impact its earnings. Hotspots witnessing this Hotspot will see their rewards scaled up or down according to this Hotspot's reward scale.`}
-                        >
-                          <p className="mb-0 text-gray-300 ml-2">
-                            {hotspot.rewardScale.toLocaleString(undefined, {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
-                          </p>
-                        </Tooltip>
-                      </div>
+                      <RewardScalePill hotspot={hotspot} className="ml-2.5" />
                     )}
                   </div>
                 </Fade>

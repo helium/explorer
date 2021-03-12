@@ -746,7 +746,7 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   }
 
   .mapboxgl-map {
-    height: 80vw !important;
+    /* height: 80vw !important; */
   }
   .logo-full {
     display: none;

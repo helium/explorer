@@ -45,13 +45,6 @@ const Beacons = ({ latestBeacons: initialLatestBeacons }) => {
   )
 }
 
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: 'blocking',
-  }
-}
-
 export async function getStaticProps() {
   const latestBeacons = await fetchLatestBeacons(1000)()
 
@@ -59,6 +52,7 @@ export async function getStaticProps() {
     props: {
       latestBeacons,
     },
+    revalidate: 10,
   }
 }
 

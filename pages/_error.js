@@ -2,7 +2,7 @@ import Error404Page from './404'
 import { HelpLinkList, HelpLink } from './404'
 import AppLayout from '../components/AppLayout/AppLayout'
 
-const Error = ({ statusCode, statusMessage }) => {
+const Error = ({ statusCode }) => {
   if (statusCode === 404) {
     return <Error404Page />
   }
@@ -61,13 +61,8 @@ const Error = ({ statusCode, statusMessage }) => {
 
 Error.getInitialProps = ({ res, err }) => {
   const statusCode = res ? res.statusCode : err ? err.statusCode : 404
-  const statusMessage = res
-    ? res.statusMessage
-    : err
-    ? err.statusMessage
-    : 'Not Found'
 
-  return { statusCode, statusMessage }
+  return { statusCode }
 }
 
 export default Error

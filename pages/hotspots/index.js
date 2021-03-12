@@ -15,6 +15,10 @@ import Widget from '../../components/Home/Widget'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { Balance, CurrencyType } from '@helium/currency'
+import DCIcon from '../../components/Icons/DC'
+import HotspotSimpleIcon from '../../components/Icons/HotspotSimple'
+import LocationIcon from '../../components/Icons/Location'
+import InfoIcon from '../../components/Icons/Info'
 
 const MiniCoverageMap = dynamic(
   () => import('../../components/CoverageMap/MiniCoverageMap'),
@@ -112,22 +116,11 @@ const Hotspots = ({
                         {m.address === DEPRECATED_HELIUM_MAKER_ADDR && (
                           <Tooltip
                             placement="top"
-                            title="This Maker address used genesis Data Credits to onboard Hotspots and is no longer in use. Read the blog for more details."
+                            title="This Maker address used genesis Data Credits to onboard Hotspots and is no longer in use."
                           >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              className="text-gray-500 h-4 w-4 ml-2"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
+                            <span className="ml-2 flex flex-row items-center justify-center">
+                              <InfoIcon className="text-gray-500 h-4 w-4" />
+                            </span>
                           </Tooltip>
                         )}
                       </div>
@@ -135,27 +128,7 @@ const Hotspots = ({
                         {m.address.slice(0, 5)}...{m.address.slice(-5)}
                       </p>
                       <div className="pt-2.5 flex flex-row items-center justify-start">
-                        <svg
-                          width="53"
-                          height="51"
-                          viewBox="0 0 53 51"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-3 w-auto mr-2"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M11.5664 25.1755C11.5664 19.4664 7.43021 14.7235 1.991 13.7798C0.902689 13.591 0 12.7136 0 11.6091V2.0004C0 0.895827 0.898592 -0.00787772 1.99977 0.0786605C14.9687 1.09785 25.1751 11.9448 25.1751 25.1755C25.1751 38.4062 14.9687 49.2531 1.99977 50.2723C0.898591 50.3589 0 49.4552 0 48.3506V38.7419C0 37.6374 0.902689 36.76 1.991 36.5712C7.43021 35.6275 11.5664 30.8845 11.5664 25.1755Z"
-                            fill="#474DFF"
-                          />
-                          <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M40.5545 25.1751C40.5545 30.8841 44.6907 35.6271 50.1299 36.5708C51.2182 36.7596 52.1209 37.637 52.1209 38.7415L52.1209 48.3502C52.1209 49.4548 51.2223 50.3585 50.1211 50.2719C37.1522 49.2527 26.9458 38.4058 26.9458 25.1751C26.9458 11.9444 37.1522 1.09745 50.1211 0.0782622C51.2223 -0.00827797 52.1209 0.895428 52.1209 2L52.1209 11.6087C52.1209 12.7132 51.2182 13.5906 50.1299 13.7794C44.6907 14.7231 40.5545 19.466 40.5545 25.1751Z"
-                            fill="#20DEB0"
-                          />
-                        </svg>
+                        <DCIcon className="h-3 w-auto mr-2" />
                         <p className="text-base font-semibold m-0 text-black">
                           {dcBalanceObject.toString()}
                         </p>
@@ -163,21 +136,7 @@ const Hotspots = ({
                     </div>
                     <div className="rounded-b-lg p-5 pt-4 bg-gray-100">
                       <div className="flex flex-row items-center justify-start">
-                        <svg
-                          width="21"
-                          height="20"
-                          viewBox="0 0 21 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="text-green-500 w-3 h-auto"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M4.91309 0C2.70395 0 0.913086 1.79086 0.913086 4V15.9553C0.913086 18.1644 2.70394 19.9553 4.91308 19.9553H16.8684C19.0775 19.9553 20.8684 18.1644 20.8684 15.9553V4C20.8684 1.79086 19.0775 0 16.8684 0H4.91309ZM10.8907 17.5822C15.0906 17.5822 18.4953 14.1775 18.4953 9.97763C18.4953 5.77773 15.0906 2.37305 10.8907 2.37305C6.69082 2.37305 3.28613 5.77773 3.28613 9.97763C3.28613 14.1775 6.69082 17.5822 10.8907 17.5822Z"
-                            fill="#474DFF"
-                          />
-                        </svg>
+                        <HotspotSimpleIcon className="text-green-500 w-3 h-auto" />
                         <p className="text-sm ml-1 font-semibold m-0 text-gray-700">
                           {m.txns.addGatewayTxns.toLocaleString()}
                           <span className="ml-1 font-light text-gray-600">
@@ -186,22 +145,7 @@ const Hotspots = ({
                         </p>
                       </div>
                       <div className="flex flex-row items-center justify-start">
-                        <svg
-                          width="26"
-                          height="31"
-                          viewBox="0 0 26 31"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="text-pink-500 w-3 h-auto"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M21.561 4.59665C26.4024 9.58151 26.4024 17.6636 21.561 22.6484L14.8179 29.5914C13.7007 30.7418 11.8893 30.7418 10.7721 29.5914L4.02896 22.6484C-0.812387 17.6636 -0.812387 9.58151 4.02896 4.59665C8.8703 -0.388214 16.7197 -0.388214 21.561 4.59665ZM12.7955 19.9476C16.3603 19.9476 19.2501 16.9728 19.2501 13.3032C19.2501 9.63353 16.3603 6.65869 12.7955 6.65869C9.23066 6.65869 6.34082 9.63353 6.34082 13.3032C6.34082 16.9728 9.23066 19.9476 12.7955 19.9476Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-
+                        <LocationIcon className="text-pink-500 w-3 h-auto" />
                         <p className="text-sm ml-1 font-semibold m-0 text-gray-700">
                           {m.txns.assertLocationTxns.toLocaleString()}
                           <span className="ml-1 font-light text-gray-600">
@@ -217,12 +161,22 @@ const Hotspots = ({
                           </span>
                         </p>
                       ) : (
-                        <p className="text-sm pt-2.5 m-0 font-medium text-gray-600">
-                          Adds + Asserts Left:{' '}
-                          <span className="text-gray-700 font-semibold">
-                            {addsPlusAssertsLeft.toLocaleString()}
-                          </span>
-                        </p>
+                        <div className="flex flex-row items-center justify-start pt-2.5">
+                          <p className="text-sm m-0 font-light text-gray-600">
+                            Adds + Asserts Left:{' '}
+                            <span className="text-gray-700 font-semibold">
+                              {addsPlusAssertsLeft.toLocaleString()}
+                            </span>
+                          </p>
+                          <Tooltip
+                            placement="top"
+                            title={`The number of hotspots this Maker could afford to onboard given their current DC balance, assuming a cost of ${(5000000).toLocaleString()} DC for each hotspot (${(4000000).toLocaleString()} DC to add it to the blockchain, and ${(1000000).toLocaleString()} DC to assert its location).`}
+                          >
+                            <span className="ml-2 flex flex-row items-center justify-center">
+                              <InfoIcon className="text-gray-500 h-4 w-4" />
+                            </span>
+                          </Tooltip>
+                        </div>
                       )}
                     </div>
                   </a>

@@ -443,7 +443,16 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const client = new Client()
   const { hotspotid } = params
-  const hotspot = await client.hotspots.get(hotspotid)
+  let hotspot
+  try {
+    hotspot = await client.hotspots.get(hotspotid)
+  } catch (e) {
+    if (e.response.status === 404) {
+      // serve the 404 page if it's a 404 error, otherwise it'll throw the appropriate server error
+      return { notFound: true }
+    }
+    throw e
+  }
 
   return {
     props: {

@@ -10,7 +10,7 @@ const layoutStyle = {
   fontFamily: 'Inter, sans-serif',
   fontStyle: 'normal',
   minHeight: '100vh',
-  marginTop: '64px',
+  paddingTop: '64px',
 }
 
 const AppLayout = (props) => (

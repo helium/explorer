@@ -283,7 +283,16 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const client = new Client()
   const { txnid } = params
-  let txn = await client.transactions.get(txnid)
+  let txn
+  try {
+    txn = await client.transactions.get(txnid)
+  } catch (e) {
+    if (e.response.status === 404) {
+      // serve the 404 page if it's a 404 error, otherwise it'll throw the appropriate server error
+      return { notFound: true }
+    }
+    throw e
+  }
 
   return {
     props: {

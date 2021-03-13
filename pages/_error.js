@@ -12,7 +12,7 @@ const Error = ({ statusCode, statusMessage }) => {
       }`}
     >
       <div className="bg-navy-500 w-full">
-        <div className="py-10 md:py-20 w-full mx-auto max-w-xl px-10 md:px-20">
+        <div className="py-5 md:py-10 w-full mx-auto max-w-xl px-10 md:px-20">
           <div className="flex flex-col items-center justify-start text-center">
             <h1 className="m-0 p-0 font-sans font-semibold text-white text-4xl md:text-6xl">
               {statusCode ? `Error ${statusCode}` : 'Unknown Error'}
@@ -26,8 +26,8 @@ const Error = ({ statusCode, statusMessage }) => {
         </div>
       </div>
       <div className="bg-bluegray-100 w-full">
-        <div className="py-10 md:pt-20 w-full mx-auto max-w-3xl px-10 md:px-20">
-          <h3 className="text-gray-300 font-sans font-normal text-lg text-center normal-case tracking-normal">
+        <div className="py-10 md:pt-20 w-full mx-auto max-w-3xl px-2.5 sm:px-20">
+          <h3 className="text-gray-300 font-sans font-normal text-lg text-center normal-case tracking-normal pb-2">
             Let us know how you got here so we can fix it
           </h3>
           <HelpLinkList>
@@ -43,7 +43,7 @@ const Error = ({ statusCode, statusMessage }) => {
               Report the issue on Discord
             </HelpLink>
           </HelpLinkList>
-          <h3 className="text-gray-300 font-sans font-normal text-lg text-center normal-case tracking-normal pt-10">
+          <h3 className="text-gray-300 font-sans font-normal text-lg text-center normal-case tracking-normal pt-5 pb-2">
             Or try one of these links
           </h3>
           <HelpLinkList>

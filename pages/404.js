@@ -49,57 +49,55 @@ export const HelpLink = ({ children, href, external }) => {
 
 const Custom404 = () => {
   return (
-    <>
-      <AppLayout
-        title={`404: Not Found`}
-        description={'404: Page Not Found'}
-        url={'/404'}
-      >
-        <div className="bg-navy-500 w-full">
-          <div className="py-10 md:py-20 w-full mx-auto max-w-3xl px-10 md:px-20">
-            <div className="flex flex-col items-center justify-start text-center">
-              <h1 className="m-0 p-0 font-sans font-semibold text-white text-4xl md:text-6xl">
-                404
-              </h1>
-              <h2 className="m-0 p-0 pt-5 font-sans text-white text-lg md:text-2xl">
-                Sorry, that page doesn't seem to exist.
-              </h2>
-            </div>
+    <AppLayout
+      title={`404: Not Found`}
+      description={'404: Page Not Found'}
+      url={'/404'}
+    >
+      <div className="bg-navy-500 w-full">
+        <div className="py-10 md:py-20 w-full mx-auto max-w-3xl px-10 md:px-20">
+          <div className="flex flex-col items-center justify-start text-center">
+            <h1 className="m-0 p-0 font-sans font-semibold text-white text-4xl md:text-6xl">
+              404
+            </h1>
+            <h2 className="m-0 p-0 pt-5 font-sans text-white text-lg md:text-2xl">
+              Sorry, that page doesn't seem to exist.
+            </h2>
           </div>
         </div>
-        <div className="bg-bluegray-100 w-full">
-          <div className="py-10 md:pt-20 w-full mx-auto max-w-3xl px-10 md:px-20">
-            <h3 className="text-gray-300 font-sans font-normal text-lg text-center normal-case tracking-normal">
-              Let us know how you got here so we can fix it
-            </h3>
-            <HelpLinkList>
-              <HelpLink
-                href="https://github.com/helium/explorer/issues/new?labels=bug&title=Unexpected+404+error"
-                external
-              >
-                Create an issue on GitHub
-              </HelpLink>
-              <HelpLink href="https://discord.com/invite/helium" external>
-                Report the issue on Discord
-              </HelpLink>
-            </HelpLinkList>
-            <h3 className="text-gray-300 font-sans font-normal text-lg text-center normal-case tracking-normal pt-10">
-              Or try one of these links
-            </h3>
-            <HelpLinkList>
-              <HelpLink href="/hotspots">Hotspots</HelpLink>
-              <HelpLink href="/blocks">Blocks</HelpLink>
-              <HelpLink href="/market">Market Data</HelpLink>
-              <HelpLink href="/consensus">Consensus</HelpLink>
-              <HelpLink href="/coverage">Coverage Map</HelpLink>
-              <HelpLink href="https://www.helium.com/" external>
-                helium.com
-              </HelpLink>
-            </HelpLinkList>
-          </div>
+      </div>
+      <div className="bg-bluegray-100 w-full">
+        <div className="py-5 md:py-10 w-full mx-auto max-w-3xl px-2.5 sm:px-20">
+          <h3 className="text-gray-300 font-sans font-normal text-lg text-center normal-case tracking-normal pb-2">
+            Let us know how you got here so we can fix it
+          </h3>
+          <HelpLinkList>
+            <HelpLink
+              href="https://github.com/helium/explorer/issues/new?labels=bug&title=Unexpected+404+error"
+              external
+            >
+              Create an issue on GitHub
+            </HelpLink>
+            <HelpLink href="https://discord.com/invite/helium" external>
+              Report the issue on Discord
+            </HelpLink>
+          </HelpLinkList>
+          <h3 className="text-gray-300 font-sans font-normal text-lg text-center normal-case tracking-normal pt-5 pb-2">
+            Or try one of these links
+          </h3>
+          <HelpLinkList>
+            <HelpLink href="/hotspots">Hotspots</HelpLink>
+            <HelpLink href="/blocks">Blocks</HelpLink>
+            <HelpLink href="/market">Market Data</HelpLink>
+            <HelpLink href="/consensus">Consensus</HelpLink>
+            <HelpLink href="/coverage">Coverage Map</HelpLink>
+            <HelpLink href="https://www.helium.com/" external>
+              helium.com
+            </HelpLink>
+          </HelpLinkList>
         </div>
-      </AppLayout>
-    </>
+      </div>
+    </AppLayout>
   )
 }
 

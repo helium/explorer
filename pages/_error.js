@@ -1,13 +1,16 @@
-import Error404Page from './404'
 import { HelpLinkList, HelpLink } from './404'
 import AppLayout from '../components/AppLayout/AppLayout'
 
-const Error = ({ statusCode }) => {
-  if (statusCode === 404) {
-    return <Error404Page />
-  }
+const Error = ({ statusCode, statusMessage }) => {
   return (
-    <AppLayout>
+    <AppLayout
+      title={`${statusCode ? `${statusCode}` : 'Error'}${
+        statusMessage ? `: ${statusMessage}` : ''
+      }`}
+      description={`${statusCode ? `Error ${statusCode}` : 'Error'}${
+        statusMessage ? `: ${statusMessage}` : ''
+      }`}
+    >
       <div className="bg-navy-500 w-full">
         <div className="py-10 md:py-20 w-full mx-auto max-w-xl px-10 md:px-20">
           <div className="flex flex-col items-center justify-start text-center">
@@ -61,8 +64,13 @@ const Error = ({ statusCode }) => {
 
 Error.getInitialProps = ({ res, err }) => {
   const statusCode = res ? res.statusCode : err ? err.statusCode : 404
+  const statusMessage = res
+    ? res.statusMessage
+    : err
+    ? err.statusMessage
+    : 'Not Found'
 
-  return { statusCode }
+  return { statusCode, statusMessage }
 }
 
 export default Error

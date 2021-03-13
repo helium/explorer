@@ -50,7 +50,11 @@ export const HelpLink = ({ children, href, external }) => {
 const Custom404 = () => {
   return (
     <>
-      <AppLayout>
+      <AppLayout
+        title={`404: Not Found`}
+        description={'404: Page Not Found'}
+        url={'/404'}
+      >
         <div className="bg-navy-500 w-full">
           <div className="py-10 md:py-20 w-full mx-auto max-w-3xl px-10 md:px-20">
             <div className="flex flex-col items-center justify-start text-center">

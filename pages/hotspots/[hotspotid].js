@@ -433,14 +433,7 @@ const HotspotView = ({ hotspot }) => {
   )
 }
 
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: 'blocking',
-  }
-}
-
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   const client = new Client()
   const { hotspotid } = params
   let hotspot
@@ -458,7 +451,6 @@ export async function getStaticProps({ params }) {
     props: {
       hotspot: JSON.parse(JSON.stringify(hotspot)),
     },
-    revalidate: 10,
   }
 }
 

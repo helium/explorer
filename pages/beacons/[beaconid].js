@@ -10,6 +10,7 @@ import { fetchBeacon } from '../../data/beacons'
 import { fetchHotspot } from '../../data/hotspots'
 import WitnessesTable from '../../components/Beacons/WitnessesTable'
 import RewardScalePill from '../../components/Hotspots/RewardScalePill'
+import AccountLink from '../../components/Common/AccountLink'
 
 const BeaconMap = dynamic(() => import('../../components/Beacons/BeaconMap'), {
   ssr: false,
@@ -41,7 +42,10 @@ const Beacons = ({ beacon, challenger }) => {
 
   return (
     <AppLayout>
-      <div className="flex flex-wrap lg:flex-row-reverse lg:h-screen">
+      <div
+        className="flex flex-wrap lg:flex-row-reverse"
+        style={{ minHeight: 'calc(100vh - 64px)' }}
+      >
         <div className="w-full lg:w-1/2">
           <BeaconMap beacon={beacon} />
         </div>
@@ -111,6 +115,7 @@ const Beacons = ({ beacon, challenger }) => {
                         <RewardScalePill hotspot={challenger} />
                       </div>
                     )}
+                    <AccountLink address={path.challengeeOwner} />
                   </div>
                   <hr className="my-6 border-gray-100" />
                   <div>

@@ -5,6 +5,7 @@ import animalHash from 'angry-purple-tiger'
 import { h3ToGeo } from 'h3-js'
 import Pill from '../Common/Pill'
 import { calculateDistance, formatDistance } from '../../utils/distance'
+import AccountLink from '../Common/AccountLink'
 
 const Label = ({ children }) => (
   <span className="text-gray-200 font-light text-sm tracking-wide">
@@ -32,6 +33,7 @@ const WitnessesTable = ({ path }) => {
       <thead>
         <tr>
           <Th>{witnesses.length} WITNESSES</Th>
+          <Th className="">OWNED BY</Th>
           <Th className="text-center">SUCCESS</Th>
           <Th className="text-right">DISTANCE</Th>
         </tr>
@@ -45,6 +47,9 @@ const WitnessesTable = ({ path }) => {
                 <Link prefetch={false} href={`/hotspots/${witness.gateway}`}>
                   <a className="text-gray-400">{animalHash(witness.gateway)}</a>
                 </Link>
+              </Td>
+              <Td>
+                <AccountLink address={witness.owner} />
               </Td>
               <Td className="text-center">
                 <Pill

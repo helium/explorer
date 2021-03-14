@@ -22,7 +22,12 @@ const Beacons = ({ latestBeacons: initialLatestBeacons }) => {
 
   return (
     <AppLayout>
-      <div className="flex flex-wrap lg:flex-row-reverse lg:h-screen">
+      <div
+        className="flex flex-wrap lg:flex-row-reverse"
+        style={{
+          minHeight: 'calc(100vh - 64px)',
+        }}
+      >
         <div className="w-full lg:w-1/2">
           <BeaconMap beacon={latestBeacons ? latestBeacons[0] : undefined} />
         </div>

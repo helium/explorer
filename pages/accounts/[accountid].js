@@ -13,6 +13,7 @@ import { ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import AccountIcon from '../../components/AccountIcon'
 import AccountAddress from '../../components/AccountAddress'
 import { getHotspotRewardsBuckets } from '../../data/hotspots'
+import BeaconsList from '../../components/Beacons/BeaconsList'
 
 const { Title } = Typography
 
@@ -232,6 +233,7 @@ const AccountView = ({ account }) => {
           hotspotsLoading={hotspotsLoading}
           hotspots={hotspots}
         />
+        <BeaconsList type="account" address={account.address} />
         <ActivityList
           type="account"
           address={account.address}

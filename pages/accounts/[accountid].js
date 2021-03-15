@@ -19,10 +19,11 @@ import {
 import AccountIcon from '../../components/AccountIcon'
 import AccountAddress from '../../components/AccountAddress'
 import { getHotspotRewardsBuckets } from '../../data/hotspots'
+import { getMakerName } from '../../components/Makers/utils'
 
 const { Title } = Typography
 
-const AccountView = ({ account, makers }) => {
+const AccountView = ({ account }) => {
   const dcBalanceObject = new Balance(
     account.dcBalance.integerBalance,
     CurrencyType.dataCredit,
@@ -40,9 +41,8 @@ const AccountView = ({ account, makers }) => {
   const [hotspotsLoading, setLoadingHotspots] = useState(true)
   const [rewardsLoading, setLoadingRewards] = useState(true)
 
-  const makerIndex = makers.findIndex((m) => m.address === account.address)
-  const isMakerAccount = makerIndex !== -1
-  let makerAccountName = isMakerAccount ? makers[makerIndex].name : ''
+  const isMakerAccount = account.makerName !== undefined
+  let makerAccountName = isMakerAccount ? account.makerName : ''
 
   useEffect(() => {
     async function getHotspots() {
@@ -254,16 +254,12 @@ export async function getServerSideProps({ params }) {
   const client = new Client()
   const { accountid } = params
   const account = await client.accounts.get(accountid)
-
-  const makersResponse = await fetch(
-    `https://onboarding.dewi.org/api/v2/makers`,
-  )
-  const makers = await makersResponse.json()
+  const makerName = await getMakerName(account.address)
+  if (makerName !== 'Unknown Maker') account.makerName = makerName
 
   return {
     props: {
       account: JSON.parse(JSON.stringify(account)),
-      makers: JSON.parse(JSON.stringify(makers.data)),
     },
   }
 }

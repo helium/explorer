@@ -4,29 +4,10 @@ import AccountIcon from '../AccountIcon'
 
 import Link from 'next/link'
 import animalHash from 'angry-purple-tiger'
-import { getMakerName } from '../Txns/utils'
 
 import { Balance, CurrencyType } from '@helium/currency'
 
 const AddGatewayV1 = ({ txn }) => {
-  const [makerName, setMakerName] = useState('')
-  const [makerNameLoading, setMakerNameLoading] = useState(true)
-
-  const getMakerInfo = async (payerAddress) => {
-    if (payerAddress === txn.owner || payerAddress === null) {
-      setMakerName('Hotspot owner')
-      setMakerNameLoading(false)
-    } else {
-      setMakerNameLoading(true)
-      const makerName = await getMakerName(payerAddress)
-      setMakerName(makerName)
-      setMakerNameLoading(false)
-    }
-  }
-  useEffect(() => {
-    getMakerInfo(txn.payer)
-  }, [])
-
   const stakingFeeObject = new Balance(
     txn.stakingFee.integerBalance,
     CurrencyType.dataCredit,
@@ -35,6 +16,8 @@ const AddGatewayV1 = ({ txn }) => {
     txn.payer === txn.owner || txn.payer === null ? txn.owner : txn.payer
 
   const feeObject = new Balance(txn.fee.integerBalance, CurrencyType.dataCredit)
+
+  const makerName = txn.makerInfo
 
   return (
     <Descriptions bordered>
@@ -68,7 +51,7 @@ const AddGatewayV1 = ({ txn }) => {
         </span>
       </Descriptions.Item>
       <Descriptions.Item label="Staking Fee Payer" span={3}>
-        {makerNameLoading ? 'Loading...' : makerName}
+        {makerName}
       </Descriptions.Item>
     </Descriptions>
   )

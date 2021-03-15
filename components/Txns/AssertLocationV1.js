@@ -8,7 +8,6 @@ import animalHash from 'angry-purple-tiger'
 import Client from '@helium/http'
 
 import { formatLocation } from '../Hotspots/utils'
-import { getMakerName } from '../Txns/utils'
 import { Balance, CurrencyType } from '@helium/currency'
 
 const AssertLocationMapbox = dynamic(() => import('../AssertLocationMapbox'), {
@@ -18,8 +17,6 @@ const AssertLocationMapbox = dynamic(() => import('../AssertLocationMapbox'), {
 
 const AssertLocationV1 = ({ txn }) => {
   const [hotspot, setHotspot] = useState({})
-  const [makerName, setMakerName] = useState('')
-  const [makerNameLoading, setMakerNameLoading] = useState(true)
 
   const getHotspot = async () => {
     // make a client-side call to get the location (city, state, country) of the hotspot
@@ -29,20 +26,9 @@ const AssertLocationV1 = ({ txn }) => {
     const hotspot = await client.hotspots.get(hotspotid)
     setHotspot(hotspot)
   }
-  const getMakerInfo = async (payerAddress) => {
-    if (payerAddress === txn.owner || payerAddress === null) {
-      setMakerName('Hotspot owner')
-      setMakerNameLoading(false)
-    } else {
-      setMakerNameLoading(true)
-      const makerName = await getMakerName(payerAddress)
-      setMakerName(makerName)
-      setMakerNameLoading(false)
-    }
-  }
+
   useEffect(() => {
     getHotspot()
-    getMakerInfo(txn.payer)
   }, [])
 
   const stakingFeeObject = new Balance(
@@ -53,6 +39,8 @@ const AssertLocationV1 = ({ txn }) => {
     txn.payer === txn.owner || txn.payer === null ? txn.owner : txn.payer
 
   const feeObject = new Balance(txn.fee.integerBalance, CurrencyType.dataCredit)
+
+  const makerName = txn.makerInfo
 
   return (
     <>
@@ -102,8 +90,8 @@ const AssertLocationV1 = ({ txn }) => {
             </span>
           </span>
         </Descriptions.Item>
-        <Descriptions.Item label="Staking Fee Payer" span={3}>
-          {makerNameLoading ? 'Loading...' : makerName}
+        <Descriptions.Item label="Staking Fee Payer" span={6}>
+          {makerName}
         </Descriptions.Item>
       </Descriptions>
     </>

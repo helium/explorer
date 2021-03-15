@@ -19,6 +19,10 @@ import DCIcon from '../../components/Icons/DC'
 import HotspotSimpleIcon from '../../components/Icons/HotspotSimple'
 import LocationIcon from '../../components/Icons/Location'
 import InfoIcon from '../../components/Icons/Info'
+import {
+  DEPRECATED_HELIUM_MAKER_ADDR,
+  getMakersData,
+} from '../../components/Makers/utils'
 
 const MiniCoverageMap = dynamic(
   () => import('../../components/CoverageMap/MiniCoverageMap'),
@@ -27,12 +31,6 @@ const MiniCoverageMap = dynamic(
     loading: () => <div style={{ height: '500px' }} />,
   },
 )
-
-const DEPRECATED_HELIUM_MAKER_ADDR =
-  '14fzfjFcHpDR1rTH8BNPvSi5dKBbgxaDnmsVPbCjuq9ENjpZbxh'
-
-const MAKER_INTEGRATION_TEST_ADDR =
-  '138LbePH4r7hWPuTnK6HXVJ8ATM2QU71iVHzLTup1UbnPDvbxmr'
 
 const Hotspots = ({
   hotspotGrowth,
@@ -212,55 +210,7 @@ export async function getStaticProps() {
     },
   ]
 
-  const makersResponse = await fetch(
-    `https://onboarding.dewi.org/api/v2/makers`,
-  )
-  const makersData = await makersResponse.json()
-  const makersArray = makersData.data
-
-  // Add old Helium maker address
-  const deprecatedHeliumMaker = {
-    address: DEPRECATED_HELIUM_MAKER_ADDR,
-    name: 'Helium Inc (Old)',
-    genesisHotspots: 47,
-  }
-  makersArray.push(deprecatedHeliumMaker)
-
-  // Hide maker integration test address
-  const makers = makersArray.filter(
-    (m) => m.address !== MAKER_INTEGRATION_TEST_ADDR,
-  )
-
-  await Promise.all(
-    makers.map(async (maker) => {
-      const makerInfo = await client.accounts.get(maker.address)
-      maker.balanceInfo = JSON.parse(JSON.stringify(makerInfo))
-
-      const MAX_TXNS = 50000
-
-      const addGatewayTxnsList = await client
-        .account(maker.address)
-        .activity.list({
-          filterTypes: ['add_gateway_v1'],
-        })
-      const assertLocationTxnsList = await client
-        .account(maker.address)
-        .activity.list({
-          filterTypes: ['assert_location_v1'],
-        })
-
-      const addGatewayTxns = await addGatewayTxnsList.take(MAX_TXNS)
-      const assertLocationTxns = await assertLocationTxnsList.take(MAX_TXNS)
-
-      const makerTxns = {
-        addGatewayTxns: addGatewayTxns.length,
-        assertLocationTxns: assertLocationTxns.length,
-      }
-      maker.txns = JSON.parse(JSON.stringify(makerTxns))
-
-      return maker
-    }),
-  )
+  const makers = await getMakersData()
 
   Array.from({ length: 39 }, (x, i) => {
     const date = sub(now, { weeks: i + 1 })

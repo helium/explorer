@@ -253,10 +253,20 @@ const AccountView = ({ account }) => {
 export async function getServerSideProps({ params }) {
   const client = new Client()
   const { accountid } = params
-  const account = await client.accounts.get(accountid)
-  const makerName = await getMakerName(account.address)
-  if (makerName !== 'Unknown Maker') account.makerName = makerName
 
+  let account
+  let makerName
+  try {
+    account = await client.accounts.get(accountid)
+    makerName = await getMakerName(account.address)
+    if (makerName !== 'Unknown Maker') account.makerName = makerName
+  } catch (e) {
+    if (e.response.status === 404) {
+      // serve the 404 page if it's a 404 error, otherwise it'll throw the appropriate server error
+      return { notFound: true }
+    }
+    throw e
+  }
   return {
     props: {
       account: JSON.parse(JSON.stringify(account)),

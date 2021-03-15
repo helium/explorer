@@ -93,7 +93,7 @@ const Hotspots = ({
         {/* Makers section */}
         <section className="mt-5 bg-white rounded-lg p-5 pb-10">
           <h2 className="font-medium text-base pb-4 m-0">Makers</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
             {makers.map((m, i) => {
               const dcBalanceObject = new Balance(
                 m.balanceInfo.dcBalance.integerBalance,

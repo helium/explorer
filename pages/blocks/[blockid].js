@@ -243,11 +243,21 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const client = new Client()
   const { blockid } = params
-
-  const [block, txnList] = await Promise.all([
-    client.blocks.get(blockid),
-    client.block(blockid).transactions.list(),
-  ])
+  let block, txnList
+  try {
+    const [fetchedBlock, fetchedTxnList] = await Promise.all([
+      client.blocks.get(blockid),
+      client.block(blockid).transactions.list(),
+    ])
+    block = fetchedBlock
+    txnList = fetchedTxnList
+  } catch (e) {
+    if (e.response.status === 404) {
+      // serve the 404 page if it's a 404 error, otherwise it'll throw the appropriate server error
+      return { notFound: true }
+    }
+    throw e
+  }
 
   let txns = []
   for await (const txn of txnList) {

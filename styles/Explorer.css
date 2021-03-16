@@ -546,6 +546,7 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
 }
 .no-location-set {
   height: 400px;
+  margin-bottom: 20px;
 }
 
 .inline-skeleton-override .ant-skeleton-title {

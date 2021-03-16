@@ -29,6 +29,7 @@ import {
   ConsensusGroupV1,
   TxnTag,
   TokenBurnV1,
+  AddGatewayV1,
 } from '../../components/Txns'
 import Block from '../../public/images/block.svg'
 import { getColor, getName } from '../../components/Txns/TxnTag'
@@ -55,6 +56,8 @@ const txnView = (txn) => {
       return <StateChannelOpenV1 txn={txn} />
     case 'transfer_hotspot_v1':
       return <TransferHotspotV1 txn={txn} />
+    case 'add_gateway_v1':
+      return <AddGatewayV1 txn={txn} />
     case 'assert_location_v1':
       return <AssertLocationV1 txn={txn} />
     case 'token_burn_v1':
@@ -280,7 +283,16 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const client = new Client()
   const { txnid } = params
-  let txn = await client.transactions.get(txnid)
+  let txn
+  try {
+    txn = await client.transactions.get(txnid)
+  } catch (e) {
+    if (e.response.status === 404) {
+      // serve the 404 page if it's a 404 error, otherwise it'll throw the appropriate server error
+      return { notFound: true }
+    }
+    throw e
+  }
 
   return {
     props: {

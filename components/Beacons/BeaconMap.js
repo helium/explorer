@@ -110,16 +110,6 @@ const BeaconMap = ({ beacon }) => {
 }
 
 const styles = {
-  // selectedMarker: {
-  //   width: 14,
-  //   height: 14,
-  //   borderRadius: '50%',
-  //   backgroundColor: '#1B8DFF',
-  //   display: 'flex',
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   border: '4px solid #fff',
-  // },
   beaconerMarker: {
     width: 14,
     height: 14,
@@ -152,16 +142,6 @@ const styles = {
     alignItems: 'center',
     cursor: 'pointer',
   },
-  // nearbyMarker: {
-  //   width: 10,
-  //   height: 10,
-  //   borderRadius: '50%',
-  //   backgroundColor: '#7C88BB',
-  //   display: 'flex',
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   cursor: 'pointer',
-  // },
 }
 
 export default memo(BeaconMap)

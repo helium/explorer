@@ -344,6 +344,7 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   z-index: 2;
   height: 100%;
   width: 100%;
+  transition: opacity 0.2s ease;
 }
 
 .ant-table-thead > tr > th,
@@ -355,11 +356,10 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
 
 .mini-coverage-map:hover > .mini-coverage-map-overlay {
   opacity: 0.1;
-  transition: opacity 0.2s ease;
 }
 .mini-coverage-map-interactive-text {
   position: absolute;
-  top: calc(50% - 24px);
+  top: calc(50% - 22px);
   text-align: center;
   width: 100%;
   z-index: 3;
@@ -370,10 +370,10 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   font-weight: 400;
   text-shadow: 0 0 10px darkslategray;
   display: block;
+  transition: opacity 0.2s ease;
 }
 .mini-coverage-map:hover > .mini-coverage-map-interactive-text {
   opacity: 1;
-  transition: opacity 0.2s ease;
 }
 
 .mini-coverage-map .mapboxgl-canvas {

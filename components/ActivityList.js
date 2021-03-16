@@ -9,6 +9,8 @@ import { Content } from './AppLayout'
 import ExportCSV from './ExportCSV'
 import Link from 'next/link'
 import animalHash from 'angry-purple-tiger'
+import dynamic from 'next/dynamic'
+import FlagLocation from '../components/Common/FlagLocation'
 
 const { Text } = Typography
 
@@ -19,6 +21,11 @@ const initialState = {
   filtersOpen: false,
   showLoadMoreButton: true,
 }
+
+const BeaconMap = dynamic(() => import('../components/Beacons/MiniBeaconMap'), {
+  ssr: false,
+  loading: () => <div className="h-80 md:h-96" />,
+})
 
 const exportableEntities = ['account', 'hotspot']
 
@@ -168,17 +175,44 @@ class ActivityList extends Component {
               loading={loading}
               scroll={{ x: true }}
               expandable={{
-                expandedRowRender: (record) => (
-                  <span className="ant-table-override">
-                    <Table
-                      dataSource={record.rewards}
-                      columns={rewardColumns(hotspots, type)}
-                      size="small"
-                      rowKey={(r) => `${r.type}-${r.gateway}`}
-                    />
-                  </span>
-                ),
-                rowExpandable: (record) => record.type === 'rewards_v1',
+                expandedRowRender: (record) => {
+                  if (record.type === 'rewards_v1') {
+                    return (
+                      <span className="ant-table-override">
+                        <Table
+                          dataSource={record.rewards}
+                          columns={rewardColumns(hotspots, type)}
+                          size="small"
+                          rowKey={(r) => `${r.type}-${r.gateway}`}
+                        />
+                      </span>
+                    )
+                  } else {
+                    return (
+                      <>
+                        <span className="ant-table-override">
+                          <Table
+                            dataSource={[record]}
+                            columns={receiptColumns()}
+                            size="small"
+                            rowKey="hash"
+                            pagination={{
+                              hideOnSinglePage: true,
+                            }}
+                          />
+                        </span>
+                        <Link href={`/beacons/${record.hash}`}>
+                          <a>
+                            <BeaconMap beacon={record} />
+                          </a>
+                        </Link>
+                      </>
+                    )
+                  }
+                },
+                rowExpandable: (record) =>
+                  record.type === 'rewards_v1' ||
+                  record.type === 'poc_receipts_v1',
               }}
             />
           )}
@@ -227,6 +261,39 @@ const rewardColumns = (hotspots, type) => {
   }
 
   return columns
+}
+
+const receiptColumns = () => {
+  return [
+    {
+      title: 'Beaconing Hotspot',
+      dataIndex: 'path',
+      key: 'hotspot',
+      render: (path) => (
+        <Link href={`/hotspots/${path[0].challengee}`} prefetch={false}>
+          <a>{animalHash(path[0].challengee)}</a>
+        </Link>
+      ),
+    },
+    {
+      title: 'Location',
+      dataIndex: 'path',
+      key: 'location',
+      render: (path, beacon) => (
+        <Link href={`/beacons/${beacon.hash}`} prefetch={false}>
+          <a>
+            <FlagLocation geocode={path[0].geocode} />
+          </a>
+        </Link>
+      ),
+    },
+    {
+      title: 'Witnesses',
+      dataIndex: 'path',
+      key: 'witnesses',
+      render: (path) => <span>{path[0].witnesses.length}</span>,
+    },
+  ]
 }
 
 const columns = (ownerAddress) => {

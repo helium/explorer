@@ -184,12 +184,13 @@ const HotspotView = ({ hotspot }) => {
           {hotspot.lng !== undefined && hotspot.lat !== undefined && (
             <div className="flex justify-between pt-3 w-full pb-8">
               <p
-                className="px-5 sm:px-0 text-white"
+                className="px-5 sm:px-0 text-white flex flex-row items-center justify-start"
                 style={{ fontWeight: 600 }}
               >
                 {hotspot.geocode.shortCountry && (
                   <ReactCountryFlag
                     countryCode={hotspot.geocode.shortCountry}
+                    svg
                     className="mr-2"
                   />
                 )}

@@ -45,15 +45,14 @@ export const generateColumns = (columnType) => {
       <p
         style={{
           color: '#555',
-          marginBottom: 0,
         }}
+        className="m-0 flex flex-row items-center justify-start"
       >
         <ReactCountryFlag
           countryCode={geocode.short_country}
+          svg
           style={{
-            fontSize: '1.5em',
             marginRight: '6px',
-            lineHeight: '1.5em',
           }}
         />
         {formatLocation(geocode)}

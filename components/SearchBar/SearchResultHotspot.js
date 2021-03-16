@@ -31,8 +31,9 @@ const SearchResultHotspot = ({ name, geocode, status }) => (
           </span>
           <ReactCountryFlag
             countryCode={geocode.shortCountry}
+            svg
             style={{
-              fontSize: '1.3em',
+              fontSize: '0.75em',
               marginLeft: '6px',
               lineHeight: '1.3em',
             }}

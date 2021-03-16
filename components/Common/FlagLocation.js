@@ -23,9 +23,9 @@ const FlagLocation = ({ geocode, country = 'short' }) => {
   locationTerms.push(country === 'short' ? shortCountry : longCountry)
 
   return (
-    <span>
-      <span className="pr-1">
-        <ReactCountryFlag countryCode={shortCountry} />
+    <span className="flex flex-row items-center justify-start">
+      <span className="mr-2 flex flex-row items-center justify-start">
+        <ReactCountryFlag countryCode={shortCountry} svg />
       </span>
       {locationTerms.join(', ')}
     </span>

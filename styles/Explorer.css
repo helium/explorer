@@ -746,7 +746,6 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
     word-break: normal;
     display: inline-block;
     position: relative;
-    top: 2px;
   }
 
   .mapboxgl-map {

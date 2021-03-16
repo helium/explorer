@@ -57,15 +57,16 @@ const Consensus = ({
         })
     })
     return (
-      <div style={{ display: 'flex' }}>
+      <div className="flex flex-row items-center justify-center py-2">
         {uniqueFlagShortcodes.map((flagId, flagIndex) => {
           return (
             <Tooltip title={flagId.fullCountryName} placement={'top'}>
               <ReactCountryFlag
                 countryCode={flagId.id}
+                svg
                 style={{
                   fontSize: '2em',
-                  marginLeft: flagIndex === 0 ? '0' : '6px',
+                  marginLeft: flagIndex === 0 ? '0' : '12px',
                   lineHeight: '2em',
                 }}
               />

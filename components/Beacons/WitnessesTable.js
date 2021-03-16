@@ -8,7 +8,7 @@ import { calculateDistance, formatDistance } from '../../utils/distance'
 import AccountLink from '../Common/AccountLink'
 
 const Label = ({ children }) => (
-  <span className="text-gray-200 font-light text-sm tracking-wide">
+  <span className="text-gray-300 font-light text-xs tracking-wide">
     {children}
   </span>
 )
@@ -32,9 +32,9 @@ const WitnessesTable = ({ path }) => {
     <table className="table-auto w-full">
       <thead>
         <tr>
-          <Th>{witnesses.length} WITNESSES</Th>
-          <Th className="">OWNED BY</Th>
-          <Th className="text-center">SUCCESS</Th>
+          <Th className="text-left">{witnesses.length} WITNESSES</Th>
+          <Th className="text-left">OWNED BY</Th>
+          <Th className="text-left">SUCCESS</Th>
           <Th className="text-right">DISTANCE</Th>
         </tr>
       </thead>
@@ -51,7 +51,7 @@ const WitnessesTable = ({ path }) => {
               <Td>
                 <AccountLink address={witness.owner} />
               </Td>
-              <Td className="text-center">
+              <Td className="text-left">
                 <Pill
                   title={witness.isValid ? 'VALID' : 'INVALID'}
                   color={witness.isValid ? 'green' : 'gray'}

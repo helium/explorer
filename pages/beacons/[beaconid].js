@@ -49,12 +49,12 @@ const Beacons = ({ beacon, challenger }) => {
         <div className="w-full lg:w-1/2">
           <BeaconMap beacon={beacon} />
         </div>
-        <div className="bg-navy-500 w-full lg:w-1/2 lg:p-8">
+        <div className="bg-navy-500 w-full lg:w-1/2 lg:p-20">
           <div className="p-6 lg:mb-8">
             <Link href="/beacons">
               <a>Latest Beacons</a>
             </Link>
-            <h1 className="text-white">Beacon</h1>
+            <h1 className="text-white text-3xl">Beacon</h1>
             <BeaconDetail icon="/images/block-mini.svg">
               <Link prefetch={false} href={`/blocks/${beacon.height}`}>
                 <a className="text-gray-400">
@@ -78,17 +78,22 @@ const Beacons = ({ beacon, challenger }) => {
           <div>
             <div className="bg-navy-900 p-4 lg:rounded-t-xl">
               <div className="text-gray-400">CHALLENGER</div>
-              <Row>
+              <div className="flex w-full">
                 <Link prefetch={false} href={`/hotspots/${challenger.address}`}>
-                  <a className="text-white">{animalHash(challenger.address)}</a>
+                  <a className="text-white flex-auto">
+                    {animalHash(challenger.address)}
+                  </a>
                 </Link>
                 <span className="text-gray-400">
                   <FlagLocation geocode={challenger.geocode} />
                 </span>
-              </Row>
+              </div>
             </div>
 
-            <div className="bg-white p-4 lg:max-h-96 lg:overflow-y-scroll lg:rounded-b-xl">
+            <div
+              className="bg-white p-4  lg:overflow-y-scroll lg:rounded-b-xl"
+              style={{ overflowY: 'overlay' }}
+            >
               {paths.map((path) => (
                 <div>
                   <div className="border-b">
@@ -111,11 +116,16 @@ const Beacons = ({ beacon, challenger }) => {
                       </span>
                     </Row>
                     {challenger.rewardScale && (
-                      <div className="py-2">
-                        <RewardScalePill hotspot={challenger} />
+                      <div className="py-2 flex content-center">
+                        <RewardScalePill
+                          className="light-reward-pill flex content-center"
+                          hotspot={challenger}
+                        />
+                        <div>
+                          <AccountLink address={path.challengeeOwner} />
+                        </div>
                       </div>
                     )}
-                    <AccountLink address={path.challengeeOwner} />
                   </div>
                   <hr className="my-6 border-gray-100" />
                   <div>

@@ -9,7 +9,10 @@ export const MAKER_INTEGRATION_TEST_ADDR =
 export const deprecatedHeliumMaker = {
   address: DEPRECATED_HELIUM_MAKER_ADDR,
   name: 'Helium Inc (Old)',
-  genesisHotspots: 44,
+  // the number of gen_gateway_v1 txns in block 1
+  // https://explorer.helium.com/blocks/1
+  // no reason to fetch this since it will never change
+  genesisHotspots: 45,
 }
 
 export const getMakersData = async () => {

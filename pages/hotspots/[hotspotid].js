@@ -25,7 +25,6 @@ import {
   getHotspotRewardsBuckets,
 } from '../../data/hotspots'
 import RewardScalePill from '../../components/Hotspots/RewardScalePill'
-import BeaconsList from '../../components/Beacons/BeaconsList'
 
 const HotspotMapbox = dynamic(
   () => import('../../components/Hotspots/HotspotMapbox'),
@@ -362,14 +361,6 @@ const HotspotView = ({ hotspot }) => {
             nearbyHotspotsLoading={nearbyHotspotsLoading}
             nearbyHotspots={nearbyHotspots}
           />
-        </Content>
-        <Content
-          style={{
-            maxWidth: 850,
-          }}
-          classes="mx-auto pb-5 mt-0"
-        >
-          <BeaconsList type="hotspot" address={hotspot.address} />
         </Content>
         <Content
           style={{

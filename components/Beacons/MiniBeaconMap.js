@@ -45,11 +45,11 @@ const MiniBeaconMap = ({ beacon }) => {
   }
 
   return (
-    <span className="mini-coverage-map">
-      <p className="mini-coverage-map-interactive-text unselectable-text">
+    <span className="mini-beacon-map">
+      <p className="mini-beacon-map-interactive-text unselectable-text">
         Click to view beacon details
       </p>
-      <span className="mini-coverage-map-overlay" />
+      <span className="mini-beacon-map-overlay" />
       <Mapbox
         style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
         container="map"

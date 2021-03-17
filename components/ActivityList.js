@@ -4,6 +4,7 @@ import { Table, Card, Button, Tooltip, Checkbox, Typography } from 'antd'
 import { FilterOutlined } from '@ant-design/icons'
 import Timestamp from 'react-timestamp'
 import { TxnTag } from './Txns'
+import { sumBy } from 'lodash'
 import LoadMoreButton from './LoadMoreButton'
 import { Content } from './AppLayout'
 import ExportCSV from './ExportCSV'
@@ -11,6 +12,10 @@ import Link from 'next/link'
 import animalHash from 'angry-purple-tiger'
 import dynamic from 'next/dynamic'
 import FlagLocation from '../components/Common/FlagLocation'
+import BeaconRow from '../components/Beacons/BeaconRow'
+import BeaconLabel from '../components/Beacons/BeaconLabel'
+import { fetchHotspot } from '../data/hotspots'
+import WitnessesTable from '../components/Beacons/WitnessesTable'
 
 const { Text } = Typography
 
@@ -22,10 +27,13 @@ const initialState = {
   showLoadMoreButton: true,
 }
 
-const BeaconMap = dynamic(() => import('../components/Beacons/MiniBeaconMap'), {
-  ssr: false,
-  loading: () => <div className="h-80 md:h-96" />,
-})
+const MiniBeaconMap = dynamic(
+  () => import('../components/Beacons/MiniBeaconMap'),
+  {
+    ssr: false,
+    loading: () => <div className="h-80 md:h-96 bg-navy-500" />,
+  },
+)
 
 const exportableEntities = ['account', 'hotspot']
 
@@ -188,24 +196,87 @@ class ActivityList extends Component {
                       </span>
                     )
                   } else {
+                    const beacon = record
+                    const challenger = record.challenger
+                    const paths = beacon?.path || []
                     return (
                       <>
-                        <span className="ant-table-override">
-                          <Table
-                            dataSource={[record]}
-                            columns={receiptColumns()}
-                            size="small"
-                            rowKey="hash"
-                            pagination={{
-                              hideOnSinglePage: true,
-                            }}
-                          />
-                        </span>
-                        <Link href={`/beacons/${record.hash}`}>
+                        <Link href={`/beacons/${beacon.hash}`}>
                           <a>
-                            <BeaconMap beacon={record} />
+                            <MiniBeaconMap beacon={beacon} />
                           </a>
                         </Link>
+                        <div>
+                          <div className="bg-navy-900 p-4">
+                            <div className="text-gray-400">CHALLENGER</div>
+                            <div className="flex w-full">
+                              <Link
+                                prefetch={false}
+                                href={`/hotspots/${challenger}`}
+                              >
+                                <a
+                                  className={`text-white inline-block${
+                                    challenger === address
+                                      ? ' bg-gray-400 px-2'
+                                      : ''
+                                  }`}
+                                >
+                                  {animalHash(challenger)}
+                                </a>
+                              </Link>
+                            </div>
+                          </div>
+
+                          <div
+                            className="bg-white pb-20 p-4 lg:overflow-y-scroll lg:rounded-b-xl"
+                            style={{ overflowY: 'overlay' }}
+                          >
+                            {paths.map((path) => (
+                              <div>
+                                <div className="border-b">
+                                  <img
+                                    src="/images/beaconer.svg"
+                                    alt=""
+                                    className="mb-2"
+                                  />
+                                  <BeaconRow>
+                                    <BeaconLabel>BEACONER</BeaconLabel>
+                                    <BeaconLabel>LOCATION</BeaconLabel>
+                                  </BeaconRow>
+                                  <BeaconRow>
+                                    <Link
+                                      prefetch={false}
+                                      href={`/hotspots/${path.challengee}`}
+                                    >
+                                      <a
+                                        className={`text-gray-400${
+                                          path.challengee === address
+                                            ? ' bg-gray-100'
+                                            : ''
+                                        }`}
+                                      >
+                                        {animalHash(path.challengee)}
+                                      </a>
+                                    </Link>
+                                    <span className="text-gray-400">
+                                      <FlagLocation geocode={path.geocode} />
+                                    </span>
+                                  </BeaconRow>
+                                </div>
+                                <hr className="my-6 border-gray-100" />
+                                <div>
+                                  <div className="mb-2">
+                                    <img src="/images/witness.svg" />
+                                  </div>
+                                  <WitnessesTable
+                                    path={path}
+                                    highlightedAddress={address}
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       </>
                     )
                   }
@@ -261,39 +332,6 @@ const rewardColumns = (hotspots, type) => {
   }
 
   return columns
-}
-
-const receiptColumns = () => {
-  return [
-    {
-      title: 'Beaconing Hotspot',
-      dataIndex: 'path',
-      key: 'hotspot',
-      render: (path) => (
-        <Link href={`/hotspots/${path[0].challengee}`} prefetch={false}>
-          <a>{animalHash(path[0].challengee)}</a>
-        </Link>
-      ),
-    },
-    {
-      title: 'Location',
-      dataIndex: 'path',
-      key: 'location',
-      render: (path, beacon) => (
-        <Link href={`/beacons/${beacon.hash}`} prefetch={false}>
-          <a>
-            <FlagLocation geocode={path[0].geocode} />
-          </a>
-        </Link>
-      ),
-    },
-    {
-      title: 'Witnesses',
-      dataIndex: 'path',
-      key: 'witnesses',
-      render: (path) => <span>{path[0].witnesses.length}</span>,
-    },
-  ]
 }
 
 const columns = (ownerAddress) => {

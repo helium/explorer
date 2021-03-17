@@ -23,7 +23,7 @@ const Td = ({ children, className }) => (
   <td className={classNames('px-1 py-1', className)}>{children}</td>
 )
 
-const WitnessesTable = ({ path }) => {
+const WitnessesTable = ({ path, highlightedAddress }) => {
   if (!path) return null
 
   const witnesses = path?.witnesses || []
@@ -42,7 +42,14 @@ const WitnessesTable = ({ path }) => {
         {witnesses.map((witness) => {
           const [witnessLat, witnessLng] = h3ToGeo(witness.location)
           return (
-            <tr key={witness.gateway}>
+            <tr
+              className={`${
+                witness.gateway === highlightedAddress
+                  ? 'bg-gray-100 -mr-2 -ml-2'
+                  : ''
+              }`}
+              key={witness.gateway}
+            >
               <Td>
                 <Link prefetch={false} href={`/hotspots/${witness.gateway}`}>
                   <a className="text-gray-400">{animalHash(witness.gateway)}</a>

@@ -11,30 +11,14 @@ import { fetchHotspot } from '../../data/hotspots'
 import WitnessesTable from '../../components/Beacons/WitnessesTable'
 import RewardScalePill from '../../components/Hotspots/RewardScalePill'
 import AccountLink from '../../components/Common/AccountLink'
+import BeaconRow from '../../components/Beacons/BeaconRow'
+import BeaconDetail from '../../components/Beacons/BeaconDetail'
+import BeaconLabel from '../../components/Beacons/BeaconLabel'
 
 const BeaconMap = dynamic(() => import('../../components/Beacons/BeaconMap'), {
   ssr: false,
   loading: () => <div className="h-80 md:h-96" />,
 })
-
-const Label = ({ children }) => (
-  <span className="text-gray-200 font-light text-sm tracking-wide">
-    {children}
-  </span>
-)
-
-const BeaconDetail = ({ icon, children }) => (
-  <div className="mb-2 text-gray-400">
-    <span className="w-5 inline-block">
-      <img src={icon} alt="" />
-    </span>
-    {children}
-  </div>
-)
-
-const Row = ({ children }) => (
-  <div className="flex flex-row justify-between">{children}</div>
-)
 
 const Beacons = ({ beacon, challenger }) => {
   const totalWitnesses = sumBy(beacon?.path || [], 'witnesses.length')
@@ -98,11 +82,11 @@ const Beacons = ({ beacon, challenger }) => {
                 <div>
                   <div className="border-b">
                     <img src="/images/beaconer.svg" alt="" className="mb-2" />
-                    <Row>
-                      <Label>BEACONER</Label>
-                      <Label>LOCATION</Label>
-                    </Row>
-                    <Row>
+                    <BeaconRow>
+                      <BeaconLabel>BEACONER</BeaconLabel>
+                      <BeaconLabel>LOCATION</BeaconLabel>
+                    </BeaconRow>
+                    <BeaconRow>
                       <Link
                         prefetch={false}
                         href={`/hotspots/${path.challengee}`}
@@ -114,14 +98,14 @@ const Beacons = ({ beacon, challenger }) => {
                       <span className="text-gray-400">
                         <FlagLocation geocode={path.geocode} />
                       </span>
-                    </Row>
+                    </BeaconRow>
                     {challenger.rewardScale && (
                       <div className="py-2 flex content-center">
                         <RewardScalePill
                           className="light-reward-pill flex content-center"
                           hotspot={challenger}
                         />
-                        <div>
+                        <div className="flex justify-center">
                           <AccountLink address={path.challengeeOwner} />
                         </div>
                       </div>

@@ -8,11 +8,18 @@ import QRCode from 'react-qr-code'
 import Fade from 'react-reveal/Fade'
 import { Balance, CurrencyType } from '@helium/currency'
 import sumBy from 'lodash/sumBy'
+import HSTIcon from '../../components/Icons/HST'
+import DCIcon from '../../components/Icons/DC'
 
-import { ClockCircleOutlined, CheckCircleOutlined } from '@ant-design/icons'
+import {
+  ClockCircleOutlined,
+  CheckCircleOutlined,
+  ToolOutlined,
+} from '@ant-design/icons'
 import AccountIcon from '../../components/AccountIcon'
 import AccountAddress from '../../components/AccountAddress'
 import { getHotspotRewardsBuckets } from '../../data/hotspots'
+import { getMakerName } from '../../components/Makers/utils'
 
 const { Title } = Typography
 
@@ -33,6 +40,9 @@ const AccountView = ({ account }) => {
   const [hotspots, setHotspots] = useState([])
   const [hotspotsLoading, setLoadingHotspots] = useState(true)
   const [rewardsLoading, setLoadingRewards] = useState(true)
+
+  const isMakerAccount = account.makerName !== undefined
+  let makerAccountName = isMakerAccount ? account.makerName : ''
 
   useEffect(() => {
     async function getHotspots() {
@@ -175,44 +185,42 @@ const AccountView = ({ account }) => {
         </div>
       </Content>
 
-      <div
-        style={{
-          width: '100%',
-          backgroundColor: '#2A344A',
-          padding: '20px',
-          textAlign: 'center',
-        }}
-      >
+      <div className="w-full bg-navy-600 p-5 text-center">
         <Fade bottom delay={1000}>
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
-            <div className="flexwrapper" style={{ justifyContent: 'center' }}>
+            <div className="flex flex-col md:flex-row items-center justify-center">
+              {isMakerAccount && (
+                <Tooltip placement="bottom" title="This is a Maker Account">
+                  <div className="mb-4 md:mb-0 mr-0 md:mr-5 flex flex-row items-center justify-start">
+                    <ToolOutlined
+                      style={{ color: '#A667F6', marginRight: 5 }}
+                    />
+                    <p className="m-0 text-white font-bold">
+                      {makerAccountName}
+                    </p>
+                  </div>
+                </Tooltip>
+              )}
               <Tooltip
                 placement="bottom"
                 title="The amount of Data Credits this account owns."
               >
-                <h3 style={{ margin: '0 20px' }}>
-                  {' '}
-                  <ClockCircleOutlined
-                    style={{ color: '#FFC769', marginRight: 5 }}
-                  />
-                  <Descriptions.Item label="Data Credits">
-                    {dcBalanceObject.toString()}
-                  </Descriptions.Item>
-                </h3>
+                <div className="mb-4 md:mb-0 mr-0 md:mr-5 flex flex-row items-center justify-start">
+                  <DCIcon className="h-3 w-auto mr-1" />
+                  <p className="text-white m-0">{dcBalanceObject.toString()}</p>
+                </div>
               </Tooltip>
 
               <Tooltip
                 placement="bottom"
                 title="The amount of Security Tokens this account owns."
               >
-                <h3 style={{ margin: '0 20px' }}>
-                  <CheckCircleOutlined
-                    style={{ color: '#29D391', marginRight: 5 }}
-                  />
-                  <Descriptions.Item label="Security Tokens">
+                <div className="mb-0 flex flex-row items-center justify-start">
+                  <HSTIcon className="text-pink-500 h-4 w-auto mr-1" />
+                  <p className="text-white m-0">
                     {hstBalanceObject.toString(2)}
-                  </Descriptions.Item>
-                </h3>
+                  </p>
+                </div>
               </Tooltip>
             </div>
           </Content>
@@ -245,9 +253,13 @@ const AccountView = ({ account }) => {
 export async function getServerSideProps({ params }) {
   const client = new Client()
   const { accountid } = params
+
   let account
+  let makerName
   try {
     account = await client.accounts.get(accountid)
+    makerName = await getMakerName(account.address)
+    if (makerName !== 'Unknown Maker') account.makerName = makerName
   } catch (e) {
     if (e.response.status === 404) {
       // serve the 404 page if it's a 404 error, otherwise it'll throw the appropriate server error

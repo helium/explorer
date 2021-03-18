@@ -44,9 +44,7 @@ const WitnessesTable = ({ path, highlightedAddress }) => {
           return (
             <tr
               className={`${
-                witness.gateway === highlightedAddress
-                  ? 'bg-gray-100 -mr-2 -ml-2'
-                  : ''
+                witness.gateway === highlightedAddress ? 'bg-gray-100' : ''
               }`}
               key={witness.gateway}
             >

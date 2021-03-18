@@ -4,7 +4,6 @@ import { Table, Card, Button, Tooltip, Checkbox, Typography } from 'antd'
 import { FilterOutlined } from '@ant-design/icons'
 import Timestamp from 'react-timestamp'
 import { TxnTag } from './Txns'
-import { sumBy } from 'lodash'
 import LoadMoreButton from './LoadMoreButton'
 import { Content } from './AppLayout'
 import ExportCSV from './ExportCSV'
@@ -14,8 +13,9 @@ import dynamic from 'next/dynamic'
 import FlagLocation from '../components/Common/FlagLocation'
 import BeaconRow from '../components/Beacons/BeaconRow'
 import BeaconLabel from '../components/Beacons/BeaconLabel'
-import { fetchHotspot } from '../data/hotspots'
 import WitnessesTable from '../components/Beacons/WitnessesTable'
+import { h3ToGeo } from 'h3-js'
+import { calculateDistance, formatDistance } from '../utils/distance'
 
 const { Text } = Typography
 
@@ -189,7 +189,7 @@ class ActivityList extends Component {
                       <span className="ant-table-override">
                         <Table
                           dataSource={record.rewards}
-                          columns={rewardColumns(hotspots, type)}
+                          columns={rewardColumns(hotspots, type, address)}
                           size="small"
                           rowKey={(r) => `${r.type}-${r.gateway}`}
                         />
@@ -217,7 +217,7 @@ class ActivityList extends Component {
                                 <a
                                   className={`text-white inline-block${
                                     challenger === address
-                                      ? ' bg-gray-400 px-2'
+                                      ? ' bg-gray-400 px-2 rounded-lg'
                                       : ''
                                   }`}
                                 >
@@ -251,7 +251,7 @@ class ActivityList extends Component {
                                       <a
                                         className={`text-gray-400${
                                           path.challengee === address
-                                            ? ' bg-gray-100'
+                                            ? ' bg-gray-100 px-2 rounded-lg'
                                             : ''
                                         }`}
                                       >
@@ -294,7 +294,7 @@ class ActivityList extends Component {
   }
 }
 
-const rewardColumns = (hotspots, type) => {
+const rewardColumns = (hotspots, type, address) => {
   let columns = [
     {
       title: 'Type',
@@ -379,7 +379,19 @@ const columns = (ownerAddress) => {
             } else {
               p.witnesses.map((w) => {
                 if (w.gateway === ownerAddress) {
-                  detailText = 'Witness'
+                  const [witnessLat, witnessLng] = h3ToGeo(w.location)
+                  let distance
+                  if (p.challengeeLon) {
+                    distance = formatDistance(
+                      calculateDistance(
+                        [p.challengeeLon, p.challengeeLat],
+                        [witnessLng, witnessLat],
+                      ),
+                    )
+                  } else {
+                    distance = ''
+                  }
+                  detailText = distance
                 }
               })
             }
@@ -406,13 +418,41 @@ const columns = (ownerAddress) => {
       title: 'Type',
       dataIndex: 'type',
       key: 'type',
-      render: (data, txn) => (
-        <Link href={`/txns/${txn.hash}`} prefetch={false}>
-          <a className="tag-link">
-            <TxnTag type={data}></TxnTag>
-          </a>
-        </Link>
-      ),
+      render: (data, txn) => {
+        if (txn.type !== 'poc_receipts_v1') {
+          return (
+            <Link href={`/txns/${txn.hash}`} prefetch={false}>
+              <a className="tag-link">
+                <TxnTag type={data} />
+              </a>
+            </Link>
+          )
+        } else {
+          let role = ''
+          if (txn.challenger === ownerAddress) {
+            role = 'poc_challengers'
+          } else {
+            txn.path.map((p) => {
+              if (p.challengee === ownerAddress) {
+                role = 'poc_challengees'
+              } else {
+                p.witnesses.map((w) => {
+                  if (w.gateway === ownerAddress) {
+                    role = 'poc_witnesses'
+                  }
+                })
+              }
+            })
+          }
+          return (
+            <Link href={`/txns/${txn.hash}`} prefetch={false}>
+              <a className="tag-link">
+                <TxnTag type={role} />
+              </a>
+            </Link>
+          )
+        }
+      },
     },
     {
       title: 'Details',

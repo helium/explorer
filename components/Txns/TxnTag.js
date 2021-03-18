@@ -7,7 +7,7 @@ const CONFIG = {
   payment_v2: { color: 'cyan', name: 'Payment' },
   poc_request_v1: {
     color: '#29D391',
-    name: 'PoC Challenge',
+    name: 'PoC Challenger',
     tooltip: 'Proof of Coverage Challenge',
   },
   poc_receipts_v1: {
@@ -32,13 +32,13 @@ const CONFIG = {
   },
   poc_challengers: {
     color: '#BE73FF',
-    name: 'PoC Challenger',
-    tooltip: 'Mining Reward for a PoC challenger',
+    name: 'Challenger',
+    tooltip: 'PoC challenger',
   },
   poc_challengees: {
     color: '#595A9A',
-    name: 'PoC Challengee',
-    tooltip: 'Mining Reward for a PoC challengee',
+    name: 'Beacon',
+    tooltip: 'PoC challengee',
   },
   assert_location_v1: {
     color: '#16CEE8',
@@ -52,8 +52,8 @@ const CONFIG = {
   },
   poc_witnesses: {
     color: '#FFC769',
-    name: 'PoC Witness',
-    tooltip: 'Mining Reward for a PoC witness',
+    name: 'Witness',
+    tooltip: 'PoC witness',
   },
   securities: {
     color: '#9AE8C9',

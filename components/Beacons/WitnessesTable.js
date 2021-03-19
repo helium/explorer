@@ -8,7 +8,7 @@ import { calculateDistance, formatDistance } from '../../utils/distance'
 import AccountLink from '../Common/AccountLink'
 
 const Label = ({ children }) => (
-  <span className="text-gray-300 font-light text-xs tracking-wide">
+  <span className="text-gray-600 font-light text-xs tracking-wide">
     {children}
   </span>
 )
@@ -44,13 +44,13 @@ const WitnessesTable = ({ path, highlightedAddress }) => {
           return (
             <tr
               className={`${
-                witness.gateway === highlightedAddress ? 'bg-gray-100' : ''
+                witness.gateway === highlightedAddress ? 'bg-gray-300' : ''
               }`}
               key={witness.gateway}
             >
               <Td>
                 <Link prefetch={false} href={`/hotspots/${witness.gateway}`}>
-                  <a className="text-gray-400">{animalHash(witness.gateway)}</a>
+                  <a className="text-gray-700">{animalHash(witness.gateway)}</a>
                 </Link>
               </Td>
               <Td>
@@ -64,7 +64,7 @@ const WitnessesTable = ({ path, highlightedAddress }) => {
                 />
               </Td>
               <Td className="text-right whitespace-nowrap">
-                <span className="text-gray-400">
+                <span className="text-gray-700">
                   {path.challengeeLon &&
                     formatDistance(
                       calculateDistance(

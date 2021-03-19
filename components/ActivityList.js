@@ -208,7 +208,7 @@ class ActivityList extends Component {
                         </Link>
                         <div>
                           <div className="bg-navy-900 p-4">
-                            <div className="text-gray-400">CHALLENGER</div>
+                            <div className="text-gray-700">CHALLENGER</div>
                             <div className="flex w-full">
                               <Link
                                 prefetch={false}
@@ -217,7 +217,7 @@ class ActivityList extends Component {
                                 <a
                                   className={`text-white inline-block${
                                     challenger === address
-                                      ? ' bg-gray-400 px-2 rounded-lg'
+                                      ? ' bg-gray-700 px-2 rounded-lg'
                                       : ''
                                   }`}
                                 >
@@ -249,21 +249,21 @@ class ActivityList extends Component {
                                       href={`/hotspots/${path.challengee}`}
                                     >
                                       <a
-                                        className={`text-gray-400${
+                                        className={`text-gray-700${
                                           path.challengee === address
-                                            ? ' bg-gray-100 px-2 rounded-lg'
+                                            ? ' bg-gray-350 px-2 rounded-lg'
                                             : ''
                                         }`}
                                       >
                                         {animalHash(path.challengee)}
                                       </a>
                                     </Link>
-                                    <span className="text-gray-400">
+                                    <span className="text-gray-700">
                                       <FlagLocation geocode={path.geocode} />
                                     </span>
                                   </BeaconRow>
                                 </div>
-                                <hr className="my-6 border-gray-100" />
+                                <hr className="my-6 border-gray-350" />
                                 <div>
                                   <div className="mb-2">
                                     <img src="/images/witness.svg" />

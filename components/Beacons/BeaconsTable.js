@@ -5,7 +5,7 @@ import FlagLocation from '../Common/FlagLocation'
 import Link from 'next/link'
 
 const Label = ({ children }) => (
-  <span className="text-gray-200 font-light text-sm tracking-wide">
+  <span className="text-gray-550 font-light text-sm tracking-wide">
     {children}
   </span>
 )
@@ -37,7 +37,7 @@ const BeaconsTable = ({ beacons }) => {
           <tr key={beacon.hash}>
             <Td>
               <Link prefetch={false} href={`/beacons/${beacon.hash}`}>
-                <a className="text-gray-400">
+                <a className="text-gray-700">
                   <FlagLocation
                     geocode={beacon.path[0].geocode}
                     country="long"
@@ -46,12 +46,12 @@ const BeaconsTable = ({ beacons }) => {
               </Link>
             </Td>
             <Td className="text-right">
-              <span className="text-gray-400">
+              <span className="text-gray-700">
                 {beacon.path[0].witnesses.length}
               </span>
             </Td>
             <Td className="text-right whitespace-nowrap">
-              <span className="text-gray-400">
+              <span className="text-gray-700">
                 <TimeAgo time={beacon.time} />
               </span>
             </Td>

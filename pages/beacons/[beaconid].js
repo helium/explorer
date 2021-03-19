@@ -41,7 +41,7 @@ const Beacons = ({ beacon, challenger }) => {
             <h1 className="text-white text-3xl">Beacon</h1>
             <BeaconDetail icon="/images/block-mini.svg">
               <Link prefetch={false} href={`/blocks/${beacon.height}`}>
-                <a className="text-gray-400">
+                <a className="text-gray-700">
                   Block{' '}
                   <span className="text-purple-500">
                     {beacon.height.toLocaleString()}
@@ -61,14 +61,14 @@ const Beacons = ({ beacon, challenger }) => {
 
           <div>
             <div className="bg-navy-900 p-4 lg:rounded-t-xl">
-              <div className="text-gray-400">CHALLENGER</div>
+              <div className="text-gray-700">CHALLENGER</div>
               <div className="flex w-full">
                 <Link prefetch={false} href={`/hotspots/${challenger.address}`}>
                   <a className="text-white flex-auto">
                     {animalHash(challenger.address)}
                   </a>
                 </Link>
-                <span className="text-gray-400">
+                <span className="text-gray-700">
                   <FlagLocation geocode={challenger.geocode} />
                 </span>
               </div>
@@ -91,11 +91,11 @@ const Beacons = ({ beacon, challenger }) => {
                         prefetch={false}
                         href={`/hotspots/${path.challengee}`}
                       >
-                        <a className="text-gray-400">
+                        <a className="text-gray-700">
                           {animalHash(path.challengee)}
                         </a>
                       </Link>
-                      <span className="text-gray-400">
+                      <span className="text-gray-700">
                         <FlagLocation geocode={path.geocode} />
                       </span>
                     </BeaconRow>
@@ -111,7 +111,7 @@ const Beacons = ({ beacon, challenger }) => {
                       </div>
                     )}
                   </div>
-                  <hr className="my-6 border-gray-100" />
+                  <hr className="my-6 border-gray-350" />
                   <div>
                     <div className="mb-2">
                       <img src="/images/witness.svg" />

@@ -34,6 +34,8 @@ import {
 import Block from '../../public/images/block.svg'
 import { getColor, getName } from '../../components/Txns/TxnTag'
 
+import { getMakerInfo } from '../../components/Makers/utils'
+
 const { Title, Text } = Typography
 
 const txnView = (txn) => {
@@ -292,6 +294,13 @@ export async function getStaticProps({ params }) {
       return { notFound: true }
     }
     throw e
+  }
+
+  if (txn.payer && txn.owner) {
+    // if there is a .payer field and a .owner field
+    // for now this should just trigger for txn.type === 'add_gateway_v1' or 'assert_location_v1'
+    const makerInfo = await getMakerInfo(txn.payer, txn.owner)
+    txn.makerInfo = makerInfo
   }
 
   return {

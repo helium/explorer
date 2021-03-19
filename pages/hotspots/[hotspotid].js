@@ -240,7 +240,7 @@ const HotspotView = ({ hotspot }) => {
                             : ``
                         }`}
                       >
-                        <p className="text-gray-300 ml-2 mb-0">
+                        <p className="text-gray-600 ml-2 mb-0">
                           {hotspot.status.online === 'offline'
                             ? `Offline`
                             : hotspot.block - hotspot.status?.height >= 500 ||

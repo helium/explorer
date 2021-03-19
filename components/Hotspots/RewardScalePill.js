@@ -24,7 +24,7 @@ const RewardScalePill = ({ hotspot, className }) => (
       placement="top"
       title={`A Hotspot's own reward scale does not impact its earnings. Hotspots witnessing this Hotspot will see their rewards scaled up or down according to this Hotspot's reward scale.`}
     >
-      <p className="mb-0 text-gray-300 ml-2">
+      <p className="mb-0 text-gray-600 ml-2">
         {hotspot.rewardScale.toLocaleString(undefined, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,

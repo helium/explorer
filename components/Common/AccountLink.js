@@ -3,7 +3,7 @@ import AccountIcon from '../AccountIcon'
 
 const AccountLink = ({ address }) => (
   <Link prefetch={false} href={`/accounts/${address}`}>
-    <a className="text-gray-400 flex max-w-md content-center ml-2">
+    <a className="text-gray-700 flex max-w-md content-center ml-2">
       <span className="mr-1 flex flex-row items-center justify-start">
         <AccountIcon address={address} />
       </span>

@@ -17,10 +17,13 @@ import Link from 'next/link'
 import { Balance, CurrencyType } from '@helium/currency'
 import DCIcon from '../../components/Icons/DC'
 import HotspotSimpleIcon from '../../components/Icons/HotspotSimple'
+import BurnIcon from '../../components/Icons/BurnIcon'
 import LocationIcon from '../../components/Icons/Location'
 import InfoIcon from '../../components/Icons/Info'
+import InternalLink from '../../components/Icons/InternalLink'
 import {
   DEPRECATED_HELIUM_MAKER_ADDR,
+  DEPRECATED_HELIUM_BURN_ADDR,
   getMakersData,
 } from '../../components/Makers/utils'
 
@@ -43,6 +46,10 @@ const Hotspots = ({
     stats: { totalHotspots, totalCities, totalCountries },
   } = useStats(initialStats)
   const { latestHotspots } = useLatestHotspots(initialLatestHotspots)
+
+  const oldHeliumBurnAddrData = makers.find(
+    (m) => m.address === DEPRECATED_HELIUM_BURN_ADDR,
+  )
 
   return (
     <AppLayout
@@ -103,9 +110,19 @@ const Hotspots = ({
                 m.balanceInfo.dcBalance.integerBalance / 5000000,
               )
 
-              return (
-                <Link href={`/accounts/${m.address}`}>
-                  <a className="transition-all border border-solid border-gray-300 rounded-lg hover:shadow-xl bg-white hover:bg-white">
+              const hntBurnedAmountInBones =
+                m.address === DEPRECATED_HELIUM_MAKER_ADDR
+                  ? // for the "Helium Inc (Old)" maker account, use the account data of the one where the burns happened instead
+                    oldHeliumBurnAddrData.txns.tokenBurnAmountInBones
+                  : m.txns.tokenBurnAmountInBones
+              const hntBurned = new Balance(
+                hntBurnedAmountInBones,
+                CurrencyType.networkToken,
+              )
+
+              if (m.address !== DEPRECATED_HELIUM_BURN_ADDR)
+                return (
+                  <div className="border border-solid border-gray-300 rounded-lg shadow-sm bg-white hover:bg-white">
                     <div className="p-5 pb-4">
                       <div className="flex flex-row items-center justify-start">
                         <p className="text-sm font-semibold m-0 text-black">
@@ -117,7 +134,7 @@ const Hotspots = ({
                             title="This Maker address used genesis Data Credits to onboard Hotspots and is no longer in use."
                           >
                             <span className="ml-2 flex flex-row items-center justify-center">
-                              <InfoIcon className="text-gray-500 h-4 w-4" />
+                              <InfoIcon className="text-gray-600 h-4 w-4" />
                             </span>
                           </Tooltip>
                         )}
@@ -132,7 +149,7 @@ const Hotspots = ({
                         </p>
                       </div>
                     </div>
-                    <div className="rounded-b-lg p-5 pt-4 bg-gray-100">
+                    <div className="rounded-b-lg p-5 pt-4 bg-gray-100 border-t border-r-0 border-b-0 border-l-0 border-gray-300 border-solid flex flex-col space-y-2">
                       <div className="flex flex-row items-center justify-start">
                         <HotspotSimpleIcon className="text-green-500 w-3 h-auto" />
                         <p className="text-sm ml-1 font-semibold m-0 text-gray-700">
@@ -150,6 +167,25 @@ const Hotspots = ({
                             Locations Asserted
                           </span>
                         </p>
+                      </div>
+                      <div className="flex flex-row items-center justify-start">
+                        <BurnIcon className="text-orange-300 w-3 h-auto" />
+                        <p className="text-sm ml-1 font-semibold m-0 text-gray-700">
+                          {hntBurned.toString(2).slice(0, -4)}
+                          <span className="ml-1 font-light text-gray-600">
+                            HNT burned
+                          </span>
+                        </p>
+                        {m.address === DEPRECATED_HELIUM_MAKER_ADDR && (
+                          <Tooltip
+                            placement="top"
+                            title={`The number represented here was burned by the wallet with the address: ${DEPRECATED_HELIUM_BURN_ADDR}.`}
+                          >
+                            <span className="ml-2 flex flex-row items-center justify-center">
+                              <InfoIcon className="text-gray-600 h-4 w-4" />
+                            </span>
+                          </Tooltip>
+                        )}
                       </div>
                       {m.address === DEPRECATED_HELIUM_MAKER_ADDR ? (
                         <p className="text-sm pt-2.5 m-0 font-medium text-gray-600">
@@ -171,15 +207,22 @@ const Hotspots = ({
                             title={`The number of hotspots this Maker could afford to onboard given their current DC balance, assuming a cost of ${(5000000).toLocaleString()} DC for each hotspot (${(4000000).toLocaleString()} DC to add it to the blockchain, and ${(1000000).toLocaleString()} DC to assert its location).`}
                           >
                             <span className="ml-2 flex flex-row items-center justify-center">
-                              <InfoIcon className="text-gray-500 h-4 w-4" />
+                              <InfoIcon className="text-gray-600 h-4 w-4" />
                             </span>
                           </Tooltip>
                         </div>
                       )}
+                      <div className="">
+                        <Link href={`/accounts/${m.address}`}>
+                          <a className="px-4 py-2 text-gray-700 font-medium bg-white mt-4 shadow-md transition-all hover:shadow-lg rounded-lg flex flex-row justify-between items-center">
+                            View account
+                            <InternalLink className="h-4 w-auto text-gray-600" />
+                          </a>
+                        </Link>
+                      </div>
                     </div>
-                  </a>
-                </Link>
-              )
+                  </div>
+                )
             })}
           </div>
         </section>

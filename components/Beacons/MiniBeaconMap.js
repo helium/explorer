@@ -1,9 +1,6 @@
 import { memo, Fragment } from 'react'
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 import { h3ToGeo } from 'h3-js'
-import { Tooltip } from 'antd'
-import animalHash from 'angry-purple-tiger'
-import { useRouter } from 'next/router'
 import { findBounds } from '../Txns/utils'
 
 const Mapbox = ReactMapboxGl({
@@ -13,8 +10,6 @@ const Mapbox = ReactMapboxGl({
 })
 
 const MiniBeaconMap = ({ beacon }) => {
-  const router = useRouter()
-
   const mapProps = {}
 
   const paths = beacon?.path || []
@@ -66,21 +61,16 @@ const MiniBeaconMap = ({ beacon }) => {
 
               return (
                 <Fragment key={[path.challengee, witness.gateway].join('-')}>
-                  <Tooltip title={animalHash(witness.gateway)}>
-                    <Marker
-                      key={witness.address}
-                      style={
-                        witness.isValid
-                          ? styles.witnessMarker
-                          : styles.invalidWitnessMarker
-                      }
-                      anchor="center"
-                      coordinates={[witnessLng, witnessLat]}
-                      onClick={() =>
-                        router.push(`/hotspots/${witness.gateway}`)
-                      }
-                    />
-                  </Tooltip>
+                  <Marker
+                    key={witness.address}
+                    style={
+                      witness.isValid
+                        ? styles.witnessMarker
+                        : styles.invalidWitnessMarker
+                    }
+                    anchor="center"
+                    coordinates={[witnessLng, witnessLat]}
+                  />
                   <Layer
                     key={['line', path.challengee, witness.gateway].join('-')}
                     type="line"
@@ -131,6 +121,7 @@ const styles = {
     boxShadow:
       '0px 0px 0px 20px rgba(255,255,255,0.15), 0px 0px 0px 10px rgba(255,255,255,0.15)',
     cursor: 'pointer',
+    zIndex: 3,
   },
   witnessMarker: {
     width: 15,
@@ -141,6 +132,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     cursor: 'pointer',
+    zIndex: 2,
   },
   invalidWitnessMarker: {
     width: 15,
@@ -151,6 +143,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     cursor: 'pointer',
+    zIndex: 1,
   },
 }
 

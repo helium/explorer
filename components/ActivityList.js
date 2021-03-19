@@ -16,7 +16,6 @@ import BeaconLabel from '../components/Beacons/BeaconLabel'
 import WitnessesTable from '../components/Beacons/WitnessesTable'
 import { h3ToGeo } from 'h3-js'
 import { calculateDistance, formatDistance } from '../utils/distance'
-
 const { Text } = Typography
 
 const initialState = {
@@ -371,16 +370,22 @@ const columns = (ownerAddress) => {
       case 'poc_receipts_v1':
         let detailText = ''
         if (txn.challenger === ownerAddress) {
-          detailText = 'Challenger'
+          let city, country
+          if (txn.path[0]?.geocode?.longCity) {
+            city = txn.path[0].geocode.longCity
+            country = txn.path[0].geocode.longCountry
+          }
+          detailText = `${city}, ${country}`
         } else {
           txn.path.map((p) => {
             if (p.challengee === ownerAddress) {
-              detailText = 'Challengee'
+              const witnesses = p.witnesses.length
+              detailText = `${witnesses} witness${witnesses === 1 ? '' : 'es'}`
             } else {
               p.witnesses.map((w) => {
                 if (w.gateway === ownerAddress) {
                   const [witnessLat, witnessLng] = h3ToGeo(w.location)
-                  let distance
+                  let distance, location
                   if (p.challengeeLon) {
                     distance = formatDistance(
                       calculateDistance(
@@ -391,7 +396,10 @@ const columns = (ownerAddress) => {
                   } else {
                     distance = ''
                   }
-                  detailText = distance
+                  if (p?.geocode?.longCity) {
+                    location = p.geocode.longCity
+                  }
+                  detailText = `${distance}, ${location}`
                 }
               })
             }
@@ -438,7 +446,7 @@ const columns = (ownerAddress) => {
               } else {
                 p.witnesses.map((w) => {
                   if (w.gateway === ownerAddress) {
-                    role = 'poc_witnesses'
+                    role = w.isValid ? 'poc_witnesses' : 'poc_witnesses_invalid'
                   }
                 })
               }

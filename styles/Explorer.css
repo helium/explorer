@@ -60,6 +60,10 @@
   color: white;
 }
 
+.light-reward-pill {
+  background: #eaeefa !important;
+}
+
 .minicoveragemap {
   height: 900px;
 }
@@ -323,10 +327,24 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   user-select: none;
 }
 
+.mini-beacon-map {
+  position: relative;
+  display: block;
+}
 .mini-coverage-map {
   position: relative;
   display: block;
   border-radius: 6px;
+}
+.mini-beacon-map-overlay {
+  display: block;
+  background-color: #fff;
+  opacity: 0;
+  position: absolute;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+  transition: opacity 0.2s ease;
 }
 .mini-coverage-map-overlay {
   display: block;
@@ -337,6 +355,7 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   z-index: 2;
   height: 100%;
   width: 100%;
+  transition: opacity 0.2s ease;
 }
 
 .ant-table-thead > tr > th,
@@ -346,13 +365,12 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   padding: 6px 16px;
 }
 
-.mini-coverage-map:hover > .mini-coverage-map-overlay {
+.mini-beacon-map:hover > .mini-beacon-map-overlay {
   opacity: 0.1;
-  transition: opacity 0.2s ease;
 }
-.mini-coverage-map-interactive-text {
+.mini-beacon-map-interactive-text {
   position: absolute;
-  top: calc(50% - 24px);
+  top: calc(50% - 22px);
   text-align: center;
   width: 100%;
   z-index: 3;
@@ -363,10 +381,32 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   font-weight: 400;
   text-shadow: 0 0 10px darkslategray;
   display: block;
+  transition: opacity 0.2s ease;
+}
+.mini-beacon-map:hover > .mini-beacon-map-interactive-text {
+  opacity: 1;
+}
+
+.mini-coverage-map:hover > .mini-coverage-map-overlay {
+  opacity: 0.1;
+}
+.mini-coverage-map-interactive-text {
+  position: absolute;
+  top: calc(50% - 22px);
+  text-align: center;
+  width: 100%;
+  z-index: 3;
+  color: white;
+  line-height: 1.1;
+  opacity: 0;
+  font-size: 22px;
+  font-weight: 400;
+  text-shadow: 0 0 10px darkslategray;
+  display: block;
+  transition: opacity 0.2s ease;
 }
 .mini-coverage-map:hover > .mini-coverage-map-interactive-text {
   opacity: 1;
-  transition: opacity 0.2s ease;
 }
 
 .mini-coverage-map .mapboxgl-canvas {
@@ -756,7 +796,6 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
     word-break: normal;
     display: inline-block;
     position: relative;
-    top: 2px;
   }
 
   .logo-full {

@@ -9,7 +9,13 @@ import { Content } from './AppLayout'
 import ExportCSV from './ExportCSV'
 import Link from 'next/link'
 import animalHash from 'angry-purple-tiger'
-
+import dynamic from 'next/dynamic'
+import FlagLocation from '../components/Common/FlagLocation'
+import BeaconRow from '../components/Beacons/BeaconRow'
+import BeaconLabel from '../components/Beacons/BeaconLabel'
+import WitnessesTable from '../components/Beacons/WitnessesTable'
+import { h3ToGeo } from 'h3-js'
+import { calculateDistance, formatDistance } from '../utils/distance'
 const { Text } = Typography
 
 const initialState = {
@@ -19,6 +25,14 @@ const initialState = {
   filtersOpen: false,
   showLoadMoreButton: true,
 }
+
+const MiniBeaconMap = dynamic(
+  () => import('../components/Beacons/MiniBeaconMap'),
+  {
+    ssr: false,
+    loading: () => <div className="h-80 md:h-96 bg-navy-500" />,
+  },
+)
 
 const exportableEntities = ['account', 'hotspot']
 
@@ -168,17 +182,107 @@ class ActivityList extends Component {
               loading={loading}
               scroll={{ x: true }}
               expandable={{
-                expandedRowRender: (record) => (
-                  <span className="ant-table-override">
-                    <Table
-                      dataSource={record.rewards}
-                      columns={rewardColumns(hotspots, type)}
-                      size="small"
-                      rowKey={(r) => `${r.type}-${r.gateway}`}
-                    />
-                  </span>
-                ),
-                rowExpandable: (record) => record.type === 'rewards_v1',
+                expandedRowRender: (record) => {
+                  if (record.type === 'rewards_v1') {
+                    return (
+                      <span className="ant-table-override">
+                        <Table
+                          dataSource={record.rewards}
+                          columns={rewardColumns(hotspots, type, address)}
+                          size="small"
+                          rowKey={(r) => `${r.type}-${r.gateway}`}
+                        />
+                      </span>
+                    )
+                  } else {
+                    const beacon = record
+                    const challenger = record.challenger
+                    const paths = beacon?.path || []
+                    return (
+                      <>
+                        <Link href={`/beacons/${beacon.hash}`}>
+                          <a>
+                            <MiniBeaconMap beacon={beacon} />
+                          </a>
+                        </Link>
+                        <div>
+                          <div className="bg-navy-900 p-4">
+                            <div className="text-gray-700">CHALLENGER</div>
+                            <div className="flex w-full">
+                              <Link
+                                prefetch={false}
+                                href={`/hotspots/${challenger}`}
+                              >
+                                <a
+                                  className={`text-white inline-block${
+                                    challenger === address
+                                      ? ' bg-gray-700 px-2 rounded-lg'
+                                      : ''
+                                  }`}
+                                >
+                                  {animalHash(challenger)}
+                                </a>
+                              </Link>
+                            </div>
+                          </div>
+
+                          <div
+                            className="bg-white pb-20 p-4 lg:overflow-y-scroll lg:rounded-b-xl"
+                            style={{ overflowY: 'overlay' }}
+                          >
+                            {paths.map((path) => (
+                              <div>
+                                <div className="border-b">
+                                  <img
+                                    src="/images/beaconer.svg"
+                                    alt=""
+                                    className="mb-2"
+                                  />
+                                  <BeaconRow>
+                                    <BeaconLabel>BEACONER</BeaconLabel>
+                                    <BeaconLabel>LOCATION</BeaconLabel>
+                                  </BeaconRow>
+                                  <BeaconRow>
+                                    <Link
+                                      prefetch={false}
+                                      href={`/hotspots/${path.challengee}`}
+                                    >
+                                      <a
+                                        className={`text-gray-700${
+                                          path.challengee === address
+                                            ? ' bg-gray-350 px-2 rounded-lg'
+                                            : ''
+                                        }`}
+                                      >
+                                        {animalHash(path.challengee)}
+                                      </a>
+                                    </Link>
+                                    <span className="text-gray-700">
+                                      <FlagLocation geocode={path.geocode} />
+                                    </span>
+                                  </BeaconRow>
+                                </div>
+                                <hr className="my-6 border-gray-350" />
+                                <div>
+                                  <div className="mb-2">
+                                    <img src="/images/witness.svg" />
+                                  </div>
+                                  <WitnessesTable
+                                    path={path}
+                                    highlightedAddress={address}
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </>
+                    )
+                  }
+                },
+                rowExpandable: (record) =>
+                  record.type === 'rewards_v1' ||
+                  record.type === 'poc_receipts_v1',
               }}
             />
           )}
@@ -189,7 +293,7 @@ class ActivityList extends Component {
   }
 }
 
-const rewardColumns = (hotspots, type) => {
+const rewardColumns = (hotspots, type, address) => {
   let columns = [
     {
       title: 'Type',
@@ -266,15 +370,36 @@ const columns = (ownerAddress) => {
       case 'poc_receipts_v1':
         let detailText = ''
         if (txn.challenger === ownerAddress) {
-          detailText = 'Challenger'
+          let city, country
+          if (txn.path[0]?.geocode?.longCity) {
+            city = txn.path[0].geocode.longCity
+            country = txn.path[0].geocode.longCountry
+          }
+          detailText = `${city}, ${country}`
         } else {
           txn.path.map((p) => {
             if (p.challengee === ownerAddress) {
-              detailText = 'Challengee'
+              const witnesses = p.witnesses.length
+              detailText = `${witnesses} witness${witnesses === 1 ? '' : 'es'}`
             } else {
               p.witnesses.map((w) => {
                 if (w.gateway === ownerAddress) {
-                  detailText = 'Witness'
+                  const [witnessLat, witnessLng] = h3ToGeo(w.location)
+                  let distance, location
+                  if (p.challengeeLon) {
+                    distance = formatDistance(
+                      calculateDistance(
+                        [p.challengeeLon, p.challengeeLat],
+                        [witnessLng, witnessLat],
+                      ),
+                    )
+                  } else {
+                    distance = ''
+                  }
+                  if (p?.geocode?.longCity) {
+                    location = p.geocode.longCity
+                  }
+                  detailText = `${distance}, ${location}`
                 }
               })
             }
@@ -301,13 +426,43 @@ const columns = (ownerAddress) => {
       title: 'Type',
       dataIndex: 'type',
       key: 'type',
-      render: (data, txn) => (
-        <Link href={`/txns/${txn.hash}`} prefetch={false}>
-          <a className="tag-link">
-            <TxnTag type={data}></TxnTag>
-          </a>
-        </Link>
-      ),
+      render: (data, txn) => {
+        if (txn.type !== 'poc_receipts_v1') {
+          return (
+            <Link href={`/txns/${txn.hash}`} prefetch={false}>
+              <a className="tag-link">
+                <TxnTag type={data} />
+              </a>
+            </Link>
+          )
+        } else {
+          let role = ''
+          if (txn.challenger === ownerAddress) {
+            role = 'poc_challengers'
+          } else {
+            txn.path.map((p) => {
+              if (p.challengee === ownerAddress) {
+                role = 'poc_challengees'
+              } else {
+                p.witnesses.map((w) => {
+                  if (w.gateway === ownerAddress) {
+                    role = w.isValid
+                      ? 'poc_witnesses_valid'
+                      : 'poc_witnesses_invalid'
+                  }
+                })
+              }
+            })
+          }
+          return (
+            <Link href={`/txns/${txn.hash}`} prefetch={false}>
+              <a className="tag-link">
+                <TxnTag type={role} />
+              </a>
+            </Link>
+          )
+        }
+      },
     },
     {
       title: 'Details',

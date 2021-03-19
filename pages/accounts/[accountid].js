@@ -19,6 +19,7 @@ import {
 import AccountIcon from '../../components/AccountIcon'
 import AccountAddress from '../../components/AccountAddress'
 import { getHotspotRewardsBuckets } from '../../data/hotspots'
+import BeaconsList from '../../components/Beacons/BeaconsList'
 import { getMakerName } from '../../components/Makers/utils'
 
 const { Title } = Typography
@@ -240,6 +241,7 @@ const AccountView = ({ account }) => {
           hotspotsLoading={hotspotsLoading}
           hotspots={hotspots}
         />
+        <BeaconsList type="account" address={account.address} />
         <ActivityList
           type="account"
           address={account.address}

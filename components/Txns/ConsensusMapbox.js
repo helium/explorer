@@ -72,17 +72,16 @@ const ConsensusMapbox = ({ members }) => {
         return (
           <Tooltip
             title={
-              <>
+              <div className="flex flex-row items-center justify-start">
                 {animalHash(m.address)}{' '}
                 <ReactCountryFlag
                   countryCode={m.geocode.short_country}
+                  svg
                   style={{
-                    fontSize: '1.5em',
-                    marginLeft: '0 4px',
-                    lineHeight: '1.5em',
+                    marginLeft: '6px',
                   }}
                 />
-              </>
+              </div>
             }
           >
             <Marker

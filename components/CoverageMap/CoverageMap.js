@@ -457,7 +457,7 @@ class CoverageMap extends React.Component {
               display: flex;
               align-items: center;
               justify-content: center;
-              background-color: #131c32;
+              background-color: #050b18;
               color: #fff;
               transition: all 0.3s;
             }
@@ -518,10 +518,10 @@ class CoverageMap extends React.Component {
                 font-size: 20px;
               }
               .map-zoom-in-button {
-                bottom: calc(70vh + 80px);
+                top: 70px;
               }
               .map-zoom-out-button {
-                bottom: calc(70vh + 10px);
+                top: 10px;
               }
             }
           `}</style>

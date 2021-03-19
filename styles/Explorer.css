@@ -313,9 +313,6 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
 .content-container-account-view {
   padding: 80px 20px 50px 20px;
 }
-.content-container-hotspot-view > .mapboxgl-map {
-  height: 400px;
-}
 
 .unselectable-text {
   -webkit-touch-callout: none;
@@ -376,9 +373,19 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   border-radius: 6px;
 }
 
-.interactive-coverage-map > .mapboxgl-map {
-  /* position: absolute; */
+.interactive-coverage-map {
   height: 100vh;
+}
+
+.interactive-coverage-map > .mapboxgl-map {
+  position: absolute;
+  height: 100vh;
+  width: calc(100% - 400px) !important;
+  overflow: hidden;
+  top: 0;
+  left: 400px;
+  bottom: 0;
+  right: 0;
 }
 
 .hotspot-name > h1 {
@@ -594,8 +601,8 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
 }
 
 .ant-checkbox-override .ant-checkbox-checked .ant-checkbox-inner {
-  background-color: #1e5b50;
-  border-color: #1e5b50;
+  background-color: #2e3750;
+  border-color: #2e3750;
 }
 .ant-checkbox-override .ant-checkbox-checked::after {
   border: 1px solid #29d391;
@@ -666,7 +673,7 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   cursor: pointer;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 890px) {
   .block-view-summary-info {
     flex-direction: column;
   }
@@ -679,7 +686,13 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   }
   .interactive-coverage-map > .mapboxgl-map {
     position: absolute;
-    height: 50vh;
+    height: 30vh !important;
+    width: 100% !important;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
   }
 }
 
@@ -746,9 +759,6 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
     top: 2px;
   }
 
-  .mapboxgl-map {
-    height: 80vw !important;
-  }
   .logo-full {
     display: none;
   }

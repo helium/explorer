@@ -446,7 +446,9 @@ const columns = (ownerAddress) => {
               } else {
                 p.witnesses.map((w) => {
                   if (w.gateway === ownerAddress) {
-                    role = w.isValid ? 'poc_witnesses' : 'poc_witnesses_invalid'
+                    role = w.isValid
+                      ? 'poc_witnesses_valid'
+                      : 'poc_witnesses_invalid'
                   }
                 })
               }

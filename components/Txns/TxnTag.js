@@ -53,6 +53,11 @@ const CONFIG = {
   poc_witnesses: {
     color: '#FFC769',
     name: 'Witness',
+    tooltip: 'PoC witness',
+  },
+  poc_witnesses_valid: {
+    color: '#FFC769',
+    name: 'Witness',
     tooltip: 'PoC witness (Valid)',
   },
   poc_witnesses_invalid: {

@@ -25,14 +25,14 @@ const Mapbox = ReactMapboxGl({
 
 const onlineCircleLayout = {
   'circle-color': '#29d391',
-  'circle-radius': 5,
+  'circle-radius': 4,
   'circle-opacity': 1,
   'circle-blur': 0,
 }
 
 const offlineCircleLayout = {
   'circle-color': '#e86161',
-  'circle-radius': 5,
+  'circle-radius': 3,
   'circle-opacity': 1,
   'circle-blur': 0,
 }
@@ -424,11 +424,7 @@ class CoverageMap extends React.Component {
           </button>
           <Mapbox
             style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
-            containerStyle={{
-              position: 'relative',
-              width: '100%',
-              overflow: 'visible',
-            }}
+            className="mapbox-object"
             center={this.state.center}
             zoom={this.state.zoom}
             onStyleLoad={(map) => {
@@ -454,24 +450,32 @@ class CoverageMap extends React.Component {
               width: 50px;
               font-size: 24px;
               text-align: center;
-              border-radius: 50px;
+              border-radius: 50% 50%;
               right: 20px;
               z-index: 3;
               border: none;
               display: flex;
               align-items: center;
               justify-content: center;
-              background-color: rgb(12, 21, 30);
-              color: white;
+              background-color: #050b18;
+              color: #fff;
               transition: all 0.3s;
             }
+
+            .mapbox-object {
+              position: relative;
+              width: 100%;
+              height: 100vh;
+              overflow: visible;
+            }
+
             .map-zoom-button:hover {
               transform: scale(1.1, 1.1);
             }
 
             .distance {
               background: ${measuringColor};
-              color: white;
+              color: #2e3750;
               border-radius: 3px;
               padding: 5px 10px;
               position: absolute;
@@ -500,16 +504,24 @@ class CoverageMap extends React.Component {
 
             @media screen and (max-width: 890px) {
               .map-measure-toggle-button {
-                bottom: calc(50vh + 160px);
+                bottom: calc(70vh + 160px);
+                display: none;
               }
+
               .map-zoom-button {
                 right: 10px;
+                height: 50px;
+                width: 50px;
+                border-radius: 6px;
+                overflow: hidden;
+                -webkit-appearance: none;
+                font-size: 20px;
               }
               .map-zoom-in-button {
-                bottom: calc(50vh + 100px);
+                top: 70px;
               }
               .map-zoom-out-button {
-                bottom: calc(50vh + 40px);
+                top: 10px;
               }
             }
           `}</style>

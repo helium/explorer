@@ -8,17 +8,17 @@ const Sidebar = ({ autoHeight = false, children }) => (
     <style jsx>{`
       aside {
         position: fixed;
-        background: #0c151e;
-        bottom: 40px;
-        left: 40px;
-        top: 60px;
+        background: #111724;
+        bottom: 0px;
+        left: 0px;
+        top: 0px;
         width: 400px;
         display: flex;
         flex-direction: column;
         z-index: 1;
-        border-radius: 10px;
+        border-radius: 0px;
         overflow: hidden;
-        box-shadow: 0 2px 24px 0 rgba(0, 0, 0, 0.5);
+        box-shadow: 0px 0px 46px #121723;
       }
 
       aside.autoHeight {
@@ -30,7 +30,7 @@ const Sidebar = ({ autoHeight = false, children }) => (
           left: 0px;
           right: 0px;
           bottom: 0px;
-          top: 50vh;
+          top: 30vh;
           border-radius: 0px;
         }
       }
@@ -42,11 +42,10 @@ export const SidebarHeader = ({ collapse = false, children }) => (
   <header
     className={classNames({ collapse })}
     style={{
-      background: '#0c151e',
+      background: '#111724',
       padding: 22,
       opacity: 1,
       transition: 'all 0.2s',
-      borderBottom: '1px solid #263441',
       display: 'block',
     }}
   >
@@ -57,7 +56,6 @@ export const SidebarHeader = ({ collapse = false, children }) => (
         padding: 22px;
         opacity: 1;
         transition: all 0.2s;
-        border-bottom: 1px solid #263441;
         display: block;
       }
 
@@ -80,7 +78,7 @@ export const SidebarScrollable = ({
   infinite ? (
     <InfiniteScrollSidebar children={children} loadMore={loadMore} />
   ) : (
-    <section className={classNames({ scroll })} style={{ overflowY: 'scroll' }}>
+    <section className={classNames({ scroll })}>
       {children}
       <style jsx>{`
         section {
@@ -95,7 +93,7 @@ export const SidebarScrollable = ({
   )
 
 const InfiniteScrollSidebar = ({ loadMore, children }) => (
-  <section className="scroll" style={{ overflowY: 'scroll' }}>
+  <section className="scroll">
     {children.length > 0 && (
       <InfiniteScroll
         pageStart={0}
@@ -109,6 +107,10 @@ const InfiniteScrollSidebar = ({ loadMore, children }) => (
     )}
 
     <style jsx>{`
+      section.scroll::-webkit-scrollbar {
+        display: none;
+      }
+
       section.scroll {
         overflow-y: scroll;
       }

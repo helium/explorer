@@ -17,7 +17,7 @@ export default class Hotspot extends Component {
       <div className={classNames('hotspot', {})} onClick={this.handleClick}>
         <header className="hotspot-header">
           <div className="hotspot-section">
-            <div className="hotspot-location mono">
+            <div className="hotspot-location">
               <img
                 className="location-white"
                 src="/images/location-white.png"
@@ -35,7 +35,7 @@ export default class Hotspot extends Component {
           </div>
 
           <div className="hotspot-section">
-            <div className="hotspot-owner mono">
+            <div className="hotspot-owner">
               <img className="owner" src="/images/owner.png" /> {hotspot.owner}
             </div>
           </div>
@@ -43,45 +43,50 @@ export default class Hotspot extends Component {
 
         <style jsx>{`
           .hotspot {
-            margin: 6px 14px;
-            background: #263441;
-            transition: all 0.2s;
-            border-radius: 6px;
-            opacity: 0.7;
+            margin: 1px 0px;
+            background: #293550;
+          }
+
+          .hotspot:first-of-type {
+            margin-top: 0;
           }
 
           .hotspot:hover {
-            background: #364858;
+            background: #3f4d6c;
           }
 
           .hotspot-header {
-            padding: 12px;
+            padding: 14px 20px;
             cursor: pointer;
           }
 
           .hotspot-name {
             font-size: 18px;
-            color: #a0b0c2;
-            margin-top: 10px;
-            opacity: 0.6;
+            color: #7787b4;
+            margin-top: 2px;
           }
 
+          .hotspot:hover .hotspot-name {
+            color: #fff;
+          }
+
+          .hotspot:hover .hotspot-location,
+          .hotspot:hover .hotspot-owner {
+            color: #707ea4;
+          }
           .hotspot-location {
-            color: #a0b0c2;
+            color: #707ea4;
             font-size: 10px;
             text-align: left;
-            text-transform: uppercase;
-            margin-top: 6px;
-            opacity: 0.6;
+            margin-top: 0px;
           }
 
           .hotspot-owner {
             font-size: 9px;
-            color: #a0b0c2;
+            color: #707ea4;
             margin-top: 8px;
             overflow: hidden;
-            margin-top: 15px;
-            opacity: 0.6;
+            margin-top: 5px;
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -94,14 +99,30 @@ export default class Hotspot extends Component {
             margin-top: -21px;
           }
 
-          .location-white {
-            height: 9px;
+          img.location-white {
+            height: 8px;
+            position: relative;
+            top: -1px;
+            margin-right: 3px;
+            opacity: 0.3;
+          }
+
+          .hotspot:hover img.location-white {
+            filter: saturate(100%);
+            opacity: 1;
           }
 
           .owner {
             height: 10px;
             margin-right: 5px;
             display: inline-block;
+            filter: saturate(0%);
+            opacity: 0.4;
+          }
+
+          .hotspot:hover .owner {
+            filter: saturate(100%);
+            opacity: 1;
           }
 
           .score-circle {

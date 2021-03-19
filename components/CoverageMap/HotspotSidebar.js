@@ -83,16 +83,16 @@ const HotspotSidebar = ({
             </div>
           )}
           <div className="header-title-section">
-            <span className="header-title mono">
+            <span className="header-title">
               {selectedHotspots.length > 0 ? hotspotsToShow.length : count}
             </span>
-            <span className="header-subtitle mono">{titleText}</span>
+            <span className="header-subtitle">{titleText}</span>
           </div>
           <span className="ant-checkbox-override">
             <Checkbox
               onChange={updateShowOffline}
               checked={showOffline}
-              style={{ color: '#aaa', marginLeft: '5px', marginTop: '14px' }}
+              style={{ color: '#fff', marginLeft: '5px', marginTop: '14px' }}
             >
               Show Offline Hotspots
             </Checkbox>
@@ -121,7 +121,7 @@ const HotspotSidebar = ({
         }
 
         .search {
-          background: #263441;
+          background: #2e3750;
           width: 100%;
           padding: 8px 10px;
           font-size: 12px;
@@ -153,12 +153,12 @@ const HotspotSidebar = ({
           color: #29d391;
           font-size: 60px;
           font-weight: 500;
-          margin-right: 10px;
+          margin-right: 4px;
           line-height: 48px;
         }
 
         .header-subtitle {
-          color: #a0b0c2;
+          color: #57678f;
           font-size: 16px;
           font-weight: 500;
           max-width: 200px;
@@ -166,7 +166,7 @@ const HotspotSidebar = ({
         }
 
         .header-go-back {
-          color: #a0b0c2;
+          color: #57678f;
           font-size: 16px;
           cursor: pointer;
           display: flex;
@@ -176,7 +176,7 @@ const HotspotSidebar = ({
         }
 
         .header-view-details {
-          color: #a0b0c2;
+          color: #fff;
           font-size: 16px;
           cursor: pointer;
           display: flex;
@@ -192,6 +192,18 @@ const HotspotSidebar = ({
           height: 10px;
           margin-left: 6px;
           transform: rotate(180deg);
+        }
+        @media screen and (max-width: 890px) {
+          .header-title {
+            color: #29d391;
+            font-size: 40px;
+            font-weight: 500;
+            margin-right: 4px;
+            line-height: 36px;
+          }
+          .header-search {
+            margin-bottom: 10px;
+          }
         }
       `}</style>
     </span>

@@ -50,7 +50,6 @@ const BeaconBarChart = ({ data }) => {
             hide
             dataKey="height"
             type="number"
-            // scale="time"
             domain={['dataMin', 'dataMax']}
             axisLine={false}
             tickLine={false}
@@ -59,7 +58,6 @@ const BeaconBarChart = ({ data }) => {
               format(fromUnixTime(unixTime), 'd MMM')
             }
             minTickGap={80}
-            // interval="preserveStartEnd"
           />
           <Tooltip
             labelFormatter={(label) => `#${label.toLocaleString()}`}

@@ -3,6 +3,9 @@ import Client from '@helium/http'
 export const DEPRECATED_HELIUM_MAKER_ADDR =
   '14fzfjFcHpDR1rTH8BNPvSi5dKBbgxaDnmsVPbCjuq9ENjpZbxh'
 
+export const DEPRECATED_HELIUM_BURN_ADDR =
+  '1398hLeHESZHE5jVtaLAV5fdg2vrUeZEs2B92t7TzeQTtugr8dL'
+
 export const MAKER_INTEGRATION_TEST_ADDR =
   '138LbePH4r7hWPuTnK6HXVJ8ATM2QU71iVHzLTup1UbnPDvbxmr'
 
@@ -25,6 +28,7 @@ export const getMakersData = async () => {
 
   // Add old Helium maker address
   makersArray.push(deprecatedHeliumMaker)
+  makersArray.push({ address: DEPRECATED_HELIUM_BURN_ADDR })
 
   // Hide maker integration test address
   const makers = makersArray.filter(
@@ -37,29 +41,55 @@ export const getMakersData = async () => {
       maker.balanceInfo = JSON.parse(JSON.stringify(makerInfo))
 
       const MAX_TXNS = 50000
+      let addGatewayTxnsList,
+        addGatewayTxns,
+        assertLocationTxnsList,
+        assertLocationTxns,
+        tokenBurnTxnsList,
+        tokenBurnTxns
 
-      const addGatewayTxnsList = await client
-        .account(maker.address)
-        .activity.list({
+      let makerTxns
+
+      if (maker.address !== DEPRECATED_HELIUM_BURN_ADDR) {
+        addGatewayTxnsList = await client.account(maker.address).activity.list({
           filterTypes: ['add_gateway_v1'],
         })
-      const assertLocationTxnsList = await client
-        .account(maker.address)
-        .activity.list({
-          filterTypes: ['assert_location_v1'],
-        })
+        assertLocationTxnsList = await client
+          .account(maker.address)
+          .activity.list({
+            filterTypes: ['assert_location_v1'],
+          })
 
-      const addGatewayTxns = await addGatewayTxnsList.take(MAX_TXNS)
-      const assertLocationTxns = await assertLocationTxnsList.take(MAX_TXNS)
+        addGatewayTxns = await addGatewayTxnsList.take(MAX_TXNS)
+        assertLocationTxns = await assertLocationTxnsList.take(MAX_TXNS)
 
-      const makerTxns = {
-        addGatewayTxns: addGatewayTxns.length,
-        assertLocationTxns: assertLocationTxns.length,
+        makerTxns = {
+          addGatewayTxns: addGatewayTxns.length,
+          assertLocationTxns: assertLocationTxns.length,
+        }
       }
+
+      tokenBurnTxnsList = await client.account(maker.address).activity.list({
+        filterTypes: ['token_burn_v1'],
+      })
+
+      tokenBurnTxns = await tokenBurnTxnsList.take(MAX_TXNS)
+
+      let tokenBurnAmountInBones = 0
+      tokenBurnTxns.map((b) => {
+        return (tokenBurnAmountInBones += b.amount.integerBalance)
+      })
+
+      makerTxns = {
+        ...makerTxns,
+        tokenBurnAmountInBones,
+      }
+
       maker.txns = JSON.parse(JSON.stringify(makerTxns))
 
       return maker
     }),
+    async () => {},
   )
 
   return makers

@@ -12,7 +12,7 @@ const Error = ({ statusCode, statusMessage }) => {
       }`}
     >
       <div className="bg-navy-500 w-full">
-        <div className="py-5 md:py-10 w-full mx-auto max-w-xl px-10 md:px-20">
+        <div className="py-10 md:py-20 w-full mx-auto max-w-3xl px-10 md:px-20">
           <div className="flex flex-col items-center justify-start text-center">
             <h1 className="m-0 p-0 font-sans font-semibold text-white text-4xl md:text-6xl">
               {statusCode ? `Error ${statusCode}` : 'Unknown Error'}

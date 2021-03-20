@@ -20,7 +20,7 @@ const BeaconMap = dynamic(() => import('../../components/Beacons/BeaconMap'), {
   loading: () => <div className="h-80 md:h-96" />,
 })
 
-const Beacons = ({ beacon, challenger }) => {
+const Beacons = ({ beacon, challenger, challengee }) => {
   const totalWitnesses = sumBy(beacon?.path || [], 'witnesses.length')
   const paths = beacon?.path || []
 
@@ -99,11 +99,11 @@ const Beacons = ({ beacon, challenger }) => {
                         <FlagLocation geocode={path.geocode} />
                       </span>
                     </BeaconRow>
-                    {challenger.rewardScale && (
+                    {challengee.rewardScale && (
                       <div className="py-2 flex content-center">
                         <RewardScalePill
                           className="light-reward-pill flex content-center"
-                          hotspot={challenger}
+                          hotspot={challengee}
                         />
                         <div className="flex justify-center">
                           <AccountLink address={path.challengeeOwner} />
@@ -138,11 +138,12 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params: { beaconid } }) {
   const beacon = await fetchBeacon(beaconid)
   const challenger = await fetchHotspot(beacon.challenger)
-
+  const challengee = await fetchHotspot(beacon.path[0].challengee)
   return {
     props: {
       beacon,
       challenger,
+      challengee,
     },
   }
 }

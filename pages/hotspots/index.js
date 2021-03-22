@@ -5,6 +5,7 @@ import AppLayout from '../../components/AppLayout'
 import { Tooltip } from 'antd'
 import HotspotChart from '../../components/Hotspots/HotspotChart'
 import LatestHotspotsTable from '../../components/Hotspots/LatestHotspotsTable'
+import CitiesTable from '../../components/Hotspots/CitiesTable'
 import { fetchStats, useStats } from '../../data/stats'
 import { sub, compareAsc, getUnixTime } from 'date-fns'
 import { useLatestHotspots } from '../../data/hotspots'
@@ -41,6 +42,7 @@ const Hotspots = ({
   latestHotspots: initialLatestHotspots,
   stats: initialStats,
   makers,
+  cities,
 }) => {
   const {
     stats: { totalHotspots, totalCities, totalCountries },
@@ -95,6 +97,12 @@ const Hotspots = ({
           <a href="/coverage">
             <MiniCoverageMap zoomLevel={0.9} />
           </a>
+        </section>
+
+        {/* Top cities section */}
+        <section className="mt-5 bg-white rounded-lg py-5">
+          <h2 className="font-medium text-base pl-6 pb-4 m-0">Top Cities</h2>
+          <CitiesTable cities={cities} />
         </section>
 
         {/* Makers section */}
@@ -276,6 +284,9 @@ export async function getStaticProps() {
 
   const latestHotspots = JSON.parse(JSON.stringify(hotspots.slice(0, 20)))
 
+  const citiesRes = await fetch('https://api.helium.io/v1/cities?sort=hotspots')
+  const { data: cities } = await citiesRes.json()
+
   return {
     props: {
       hotspotGrowth,
@@ -283,6 +294,7 @@ export async function getStaticProps() {
       latestHotspots,
       stats,
       makers,
+      cities,
     },
     revalidate: 60,
   }

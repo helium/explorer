@@ -53,6 +53,9 @@ const Hotspots = ({
     (m) => m.address === DEPRECATED_HELIUM_BURN_ADDR,
   )
 
+  const hotspotAddedInLastDay =
+    hotspotGrowth[hotspotGrowth.length - 1].count -
+    hotspotGrowth[hotspotGrowth.length - 2].count
   return (
     <AppLayout
       title={'Hotspots'}
@@ -263,8 +266,8 @@ export async function getStaticProps() {
 
   const makers = await getMakersData()
 
-  Array.from({ length: 39 }, (x, i) => {
-    const date = sub(now, { weeks: i + 1 })
+  Array.from({ length: 364 }, (x, i) => {
+    const date = sub(now, { days: i + 1 })
     // count hotspots where the time added is earlier than the given date
     const count = countBy(
       hotspots,

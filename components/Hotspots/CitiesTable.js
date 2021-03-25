@@ -53,7 +53,6 @@ const CitiesTable = ({ cities }) => {
           {currentPageOfCities.map((c, i, { length }) => {
             return (
               <div
-                // TODO: clean up styles using classnames package
                 className={classNames(
                   'relative flex flex-col border-t border-0 border-l border-r border-solid border-gray-500',
                   {

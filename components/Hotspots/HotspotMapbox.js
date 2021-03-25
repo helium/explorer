@@ -8,10 +8,6 @@ import ScaleControl from '../ScaleControl'
 import MapButton from './MapButton'
 import WitnessIcon from './WitnessIcon'
 
-const Mapbox = ReactMapboxGl({
-  accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
-})
-
 const styles = {
   selectedMarker: {
     width: 14,
@@ -64,6 +60,10 @@ const HotspotMapbox = ({
   nearbyHotspots = [],
   router,
 }) => {
+  const Mapbox = ReactMapboxGl({
+    accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
+  })
+  
   const [showWitnesses, setShowWitnesses] = useState(true)
   const [showNearbyHotspots, setShowNearbyHotspots] = useState(true)
 

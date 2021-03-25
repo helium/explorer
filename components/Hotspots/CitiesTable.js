@@ -19,6 +19,15 @@ const CitiesTable = ({ cities }) => {
     )
     .map((c, i) => ({ ...c, rank: i + 1 }))
 
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const indexOfLastPost = currentPage * pageSize
+  const indexOfFirstPost = indexOfLastPost - pageSize
+  const currentPageOfCities = citiesWithIndex.slice(
+    indexOfFirstPost,
+    indexOfLastPost,
+  )
+
   return (
     <>
       <div className="hidden md:block">
@@ -40,11 +49,11 @@ const CitiesTable = ({ cities }) => {
       </div>
       <div className="block md:hidden">
         <div className="flex flex-col px-5 mb-2">
-          {citiesWithIndex.map((c, i, { length }) => {
+          {currentPageOfCities.map((c, i, { length }) => {
             return (
               <div
                 // TODO: clean up styles using classnames package
-                className={`flex flex-col border-t border-0 border-l border-r border-solid px-3 py-2 border-gray-500 ${
+                className={`relative flex flex-col border-t border-0 border-l border-r border-solid border-gray-500 ${
                   i === 0
                     ? 'rounded-t-lg'
                     : i === length - 1
@@ -52,31 +61,49 @@ const CitiesTable = ({ cities }) => {
                     : 'border-b-0'
                 }`}
               >
-                <p className="text-black text-md">
-                  <span className="text-gray-800 font-semibold">
-                    #{c.rank}{' '}
-                  </span>
-                  {c.long_city}
-                </p>
-                <div className="flex items-center justify-start">
-                  <ReactCountryFlag countryCode={c.short_country} svg />
-                  <span className="mr-2" />
-                  <span className="m-0 p-0">
-                    {c.long_state ? `${c.long_state}, ` : ''}
-                    {c.long_country}
-                  </span>
+                <div
+                  className={`absolute top-0 bottom-0 w-14 flex items-center justify-center bg-purple-700${
+                    i === 0
+                      ? ' rounded-tl-lg'
+                      : i === length - 1
+                      ? ' rounded-bl-lg'
+                      : ''
+                  }`}
+                >
+                  <span className="text-white font-normal">{c.rank}</span>
                 </div>
-
-                <div className="flex">
-                  <p className="text-black font-semibold text-md">
-                    {c.hotspot_count} hotspots
-                  </p>
+                <div className="pl-14">
+                  <div className="px-3 py-2">
+                    <div className="flex items-center justify-start">
+                      <ReactCountryFlag countryCode={c.short_country} svg />
+                      <span className="mr-2" />
+                      <p className="text-black text-md font-semibold m-0 p-0">
+                        {c.long_city}
+                        <span className="m-0 p-0 font-normal text-gray-600">
+                          , {c.long_country}
+                        </span>
+                      </p>
+                    </div>
+                    <p className="text-purple-700 font-semibold text-md m-0 p-0">
+                      {c.hotspot_count?.toLocaleString()} hotspots
+                    </p>
+                  </div>
                 </div>
               </div>
             )
           })}
         </div>
-        <Pagination />
+        <div className="flex items-center justify-center mt-5">
+          <Pagination
+            current={currentPage}
+            total={citiesWithIndex.length}
+            pageSize={pageSize}
+            onChange={(page, pageSize) => {
+              setCurrentPage(page)
+              setPageSize(pageSize)
+            }}
+          />
+        </div>
       </div>
     </>
   )
@@ -93,7 +120,9 @@ const citiesColumns = [
     title: '# Hotspots Deployed',
     dataIndex: 'hotspot_count',
     key: 'hotspot_count',
-    render: (data) => <span>{data}</span>,
+    render: (data) => (
+      <span className="text-purple-500 font-semibold">{data}</span>
+    ),
   },
   {
     title: 'City',

@@ -29,6 +29,7 @@ module.exports = {
       },
       purple: {
         500: '#A667F6',
+        700: '#5850EB',
       },
       green: {
         100: '#474DFF',

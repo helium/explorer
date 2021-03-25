@@ -71,7 +71,7 @@ const Hotspots = ({
         title="Hotspot Network Growth"
         chart={<HotspotChart data={hotspotGrowth} />}
       />
-      <div className="max-w-screen-xl mx-auto px-2 sm:px-10 pt-5 pb-24">
+      <div className="max-w-screen-xl mx-auto px-2 sm:px-3 md:px-4 lg:px-10 pt-5 pb-24">
         {/* Stats section */}
         <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
           <Widget

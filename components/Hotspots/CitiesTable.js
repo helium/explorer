@@ -96,6 +96,8 @@ const CitiesTable = ({ cities }) => {
         <div className="flex items-center justify-center mt-5">
           <Pagination
             current={currentPage}
+            showSizeChanger
+            size="small"
             total={citiesWithIndex.length}
             pageSize={pageSize}
             onChange={(page, pageSize) => {

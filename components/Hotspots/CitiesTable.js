@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Table } from 'antd'
 import ReactCountryFlag from 'react-country-flag'
 import { Pagination } from 'antd'
+import classNames from 'classnames'
 
 const CitiesTable = ({ cities }) => {
   const PAGE_SIZE_DEFAULT = 10
@@ -53,22 +54,23 @@ const CitiesTable = ({ cities }) => {
             return (
               <div
                 // TODO: clean up styles using classnames package
-                className={`relative flex flex-col border-t border-0 border-l border-r border-solid border-gray-500 ${
-                  i === 0
-                    ? 'rounded-t-lg'
-                    : i === length - 1
-                    ? 'rounded-b-lg border-b'
-                    : 'border-b-0'
-                }`}
+                className={classNames(
+                  'relative flex flex-col border-t border-0 border-l border-r border-solid border-gray-500',
+                  {
+                    'rounded-t-lg': i === 0,
+                    'rounded-b-lg border-b': i === length - 1,
+                    'border-b-0': i !== 0 && i !== length - 1,
+                  },
+                )}
               >
                 <div
-                  className={`absolute top-0 bottom-0 w-14 flex items-center justify-center bg-purple-700${
-                    i === 0
-                      ? ' rounded-tl-lg'
-                      : i === length - 1
-                      ? ' rounded-bl-lg'
-                      : ''
-                  }`}
+                  className={classNames(
+                    'absolute top-0 bottom-0 w-14 flex items-center justify-center bg-purple-700',
+                    {
+                      'rounded-tl-lg': i === 0,
+                      'rounded-bl-lg': i === length - 1,
+                    },
+                  )}
                 >
                   <span className="text-white font-normal">{c.rank}</span>
                 </div>

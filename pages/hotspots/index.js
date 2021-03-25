@@ -56,6 +56,7 @@ const Hotspots = ({
   const hotspotAddedInLastDay =
     hotspotGrowth[hotspotGrowth.length - 1].count -
     hotspotGrowth[hotspotGrowth.length - 2].count
+
   return (
     <AppLayout
       title={'Hotspots'}

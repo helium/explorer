@@ -77,7 +77,6 @@ const HotspotMapbox = ({
   // include witnesses in centering / zooming logic
   witnesses.map((w) => {
     const distance = haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat)
-    console.log(distance);
     if (showWitnesses && distance <= MAX_WITNESS_DISTANCE_THRESHOLD) {
       boundsLocations.push({ lng: w?.lng, lat: w?.lat })
     }

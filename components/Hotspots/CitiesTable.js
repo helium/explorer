@@ -4,7 +4,7 @@ import ReactCountryFlag from 'react-country-flag'
 import { Pagination } from 'antd'
 import classNames from 'classnames'
 
-const CitiesTable = ({ cities, topCities }) => {
+const CitiesTable = ({ cities, topCities, topCitiesTotal }) => {
   const PAGE_SIZE_DEFAULT = 10
   const [pageSize, setPageSize] = useState(PAGE_SIZE_DEFAULT)
   const handleTableChange = (pagination) => {

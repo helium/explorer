@@ -91,7 +91,7 @@ const Hotspots = ({
 
         {/* Top cities section */}
         <section className="mt-5 bg-white rounded-lg py-5">
-          <h2 className="font-medium text-base pl-6 pb-4 m-0">Top Cities</h2>
+          <h2 className="font-medium text-base pl-6 pb-2 m-0">Top Cities</h2>
           <CitiesTable
             cities={cities}
             topCities={topCities}
@@ -157,38 +157,57 @@ export async function getStaticProps() {
   const citiesRes = await fetch('https://api.helium.io/v1/cities?sort=hotspots')
   const { data: cities } = await citiesRes.json()
 
-  const topCitiesTotal = []
   const topCities = []
   hotspots.map((h) => {
-    const isOnlineAndAsserted = h.status.online === 'online' && h.lat && h.lng
-    // see if another hotspot from this city has already been counted
-    const cityIndex = topCities.findIndex((c) => c.id === h.geocode.cityId)
-    const newCity = {
-      id: h.geocode.cityId,
-      shortCity: h.geocode.shortCity,
-      longCity: h.geocode.longCity,
-      shortState: h.geocode.shortState,
-      longState: h.geocode.longState,
-      shortCountry: h.geocode.shortCountry,
-      longCountry: h.geocode.longCountry,
-      hotspotCount: isOnlineAndAsserted ? 1 : 0,
+    const isOnlineAndAsserted =
+      h.status.online === 'online' &&
+      h.location !== null &&
+      h.geocode.cityId !== null
+    if (isOnlineAndAsserted) {
+      // see if another hotspot from this city has already been counted
+      const cityIndex = topCities.findIndex((c) => c.id === h.geocode.cityId)
+      if (cityIndex === -1) {
+        // if it hasn't, create a new city in our topCities array
+        const newCity = {
+          id: h.geocode.cityId,
+          shortCity: h.geocode.shortCity,
+          longCity: h.geocode.longCity,
+          shortState: h.geocode.shortState,
+          longState: h.geocode.longState,
+          shortCountry: h.geocode.shortCountry,
+          longCountry: h.geocode.longCountry,
+          hotspotCount: isOnlineAndAsserted ? 1 : 0,
+        }
+        topCities.push(newCity)
+      } else {
+        // if it has, increment that city's hotspotCount
+        if (isOnlineAndAsserted) topCities[cityIndex].hotspotCount++
+      }
     }
-    if (cityIndex === -1) {
-      // if it hasn't, create a new city in our topCities array
-      topCities.push(newCity)
-    } else {
-      // if it has, increment that city's hotspotCount
-      if (isOnlineAndAsserted) topCities[cityIndex].hotspotCount++
-    }
+  })
 
+  const topCitiesTotal = []
+  hotspots.map((h) => {
+    // see if another hotspot from this city has already been counted
     const cityIndexTotal = topCitiesTotal.findIndex(
       (c) => c.id === h.geocode.cityId,
     )
     if (cityIndexTotal === -1) {
-      newCity.hotspotCount = 1
+      // if it hasn't, create a new city in our topCities array
+      const newCity = {
+        id: h.geocode.cityId,
+        shortCity: h.geocode.shortCity,
+        longCity: h.geocode.longCity,
+        shortState: h.geocode.shortState,
+        longState: h.geocode.longState,
+        shortCountry: h.geocode.shortCountry,
+        longCountry: h.geocode.longCountry,
+        hotspotCount: 1,
+      }
       topCitiesTotal.push(newCity)
     } else {
-      topCitiesTotal[cityIndexTotal].hotspotCount++
+      // if it has, increment that city's hotspotCount
+      if (h.location !== null) topCitiesTotal[cityIndexTotal].hotspotCount++
     }
   })
 

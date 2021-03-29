@@ -1,44 +1,81 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Table } from 'antd'
 import ReactCountryFlag from 'react-country-flag'
 import { Pagination } from 'antd'
 import classNames from 'classnames'
+import { Checkbox } from 'antd'
 
 const CitiesTable = ({ cities, topCities, topCitiesTotal }) => {
   const PAGE_SIZE_DEFAULT = 10
   const [pageSize, setPageSize] = useState(PAGE_SIZE_DEFAULT)
+
+  const [excludeOfflineHotspots, setExcludeOfflineHotspots] = useState(true)
+  const updateShowOffline = (e) => {
+    setExcludeOfflineHotspots(e.target.checked)
+  }
+
   const handleTableChange = (pagination) => {
+    setCurrentPage(pagination.current)
     setPageSize(pagination.pageSize)
   }
-  const citiesToDisplay = topCities
-    .sort((a, b) =>
-      a.hotspotCount < b.hotspotCount
-        ? 1
-        : a.hotspotCount > b.hotspotCount
-        ? -1
-        : 0,
-    )
-    .slice(0, 100)
-    .map((c, i) => ({ ...c, rank: i + 1 }))
+
+  const sortAndSliceArray = (array) => {
+    return array
+      .sort((a, b) =>
+        a.hotspotCount < b.hotspotCount
+          ? 1
+          : a.hotspotCount > b.hotspotCount
+          ? -1
+          : 0,
+      )
+      .slice(0, 100)
+      .map((c, i) => ({ ...c, rank: i + 1 }))
+  }
+
+  const top100Online = sortAndSliceArray(topCities)
+  const top100Total = sortAndSliceArray(topCitiesTotal)
+
+  const [citiesToDisplayArray, setCitiesToDisplayArray] = useState(top100Online)
 
   const [currentPage, setCurrentPage] = useState(1)
 
-  const indexOfLastPost = currentPage * pageSize
-  const indexOfFirstPost = indexOfLastPost - pageSize
-  const currentPageOfCities = citiesToDisplay.slice(
-    indexOfFirstPost,
-    indexOfLastPost,
+  const indexOfLast = currentPage * pageSize
+  const indexOfFirst = indexOfLast - pageSize
+
+  useEffect(() => {
+    if (excludeOfflineHotspots) {
+      setCitiesToDisplayArray(top100Online)
+    } else {
+      setCitiesToDisplayArray(top100Total)
+    }
+  }, [excludeOfflineHotspots])
+
+  const currentPageOfCities = citiesToDisplayArray.slice(
+    indexOfFirst,
+    indexOfLast,
   )
 
   return (
     <>
       <div className="hidden md:block">
+        <div className="px-5">
+          <span className="ant-checkbox-override-purple">
+            <Checkbox
+              onChange={updateShowOffline}
+              checked={excludeOfflineHotspots}
+              style={{ color: '#888', marginLeft: '5px', marginBottom: '4px' }}
+            >
+              Exclude offline hotspots
+            </Checkbox>{' '}
+          </span>
+        </div>
         <Table
-          dataSource={citiesToDisplay}
+          dataSource={citiesToDisplayArray}
           columns={citiesColumns}
           size="small"
           rowKey="id"
           pagination={{
+            current: currentPage,
             pageSize,
             showSizeChanger: cities.length > PAGE_SIZE_DEFAULT,
             hideOnSinglePage: cities.length <= PAGE_SIZE_DEFAULT,
@@ -50,6 +87,17 @@ const CitiesTable = ({ cities, topCities, topCitiesTotal }) => {
         />
       </div>
       <div className="block md:hidden">
+        <div className="px-5">
+          <span className="ant-checkbox-override-purple">
+            <Checkbox
+              onChange={updateShowOffline}
+              checked={excludeOfflineHotspots}
+              style={{ color: '#888', marginLeft: '5px', marginBottom: '8px' }}
+            >
+              Exclude offline hotspots
+            </Checkbox>
+          </span>
+        </div>
         <div className="flex flex-col px-5 mb-2">
           {currentPageOfCities.map((c, i, { length }) => {
             return (
@@ -100,7 +148,7 @@ const CitiesTable = ({ cities, topCities, topCitiesTotal }) => {
             current={currentPage}
             showSizeChanger
             size="small"
-            total={citiesToDisplay.length}
+            total={citiesToDisplayArray.length}
             pageSize={pageSize}
             onChange={(page, pageSize) => {
               setCurrentPage(page)
@@ -125,7 +173,7 @@ const citiesColumns = [
     dataIndex: 'hotspotCount',
     key: 'hotspotCount',
     render: (data) => (
-      <span className="text-purple-500 font-semibold">{data}</span>
+      <span className="text-purple-700 font-semibold">{data}</span>
     ),
   },
   {

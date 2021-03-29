@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { Tooltip } from 'antd'
-import { findBounds } from '../Txns/utils'
+import { findBounds, haversineDistance } from '../Txns/utils'
 import animalHash from 'angry-purple-tiger'
 import ReactMapboxGl, { Layer, Marker, Feature } from 'react-mapbox-gl'
 import { withRouter } from 'next/router'
 import ScaleControl from '../ScaleControl'
 import MapButton from './MapButton'
 import WitnessIcon from './WitnessIcon'
+
+const MAX_WITNESS_DISTANCE_THRESHOLD = 200
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
@@ -74,7 +76,10 @@ const HotspotMapbox = ({
 
   // include witnesses in centering / zooming logic
   witnesses.map((w) => {
-    if (showWitnesses) boundsLocations.push({ lng: w?.lng, lat: w?.lat })
+    const distance = haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat)
+    if (showWitnesses && distance <= MAX_WITNESS_DISTANCE_THRESHOLD) {
+      boundsLocations.push({ lng: w?.lng, lat: w?.lat })
+    }
   })
 
   // include nearby hotspots in centering / zooming logic
@@ -145,39 +150,43 @@ const HotspotMapbox = ({
           />
 
           {showWitnesses &&
-            witnesses.map((w) => (
-              <>
-                <Tooltip title={animalHash(w.address)}>
-                  <Marker
-                    key={w.address}
-                    style={styles.witnessMarker}
-                    anchor="center"
-                    coordinates={[w.lng, w.lat]}
-                    onClick={() => router.push(`/hotspots/${w.address}`)}
-                  ></Marker>
-                </Tooltip>
-                <Layer
-                  key={'line-' + w.address}
-                  type="line"
-                  layout={{
-                    'line-cap': 'round',
-                    'line-join': 'round',
-                  }}
-                  paint={{
-                    'line-color': '#F1C40F',
-                    'line-width': 2,
-                    'line-opacity': 0.3,
-                  }}
-                >
-                  <Feature
-                    coordinates={[
-                      [w.lng, w.lat],
-                      [hotspot.lng, hotspot.lat],
-                    ]}
-                  />
-                </Layer>
-              </>
-            ))}
+            witnesses.map((w) => {
+              if (haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <= MAX_WITNESS_DISTANCE_THRESHOLD) {
+                return (
+                  <>
+                    <Tooltip title={animalHash(w.address)}>
+                      <Marker
+                        key={w.address}
+                        style={styles.witnessMarker}
+                        anchor="center"
+                        coordinates={[w.lng, w.lat]}
+                        onClick={() => router.push(`/hotspots/${w.address}`)}
+                      ></Marker>
+                    </Tooltip>
+                    <Layer
+                      key={'line-' + w.address}
+                      type="line"
+                      layout={{
+                        'line-cap': 'round',
+                        'line-join': 'round',
+                      }}
+                      paint={{
+                        'line-color': '#F1C40F',
+                        'line-width': 2,
+                        'line-opacity': 0.3,
+                      }}
+                    >
+                      <Feature
+                        coordinates={[
+                          [w.lng, w.lat],
+                          [hotspot.lng, hotspot.lat],
+                        ]}
+                      />
+                    </Layer>
+                  </>
+                )
+              }
+            })}
         </Mapbox>
       </div>
     )

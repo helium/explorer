@@ -21,6 +21,7 @@ const Mapbox = ReactMapboxGl({
   touchZoomRotate: true,
   maxZoom: maxZoom,
   minZoom: minZoom,
+  hash: true,
 })
 
 const onlineCircleLayout = {
@@ -350,6 +351,7 @@ const CoverageMap = ({ selectedHotspots, selectHotspots, showOffline }) => {
           }}
           onClick={handleClick}
           onMouseMove={handleMouseMove}
+          onZoomEnd={(zoom) => {}}
         >
           {renderOverviewMap()}
           {renderMeasureMap()}

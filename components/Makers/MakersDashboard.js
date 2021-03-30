@@ -17,7 +17,7 @@ const MakersDashboard = ({ makers }) => {
     (m) => m.address === DEPRECATED_HELIUM_BURN_ADDR,
   )
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
       {makers.map((m, i) => {
         const dcBalanceObject = new Balance(
           m.balanceInfo.dcBalance.integerBalance,

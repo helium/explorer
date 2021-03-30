@@ -39,9 +39,16 @@ const Hotspots = ({
   } = useStats(initialStats)
   const { latestHotspots } = useLatestHotspots(initialLatestHotspots)
 
-  const hotspotAddedInLastDay =
-    hotspotGrowth[hotspotGrowth.length - 1].count -
-    hotspotGrowth[hotspotGrowth.length - 2].count
+  const days = hotspotGrowth.length
+  const hotspotGrowth24Hours =
+    hotspotGrowth[days - 1].count - hotspotGrowth[days - 2].count
+  const hotspotGrowth24HourPreviousPeriod =
+    hotspotGrowth[days - 2].count - hotspotGrowth[days - 3].count
+
+  const hotspotGrowth30Days =
+    hotspotGrowth[days - 1].count - hotspotGrowth[days - 31].count
+  const hotspotGrowth30DayPreviousPeriod =
+    hotspotGrowth[days - 31].count - hotspotGrowth[days - 61].count
 
   return (
     <AppLayout
@@ -57,9 +64,9 @@ const Hotspots = ({
         title="Hotspot Network Growth"
         chart={<HotspotChart data={hotspotGrowth} />}
       />
-      <div className="max-w-screen-xl mx-auto px-2 sm:px-3 md:px-4 lg:px-10 pt-5 pb-24">
+      <div className="max-w-screen-lg mx-auto px-2 sm:px-3 md:px-4 lg:px-10 pt-5 pb-24">
         {/* Stats section */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+        <section className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3 lg:gap-4">
           <Widget
             title="Total Hotspots"
             value={totalHotspots.toLocaleString()}
@@ -76,6 +83,26 @@ const Hotspots = ({
             change={(onlineHotspotCount / totalHotspots) * 100}
             changeSuffix="%"
             changeIsAmbivalent
+          />
+          <Widget
+            title="Hotspots Added in Last 24 Hours"
+            value={hotspotGrowth24Hours.toLocaleString()}
+            change={
+              ((hotspotGrowth24Hours - hotspotGrowth24HourPreviousPeriod) /
+                hotspotGrowth24HourPreviousPeriod) *
+              100
+            }
+            changeSuffix="%"
+          />
+          <Widget
+            title="Hotspots Added in Last 30 Days"
+            value={hotspotGrowth30Days.toLocaleString()}
+            change={
+              ((hotspotGrowth30Days - hotspotGrowth30DayPreviousPeriod) /
+                hotspotGrowth30DayPreviousPeriod) *
+              100
+            }
+            changeSuffix="%"
           />
           <Widget title="Cities" value={totalCities.toLocaleString()} />
           <Widget title="Countries" value={totalCountries.toLocaleString()} />

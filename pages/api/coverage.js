@@ -19,5 +19,7 @@ const getCache = async (key, fallback) => {
 
 export default async function handler(req, res) {
   const coverage = await getCache('coverage', getCoverage)
+  console.log(coverage)
+  console.log(res.status)
   res.status(200).send(coverage)
 }

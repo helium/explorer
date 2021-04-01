@@ -9,6 +9,7 @@ import { HotKeys } from 'react-hotkeys'
 import Ruler from '../../public/images/ruler-light.svg'
 import turfDistance from '@turf/distance'
 import { point as turfPoint } from '@turf/helpers'
+import { getCoverageFromBounds } from '../../commonjs/coverage'
 
 const maxZoom = 14
 const minZoom = 2
@@ -48,23 +49,74 @@ const CoverageMap = ({ selectedHotspots, selectHotspots, showOffline }) => {
   const [zoom, setZoom] = useState([2.2])
   const [hasGeolocation, setHasGeolocation] = useState(false)
   const [online, setOnline] = useState(null)
+  const [cachedOnline, setCachedOnline] = useState(null)
   const [offline, setOffline] = useState(null)
+  const [cachedOffline, setCachedOffline] = useState(null)
   const [measuring, setMeasuring] = useState(false)
   const [measurements, setMeasurements] = useState({ from: null, to: null })
   const [distance, setDistance] = useState('')
+  const [boundsNELat, setBoundsNELat] = useState(null)
+  const [boundsNELon, setBoundsNELon] = useState(null)
+  const [boundsSWLat, setBoundsSWLat] = useState(null)
+  const [boundsSWLon, setBoundsSWLon] = useState(null)
 
   useEffect(() => {
     const getHotspots = async () => {
       const response = await fetch('/api/coverage')
       const coverage = await response.json()
       const { offline, online } = coverage
-      setOffline(offline)
       setOnline(online)
+      setCachedOnline(online)
+      setOffline(offline)
+      setCachedOffline(offline)
     }
-    getHotspots()
+    if (
+      boundsNELat === null &&
+      boundsNELon === null &&
+      boundsSWLat === null &&
+      boundsSWLon === null
+    ) {
+      getHotspots()
+    }
   }, [])
 
-  useEffect(() => {}, [selectedHotspots])
+  const DYNAMIC_LOADING_ZOOM_THRESHOLD = 12
+
+  useEffect(() => {
+    const getNewCoverage = async () => {
+      const { online, offline } = await getCoverageFromBounds({
+        boundsNELat,
+        boundsNELon,
+        boundsSWLat,
+        boundsSWLon,
+      })
+      setOnline(online)
+      setOffline(offline)
+    }
+    if (
+      boundsNELat !== null &&
+      boundsNELon !== null &&
+      boundsSWLat !== null &&
+      boundsSWLon !== null
+    ) {
+      getNewCoverage()
+    }
+  }, [boundsNELat, boundsNELon, boundsSWLat, boundsSWLon])
+
+  const handleDynamicMapLoad = (mapData) => {
+    const bounds = mapData.getBounds()
+    const zoom = mapData.getZoom()
+    if (zoom >= DYNAMIC_LOADING_ZOOM_THRESHOLD) {
+      // this is triggering an infinite loop of state / useEffect updates somehow—it seems like map.flyTo triggers a ton of moveEnd events
+      setBoundsNELat(bounds._ne.lat)
+      setBoundsNELon(bounds._ne.lng)
+      setBoundsSWLat(bounds._sw.lat)
+      setBoundsSWLon(bounds._sw.lng)
+    } else {
+      setOnline(cachedOnline)
+      setOffline(cachedOffline)
+    }
+  }
 
   const handleMapZoomButtons = (event) => {
     const zoomArray = zoom
@@ -349,9 +401,10 @@ const CoverageMap = ({ selectedHotspots, selectHotspots, showOffline }) => {
           onStyleLoad={(map) => {
             setMap(map)
           }}
+          onDragEnd={handleDynamicMapLoad}
+          onZoomEnd={handleDynamicMapLoad}
           onClick={handleClick}
           onMouseMove={handleMouseMove}
-          onZoomEnd={(zoom) => {}}
         >
           {renderOverviewMap()}
           {renderMeasureMap()}

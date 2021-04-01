@@ -15,6 +15,7 @@ import Widget from '../../components/Home/Widget'
 import dynamic from 'next/dynamic'
 import MakersDashboard from '../../components/Makers/MakersDashboard'
 import { getMakersData } from '../../components/Makers/utils.js'
+import { fetchCitiesByOnline, fetchCitiesByTotal } from '../../data/stats'
 
 const MiniCoverageMap = dynamic(
   () => import('../../components/CoverageMap/MiniCoverageMap'),
@@ -176,15 +177,8 @@ export async function getStaticProps() {
 
   const latestHotspots = JSON.parse(JSON.stringify(hotspots.slice(0, 20)))
 
-  const citiesResOnline = await fetch(
-    'https://api.helium.io/v1/cities?order=online_count',
-  )
-  const { data: topCities } = await citiesResOnline.json()
-
-  const citiesResTotal = await fetch(
-    'https://api.helium.io/v1/cities?order=hotspot_count',
-  )
-  const { data: topCitiesTotal } = await citiesResTotal.json()
+  const topCities = await fetchCitiesByOnline()
+  const topCitiesTotal = await fetchCitiesByTotal()
 
   return {
     props: {
@@ -193,7 +187,6 @@ export async function getStaticProps() {
       latestHotspots,
       stats,
       makers,
-      // cities,
       topCities,
       topCitiesTotal,
     },

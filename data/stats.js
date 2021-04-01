@@ -33,3 +33,19 @@ export const useStats = (initialData) => {
     isError: error,
   }
 }
+
+export const fetchCitiesByOnline = async () => {
+  const citiesResOnline = await fetch(
+    'https://api.helium.io/v1/cities?order=online_count',
+  )
+  const { data } = await citiesResOnline.json()
+  return JSON.parse(JSON.stringify(data))
+}
+
+export const fetchCitiesByTotal = async () => {
+  const citiesResTotal = await fetch(
+    'https://api.helium.io/v1/cities?order=hotspot_count',
+  )
+  const { data } = await citiesResTotal.json()
+  return JSON.parse(JSON.stringify(data))
+}

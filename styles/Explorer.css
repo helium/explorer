@@ -640,6 +640,14 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   padding: 0 0 0 24px;
 }
 
+.ant-checkbox-override-purple .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #5850eb !important;
+  border-color: #5850eb !important;
+}
+.ant-checkbox-override-purple .ant-checkbox-checked::after {
+  border: 1px solid #5850eb !important;
+}
+
 .ant-checkbox-override .ant-checkbox-checked .ant-checkbox-inner {
   background-color: #2e3750;
   border-color: #2e3750;

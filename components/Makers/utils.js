@@ -41,39 +41,31 @@ export const getMakersData = async () => {
       maker.balanceInfo = JSON.parse(JSON.stringify(makerInfo))
 
       const MAX_TXNS = 50000
-      let addGatewayTxnsList,
-        addGatewayTxns,
-        assertLocationTxnsList,
-        assertLocationTxns,
-        tokenBurnTxnsList,
-        tokenBurnTxns
+      let addGatewayTxns, assertLocationTxns
 
       let makerTxns
 
       if (maker.address !== DEPRECATED_HELIUM_BURN_ADDR) {
-        addGatewayTxnsList = await client.account(maker.address).activity.list({
-          filterTypes: ['add_gateway_v1'],
-        })
-        assertLocationTxnsList = await client
-          .account(maker.address)
-          .activity.list({
-            filterTypes: ['assert_location_v1'],
-          })
-
-        addGatewayTxns = await addGatewayTxnsList.take(MAX_TXNS)
-        assertLocationTxns = await assertLocationTxnsList.take(MAX_TXNS)
+        const txnCountsRes = await fetch(
+          `https://api.helium.io/v1/accounts/${maker.address}/activity/count?filter_types=add_gateway_v1,assert_location_v1,token_burn_v1`,
+        )
+        const txnCounts = await txnCountsRes.json()
+        assertLocationTxns = txnCounts.data['assert_location_v1']
+        addGatewayTxns = txnCounts.data['add_gateway_v1']
 
         makerTxns = {
-          addGatewayTxns: addGatewayTxns.length,
-          assertLocationTxns: assertLocationTxns.length,
+          addGatewayTxns,
+          assertLocationTxns,
         }
       }
 
-      tokenBurnTxnsList = await client.account(maker.address).activity.list({
-        filterTypes: ['token_burn_v1'],
-      })
+      const tokenBurnTxnsList = await client
+        .account(maker.address)
+        .activity.list({
+          filterTypes: ['token_burn_v1'],
+        })
 
-      tokenBurnTxns = await tokenBurnTxnsList.take(MAX_TXNS)
+      const tokenBurnTxns = await tokenBurnTxnsList.take(MAX_TXNS)
 
       let tokenBurnAmountInBones = 0
       tokenBurnTxns.map((b) => {

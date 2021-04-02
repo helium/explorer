@@ -9,6 +9,7 @@ import { HotKeys } from 'react-hotkeys'
 import Ruler from '../../public/images/ruler-light.svg'
 import turfDistance from '@turf/distance'
 import { point as turfPoint } from '@turf/helpers'
+import Client from '@helium/http'
 
 const maxZoom = 14
 const minZoom = 2
@@ -53,6 +54,8 @@ const CoverageMap = ({ selectedHotspots, selectHotspots, showOffline }) => {
   const [measurements, setMeasurements] = useState({ from: null, to: null })
   const [distance, setDistance] = useState('')
 
+  const client = new Client()
+
   useEffect(() => {
     const getHotspots = async () => {
       const response = await fetch('/api/coverage')
@@ -63,8 +66,6 @@ const CoverageMap = ({ selectedHotspots, selectHotspots, showOffline }) => {
     }
     getHotspots()
   }, [])
-
-  useEffect(() => {}, [selectedHotspots])
 
   const handleMapZoomButtons = (event) => {
     const zoomArray = zoom
@@ -305,7 +306,6 @@ const CoverageMap = ({ selectedHotspots, selectHotspots, showOffline }) => {
     <HotKeys keyMap={keyMap} handlers={handlers}>
       <span className="interactive-coverage-map">
         {distance && <div className="distance">{renderDistance()}</div>}
-
         <button
           id="measure"
           className={classNames({

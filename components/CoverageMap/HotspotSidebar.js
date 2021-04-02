@@ -4,6 +4,7 @@ import Hotspot from './Hotspot'
 import Link from 'next/link'
 import withSearchResults from '../SearchBar/withSearchResults'
 import { Checkbox } from 'antd'
+import animalHash from 'angry-purple-tiger'
 
 const hotspotToObj = (hotspot) => ({
   ...hotspot,
@@ -14,6 +15,8 @@ const HotspotSidebar = ({
   hotspots,
   count,
   selectedHotspots,
+  selectedHotspotData,
+  selectedHotspotLoading,
   selectHotspots,
   clearSelectedHotspots,
   fetchMoreHotspots,
@@ -98,7 +101,6 @@ const HotspotSidebar = ({
             </Checkbox>
           </span>
         </SidebarHeader>
-
         <SidebarScrollable loadMore={fetchMoreHotspots}>
           {hotspotsToShow.map((hotspot) => (
             <div key={hotspot.address}>
@@ -110,6 +112,26 @@ const HotspotSidebar = ({
             </div>
           ))}
         </SidebarScrollable>
+        {hotspotsToShow.length === 1 && (
+          <>
+            {selectedHotspotLoading ? (
+              <div className="bg-white">Loading...</div>
+            ) : (
+              <div className="bg-white w-full">
+                <p className="text-green-500 text-xl">
+                  {animalHash(selectedHotspotData.address)}
+                </p>
+                {selectedHotspotData?.witnessesData?.length} witnesses
+                {/* {JSON.stringify(selectedHotspotData)} */}
+                {selectedHotspotData?.witnessesData?.map((w) => (
+                  <div className="text-navy-400">
+                    <p>{animalHash(w.address)}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
       </Sidebar>
       <style jsx>{`
         .header-search {

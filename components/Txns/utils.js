@@ -32,22 +32,25 @@ export const findBounds = (arrayOfLatsAndLons) => {
 
 export const haversineDistance = (lon1, lat1, lon2, lat2) => {
   function toRad(x) {
-    return x * Math.PI / 180;
+    return (x * Math.PI) / 180
   }
 
-  var R = 6371;
+  var R = 6371
 
-  var x1 = lat2 - lat1;
-  var dLat = toRad(x1);
-  var x2 = lon2 - lon1;
+  var x1 = lat2 - lat1
+  var dLat = toRad(x1)
+  var x2 = lon2 - lon1
   var dLon = toRad(x2)
-  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  var d = R * c;
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) *
+      Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2)
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  var d = R * c
 
-  return d;
+  return d
 }
 
 const convertToUtc = (date) => addMinutes(date, date.getTimezoneOffset())
@@ -145,6 +148,22 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
         break
       }
       case 'rewards_v1': {
+        const totalAmountObject = new Balance(
+          txn.totalAmount.integerBalance,
+          CurrencyType.networkToken,
+        )
+
+        type = `Rewards`
+        description = `A rewards transaction with ${totalAmountObject.toString(
+          2,
+        )} in total rewarded to ${
+          txn.rewards.length
+        } accounts ${dateString} ${blockString}`
+        ogImageUrl = `${ogImageUrlBase}/txn_rewards.png`
+        url = `${urlBase}/txns/${txn.hash}`
+        break
+      }
+      case 'rewards_v2': {
         const totalAmountObject = new Balance(
           txn.totalAmount.integerBalance,
           CurrencyType.networkToken,

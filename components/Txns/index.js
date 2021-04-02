@@ -1,7 +1,7 @@
 export { default as PaymentV1 } from './PaymentV1'
 export { default as PaymentV2 } from './PaymentV2'
 export { default as PocReceiptsV1 } from './PocReceiptsV1'
-export { default as RewardsV1 } from './RewardsV1'
+export { default as Rewards } from './Rewards'
 export { default as StateChannelCloseV1 } from './StateChannelCloseV1'
 export { default as StateChannelOpenV1 } from './StateChannelOpenV1'
 export { default as TransferHotspotV1 } from './TransferHotspotV1'

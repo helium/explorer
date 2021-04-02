@@ -25,6 +25,7 @@ import {
   getHotspotRewardsBuckets,
 } from '../../data/hotspots'
 import RewardScalePill from '../../components/Hotspots/RewardScalePill'
+import { getCoverageFromBounds } from '../../commonjs/coverage'
 
 const HotspotMapbox = dynamic(
   () => import('../../components/Hotspots/HotspotMapbox'),
@@ -49,6 +50,51 @@ const HotspotView = ({ hotspot }) => {
   const [nearbyHotspotsLoading, setNearbyHotspotsLoading] = useState(true)
 
   const [loading, setLoading] = useState(true)
+
+  const [boundsNELat, setBoundsNELat] = useState(null)
+  const [boundsNELon, setBoundsNELon] = useState(null)
+  const [boundsSWLat, setBoundsSWLat] = useState(null)
+  const [boundsSWLon, setBoundsSWLon] = useState(null)
+
+  const DYNAMIC_LOADING_ZOOM_THRESHOLD = 12
+
+  useEffect(() => {
+    const getNewCoverage = async () => {
+      setNearbyHotspotsLoading(true)
+      const hotspotsInBounds = await getCoverageFromBounds({
+        boundsNELat,
+        boundsNELon,
+        boundsSWLat,
+        boundsSWLon,
+      })
+      console.log('hello!!!')
+      console.log(hotspotsInBounds)
+      setNearbyHotspots(hotspotsInBounds.data)
+      setNearbyHotspotsLoading(false)
+    }
+    // console.log(boundsNELat)
+    // console.log(boundsNELon)
+    // console.log(boundsSWLat)
+    // console.log(boundsSWLon)
+    if (
+      boundsNELat !== null &&
+      boundsNELon !== null &&
+      boundsSWLat !== null &&
+      boundsSWLon !== null
+    ) {
+      getNewCoverage()
+    }
+  }, [boundsNELat, boundsNELon, boundsSWLat, boundsSWLon])
+
+  const handleDynamicMapLoad = (mapData) => {
+    const bounds = mapData.getBounds()
+    // const zoom = mapData.getZoom()
+    // console.log(bounds)
+    setBoundsNELat(bounds._ne.lat)
+    setBoundsNELon(bounds._ne.lng)
+    setBoundsSWLat(bounds._sw.lat)
+    setBoundsSWLon(bounds._sw.lng)
+  }
 
   useEffect(() => {
     setLoading(
@@ -179,6 +225,7 @@ const HotspotView = ({ hotspot }) => {
             hotspot={hotspot}
             witnesses={witnesses}
             nearbyHotspots={nearbyHotspots}
+            handleDynamicMapLoad={handleDynamicMapLoad}
           />
           {hotspot.lng !== undefined && hotspot.lat !== undefined && (
             <div className="flex justify-between pt-3 w-full pb-8">

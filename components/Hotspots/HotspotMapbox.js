@@ -63,6 +63,7 @@ const HotspotMapbox = ({
   classes,
   hotspot,
   witnesses,
+  handleDynamicMapLoad,
   nearbyHotspots = [],
   router,
 }) => {
@@ -83,9 +84,9 @@ const HotspotMapbox = ({
   })
 
   // include nearby hotspots in centering / zooming logic
-  nearbyHotspots.map((h) => {
-    boundsLocations.push({ lng: parseFloat(h?.lng), lat: parseFloat(h?.lat) })
-  })
+  // nearbyHotspots.map((h) => {
+  //   boundsLocations.push({ lng: parseFloat(h?.lng), lat: parseFloat(h?.lat) })
+  // })
 
   // calculate map bounds
   const mapBounds = findBounds(boundsLocations)
@@ -122,6 +123,7 @@ const HotspotMapbox = ({
           }}
           movingMethod="jumpTo"
           {...mapProps}
+          onDragEnd={handleDynamicMapLoad}
         >
           <ScaleControl />
           {showNearbyHotspots &&
@@ -151,7 +153,10 @@ const HotspotMapbox = ({
 
           {showWitnesses &&
             witnesses.map((w) => {
-              if (haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <= MAX_WITNESS_DISTANCE_THRESHOLD) {
+              if (
+                haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <=
+                MAX_WITNESS_DISTANCE_THRESHOLD
+              ) {
                 return (
                   <>
                     <Tooltip title={animalHash(w.address)}>

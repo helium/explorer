@@ -10,6 +10,9 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
   const [showChecklist, setShowChecklist] = useState(false)
   const [checklistFetched, setChecklistFetched] = useState(false)
 
+  const toggleShowChecklist = () =>
+    setShowChecklist((currentSetting) => !currentSetting)
+
   useEffect(() => {
     const client = new Client()
     const hotspotid = hotspot.address
@@ -376,7 +379,7 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
   return (
     <div className={`${showChecklist ? 'pb-12' : 'pb-4'}`}>
       <button
-        onClick={() => setShowChecklist((currentSetting) => !currentSetting)}
+        onClick={toggleShowChecklist}
         className={`cursor-pointer text-gray-600 px-2 py-1 ml-4 bg-navy-600 rounded-full outline-none border-transparent text-xs ${
           showChecklist ? 'mb-2' : ''
         }`}

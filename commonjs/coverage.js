@@ -1,5 +1,7 @@
-const { Client } = require('@helium/http')
+const { Client, Network } = require('@helium/http')
 const geoJSON = require('geojson')
+
+const MAX_HOTSPOTS_TO_FETCH = 200000
 
 const toGeoJSON = (hotspots) =>
   geoJSON.parse(hotspots, {
@@ -8,36 +10,22 @@ const toGeoJSON = (hotspots) =>
   })
 
 const getCoverage = async () => {
-  const client = new Client()
-  const hotspots = await client.hotspots.list()
-  const result = {
-    unset: 0,
-    online: [],
-    offline: [],
-  }
+  const client = new Client(Network.staging)
+  const list = await client.hotspots.list()
+  const hotspots = await list.takeJSON(MAX_HOTSPOTS_TO_FETCH)
+  const hotspotsWithLocation = hotspots.filter((h) => !!h.lat && !!h.lng)
+  const onlineHotspots = hotspotsWithLocation.filter(
+    (h) => h.status.online === 'online',
+  )
+  const offlineHotspots = hotspotsWithLocation.filter(
+    (h) => h.status.online !== 'online',
+  )
 
-  for await (const { data } of hotspots) {
-    const hotspot = {
-      ...data,
-      location: [data.geocode.longCity, data.geocode.shortState]
-        .filter(Boolean)
-        .join(', '),
-      status: data.status.online,
-    }
-
-    if (!hotspot.lng || !hotspot.lat) {
-      result.unset++
-      continue
-    }
-
-    const isOnline = hotspot.status === 'online'
-    result[isOnline ? 'online' : 'offline'].push(hotspot)
-  }
-
+  // TODO don't split these into separate feature collections, just use conditional
+  // mapbox styles based on the included attributes
   return {
-    ...result,
-    online: toGeoJSON(result.online),
-    offline: toGeoJSON(result.offline),
+    online: toGeoJSON(onlineHotspots),
+    offline: toGeoJSON(offlineHotspots),
   }
 }
 

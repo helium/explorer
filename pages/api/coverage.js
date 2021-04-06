@@ -1,4 +1,4 @@
-const { getCache } = require('../commonjs/redis')
+const { getCache } = require('../../commonjs/redis')
 const { getCoverage } = require('../../commonjs/coverage')
 
 export default async function handler(req, res) {

@@ -24,7 +24,7 @@ const RewardSummary = ({ rewards, rewardsLoading }) => {
 
     return tempArray
   }
-  const monthBucketsForYear = splitYearIntoMonths(yearBuckets)
+  // const monthBucketsForYear = splitYearIntoMonths(yearBuckets)
 
   return (
     <div
@@ -66,14 +66,15 @@ const RewardSummary = ({ rewards, rewardsLoading }) => {
           scale="days"
           slices={30}
         />
-        <RewardSummaryCard
+        {/* Temporarily remove the 12 month rewards summary to ease the pain on the API. */}
+        {/* <RewardSummaryCard
           value={rewards.oneYear}
           buckets={monthBucketsForYear}
           rewardsLoading={rewardsLoading}
           timeframeString="1 Year"
           scale="year"
           slices={12}
-        />
+        /> */}
       </div>
     </div>
   )

@@ -141,16 +141,20 @@ const HotspotView = ({ hotspot }) => {
         48,
         'hour',
       )
-      const oneYear = await getHotspotRewardsBuckets(hotspotid, 365, 'day')
+      // const oneYear = await getHotspotRewardsBuckets(hotspotid, 365, 'day')
       setRewards({
-        buckets: { days: sixtyDays, hours: fourtyEightHours, year: oneYear },
+        buckets: {
+          days: sixtyDays,
+          hours: fourtyEightHours,
+          // year: oneYear,
+        },
         day: sumBy(sixtyDays.slice(0, 1), 'total'),
         previousDay: sumBy(sixtyDays.slice(1, 2), 'total'),
         week: sumBy(sixtyDays.slice(0, 7), 'total'),
         previousWeek: sumBy(sixtyDays.slice(7, 14), 'total'),
         month: sumBy(sixtyDays.slice(0, 30), 'total'),
         previousMonth: sumBy(sixtyDays.slice(30, 60), 'total'),
-        oneYear: sumBy(oneYear, 'total'),
+        // oneYear: sumBy(oneYear, 'total'),
       })
       setRewardsLoading(false)
     }

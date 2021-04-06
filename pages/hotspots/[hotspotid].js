@@ -39,32 +39,22 @@ const { TabPane } = Tabs
 
 const HotspotView = ({ hotspot }) => {
   const [witnesses, setWitnesses] = useState([])
-  const [activity, setActivity] = useState({})
   const [rewards, setRewards] = useState([])
   const [nearbyHotspots, setNearbyHotspots] = useState([])
 
   const [witnessesLoading, setWitnessesLoading] = useState(true)
-  const [activityLoading, setActivityLoading] = useState(true)
   const [rewardsLoading, setRewardsLoading] = useState(true)
   const [nearbyHotspotsLoading, setNearbyHotspotsLoading] = useState(true)
 
   const [loading, setLoading] = useState(true)
 
-  const [showChecklist, setShowChecklist] = useState(false)
-  const [checklistFetched, setChecklistFetched] = useState(false)
   useEffect(() => {
     setLoading(
-      !(
-        !witnessesLoading &&
-        !activityLoading &&
-        !rewardsLoading &&
-        !nearbyHotspotsLoading
-      ),
+      !(!witnessesLoading && !rewardsLoading && !nearbyHotspotsLoading),
     )
-  }, [witnessesLoading, activityLoading, rewardsLoading, nearbyHotspotsLoading])
+  }, [witnessesLoading, rewardsLoading, nearbyHotspotsLoading])
 
   useEffect(() => {
-    const client = new Client()
     const hotspotid = hotspot.address
 
     async function getWitnesses() {
@@ -115,64 +105,6 @@ const HotspotView = ({ hotspot }) => {
     getNearbyHotspots()
     getHotspotRewards()
   }, [])
-
-  useEffect(() => {
-    const client = new Client()
-    const hotspotid = hotspot.address
-
-    async function getHotspotActivity() {
-      setActivityLoading(true)
-      // Get most recent challenger transaction
-      const challengerTxnList = await client.hotspot(hotspotid).activity.list({
-        filterTypes: ['poc_request_v1'],
-      })
-      const challengerTxn = await challengerTxnList.take(1)
-
-      // Get most recent challengee transaction
-      const challengeeTxnList = await client.hotspot(hotspotid).activity.list({
-        filterTypes: ['poc_receipts_v1'],
-      })
-      const challengeeTxn = await challengeeTxnList.take(1)
-
-      // Get most recent rewards transactions to search for...
-      const rewardTxnsList = await client.hotspot(hotspotid).activity.list({
-        filterTypes: ['rewards_v1'],
-      })
-      const rewardTxns = await rewardTxnsList.take(200)
-
-      let witnessTxn = null
-      // most recent witness transaction
-      rewardTxns.some(function (txn) {
-        return txn.rewards.some(function (txnReward) {
-          if (txnReward.type === 'poc_witnesses') {
-            witnessTxn = txn
-            return
-          }
-        })
-      })
-      let dataTransferTxn = null
-      // most recent data credit transaction
-      rewardTxns.some(function (txn) {
-        return txn.rewards.some(function (txnReward) {
-          if (txnReward.type === 'data_credits') {
-            dataTransferTxn = txn
-            return
-          }
-        })
-      })
-      const hotspotActivity = {
-        challengerTxn: challengerTxn.length === 1 ? challengerTxn[0] : null,
-        challengeeTxn: challengeeTxn.length === 1 ? challengeeTxn[0] : null,
-        witnessTxn: witnessTxn,
-        dataTransferTxn: dataTransferTxn,
-      }
-      setActivity(hotspotActivity)
-      setChecklistFetched(true)
-      setActivityLoading(false)
-    }
-
-    if (showChecklist && !checklistFetched) getHotspotActivity()
-  }, [showChecklist])
 
   return (
     <AppLayout
@@ -309,32 +241,14 @@ const HotspotView = ({ hotspot }) => {
             </div>
           </Row>
         </div>
-        <div
-          className={`hidden md:block max-w-4xl mx-auto ${
-            showChecklist ? 'pb-12' : 'pb-4'
-          }`}
-        >
-          <button
-            onClick={() =>
-              setShowChecklist((currentSetting) => !currentSetting)
-            }
-            className={`cursor-pointer text-gray-600 px-2 py-1 ml-4 bg-navy-600 rounded-full outline-none border-transparent text-xs ${
-              showChecklist ? 'mb-2' : ''
-            }`}
-          >
-            {showChecklist ? 'Hide' : 'Show'} checklist
-          </button>
-          {showChecklist && (
-            <Checklist
-              hotspot={hotspot}
-              witnesses={witnesses}
-              activity={activity}
-              loading={loading}
-              rewardsLoading={rewardsLoading}
-              witnessesLoading={witnessesLoading}
-              activityLoading={activityLoading}
-            />
-          )}
+        <div className={`hidden md:block max-w-4xl mx-auto`}>
+          <Checklist
+            hotspot={hotspot}
+            witnesses={witnesses}
+            loading={loading}
+            rewardsLoading={rewardsLoading}
+            witnessesLoading={witnessesLoading}
+          />
         </div>
         <div className="w-full bg-navy-600 px-5 md:px-8 py-5 text-center">
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>

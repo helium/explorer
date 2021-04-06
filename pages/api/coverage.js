@@ -1,7 +1,7 @@
 const { getCache } = require('../../commonjs/redis')
-const { getCoverage } = require('../../commonjs/coverage')
+const { emptyCoverage } = require('../../commonjs/coverage')
 
 export default async function handler(req, res) {
-  const coverage = await getCache('coverage', getCoverage)
+  const coverage = await getCache('coverage', emptyCoverage)
   res.status(200).send(coverage)
 }

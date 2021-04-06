@@ -10,15 +10,24 @@ const toGeoJSON = (hotspots) =>
   })
 
 const getCoverage = async () => {
+  // TODO switch back to prod API when things are better
   const client = new Client(Network.staging)
   const list = await client.hotspots.list()
   const hotspots = await list.takeJSON(MAX_HOTSPOTS_TO_FETCH)
-  const hotspotsWithLocation = hotspots.filter((h) => !!h.lat && !!h.lng)
+  const hotspotsWithLocation = hotspots
+    .filter((h) => !!h.lat && !!h.lng)
+    .map((h) => ({
+      ...h,
+      location: [h.geocode.longCity, h.geocode.shortState]
+        .filter(Boolean)
+        .join(', '),
+      status: h.status.online,
+    }))
   const onlineHotspots = hotspotsWithLocation.filter(
-    (h) => h.status.online === 'online',
+    (h) => h.status === 'online',
   )
   const offlineHotspots = hotspotsWithLocation.filter(
-    (h) => h.status.online !== 'online',
+    (h) => h.status !== 'online',
   )
 
   // TODO don't split these into separate feature collections, just use conditional
@@ -29,4 +38,8 @@ const getCoverage = async () => {
   }
 }
 
-module.exports = { getCoverage }
+const emptyCoverage = () => {
+  return toGeoJSON([])
+}
+
+module.exports = { getCoverage, emptyCoverage }

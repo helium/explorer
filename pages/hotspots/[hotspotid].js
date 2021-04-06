@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Row, Typography, Checkbox, Tooltip, Tabs } from 'antd'
-import Client from '@helium/http'
+import { Client } from '@helium/http'
 import Fade from 'react-reveal/Fade'
 import Checklist from '../../components/Hotspots/Checklist/Checklist'
 import RewardSummary from '../../components/Hotspots/RewardSummary'
@@ -50,6 +50,8 @@ const HotspotView = ({ hotspot }) => {
 
   const [loading, setLoading] = useState(true)
 
+  const [showChecklist, setShowChecklist] = useState(false)
+  const [checklistFetched, setChecklistFetched] = useState(false)
   useEffect(() => {
     setLoading(
       !(
@@ -82,6 +84,41 @@ const HotspotView = ({ hotspot }) => {
       setNearbyHotspots(hotspots.filter((h) => h.address !== hotspotid))
       setNearbyHotspotsLoading(false)
     }
+
+    async function getHotspotRewards() {
+      setRewardsLoading(true)
+      const sixtyDays = await getHotspotRewardsBuckets(hotspotid, 60, 'day')
+      const fourtyEightHours = await getHotspotRewardsBuckets(
+        hotspotid,
+        48,
+        'hour',
+      )
+      // const oneYear = await getHotspotRewardsBuckets(hotspotid, 365, 'day')
+      setRewards({
+        buckets: {
+          days: sixtyDays,
+          hours: fourtyEightHours,
+          // year: oneYear,
+        },
+        day: sumBy(sixtyDays.slice(0, 1), 'total'),
+        previousDay: sumBy(sixtyDays.slice(1, 2), 'total'),
+        week: sumBy(sixtyDays.slice(0, 7), 'total'),
+        previousWeek: sumBy(sixtyDays.slice(7, 14), 'total'),
+        month: sumBy(sixtyDays.slice(0, 30), 'total'),
+        previousMonth: sumBy(sixtyDays.slice(30, 60), 'total'),
+        // oneYear: sumBy(oneYear, 'total'),
+      })
+      setRewardsLoading(false)
+    }
+
+    getWitnesses()
+    getNearbyHotspots()
+    getHotspotRewards()
+  }, [])
+
+  useEffect(() => {
+    const client = new Client()
+    const hotspotid = hotspot.address
 
     async function getHotspotActivity() {
       setActivityLoading(true)
@@ -130,40 +167,12 @@ const HotspotView = ({ hotspot }) => {
         dataTransferTxn: dataTransferTxn,
       }
       setActivity(hotspotActivity)
+      setChecklistFetched(true)
       setActivityLoading(false)
     }
 
-    async function getHotspotRewards() {
-      setRewardsLoading(true)
-      const sixtyDays = await getHotspotRewardsBuckets(hotspotid, 60, 'day')
-      const fourtyEightHours = await getHotspotRewardsBuckets(
-        hotspotid,
-        48,
-        'hour',
-      )
-      // const oneYear = await getHotspotRewardsBuckets(hotspotid, 365, 'day')
-      setRewards({
-        buckets: {
-          days: sixtyDays,
-          hours: fourtyEightHours,
-          // year: oneYear,
-        },
-        day: sumBy(sixtyDays.slice(0, 1), 'total'),
-        previousDay: sumBy(sixtyDays.slice(1, 2), 'total'),
-        week: sumBy(sixtyDays.slice(0, 7), 'total'),
-        previousWeek: sumBy(sixtyDays.slice(7, 14), 'total'),
-        month: sumBy(sixtyDays.slice(0, 30), 'total'),
-        previousMonth: sumBy(sixtyDays.slice(30, 60), 'total'),
-        // oneYear: sumBy(oneYear, 'total'),
-      })
-      setRewardsLoading(false)
-    }
-
-    getWitnesses()
-    getNearbyHotspots()
-    getHotspotActivity()
-    getHotspotRewards()
-  }, [hotspot.address])
+    if (showChecklist && !checklistFetched) getHotspotActivity()
+  }, [showChecklist])
 
   return (
     <AppLayout
@@ -300,16 +309,32 @@ const HotspotView = ({ hotspot }) => {
             </div>
           </Row>
         </div>
-        <div className="hidden md:block max-w-4xl mt-10 pb-12 mx-auto ">
-          <Checklist
-            hotspot={hotspot}
-            witnesses={witnesses}
-            activity={activity}
-            loading={loading}
-            rewardsLoading={rewardsLoading}
-            witnessesLoading={witnessesLoading}
-            activityLoading={activityLoading}
-          />
+        <div
+          className={`hidden md:block max-w-4xl mx-auto ${
+            showChecklist ? 'pb-12' : 'pb-4'
+          }`}
+        >
+          <button
+            onClick={() =>
+              setShowChecklist((currentSetting) => !currentSetting)
+            }
+            className={`cursor-pointer text-gray-600 px-2 py-1 ml-4 bg-navy-600 rounded-full outline-none border-transparent text-xs ${
+              showChecklist ? 'mb-2' : ''
+            }`}
+          >
+            {showChecklist ? 'Hide' : 'Show'} checklist
+          </button>
+          {showChecklist && (
+            <Checklist
+              hotspot={hotspot}
+              witnesses={witnesses}
+              activity={activity}
+              loading={loading}
+              rewardsLoading={rewardsLoading}
+              witnessesLoading={witnessesLoading}
+              activityLoading={activityLoading}
+            />
+          )}
         </div>
         <div className="w-full bg-navy-600 px-5 md:px-8 py-5 text-center">
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
@@ -426,6 +451,7 @@ export async function getServerSideProps({ params }) {
 
   return {
     props: {
+      key: hotspotid,
       hotspot: JSON.parse(JSON.stringify(hotspot)),
     },
   }

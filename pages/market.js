@@ -20,7 +20,6 @@ function Market({
 }) {
   const { market } = useMarket(initialMarket)
   const { stats } = useStats(initialStats)
-  console.log('stats', stats)
   const { oraclePrices } = useOraclePrices(initialOraclePrices)
 
   const latestOraclePrice = (oraclePrices[0].price / 100000000).toLocaleString(

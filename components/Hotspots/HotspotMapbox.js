@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Tooltip } from 'antd'
 import { findBounds, haversineDistance } from '../Txns/utils'
 import animalHash from 'angry-purple-tiger'
@@ -67,181 +67,158 @@ const HotspotMapbox = ({
   router,
 }) => {
   const [showWitnesses, setShowWitnesses] = useState(true)
-  const [mapBounds, setMapBounds] = useState(null)
-  const [isLonely, setIsLonely] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [showNearbyHotspots, setShowNearbyHotspots] = useState(true)
 
-  useEffect(() => {
-    const boundsLocations = []
+  const boundsLocations = []
 
-    // include hotspot in centering / zooming logic
-    boundsLocations.push({ lng: hotspot?.lng, lat: hotspot?.lat })
+  // include hotspot in centering / zooming logic
+  boundsLocations.push({ lng: hotspot?.lng, lat: hotspot?.lat })
 
-    // include witnesses in centering / zooming logic
-    witnesses.map((w) => {
-      const distance = haversineDistance(
-        hotspot?.lng,
-        hotspot?.lat,
-        w.lng,
-        w.lat,
-      )
-      if (showWitnesses && distance <= MAX_WITNESS_DISTANCE_THRESHOLD) {
-        boundsLocations.push({ lng: w?.lng, lat: w?.lat })
-      }
-    })
-
-    // include nearby hotspots in centering / zooming logic
-    nearbyHotspots.map((h) => {
-      boundsLocations.push({ lng: parseFloat(h?.lng), lat: parseFloat(h?.lat) })
-    })
-
-    // calculate map bounds
-    if (boundsLocations.length === 1) {
-      setIsLonely(true)
-    } else {
-      setMapBounds(findBounds(boundsLocations))
-      setIsLonely(false)
+  // include witnesses in centering / zooming logic
+  witnesses.map((w) => {
+    const distance = haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat)
+    if (showWitnesses && distance <= MAX_WITNESS_DISTANCE_THRESHOLD) {
+      boundsLocations.push({ lng: w?.lng, lat: w?.lat })
     }
+  })
 
-    setIsLoading(false)
-  }, [hotspot.lat, hotspot.lng, nearbyHotspots, showWitnesses, witnesses])
+  // include nearby hotspots in centering / zooming logic
+  nearbyHotspots.map((h) => {
+    boundsLocations.push({ lng: parseFloat(h?.lng), lat: parseFloat(h?.lat) })
+  })
 
-  if (isLoading) return <LoadingPlaceholder />
+  // calculate map bounds
+  const mapBounds = findBounds(boundsLocations)
 
-  if (hotspot.lng === undefined || hotspot.lat === undefined)
-    return <NoLocationPlaceholder />
+  const mapProps = {}
 
-  return (
-    <div className="relative">
-      <MapButton
-        active={showWitnesses}
-        handleClick={() => setShowWitnesses((prevValue) => !prevValue)}
-        icon={<WitnessIcon />}
-      />
-      <Mapbox
-        style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
-        container="map"
-        className={classes}
-        containerStyle={{
-          width: '100%',
-        }}
-        zoom={isLonely ? [12] : undefined}
-        center={
-          isLonely
-            ? [hotspot?.lng ? hotspot.lng : 0, hotspot?.lat ? hotspot.lat : 0]
-            : undefined
-        }
-        fitBounds={isLonely ? undefined : mapBounds}
-        fitBoundsOptions={{ padding: 50, animate: true }}
-      >
-        <ScaleControl />
-        {nearbyHotspots.map((h) => (
-          <Tooltip title={animalHash(h.address)} key={`nearby-${h.address}`}>
-            <Marker
-              style={styles.nearbyMarker}
-              anchor="center"
-              coordinates={[h.lng, h.lat]}
-              onClick={() => router.push(`/hotspots/${h.address}`)}
-            />
-          </Tooltip>
-        ))}
+  if (boundsLocations.length === 1) {
+    // if the hotspot doesn't have any witnesses or nearby hotspots, centre on the hotspot by itself, at a decent zoom level
+    mapProps.zoom = [12]
+    mapProps.center = [
+      hotspot?.lng ? hotspot.lng : 0,
+      hotspot?.lat ? hotspot.lat : 0,
+    ]
+    mapProps.fitBoundsOptions = { padding: 50, animate: true }
+  } else {
+    mapProps.fitBounds = mapBounds
+    mapProps.fitBoundsOptions = { padding: 50, animate: true }
+  }
 
-        <Marker
-          key={hotspot.address}
-          style={styles.gatewayMarker}
-          anchor="center"
-          coordinates={[
-            hotspot.lng ? hotspot.lng : 0,
-            hotspot.lat ? hotspot.lat : 0,
-          ]}
+  if (hotspot.lng !== undefined && hotspot.lat !== undefined) {
+    return (
+      <div className="relative">
+        <MapButton
+          active={showWitnesses}
+          handleClick={() => setShowWitnesses((prevValue) => !prevValue)}
+          icon={<WitnessIcon />}
         />
+        <Mapbox
+          style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
+          container="map"
+          className={classes}
+          containerStyle={{
+            width: '100%',
+          }}
+          movingMethod="jumpTo"
+          {...mapProps}
+        >
+          <ScaleControl />
+          {showNearbyHotspots &&
+            nearbyHotspots.map((h) => (
+              <Tooltip
+                title={animalHash(h.address)}
+                key={`nearby-${h.address}`}
+              >
+                <Marker
+                  style={styles.nearbyMarker}
+                  anchor="center"
+                  coordinates={[h.lng, h.lat]}
+                  onClick={() => router.push(`/hotspots/${h.address}`)}
+                />
+              </Tooltip>
+            ))}
 
-        {showWitnesses &&
-          witnesses.map((w) => {
-            if (
-              haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <=
-              MAX_WITNESS_DISTANCE_THRESHOLD
-            ) {
-              return (
-                <>
-                  <Tooltip title={animalHash(w.address)}>
-                    <Marker
-                      key={w.address}
-                      style={styles.witnessMarker}
-                      anchor="center"
-                      coordinates={[w.lng, w.lat]}
-                      onClick={() => router.push(`/hotspots/${w.address}`)}
-                    ></Marker>
-                  </Tooltip>
-                  <Layer
-                    key={'line-' + w.address}
-                    type="line"
-                    layout={{
-                      'line-cap': 'round',
-                      'line-join': 'round',
-                    }}
-                    paint={{
-                      'line-color': '#F1C40F',
-                      'line-width': 2,
-                      'line-opacity': 0.3,
-                    }}
-                  >
-                    <Feature
-                      coordinates={[
-                        [w.lng, w.lat],
-                        [hotspot.lng, hotspot.lat],
-                      ]}
-                    />
-                  </Layer>
-                </>
-              )
-            }
-          })}
-      </Mapbox>
-    </div>
-  )
+          <Marker
+            key={hotspot.address}
+            style={styles.gatewayMarker}
+            anchor="center"
+            coordinates={[
+              hotspot.lng ? hotspot.lng : 0,
+              hotspot.lat ? hotspot.lat : 0,
+            ]}
+          />
+
+          {showWitnesses &&
+            witnesses.map((w) => {
+              if (haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <= MAX_WITNESS_DISTANCE_THRESHOLD) {
+                return (
+                  <>
+                    <Tooltip title={animalHash(w.address)}>
+                      <Marker
+                        key={w.address}
+                        style={styles.witnessMarker}
+                        anchor="center"
+                        coordinates={[w.lng, w.lat]}
+                        onClick={() => router.push(`/hotspots/${w.address}`)}
+                      ></Marker>
+                    </Tooltip>
+                    <Layer
+                      key={'line-' + w.address}
+                      type="line"
+                      layout={{
+                        'line-cap': 'round',
+                        'line-join': 'round',
+                      }}
+                      paint={{
+                        'line-color': '#F1C40F',
+                        'line-width': 2,
+                        'line-opacity': 0.3,
+                      }}
+                    >
+                      <Feature
+                        coordinates={[
+                          [w.lng, w.lat],
+                          [hotspot.lng, hotspot.lat],
+                        ]}
+                      />
+                    </Layer>
+                  </>
+                )
+              }
+            })}
+        </Mapbox>
+      </div>
+    )
+  } else {
+    return (
+      <div
+        className="no-location-set"
+        style={{
+          backgroundColor: '#324b61',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div
+          style={{
+            width: 18,
+            height: 18,
+            borderRadius: '50%',
+            backgroundColor: '#A984FF',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            border: '3px solid #8B62EA',
+            boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
+            marginBottom: 14,
+          }}
+        />
+        <p style={{ fontSize: '18px', color: 'white' }}>No location set</p>
+      </div>
+    )
+  }
 }
-
-const NoLocationPlaceholder = () => (
-  <div
-    className="no-location-set"
-    style={{
-      backgroundColor: '#324b61',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}
-  >
-    <div
-      style={{
-        width: 18,
-        height: 18,
-        borderRadius: '50%',
-        backgroundColor: '#A984FF',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        border: '3px solid #8B62EA',
-        boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
-        marginBottom: 14,
-      }}
-    />
-    <p style={{ fontSize: '18px', color: 'white' }}>No location set</p>
-  </div>
-)
-
-const LoadingPlaceholder = () => (
-  <div
-    className="no-location-set"
-    style={{
-      backgroundColor: '#324b61',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}
-  ></div>
-)
-
 export default withRouter(HotspotMapbox)

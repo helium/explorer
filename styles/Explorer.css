@@ -428,6 +428,10 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   right: 0;
 }
 
+.mapboxgl-canvas {
+  outline: none;
+}
+
 .hotspot-name > h1 {
   line-height: 0.7;
 }

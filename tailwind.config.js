@@ -65,6 +65,12 @@ module.exports = {
         100: '#E9EAFF2',
       },
     },
+    extend: {
+      spacing: {
+        '108': '27rem',
+        '120': '30rem',
+      },
+    },
   },
   variants: {
     extend: {},

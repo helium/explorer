@@ -241,22 +241,7 @@ const LoadingPlaceholder = () => (
       alignItems: 'center',
       justifyContent: 'center',
     }}
-  >
-    <div
-      style={{
-        width: 18,
-        height: 18,
-        borderRadius: '50%',
-        backgroundColor: '#A984FF',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        border: '3px solid #8B62EA',
-        boxShadow: '0px 2px 4px 0px rgba(0,0,0,0.5)',
-        marginBottom: 14,
-      }}
-    />
-  </div>
+  ></div>
 )
 
 export default withRouter(HotspotMapbox)

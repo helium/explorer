@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Row, Typography, Checkbox, Tooltip, Tabs } from 'antd'
-import Client from '@helium/http'
+import { Client } from '@helium/http'
 import Fade from 'react-reveal/Fade'
 import Checklist from '../../components/Hotspots/Checklist/Checklist'
 import RewardSummary from '../../components/Hotspots/RewardSummary'
@@ -39,12 +39,10 @@ const { TabPane } = Tabs
 
 const HotspotView = ({ hotspot }) => {
   const [witnesses, setWitnesses] = useState([])
-  const [activity, setActivity] = useState({})
   const [rewards, setRewards] = useState([])
   const [nearbyHotspots, setNearbyHotspots] = useState([])
 
   const [witnessesLoading, setWitnessesLoading] = useState(true)
-  const [activityLoading, setActivityLoading] = useState(true)
   const [rewardsLoading, setRewardsLoading] = useState(true)
   const [nearbyHotspotsLoading, setNearbyHotspotsLoading] = useState(true)
 
@@ -52,17 +50,11 @@ const HotspotView = ({ hotspot }) => {
 
   useEffect(() => {
     setLoading(
-      !(
-        !witnessesLoading &&
-        !activityLoading &&
-        !rewardsLoading &&
-        !nearbyHotspotsLoading
-      ),
+      !(!witnessesLoading && !rewardsLoading && !nearbyHotspotsLoading),
     )
-  }, [witnessesLoading, activityLoading, rewardsLoading, nearbyHotspotsLoading])
+  }, [witnessesLoading, rewardsLoading, nearbyHotspotsLoading])
 
   useEffect(() => {
-    const client = new Client()
     const hotspotid = hotspot.address
 
     async function getWitnesses() {
@@ -83,56 +75,6 @@ const HotspotView = ({ hotspot }) => {
       setNearbyHotspotsLoading(false)
     }
 
-    async function getHotspotActivity() {
-      setActivityLoading(true)
-      // Get most recent challenger transaction
-      const challengerTxnList = await client.hotspot(hotspotid).activity.list({
-        filterTypes: ['poc_request_v1'],
-      })
-      const challengerTxn = await challengerTxnList.take(1)
-
-      // Get most recent challengee transaction
-      const challengeeTxnList = await client.hotspot(hotspotid).activity.list({
-        filterTypes: ['poc_receipts_v1'],
-      })
-      const challengeeTxn = await challengeeTxnList.take(1)
-
-      // Get most recent rewards transactions to search for...
-      const rewardTxnsList = await client.hotspot(hotspotid).activity.list({
-        filterTypes: ['rewards_v1'],
-      })
-      const rewardTxns = await rewardTxnsList.take(200)
-
-      let witnessTxn = null
-      // most recent witness transaction
-      rewardTxns.some(function (txn) {
-        return txn.rewards.some(function (txnReward) {
-          if (txnReward.type === 'poc_witnesses') {
-            witnessTxn = txn
-            return
-          }
-        })
-      })
-      let dataTransferTxn = null
-      // most recent data credit transaction
-      rewardTxns.some(function (txn) {
-        return txn.rewards.some(function (txnReward) {
-          if (txnReward.type === 'data_credits') {
-            dataTransferTxn = txn
-            return
-          }
-        })
-      })
-      const hotspotActivity = {
-        challengerTxn: challengerTxn.length === 1 ? challengerTxn[0] : null,
-        challengeeTxn: challengeeTxn.length === 1 ? challengeeTxn[0] : null,
-        witnessTxn: witnessTxn,
-        dataTransferTxn: dataTransferTxn,
-      }
-      setActivity(hotspotActivity)
-      setActivityLoading(false)
-    }
-
     async function getHotspotRewards() {
       setRewardsLoading(true)
       const sixtyDays = await getHotspotRewardsBuckets(hotspotid, 60, 'day')
@@ -141,25 +83,28 @@ const HotspotView = ({ hotspot }) => {
         48,
         'hour',
       )
-      const oneYear = await getHotspotRewardsBuckets(hotspotid, 365, 'day')
+      // const oneYear = await getHotspotRewardsBuckets(hotspotid, 365, 'day')
       setRewards({
-        buckets: { days: sixtyDays, hours: fourtyEightHours, year: oneYear },
+        buckets: {
+          days: sixtyDays,
+          hours: fourtyEightHours,
+          // year: oneYear,
+        },
         day: sumBy(sixtyDays.slice(0, 1), 'total'),
         previousDay: sumBy(sixtyDays.slice(1, 2), 'total'),
         week: sumBy(sixtyDays.slice(0, 7), 'total'),
         previousWeek: sumBy(sixtyDays.slice(7, 14), 'total'),
         month: sumBy(sixtyDays.slice(0, 30), 'total'),
         previousMonth: sumBy(sixtyDays.slice(30, 60), 'total'),
-        oneYear: sumBy(oneYear, 'total'),
+        // oneYear: sumBy(oneYear, 'total'),
       })
       setRewardsLoading(false)
     }
 
     getWitnesses()
     getNearbyHotspots()
-    getHotspotActivity()
     getHotspotRewards()
-  }, [hotspot.address])
+  }, [])
 
   return (
     <AppLayout
@@ -296,15 +241,13 @@ const HotspotView = ({ hotspot }) => {
             </div>
           </Row>
         </div>
-        <div className="hidden md:block max-w-4xl mt-10 pb-12 mx-auto ">
+        <div className={`hidden md:block max-w-4xl mx-auto`}>
           <Checklist
             hotspot={hotspot}
             witnesses={witnesses}
-            activity={activity}
             loading={loading}
             rewardsLoading={rewardsLoading}
             witnessesLoading={witnessesLoading}
-            activityLoading={activityLoading}
           />
         </div>
         <div className="w-full bg-navy-600 px-5 md:px-8 py-5 text-center">
@@ -422,6 +365,7 @@ export async function getServerSideProps({ params }) {
 
   return {
     props: {
+      key: hotspotid,
       hotspot: JSON.parse(JSON.stringify(hotspot)),
     },
   }

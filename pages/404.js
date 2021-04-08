@@ -26,7 +26,7 @@ export const HelpLink = ({ children, href, external }) => {
         <li className="text-navy-600 font-semibold w-full m-0 p-0">
           <div className="flex flex-row justify-between items-center">
             {children}
-            <ExternalLinkIcon className="h-5 w-auto text-gray-300" />
+            <ExternalLinkIcon className="h-5 w-auto text-gray-700" />
           </div>
         </li>
       </a>
@@ -38,7 +38,7 @@ export const HelpLink = ({ children, href, external }) => {
           <li className="text-navy-600 font-semibold w-full m-0 p-0">
             <div className="flex flex-row justify-between items-center">
               {children}
-              <InternalLinkIcon className="h-5 w-auto text-gray-300" />
+              <InternalLinkIcon className="h-5 w-auto text-gray-700" />
             </div>
           </li>
         </a>
@@ -68,7 +68,7 @@ const Custom404 = () => {
       </div>
       <div className="bg-bluegray-100 w-full">
         <div className="py-5 md:py-10 w-full mx-auto max-w-3xl px-2.5 sm:px-20">
-          <h3 className="text-gray-300 font-sans font-normal text-lg text-center normal-case tracking-normal pb-2">
+          <h3 className="text-gray-700 font-sans font-normal text-lg text-center normal-case tracking-normal pb-2">
             Let us know how you got here so we can fix it
           </h3>
           <HelpLinkList>
@@ -82,7 +82,7 @@ const Custom404 = () => {
               Report the issue on Discord
             </HelpLink>
           </HelpLinkList>
-          <h3 className="text-gray-300 font-sans font-normal text-lg text-center normal-case tracking-normal pt-5 pb-2">
+          <h3 className="text-gray-700 font-sans font-normal text-lg text-center normal-case tracking-normal pt-5 pb-2">
             Or try one of these links
           </h3>
           <HelpLinkList>

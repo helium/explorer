@@ -16,6 +16,7 @@ import animalHash from 'angry-purple-tiger'
 import {
   formatHotspotName,
   formatLocation,
+  isRelay,
 } from '../../components/Hotspots/utils'
 import sumBy from 'lodash/sumBy'
 import ReactCountryFlag from 'react-country-flag'
@@ -25,6 +26,8 @@ import {
   getHotspotRewardsBuckets,
 } from '../../data/hotspots'
 import RewardScalePill from '../../components/Hotspots/RewardScalePill'
+import StatusPill from '../../components/Hotspots/StatusPill'
+import RelayPill from '../../components/Hotspots/RelayPill'
 
 const HotspotMapbox = dynamic(
   () => import('../../components/Hotspots/HotspotMapbox'),
@@ -142,62 +145,17 @@ const HotspotView = ({ hotspot }) => {
               </p>
             </div>
           )}
-
           <Row className="px-5 sm:px-0 pb-4 sm:pb-8">
             <div className="flex justify-start items-start pr-5">
               <div className="w-full">
                 <Fade delay={500}>
                   <div className="flex flex-row items-center justify-start p-0 pb-2 w-auto">
-                    <div className="flex flex-row items-center justify-center py-0.5 px-2.5 bg-navy-600 rounded-full">
-                      <Tooltip
-                        placement="top"
-                        title={`Hotspot is ${hotspot.status.online}`}
-                      >
-                        <div
-                          className={classNames(
-                            'h-2.5',
-                            'w-2.5',
-                            'rounded-full',
-                            {
-                              'bg-green-500':
-                                hotspot.status.online === 'online',
-                              'bg-red-400': hotspot.status.online === 'offline',
-                            },
-                          )}
-                        />
-                      </Tooltip>
-                      <Tooltip
-                        placement="top"
-                        title={`${
-                          hotspot.status.online === 'online' &&
-                          hotspot.status.height === null
-                            ? 'Beginning to sync'
-                            : hotspot.status.online === 'online' &&
-                              hotspot.status.height !== null
-                            ? `Syncing block ${hotspot.status?.height.toLocaleString()}. `
-                            : 'Hotspot is not syncing. '
-                        }${
-                          hotspot.status.online === 'online' &&
-                          hotspot.status.height !== null
-                            ? `Blocks remaining: ${(
-                                hotspot.block - hotspot.status?.height
-                              ).toLocaleString()}.`
-                            : ``
-                        }`}
-                      >
-                        <p className="text-gray-600 ml-2 mb-0">
-                          {hotspot.status.online === 'offline'
-                            ? `Offline`
-                            : hotspot.block - hotspot.status?.height >= 500 ||
-                              hotspot.status.height === null
-                            ? `Syncing`
-                            : `Synced`}
-                        </p>
-                      </Tooltip>
-                    </div>
-
+                    <StatusPill hotspot={hotspot} />
                     {hotspot.rewardScale && (
                       <RewardScalePill hotspot={hotspot} className="ml-2.5" />
+                    )}
+                    {isRelay(hotspot.status.listen_addrs) && (
+                      <RelayPill className="ml-2.5" />
                     )}
                   </div>
                 </Fade>

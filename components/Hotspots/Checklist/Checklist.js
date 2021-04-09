@@ -3,6 +3,7 @@ import ChecklistCard from './ChecklistCard'
 import { Tooltip } from 'antd'
 import withBlockHeight from '../../withBlockHeight'
 import { Client } from '@helium/http'
+import classNames from 'classnames'
 
 const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
   const [activity, setActivity] = useState({})
@@ -25,7 +26,6 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
       })
       const challengerTxn = await challengerTxnList.take(1)
 
-      console.log(hotspot)
       // Get most recent challengee transaction
       const challengeeTxnList = await client.hotspot(hotspotid).activity.list({
         filterTypes: ['poc_receipts_v1'],
@@ -380,11 +380,47 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
     <div className={`${showChecklist ? 'pb-12' : 'pb-4'}`}>
       <button
         onClick={toggleShowChecklist}
-        className={`cursor-pointer text-gray-600 px-2 py-1 ml-4 bg-navy-600 rounded-full outline-none border-transparent text-xs ${
-          showChecklist ? 'mb-2' : ''
-        }`}
+        className={classNames(
+          'flex',
+          'flex-row',
+          'items-center',
+          'justify-between',
+          'w-32',
+          'cursor-pointer',
+          'text-gray-600',
+          'px-2',
+          'py-1',
+          'ml-5',
+          'bg-navy-600',
+          'rounded-full',
+          'outline-none',
+          'border-transparent',
+          'text-xs',
+          { 'mb-2': showChecklist },
+        )}
       >
         {showChecklist ? 'Hide' : 'Show'} checklist
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className={classNames(
+            'h-4',
+            'w-4',
+            'ml-1',
+            'transform duration-500',
+            'transition-all',
+            { 'rotate-180': !showChecklist },
+          )}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M5 15l7-7 7 7"
+          />
+        </svg>
       </button>
       {showChecklist && (
         <>

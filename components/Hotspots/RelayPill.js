@@ -7,7 +7,8 @@ const RelayPill = ({ className }) => {
       placement="top"
       title={
         <>
-          Hotspot is being relayed which may affect mining. Go{' '}
+          Hotspot's connection is being relayed through another Hotspot on the
+          network which may affect mining. Go{' '}
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -16,7 +17,7 @@ const RelayPill = ({ className }) => {
           >
             here
           </a>{' '}
-          to learn more about opening ports for the Hotspot.
+          to learn more about opening port 44158 for the Hotspot.
         </>
       }
     >

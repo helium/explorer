@@ -1,5 +1,9 @@
 @import '~antd/dist/antd.css';
 
+body {
+  background-color: black;
+}
+
 .App {
   text-align: center;
 }
@@ -1003,4 +1007,14 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
 .consensus_map__zoom_buttons button:hover,
 .reset-zoom-button button:hover {
   transform: scale(1.1, 1.1);
+}
+
+/* Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

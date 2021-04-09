@@ -9,6 +9,12 @@ const toGeoJSON = (hotspots) =>
     include: ['address', 'owner', 'location', 'status'],
   })
 
+const toGeoJSONv2 = (hotspots) =>
+  geoJSON.parse(hotspots, {
+    Point: ['lat', 'lng'],
+    include: ['address', 'owner', 'location', 'status', 'blockAdded'],
+  })
+
 const getCoverage = async () => {
   // TODO switch back to prod API when things are better
   const client = new Client(Network.staging)
@@ -38,8 +44,26 @@ const getCoverage = async () => {
   }
 }
 
+const getCoverageV2 = async () => {
+  // TODO switch back to prod API when things are better
+  const client = new Client(Network.staging)
+  const list = await client.hotspots.list()
+  const hotspots = await list.takeJSON(MAX_HOTSPOTS_TO_FETCH)
+  const hotspotsWithLocation = hotspots
+    .filter((h) => !!h.lat && !!h.lng)
+    .map((h) => ({
+      ...h,
+      location: [h.geocode.longCity, h.geocode.shortState]
+        .filter(Boolean)
+        .join(', '),
+      status: h.status.online,
+    }))
+
+  return toGeoJSONv2(hotspotsWithLocation)
+}
+
 const emptyCoverage = () => {
   return toGeoJSON([])
 }
 
-module.exports = { getCoverage, emptyCoverage }
+module.exports = { getCoverage, getCoverageV2, emptyCoverage }

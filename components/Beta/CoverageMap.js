@@ -1,7 +1,11 @@
-import React from 'react'
+import { useEffect, useState, useCallback, useRef, useMemo, memo } from 'react'
+import { useMediaQuery } from 'react-responsive'
 import ReactMapboxGl, { GeoJSONLayer, Image } from 'react-mapbox-gl'
-import geoJSON from 'geojson'
 import fetch from 'node-fetch'
+import { useAsync } from 'react-async-hooks'
+import { findBounds } from '../../utils/location'
+import CoverageLayer from './CoverageMap/CoverageLayer'
+import HotspotDetailLayer from './CoverageMap/HotspotDetailLayer'
 
 const maxZoom = 14
 const minZoom = 2
@@ -14,136 +18,147 @@ const Mapbox = ReactMapboxGl({
   minZoom: minZoom,
 })
 
-const onlineCircleLayout = {
-  'circle-color': '#29d391',
-  'circle-radius': 2,
-  'circle-opacity': 0.7,
-  'circle-blur': 0,
-}
+const initialPosition = { timestamp: 0 }
 
-const offlineCircleLayout = {
-  'circle-color': '#e86161',
-  'circle-radius': 3,
-  'circle-opacity': 1,
-  'circle-blur': 0,
-}
+const US_BOUNDS = [
+  [-61.08, 44.84],
+  [-125, 33],
+]
 
-const emptyGeoJSON = geoJSON.parse([], {
-  Point: ['lat', 'lng'],
-})
+const US_EU_BOUNDS = [
+  [32.1, 58.63],
+  [-125, 33],
+]
 
-class CoverageMap extends React.Component {
-  state = {
-    map: null,
-    center: [-65.5795, 39.8283],
-    zoom: [2.2],
-    hasGeolocation: false,
-    flyingComplete: false,
-    online: null,
-    offline: null,
-  }
+const EU_CN_BOUNDS = [
+  [143.61, 62.2],
+  [-14.10009, 23.898041],
+]
 
-  async componentDidMount() {
-    const response = await fetch('/api/coverage')
+const MOBILE_PADDING = { top: 10, left: 10, right: 10, bottom: 450 }
+const DESKTOP_PADDING = { top: 10, left: 600, right: 10, bottom: 10 }
+
+const CoverageMap = ({
+  currentPosition = initialPosition,
+  selectedHotspot,
+  selectHotspot,
+  showInfoBox,
+  layer,
+}) => {
+  const isDesktopOrLaptop = useMediaQuery({ minDeviceWidth: 1224 })
+  const map = useRef()
+
+  const [coverage, setCoverage] = useState()
+  const [bounds, setBounds] = useState(
+    isDesktopOrLaptop ? US_EU_BOUNDS : US_BOUNDS,
+  )
+
+  useAsync(async () => {
+    const response = await fetch('/api/v2/coverage')
     const coverage = await response.json()
-    this.setState(coverage)
-  }
+    setCoverage(coverage)
+  }, [])
 
-  renderOverviewMap = () => {
-    const { selectedHotspots = [], showOffline } = this.props
-    const { online, offline } = this.state
-
-    const selectedData = geoJSON.parse(selectedHotspots[0] || [], {
-      Point: ['lat', 'lng'],
-    })
-
-    // If any of the selected hotspots is online, then the displayed color will be green,
-    // as online hotspots are displayed one layer above offline ones.
-    const blurColor = (selectedHotspots.some(
-      (hotspot) => hotspot.status === 'online',
+  useEffect(() => {
+    if (!currentPosition.coords) return
+    setBounds(
+      findBounds([
+        {
+          lng: currentPosition.coords.longitude,
+          lat: currentPosition.coords.latitude,
+        },
+      ]),
     )
-      ? onlineCircleLayout
-      : offlineCircleLayout)['circle-color']
+  }, [currentPosition.coords, currentPosition.timestamp])
 
-    let flying = false
+  useEffect(() => {
+    if (!selectedHotspot) return
 
-    if (selectedHotspots.length > 0) {
-      if (!this.state.map) return
+    const selectionBounds = findBounds([
+      ...(selectedHotspot.witnesses || []).map(({ lat, lng }) => ({
+        lat,
+        lng,
+      })),
+      { lat: selectedHotspot.lat, lng: selectedHotspot.lng },
+    ])
+    setBounds(selectionBounds)
+  }, [selectedHotspot])
 
-      if (!this.state.flyingComplete) {
-        if (!flying) {
-          this.state.map.flyTo({
-            center: [selectedHotspots[0].lng, selectedHotspots[0].lat],
-            zoom: 14,
-          })
-          // So that we know that the map is currently flying from one location to another
-          this.state.map.fire('flystart')
-          flying = true
+  const fitBoundsOptions = useMemo(() => {
+    if (isDesktopOrLaptop) return { padding: DESKTOP_PADDING, animate: true }
+    if (showInfoBox) return { padding: MOBILE_PADDING, animate: true }
+    return { padding: 10, animate: true }
+  }, [isDesktopOrLaptop, showInfoBox])
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setBounds(EU_CN_BOUNDS)
+  //   }, 5000)
+  // }, [])
+
+  const handleHotspotClick = useCallback(
+    (e) => {
+      const features = map.current.queryRenderedFeatures(e.point, {
+        layers: ['hotspots-circle'],
+      })
+
+      if (features.length === 1) {
+        // if a single hotspot was clicked on, then select it
+        const [feature] = features
+        const selectedHotspot = {
+          lat: feature.geometry.coordinates[1],
+          lng: feature.geometry.coordinates[0],
+          ...feature.properties,
         }
-
-        if (flying) {
-          // While the flying event is happening, wait until it's completed
-          // (either by the user interrupting it, or once it reaches its end state)
-          this.state.map.once('moveend', (event) => {
-            // Once it's finished, reset the flying flag
-            flying = false
-            // Set the flyingComplete flag to true so this code chunk doesn't keep running
-            this.setState({ flyingComplete: true })
-            // Set zoom state variable to what the zoom level was when the flying event stopped
-            // Without setting this, the manual zoom +/- buttons would be incrementing or
-            // decrementing the zoom level from before the fly action started
-            this.setState({ zoom: [event.target.transform.tileZoom] })
-          })
-        }
+        selectHotspot(selectedHotspot)
+      } else {
+        // if more than one hotspot was clicked on, adjust bounds to fit that cluster
+        const selectionBounds = findBounds(
+          features.map(({ geometry: { coordinates } }) => ({
+            lat: coordinates[1],
+            lng: coordinates[0],
+          })),
+        )
+        setBounds(selectionBounds)
       }
+
+      map.current.getCanvas().style.cursor = ''
+    },
+    [selectHotspot],
+  )
+
+  const handleMouseMove = useCallback((map, e) => {
+    const features = map.queryRenderedFeatures(e.point, {
+      layers: ['hotspots-circle'],
+    })
+    if (features.length > 0) {
+      map.getCanvas().style.cursor = 'pointer'
+    } else {
+      map.getCanvas().style.cursor = ''
     }
+  }, [])
 
-    return (
-      <>
-        <Image id="green-hex" url="/images/hex-green.png" />
-        <GeoJSONLayer
-          id="selected-hotspots-glow"
-          data={selectedData}
-          circlePaint={{
-            'circle-color': blurColor,
-            'circle-radius': 70,
-            'circle-opacity': 0.3,
-            'circle-blur': 1,
-          }}
-        />
-
-        <GeoJSONLayer
-          id="online-hotspots"
-          data={online || emptyGeoJSON}
-          circlePaint={onlineCircleLayout}
-          circleOnClick={this.handleHotspotClick}
-        />
-      </>
-    )
-  }
-
-  render() {
-    return (
-      <>
-        <Mapbox
-          style="mapbox://styles/petermain/ckmwdn50a1ebk17o3h5e6wwui"
-          className="h-screen w-screen"
-          center={this.state.center}
-          zoom={this.state.zoom}
-          onStyleLoad={(map) => {
-            this.setState({ map })
-          }}
-          ref={(e) => {
-            this.map = e
-          }}
-          onClick={this.handleClick}
-          onMouseMove={this.handleMouseMove}
-        >
-          {this.renderOverviewMap()}
-        </Mapbox>
-      </>
-    )
-  }
+  return (
+    <Mapbox
+      style="mapbox://styles/petermain/ckmwdn50a1ebk17o3h5e6wwui"
+      className="h-screen w-screen"
+      fitBounds={bounds}
+      fitBoundsOptions={fitBoundsOptions}
+      onStyleLoad={(mapInstance) => {
+        map.current = mapInstance
+      }}
+      onMouseMove={handleMouseMove}
+    >
+      <CoverageLayer
+        hotspots={coverage}
+        minZoom={minZoom}
+        maxZoom={maxZoom}
+        onHotspotClick={handleHotspotClick}
+        layer={layer}
+      />
+      <HotspotDetailLayer hotspot={selectedHotspot} />
+    </Mapbox>
+  )
 }
 
-export default CoverageMap
+export default memo(CoverageMap)

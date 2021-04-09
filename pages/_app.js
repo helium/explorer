@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }) {
     // this #app div is used to increase the specificity of Tailwind's utility classes, making it easier to override styles without resorting to !important
     <div id="app">
       <Component {...pageProps} />
-      <script src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js"></script>
+      {/* <script src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js"></script> */}
     </div>
   )
 }

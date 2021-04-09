@@ -37,7 +37,7 @@ const TrendWidget = ({ title, value, change }) => {
   return (
     <div className="bg-gray-200 p-3 rounded-lg col-span-2 flex">
       <div>
-        <div className="text-gray-600 text-sm">{title}</div>
+        <div className="text-gray-600 text-sm whitespace-nowrap">{title}</div>
         <div className="text-3xl font-medium my-1.5 tracking-tighter">
           {value}
         </div>

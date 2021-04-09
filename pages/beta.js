@@ -1,18 +1,71 @@
-import React, { useEffect, useState } from 'react'
-import castArray from 'lodash/castArray'
+import React, { useCallback, useState } from 'react'
 import Header from '../components/Beta/Header'
 import Page from '../components/CoverageMap/Page'
 import dynamic from 'next/dynamic'
 import { Client } from '@helium/http'
 import MetaTags from '../components/AppLayout/MetaTags'
 import InfoBox from '../components/Beta/InfoBox'
+import useToggle from '../utils/useToggle'
+import MapLayersBox from '../components/Beta/MapLayersBox'
+import MapControls from '../components/Beta/MapControls'
+import { haversineDistance } from '../utils/location'
+
+const MAX_WITNESS_DISTANCE_THRESHOLD = 200
 
 const Map = dynamic(() => import('../components/Beta/CoverageMap'), {
   ssr: false,
   loading: () => <div />,
 })
 
-const Coverage = (props) => {
+async function getWitnesses(hotspotid) {
+  const witnesses = await fetch(
+    `https://api.helium.io/v1/hotspots/${hotspotid}/witnesses`,
+  )
+    .then((res) => res.json())
+    .then((json) => json.data.filter((w) => !(w.address === hotspotid)))
+  return witnesses
+}
+
+const Coverage = () => {
+  const [showInfoBox, toggleShowInfoBox, setShowInfoBox] = useToggle(true)
+  const [showMapLayers, toggleShowMapLayers, setShowMapLayers] = useToggle(
+    false,
+  )
+  const [currentPosition, setCurrentPosition] = useState()
+  const [loadingCurrentPosition, setLoadingCurrentPosition] = useState(false)
+  const [selectedHotspot, setSelectedHotspot] = useState()
+  const [layer, setLayer] = useState(null)
+
+  const requestCurrentPosition = useCallback(() => {
+    setLoadingCurrentPosition(true)
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setCurrentPosition(position)
+        setLoadingCurrentPosition(false)
+      },
+      (error) => {
+        console.error(error)
+        setLoadingCurrentPosition(false)
+      },
+    )
+  }, [])
+
+  const handleSelectHotspot = useCallback(async (hotspot) => {
+    const fetchedWitnesses = await getWitnesses(hotspot.address)
+    const filteredWitnesses = fetchedWitnesses.filter(
+      (w) =>
+        haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <=
+        MAX_WITNESS_DISTANCE_THRESHOLD,
+    )
+    setSelectedHotspot({ ...hotspot, witnesses: filteredWitnesses })
+    setShowInfoBox(true)
+  }, [])
+
+  const handleSelectLayer = useCallback((layer) => {
+    setLayer(layer)
+    setShowMapLayers(false)
+  }, [])
+
   return (
     <Page>
       <MetaTags
@@ -25,8 +78,36 @@ const Coverage = (props) => {
       />
       <title>Helium Network - Coverage</title>
       <Header activeNav="coverage" />
-      <Map />
-      <InfoBox />
+      <Map
+        currentPosition={currentPosition}
+        selectedHotspot={selectedHotspot}
+        selectHotspot={handleSelectHotspot}
+        showInfoBox={showInfoBox}
+        layer={layer}
+      />
+      <InfoBox
+        showInfoBox={showInfoBox}
+        toggleShowInfoBox={toggleShowInfoBox}
+        showMapLayers={showMapLayers}
+        toggleShowMapLayers={toggleShowMapLayers}
+        selectedHotspot={selectedHotspot}
+      />
+      <MapLayersBox
+        showInfoBox={showInfoBox}
+        toggleShowInfoBox={toggleShowInfoBox}
+        showMapLayers={showMapLayers}
+        toggleShowMapLayers={toggleShowMapLayers}
+        layer={layer}
+        setLayer={handleSelectLayer}
+      />
+      <MapControls
+        showInfoBox={showInfoBox}
+        toggleShowInfoBox={toggleShowInfoBox}
+        showMapLayers={showMapLayers}
+        toggleShowMapLayers={toggleShowMapLayers}
+        requestCurrentPosition={requestCurrentPosition}
+        loadingCurrentPosition={loadingCurrentPosition}
+      />
     </Page>
   )
 }

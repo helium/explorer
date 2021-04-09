@@ -28,7 +28,7 @@ function Market({
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 2,
-      maximumFractionDigits: 4,
+      maximumFractionDigits: 2,
     },
   )
 
@@ -174,15 +174,7 @@ function Market({
           <Col xs={24} md={6}>
             <Widget
               title="Market Cap"
-              value={(market.price * stats.circulatingSupply).toLocaleString(
-                'en-US',
-                {
-                  style: 'currency',
-                  currency: 'USD',
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 0,
-                },
-              )}
+              value={marketCapString(market.price, stats.circulatingSupply)}
               tooltip="Based on data provided by CoinGecko"
               footer="View more"
               href="https://www.coingecko.com/en/coins/helium"
@@ -192,6 +184,19 @@ function Market({
       </Content>
     </AppLayout>
   )
+}
+
+const marketCapString = (price, supply) => {
+  const cap = price * supply
+
+  const BILLION = 1_000_000_000
+  const MILLION = 1_000_000
+
+  if (cap >= BILLION) {
+    return ['$', round(cap / BILLION, 3), 'B'].join('')
+  }
+
+  return ['$', round(cap / MILLION, 3), 'M'].join('')
 }
 
 export async function getStaticProps() {

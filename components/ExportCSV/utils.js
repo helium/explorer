@@ -44,6 +44,22 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
         }
       })
     }
+    case 'rewards_v2': {
+      return txn.rewards.map(({ type, gateway, amount }) => {
+        const amountObject = new Balance(
+          amount.integerBalance,
+          CurrencyType.networkToken,
+        )
+        return {
+          'Received Quantity': amountObject.toString(8).slice(0, -4),
+          'Received From': 'Helium Network',
+          'Received Currency': 'HNT',
+          Tag: 'mined',
+          Hotspot: gateway ? animalHash(gateway) : '',
+          'Reward Type': type,
+        }
+      })
+    }
     case 'payment_v1': {
       const amountObject = new Balance(
         txn.amount.integerBalance,

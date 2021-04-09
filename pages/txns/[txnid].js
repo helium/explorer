@@ -21,7 +21,7 @@ import {
   PaymentV1,
   PaymentV2,
   PocReceiptsV1,
-  RewardsV1,
+  Rewards,
   StateChannelCloseV1,
   StateChannelOpenV1,
   PocRequestV1,
@@ -49,7 +49,9 @@ const txnView = (txn) => {
     case 'poc_receipts_v1':
       return <PocReceiptsV1 txn={txn} />
     case 'rewards_v1':
-      return <RewardsV1 txn={txn} />
+      return <Rewards txn={txn} />
+    case 'rewards_v2':
+      return <Rewards txn={txn} />
     case 'consensus_group_v1':
       return <ConsensusGroupV1 txn={txn} />
     case 'state_channel_close_v1':
@@ -70,7 +72,7 @@ const txnView = (txn) => {
 }
 
 const rewardChart = (txn) => {
-  if (txn.type === 'rewards_v1') {
+  if (txn.type === 'rewards_v1' || txn.type === 'rewards_v2') {
     const res = []
     if (txn.rewards.length > 0) {
       txn.rewards.forEach((t) => {
@@ -143,7 +145,7 @@ const TxnView = ({ txn }) => {
   const transactionMetaTags = getMetaTagsForTransaction(txn)
 
   const txnTotalAmountObject =
-    txn.type === 'rewards_v1' &&
+    (txn.type === 'rewards_v1' || txn.type === 'rewards_v2') &&
     new Balance(txn.totalAmount.integerBalance, CurrencyType.networkToken)
 
   const [transactions, setTransactions] = useState()
@@ -224,7 +226,7 @@ const TxnView = ({ txn }) => {
                   <a>{txn.height}</a>
                 </Link>
               </p>
-              {txn.type === 'rewards_v1' && (
+              {(txn.type === 'rewards_v1' || txn.type === 'rewards_v2') && (
                 <p style={{ color: '#FFC769' }}>
                   <WalletOutlined
                     style={{ color: '#FFC769', marginRight: 6 }}
@@ -234,7 +236,7 @@ const TxnView = ({ txn }) => {
               )}
             </div>
 
-            {txn.type === 'rewards_v1' && (
+            {(txn.type === 'rewards_v1' || txn.type === 'rewards_v2') && (
               <div>
                 <PieChart data={rewardChart(txn)} />
               </div>

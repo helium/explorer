@@ -145,7 +145,6 @@ const HotspotView = ({ hotspot }) => {
               </p>
             </div>
           )}
-
           <Row className="px-5 sm:px-0 pb-4 sm:pb-8">
             <div className="flex justify-start items-start pr-5">
               <div className="w-full">

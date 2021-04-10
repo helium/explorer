@@ -1,5 +1,9 @@
 const { Client, Network } = require('@helium/http')
 const geoJSON = require('geojson')
+const ColorHash = require('color-hash')
+
+// const colorHash = new ColorHash()
+const colorHash = new ColorHash({ saturation: 0.5 })
 
 const MAX_HOTSPOTS_TO_FETCH = 200000
 
@@ -12,7 +16,15 @@ const toGeoJSON = (hotspots) =>
 const toGeoJSONv2 = (hotspots) =>
   geoJSON.parse(hotspots, {
     Point: ['lat', 'lng'],
-    include: ['address', 'owner', 'location', 'status', 'blockAdded'],
+    include: [
+      'address',
+      'owner',
+      'location',
+      'status',
+      'blockAdded',
+      'ownerColor',
+      'rewardScale',
+    ],
   })
 
 const getCoverage = async () => {
@@ -57,6 +69,7 @@ const getCoverageV2 = async () => {
         .filter(Boolean)
         .join(', '),
       status: h.status.online,
+      ownerColor: colorHash.hex(h.owner),
     }))
 
   return toGeoJSONv2(hotspotsWithLocation)

@@ -35,12 +35,12 @@ const InfoBox = ({ title, visible = true, toggleVisible, children }) => {
   return (
     <div
       className={classNames(
-        'fixed left-0 md:left-10 md:top-0 bottom-0 md:m-auto w-full md:w-120 h-3/5',
+        'fixed left-0 z-20 md:left-10 md:top-0 bottom-0 md:m-auto w-full md:w-120 h-3/5 transform-gpu transition-transform duration-200 ease-in-ou',
         {
-          hidden: !visible,
-          'md:block': !visible,
+          // 'translate-y-full': !visible,
         },
       )}
+      style={{ transform: `translateY(${visible ? 0 : 120}%)` }}
     >
       <div className="absolute flex justify-between w-full -top-16 p-4 md:px-0">
         <span className="text-white text-3xl font-semibold">{title}</span>

@@ -18,10 +18,9 @@ const MapControls = ({
   return (
     <div
       className={classNames(
-        'fixed right-0 bottom-0 p-4 md:p-8 grid grid-flow-row gap-3',
+        'fixed right-0 bottom-0 p-4 md:p-8 grid grid-flow-row gap-3 transform-gpu transition-transform duration-300 ease-in-out',
         {
-          hidden: showInfoBox || showMapLayers,
-          'md:grid': !showMapLayers,
+          'translate-x-20': showMapLayers,
         },
       )}
     >

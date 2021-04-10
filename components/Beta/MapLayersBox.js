@@ -2,10 +2,17 @@ import classNames from 'classnames'
 import Image from 'next/image'
 import { useCallback } from 'react'
 
-const Layer = ({ title, onClick }) => (
+const Layer = ({ title, onClick, active = false }) => (
   <div className="flex flex-col items-center cursor-pointer" onClick={onClick}>
     <div className="bg-gray-500 w-20 h-20 rounded-xl mb-1" />
-    <span className="text-sm text-gray-800">{title}</span>
+    <span
+      className={classNames('text-sm', {
+        'text-navy-400 font-semibold': active,
+        'text-gray-800': !active,
+      })}
+    >
+      {title}
+    </span>
   </div>
 )
 
@@ -17,7 +24,7 @@ const MapLayersBox = ({
 }) => {
   const handleClick = useCallback(
     (clickedLayer) => () => {
-      if (layer !== null) {
+      if (layer === clickedLayer) {
         setLayer(null)
         return
       }
@@ -29,9 +36,12 @@ const MapLayersBox = ({
 
   return (
     <div
-      className={classNames('fixed bottom-0 bg-white w-full p-4', {
-        hidden: !showMapLayers,
-      })}
+      className={classNames(
+        'fixed bottom-0 bg-white w-full p-4 z-10 transform-gpu transition-transform duration-300 ease-in-out',
+        {
+          'translate-y-96': !showMapLayers,
+        },
+      )}
     >
       <div className="absolute flex justify-end w-full -top-14 left-0 px-4 md:px-0">
         <div
@@ -42,10 +52,27 @@ const MapLayersBox = ({
         </div>
       </div>
       <div className="text-base font-medium mb-3">Map Layers</div>
-      <div className="grid grid-flow-col">
-        <Layer title="New Hotspots" onClick={handleClick('offline')} />
-        <Layer title="Reward Scales" onClick={handleClick('offline')} />
-        <Layer title="Offline" onClick={handleClick('offline')} />
+      <div className="grid grid-cols-3 gap-4 md:grid-flow-col md:auto-cols-fr">
+        <Layer
+          title="New Hotspots"
+          onClick={handleClick('added')}
+          active={layer === 'added'}
+        />
+        <Layer
+          title="Reward Scales"
+          onClick={handleClick('rewardScale')}
+          active={layer === 'rewardScale'}
+        />
+        <Layer
+          title="Owner"
+          onClick={handleClick('owner')}
+          active={layer === 'owner'}
+        />
+        <Layer
+          title="Offline"
+          onClick={handleClick('offline')}
+          active={layer === 'offline'}
+        />
       </div>
     </div>
   )

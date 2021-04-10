@@ -67,7 +67,7 @@ const Coverage = () => {
   }, [])
 
   return (
-    <Page>
+    <Page className="overflow-hidden">
       <MetaTags
         title={'Coverage Map'}
         description={`View an interactive map of the Helium network and all the hotspots currently active around the world`}

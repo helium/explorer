@@ -108,6 +108,19 @@ const Coverage = () => {
         requestCurrentPosition={requestCurrentPosition}
         loadingCurrentPosition={loadingCurrentPosition}
       />
+
+      <style jsx global>{`
+        #__next,
+        #app,
+        #app article {
+          height: 100%;
+        }
+
+        html,
+        body {
+          overscroll-behavior: none;
+        }
+      `}</style>
     </Page>
   )
 }

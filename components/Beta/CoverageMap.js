@@ -141,7 +141,7 @@ const CoverageMap = ({
   return (
     <Mapbox
       style="mapbox://styles/petermain/ckmwdn50a1ebk17o3h5e6wwui"
-      className="h-screen w-screen overflow-hidden"
+      className="h-full w-screen overflow-hidden"
       fitBounds={bounds}
       fitBoundsOptions={fitBoundsOptions}
       onStyleLoad={(mapInstance) => {

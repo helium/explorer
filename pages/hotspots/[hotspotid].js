@@ -269,7 +269,12 @@ const HotspotView = ({ hotspot }) => {
           }}
           classes="mx-auto pb-5 mt-0"
         >
-          <ActivityList type="hotspot" address={hotspot.address} />
+          {/* <ActivityList type="hotspot" address={hotspot.address} /> */}
+          <div className="bg-white flex items-center justify-center p-5">
+            <p className="text-gray-700 p-0 m-0">
+              Activity list is temporarily disabled
+            </p>
+          </div>
         </Content>
       </div>
 
@@ -287,7 +292,12 @@ const HotspotView = ({ hotspot }) => {
           }}
         >
           <TabPane tab="Activity" key="1" style={{ paddingBottom: 50 }}>
-            <ActivityList type="hotspot" address={hotspot.address} />
+            {/* <ActivityList type="hotspot" address={hotspot.address} /> */}
+            <div className="bg-white flex items-center justify-center p-5">
+              <p className="text-gray-700 p-0 m-0">
+                Activity list is temporarily disabled
+              </p>
+            </div>
           </TabPane>
           <TabPane tab="Witnesses" key="2" style={{ paddingBottom: 50 }}>
             <WitnessesList

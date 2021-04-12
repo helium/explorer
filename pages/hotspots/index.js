@@ -1,5 +1,5 @@
 import React from 'react'
-import Client from '@helium/http'
+import Client, { Network } from '@helium/http'
 import countBy from 'lodash/countBy'
 import AppLayout from '../../components/AppLayout'
 import HotspotChart from '../../components/Hotspots/HotspotChart'
@@ -141,7 +141,7 @@ const Hotspots = ({
 }
 
 export async function getStaticProps() {
-  const client = new Client()
+  const client = new Client(Network.staging)
   const stats = await fetchStats()
   const hotspots = await (await client.hotspots.list()).take(100000)
 

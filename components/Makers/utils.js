@@ -47,7 +47,7 @@ export const getMakersData = async () => {
 
       if (maker.address !== DEPRECATED_HELIUM_BURN_ADDR) {
         const txnCountsRes = await fetch(
-          `https://api.helium.io/v1/accounts/${maker.address}/activity/count?filter_types=add_gateway_v1,assert_location_v1,token_burn_v1`,
+          `https://api.helium.wtf/v1/accounts/${maker.address}/activity/count?filter_types=add_gateway_v1,assert_location_v1,token_burn_v1`,
         )
         const txnCounts = await txnCountsRes.json()
         assertLocationTxns = txnCounts.data['assert_location_v1']

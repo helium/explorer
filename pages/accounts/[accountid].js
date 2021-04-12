@@ -242,11 +242,16 @@ const AccountView = ({ account }) => {
           hotspots={hotspots}
         />
         <BeaconsList type="account" address={account.address} />
-        <ActivityList
+        <div className="bg-white flex items-center justify-center p-5">
+          <p className="text-gray-700 p-0 m-0">
+            Activity list is temporarily disabled
+          </p>
+        </div>{' '}
+        {/* <ActivityList
           type="account"
           address={account.address}
           hotspots={hotspots}
-        />
+        /> */}
       </Content>
     </AppLayout>
   )

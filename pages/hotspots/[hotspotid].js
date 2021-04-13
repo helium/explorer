@@ -239,7 +239,7 @@ const HotspotView = ({ hotspot }) => {
       >
         <RewardSummary rewardsLoading={rewardsLoading} rewards={rewards} />
       </Content>
-      <div className="hidden sm:block">
+      {/* <div className="hidden sm:block">
         <Content
           style={{
             maxWidth: 850,
@@ -271,35 +271,36 @@ const HotspotView = ({ hotspot }) => {
         >
           <ActivityList type="hotspot" address={hotspot.address} />
         </Content>
-      </div>
+      </div> */}
 
       <Content
         style={{
           maxWidth: 850,
         }}
-        classes="mx-auto mt-5 pb-24 block sm:hidden"
+        classes="mx-auto mt-5 pb-24 zblock zsm:hidden"
       >
         <Tabs
           className=""
+          defaultActiveKey="1"
           centered
           style={{
             background: 'white',
           }}
         >
-          <TabPane tab="Activity" key="1" style={{ paddingBottom: 50 }}>
-            <ActivityList type="hotspot" address={hotspot.address} />
-          </TabPane>
-          <TabPane tab="Witnesses" key="2" style={{ paddingBottom: 50 }}>
+          <TabPane tab="Witnesses" key="1" style={{ paddingBottom: 50 }}>
             <WitnessesList
               witnessesLoading={witnessesLoading}
               witnesses={witnesses}
             />
           </TabPane>
-          <TabPane tab="Nearby Hotspots" key="3" style={{ paddingBottom: 50 }}>
+          <TabPane tab="Nearby Hotspots" key="2" style={{ paddingBottom: 50 }}>
             <NearbyHotspotsList
               nearbyHotspotsLoading={nearbyHotspotsLoading}
               nearbyHotspots={nearbyHotspots}
             />
+          </TabPane>
+          <TabPane tab="Activity" key="3" style={{ paddingBottom: 50 }}>
+            <ActivityList type="hotspot" address={hotspot.address} />
           </TabPane>
         </Tabs>
       </Content>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Typography, Descriptions, Tooltip } from 'antd'
+import { Typography, Descriptions, Tooltip, Tabs } from 'antd'
 import Client from '@helium/http'
 import AppLayout, { Content } from '../../components/AppLayout'
 import ActivityList from '../../components/ActivityList'
@@ -23,6 +23,7 @@ import BeaconsList from '../../components/Beacons/BeaconsList'
 import { getMakerName } from '../../components/Makers/utils'
 
 const { Title } = Typography
+const { TabPane } = Tabs
 
 const AccountView = ({ account }) => {
   const dcBalanceObject = new Balance(
@@ -236,17 +237,32 @@ const AccountView = ({ account }) => {
           marginTop: 0,
         }}
       >
-        <HotspotsList
-          rewardsLoading={rewardsLoading}
-          hotspotsLoading={hotspotsLoading}
-          hotspots={hotspots}
-        />
-        <BeaconsList type="account" address={account.address} />
-        <ActivityList
-          type="account"
-          address={account.address}
-          hotspots={hotspots}
-        />
+        <Tabs
+          className=""
+          defaultActiveKey="1"
+          centered
+          style={{
+            background: 'white',
+          }}
+        >
+          <TabPane tab="Hotspots" key="1" style={{ paddingBottom: 50 }}>
+            <HotspotsList
+              rewardsLoading={rewardsLoading}
+              hotspotsLoading={hotspotsLoading}
+              hotspots={hotspots}
+            />
+          </TabPane>
+          <TabPane tab="Beacons" key="2" style={{ paddingBottom: 50 }}>
+            <BeaconsList type="account" address={account.address} />
+          </TabPane>
+          <TabPane tab="Activity" key="3" style={{ paddingBottom: 50 }}>
+            <ActivityList
+              type="account"
+              address={account.address}
+              hotspots={hotspots}
+            />
+          </TabPane>
+        </Tabs>
       </Content>
     </AppLayout>
   )

@@ -102,3 +102,11 @@ export const isRelay = (listen_addrs) => {
     listen_addrs[0].match('p2p-circuit')
   )
 }
+
+export const formatGain = (gain) => {
+  return `${gain / 10} dBi`
+}
+
+export const formatElevation = (elevation) => {
+  return `${elevation} m`
+}

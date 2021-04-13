@@ -144,7 +144,14 @@ class ActivityList extends Component {
                       { label: 'Payment (v1)', value: 'payment_v1' },
                       { label: 'Payment (v2)', value: 'payment_v2' },
                       { label: 'Add Hotspot', value: 'add_gateway_v1' },
-                      { label: 'Assert Location', value: 'assert_location_v1' },
+                      {
+                        label: 'Assert Location (v1)',
+                        value: 'assert_location_v1',
+                      },
+                      {
+                        label: 'Assert Location (v2)',
+                        value: 'assert_location_v2',
+                      },
                       {
                         label: 'Packets Transferred',
                         value: 'state_channel_close_v1',

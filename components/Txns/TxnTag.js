@@ -48,7 +48,12 @@ const CONFIG = {
   assert_location_v1: {
     color: '#16CEE8',
     name: 'Assert Location',
-    tooltip: 'Assert Location Transaction',
+    tooltip: 'Assert Location Transaction (v1)',
+  },
+  assert_location_v2: {
+    color: '#16CEE8',
+    name: 'Assert Location',
+    tooltip: 'Assert Location Transaction (v2)',
   },
   add_gateway_v1: {
     color: '#8597BB',

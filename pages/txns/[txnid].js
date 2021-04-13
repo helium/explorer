@@ -18,6 +18,7 @@ import classNames from 'classnames'
 import {
   Fallback,
   AssertLocationV1,
+  AssertLocationV2,
   PaymentV1,
   PaymentV2,
   PocReceiptsV1,
@@ -64,6 +65,8 @@ const txnView = (txn) => {
       return <AddGatewayV1 txn={txn} />
     case 'assert_location_v1':
       return <AssertLocationV1 txn={txn} />
+    case 'assert_location_v2':
+      return <AssertLocationV2 txn={txn} />
     case 'token_burn_v1':
       return <TokenBurnV1 txn={txn} />
     default:
@@ -290,6 +293,14 @@ export async function getStaticProps({ params }) {
   let txn
   try {
     txn = await client.transactions.get(txnid)
+    if (txn.location) {
+      // TODO: add to helium-js
+      const geoRes = await fetch(
+        `https://api.helium.io/v1/locations/${txn.location}`,
+      )
+      const { data: geocode } = await geoRes.json()
+      txn.geocode = geocode
+    }
   } catch (e) {
     if (e.response.status === 404) {
       // serve the 404 page if it's a 404 error, otherwise it'll throw the appropriate server error

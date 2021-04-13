@@ -109,7 +109,9 @@ const WitnessesList = ({ witnesses, witnessesLoading }) => {
             padding: '20px',
           }}
         >
-          Hotspot has no recent witnesses
+          {witnessesLoading
+            ? 'Witnesses are loading'
+            : 'Hotspot has no recent witnesses'}
         </p>
       ) : (
         <span className="ant-table-styling-override">

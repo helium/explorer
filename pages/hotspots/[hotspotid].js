@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Row, Typography, Checkbox, Tooltip, Tabs } from 'antd'
+import { Row, Typography, Tooltip, Tabs } from 'antd'
 import { Client } from '@helium/http'
 import Fade from 'react-reveal/Fade'
 import Checklist from '../../components/Hotspots/Checklist/Checklist'
@@ -18,13 +18,8 @@ import {
   formatLocation,
   isRelay,
 } from '../../components/Hotspots/utils'
-import sumBy from 'lodash/sumBy'
 import ReactCountryFlag from 'react-country-flag'
-import classNames from 'classnames'
-import {
-  fetchNearbyHotspots,
-  getHotspotRewardsBuckets,
-} from '../../data/hotspots'
+import { fetchNearbyHotspots } from '../../data/hotspots'
 import RewardScalePill from '../../components/Hotspots/RewardScalePill'
 import StatusPill from '../../components/Hotspots/StatusPill'
 import RelayPill from '../../components/Hotspots/RelayPill'
@@ -42,20 +37,16 @@ const { TabPane } = Tabs
 
 const HotspotView = ({ hotspot }) => {
   const [witnesses, setWitnesses] = useState([])
-  const [rewards, setRewards] = useState([])
   const [nearbyHotspots, setNearbyHotspots] = useState([])
 
   const [witnessesLoading, setWitnessesLoading] = useState(true)
-  const [rewardsLoading, setRewardsLoading] = useState(true)
   const [nearbyHotspotsLoading, setNearbyHotspotsLoading] = useState(true)
 
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setLoading(
-      !(!witnessesLoading && !rewardsLoading && !nearbyHotspotsLoading),
-    )
-  }, [witnessesLoading, rewardsLoading, nearbyHotspotsLoading])
+    setLoading(!(!witnessesLoading && !nearbyHotspotsLoading))
+  }, [witnessesLoading, nearbyHotspotsLoading])
 
   useEffect(() => {
     const hotspotid = hotspot.address
@@ -78,35 +69,8 @@ const HotspotView = ({ hotspot }) => {
       setNearbyHotspotsLoading(false)
     }
 
-    async function getHotspotRewards() {
-      setRewardsLoading(true)
-      const sixtyDays = await getHotspotRewardsBuckets(hotspotid, 60, 'day')
-      const fourtyEightHours = await getHotspotRewardsBuckets(
-        hotspotid,
-        48,
-        'hour',
-      )
-      // const oneYear = await getHotspotRewardsBuckets(hotspotid, 365, 'day')
-      setRewards({
-        buckets: {
-          days: sixtyDays,
-          hours: fourtyEightHours,
-          // year: oneYear,
-        },
-        day: sumBy(sixtyDays.slice(0, 1), 'total'),
-        previousDay: sumBy(sixtyDays.slice(1, 2), 'total'),
-        week: sumBy(sixtyDays.slice(0, 7), 'total'),
-        previousWeek: sumBy(sixtyDays.slice(7, 14), 'total'),
-        month: sumBy(sixtyDays.slice(0, 30), 'total'),
-        previousMonth: sumBy(sixtyDays.slice(30, 60), 'total'),
-        // oneYear: sumBy(oneYear, 'total'),
-      })
-      setRewardsLoading(false)
-    }
-
     getWitnesses()
     getNearbyHotspots()
-    getHotspotRewards()
   }, [])
 
   return (
@@ -204,7 +168,6 @@ const HotspotView = ({ hotspot }) => {
             hotspot={hotspot}
             witnesses={witnesses}
             loading={loading}
-            rewardsLoading={rewardsLoading}
             witnessesLoading={witnessesLoading}
           />
         </div>
@@ -234,30 +197,28 @@ const HotspotView = ({ hotspot }) => {
         style={{
           maxWidth: 850,
         }}
-        classes="mx-auto mt-5 pb-24"
+        classes="mx-auto mt-5 pb-10"
       >
         <Tabs
           className=""
           defaultActiveKey="1"
           centered
-          style={{
-            background: 'white',
-          }}
+          tabBarStyle={{ margin: 0, backgroundColor: 'white' }}
         >
-          <TabPane tab="Rewards" key="1" style={{ paddingBottom: 50 }}>
-            <RewardSummary rewardsLoading={rewardsLoading} rewards={rewards} />
-          </TabPane>
-          <TabPane tab="Witnesses" key="2" style={{ paddingBottom: 50 }}>
+          <TabPane tab="Witnesses" key="1" style={{ paddingBottom: 50 }}>
             <WitnessesList
               witnessesLoading={witnessesLoading}
               witnesses={witnesses}
             />
           </TabPane>
-          <TabPane tab="Nearby Hotspots" key="3" style={{ paddingBottom: 50 }}>
+          <TabPane tab="Nearby Hotspots" key="2" style={{ paddingBottom: 50 }}>
             <NearbyHotspotsList
               nearbyHotspotsLoading={nearbyHotspotsLoading}
               nearbyHotspots={nearbyHotspots}
             />
+          </TabPane>
+          <TabPane tab="Rewards" key="3" style={{ paddingBottom: 50 }}>
+            <RewardSummary hotspot={hotspot} />
           </TabPane>
           <TabPane tab="Activity" key="4" style={{ paddingBottom: 50 }}>
             <ActivityList type="hotspot" address={hotspot.address} />

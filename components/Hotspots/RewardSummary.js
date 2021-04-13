@@ -1,7 +1,12 @@
+import { useEffect, useState } from 'react'
 import RewardSummaryCard from './RewardSummaryCard'
 import { sumBy } from 'lodash'
+import { getHotspotRewardsBuckets } from '../../data/hotspots'
 
-const RewardSummary = ({ rewards, rewardsLoading }) => {
+const RewardSummary = ({ hotspot }) => {
+  const [rewards, setRewards] = useState([])
+  const [rewardsLoading, setRewardsLoading] = useState(true)
+
   let yearBuckets = []
   if (!rewardsLoading) yearBuckets = rewards.buckets.year
 
@@ -25,6 +30,37 @@ const RewardSummary = ({ rewards, rewardsLoading }) => {
     return tempArray
   }
   // const monthBucketsForYear = splitYearIntoMonths(yearBuckets)
+
+  useEffect(() => {
+    const hotspotid = hotspot.address
+
+    async function getHotspotRewards() {
+      setRewardsLoading(true)
+      const sixtyDays = await getHotspotRewardsBuckets(hotspotid, 60, 'day')
+      const fourtyEightHours = await getHotspotRewardsBuckets(
+        hotspotid,
+        48,
+        'hour',
+      )
+      // const oneYear = await getHotspotRewardsBuckets(hotspotid, 365, 'day')
+      setRewards({
+        buckets: {
+          days: sixtyDays,
+          hours: fourtyEightHours,
+          // year: oneYear,
+        },
+        day: sumBy(sixtyDays.slice(0, 1), 'total'),
+        previousDay: sumBy(sixtyDays.slice(1, 2), 'total'),
+        week: sumBy(sixtyDays.slice(0, 7), 'total'),
+        previousWeek: sumBy(sixtyDays.slice(7, 14), 'total'),
+        month: sumBy(sixtyDays.slice(0, 30), 'total'),
+        previousMonth: sumBy(sixtyDays.slice(30, 60), 'total'),
+        // oneYear: sumBy(oneYear, 'total'),
+      })
+      setRewardsLoading(false)
+    }
+    getHotspotRewards()
+  }, [])
 
   return (
     <div

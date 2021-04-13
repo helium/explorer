@@ -239,45 +239,11 @@ const HotspotView = ({ hotspot }) => {
       >
         <RewardSummary rewardsLoading={rewardsLoading} rewards={rewards} />
       </Content>
-      {/* <div className="hidden sm:block">
-        <Content
-          style={{
-            maxWidth: 850,
-          }}
-          classes="mx-auto pb-5 mt-0"
-        >
-          <WitnessesList
-            witnessesLoading={witnessesLoading}
-            witnesses={witnesses}
-          />
-        </Content>
-
-        <Content
-          style={{
-            maxWidth: 850,
-          }}
-          classes="mx-auto pb-5 mt-0"
-        >
-          <NearbyHotspotsList
-            nearbyHotspotsLoading={nearbyHotspotsLoading}
-            nearbyHotspots={nearbyHotspots}
-          />
-        </Content>
-        <Content
-          style={{
-            maxWidth: 850,
-          }}
-          classes="mx-auto pb-5 mt-0"
-        >
-          <ActivityList type="hotspot" address={hotspot.address} />
-        </Content>
-      </div> */}
-
       <Content
         style={{
           maxWidth: 850,
         }}
-        classes="mx-auto mt-5 pb-24 zblock zsm:hidden"
+        classes="mx-auto mt-5 pb-24"
       >
         <Tabs
           className=""

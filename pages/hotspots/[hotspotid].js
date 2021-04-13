@@ -230,15 +230,6 @@ const HotspotView = ({ hotspot }) => {
           </Content>
         </div>
       </div>
-
-      <Content
-        style={{
-          maxWidth: 850,
-        }}
-        classes="mx-auto pb-5 mt-0"
-      >
-        <RewardSummary rewardsLoading={rewardsLoading} rewards={rewards} />
-      </Content>
       <Content
         style={{
           maxWidth: 850,
@@ -253,19 +244,22 @@ const HotspotView = ({ hotspot }) => {
             background: 'white',
           }}
         >
-          <TabPane tab="Witnesses" key="1" style={{ paddingBottom: 50 }}>
+          <TabPane tab="Rewards" key="1" style={{ paddingBottom: 50 }}>
+            <RewardSummary rewardsLoading={rewardsLoading} rewards={rewards} />
+          </TabPane>
+          <TabPane tab="Witnesses" key="2" style={{ paddingBottom: 50 }}>
             <WitnessesList
               witnessesLoading={witnessesLoading}
               witnesses={witnesses}
             />
           </TabPane>
-          <TabPane tab="Nearby Hotspots" key="2" style={{ paddingBottom: 50 }}>
+          <TabPane tab="Nearby Hotspots" key="3" style={{ paddingBottom: 50 }}>
             <NearbyHotspotsList
               nearbyHotspotsLoading={nearbyHotspotsLoading}
               nearbyHotspots={nearbyHotspots}
             />
           </TabPane>
-          <TabPane tab="Activity" key="3" style={{ paddingBottom: 50 }}>
+          <TabPane tab="Activity" key="4" style={{ paddingBottom: 50 }}>
             <ActivityList type="hotspot" address={hotspot.address} />
           </TabPane>
         </Tabs>

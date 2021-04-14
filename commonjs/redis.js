@@ -1,10 +1,8 @@
 const Redis = require('ioredis')
 
 let redisClient
-if (process.env.REDIS_URL) {
-  redisClient = new Redis(process.env.REDIS_URL, {
-    tls: { rejectUnauthorized: false },
-  })
+if (process.env.REDIS_CLOUD_URL) {
+  redisClient = new Redis(process.env.REDIS_CLOUD_URL)
 }
 
 const setCache = async (key, value) => {

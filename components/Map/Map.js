@@ -1,11 +1,11 @@
 import { useEffect, useState, useCallback, useRef, useMemo, memo } from 'react'
 import { useMediaQuery } from 'react-responsive'
-import ReactMapboxGl, { GeoJSONLayer, Image } from 'react-mapbox-gl'
+import ReactMapboxGl from 'react-mapbox-gl'
 import fetch from 'node-fetch'
 import { useAsync } from 'react-async-hooks'
 import { findBounds } from '../../utils/location'
-import CoverageLayer from './CoverageMap/CoverageLayer'
-import HotspotDetailLayer from './CoverageMap/HotspotDetailLayer'
+import CoverageLayer from './Layers/CoverageLayer'
+import HotspotDetailLayer from './Layers/HotspotDetailLayer'
 
 const maxZoom = 14
 const minZoom = 2
@@ -54,7 +54,7 @@ const CoverageMap = ({
   )
 
   useAsync(async () => {
-    const response = await fetch('/api/v2/coverage')
+    const response = await fetch('/api/coverage')
     const coverage = await response.json()
     setCoverage(coverage)
   }, [])

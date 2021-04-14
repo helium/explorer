@@ -1,5 +1,5 @@
-import Router from 'next/router'
 import withGA from 'next-ga'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 import '../styles/index.css'
 import '../styles/Explorer.css'
@@ -8,16 +8,20 @@ import NProgress from 'nprogress' //nprogress module
 import 'nprogress/nprogress.css' //styles of nprogress
 
 //Binding events.
-Router.events.on('routeChangeStart', () => NProgress.start())
-Router.events.on('routeChangeComplete', () => NProgress.done())
-Router.events.on('routeChangeError', () => NProgress.done())
+// Router.events.on('routeChangeStart', () => NProgress.start())
+// Router.events.on('routeChangeComplete', () => NProgress.done())
+// Router.events.on('routeChangeError', () => NProgress.done())
 
 function MyApp({ Component, pageProps }) {
   return (
     // this #app div is used to increase the specificity of Tailwind's utility classes, making it easier to override styles without resorting to !important
-    <div id="app">
-      <Component {...pageProps} />
-      {/* <script src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js"></script> */}
+    <div id="app" suppressHydrationWarning>
+      {typeof window === 'undefined' ? null : (
+        <Router>
+          <Component {...pageProps} />
+        </Router>
+      )}
+      <script src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js"></script>
     </div>
   )
 }
@@ -34,4 +38,5 @@ function MyApp({ Component, pageProps }) {
 //   return { ...appProps }
 // }
 
-export default withGA('G-258DXEWXY4', Router)(MyApp)
+// export default withGA('G-258DXEWXY4', Router)(MyApp)
+export default MyApp

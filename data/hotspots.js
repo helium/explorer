@@ -23,7 +23,7 @@ export const useLatestHotspots = (initialData, count = 20) => {
 }
 
 export const fetchHotspotsStats = async () => {
-  const response = await fetch('/api/v2/metrics/hotspots')
+  const response = await fetch('/api/metrics/hotspots')
   return response.json()
 }
 

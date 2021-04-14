@@ -2,7 +2,7 @@ const {
   redisClient,
   timestampRange,
   aggregation,
-} = require('../../../../commonjs/redisTimeSeries')
+} = require('../../../commonjs/redisTimeSeries')
 
 export default async function handler(req, res) {
   const redis = redisClient()

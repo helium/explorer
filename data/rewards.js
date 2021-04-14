@@ -8,14 +8,12 @@ export const getHotspotRewardsBuckets = async (
   numBack,
   bucketType,
 ) => {
-  console.log('get rewards', address, numBack, bucketType)
   const list = await client.hotspot(address).rewards.sum.list({
     minTime: `-${numBack} ${bucketType}`,
     maxTime: new Date(),
     bucket: bucketType,
   })
   const rewards = await list.take(100000)
-  console.log('got rewards', rewards)
   return rewards.reverse()
 }
 

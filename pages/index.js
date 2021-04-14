@@ -1,18 +1,21 @@
 import React, { useCallback, useState } from 'react'
-import Header from '../components/Beta/Header'
-import Page from '../components/CoverageMap/Page'
+import { Switch, Route, useHistory, useRouteMatch } from 'react-router-dom'
 import dynamic from 'next/dynamic'
+import Header from '../components/Nav/Header'
+import Page from '../components/CoverageMap/Page'
 import MetaTags from '../components/AppLayout/MetaTags'
-import InfoBox from '../components/Beta/InfoBox'
 import useToggle from '../utils/useToggle'
-import MapLayersBox from '../components/Beta/MapLayersBox'
-import MapControls from '../components/Beta/MapControls'
+import MapLayersBox from '../components/Map/MapLayersBox'
+import MapControls from '../components/Map/MapControls'
 import { haversineDistance } from '../utils/location'
 import { useHotspotsStats } from '../data/hotspots'
+import OverviewInfoBox from '../components/InfoBox/OverviewInfoBox'
+import HotspotsInfoBox from '../components/InfoBox/HotspotsInfoBox'
+import HotspotDetailsInfoBox from '../components/InfoBox/HotspotDetailsInfoBox'
 
 const MAX_WITNESS_DISTANCE_THRESHOLD = 200
 
-const Map = dynamic(() => import('../components/Beta/CoverageMap'), {
+const Map = dynamic(() => import('../components/Map/Map'), {
   ssr: false,
   loading: () => <div />,
 })
@@ -27,6 +30,9 @@ async function getWitnesses(hotspotid) {
 }
 
 const Coverage = () => {
+  const history = useHistory()
+  const matchHotspotDetails = useRouteMatch('/hotspots/:address')
+
   const [showInfoBox, toggleShowInfoBox, setShowInfoBox] = useToggle(true)
   const [showMapLayers, toggleShowMapLayers, setShowMapLayers] = useToggle(
     false,
@@ -51,21 +57,28 @@ const Coverage = () => {
     )
   }, [])
 
-  const handleSelectHotspot = useCallback(async (hotspot) => {
-    const fetchedWitnesses = await getWitnesses(hotspot.address)
-    const filteredWitnesses = fetchedWitnesses.filter(
-      (w) =>
-        haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <=
-        MAX_WITNESS_DISTANCE_THRESHOLD,
-    )
-    setSelectedHotspot({ ...hotspot, witnesses: filteredWitnesses })
-    setShowInfoBox(true)
-  }, [])
+  const handleSelectHotspot = useCallback(
+    async (hotspot) => {
+      const fetchedWitnesses = await getWitnesses(hotspot.address)
+      const filteredWitnesses = fetchedWitnesses.filter(
+        (w) =>
+          haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <=
+          MAX_WITNESS_DISTANCE_THRESHOLD,
+      )
+      setSelectedHotspot({ ...hotspot, witnesses: filteredWitnesses })
+      setShowInfoBox(true)
+      history.push(`/hotspots/${hotspot.address}`)
+    },
+    [history, setShowInfoBox],
+  )
 
-  const handleSelectLayer = useCallback((layer) => {
-    setLayer(layer)
-    setShowMapLayers(false)
-  }, [])
+  const handleSelectLayer = useCallback(
+    (layer) => {
+      setLayer(layer)
+      setShowMapLayers(false)
+    },
+    [setShowMapLayers],
+  )
 
   return (
     <Page className="overflow-hidden">
@@ -81,19 +94,34 @@ const Coverage = () => {
       <Header activeNav="coverage" />
       <Map
         currentPosition={currentPosition}
-        selectedHotspot={selectedHotspot}
+        selectedHotspot={matchHotspotDetails ? selectedHotspot : undefined}
         selectHotspot={handleSelectHotspot}
         showInfoBox={showInfoBox}
         layer={layer}
       />
-      <InfoBox
-        showInfoBox={showInfoBox}
-        toggleShowInfoBox={toggleShowInfoBox}
-        showMapLayers={showMapLayers}
-        toggleShowMapLayers={toggleShowMapLayers}
-        selectedHotspot={selectedHotspot}
-        hotspotsStats={hotspotsStats}
-      />
+      <Switch>
+        <Route path="/hotspots/:address">
+          <HotspotDetailsInfoBox
+            hotspot={selectedHotspot}
+            visible={showInfoBox}
+            toggleVisible={toggleShowInfoBox}
+          />
+        </Route>
+        <Route path="/hotspots">
+          <HotspotsInfoBox
+            stats={hotspotsStats}
+            visible={showInfoBox}
+            toggleVisible={toggleShowInfoBox}
+          />
+        </Route>
+        <Route path="/">
+          <OverviewInfoBox
+            stats={hotspotsStats}
+            visible={showInfoBox}
+            toggleVisible={toggleShowInfoBox}
+          />
+        </Route>
+      </Switch>
       <MapLayersBox
         showInfoBox={showInfoBox}
         toggleShowInfoBox={toggleShowInfoBox}
@@ -128,18 +156,3 @@ const Coverage = () => {
 }
 
 export default Coverage
-
-// export async function getStaticProps() {
-//   const client = new Client()
-//   const stats = await client.stats.get()
-//   const count = stats.counts.hotspots
-
-//   let props = {
-//     count,
-//   }
-
-//   return {
-//     props,
-//     revalidate: 60,
-//   }
-// }

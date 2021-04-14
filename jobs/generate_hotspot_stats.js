@@ -2,7 +2,7 @@ const { Client, Network } = require('@helium/http')
 const { countBy, round, uniqBy } = require('lodash')
 const { sub, compareAsc, getUnixTime } = require('date-fns')
 const { Sample } = require('redis-time-series-ts')
-const { redisClient } = require('../../commonjs/redisTimeSeries')
+const { redisClient } = require('../commonjs/redisTimeSeries')
 
 const backfillHotspotsCount = async () => {
   const redis = redisClient()

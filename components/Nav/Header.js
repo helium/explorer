@@ -1,8 +1,8 @@
 import React from 'react'
-import Link from 'next/link'
+import { Link } from 'react-router-dom'
 
 const NavLink = ({ href, title }) => (
-  <Link href={href}>
+  <Link to={href}>
     <a className="text-white font-medium text-base">{title}</a>
   </Link>
 )
@@ -22,7 +22,7 @@ const MenuButton = () => (
 const Header = ({ activeNav }) => {
   return (
     <header className="fixed w-full z-10 p-4 flex items-center justify-between">
-      <Link href="/">
+      <Link to="/">
         <a>
           <img src="/images/logo-sm.svg" />
         </a>

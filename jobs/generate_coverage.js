@@ -1,8 +1,8 @@
 const { setCache } = require('../commonjs/redis')
-const { getCoverage } = require('../commonjs/coverage')
+const { getCoverageV2 } = require('../commonjs/coverage')
 
 const generateCoverage = async () => {
-  await setCache('coverage', await getCoverage())
+  await setCache('coverageV2', await getCoverageV2())
 
   return process.exit(0)
 }

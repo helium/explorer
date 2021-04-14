@@ -241,9 +241,7 @@ const AccountView = ({ account }) => {
           className=""
           defaultActiveKey="1"
           centered
-          style={{
-            background: 'white',
-          }}
+          tabBarStyle={{ margin: 0, backgroundColor: 'white' }}
         >
           <TabPane tab="Hotspots" key="1" style={{ paddingBottom: 50 }}>
             <HotspotsList

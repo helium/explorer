@@ -2,13 +2,13 @@ import React, { useCallback, useState } from 'react'
 import Header from '../components/Beta/Header'
 import Page from '../components/CoverageMap/Page'
 import dynamic from 'next/dynamic'
-import { Client } from '@helium/http'
 import MetaTags from '../components/AppLayout/MetaTags'
 import InfoBox from '../components/Beta/InfoBox'
 import useToggle from '../utils/useToggle'
 import MapLayersBox from '../components/Beta/MapLayersBox'
 import MapControls from '../components/Beta/MapControls'
 import { haversineDistance } from '../utils/location'
+import { useHotspotsStats } from '../data/hotspots'
 
 const MAX_WITNESS_DISTANCE_THRESHOLD = 200
 
@@ -35,6 +35,7 @@ const Coverage = () => {
   const [loadingCurrentPosition, setLoadingCurrentPosition] = useState(false)
   const [selectedHotspot, setSelectedHotspot] = useState()
   const [layer, setLayer] = useState(null)
+  const { hotspotsStats } = useHotspotsStats()
 
   const requestCurrentPosition = useCallback(() => {
     setLoadingCurrentPosition(true)
@@ -91,6 +92,7 @@ const Coverage = () => {
         showMapLayers={showMapLayers}
         toggleShowMapLayers={toggleShowMapLayers}
         selectedHotspot={selectedHotspot}
+        hotspotsStats={hotspotsStats}
       />
       <MapLayersBox
         showInfoBox={showInfoBox}
@@ -127,17 +129,17 @@ const Coverage = () => {
 
 export default Coverage
 
-export async function getStaticProps() {
-  const client = new Client()
-  const stats = await client.stats.get()
-  const count = stats.counts.hotspots
+// export async function getStaticProps() {
+//   const client = new Client()
+//   const stats = await client.stats.get()
+//   const count = stats.counts.hotspots
 
-  let props = {
-    count,
-  }
+//   let props = {
+//     count,
+//   }
 
-  return {
-    props,
-    revalidate: 60,
-  }
-}
+//   return {
+//     props,
+//     revalidate: 60,
+//   }
+// }

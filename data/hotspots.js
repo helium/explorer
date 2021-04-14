@@ -22,6 +22,23 @@ export const useLatestHotspots = (initialData, count = 20) => {
   }
 }
 
+export const fetchHotspotsStats = async () => {
+  const response = await fetch('/api/v2/metrics/hotspots')
+  return response.json()
+}
+
+export const useHotspotsStats = (initialData) => {
+  const { data, error } = useSWR('latestHotspots', fetchHotspotsStats, {
+    initialData,
+    refreshInterval: 60000,
+  })
+  return {
+    hotspotsStats: data,
+    isLoading: !error && !data,
+    isError: error,
+  }
+}
+
 const MAX = 100000
 const client = new Client()
 

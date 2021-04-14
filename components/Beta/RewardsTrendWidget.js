@@ -1,20 +1,23 @@
 import { LineChart, Line, YAxis, ResponsiveContainer } from 'recharts'
 
-import { first, last } from 'lodash'
+import { first, last, maxBy, minBy, sumBy } from 'lodash'
 
-const TrendWidget = ({ title, series }) => {
-  const yMin = first(series || [])?.value || 0
-  const yMax = last(series || [])?.value || 0
+const RewardsTrendWidget = ({ title, series }) => {
+  const firstValue = first(series || [])?.total || 0
+  const lastValue = last(series || [])?.total || 0
+  const yMin = minBy(series || [], 'total')?.total || 0
+  const yMax = maxBy(series || [], 'total')?.total || 0
+  const valueSum = sumBy(series || [], 'total')
 
   return (
     <div className="bg-gray-200 p-3 rounded-lg col-span-2 flex">
       <div className="w-1/3">
         <div className="text-gray-600 text-sm whitespace-nowrap">{title}</div>
         <div className="text-3xl font-medium my-1.5 tracking-tighter">
-          {yMax.toLocaleString()}
+          {valueSum.toLocaleString()}
         </div>
         <div className="text-green-500 text-sm font-medium">
-          +{(yMax - yMin).toLocaleString()}
+          +{(lastValue - firstValue).toLocaleString()}
         </div>
       </div>
       <div className="w-full p-4 pr-0 relative">
@@ -23,7 +26,7 @@ const TrendWidget = ({ title, series }) => {
             <YAxis hide domain={[yMin, yMax]} />
             <Line
               type="monotone"
-              dataKey="value"
+              dataKey="total"
               stroke="#474DFF"
               strokeWidth={3}
               dot={false}
@@ -38,4 +41,4 @@ const TrendWidget = ({ title, series }) => {
   )
 }
 
-export default TrendWidget
+export default RewardsTrendWidget

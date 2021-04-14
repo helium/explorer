@@ -16,7 +16,7 @@ const NavItem = ({ title, active = false }) => (
 
 const PillNavbar = () => {
   return (
-    <div className="flex md:hidden mt-5 px-2 overflow-x-scroll no-scrollbar">
+    <div className="flex md:hidden mt-5 px-2 overflow-x-scroll justify-center no-scrollbar">
       <NavItem title="Overview" />
       <NavItem title="Hotspots" active />
       <NavItem title="Beacons" />

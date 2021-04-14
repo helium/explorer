@@ -35,7 +35,7 @@ const InfoBox = ({ title, visible = true, toggleVisible, children }) => {
   return (
     <div
       className={classNames(
-        'fixed left-0 z-20 md:left-10 md:top-0 bottom-0 md:m-auto w-full md:w-120 h-3/5 transform-gpu transition-transform duration-200 ease-in-ou',
+        'fixed left-0 z-20 md:left-10 md:top-0 bottom-0 md:m-auto w-full md:w-120 h-3/5 md:h-2/5 md:bottom transform-gpu transition-transform duration-200 ease-in-ou shadow-2xl',
         {
           // 'translate-y-full': !visible,
         },
@@ -61,7 +61,7 @@ const HotspotsInfoBox = () => (
       <PillNavbar />
       <TabNavbar />
     </div>
-    <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll">
+    <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
       <TrendWidget title="Hotspots" value="32,597" change="+0.3%" />
       <Widget title="% Online" value="71.4%" change="+0.3%" />
       <Widget title="Hotspot Owners" value="28,510" change="+0.3%" />
@@ -77,7 +77,6 @@ const HotspotsInfoBox = () => (
         subtitle={<FlagLocation geocode={geocode} />}
         span={2}
       />
-      <div className="col-span-2 pb-1" />
     </div>
   </>
 )
@@ -97,7 +96,6 @@ const HotspotDetailsInfoBox = () => (
       <Widget title="Sync Status" value="Synced" />
       <Widget title="7D Beacons" value="54" change="+2" />
       <Widget title="7D Avg Witnesses" value="6.3" change="+0.5%" />
-      <div className="col-span-2 pb-1" />
     </div>
   </>
 )

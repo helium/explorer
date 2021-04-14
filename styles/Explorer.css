@@ -19,6 +19,10 @@ body {
   }
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 #nprogress .spinner {
   display: block !important;
   position: absolute !important;

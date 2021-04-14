@@ -2,9 +2,9 @@ import classNames from 'classnames'
 import Image from 'next/image'
 import { useCallback } from 'react'
 
-const Layer = ({ title, onClick, active = false }) => (
+const Layer = ({ title, image, onClick, active = false }) => (
   <div className="flex flex-col items-center cursor-pointer" onClick={onClick}>
-    <div className="bg-gray-500 w-20 h-20 rounded-xl mb-1" />
+    <img src={image} />
     <span
       className={classNames('text-sm', {
         'text-navy-400 font-semibold': active,
@@ -52,26 +52,30 @@ const MapLayersBox = ({
         </div>
       </div>
       <div className="text-base font-medium mb-3">Map Layers</div>
-      <div className="grid grid-cols-3 gap-4 md:grid-flow-col md:auto-cols-fr">
+      <div className="flex justify-center">
         <Layer
           title="New Hotspots"
           onClick={handleClick('added')}
           active={layer === 'added'}
+          image="/images/newhotspots.svg"
         />
         <Layer
           title="Reward Scales"
           onClick={handleClick('rewardScale')}
           active={layer === 'rewardScale'}
+          image="/images/rewardscale.svg"
         />
         <Layer
           title="Owner"
           onClick={handleClick('owner')}
           active={layer === 'owner'}
+          image="/images/owner.svg"
         />
         <Layer
           title="Offline"
           onClick={handleClick('offline')}
           active={layer === 'offline'}
+          image="/images/offline.svg"
         />
       </div>
     </div>

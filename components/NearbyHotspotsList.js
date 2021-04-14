@@ -62,7 +62,9 @@ const NearbyHotspotsList = ({ nearbyHotspots, nearbyHotspotsLoading }) => {
             padding: '20px',
           }}
         >
-          Hotspot has no nearby hotspots (within 2km)
+          {nearbyHotspotsLoading
+            ? 'Nearby hotspots are loading'
+            : 'Hotspot has no nearby hotspots (within 2km)'}
         </p>
       ) : (
         <span className="ant-table-styling-override">

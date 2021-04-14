@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Client from '@helium/http'
+import Client, { Network } from '@helium/http'
 import { Table, Card, Button, Tooltip, Checkbox, Typography } from 'antd'
 import { FilterOutlined } from '@ant-design/icons'
 import Timestamp from 'react-timestamp'
@@ -40,7 +40,7 @@ class ActivityList extends Component {
   state = initialState
 
   async componentDidMount() {
-    this.client = new Client()
+    this.client = new Client(Network.production, { retry: 0 })
     this.loadData()
   }
 

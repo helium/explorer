@@ -1,3 +1,4 @@
+import '../wdyr'
 import withGA from 'next-ga'
 import { BrowserRouter as Router } from 'react-router-dom'
 
@@ -6,6 +7,7 @@ import '../styles/Explorer.css'
 
 import NProgress from 'nprogress' //nprogress module
 import 'nprogress/nprogress.css' //styles of nprogress
+import { StateProvider } from '../store/store'
 
 //Binding events.
 // Router.events.on('routeChangeStart', () => NProgress.start())
@@ -18,7 +20,9 @@ function MyApp({ Component, pageProps }) {
     <div id="app" suppressHydrationWarning>
       {typeof window === 'undefined' ? null : (
         <Router>
-          <Component {...pageProps} />
+          <StateProvider>
+            <Component {...pageProps} />
+          </StateProvider>
         </Router>
       )}
       <script src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js"></script>

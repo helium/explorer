@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import Image from 'next/image'
 import { useCallback } from 'react'
+import useMapLayer from '../../hooks/useMapLayer'
 
 const Layer = ({ title, onClick, active = false }) => (
   <div className="flex flex-col items-center cursor-pointer" onClick={onClick}>
@@ -16,22 +17,24 @@ const Layer = ({ title, onClick, active = false }) => (
   </div>
 )
 
-const MapLayersBox = ({
-  showMapLayers,
-  toggleShowMapLayers,
-  layer,
-  setLayer,
-}) => {
+const MapLayersBox = () => {
+  const {
+    showMapLayers,
+    setMapLayer,
+    mapLayer,
+    toggleMapLayers,
+  } = useMapLayer()
+
   const handleClick = useCallback(
     (clickedLayer) => () => {
-      if (layer === clickedLayer) {
-        setLayer(null)
+      if (mapLayer === clickedLayer) {
+        setMapLayer(null)
         return
       }
 
-      setLayer(clickedLayer)
+      setMapLayer(clickedLayer)
     },
-    [layer, setLayer],
+    [mapLayer, setMapLayer],
   )
 
   return (
@@ -46,7 +49,7 @@ const MapLayersBox = ({
       <div className="absolute flex justify-end w-full -top-14 left-0 px-4 md:px-0">
         <div
           className="md:hidden transform rotate-180"
-          onClick={toggleShowMapLayers}
+          onClick={toggleMapLayers}
         >
           <Image src="/images/circle-arrow.svg" width={35} height={35} />
         </div>
@@ -56,22 +59,22 @@ const MapLayersBox = ({
         <Layer
           title="New Hotspots"
           onClick={handleClick('added')}
-          active={layer === 'added'}
+          active={mapLayer === 'added'}
         />
         <Layer
           title="Reward Scales"
           onClick={handleClick('rewardScale')}
-          active={layer === 'rewardScale'}
+          active={mapLayer === 'rewardScale'}
         />
         <Layer
           title="Owner"
           onClick={handleClick('owner')}
-          active={layer === 'owner'}
+          active={mapLayer === 'owner'}
         />
         <Layer
           title="Offline"
           onClick={handleClick('offline')}
-          active={layer === 'offline'}
+          active={mapLayer === 'offline'}
         />
       </div>
     </div>

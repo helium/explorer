@@ -1,19 +1,22 @@
 import classNames from 'classnames'
 import Image from 'next/image'
 import { useCallback } from 'react'
+import useGeolocation from '../../hooks/useGeolocation'
+import useInfoBox from '../../hooks/useInfoBox'
+import useMapLayer from '../../hooks/useMapLayer'
 
-const MapControls = ({
-  showInfoBox,
-  toggleShowInfoBox,
-  showMapLayers,
-  toggleShowMapLayers,
-  requestCurrentPosition,
-  loadingCurrentPosition,
-}) => {
+const MapControls = () => {
+  const { toggleInfoBox } = useInfoBox()
+  const { showMapLayers, toggleMapLayers } = useMapLayer()
+  const {
+    isLoading: isLoadingCurrentPosition,
+    requestCurrentPosition,
+  } = useGeolocation()
+
   const handleLocationClick = useCallback(() => {
-    if (loadingCurrentPosition) return
+    if (isLoadingCurrentPosition) return
     requestCurrentPosition()
-  }, [loadingCurrentPosition, requestCurrentPosition])
+  }, [isLoadingCurrentPosition, requestCurrentPosition])
 
   return (
     <div
@@ -26,7 +29,7 @@ const MapControls = ({
     >
       <div
         className="cursor-pointer md:hidden bg-navy-400 w-10 h-10 rounded-full flex items-center justify-center shadow-md"
-        onClick={toggleShowInfoBox}
+        onClick={toggleInfoBox}
       >
         <Image
           src="/images/arrow.svg"
@@ -37,7 +40,7 @@ const MapControls = ({
       </div>
       <div
         className="cursor-pointer bg-white w-10 h-10 rounded-full flex items-center justify-center shadow-md"
-        onClick={toggleShowMapLayers}
+        onClick={toggleMapLayers}
       >
         <Image src="/images/layer.svg" width={20} height={20} />
       </div>
@@ -45,7 +48,7 @@ const MapControls = ({
         className="cursor-pointer bg-white w-10 h-10 rounded-full flex items-center justify-center shadow-md"
         onClick={handleLocationClick}
       >
-        {loadingCurrentPosition ? (
+        {isLoadingCurrentPosition ? (
           <Spinner />
         ) : (
           <Image src="/images/location.svg" width={20} height={20} />

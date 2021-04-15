@@ -6,12 +6,13 @@ import FlagLocation from '../Common/FlagLocation'
 import PillNavbar from '../Nav/PillNavbar'
 import TabNavbar from '../Nav/TabNavbar'
 import { useHotspotsStats } from '../../data/hotspots'
+import I18n from '../../copy/I18n'
 
 const HotspotsInfoBox = () => {
   const { hotspotsStats: stats } = useHotspotsStats()
 
   return (
-    <InfoBox title="Hotspots">
+    <InfoBox title={<I18n t="hotspots.title" />}>
       <div className="w-full bg-white z-10 rounded-t-xl">
         <PillNavbar />
         <TabNavbar />

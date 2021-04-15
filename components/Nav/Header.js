@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-i18n'
 
 const NavLink = ({ href, title }) => (
   <Link to={href}>

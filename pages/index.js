@@ -16,6 +16,9 @@ const Map = dynamic(() => import('../components/Map/Map'), {
 })
 
 const Index = () => {
+  // Match locales with regular expression containing each locale separated by `|`
+  const base = '/:locale(en|fr)?'
+
   return (
     <Page className="overflow-hidden">
       <MetaTags
@@ -30,13 +33,13 @@ const Index = () => {
       <Header activeNav="coverage" />
       <Map />
       <Switch>
-        <Route path="/hotspots/:address">
+        <Route path={`${base}/hotspots/:address`}>
           <HotspotDetailsInfoBox />
         </Route>
-        <Route path="/hotspots">
+        <Route path={`${base}/hotspots`}>
           <HotspotsInfoBox />
         </Route>
-        <Route path="/">
+        <Route path={base}>
           <OverviewInfoBox />
         </Route>
       </Switch>

@@ -17,6 +17,7 @@ import WitnessesTable from '../components/Beacons/WitnessesTable'
 import { h3ToGeo } from 'h3-js'
 import { calculateDistance, formatDistance } from '../utils/distance'
 const { Text } = Typography
+import classNames from 'classnames'
 
 const initialState = {
   txns: [],
@@ -189,7 +190,7 @@ class ActivityList extends Component {
                   marginTop: '0.5rem',
                   fontSize: '14px',
                   color: 'rgba(0, 0, 0, 0.25)',
-                  padding: '20px',
+                  padding: '10px 20px',
                 }}
               >
                 {loading
@@ -202,7 +203,22 @@ class ActivityList extends Component {
               </h2>
               {errorFetching && (
                 <button
-                  className="px-3 py-1 mb-10 bg-gray-100 text-gray-700 font-sans border-gray-100 border rounded-md outline-none hover:bg-gray-200 focus:border-navy-400"
+                  className={classNames(
+                    'px-3',
+                    'py-1',
+                    'mb-10',
+                    'bg-gray-100',
+                    'cursor-pointer',
+                    'rounded-sm',
+                    'text-navy-800',
+                    'font-sans',
+                    'border-gray-400',
+                    'border',
+                    'outline-none',
+                    'border-solid',
+                    'hover:bg-gray-300',
+                    'focus:border-navy-400',
+                  )}
                   onClick={this.onRetryClicked}
                 >
                   Retry

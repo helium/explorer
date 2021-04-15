@@ -5,9 +5,14 @@ import Widget from '../Widgets/Widget'
 import FlagLocation from '../Common/FlagLocation'
 import PillNavbar from '../Nav/PillNavbar'
 import TabNavbar from '../Nav/TabNavbar'
+import I18n from '../../copy/I18n'
 
 const HotspotsInfoBox = ({ stats, visible = true, toggleVisible }) => (
-  <InfoBox title="Hotspots" visible={visible} toggleVisible={toggleVisible}>
+  <InfoBox
+    title={<I18n t="hotspots.title" />}
+    visible={visible}
+    toggleVisible={toggleVisible}
+  >
     <div className="w-full bg-white z-10 rounded-t-xl">
       <PillNavbar />
       <TabNavbar />

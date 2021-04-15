@@ -80,6 +80,9 @@ const Coverage = () => {
     [setShowMapLayers],
   )
 
+  // Match locales with regular expression containing each locale separated by `|`
+  const base = '/:locale(en|fr)?'
+
   return (
     <Page className="overflow-hidden">
       <MetaTags
@@ -100,21 +103,21 @@ const Coverage = () => {
         layer={layer}
       />
       <Switch>
-        <Route path="/hotspots/:address">
+        <Route path={`${base}/hotspots/:address`}>
           <HotspotDetailsInfoBox
             hotspot={selectedHotspot}
             visible={showInfoBox}
             toggleVisible={toggleShowInfoBox}
           />
         </Route>
-        <Route path="/hotspots">
+        <Route path={`${base}/hotspots`}>
           <HotspotsInfoBox
             stats={hotspotsStats}
             visible={showInfoBox}
             toggleVisible={toggleShowInfoBox}
           />
         </Route>
-        <Route path="/">
+        <Route path={base}>
           <OverviewInfoBox
             stats={hotspotsStats}
             visible={showInfoBox}

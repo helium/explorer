@@ -1,18 +1,50 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import animalHash from 'angry-purple-tiger'
+import { useAsync } from 'react-async-hooks'
+import { useParams } from 'react-router'
 import InfoBox from './InfoBox'
 import TabNavbar from '../Nav/TabNavbar'
 import RewardsTrendWidget from '../Widgets/RewardsTrendWidget'
 import Widget from '../Widgets/Widget'
 import { useHotspotRewards } from '../../data/rewards'
+import useSelectedHotspot from '../../hooks/useSelectedHotspot'
+import { fetchHotspot } from '../../data/hotspots'
 
-const HotspotDetailsInfoBox = ({ hotspot, visible, toggleVisible }) => {
+const HotspotDetailsRoute = () => {
+  const { address } = useParams()
+
+  const { selectedHotspot: hotspot, selectHotspot } = useSelectedHotspot()
+
+  useAsync(async () => {
+    if (!hotspot) {
+      const fetchedHotspot = await fetchHotspot(address)
+      selectHotspot(fetchedHotspot)
+    }
+  }, [hotspot, address])
+
+  if (!hotspot) return null
+
+  return <HotspotDetailsInfoBox />
+}
+
+const HotspotDetailsInfoBox = () => {
+  const {
+    selectedHotspot: hotspot,
+    clearSelectedHotspot,
+  } = useSelectedHotspot()
+
   const { rewards } = useHotspotRewards(hotspot.address)
 
   const title = useMemo(() => animalHash(hotspot.address), [hotspot])
 
+  useEffect(() => {
+    return () => {
+      clearSelectedHotspot()
+    }
+  }, [clearSelectedHotspot])
+
   return (
-    <InfoBox title={title} visible={visible} toggleVisible={toggleVisible}>
+    <InfoBox title={title}>
       <div className="w-full bg-white z-10 rounded-t-xl">
         <TabNavbar />
       </div>
@@ -32,4 +64,4 @@ const HotspotDetailsInfoBox = ({ hotspot, visible, toggleVisible }) => {
   )
 }
 
-export default HotspotDetailsInfoBox
+export default HotspotDetailsRoute

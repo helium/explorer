@@ -1906,10 +1906,10 @@
   dependencies:
     bignumber.js "^9.0.0"
 
-"@helium/http@^3.29.0":
-  version "3.29.0"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.29.0.tgz#87ed6e55492810fdfa23116084eb0012380755f8"
-  integrity sha512-usAfxoVqBpnVX+VMktgAj5yZz1NTDHVrR2zCwY8y9BwacWH2qZwjoohbsupqa84fThQklCagoTt6nSP340Z57A==
+"@helium/http@^3.31.0":
+  version "3.31.0"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.31.0.tgz#68c95326248ed0229d334dd7a45aa9df6e5821ca"
+  integrity sha512-MnHf2n4Ju0qsWois0+o/nlNpXAP5UBxtPx/ezzjkKSapzHwOAFynJ9PHL3xbye1phs8LdCsoRzfMxYIOFPrEyw==
   dependencies:
     "@helium/currency" "^3.25.1"
     axios "^0.21.1"

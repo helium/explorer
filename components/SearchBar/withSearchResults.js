@@ -1,11 +1,7 @@
 import React from 'react'
 import Client from '@helium/http'
 import { Address } from '@helium/crypto'
-import algoliasearch from 'algoliasearch'
 import debounce from 'lodash/debounce'
-
-const ALGOLIA_APP = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID
-const ALGOLIA_API_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY
 
 function isBase64Url(term) {
   return term.match(/^[A-Za-z0-9_-]+$/)
@@ -29,10 +25,6 @@ const withSearchResults = (WrappedComponent) => {
 
     componentDidMount() {
       this.client = new Client()
-
-      const algoliaClient = algoliasearch(ALGOLIA_APP, ALGOLIA_API_KEY)
-
-      this.hotspotsIndex = algoliaClient.initIndex('hotspots')
     }
 
     handleSearch = (term) => {
@@ -40,8 +32,7 @@ const withSearchResults = (WrappedComponent) => {
 
       const trimmedTerm = term.trim()
 
-      // just go ahead and fire off an algolia search
-      this.algoliaSearch(trimmedTerm)
+      this.searchHotspot(trimmedTerm)
 
       // if term is an integer, assume it's a block height
       if (isPositiveInt(trimmedTerm)) {
@@ -62,20 +53,35 @@ const withSearchResults = (WrappedComponent) => {
       if (Address.isValid(trimmedTerm)) {
         // account address
         this.searchAccount(trimmedTerm)
-        // hotspot address, but that's taken care of by algolia
+        // hotspot address
+        this.searchHotspotAddress(trimmedTerm)
       } else {
         this.setState({ accountResult: null })
       }
     }
 
-    algoliaSearch = debounce(
+    searchHotspot = debounce(
       async (term) => {
-        if (!term) {
+        try {
+          const list = await this.client.hotspots.search(term)
+          const hotspots = await list.take(20)
+          this.setState({ hotspotResults: hotspots })
+        } catch {
           this.setState({ hotspotResults: [] })
-          return
         }
-        const { hits: hotspotResults } = await this.hotspotsIndex.search(term)
-        this.setState({ hotspotResults })
+      },
+      200,
+      { trailing: true },
+    )
+
+    searchHotspotAddress = debounce(
+      async (term) => {
+        try {
+          const hotspot = await this.client.hotspots.get(term)
+          this.setState({ hotspotResults: [hotspot] })
+        } catch {
+          this.setState({ hotspotResults: [] })
+        }
       },
       200,
       { trailing: true },

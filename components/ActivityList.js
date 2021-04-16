@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Client from '@helium/http'
+import Client, { Network } from '@helium/http'
 import { Table, Card, Button, Tooltip, Checkbox, Typography } from 'antd'
 import { FilterOutlined } from '@ant-design/icons'
 import Timestamp from 'react-timestamp'
@@ -40,7 +40,7 @@ class ActivityList extends Component {
   state = initialState
 
   async componentDidMount() {
-    this.client = new Client()
+    this.client = new Client(Network.production, { retry: 0 })
     this.loadData()
   }
 
@@ -139,7 +139,8 @@ class ActivityList extends Component {
                 <p style={{ marginBottom: 20 }}>
                   <Checkbox.Group
                     options={[
-                      { label: 'Mining Rewards', value: 'rewards_v1' },
+                      { label: 'Mining Rewards (v1)', value: 'rewards_v1' },
+                      { label: 'Mining Rewards (v2)', value: 'rewards_v2' },
                       { label: 'Payment (v1)', value: 'payment_v1' },
                       { label: 'Payment (v2)', value: 'payment_v2' },
                       { label: 'Add Hotspot', value: 'add_gateway_v1' },
@@ -183,7 +184,10 @@ class ActivityList extends Component {
               scroll={{ x: true }}
               expandable={{
                 expandedRowRender: (record) => {
-                  if (record.type === 'rewards_v1') {
+                  if (
+                    record.type === 'rewards_v1' ||
+                    record.type === 'rewards_v2'
+                  ) {
                     return (
                       <span className="ant-table-override">
                         <Table
@@ -282,6 +286,7 @@ class ActivityList extends Component {
                 },
                 rowExpandable: (record) =>
                   record.type === 'rewards_v1' ||
+                  record.type === 'rewards_v2' ||
                   record.type === 'poc_receipts_v1',
               }}
             />
@@ -366,6 +371,8 @@ const columns = (ownerAddress) => {
         return <span>{txn.amount.toString(2)}</span>
 
       case 'rewards_v1':
+        return <span>{txn.totalAmount.toString(2)}</span>
+      case 'rewards_v2':
         return <span>{txn.totalAmount.toString(2)}</span>
       case 'poc_receipts_v1':
         let detailText = ''

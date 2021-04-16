@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Row, Typography, Checkbox, Tooltip, Tabs } from 'antd'
-import Client from '@helium/http'
+import { Row, Typography, Tooltip, Tabs } from 'antd'
+import { Client } from '@helium/http'
 import Fade from 'react-reveal/Fade'
 import Checklist from '../../components/Hotspots/Checklist/Checklist'
 import RewardSummary from '../../components/Hotspots/RewardSummary'
@@ -16,16 +16,14 @@ import animalHash from 'angry-purple-tiger'
 import {
   formatHotspotName,
   formatLocation,
+  isRelay,
 } from '../../components/Hotspots/utils'
-import sumBy from 'lodash/sumBy'
 import ReactCountryFlag from 'react-country-flag'
-import classNames from 'classnames'
-import {
-  fetchNearbyHotspots,
-  getHotspotRewardsBuckets,
-} from '../../data/hotspots'
+import { fetchNearbyHotspots } from '../../data/hotspots'
 import RewardScalePill from '../../components/Hotspots/RewardScalePill'
 import { getCoverageFromBounds } from '../../commonjs/coverage'
+import StatusPill from '../../components/Hotspots/StatusPill'
+import RelayPill from '../../components/Hotspots/RelayPill'
 
 const HotspotMapbox = dynamic(
   () => import('../../components/Hotspots/HotspotMapbox'),
@@ -40,13 +38,9 @@ const { TabPane } = Tabs
 
 const HotspotView = ({ hotspot }) => {
   const [witnesses, setWitnesses] = useState([])
-  const [activity, setActivity] = useState({})
-  const [rewards, setRewards] = useState([])
   const [nearbyHotspots, setNearbyHotspots] = useState([])
 
   const [witnessesLoading, setWitnessesLoading] = useState(true)
-  const [activityLoading, setActivityLoading] = useState(true)
-  const [rewardsLoading, setRewardsLoading] = useState(true)
   const [nearbyHotspotsLoading, setNearbyHotspotsLoading] = useState(true)
 
   const [loading, setLoading] = useState(true)
@@ -67,7 +61,6 @@ const HotspotView = ({ hotspot }) => {
         boundsSWLat,
         boundsSWLon,
       })
-      console.log('hello!!!')
       console.log(hotspotsInBounds)
       setNearbyHotspots(hotspotsInBounds.data)
       setNearbyHotspotsLoading(false)
@@ -97,18 +90,10 @@ const HotspotView = ({ hotspot }) => {
   }
 
   useEffect(() => {
-    setLoading(
-      !(
-        !witnessesLoading &&
-        !activityLoading &&
-        !rewardsLoading &&
-        !nearbyHotspotsLoading
-      ),
-    )
-  }, [witnessesLoading, activityLoading, rewardsLoading, nearbyHotspotsLoading])
+    setLoading(!(!witnessesLoading && !nearbyHotspotsLoading))
+  }, [witnessesLoading, nearbyHotspotsLoading])
 
   useEffect(() => {
-    const client = new Client()
     const hotspotid = hotspot.address
 
     async function getWitnesses() {
@@ -129,83 +114,9 @@ const HotspotView = ({ hotspot }) => {
       setNearbyHotspotsLoading(false)
     }
 
-    async function getHotspotActivity() {
-      setActivityLoading(true)
-      // Get most recent challenger transaction
-      const challengerTxnList = await client.hotspot(hotspotid).activity.list({
-        filterTypes: ['poc_request_v1'],
-      })
-      const challengerTxn = await challengerTxnList.take(1)
-
-      // Get most recent challengee transaction
-      const challengeeTxnList = await client.hotspot(hotspotid).activity.list({
-        filterTypes: ['poc_receipts_v1'],
-      })
-      const challengeeTxn = await challengeeTxnList.take(1)
-
-      // Get most recent rewards transactions to search for...
-      const rewardTxnsList = await client.hotspot(hotspotid).activity.list({
-        filterTypes: ['rewards_v1'],
-      })
-      const rewardTxns = await rewardTxnsList.take(200)
-
-      let witnessTxn = null
-      // most recent witness transaction
-      rewardTxns.some(function (txn) {
-        return txn.rewards.some(function (txnReward) {
-          if (txnReward.type === 'poc_witnesses') {
-            witnessTxn = txn
-            return
-          }
-        })
-      })
-      let dataTransferTxn = null
-      // most recent data credit transaction
-      rewardTxns.some(function (txn) {
-        return txn.rewards.some(function (txnReward) {
-          if (txnReward.type === 'data_credits') {
-            dataTransferTxn = txn
-            return
-          }
-        })
-      })
-      const hotspotActivity = {
-        challengerTxn: challengerTxn.length === 1 ? challengerTxn[0] : null,
-        challengeeTxn: challengeeTxn.length === 1 ? challengeeTxn[0] : null,
-        witnessTxn: witnessTxn,
-        dataTransferTxn: dataTransferTxn,
-      }
-      setActivity(hotspotActivity)
-      setActivityLoading(false)
-    }
-
-    async function getHotspotRewards() {
-      setRewardsLoading(true)
-      const sixtyDays = await getHotspotRewardsBuckets(hotspotid, 60, 'day')
-      const fourtyEightHours = await getHotspotRewardsBuckets(
-        hotspotid,
-        48,
-        'hour',
-      )
-      const oneYear = await getHotspotRewardsBuckets(hotspotid, 365, 'day')
-      setRewards({
-        buckets: { days: sixtyDays, hours: fourtyEightHours, year: oneYear },
-        day: sumBy(sixtyDays.slice(0, 1), 'total'),
-        previousDay: sumBy(sixtyDays.slice(1, 2), 'total'),
-        week: sumBy(sixtyDays.slice(0, 7), 'total'),
-        previousWeek: sumBy(sixtyDays.slice(7, 14), 'total'),
-        month: sumBy(sixtyDays.slice(0, 30), 'total'),
-        previousMonth: sumBy(sixtyDays.slice(30, 60), 'total'),
-        oneYear: sumBy(oneYear, 'total'),
-      })
-      setRewardsLoading(false)
-    }
-
     getWitnesses()
     getNearbyHotspots()
-    getHotspotActivity()
-    getHotspotRewards()
-  }, [hotspot.address])
+  }, [])
 
   return (
     <AppLayout
@@ -244,62 +155,17 @@ const HotspotView = ({ hotspot }) => {
               </p>
             </div>
           )}
-
           <Row className="px-5 sm:px-0 pb-4 sm:pb-8">
             <div className="flex justify-start items-start pr-5">
               <div className="w-full">
                 <Fade delay={500}>
                   <div className="flex flex-row items-center justify-start p-0 pb-2 w-auto">
-                    <div className="flex flex-row items-center justify-center py-0.5 px-2.5 bg-navy-600 rounded-full">
-                      <Tooltip
-                        placement="top"
-                        title={`Hotspot is ${hotspot.status.online}`}
-                      >
-                        <div
-                          className={classNames(
-                            'h-2.5',
-                            'w-2.5',
-                            'rounded-full',
-                            {
-                              'bg-green-500':
-                                hotspot.status.online === 'online',
-                              'bg-red-400': hotspot.status.online === 'offline',
-                            },
-                          )}
-                        />
-                      </Tooltip>
-                      <Tooltip
-                        placement="top"
-                        title={`${
-                          hotspot.status.online === 'online' &&
-                          hotspot.status.height === null
-                            ? 'Beginning to sync'
-                            : hotspot.status.online === 'online' &&
-                              hotspot.status.height !== null
-                            ? `Syncing block ${hotspot.status?.height.toLocaleString()}. `
-                            : 'Hotspot is not syncing. '
-                        }${
-                          hotspot.status.online === 'online' &&
-                          hotspot.status.height !== null
-                            ? `Blocks remaining: ${(
-                                hotspot.block - hotspot.status?.height
-                              ).toLocaleString()}.`
-                            : ``
-                        }`}
-                      >
-                        <p className="text-gray-600 ml-2 mb-0">
-                          {hotspot.status.online === 'offline'
-                            ? `Offline`
-                            : hotspot.block - hotspot.status?.height >= 500 ||
-                              hotspot.status.height === null
-                            ? `Syncing`
-                            : `Synced`}
-                        </p>
-                      </Tooltip>
-                    </div>
-
+                    <StatusPill hotspot={hotspot} />
                     {hotspot.rewardScale && (
                       <RewardScalePill hotspot={hotspot} className="ml-2.5" />
+                    )}
+                    {isRelay(hotspot.status.listen_addrs) && (
+                      <RelayPill className="ml-2.5" />
                     )}
                   </div>
                 </Fade>
@@ -343,15 +209,12 @@ const HotspotView = ({ hotspot }) => {
             </div>
           </Row>
         </div>
-        <div className="hidden md:block max-w-4xl mt-10 pb-12 mx-auto ">
+        <div className={`hidden md:block max-w-4xl mx-auto`}>
           <Checklist
             hotspot={hotspot}
             witnesses={witnesses}
-            activity={activity}
             loading={loading}
-            rewardsLoading={rewardsLoading}
             witnessesLoading={witnessesLoading}
-            activityLoading={activityLoading}
           />
         </div>
         <div className="w-full bg-navy-600 px-5 md:px-8 py-5 text-center">
@@ -376,76 +239,35 @@ const HotspotView = ({ hotspot }) => {
           </Content>
         </div>
       </div>
-
       <Content
         style={{
           maxWidth: 850,
         }}
-        classes="mx-auto pb-5 mt-0"
-      >
-        <RewardSummary rewardsLoading={rewardsLoading} rewards={rewards} />
-      </Content>
-      <div className="hidden sm:block">
-        <Content
-          style={{
-            maxWidth: 850,
-          }}
-          classes="mx-auto pb-5 mt-0"
-        >
-          <WitnessesList
-            witnessesLoading={witnessesLoading}
-            witnesses={witnesses}
-          />
-        </Content>
-
-        <Content
-          style={{
-            maxWidth: 850,
-          }}
-          classes="mx-auto pb-5 mt-0"
-        >
-          <NearbyHotspotsList
-            nearbyHotspotsLoading={nearbyHotspotsLoading}
-            nearbyHotspots={nearbyHotspots}
-          />
-        </Content>
-        <Content
-          style={{
-            maxWidth: 850,
-          }}
-          classes="mx-auto pb-5 mt-0"
-        >
-          <ActivityList type="hotspot" address={hotspot.address} />
-        </Content>
-      </div>
-
-      <Content
-        style={{
-          maxWidth: 850,
-        }}
-        classes="mx-auto mt-5 pb-24 block sm:hidden"
+        classes="mx-auto mt-5 pb-10"
       >
         <Tabs
           className=""
+          defaultActiveKey="1"
           centered
-          style={{
-            background: 'white',
-          }}
+          tabBarStyle={{ margin: 0, backgroundColor: 'white' }}
         >
-          <TabPane tab="Activity" key="1" style={{ paddingBottom: 50 }}>
-            <ActivityList type="hotspot" address={hotspot.address} />
-          </TabPane>
-          <TabPane tab="Witnesses" key="2" style={{ paddingBottom: 50 }}>
+          <TabPane tab="Witnesses" key="1" style={{ paddingBottom: 50 }}>
             <WitnessesList
               witnessesLoading={witnessesLoading}
               witnesses={witnesses}
             />
           </TabPane>
-          <TabPane tab="Nearby Hotspots" key="3" style={{ paddingBottom: 50 }}>
+          <TabPane tab="Nearby Hotspots" key="2" style={{ paddingBottom: 50 }}>
             <NearbyHotspotsList
               nearbyHotspotsLoading={nearbyHotspotsLoading}
               nearbyHotspots={nearbyHotspots}
             />
+          </TabPane>
+          <TabPane tab="Rewards" key="3" style={{ paddingBottom: 50 }}>
+            <RewardSummary hotspot={hotspot} />
+          </TabPane>
+          <TabPane tab="Activity" key="4" style={{ paddingBottom: 50 }}>
+            <ActivityList type="hotspot" address={hotspot.address} />
           </TabPane>
         </Tabs>
       </Content>
@@ -469,6 +291,7 @@ export async function getServerSideProps({ params }) {
 
   return {
     props: {
+      key: hotspotid,
       hotspot: JSON.parse(JSON.stringify(hotspot)),
     },
   }

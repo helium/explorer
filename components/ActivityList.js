@@ -26,7 +26,6 @@ const initialState = {
   filtersOpen: false,
   showLoadMoreButton: true,
   errorFetching: false,
-  retry: false,
 }
 
 const MiniBeaconMap = dynamic(
@@ -39,6 +38,30 @@ const MiniBeaconMap = dynamic(
 
 const exportableEntities = ['account', 'hotspot']
 
+const RetryButton = ({ onClick }) => (
+  <button
+    className={classNames(
+      'px-3',
+      'py-1',
+      'mb-10',
+      'bg-gray-100',
+      'cursor-pointer',
+      'rounded-sm',
+      'text-navy-800',
+      'font-sans',
+      'border-gray-400',
+      'border',
+      'outline-none',
+      'border-solid',
+      'hover:bg-gray-300',
+      'focus:border-navy-400',
+    )}
+    onClick={onClick}
+  >
+    Retry
+  </button>
+)
+
 class ActivityList extends Component {
   state = initialState
 
@@ -47,11 +70,8 @@ class ActivityList extends Component {
     this.loadData()
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      prevProps.address !== this.props.address ||
-      prevState.retry !== this.state.retry
-    ) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.address !== this.props.address) {
       this.loadData()
     }
   }
@@ -96,7 +116,6 @@ class ActivityList extends Component {
         errorFetching: true,
         loading: false,
         loadingInitial: false,
-        txns: [],
       })
     }
   }
@@ -108,12 +127,13 @@ class ActivityList extends Component {
   onFiltersChanged = async (filters) => {
     this.list = await this.makeList(filters)
 
-    await this.setState({ txns: [] })
+    await this.setState({ txns: [], loading: true })
     this.loadMore()
   }
 
-  onRetryClicked = () => {
-    this.setState({ retry: true })
+  onRetry = () => {
+    this.setState({ errorFetching: false })
+    this.loadData()
   }
 
   render() {
@@ -201,29 +221,7 @@ class ActivityList extends Component {
                   ? 'Account has no activity'
                   : 'Hotspot has no activity'}
               </h2>
-              {errorFetching && (
-                <button
-                  className={classNames(
-                    'px-3',
-                    'py-1',
-                    'mb-10',
-                    'bg-gray-100',
-                    'cursor-pointer',
-                    'rounded-sm',
-                    'text-navy-800',
-                    'font-sans',
-                    'border-gray-400',
-                    'border',
-                    'outline-none',
-                    'border-solid',
-                    'hover:bg-gray-300',
-                    'focus:border-navy-400',
-                  )}
-                  onClick={this.onRetryClicked}
-                >
-                  Retry
-                </button>
-              )}
+              {errorFetching && <RetryButton onClick={this.onRetry} />}
             </div>
           ) : (
             <>

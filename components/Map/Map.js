@@ -45,6 +45,7 @@ const DESKTOP_PADDING = { top: 10, left: 600, right: 10, bottom: 10 }
 const CoverageMap = () => {
   const isDesktopOrLaptop = useMediaQuery({ minDeviceWidth: 1224 })
   const map = useRef()
+  const [styleLoaded, setStyledLoaded] = useState(false)
 
   const { showInfoBox } = useInfoBox()
   const { mapLayer } = useMapLayer()
@@ -88,10 +89,11 @@ const CoverageMap = () => {
   }, [selectedHotspot])
 
   const fitBoundsOptions = useMemo(() => {
-    if (isDesktopOrLaptop) return { padding: DESKTOP_PADDING, animate: true }
-    if (showInfoBox) return { padding: MOBILE_PADDING, animate: true }
-    return { padding: 10, animate: true }
-  }, [isDesktopOrLaptop, showInfoBox])
+    const animate = styleLoaded
+    if (isDesktopOrLaptop) return { padding: DESKTOP_PADDING, animate }
+    if (showInfoBox) return { padding: MOBILE_PADDING, animate }
+    return { padding: 10, animate }
+  }, [isDesktopOrLaptop, showInfoBox, styleLoaded])
 
   // useEffect(() => {
   //   setTimeout(() => {
@@ -113,7 +115,7 @@ const CoverageMap = () => {
           lng: feature.geometry.coordinates[0],
           ...feature.properties,
         }
-        selectHotspot(selectedHotspot)
+        selectHotspot(selectedHotspot.address)
       } else {
         // if more than one hotspot was clicked on, adjust bounds to fit that cluster
         const selectionBounds = findBounds(
@@ -144,11 +146,13 @@ const CoverageMap = () => {
   return (
     <Mapbox
       style="mapbox://styles/petermain/ckmwdn50a1ebk17o3h5e6wwui"
+      // style="https://api.maptiler.com/maps/97304e4f-26e3-4d85-82e7-9e99c634fb51/style.json?key=yQvLX2QhQwATq8KrjoIi"
       className="h-full w-screen overflow-hidden"
       fitBounds={bounds}
       fitBoundsOptions={fitBoundsOptions}
       onStyleLoad={(mapInstance) => {
         map.current = mapInstance
+        setStyledLoaded(true)
       }}
       onMouseMove={handleMouseMove}
     >

@@ -84,13 +84,19 @@ export const calculatePercentChange = (value, previousValue) => {
 }
 
 export const generateRewardScaleColor = (rewardScale) => {
-  if (rewardScale >= 0.75) {
-    return '#32C48D'
-  } else if (rewardScale >= 0.5) {
+  const factor = 1 / 6
+
+  if (rewardScale >= factor * 5) {
+    return '#29D344'
+  } else if (rewardScale >= factor * 4) {
+    return '#9FE14A'
+  } else if (rewardScale >= factor * 3) {
     return '#FCC945'
-  } else if (rewardScale >= 0.25) {
+  } else if (rewardScale >= factor * 2) {
     return '#FEA053'
+  } else if (rewardScale >= factor * 1) {
+    return '#FC8745'
   } else {
-    return '#E86161'
+    return '#FF6666'
   }
 }

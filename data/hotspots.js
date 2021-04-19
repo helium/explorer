@@ -13,27 +13,10 @@ export const useLatestHotspots = (initialData, count = 20) => {
   const fetcher = () => fetchLatestHotspots(count)
   const { data, error } = useSWR('latestHotspots', fetcher, {
     initialData,
-    refreshInterval: 10000,
+    refreshInterval: 1000 * 60,
   })
   return {
     latestHotspots: data,
-    isLoading: !error && !data,
-    isError: error,
-  }
-}
-
-export const fetchHotspotsStats = async () => {
-  const response = await fetch('/api/metrics/hotspots')
-  return response.json()
-}
-
-export const useHotspotsStats = (initialData) => {
-  const { data, error } = useSWR('latestHotspots', fetchHotspotsStats, {
-    initialData,
-    refreshInterval: 60000,
-  })
-  return {
-    hotspotsStats: data,
     isLoading: !error && !data,
     isError: error,
   }

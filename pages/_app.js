@@ -8,6 +8,7 @@ import '../styles/Explorer.css'
 import NProgress from 'nprogress' //nprogress module
 import 'nprogress/nprogress.css' //styles of nprogress
 import { StateProvider } from '../store/store'
+import { SWRConfig } from 'swr'
 
 //Binding events.
 // Router.events.on('routeChangeStart', () => NProgress.start())
@@ -21,7 +22,15 @@ function MyApp({ Component, pageProps }) {
       {typeof window === 'undefined' ? null : (
         <Router>
           <StateProvider>
-            <Component {...pageProps} />
+            <SWRConfig
+              value={{
+                refreshInterval: 1000 * 60,
+                fetcher: (resource, init) =>
+                  fetch(resource, init).then((res) => res.json()),
+              }}
+            >
+              <Component {...pageProps} />
+            </SWRConfig>
           </StateProvider>
         </Router>
       )}

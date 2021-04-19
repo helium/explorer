@@ -33,6 +33,7 @@ module.exports = {
       },
       green: {
         100: '#474DFF',
+        400: '#29D344',
         500: '#32C48D',
       },
       red: {
@@ -64,6 +65,15 @@ module.exports = {
       bluegray: {
         100: '#E9EAFF2',
       },
+    },
+    borderWidth: {
+      DEFAULT: '1px',
+      '0': '0',
+      '2': '2px',
+      '3': '3px',
+      '4': '4px',
+      '6': '6px',
+      '8': '8px',
     },
     extend: {
       spacing: {

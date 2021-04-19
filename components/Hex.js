@@ -1,4 +1,4 @@
-const Hex = ({ width, height, fillColor }) => (
+const Hex = ({ width, height, fillColor, className }) => (
   <svg
     width={width ? width : 28}
     height={height ? height : 32}

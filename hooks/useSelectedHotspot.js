@@ -1,5 +1,6 @@
 import { useContext, useCallback } from 'react'
 import { useHistory } from 'react-router'
+import { fetchHotspot } from '../data/hotspots'
 import { store, SET_SELECTED_HOTSPOT } from '../store/store'
 import useDispatch from '../store/useDispatch'
 import { haversineDistance } from '../utils/location'
@@ -24,8 +25,11 @@ const useSelectedHotspot = () => {
   } = useContext(store)
 
   const selectHotspot = useCallback(
-    async (hotspot) => {
-      const fetchedWitnesses = await getWitnesses(hotspot.address)
+    async (address) => {
+      const [hotspot, fetchedWitnesses] = await Promise.all([
+        fetchHotspot(address),
+        getWitnesses(address),
+      ])
       const filteredWitnesses = fetchedWitnesses.filter(
         (w) =>
           haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <=

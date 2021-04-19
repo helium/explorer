@@ -58,10 +58,10 @@ const AssertLocationV1 = ({ txn }) => {
         <Descriptions.Item
           label={
             <div className="flex flex-row items-center justify-start">
-              Elevation
+              Height
               <Tooltip
                 placement="top"
-                title="This number represents how high above ground level the hotspot is. If this number is negative, it means the Hotspot is below ground level."
+                title="This number represents how high the antenna is placed relative to the ground. If this number is negative, it means the Hotspot is below ground level."
               >
                 <div className="ml-2 flex flex-row items-center justify-center">
                   <InfoIcon className="text-gray-600 h-4 w-4" />

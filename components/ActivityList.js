@@ -17,6 +17,7 @@ import WitnessesTable from '../components/Beacons/WitnessesTable'
 import { h3ToGeo } from 'h3-js'
 import { calculateDistance, formatDistance } from '../utils/distance'
 const { Text } = Typography
+import classNames from 'classnames'
 
 const initialState = {
   txns: [],
@@ -24,6 +25,7 @@ const initialState = {
   loadingInitial: true,
   filtersOpen: false,
   showLoadMoreButton: true,
+  errorFetching: false,
 }
 
 const MiniBeaconMap = dynamic(
@@ -35,6 +37,30 @@ const MiniBeaconMap = dynamic(
 )
 
 const exportableEntities = ['account', 'hotspot']
+
+const RetryButton = ({ onClick }) => (
+  <button
+    className={classNames(
+      'px-3',
+      'py-1',
+      'mb-10',
+      'bg-gray-100',
+      'cursor-pointer',
+      'rounded-sm',
+      'text-navy-800',
+      'font-sans',
+      'border-gray-400',
+      'border',
+      'outline-none',
+      'border-solid',
+      'hover:bg-gray-300',
+      'focus:border-navy-400',
+    )}
+    onClick={onClick}
+  >
+    Retry
+  </button>
+)
 
 class ActivityList extends Component {
   state = initialState
@@ -70,19 +96,28 @@ class ActivityList extends Component {
   }
 
   loadMore = async () => {
-    this.setState({ loading: true })
-    const { txns } = this.state
-    const nextTxns = await this.list.take(20)
+    try {
+      this.setState({ loading: true, retry: false })
+      const { txns } = this.state
+      const nextTxns = await this.list.take(20)
 
-    if (nextTxns.length < 20) {
-      this.setState({ showLoadMoreButton: false })
+      if (nextTxns.length < 20) {
+        this.setState({ showLoadMoreButton: false })
+      }
+
+      this.setState({
+        txns: [...txns, ...nextTxns],
+        loading: false,
+        loadingInitial: false,
+      })
+    } catch (e) {
+      console.error(e)
+      this.setState({
+        errorFetching: true,
+        loading: false,
+        loadingInitial: false,
+      })
     }
-
-    this.setState({
-      txns: [...txns, ...nextTxns],
-      loading: false,
-      loadingInitial: false,
-    })
   }
 
   toggleFilters = () => {
@@ -92,8 +127,13 @@ class ActivityList extends Component {
   onFiltersChanged = async (filters) => {
     this.list = await this.makeList(filters)
 
-    await this.setState({ txns: [] })
+    await this.setState({ txns: [], loading: true })
     this.loadMore()
+  }
+
+  onRetry = () => {
+    this.setState({ errorFetching: false })
+    this.loadData()
   }
 
   render() {
@@ -103,6 +143,7 @@ class ActivityList extends Component {
       loadingInitial,
       filtersOpen,
       showLoadMoreButton,
+      errorFetching,
     } = this.state
     const { address, hotspots, type } = this.props
 
@@ -161,137 +202,148 @@ class ActivityList extends Component {
               </div>
             </>
           )}
-          {txns.length == 0 ? (
-            <h2
-              style={{
-                textAlign: 'center',
-                marginTop: '0.5rem',
-                fontSize: '14px',
-                color: 'rgba(0, 0, 0, 0.25)',
-                padding: '20px',
-              }}
-            >
-              {type === 'account' ? 'Account' : 'Hotspot'} has no activity
-            </h2>
+          {txns.length === 0 || errorFetching ? (
+            <div className="flex flex-col items-center justify-center">
+              <h2
+                style={{
+                  textAlign: 'center',
+                  marginTop: '0.5rem',
+                  fontSize: '14px',
+                  color: 'rgba(0, 0, 0, 0.25)',
+                  padding: '10px 20px',
+                }}
+              >
+                {loading
+                  ? 'Activity is loading'
+                  : errorFetching
+                  ? 'Error fetching activity'
+                  : type === 'account'
+                  ? 'Account has no activity'
+                  : 'Hotspot has no activity'}
+              </h2>
+              {errorFetching && <RetryButton onClick={this.onRetry} />}
+            </div>
           ) : (
-            <Table
-              dataSource={txns}
-              columns={columns(address)}
-              size="small"
-              rowKey="hash"
-              pagination={false}
-              loading={loading}
-              scroll={{ x: true }}
-              expandable={{
-                expandedRowRender: (record) => {
-                  if (
-                    record.type === 'rewards_v1' ||
-                    record.type === 'rewards_v2'
-                  ) {
-                    return (
-                      <span className="ant-table-override">
-                        <Table
-                          dataSource={record.rewards}
-                          columns={rewardColumns(hotspots, type, address)}
-                          size="small"
-                          rowKey={(r) => `${r.type}-${r.gateway}`}
-                        />
-                      </span>
-                    )
-                  } else {
-                    const beacon = record
-                    const challenger = record.challenger
-                    const paths = beacon?.path || []
-                    return (
-                      <>
-                        <Link href={`/beacons/${beacon.hash}`}>
-                          <a>
-                            <MiniBeaconMap beacon={beacon} />
-                          </a>
-                        </Link>
-                        <div>
-                          <div className="bg-navy-900 p-4">
-                            <div className="text-gray-700">CHALLENGER</div>
-                            <div className="flex w-full">
-                              <Link
-                                prefetch={false}
-                                href={`/hotspots/${challenger}`}
-                              >
-                                <a
-                                  className={`text-white inline-block${
-                                    challenger === address
-                                      ? ' bg-gray-700 px-2 rounded-lg'
-                                      : ''
-                                  }`}
+            <>
+              <Table
+                dataSource={txns}
+                columns={columns(address)}
+                size="small"
+                rowKey="hash"
+                pagination={false}
+                loading={loading}
+                scroll={{ x: true }}
+                expandable={{
+                  expandedRowRender: (record) => {
+                    if (
+                      record.type === 'rewards_v1' ||
+                      record.type === 'rewards_v2'
+                    ) {
+                      return (
+                        <span className="ant-table-override">
+                          <Table
+                            dataSource={record.rewards}
+                            columns={rewardColumns(hotspots, type, address)}
+                            size="small"
+                            rowKey={(r) => `${r.type}-${r.gateway}`}
+                          />
+                        </span>
+                      )
+                    } else {
+                      const beacon = record
+                      const challenger = record.challenger
+                      const paths = beacon?.path || []
+                      return (
+                        <>
+                          <Link href={`/beacons/${beacon.hash}`}>
+                            <a>
+                              <MiniBeaconMap beacon={beacon} />
+                            </a>
+                          </Link>
+                          <div>
+                            <div className="bg-navy-900 p-4">
+                              <div className="text-gray-700">CHALLENGER</div>
+                              <div className="flex w-full">
+                                <Link
+                                  prefetch={false}
+                                  href={`/hotspots/${challenger}`}
                                 >
-                                  {animalHash(challenger)}
-                                </a>
-                              </Link>
+                                  <a
+                                    className={`text-white inline-block${
+                                      challenger === address
+                                        ? ' bg-gray-700 px-2 rounded-lg'
+                                        : ''
+                                    }`}
+                                  >
+                                    {animalHash(challenger)}
+                                  </a>
+                                </Link>
+                              </div>
+                            </div>
+
+                            <div
+                              className="bg-white pb-20 p-4 lg:overflow-y-scroll lg:rounded-b-xl"
+                              style={{ overflowY: 'overlay' }}
+                            >
+                              {paths.map((path) => (
+                                <div>
+                                  <div className="border-b">
+                                    <img
+                                      src="/images/beaconer.svg"
+                                      alt=""
+                                      className="mb-2"
+                                    />
+                                    <BeaconRow>
+                                      <BeaconLabel>BEACONER</BeaconLabel>
+                                      <BeaconLabel>LOCATION</BeaconLabel>
+                                    </BeaconRow>
+                                    <BeaconRow>
+                                      <Link
+                                        prefetch={false}
+                                        href={`/hotspots/${path.challengee}`}
+                                      >
+                                        <a
+                                          className={`text-gray-700${
+                                            path.challengee === address
+                                              ? ' bg-gray-350 px-2 rounded-lg'
+                                              : ''
+                                          }`}
+                                        >
+                                          {animalHash(path.challengee)}
+                                        </a>
+                                      </Link>
+                                      <span className="text-gray-700">
+                                        <FlagLocation geocode={path.geocode} />
+                                      </span>
+                                    </BeaconRow>
+                                  </div>
+                                  <hr className="my-6 border-gray-350" />
+                                  <div>
+                                    <div className="mb-2">
+                                      <img src="/images/witness.svg" />
+                                    </div>
+                                    <WitnessesTable
+                                      path={path}
+                                      highlightedAddress={address}
+                                    />
+                                  </div>
+                                </div>
+                              ))}
                             </div>
                           </div>
-
-                          <div
-                            className="bg-white pb-20 p-4 lg:overflow-y-scroll lg:rounded-b-xl"
-                            style={{ overflowY: 'overlay' }}
-                          >
-                            {paths.map((path) => (
-                              <div>
-                                <div className="border-b">
-                                  <img
-                                    src="/images/beaconer.svg"
-                                    alt=""
-                                    className="mb-2"
-                                  />
-                                  <BeaconRow>
-                                    <BeaconLabel>BEACONER</BeaconLabel>
-                                    <BeaconLabel>LOCATION</BeaconLabel>
-                                  </BeaconRow>
-                                  <BeaconRow>
-                                    <Link
-                                      prefetch={false}
-                                      href={`/hotspots/${path.challengee}`}
-                                    >
-                                      <a
-                                        className={`text-gray-700${
-                                          path.challengee === address
-                                            ? ' bg-gray-350 px-2 rounded-lg'
-                                            : ''
-                                        }`}
-                                      >
-                                        {animalHash(path.challengee)}
-                                      </a>
-                                    </Link>
-                                    <span className="text-gray-700">
-                                      <FlagLocation geocode={path.geocode} />
-                                    </span>
-                                  </BeaconRow>
-                                </div>
-                                <hr className="my-6 border-gray-350" />
-                                <div>
-                                  <div className="mb-2">
-                                    <img src="/images/witness.svg" />
-                                  </div>
-                                  <WitnessesTable
-                                    path={path}
-                                    highlightedAddress={address}
-                                  />
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </>
-                    )
-                  }
-                },
-                rowExpandable: (record) =>
-                  record.type === 'rewards_v1' ||
-                  record.type === 'rewards_v2' ||
-                  record.type === 'poc_receipts_v1',
-              }}
-            />
+                        </>
+                      )
+                    }
+                  },
+                  rowExpandable: (record) =>
+                    record.type === 'rewards_v1' ||
+                    record.type === 'rewards_v2' ||
+                    record.type === 'poc_receipts_v1',
+                }}
+              />
+              {showLoadMoreButton && <LoadMoreButton onClick={this.loadMore} />}
+            </>
           )}
-          {showLoadMoreButton && <LoadMoreButton onClick={this.loadMore} />}
         </Card>
       </Content>
     )

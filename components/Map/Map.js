@@ -146,7 +146,6 @@ const CoverageMap = () => {
   return (
     <Mapbox
       style="mapbox://styles/petermain/ckmwdn50a1ebk17o3h5e6wwui"
-      // style="https://api.maptiler.com/maps/97304e4f-26e3-4d85-82e7-9e99c634fb51/style.json?key=yQvLX2QhQwATq8KrjoIi"
       className="h-full w-screen overflow-hidden"
       fitBounds={bounds}
       fitBoundsOptions={fitBoundsOptions}

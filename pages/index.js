@@ -6,8 +6,8 @@ import MetaTags from '../components/AppLayout/MetaTags'
 import MapLayersBox from '../components/Map/MapLayersBox'
 import MapControls from '../components/Map/MapControls'
 import InfoBoxSwitch from '../components/InfoBox/InfoBoxSwitch'
-const { getCache } = require('../commonjs/redis')
-const { emptyCoverage } = require('../commonjs/coverage')
+// const { getCache } = require('../commonjs/redis')
+// const { emptyCoverage } = require('../commonjs/coverage')
 
 const Map = dynamic(() => import('../components/Map/Map'), {
   ssr: false,
@@ -27,7 +27,9 @@ const Index = ({ coverage }) => {
       />
       <title>Helium Network - Coverage</title>
       <Header activeNav="coverage" />
-      <Map initialCoverage={coverage} />
+      <Map
+      //initialCoverage={coverage}
+      />
       <InfoBoxSwitch />
       <MapLayersBox />
       <MapControls />
@@ -48,11 +50,12 @@ const Index = ({ coverage }) => {
   )
 }
 
-export async function getStaticProps() {
-  const coverage = await getCache('coverageV2', emptyCoverage)
-  return {
-    props: { coverage },
-  }
-}
+// export async function getStaticProps() {
+//   // const coverage = await getCache('coverageV2', emptyCoverage)
+//   const coverage = []
+//   return {
+//     props: { coverage },
+//   }
+// }
 
 export default Index

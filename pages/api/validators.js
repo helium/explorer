@@ -55,12 +55,12 @@ export const fetchValidators = async () => {
   const validatorsWithGeo = []
 
   await asyncForEach(validators, async (v, i) => {
-    // const geo = await getGeo(v)
+    const geo = await getGeo(v)
     // const rewards = await getRewards(v)
     validatorsWithGeo.push({
       ...v,
-      // geo: geo || {},
-      geo: {},
+      geo: geo || {},
+      // geo: {},
       elected: electedAddresses.includes(v.address),
       number: validators.length - i,
       rewards: {

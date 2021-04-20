@@ -46,12 +46,35 @@ export const getHotspotRewardsBuckets = async (
   return rewards
 }
 
+const fetchMoreNearbyHotspots = async (lat, lon, distance, cursor) => {
+  const params = qs.stringify({ lat, lon, distance, cursor })
+  const url = 'https://api.helium.io/v1/hotspots/location/distance?' + params
+  const response = await fetch(url)
+  const moreNearbyHotspots = await response.json()
+  return moreNearbyHotspots
+}
+
 export const fetchNearbyHotspots = async (lat, lon, distance = 1000) => {
   if (!lat || !lon) return []
   const params = qs.stringify({ lat, lon, distance })
   const url = 'https://api.helium.io/v1/hotspots/location/distance?' + params
   const response = await fetch(url)
-  const { data: hotspots } = await response.json()
+  const hotspotsResponse = await response.json()
+  const { data: hotspots } = hotspotsResponse
+
+  let { cursor } = hotspotsResponse
+  while (cursor !== undefined) {
+    // if API returns a cursor, there are more than 500 hotspots and a cursor for the next set, so fetch the rest of them
+    const moreNearbyHotspots = await fetchMoreNearbyHotspots(
+      lat,
+      lon,
+      distance,
+      cursor,
+    )
+    // very important to update the cursor to the one returned by the next request so we don't cause an infinite loop
+    cursor = moreNearbyHotspots.cursor
+    hotspots.push(...moreNearbyHotspots.data)
+  }
   return hotspots
 }
 

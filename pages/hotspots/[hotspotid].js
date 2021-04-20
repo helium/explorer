@@ -24,6 +24,7 @@ import RewardScalePill from '../../components/Hotspots/RewardScalePill'
 import { getCoverageFromBounds } from '../../commonjs/coverage'
 import StatusPill from '../../components/Hotspots/StatusPill'
 import RelayPill from '../../components/Hotspots/RelayPill'
+import { haversineDistance } from '../../components/Txns/utils'
 
 const HotspotMapbox = dynamic(
   () => import('../../components/Hotspots/HotspotMapbox'),
@@ -38,57 +39,13 @@ const { TabPane } = Tabs
 
 const HotspotView = ({ hotspot }) => {
   const [witnesses, setWitnesses] = useState([])
-  const [nearbyHotspots, setNearbyHotspots] = useState([])
-
   const [witnessesLoading, setWitnessesLoading] = useState(true)
-  const [nearbyHotspotsLoading, setNearbyHotspotsLoading] = useState(true)
 
+  const [nearbyHotspots, setNearbyHotspots] = useState([])
+  const [nearbyHotspotsLoading, setNearbyHotspotsLoading] = useState(true)
   const [loading, setLoading] = useState(true)
 
-  const [boundsNELat, setBoundsNELat] = useState(null)
-  const [boundsNELon, setBoundsNELon] = useState(null)
-  const [boundsSWLat, setBoundsSWLat] = useState(null)
-  const [boundsSWLon, setBoundsSWLon] = useState(null)
-
-  const DYNAMIC_LOADING_ZOOM_THRESHOLD = 12
-
-  useEffect(() => {
-    const getNewCoverage = async () => {
-      setNearbyHotspotsLoading(true)
-      const hotspotsInBounds = await getCoverageFromBounds({
-        boundsNELat,
-        boundsNELon,
-        boundsSWLat,
-        boundsSWLon,
-      })
-      console.log(hotspotsInBounds)
-      setNearbyHotspots(hotspotsInBounds.data)
-      setNearbyHotspotsLoading(false)
-    }
-    // console.log(boundsNELat)
-    // console.log(boundsNELon)
-    // console.log(boundsSWLat)
-    // console.log(boundsSWLon)
-    if (
-      boundsNELat !== null &&
-      boundsNELon !== null &&
-      boundsSWLat !== null &&
-      boundsSWLon !== null
-    ) {
-      getNewCoverage()
-    }
-  }, [boundsNELat, boundsNELon, boundsSWLat, boundsSWLon])
-
-  const handleDynamicMapLoad = (mapData) => {
-    const bounds = mapData.getBounds()
-    // const zoom = mapData.getZoom()
-    // console.log(bounds)
-    setBoundsNELat(bounds._ne.lat)
-    setBoundsNELon(bounds._ne.lng)
-    setBoundsSWLat(bounds._sw.lat)
-    setBoundsSWLon(bounds._sw.lng)
-  }
-
+  const [mapCenter, setMapCenter] = useState([hotspot.lng, hotspot.lat])
   useEffect(() => {
     setLoading(!(!witnessesLoading && !nearbyHotspotsLoading))
   }, [witnessesLoading, nearbyHotspotsLoading])
@@ -107,10 +64,23 @@ const HotspotView = ({ hotspot }) => {
       setWitnesses(witnesses)
       setWitnessesLoading(false)
     }
+
     async function getNearbyHotspots() {
       setNearbyHotspotsLoading(true)
-      const hotspots = await fetchNearbyHotspots(hotspot.lat, hotspot.lng, 2000)
-      setNearbyHotspots(hotspots.filter((h) => h.address !== hotspotid))
+      const hotspotsUnfiltered = await fetchNearbyHotspots(
+        hotspot.lat,
+        hotspot.lng,
+        2000,
+      )
+      const hotspots = hotspotsUnfiltered
+        .filter((h) => h.address !== hotspotid)
+        .map((h) => {
+          const distance =
+            haversineDistance(hotspot.lng, hotspot.lat, h.lng, h.lat) * 1000
+          h.distanceAway = distance
+          return h
+        })
+      setNearbyHotspots(hotspots)
       setNearbyHotspotsLoading(false)
     }
 
@@ -136,7 +106,9 @@ const HotspotView = ({ hotspot }) => {
             hotspot={hotspot}
             witnesses={witnesses}
             nearbyHotspots={nearbyHotspots}
-            handleDynamicMapLoad={handleDynamicMapLoad}
+            // discoveredNearbyHotspots={discoveredNearbyHotspots}
+            mapCenter={mapCenter}
+            // handleDynamicMapLoad={handleMapMovement}
           />
           {hotspot.lng !== undefined && hotspot.lat !== undefined && (
             <div className="flex justify-between pt-3 w-full pb-8">

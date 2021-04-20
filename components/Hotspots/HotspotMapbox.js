@@ -62,13 +62,12 @@ const styles = {
 const HotspotMapbox = ({
   classes,
   hotspot,
+  mapCenter,
   witnesses,
-  handleDynamicMapLoad,
   nearbyHotspots = [],
   router,
 }) => {
   const [showWitnesses, setShowWitnesses] = useState(true)
-
   return (
     <div className="relative">
       <MapButton
@@ -86,7 +85,7 @@ const HotspotMapbox = ({
           containerStyle={{
             width: '100%',
           }}
-          center={[hotspot.lng, hotspot.lat]}
+          center={mapCenter}
           zoom={[12]}
         >
           <ScaleControl />

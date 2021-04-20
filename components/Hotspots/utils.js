@@ -22,6 +22,18 @@ export const formatDistance = (meters) => {
   )
 }
 
+export const formatNearbyLocation = (geocode0) => {
+  const geocode = camelcaseKeys(geocode0)
+
+  if (!geocode?.longStreet && !geocode?.longCity) {
+    return 'No location set'
+  }
+  const locationTerms = [geocode?.longStreet]
+  locationTerms.push(geocode?.longCity)
+
+  return locationTerms.join(', ')
+}
+
 export const formatLocation = (geocode0) => {
   const geocode = camelcaseKeys(geocode0)
 

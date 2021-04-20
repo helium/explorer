@@ -46,13 +46,12 @@ export const getHotspotRewardsBuckets = async (
   return rewards
 }
 
-export const fetchNearbyHotspots = async (lat, lng, dist = 1000) => {
-  return []
-  if (!lat || !lng) return []
-  const params = qs.stringify({ lat, lng, dist })
-  const url = 'https://wallet.api.helium.systems/api/v1/hotspots?' + params
+export const fetchNearbyHotspots = async (lat, lon, distance = 1000) => {
+  if (!lat || !lon) return []
+  const params = qs.stringify({ lat, lon, distance })
+  const url = 'https://api.helium.io/v1/hotspots/location/distance?' + params
   const response = await fetch(url)
-  const hotspots = await response.json()
+  const { data: hotspots } = await response.json()
   return hotspots
 }
 

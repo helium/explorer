@@ -64,8 +64,6 @@ const CoverageMap = ({ selectedHotspots, selectHotspots, showOffline }) => {
     getHotspots()
   }, [])
 
-  useEffect(() => {}, [selectedHotspots])
-
   const handleMapZoomButtons = (event) => {
     const zoomArray = zoom
 

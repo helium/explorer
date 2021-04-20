@@ -21,7 +21,6 @@ import {
 import ReactCountryFlag from 'react-country-flag'
 import { fetchNearbyHotspots } from '../../data/hotspots'
 import RewardScalePill from '../../components/Hotspots/RewardScalePill'
-import { getCoverageFromBounds } from '../../commonjs/coverage'
 import StatusPill from '../../components/Hotspots/StatusPill'
 import RelayPill from '../../components/Hotspots/RelayPill'
 import { haversineDistance } from '../../components/Txns/utils'
@@ -106,9 +105,7 @@ const HotspotView = ({ hotspot }) => {
             hotspot={hotspot}
             witnesses={witnesses}
             nearbyHotspots={nearbyHotspots}
-            // discoveredNearbyHotspots={discoveredNearbyHotspots}
             mapCenter={mapCenter}
-            // handleDynamicMapLoad={handleMapMovement}
           />
           {hotspot.lng !== undefined && hotspot.lat !== undefined && (
             <div className="flex justify-between pt-3 w-full pb-8">

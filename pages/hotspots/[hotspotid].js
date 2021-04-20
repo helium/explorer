@@ -74,10 +74,9 @@ const HotspotView = ({ hotspot }) => {
       const hotspots = hotspotsUnfiltered
         .filter((h) => h.address !== hotspotid)
         .map((h) => {
-          const distance =
+          const distanceAway =
             haversineDistance(hotspot.lng, hotspot.lat, h.lng, h.lat) * 1000
-          h.distanceAway = distance
-          return h
+          return { ...h, distanceAway }
         })
       setNearbyHotspots(hotspots)
       setNearbyHotspotsLoading(false)
@@ -104,7 +103,9 @@ const HotspotView = ({ hotspot }) => {
             classes={'h-80 md:h-96'}
             hotspot={hotspot}
             witnesses={witnesses}
+            witnessesLoading={witnessesLoading}
             nearbyHotspots={nearbyHotspots}
+            nearbyHotspotsLoading={nearbyHotspotsLoading}
             mapCenter={mapCenter}
           />
           {hotspot.lng !== undefined && hotspot.lat !== undefined && (

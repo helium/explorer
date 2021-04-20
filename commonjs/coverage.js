@@ -42,4 +42,4 @@ const emptyCoverage = () => {
   return toGeoJSON([])
 }
 
-module.exports = { getCoverage, getCoverageFromBounds, emptyCoverage }
+module.exports = { getCoverage, emptyCoverage }

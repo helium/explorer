@@ -202,6 +202,15 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
         url = `${urlBase}/txns/${txn.hash}`
         break
       }
+      case 'assert_location_v2': {
+        type = `Assert Location`
+        description = `${animalHash(
+          txn.gateway,
+        )} asserted its location ${dateString} ${blockString}`
+        ogImageUrl = `${ogImageUrlBase}/txn_assert_location.png`
+        url = `${urlBase}/txns/${txn.hash}`
+        break
+      }
       case 'consensus_group_v1': {
         type = `Consensus Election`
         description = `${txn.members.length} Hotspots were elected to a consensus group ${dateString} ${blockString}`

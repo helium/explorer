@@ -33,15 +33,16 @@ const SearchBar = () => {
         </div>
         <input
           type="search"
+          value={term}
           onChange={handleChange}
           className="w-full pl-8 border-none outline-none"
-          value={term}
         />
       </div>
       {results.length > 0 && (
         <div className="absolute bg-white max-h-72 w-80 right-0 top-12 rounded-lg divide-y divide-gray-400 overflow-y-scroll">
           {results.map((r) => (
             <div
+              key={r.address}
               className="border-solid py-2 px-4 flex hover:bg-gray-100 cursor-pointer"
               onClick={handleSelectResult(r)}
             >

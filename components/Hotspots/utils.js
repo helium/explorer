@@ -28,8 +28,11 @@ export const formatNearbyLocation = (geocode0) => {
   if (!geocode?.longStreet && !geocode?.longCity) {
     return 'No location set'
   }
-  const locationTerms = [geocode?.longStreet]
-  locationTerms.push(geocode?.longCity)
+  const locationTerms = [geocode?.longCity]
+
+  if (geocode?.longStreet !== null && geocode?.longStreet !== undefined) {
+    locationTerms.unshift(geocode?.longStreet)
+  }
 
   return locationTerms.join(', ')
 }

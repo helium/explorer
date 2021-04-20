@@ -9,6 +9,7 @@ import useMapLayer from '../../hooks/useMapLayer'
 import useInfoBox from '../../hooks/useInfoBox'
 import useGeolocation from '../../hooks/useGeolocation'
 import useSWR from 'swr'
+import ValidatorsLayer from './Layers/ValidatorsLayer'
 
 const maxZoom = 14
 const minZoom = 2
@@ -56,6 +57,7 @@ const CoverageMap = ({ initialCoverage }) => {
   const { data: coverage } = useSWR('/api/coverage', {
     initialData: initialCoverage,
   })
+  const { data: validators } = useSWR('/api/validators')
 
   useEffect(() => {
     if (!currentPosition.coords) return
@@ -157,6 +159,11 @@ const CoverageMap = ({ initialCoverage }) => {
         layer={mapLayer}
       />
       <HotspotDetailLayer hotspot={selectedHotspot} />
+      <ValidatorsLayer
+        validators={validators}
+        minZoom={minZoom}
+        maxZoom={maxZoom}
+      />
     </Mapbox>
   )
 }

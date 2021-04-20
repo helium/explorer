@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import { Link } from 'react-router-dom'
 
 const Skeleton = () => (
   <div class="animate-pulse h-4 bg-gray-400 my-2 rounded w-3/4" />
@@ -13,8 +14,9 @@ const Widget = ({
   icon,
   span = 1,
   isLoading = false,
+  linkTo,
 }) => {
-  return (
+  const inner = (
     <div
       className={classNames(`bg-gray-200 p-3 rounded-lg col-span-${span}`, {
         'cursor-pointer': !!onClick,
@@ -24,7 +26,7 @@ const Widget = ({
       <div className="text-gray-600 text-sm">{title}</div>
       <div className="flex items-center">
         {icon && <div className="mr-1.5 flex items-center">{icon}</div>}
-        <div className="text-3xl font-medium my-1.5 tracking-tighter w-full">
+        <div className="text-3xl font-medium text-black my-1.5 tracking-tighter w-full">
           {isLoading ? <Skeleton /> : value}
         </div>
       </div>
@@ -37,6 +39,10 @@ const Widget = ({
       {subtitle}
     </div>
   )
+
+  if (linkTo) return <Link to={linkTo}>{inner}</Link>
+
+  return inner
 }
 
 export default Widget

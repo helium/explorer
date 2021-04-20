@@ -9,6 +9,7 @@ const Pill = ({ title, color = 'gray', tooltip }) => (
         {
           'bg-green-500': color === 'green',
           'bg-gray-700': color === 'gray',
+          'bg-yellow-500': color === 'yellow',
         },
       )}
     >

@@ -62,12 +62,14 @@ const styles = {
 const HotspotMapbox = ({
   classes,
   hotspot,
+  mapCenter,
   witnesses,
   nearbyHotspots = [],
+  witnessesLoading,
+  nearbyHotspotsLoading,
   router,
 }) => {
   const [showWitnesses, setShowWitnesses] = useState(true)
-
   return (
     <div className="relative">
       <MapButton
@@ -85,20 +87,24 @@ const HotspotMapbox = ({
           containerStyle={{
             width: '100%',
           }}
-          center={[hotspot.lng, hotspot.lat]}
+          center={mapCenter}
           zoom={[12]}
         >
           <ScaleControl />
-          {nearbyHotspots.map((h) => (
-            <Tooltip title={animalHash(h.address)} key={`nearby-${h.address}`}>
-              <Marker
-                style={styles.nearbyMarker}
-                anchor="center"
-                coordinates={[h.lng, h.lat]}
-                onClick={() => router.push(`/hotspots/${h.address}`)}
-              />
-            </Tooltip>
-          ))}
+          {!nearbyHotspotsLoading &&
+            nearbyHotspots.map((h) => (
+              <Tooltip
+                title={animalHash(h.address)}
+                key={`nearby-${h.address}`}
+              >
+                <Marker
+                  style={styles.nearbyMarker}
+                  anchor="center"
+                  coordinates={[h.lng, h.lat]}
+                  onClick={() => router.push(`/hotspots/${h.address}`)}
+                />
+              </Tooltip>
+            ))}
 
           <Marker
             key={hotspot.address}
@@ -111,6 +117,7 @@ const HotspotMapbox = ({
           />
 
           {showWitnesses &&
+            !witnessesLoading &&
             witnesses.map((w) => {
               if (
                 haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <=

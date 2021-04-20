@@ -1,24 +1,20 @@
-import React, { useCallback, useState } from 'react'
-import { Switch, Route } from 'react-router-dom'
+import React from 'react'
 import dynamic from 'next/dynamic'
 import Header from '../components/Nav/Header'
 import Page from '../components/CoverageMap/Page'
 import MetaTags from '../components/AppLayout/MetaTags'
 import MapLayersBox from '../components/Map/MapLayersBox'
 import MapControls from '../components/Map/MapControls'
-import OverviewInfoBox from '../components/InfoBox/OverviewInfoBox'
-import HotspotsInfoBox from '../components/InfoBox/HotspotsInfoBox'
-import HotspotDetailsInfoBox from '../components/InfoBox/HotspotDetailsInfoBox'
+import InfoBoxSwitch from '../components/InfoBox/InfoBoxSwitch'
+const { getCache } = require('../commonjs/redis')
+const { emptyCoverage } = require('../commonjs/coverage')
 
 const Map = dynamic(() => import('../components/Map/Map'), {
   ssr: false,
   loading: () => <div />,
 })
 
-const Index = () => {
-  // Match locales with regular expression containing each locale separated by `|`
-  const base = '/:locale(en|fr)?'
-
+const Index = ({ coverage }) => {
   return (
     <Page className="overflow-hidden">
       <MetaTags
@@ -31,18 +27,8 @@ const Index = () => {
       />
       <title>Helium Network - Coverage</title>
       <Header activeNav="coverage" />
-      <Map />
-      <Switch>
-        <Route path={`${base}/hotspots/:address`}>
-          <HotspotDetailsInfoBox />
-        </Route>
-        <Route path={`${base}/hotspots`}>
-          <HotspotsInfoBox />
-        </Route>
-        <Route path={base}>
-          <OverviewInfoBox />
-        </Route>
-      </Switch>
+      <Map initialCoverage={coverage} />
+      <InfoBoxSwitch />
       <MapLayersBox />
       <MapControls />
 
@@ -60,6 +46,13 @@ const Index = () => {
       `}</style>
     </Page>
   )
+}
+
+export async function getStaticProps() {
+  const coverage = await getCache('coverageV2', emptyCoverage)
+  return {
+    props: { coverage },
+  }
 }
 
 export default Index

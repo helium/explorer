@@ -1,10 +1,18 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
+import { matchPath } from 'react-router'
+import {
+  Switch,
+  Route,
+  useRouteMatch,
+  Link,
+  useLocation,
+} from 'react-router-dom'
 import classNames from 'classnames'
-import { castArray, keyBy } from 'lodash'
+import { castArray } from 'lodash'
 
-const NavItem = ({ title, active = false, onClick }) => (
-  <span
-    onClick={onClick}
+const NavItem = ({ title, active = false, href }) => (
+  <Link
+    to={href}
     className={classNames(
       'mx-2 py-3 inline-block font-medium text-base cursor-pointer',
       {
@@ -14,28 +22,34 @@ const NavItem = ({ title, active = false, onClick }) => (
     )}
   >
     {title}
-  </span>
+  </Link>
 )
 
 const TabNavbar = ({ children }) => {
+  const { path, url } = useRouteMatch()
+  const location = useLocation()
+
   const navItems = useMemo(() => {
     return castArray(children).map((c) => ({
       key: c.key,
       title: c.props.title,
+      path: c.props.path,
     }))
   }, [children])
 
   const navPanes = useMemo(() => {
-    return keyBy(castArray(children), 'key')
+    return castArray(children)
   }, [children])
 
-  const [activeNavItem, setActiveNavItem] = useState(navItems[0])
-
-  const handleNavItemClick = useCallback(
-    (item) => () => {
-      setActiveNavItem(item)
+  const navMatch = useCallback(
+    (itemPath) => {
+      const match = matchPath(location.pathname, {
+        path: itemPath ? `${path}/${itemPath}` : path,
+        exact: true,
+      })
+      return match?.isExact || false
     },
-    [],
+    [location.pathname, path],
   )
 
   return (
@@ -44,15 +58,26 @@ const TabNavbar = ({ children }) => {
         <div className="border-b border-gray-400 border-solid mt-2 px-2 md:px-8 flex overflow-x-scroll">
           {navItems.map((item) => (
             <NavItem
+              key={item.key}
               title={item.title}
-              active={item.key === activeNavItem.key}
-              onClick={handleNavItemClick(item)}
+              active={navMatch(item.path)}
+              href={item.path ? `${url}/${item.path}` : url}
             />
           ))}
         </div>
       </div>
 
-      {navPanes[activeNavItem.key]}
+      <Switch>
+        {navPanes.map((pane) => (
+          <Route
+            key={pane.key}
+            exact
+            path={pane.props.path ? `${path}/${pane.props.path}` : path}
+          >
+            {pane}
+          </Route>
+        ))}
+      </Switch>
     </>
   )
 }

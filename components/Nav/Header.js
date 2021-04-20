@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-i18n'
+import SearchBar from '../SearchBar/SearchBar'
 
 const NavLink = ({ href, title }) => (
   <Link to={href}>
@@ -38,7 +39,7 @@ const Header = ({ activeNav }) => {
         </div>
 
         <div className="grid grid-flow-col gap-4 items-center">
-          <SearchButton />
+          <SearchBar />
           <MenuButton />
         </div>
       </div>

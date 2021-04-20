@@ -98,7 +98,7 @@ const StatusWidget = ({ hotspot }) => {
       value={value}
       icon={
         <div
-          className={classNames('rounded-full w-6 h-6', {
+          className={classNames('rounded-full w-5 h-5', {
             'bg-green-400': status === 'online',
             'bg-red-400': status === 'offline',
           })}

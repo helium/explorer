@@ -1,106 +1,68 @@
-import React, { useEffect, useRef } from 'react'
-import { withRouter } from 'next/router'
-import { AutoComplete, Input } from 'antd'
-import withSearchResults from './withSearchResults'
-import SearchResultCategory from './SearchResultCategory'
-import SearchResultHotspot from './SearchResultHotspot'
-import SearchResultBlock from './SearchResultBlock'
-import SearchResultAccount from './SearchResultAccount'
-import SearchResultTransaction from './SearchResultTransaction'
-import KeyboardIcon from './KeyboardIcon'
+import { useCallback } from 'react'
+import Image from 'next/image'
+import FlagLocation from '../Common/FlagLocation'
+import { formatHotspotName } from '../Hotspots/utils'
+import useSearchResults from './useSearchResults'
+import { Link } from 'react-router-dom'
+import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 
-const { Search } = Input
+const SearchBar = () => {
+  const { term, setTerm, results } = useSearchResults()
+  const { selectHotspot } = useSelectedHotspot()
 
-const buildOptions = (searchResults) => {
-  const categoryBuilder = {
-    Blocks: {
-      route: (r) => `/blocks/${r.height}`,
-      Component: SearchResultBlock,
+  const handleChange = useCallback(
+    (e) => {
+      setTerm(e.target.value)
     },
-    Accounts: {
-      route: (r) => `/accounts/${r.address}`,
-      Component: SearchResultAccount,
+    [setTerm],
+  )
+
+  const handleSelectResult = useCallback(
+    (result) => () => {
+      setTerm('')
+      selectHotspot(result.address)
     },
-    Transactions: {
-      route: (r) => `/txns/${r.hash}`,
-      Component: SearchResultTransaction,
-    },
-    Hotspots: {
-      route: (r) => `/hotspots/${r.address}`,
-      Component: SearchResultHotspot,
-    },
-  }
-
-  return searchResults
-    .filter(({ category }) => categoryBuilder[category])
-    .map(({ category, results }) => ({
-      label: <SearchResultCategory title={category} />,
-      options: results.map((r) => {
-        const SearchResultComponent = categoryBuilder[category].Component
-        return {
-          value: categoryBuilder[category].route(r),
-          label: <SearchResultComponent {...r} />,
-        }
-      }),
-    }))
-}
-
-const SearchBar = ({ router, searchResults, searchTerm, updateSearchTerm }) => {
-  const input = useRef()
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleKeydown)
-
-    return () => {
-      document.removeEventListener('keydown', handleKeydown)
-    }
-  }, [])
-
-  const handleKeydown = (event) => {
-    // Disable the following keyboard shortcuts when the user is typing
-    if (document.activeElement.tagName === 'INPUT') return
-    if (document.activeElement.tagName === 'TEXTAREA') return
-
-    if (event.key === '/') {
-      event.preventDefault()
-      focusSearchBar()
-    }
-  }
-
-  const focusSearchBar = () => {
-    input.current.focus()
-  }
-
-  const handleSelect = (value) => {
-    router.push(value)
-  }
+    [selectHotspot, setTerm],
+  )
 
   return (
-    <AutoComplete
-      style={{
-        width: '100%',
-        maxWidth: 850,
-      }}
-      options={buildOptions(searchResults)}
-      onSelect={handleSelect}
-      onSearch={updateSearchTerm}
-      value={searchTerm}
-      defaultActiveFirstOption
-    >
-      <Search
-        ref={input}
-        enterButton
-        size="large"
-        placeholder="Search for hotspots, hashes, addresses, or blocks"
-        style={{
-          background: '#27284B',
-          border: 'none',
-        }}
-        allowClear
-        suffix={searchTerm ? null : <KeyboardIcon />}
-      />
-    </AutoComplete>
+    <div className="relative">
+      <div className="relative bg-white rounded-full w-60 h-8 flex overflow-hidden">
+        <div className="absolute flex left-2 h-full pointer-events-none">
+          <Image src="/images/search.svg" width={16} height={16} />
+        </div>
+        <input
+          type="search"
+          value={term}
+          onChange={handleChange}
+          className="w-full pl-8 border-none outline-none"
+        />
+      </div>
+      {results.length > 0 && (
+        <div className="absolute bg-white max-h-72 w-80 right-0 top-12 rounded-lg divide-y divide-gray-400 overflow-y-scroll">
+          {results.map((r) => (
+            <div
+              key={r.address}
+              className="border-solid py-2 px-4 flex hover:bg-gray-100 cursor-pointer"
+              onClick={handleSelectResult(r)}
+            >
+              <div className="w-full">
+                <div className="font-medium text-base text-navy-1000">
+                  {formatHotspotName(r.name)}
+                </div>
+                <div className="text-gray-700 text-sm">
+                  <FlagLocation geocode={r.geocode} />
+                </div>
+              </div>
+              <div className="flex">
+                <Image src="/images/details-arrow.svg" width={10} height={10} />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 
-export default withSearchResults(withRouter(SearchBar))
+export default SearchBar

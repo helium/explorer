@@ -33,7 +33,7 @@ const Header = ({ activeNav }) => {
           <NavLink href="/hotspots" title="Hotspots" />
           <NavLink href="/beacons" title="Beacons" />
           <NavLink href="/blocks" title="Blocks" />
-          <NavLink href="/consensus" title="Validators" />
+          <NavLink href="/validators" title="Validators" />
           <NavLink href="/market" title="Market" />
         </div>
 

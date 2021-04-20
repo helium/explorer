@@ -1,8 +1,6 @@
 import { useEffect, useState, useCallback, useRef, useMemo, memo } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import ReactMapboxGl from 'react-mapbox-gl'
-import fetch from 'node-fetch'
-import { useAsync } from 'react-async-hooks'
 import { findBounds } from '../../utils/location'
 import CoverageLayer from './Layers/CoverageLayer'
 import HotspotDetailLayer from './Layers/HotspotDetailLayer'
@@ -10,6 +8,7 @@ import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import useMapLayer from '../../hooks/useMapLayer'
 import useInfoBox from '../../hooks/useInfoBox'
 import useGeolocation from '../../hooks/useGeolocation'
+import useSWR from 'swr'
 
 const maxZoom = 14
 const minZoom = 2
@@ -21,8 +20,6 @@ const Mapbox = ReactMapboxGl({
   maxZoom: maxZoom,
   minZoom: minZoom,
 })
-
-const initialPosition = { timestamp: 0 }
 
 const US_BOUNDS = [
   [-61.08, 44.84],
@@ -42,7 +39,7 @@ const EU_CN_BOUNDS = [
 const MOBILE_PADDING = { top: 10, left: 10, right: 10, bottom: 450 }
 const DESKTOP_PADDING = { top: 10, left: 600, right: 10, bottom: 10 }
 
-const CoverageMap = () => {
+const CoverageMap = ({ initialCoverage }) => {
   const isDesktopOrLaptop = useMediaQuery({ minDeviceWidth: 1224 })
   const map = useRef()
   const [styleLoaded, setStyledLoaded] = useState(false)
@@ -52,16 +49,13 @@ const CoverageMap = () => {
   const { selectHotspot, selectedHotspot } = useSelectedHotspot()
   const { currentPosition } = useGeolocation()
 
-  const [coverage, setCoverage] = useState()
   const [bounds, setBounds] = useState(
     isDesktopOrLaptop ? US_EU_BOUNDS : US_BOUNDS,
   )
 
-  useAsync(async () => {
-    const response = await fetch('/api/coverage')
-    const coverage = await response.json()
-    setCoverage(coverage)
-  }, [])
+  const { data: coverage } = useSWR('/api/coverage', {
+    initialData: initialCoverage,
+  })
 
   useEffect(() => {
     if (!currentPosition.coords) return

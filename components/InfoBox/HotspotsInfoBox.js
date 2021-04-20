@@ -49,7 +49,7 @@ const LatestHotspotWidget = ({ hotspot }) => {
       value={formatHotspotName(hotspot.name)}
       subtitle={<FlagLocation geocode={hotspot.geocode} />}
       span={2}
-      onClick={() => selectHotspot(hotspot)}
+      onClick={() => selectHotspot(hotspot.address)}
     />
   )
 }

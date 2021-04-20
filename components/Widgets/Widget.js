@@ -1,5 +1,9 @@
 import classNames from 'classnames'
 
+const Skeleton = () => (
+  <div class="animate-pulse h-4 bg-gray-400 my-2 rounded w-3/4" />
+)
+
 const Widget = ({
   title,
   value,
@@ -8,6 +12,7 @@ const Widget = ({
   onClick,
   icon,
   span = 1,
+  isLoading = false,
 }) => {
   return (
     <div
@@ -19,8 +24,8 @@ const Widget = ({
       <div className="text-gray-600 text-sm">{title}</div>
       <div className="flex items-center">
         {icon && <div className="mr-1.5 flex items-center">{icon}</div>}
-        <div className="text-3xl font-medium my-1.5 tracking-tighter">
-          {value}
+        <div className="text-3xl font-medium my-1.5 tracking-tighter w-full">
+          {isLoading ? <Skeleton /> : value}
         </div>
       </div>
       {change && (

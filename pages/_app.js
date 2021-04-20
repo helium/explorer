@@ -5,15 +5,8 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import '../styles/index.css'
 import '../styles/Explorer.css'
 
-import NProgress from 'nprogress' //nprogress module
-import 'nprogress/nprogress.css' //styles of nprogress
 import { StateProvider } from '../store/store'
 import { SWRConfig } from 'swr'
-
-//Binding events.
-// Router.events.on('routeChangeStart', () => NProgress.start())
-// Router.events.on('routeChangeComplete', () => NProgress.done())
-// Router.events.on('routeChangeError', () => NProgress.done())
 
 function MyApp({ Component, pageProps }) {
   return (

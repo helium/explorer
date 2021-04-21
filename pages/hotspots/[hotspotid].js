@@ -11,7 +11,6 @@ import AccountIcon from '../../components/AccountIcon'
 import ActivityList from '../../components/ActivityList'
 import WitnessesList from '../../components/WitnessesList'
 import HotspotImg from '../../public/images/hotspot.svg'
-import LocationImg from '../../public/images/location-white.png'
 import NearbyHotspotsList from '../../components/NearbyHotspotsList'
 import animalHash from 'angry-purple-tiger'
 import {
@@ -24,6 +23,7 @@ import { fetchNearbyHotspots } from '../../data/hotspots'
 import RewardScalePill from '../../components/Hotspots/RewardScalePill'
 import StatusPill from '../../components/Hotspots/StatusPill'
 import RelayPill from '../../components/Hotspots/RelayPill'
+import LocationIcon from '../../components/Icons/Location'
 
 const HotspotMapbox = dynamic(
   () => import('../../components/Hotspots/HotspotMapbox'),
@@ -93,50 +93,43 @@ const HotspotView = ({ hotspot }) => {
             witnesses={witnesses}
             nearbyHotspots={nearbyHotspots}
           />
-          {hotspot.lng !== undefined && hotspot.lat !== undefined && (
-            <div className="flex justify-between pt-3 w-full pb-8">
-              <p
-                className="px-5 sm:px-0 text-white flex flex-row items-center justify-start"
-                style={{ fontWeight: 600 }}
-              >
-                {hotspot.geocode.shortCountry && (
-                  <ReactCountryFlag
-                    countryCode={hotspot.geocode.shortCountry}
-                    svg
-                    className="mr-2"
-                  />
-                )}
-                {formatLocation(hotspot?.geocode)}
-              </p>
-              <div>
-                <Tooltip
-                  placement="bottom"
-                  title="Hotspot Location (h3)"
-                  className="hidden-xs"
+          {hotspot.lng !== undefined &&
+            hotspot.lat !== undefined &&
+            hotspot.location !== undefined && (
+              <div className="flex justify-between pt-3 w-full pb-8">
+                <p
+                  className="px-5 sm:px-0 text-white flex flex-row items-center justify-start"
+                  style={{ fontWeight: 600 }}
                 >
-                  <img
-                    src={LocationImg}
-                    style={{
-                      height: 15,
-                      marginRight: 5,
-                      position: 'relative',
-                      top: '-2px',
-                    }}
-                    alt="Location"
-                  />
-                  <Text
-                    copyable
-                    style={{
-                      color: '#8283B2',
-                      wordBreak: 'break-all',
-                    }}
+                  {hotspot.geocode.shortCountry && (
+                    <ReactCountryFlag
+                      countryCode={hotspot.geocode.shortCountry}
+                      svg
+                      className="mr-2"
+                    />
+                  )}
+                  {formatLocation(hotspot?.geocode)}
+                </p>
+                <div>
+                  <Tooltip
+                    placement="bottom"
+                    title="Hotspot Location (h3)"
+                    className="hidden-xs flex flex-row items-center justify-start"
                   >
-                    {hotspot.location}
-                  </Text>
-                </Tooltip>
+                    <LocationIcon className="text-gray-600 w-3 h-auto mr-1" />
+                    <Text
+                      copyable
+                      style={{
+                        color: '#8283B2',
+                        wordBreak: 'break-all',
+                      }}
+                    >
+                      {hotspot.location}
+                    </Text>
+                  </Tooltip>
+                </div>
               </div>
-            </div>
-          )}
+            )}
           <Row className="px-5 sm:px-0 pb-4 sm:pb-8">
             <div className="flex justify-start items-start pr-5">
               <div className="w-full">

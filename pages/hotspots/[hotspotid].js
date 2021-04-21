@@ -11,6 +11,7 @@ import AccountIcon from '../../components/AccountIcon'
 import ActivityList from '../../components/ActivityList'
 import WitnessesList from '../../components/WitnessesList'
 import HotspotImg from '../../public/images/hotspot.svg'
+import LocationImg from '../../public/images/location-white.png'
 import NearbyHotspotsList from '../../components/NearbyHotspotsList'
 import animalHash from 'angry-purple-tiger'
 import {
@@ -159,6 +160,33 @@ const HotspotView = ({ hotspot }) => {
                     {hotspot.address}
                   </Text>
                 </Tooltip>
+                <div>
+                  <Tooltip
+                    placement="bottom"
+                    title="Hotspot Location (h3)"
+                    className="hidden-xs"
+                  >
+                    <img
+                      src={LocationImg}
+                      style={{
+                        height: 15,
+                        marginRight: 5,
+                        position: 'relative',
+                        top: '-2px',
+                      }}
+                      alt="Location"
+                    />
+                    <Text
+                      copyable
+                      style={{
+                        color: '#8283B2',
+                        wordBreak: 'break-all',
+                      }}
+                    >
+                      {hotspot.location}
+                    </Text>
+                  </Tooltip>
+                </div>
               </div>
             </div>
           </Row>

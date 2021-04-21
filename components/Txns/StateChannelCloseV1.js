@@ -137,6 +137,9 @@ class StateChannelCloseV1 extends Component {
           <Descriptions.Item label="Number of Hotspots" span={3}>
             {totalHotspots.toLocaleString()}
           </Descriptions.Item>
+          <Descriptions.Item label="State Channel ID" span={3}>
+            {txn.stateChannel.id}
+          </Descriptions.Item>
           <Descriptions.Item label="State Channel Closer" span={3}>
             <Link href={'/accounts/' + txn.closer}>
               <a>{txn.closer}</a>

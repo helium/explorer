@@ -18,12 +18,17 @@ const MetaTags = ({
     : 'https://explorer.helium.com/images/og/explorer.png'
   const metaUrl = url ? url : 'https://explorer.helium.com'
 
+  // Help developers differentiate between dev & prod by displaying the React
+  // logo in dev
+  const faviconSrc =
+    process.env.NODE_ENV === 'production' ? 'favicon.ico' : 'logo.svg'
+
   return (
     <>
       <Head>
         {/* General Meta Tags */}
         <meta charSet="utf-8" />
-        <link rel="icon" href="https://explorer.helium.com/favicon.ico" />
+        <link rel="icon" href={`https://explorer.helium.com/${faviconSrc}`} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
         <link

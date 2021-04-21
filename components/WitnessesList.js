@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Card, Table, Tooltip } from 'antd'
 import Link from 'next/link'
-import { formatHotspotName, formatLocation } from './Hotspots/utils'
+import { formatHotspotName, formatNearbyLocation } from './Hotspots/utils'
 import { StatusCircle } from './Hotspots'
+import InfoIcon from '../components/Icons/Info'
 
 const columns = [
   {
@@ -13,7 +14,7 @@ const columns = [
       <>
         <StatusCircle status={row.status} />
         <Link href={'/hotspots/' + row.address} prefetch={false}>
-          <a style={{ fontFamily: "'inter', sans-serif" }}>
+          <a style={{ fontFamily: "'Inter', sans-serif" }}>
             {formatHotspotName(name)}
           </a>
         </Link>
@@ -24,7 +25,7 @@ const columns = [
     title: 'Location',
     dataIndex: 'geocode',
     key: 'location',
-    render: (data) => <span>{formatLocation(data)}</span>,
+    render: (data) => <span>{formatNearbyLocation(data)}</span>,
   },
   {
     title: 'Reward Scale',
@@ -67,34 +68,12 @@ const WitnessesList = ({ witnesses, witnessesLoading }) => {
   return (
     <Card
       title={
-        <span
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-          }}
-        >
+        <span className="flex items-center justify-start">
           Recent Witnesses{!witnessesLoading ? ` (${witnesses.length})` : ''}
           <Tooltip placement="top" title={'Witnesses from the last 5 days'}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              style={{
-                color: '#999',
-                height: 18,
-                width: 18,
-                marginLeft: 10,
-              }}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+            <div className="flex items-center justify-center ml-2">
+              <InfoIcon className="text-gray-600 h-5 w-5" />
+            </div>
           </Tooltip>
         </span>
       }

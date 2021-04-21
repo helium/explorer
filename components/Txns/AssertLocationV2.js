@@ -1,12 +1,12 @@
-import { Descriptions } from 'antd'
+import { Descriptions, Tooltip } from 'antd'
 import AccountIcon from '../AccountIcon'
+import InfoIcon from '../Icons/Info'
 
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import animalHash from 'angry-purple-tiger'
-import Client from '@helium/http'
 
-import { formatLocation } from '../Hotspots/utils'
+import { formatLocation, formatGain, formatElevation } from '../Hotspots/utils'
 import { Balance, CurrencyType } from '@helium/currency'
 
 const AssertLocationMapbox = dynamic(() => import('../AssertLocationMapbox'), {
@@ -51,6 +51,27 @@ const AssertLocationV1 = ({ txn }) => {
         </Descriptions.Item>
         <Descriptions.Item label="Longitude" span={3}>
           {txn.lng}
+        </Descriptions.Item>
+        <Descriptions.Item label="Gain" span={3}>
+          {formatGain(txn.gain)}
+        </Descriptions.Item>
+        <Descriptions.Item
+          label={
+            <div className="flex flex-row items-center justify-start">
+              Height
+              <Tooltip
+                placement="top"
+                title="This number represents how high the antenna is placed relative to the ground. If this number is negative, it means the Hotspot is below ground level."
+              >
+                <div className="ml-2 flex flex-row items-center justify-center">
+                  <InfoIcon className="text-gray-600 h-4 w-4" />
+                </div>
+              </Tooltip>
+            </div>
+          }
+          span={3}
+        >
+          {formatElevation(txn.elevation)}
         </Descriptions.Item>
         <Descriptions.Item label="Nonce" span={3}>
           {txn.nonce}

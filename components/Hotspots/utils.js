@@ -22,6 +22,21 @@ export const formatDistance = (meters) => {
   )
 }
 
+export const formatNearbyLocation = (geocode0) => {
+  const geocode = camelcaseKeys(geocode0)
+
+  if (!geocode?.longStreet && !geocode?.longCity) {
+    return 'No location set'
+  }
+  const locationTerms = [geocode?.longCity]
+
+  if (geocode?.longStreet !== null && geocode?.longStreet !== undefined) {
+    locationTerms.unshift(geocode?.longStreet)
+  }
+
+  return locationTerms.join(', ')
+}
+
 export const formatLocation = (geocode0) => {
   const geocode = camelcaseKeys(geocode0)
 
@@ -101,4 +116,12 @@ export const isRelay = (listen_addrs) => {
     listen_addrs.length > 0 &&
     listen_addrs[0].match('p2p-circuit')
   )
+}
+
+export const formatGain = (gain) => {
+  return `${gain / 10} dBi`
+}
+
+export const formatElevation = (elevation) => {
+  return `${elevation} m`
 }

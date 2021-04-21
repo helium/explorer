@@ -8,6 +8,7 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import AppLayout, { Content } from '../../components/AppLayout'
 import AccountIcon from '../../components/AccountIcon'
+import LocationIcon from '../../components/Icons/Location'
 import ActivityList from '../../components/ActivityList'
 import WitnessesList from '../../components/WitnessesList'
 import HotspotImg from '../../public/images/hotspot.svg'
@@ -18,8 +19,9 @@ import {
   formatLocation,
   isRelay,
 } from '../../components/Hotspots/utils'
-import ReactCountryFlag from 'react-country-flag'
+import { haversineDistance } from '../../components/Txns/utils'
 import { fetchNearbyHotspots } from '../../data/hotspots'
+import ReactCountryFlag from 'react-country-flag'
 import RewardScalePill from '../../components/Hotspots/RewardScalePill'
 import StatusPill from '../../components/Hotspots/StatusPill'
 import RelayPill from '../../components/Hotspots/RelayPill'
@@ -37,13 +39,13 @@ const { TabPane } = Tabs
 
 const HotspotView = ({ hotspot }) => {
   const [witnesses, setWitnesses] = useState([])
-  const [nearbyHotspots, setNearbyHotspots] = useState([])
-
   const [witnessesLoading, setWitnessesLoading] = useState(true)
-  const [nearbyHotspotsLoading, setNearbyHotspotsLoading] = useState(true)
 
+  const [nearbyHotspots, setNearbyHotspots] = useState([])
+  const [nearbyHotspotsLoading, setNearbyHotspotsLoading] = useState(true)
   const [loading, setLoading] = useState(true)
 
+  const [mapCenter, setMapCenter] = useState([hotspot.lng, hotspot.lat])
   useEffect(() => {
     setLoading(!(!witnessesLoading && !nearbyHotspotsLoading))
   }, [witnessesLoading, nearbyHotspotsLoading])
@@ -62,10 +64,22 @@ const HotspotView = ({ hotspot }) => {
       setWitnesses(witnesses)
       setWitnessesLoading(false)
     }
+
     async function getNearbyHotspots() {
       setNearbyHotspotsLoading(true)
-      const hotspots = await fetchNearbyHotspots(hotspot.lat, hotspot.lng, 2000)
-      setNearbyHotspots(hotspots.filter((h) => h.address !== hotspotid))
+      const hotspotsUnfiltered = await fetchNearbyHotspots(
+        hotspot.lat,
+        hotspot.lng,
+        2000,
+      )
+      const hotspots = hotspotsUnfiltered
+        .filter((h) => h.address !== hotspotid)
+        .map((h) => {
+          const distanceAway =
+            haversineDistance(hotspot.lng, hotspot.lat, h.lng, h.lat) * 1000
+          return { ...h, distanceAway }
+        })
+      setNearbyHotspots(hotspots)
       setNearbyHotspotsLoading(false)
     }
 
@@ -90,25 +104,48 @@ const HotspotView = ({ hotspot }) => {
             classes={'h-80 md:h-96'}
             hotspot={hotspot}
             witnesses={witnesses}
+            witnessesLoading={witnessesLoading}
             nearbyHotspots={nearbyHotspots}
+            nearbyHotspotsLoading={nearbyHotspotsLoading}
+            mapCenter={mapCenter}
           />
-          {hotspot.lng !== undefined && hotspot.lat !== undefined && (
-            <div className="flex justify-between pt-3 w-full pb-8">
-              <p
-                className="px-5 sm:px-0 text-white flex flex-row items-center justify-start"
-                style={{ fontWeight: 600 }}
-              >
-                {hotspot.geocode.shortCountry && (
-                  <ReactCountryFlag
-                    countryCode={hotspot.geocode.shortCountry}
-                    svg
-                    className="mr-2"
-                  />
-                )}
-                {formatLocation(hotspot?.geocode)}
-              </p>
-            </div>
-          )}
+          {hotspot.lng !== undefined &&
+            hotspot.lat !== undefined &&
+            hotspot.location !== undefined && (
+              <div className="flex justify-between pt-3 w-full pb-8">
+                <p
+                  className="px-5 sm:px-0 text-white flex flex-row items-center justify-start"
+                  style={{ fontWeight: 600 }}
+                >
+                  {hotspot.geocode.shortCountry && (
+                    <ReactCountryFlag
+                      countryCode={hotspot.geocode.shortCountry}
+                      svg
+                      className="mr-2"
+                    />
+                  )}
+                  {formatLocation(hotspot?.geocode)}
+                </p>
+                <div>
+                  <Tooltip
+                    placement="bottom"
+                    title="Hotspot Location (h3)"
+                    className="hidden-xs flex flex-row items-center justify-start"
+                  >
+                    <LocationIcon className="text-gray-600 w-3 h-auto mr-1" />
+                    <Text
+                      copyable
+                      style={{
+                        color: '#8283B2',
+                        wordBreak: 'break-all',
+                      }}
+                    >
+                      {hotspot.location}
+                    </Text>
+                  </Tooltip>
+                </div>
+              </div>
+            )}
           <Row className="px-5 sm:px-0 pb-4 sm:pb-8">
             <div className="flex justify-start items-start pr-5">
               <div className="w-full">

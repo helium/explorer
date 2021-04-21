@@ -1,7 +1,7 @@
 import { first, last } from 'lodash'
 import Widget from './Widget'
 
-const StatWidget = ({ title, series }) => {
+const StatWidget = ({ title, series, isLoading = false }) => {
   const value = last(series || [])?.value
   const initial = first(series || [])?.value
 
@@ -16,13 +16,21 @@ const StatWidget = ({ title, series }) => {
         title={title}
         value={valueString}
         subtitle={<span className="text-gray-550">No Change</span>}
+        isLoading={isLoading}
       />
     )
   }
 
   const changeString = (value - initial).toLocaleString(undefined, stringOpts)
 
-  return <Widget title={title} value={valueString} change={changeString} />
+  return (
+    <Widget
+      title={title}
+      value={valueString}
+      change={changeString}
+      isLoading={isLoading}
+    />
+  )
 }
 
 export default StatWidget

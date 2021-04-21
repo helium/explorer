@@ -1,8 +1,9 @@
 import { LineChart, Line, YAxis, ResponsiveContainer } from 'recharts'
 
 import { first, last } from 'lodash'
+import Skeleton from '../Common/Skeleton'
 
-const TrendWidget = ({ title, series }) => {
+const TrendWidget = ({ title, series, isLoading = false }) => {
   const yMin = first(series || [])?.value || 0
   const yMax = last(series || [])?.value || 0
 
@@ -11,10 +12,10 @@ const TrendWidget = ({ title, series }) => {
       <div className="w-1/3">
         <div className="text-gray-600 text-sm whitespace-nowrap">{title}</div>
         <div className="text-3xl font-medium my-1.5 tracking-tighter">
-          {yMax.toLocaleString()}
+          {isLoading ? <Skeleton w="full" my="4" /> : yMax.toLocaleString()}
         </div>
         <div className="text-green-500 text-sm font-medium">
-          +{(yMax - yMin).toLocaleString()}
+          {isLoading ? <Skeleton w="1/3" /> : (yMax - yMin).toLocaleString()}
         </div>
       </div>
       <div className="w-full p-4 pr-0 relative">

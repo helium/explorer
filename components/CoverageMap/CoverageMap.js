@@ -16,7 +16,6 @@ const minZoom = 2
 const measuringColor = '#5850EB'
 
 const Mapbox = ReactMapboxGl({
-  accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
   interactive: true,
   touchZoomRotate: true,
   maxZoom: maxZoom,
@@ -340,7 +339,7 @@ const CoverageMap = ({ selectedHotspots, selectHotspots, showOffline }) => {
           </span>
         </button>
         <Mapbox
-          style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
+          style="https://api.maptiler.com/maps/2469a8ae-f7e5-4ed1-b856-cd312538e33b/style.json?key=kNomjOqCRi7kEjO4HbFF"
           className="mapbox-object"
           center={center}
           zoom={zoom}

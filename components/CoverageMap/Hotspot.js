@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import animalHash from 'angry-purple-tiger'
-
+import LocationIcon from '../../components/Icons/Location'
 export default class Hotspot extends Component {
   handleClick = () => {
     const { hotspot, selectHotspots } = this.props
@@ -14,14 +14,14 @@ export default class Hotspot extends Component {
     const { hotspot } = this.props
 
     return (
-      <div className={classNames('hotspot', {})} onClick={this.handleClick}>
+      <div
+        className={classNames('hotspot', 'group', {})}
+        onClick={this.handleClick}
+      >
         <header className="hotspot-header">
           <div className="hotspot-section">
-            <div className="hotspot-location">
-              <img
-                className="location-white"
-                src="/images/location-white.png"
-              />{' '}
+            <div className="hotspot-location ">
+              <LocationIcon className="group-hover:text-purple-500 text-gray-650 h-2.5 w-auto mr-1 location-white" />
               {hotspot.lat ? hotspot.location : 'No Location'}
             </div>
           </div>
@@ -97,19 +97,6 @@ export default class Hotspot extends Component {
             color: #a0b0c2;
             font-size: 13px;
             margin-top: -21px;
-          }
-
-          img.location-white {
-            height: 8px;
-            position: relative;
-            top: -1px;
-            margin-right: 3px;
-            opacity: 0.3;
-          }
-
-          .hotspot:hover img.location-white {
-            filter: saturate(100%);
-            opacity: 1;
           }
 
           .owner {

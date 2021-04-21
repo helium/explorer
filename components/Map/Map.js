@@ -38,7 +38,7 @@ const EU_CN_BOUNDS = [
 ]
 
 const MOBILE_PADDING = { top: 10, left: 10, right: 10, bottom: 450 }
-const DESKTOP_PADDING = { top: 10, left: 600, right: 10, bottom: 10 }
+const DESKTOP_PADDING = { top: 200, left: 600, right: 200, bottom: 200 }
 
 const CoverageMap = ({ initialCoverage }) => {
   const isDesktopOrLaptop = useMediaQuery({ minDeviceWidth: 1224 })

@@ -21,8 +21,8 @@ export default class Hotspot extends Component {
       >
         <header className="hotspot-header">
           <div className="hotspot-section">
-            <div className="hotspot-location ">
-              <LocationIcon className="group-hover:text-purple-500 text-gray-650 h-2.5 w-auto mr-1 location-white" />
+            <div className="hotspot-location flex flex-row items-center justify-start">
+              <LocationIcon className="group-hover:text-purple-500 text-gray-650 h-2.5 pb-px w-auto mr-1.5 location-white" />
               {hotspot.lat ? hotspot.location : 'No Location'}
             </div>
           </div>

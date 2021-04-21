@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 import animalHash from 'angry-purple-tiger'
 import LocationIcon from '../../components/Icons/Location'
+
 export default class Hotspot extends Component {
   handleClick = () => {
     const { hotspot, selectHotspots } = this.props
@@ -25,10 +26,6 @@ export default class Hotspot extends Component {
               {hotspot.lat ? hotspot.location : 'No Location'}
             </div>
           </div>
-
-          {/*<div className="hotspot-section">
-              <div className="hotspot-score mono"><img className="score-circle" src="/static/img/score-circle.png" /> {hotspot.score}</div>
-            </div>*/}
 
           <div className="hotspot-section">
             <div className="hotspot-name">{animalHash(hotspot.address)}</div>

@@ -1,6 +1,6 @@
 import useSWR from 'swr'
 import Client from '@helium/http'
-import qs from 'qs'
+import { fetchAll } from '../utils/pagination'
 
 export const fetchLatestHotspots = async (count = 20) => {
   const client = new Client()
@@ -46,13 +46,13 @@ export const getHotspotRewardsBuckets = async (
   return rewards
 }
 
-export const fetchNearbyHotspots = async (lat, lng, dist = 1000) => {
-  return []
-  if (!lat || !lng) return []
-  const params = qs.stringify({ lat, lng, dist })
-  const url = 'https://wallet.api.helium.systems/api/v1/hotspots?' + params
-  const response = await fetch(url)
-  const hotspots = await response.json()
+export const fetchNearbyHotspots = async (lat, lon, distance = 1000) => {
+  if (!lat || !lon) return []
+  const hotspots = await fetchAll('/hotspots/location/distance', {
+    lat,
+    lon,
+    distance,
+  })
   return hotspots
 }
 

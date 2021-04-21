@@ -1,25 +1,22 @@
 import React, { useState } from 'react'
-import { Card, Table } from 'antd'
+import { Card, Table, Tooltip } from 'antd'
 import Link from 'next/link'
 import { StatusCircle } from './Hotspots'
-import {
-  formatDistance,
-  formatHotspotName,
-  formatLocation,
-} from './Hotspots/utils'
+import { formatDistance, formatNearbyLocation } from './Hotspots/utils'
+import animalHash from 'angry-purple-tiger'
+import InfoIcon from '../components/Icons/Info'
 
 const columns = [
   {
     title: 'Hotspot',
-    dataIndex: 'name',
-    key: 'name',
-    render: (name, row) => (
+    dataIndex: 'address',
+    key: 'address',
+    render: (address, row) => (
       <>
-        {/* hiding status for now until status is something that comes back in nearby API response */}
-        {/* <StatusCircle status={row.status} /> */}
-        <Link href={'/hotspots/' + row.address} prefetch={false}>
+        <StatusCircle status={row.status} />
+        <Link href={'/hotspots/' + address} prefetch={false}>
           <a style={{ fontFamily: "'Inter', sans-serif" }}>
-            {formatHotspotName(name)}
+            {animalHash(address)}
           </a>
         </Link>
       </>
@@ -29,12 +26,27 @@ const columns = [
     title: 'Location',
     dataIndex: 'geocode',
     key: 'location',
-    render: (data) => <span>{formatLocation(data)}</span>,
+    render: (data) => <span>{formatNearbyLocation(data)}</span>,
+  },
+  {
+    title: 'Reward Scale',
+    dataIndex: 'reward_scale',
+    key: 'reward_scale',
+    render: (data) => (
+      <span>
+        {data
+          ? data.toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            })
+          : ''}
+      </span>
+    ),
   },
   {
     title: 'Distance',
-    dataIndex: 'dist',
-    key: 'dist',
+    dataIndex: 'distanceAway',
+    key: 'distanceAway',
     render: (dist) => <span>{formatDistance(dist)}</span>,
   },
 ]
@@ -48,9 +60,20 @@ const NearbyHotspotsList = ({ nearbyHotspots, nearbyHotspotsLoading }) => {
   }
   return (
     <Card
-      title={`Nearby Hotspots${
-        !nearbyHotspotsLoading ? ` (${nearbyHotspots.length})` : ''
-      }`}
+      title={
+        <span className="flex items-center justify-start">
+          Nearby Hotspots
+          {!nearbyHotspotsLoading ? ` (${nearbyHotspots.length})` : ''}
+          <Tooltip
+            placement="top"
+            title={'Hotspots within 2 km of this Hotspot'}
+          >
+            <div className="flex items-center justify-center ml-2">
+              <InfoIcon className="text-gray-600 h-5 w-5" />
+            </div>
+          </Tooltip>
+        </span>
+      }
     >
       {nearbyHotspots.length === 0 ? (
         <p

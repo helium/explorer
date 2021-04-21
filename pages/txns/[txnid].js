@@ -226,7 +226,7 @@ const TxnView = ({ txn }) => {
                 />
 
                 <Link href={'/blocks/' + txn.height}>
-                  <a>{txn.height}</a>
+                  <a>{txn.height.toLocaleString()}</a>
                 </Link>
               </p>
               {(txn.type === 'rewards_v1' || txn.type === 'rewards_v2') && (

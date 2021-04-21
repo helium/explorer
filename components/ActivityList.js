@@ -552,7 +552,7 @@ const columns = (ownerAddress) => {
       key: 'height',
       render: (height) => (
         <Link href={`/blocks/${height}`} prefetch={false}>
-          <a>{height}</a>
+          <a>{height.toLocaleString()}</a>
         </Link>
       ),
     },

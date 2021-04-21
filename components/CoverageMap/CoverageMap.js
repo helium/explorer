@@ -422,7 +422,7 @@ class CoverageMap extends React.Component {
             </span>
           </button>
           <Mapbox
-            style="https://api.maptiler.com/maps/b238ec2f-4ff6-407c-a310-3dafb5f838f4/style.json?key=kNomjOqCRi7kEjO4HbFF"
+            style="https://api.maptiler.com/maps/2469a8ae-f7e5-4ed1-b856-cd312538e33b/style.json?key=kNomjOqCRi7kEjO4HbFF"
             className="mapbox-object"
             center={this.state.center}
             zoom={this.state.zoom}

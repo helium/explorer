@@ -3,7 +3,6 @@ import ReactMapboxGl, { GeoJSONLayer } from 'react-mapbox-gl'
 import fetch from 'node-fetch'
 
 const Mapbox = ReactMapboxGl({
-  accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
   interactive: false,
   touchZoomRotate: false,
   maxZoom: 14,
@@ -40,7 +39,7 @@ class MiniCoverageMap extends React.Component {
         </p>
         <span className="mini-coverage-map-overlay" />
         <Mapbox
-          style="mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk"
+          style="https://api.maptiler.com/maps/2469a8ae-f7e5-4ed1-b856-cd312538e33b/style.json?key=kNomjOqCRi7kEjO4HbFF"
           containerStyle={{
             position: 'relative',
             width: '100%',

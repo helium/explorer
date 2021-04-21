@@ -108,6 +108,33 @@ const HotspotView = ({ hotspot }) => {
                 )}
                 {formatLocation(hotspot?.geocode)}
               </p>
+              <div>
+                <Tooltip
+                  placement="bottom"
+                  title="Hotspot Location (h3)"
+                  className="hidden-xs"
+                >
+                  <img
+                    src={LocationImg}
+                    style={{
+                      height: 15,
+                      marginRight: 5,
+                      position: 'relative',
+                      top: '-2px',
+                    }}
+                    alt="Location"
+                  />
+                  <Text
+                    copyable
+                    style={{
+                      color: '#8283B2',
+                      wordBreak: 'break-all',
+                    }}
+                  >
+                    {hotspot.location}
+                  </Text>
+                </Tooltip>
+              </div>
             </div>
           )}
           <Row className="px-5 sm:px-0 pb-4 sm:pb-8">
@@ -160,33 +187,6 @@ const HotspotView = ({ hotspot }) => {
                     {hotspot.address}
                   </Text>
                 </Tooltip>
-                <div>
-                  <Tooltip
-                    placement="bottom"
-                    title="Hotspot Location (h3)"
-                    className="hidden-xs"
-                  >
-                    <img
-                      src={LocationImg}
-                      style={{
-                        height: 15,
-                        marginRight: 5,
-                        position: 'relative',
-                        top: '-2px',
-                      }}
-                      alt="Location"
-                    />
-                    <Text
-                      copyable
-                      style={{
-                        color: '#8283B2',
-                        wordBreak: 'break-all',
-                      }}
-                    >
-                      {hotspot.location}
-                    </Text>
-                  </Tooltip>
-                </div>
               </div>
             </div>
           </Row>

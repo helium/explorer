@@ -27,7 +27,7 @@ export const fetchAll = async (
   const accData = [...acc, ...data]
 
   if (nextCursor) {
-    const nextData = await fetchAll(path, accData, nextCursor)
+    const nextData = await fetchAll(path, params, network, accData, nextCursor)
     return nextData
   }
 

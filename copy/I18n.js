@@ -11,11 +11,17 @@ const translations = {
     hotspots: {
       title: 'Hotspots',
     },
+    blocks: {
+      title: 'Blocks',
+    },
   },
   fr: {
     hello: 'Bonjour',
     hotspots: {
       title: 'Chaudspots',
+    },
+    blocks: {
+      title: 'Blocks',
     },
   },
 }

@@ -1,6 +1,10 @@
 import useSWR from 'swr'
 import Client from '@helium/http'
 import qs from 'qs'
+import client, { TAKE_MAX } from './client'
+import { fetchAll } from '../utils/pagination'
+import camelcaseKeys from 'camelcase-keys'
+import { haversineDistance } from '../utils/location'
 
 export const fetchLatestHotspots = async (count = 20) => {
   const client = new Client()
@@ -22,9 +26,6 @@ export const useLatestHotspots = (initialData, count = 20) => {
   }
 }
 
-const MAX = 100000
-const client = new Client()
-
 export const getHotspotRewardsSum = async (address, numDaysBack) => {
   const initialDate = new Date()
   const endDate = new Date()
@@ -42,21 +43,32 @@ export const getHotspotRewardsBuckets = async (
     maxTime: new Date(),
     bucket: bucketType,
   })
-  const rewards = await list.take(MAX)
+  const rewards = await list.take(TAKE_MAX)
   return rewards
 }
 
-export const fetchNearbyHotspots = async (lat, lng, dist = 1000) => {
-  if (!lat || !lng) return []
-  const params = qs.stringify({ lat, lng, dist })
-  const url = 'https://wallet.api.helium.systems/api/v1/hotspots?' + params
-  const response = await fetch(url)
-  const hotspots = await response.json()
-  return hotspots
+export const fetchNearbyHotspots = async (lat, lon, distance = 1000) => {
+  if (!lat || !lon) return []
+  const hotspots = await fetchAll('/hotspots/location/distance', {
+    lat,
+    lon,
+    distance,
+  })
+  const hotspotsWithDistance = hotspots.map((h) => ({
+    ...h,
+    distance: haversineDistance(lon, lat, h.lng, h.lat) * 1000,
+  }))
+  return camelcaseKeys(hotspotsWithDistance)
 }
 
 export const fetchHotspot = async (address) => {
-  const client = new Client()
   const hotspot = await client.hotspots.get(address)
   return JSON.parse(JSON.stringify(hotspot))
+}
+
+export const fetchWitnesses = async (address) => {
+  console.log('fetch witnesses', address)
+  const list = await client.hotspot(address).witnesses.list()
+  const witnesses = await list.take(TAKE_MAX)
+  return witnesses
 }

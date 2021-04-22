@@ -60,10 +60,10 @@ const defaultStyle = (minZoom, maxZoom) => ({
   },
   'circle-opacity': [
     'interpolate',
-    ['exponential', 1.75],
+    ['exponential', 1],
     ['zoom'],
     minZoom,
-    ['match', ['get', 'status'], 'online', 0.7, 'offline', 0, 0],
+    ['match', ['get', 'status'], 'online', 0.2, 'offline', 0, 0],
     maxZoom,
     ['match', ['get', 'status'], 'online', 1, 'offline', 0, 0],
   ],

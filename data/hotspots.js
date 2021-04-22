@@ -67,7 +67,6 @@ export const fetchHotspot = async (address) => {
 }
 
 export const fetchWitnesses = async (address) => {
-  console.log('fetch witnesses', address)
   const list = await client.hotspot(address).witnesses.list()
   const witnesses = await list.take(TAKE_MAX)
   return witnesses

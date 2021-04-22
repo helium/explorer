@@ -1,35 +1,43 @@
-import Image from 'next/image'
+import { useCallback } from 'react'
 import animalHash from 'angry-purple-tiger'
 import ConsensusIndicator from '../Validators/ConsensusIndicator'
 import ValidatorFlagLocation from '../Validators/ValidatorFlagLocation'
 import ValidatorStatusPill from '../Validators/ValidatorStatusPill'
+import BaseList from './BaseList'
 
 const ValidatorsList = ({ validators, recentGroups }) => {
+  const keyExtractor = useCallback((v) => v.address, [])
+
+  const renderTitle = useCallback((v) => {
+    return `${animalHash(v.address)} (#${v.number})`
+  }, [])
+
+  const renderSubtitle = useCallback(
+    (v) => {
+      return (
+        <>
+          <ValidatorFlagLocation geo={v.geo} />
+          <ConsensusIndicator address={v.address} recentGroups={recentGroups} />
+        </>
+      )
+    },
+    [recentGroups],
+  )
+
+  const renderDetails = useCallback((v) => {
+    return <ValidatorStatusPill status={v.status} />
+  }, [])
+
   return (
-    <div className="w-full grid grid-cols-1 divide-y divide-gray-400">
-      {validators.map((v) => (
-        <div key={v.address} className="border-solid py-2 px-4 flex">
-          <div className="w-full">
-            <div className="text-base font-medium">
-              {animalHash(v.address)} (#{v.number})
-            </div>
-            <div className="flex items-center space-x-4 h-8">
-              <ValidatorFlagLocation geo={v.geo} />
-              <ConsensusIndicator
-                address={v.address}
-                recentGroups={recentGroups}
-              />
-            </div>
-          </div>
-          <div className="flex items-center px-4">
-            <ValidatorStatusPill status={v.status} />
-          </div>
-          <div className="flex">
-            <Image src="/images/details-arrow.svg" width={10} height={10} />
-          </div>
-        </div>
-      ))}
-    </div>
+    <BaseList
+      items={validators}
+      keyExtractor={keyExtractor}
+      isLoading={false}
+      renderTitle={renderTitle}
+      renderSubtitle={renderSubtitle}
+      renderDetails={renderDetails}
+      blankTitle="No validators"
+    />
   )
 }
 

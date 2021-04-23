@@ -49,8 +49,8 @@ const getRewards = async ({ address }) => {
 }
 
 export const fetchValidators = async () => {
-  const validators = await fetchAll('/validators')
-  const elected = await fetchAll('/validators/elected')
+  const validators = await fetchAll('/validators', undefined, 'testnet')
+  const elected = await fetchAll('/validators/elected', undefined, 'testnet')
   const electedAddresses = elected.map((e) => e.address)
   const validatorsWithGeo = []
 

@@ -100,3 +100,9 @@ export const generateRewardScaleColor = (rewardScale) => {
     return '#FF6666'
   }
 }
+
+export const witnessRssi = (histogram = {}) =>
+  Object.keys(histogram).reduce(
+    (a, b) => (histogram[a] > histogram[b] ? a : b),
+    0,
+  )

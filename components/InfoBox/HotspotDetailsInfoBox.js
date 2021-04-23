@@ -10,7 +10,10 @@ import { useHotspotRewards } from '../../data/rewards'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import Hex from '../Hex'
 import { generateRewardScaleColor } from '../Hotspots/utils'
-import classNames from 'classnames'
+import StatusWidget from '../Widgets/StatusWidget'
+import WitnessesPane from './HotspotDetails/WitnessesPane'
+import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
+import ActivityPane from './HotspotDetails/ActivityPane'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -47,7 +50,7 @@ const HotspotDetailsInfoBox = () => {
   return (
     <InfoBox title={title}>
       <TabNavbar>
-        <TabPane title="Statistics" key="1">
+        <TabPane title="Statistics" key="statistics">
           <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll">
             <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
             <Widget
@@ -71,45 +74,20 @@ const HotspotDetailsInfoBox = () => {
             <div className="col-span-2 pb-1" />
           </div>
         </TabPane>
+
+        <TabPane title="Activity" path="activity" key="activity">
+          <ActivityPane hotspot={hotspot} />
+        </TabPane>
+
+        <TabPane title="Witnesses" path="witnesses" key="witnesses">
+          <WitnessesPane hotspot={hotspot} />
+        </TabPane>
+
+        <TabPane title="Nearby" path="nearby" key="nearby">
+          <NearbyHotspotsPane hotspot={hotspot} />
+        </TabPane>
       </TabNavbar>
     </InfoBox>
-  )
-}
-
-const StatusWidget = ({ hotspot }) => {
-  const status = hotspot?.status?.online
-
-  const value = useMemo(() => {
-    if (status === 'offline') {
-      return 'Offline'
-    }
-    if (
-      hotspot.block - hotspot.status?.height >= 500 ||
-      hotspot.status.height === null
-    ) {
-      return 'Syncing'
-    }
-    return 'Synced'
-  }, [hotspot.block, hotspot.status.height, status])
-
-  return (
-    <Widget
-      title="Sync Status"
-      value={value}
-      icon={
-        <div
-          className={classNames('rounded-full w-5 h-5', {
-            'bg-green-400': status === 'online',
-            'bg-red-400': status === 'offline',
-          })}
-        />
-      }
-      subtitle={
-        <span className="text-gray-550">
-          At block {hotspot?.status?.height?.toLocaleString()}
-        </span>
-      }
-    />
   )
 }
 

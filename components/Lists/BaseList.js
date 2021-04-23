@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import Image from 'next/image'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import SkeletonList from './SkeletonList'
+import classNames from 'classnames'
 
 const BaseList = ({
   items,
@@ -50,11 +51,31 @@ const BaseList = ({
   }
 
   return (
-    <div className="w-full grid grid-cols-1 divide-y divide-gray-400">
-      {items.map((item) => (
+    <div
+      className={classNames('w-full grid grid-cols-1 divide-y divide-gray-400')}
+    >
+      {items.map((item, i) => (
         <div
           key={keyExtractor(item)}
-          className="cursor-pointer border-solid py-2 px-4 flex"
+          className={classNames(
+            'hover:bg-gray-100',
+            'cursor-pointer',
+            'bg-white',
+            'relative',
+            'flex',
+            'border-t',
+            'border-l',
+            'border-r',
+            'py-2',
+            'px-4',
+            'border-solid',
+            'border-gray-500',
+            {
+              'rounded-t-lg': i === 0,
+              'rounded-b-lg border-b': i === length - 1,
+              'border-b-0': i !== 0 && i !== length - 1,
+            },
+          )}
           onClick={handleSelectItem(item)}
         >
           <div className="w-full">

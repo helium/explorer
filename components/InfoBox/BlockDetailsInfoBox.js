@@ -9,9 +9,10 @@ import I18n from '../../copy/I18n'
 import { useLatestHotspots } from '../../data/hotspots'
 import { useMemo } from 'react'
 import { formatHotspotName } from '../Hotspots/utils'
-import useSelectedHotspot from '../../hooks/useSelectedHotspot'
+import Timestamp from 'react-timestamp'
+import Image from 'next/image'
 
-const HotspotsInfoBox = () => {
+const BlockDetailsInfoBox = () => {
   // const { data: blocks } = useSWR('/api/metrics/blocks')
 
   // const latestHotspot = useMemo(() => {
@@ -23,90 +24,38 @@ const HotspotsInfoBox = () => {
     count: 809192,
   }
 
+  const block = {
+    transactionCount: 141,
+    time: 1618184215,
+    snapshotHash: '',
+    prevHash: 'TS5jgw28xQLBB-m80_eDKDPcj013OI4XDW3Q3kERT4o',
+    height: 800000,
+    hash: 'j7NYY-dn2CWuLYU08wA57Bkf1aJSfrp04ld_9I6n2qI',
+  }
+
   return (
-    <InfoBox title={<I18n t="blocks.title" />}>
-      <TabNavbar>
-        <TabPane title="Overview" key="1">
-          <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll">
-            <TrendWidget
-              title="Blocks"
-              series={blocks?.count}
-              isLoading={!blocks}
+    <InfoBox title={`Block ${block.height.toLocaleString()}`}>
+      <div className="overflow-y-scroll px-4 py-5">
+        <div className="flex flex-col items-start text-gray-800">
+          <span className="flex items-center justify-start">
+            <Image src="/images/clock.svg" width={14} height={14} />
+            <Timestamp
+              date={block.time}
+              className="tracking-tighter text-gray-525 text-sm font-sans ml-1"
             />
-            {/* <StatWidget
-              title="% Online"
-              series={stats?.onlinePct}
-              isLoading={!stats}
-            />
-            <StatWidget
-              title="Hotspot Owners"
-              series={stats?.ownersCount}
-              isLoading={!stats}
-            />
-            <StatWidget
-              title="Cities"
-              series={stats?.citiesCount}
-              isLoading={!stats}
-            />
-            <StatWidget
-              title="Countries"
-              series={stats?.countriesCount}
-              isLoading={!stats}
-            />
-            <LatestHotspotWidget hotspot={latestHotspot} /> */}
-            <div className="col-span-2 pb-1" />
-          </div>
-        </TabPane>
-        {/* <TabPane title="Statistics" key="2">
-          <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll">
-            <TrendWidget
-              title="Hotspots"
-              series={stats?.count}
-              isLoading={!stats}
-            />
-            <StatWidget
-              title="% Online"
-              series={stats?.onlinePct}
-              isLoading={!stats}
-            />
-            <StatWidget
-              title="Hotspot Owners"
-              series={stats?.ownersCount}
-              isLoading={!stats}
-            />
-            <StatWidget
-              title="Cities"
-              series={stats?.citiesCount}
-              isLoading={!stats}
-            />
-            <StatWidget
-              title="Countries"
-              series={stats?.countriesCount}
-              isLoading={!stats}
-            />
-            <LatestHotspotWidget hotspot={latestHotspot} />
-            <div className="col-span-2 pb-1" />
-          </div>
-        </TabPane> */}
-      </TabNavbar>
+          </span>
+          <span className="flex flex-row items-center justify-start">
+            <Image src="/images/txn.svg" width={14} height={14} />
+            <p className="tracking-tighter text-gray-525 text-sm font-sans m-0 ml-1">
+              {block.transactionCount} transactions
+            </p>
+          </span>
+        </div>
+
+        <div className="col-span-2 pb-1" />
+      </div>
     </InfoBox>
   )
 }
 
-const LatestHotspotWidget = ({ hotspot }) => {
-  const { selectHotspot } = useSelectedHotspot()
-  if (!hotspot) return null
-
-  return (
-    <Widget
-      title="Latest Hotspot"
-      value={formatHotspotName(hotspot.name)}
-      subtitle={<FlagLocation geocode={hotspot.geocode} />}
-      span={2}
-      onClick={() => selectHotspot(hotspot.address)}
-      isLoading={!hotspot}
-    />
-  )
-}
-
-export default HotspotsInfoBox
+export default BlockDetailsInfoBox

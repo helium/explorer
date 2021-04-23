@@ -13,6 +13,7 @@ const translations = {
     },
     blocks: {
       title: 'Blocks',
+      block: 'Block',
     },
   },
   fr: {
@@ -22,6 +23,7 @@ const translations = {
     },
     blocks: {
       title: 'Blocks',
+      block: 'Block',
     },
   },
 }

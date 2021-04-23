@@ -15,6 +15,7 @@ module.exports = {
       sans: ['Inter', 'sans-serif'],
     },
     colors: {
+      //TODO: get Pete to define a palette and do a full color audit
       transparent: 'transparent',
       white: '#FFFFFF',
       black: '#000000',

@@ -32,7 +32,7 @@ const LatestBlocksPane = () => {
             'border-solid',
             'border-gray-500',
             'rounded-lg',
-            'my-5',
+            'my-3',
           )}
         >
           <div

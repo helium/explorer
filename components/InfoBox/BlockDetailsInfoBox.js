@@ -6,7 +6,6 @@ import Widget from '../Widgets/Widget'
 import FlagLocation from '../Common/FlagLocation'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import I18n from '../../copy/I18n'
-import { useLatestHotspots } from '../../data/hotspots'
 import { useMemo } from 'react'
 import { formatHotspotName } from '../Hotspots/utils'
 import Timestamp from 'react-timestamp'
@@ -14,11 +13,6 @@ import Image from 'next/image'
 
 const BlockDetailsInfoBox = () => {
   // const { data: blocks } = useSWR('/api/metrics/blocks')
-
-  // const latestHotspot = useMemo(() => {
-  //   if (!latestHotspots) return null
-  //   return latestHotspots.find((h) => !!h.location)
-  // }, [latestHotspots])
 
   const blocks = {
     count: 809192,

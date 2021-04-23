@@ -9,7 +9,7 @@ const { sub } = require('date-fns')
 
 const REDIS_CLOUD_URL = process.env.REDIS_CLOUD_URL
 
-const redisClient = () => {
+const makeRedisClient = () => {
   const [_url, username, password, host, port] = REDIS_CLOUD_URL.match(
     /^redis:\/\/(.*):(.*)@(.*):(\d*)$/,
   )
@@ -21,6 +21,8 @@ const redisClient = () => {
   })
   return factory.create()
 }
+
+const redisClient = makeRedisClient()
 
 const TimeBucket = {
   HOUR: 1000 * 60 * 60,
@@ -37,16 +39,18 @@ const timestampRange = () => {
 }
 
 const getRange = async (key) => {
-  const redis = redisClient()
   const now = new Date()
   const aggregation = new Aggregation(AggregationType.MAX, TimeBucket.DAY)
   const timestampRange = new TimestampRange(
     sub(now, { days: 30 }),
     now.getTime(),
   )
-  const samples = await redis.range(key, timestampRange, undefined, aggregation)
-
-  await redis.disconnect()
+  const samples = await redisClient.range(
+    key,
+    timestampRange,
+    undefined,
+    aggregation,
+  )
 
   return samples
 }

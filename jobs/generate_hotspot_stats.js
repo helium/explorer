@@ -5,8 +5,6 @@ const { Sample } = require('redis-time-series-ts')
 const { redisClient } = require('../commonjs/redisTimeSeries')
 
 const backfillHotspotsCount = async () => {
-  const redis = redisClient()
-
   const client = new Client(Network.staging)
   const hotspots = await (await client.hotspots.list()).take(200000)
 
@@ -14,7 +12,11 @@ const backfillHotspotsCount = async () => {
 
   console.log(getUnixTime(now), hotspots.length)
 
-  await redis.add(new Sample('hotspots_count', hotspots.length, now), [], 0)
+  await redisClient.add(
+    new Sample('hotspots_count', hotspots.length, now),
+    [],
+    0,
+  )
 
   await Promise.all(
     Array.from({ length: 364 }, async (x, i) => {
@@ -25,16 +27,16 @@ const backfillHotspotsCount = async () => {
         (h) => compareAsc(new Date(h.timestampAdded), date) === -1,
       ).true
 
-      return redis.add(new Sample('hotspots_count', count, date), [], 3600)
+      return redisClient.add(
+        new Sample('hotspots_count', count, date),
+        [],
+        3600,
+      )
     }),
   )
-
-  await redis.disconnect()
 }
 
 const generateStats = async () => {
-  const redis = redisClient()
-
   const client = new Client(Network.staging)
   const hotspots = await (await client.hotspots.list()).take(200000)
   const hotspotsCount = hotspots.length
@@ -46,17 +48,27 @@ const generateStats = async () => {
 
   const now = new Date()
 
-  await redis.add(new Sample('hotspots_count', hotspotsCount, now), [], 0)
-  await redis.add(new Sample('hotspots_online_pct', onlinePct, now), [], 0)
-  await redis.add(new Sample('hotspots_owners_count', ownersCount, now), [], 0)
-  await redis.add(new Sample('hotspots_cities_count', citiesCount, now), [], 0)
-  await redis.add(
+  await redisClient.add(new Sample('hotspots_count', hotspotsCount, now), [], 0)
+  await redisClient.add(
+    new Sample('hotspots_online_pct', onlinePct, now),
+    [],
+    0,
+  )
+  await redisClient.add(
+    new Sample('hotspots_owners_count', ownersCount, now),
+    [],
+    0,
+  )
+  await redisClient.add(
+    new Sample('hotspots_cities_count', citiesCount, now),
+    [],
+    0,
+  )
+  await redisClient.add(
     new Sample('hotspots_countries_count', countriesCount, now),
     [],
     0,
   )
-
-  await redis.disconnect()
 }
 
 const run = async () => {

@@ -1906,10 +1906,10 @@
   dependencies:
     bignumber.js "^9.0.0"
 
-"@helium/http@^3.32.0":
-  version "3.32.0"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.32.0.tgz#70d99bf090e1e1112a84fc0fc22563a85b12e472"
-  integrity sha512-8xjTT86A6BUGnHXgXVWYVB6ajhi6sO51etXRQDe6fgXxHMue1kZu93N+CGlHKYfL+4mBx75jBsA0qs02irJssw==
+"@helium/http@^3.33.0":
+  version "3.33.0"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.33.0.tgz#a5814977d0466e3bbcccca0249cf2b13c7890d47"
+  integrity sha512-KcD9JsCSj71yMp9Dxt4o1x1+/66ULHctFQtVObUZFxCVVDYCb5c9sWDfMFrum8KXOgMmU12BDpwAIriAwFu5mA==
   dependencies:
     "@helium/currency" "^3.25.1"
     axios "^0.21.1"
@@ -13086,6 +13086,11 @@ react-app-polyfill@^1.0.6:
     regenerator-runtime "^0.13.3"
     whatwg-fetch "^3.0.0"
 
+react-async-hook@^3.6.2:
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/react-async-hook/-/react-async-hook-3.6.2.tgz#360018e5cd6ecc8841152a79875841b9e49dbdba"
+  integrity sha512-RkwHCJ8V7I6umKZLHneapuTRWf+eO4LOj0qUwUDsSn27jrAOcW6ClbV3x22Z4hVxH9bA0zb7y+ozDJDJ8PnZoA==
+
 react-async-hooks@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-async-hooks/-/react-async-hooks-1.0.1.tgz#41756db6a3b1414f72c3753fac83153ce065769c"
@@ -13174,12 +13179,24 @@ react-hotkeys@^2.0.0:
   dependencies:
     lodash "^4.17.15"
 
+react-infinite-scroll-hook@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-infinite-scroll-hook/-/react-infinite-scroll-hook-4.0.1.tgz#0fea9de7a84764975aad1209baeff286681d83b9"
+  integrity sha512-UzRt1TPLnWV8TZ6Yw2k5vuVZX/d/gOm2NB1hrp48iTcVwV/4dSsUFDsnwrdTqioSl2n6wz2kfo8BowOczsaJRw==
+  dependencies:
+    react-intersection-observer-hook "^2.0.3"
+
 react-infinite-scroller@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/react-infinite-scroller/-/react-infinite-scroller-1.2.4.tgz#f67eaec4940a4ce6417bebdd6e3433bfc38826e9"
   integrity sha512-/oOa0QhZjXPqaD6sictN2edFMsd3kkMiE19Vcz5JDgHpzEJVqYcmq+V3mkwO88087kvKGe1URNksHEOt839Ubw==
   dependencies:
     prop-types "^15.5.8"
+
+react-intersection-observer-hook@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-intersection-observer-hook/-/react-intersection-observer-hook-2.0.3.tgz#de6a1fb00ffac1acee651e908e7e17e0eff1e8b6"
+  integrity sha512-6LcrY/oUtZqn7HbwLTgSk43/KdZD5LZJsWUOwQB11aMPi3OkjyDcm2dwAQ1ydlbrSDlL4fHUNXisNt4B470UJg==
 
 react-is@16.13.1, react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.13.1"

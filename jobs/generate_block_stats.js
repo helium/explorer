@@ -1,18 +1,19 @@
 const { Client, Network } = require('@helium/http')
-const { countBy, round, uniqBy, meanBy } = require('lodash')
-const { sub, compareAsc, getUnixTime } = require('date-fns')
+const { meanBy } = require('lodash')
 const { Sample } = require('redis-time-series-ts')
 const { redisClient } = require('../commonjs/redisTimeSeries')
+const fetch = require('node-fetch')
 
 const generateBlockStats = async () => {
-  const redis = redisClient()
+  const now = new Date()
 
   const client = new Client(Network.staging)
   const latestBlocks = await (await client.blocks.list()).take(100)
   const stats = await client.stats.get()
 
-  const counts = stats.counts.blocks
-  const longFiData = (stats.dataCredits * 24) / 10e8
+  const blocksCount = stats.counts.blocks
+  // TODO this is longer in this stats endpoint
+  // const longFiData = (stats.dataCredits * 24) / 10e8
 
   const blockTimeDay = stats.blockTimes.lastDay.avg
   const blockTimeDayStdDev = stats.blockTimes.lastDay.stddev
@@ -20,7 +21,7 @@ const generateBlockStats = async () => {
   const blockTimeWeek = stats.electionTimes.lastWeek.avg
   const blockTimeWeekStdDev = stats.electionTimes.lastWeek.stddev
 
-  const blockTimeMonth = stats.electionTimes.lastMont.avg
+  const blockTimeMonth = stats.electionTimes.lastMonth.avg
   const blockTimeMonthStdDev = stats.electionTimes.lastMonth.stddev
 
   const electionTimeDay = stats.electionTimes.lastDay.avg
@@ -28,34 +29,48 @@ const generateBlockStats = async () => {
   const txnRate = meanBy(latestBlocks, 'transactionCount')
 
   const heightRes = await fetch('https://api.helium.io/v1/blocks/height')
-  const { data: height } = await heightRes.json()
+  const {
+    data: { height },
+  } = await heightRes.json()
 
-  await redis.add(new Sample('blocks_count', counts, now), [], 0)
-  await redis.add(new Sample('longfi_data', longFiData, now), [], 0)
-  await redis.add(new Sample('election_time_day', electionTimeDay, now), [], 0)
-  await redis.add(new Sample('block_time_day', blockTimeDay, now), [], 0)
-  await redis.add(
+  await redisClient.add(new Sample('blocks_count', blocksCount, now), [], 0)
+  // await redisClient.add(new Sample('longfi_data', longFiData, now), [], 0)
+  await redisClient.add(
+    new Sample('election_time_day', electionTimeDay, now),
+    [],
+    0,
+  )
+  await redisClient.add(new Sample('block_time_day', blockTimeDay, now), [], 0)
+  await redisClient.add(
     new Sample('block_time_day_std_dev', blockTimeDayStdDev, now),
     [],
     0,
   )
-  await redis.add(new Sample('block_time_week', blockTimeWeek, now), [], 0)
-  await redis.add(
+  await redisClient.add(
+    new Sample('block_time_week', blockTimeWeek, now),
+    [],
+    0,
+  )
+  await redisClient.add(
     new Sample('block_time_week_std_dev', blockTimeWeekStdDev, now),
     [],
     0,
   )
-  await redis.add(new Sample('block_time_month', blockTimeMonth, now), [], 0)
-  await redis.add(
+  await redisClient.add(
+    new Sample('block_time_month', blockTimeMonth, now),
+    [],
+    0,
+  )
+  await redisClient.add(
     new Sample('block_time_month_std_dev', blockTimeMonthStdDev, now),
     [],
     0,
   )
 
-  await redis.add(new Sample('txn_rate', txnRate, now), [], 0)
-  await redis.add(new Sample('height', height, now), [], 0)
+  await redisClient.add(new Sample('txn_rate', txnRate, now), [], 0)
+  await redisClient.add(new Sample('height', height, now), [], 0)
 
-  await redis.disconnect()
+  await redisClient.disconnect()
 }
 
 const run = async () => {

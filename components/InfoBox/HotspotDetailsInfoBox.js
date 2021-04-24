@@ -4,20 +4,11 @@ import { useAsync } from 'react-async-hooks'
 import { useParams } from 'react-router'
 import InfoBox from './InfoBox'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
-import RewardsTrendWidget from '../Widgets/RewardsTrendWidget'
-import Widget from '../Widgets/Widget'
-import { useHotspotRewards } from '../../data/rewards'
-import { useHotspotWitnessSums } from '../../data/witnesses'
-import useSelectedHotspot from '../../hooks/useSelectedHotspot'
-import Hex from '../Hex'
-import { generateRewardScaleColor } from '../Hotspots/utils'
-import StatusWidget from '../Widgets/StatusWidget'
+import StatisticsPane from './HotspotDetails/StatisticsPane'
+import ActivityPane from './HotspotDetails/ActivityPane'
 import WitnessesPane from './HotspotDetails/WitnessesPane'
 import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
-import ActivityPane from './HotspotDetails/ActivityPane'
-import StatWidget from '../Widgets/StatWidget'
-import { useHotspotBeaconSums } from '../../data/beacons'
-import RewardScaleWidget from '../Widgets/RewardScaleWidget'
+import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -41,18 +32,6 @@ const HotspotDetailsInfoBox = () => {
     clearSelectedHotspot,
   } = useSelectedHotspot()
 
-  const { rewards } = useHotspotRewards(hotspot.address, 60, 'day')
-  const { witnesses, isLoading: isWitnessesLoading } = useHotspotWitnessSums(
-    hotspot.address,
-    2,
-    'week',
-  )
-  const { beaconSums, isLoading: isBeaconSumsLoading } = useHotspotBeaconSums(
-    hotspot.address,
-    2,
-    'week',
-  )
-
   const title = useMemo(() => animalHash(hotspot.address), [hotspot])
 
   useEffect(() => {
@@ -65,26 +44,7 @@ const HotspotDetailsInfoBox = () => {
     <InfoBox title={title}>
       <TabNavbar>
         <TabPane title="Statistics" key="statistics">
-          <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll">
-            <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
-            <RewardScaleWidget hotspot={hotspot} />
-            <StatusWidget hotspot={hotspot} />
-            <StatWidget
-              title="7D Avg Beacons"
-              series={beaconSums}
-              isLoading={isBeaconSumsLoading}
-              dataKey="sum"
-              changeType="percent"
-            />
-            <StatWidget
-              title="7D Avg Witnesses"
-              series={witnesses}
-              isLoading={isWitnessesLoading}
-              dataKey="avg"
-              changeType="percent"
-            />
-            <div className="col-span-2 pb-1" />
-          </div>
+          <StatisticsPane hotspot={hotspot} />
         </TabPane>
 
         <TabPane title="Activity" path="activity" key="activity">

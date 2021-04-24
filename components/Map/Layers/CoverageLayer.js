@@ -35,7 +35,7 @@ const CoverageLayer = ({
   return (
     <GeoJSONLayer
       id="hotspots"
-      data={hotspots || emptyGeoJSON}
+      data="https://helium-explorer.s3-us-west-2.amazonaws.com/coverage/coverage.geojson"
       circlePaint={onlineCircleLayout}
       circleOnClick={onHotspotClick}
     />

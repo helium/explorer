@@ -7,6 +7,7 @@ import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import RewardsTrendWidget from '../Widgets/RewardsTrendWidget'
 import Widget from '../Widgets/Widget'
 import { useHotspotRewards } from '../../data/rewards'
+import { useHotspotWitnessSums } from '../../data/witnesses'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import Hex from '../Hex'
 import { generateRewardScaleColor } from '../Hotspots/utils'
@@ -14,6 +15,9 @@ import StatusWidget from '../Widgets/StatusWidget'
 import WitnessesPane from './HotspotDetails/WitnessesPane'
 import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
 import ActivityPane from './HotspotDetails/ActivityPane'
+import StatWidget from '../Widgets/StatWidget'
+import { useHotspotBeaconSums } from '../../data/beacons'
+import RewardScaleWidget from '../Widgets/RewardScaleWidget'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -37,7 +41,17 @@ const HotspotDetailsInfoBox = () => {
     clearSelectedHotspot,
   } = useSelectedHotspot()
 
-  const { rewards } = useHotspotRewards(hotspot.address)
+  const { rewards } = useHotspotRewards(hotspot.address, 60, 'day')
+  const { witnesses, isLoading: isWitnessesLoading } = useHotspotWitnessSums(
+    hotspot.address,
+    2,
+    'week',
+  )
+  const { beaconSums, isLoading: isBeaconSumsLoading } = useHotspotBeaconSums(
+    hotspot.address,
+    2,
+    'week',
+  )
 
   const title = useMemo(() => animalHash(hotspot.address), [hotspot])
 
@@ -53,24 +67,22 @@ const HotspotDetailsInfoBox = () => {
         <TabPane title="Statistics" key="statistics">
           <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll">
             <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
-            <Widget
-              title="Reward Scaling"
-              value={hotspot.rewardScale?.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
-              icon={
-                <Hex
-                  width={21}
-                  height={24}
-                  fillColor={generateRewardScaleColor(hotspot.rewardScale)}
-                />
-              }
-              subtitle={<span className="text-gray-550">No Change</span>}
-            />
+            <RewardScaleWidget hotspot={hotspot} />
             <StatusWidget hotspot={hotspot} />
-            <Widget title="7D Beacons" value="54" change="+2" />
-            <Widget title="7D Avg Witnesses" value="6.3" change="+0.5%" />
+            <StatWidget
+              title="7D Avg Beacons"
+              series={beaconSums}
+              isLoading={isBeaconSumsLoading}
+              dataKey="sum"
+              changeType="percent"
+            />
+            <StatWidget
+              title="7D Avg Witnesses"
+              series={witnesses}
+              isLoading={isWitnessesLoading}
+              dataKey="avg"
+              changeType="percent"
+            />
             <div className="col-span-2 pb-1" />
           </div>
         </TabPane>

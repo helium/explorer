@@ -126,7 +126,7 @@ const HotspotView = ({ hotspot }) => {
                   )}
                   {formatLocation(hotspot?.geocode)}
                 </p>
-                <div>
+                <div className="hidden sm:block">
                   <Tooltip
                     placement="bottom"
                     title="Hotspot Location (h3)"

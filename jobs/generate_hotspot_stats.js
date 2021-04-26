@@ -69,6 +69,8 @@ const generateStats = async () => {
     [],
     0,
   )
+
+  await redisClient.disconnect()
 }
 
 const run = async () => {

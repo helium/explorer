@@ -5,12 +5,12 @@ const {
 } = require('../../../commonjs/redisTimeSeries')
 
 export default async function handler(req, res) {
-  const redis = redisClient()
+  const redis = redisClient
   const range = timestampRange()
   const agg = aggregation()
 
   const blockCount = await redis.range('blocks_count', range, undefined, agg)
-  const longFiData = await redis.range('longfi_data', range, undefined, agg)
+  // const longFiData = await redis.range('longfi_data', range, undefined, agg)
   const electionTimeDay = await redis.range(
     'election_time_day',
     range,
@@ -61,7 +61,7 @@ export default async function handler(req, res) {
 
   res.status(200).send({
     blockCount,
-    longFiData,
+    // longFiData,
     electionTimeDay,
     blockTimeDay,
     blockTimeDayStdDev,

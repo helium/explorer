@@ -12,7 +12,6 @@ export const useHotspotActivity = (address, pageSize = 20) => {
   useAsync(async () => {
     const newList = await client.hotspot(address).activity.list()
     setList(newList)
-    setIsLoadingInitial(false)
   }, [address])
 
   useAsync(async () => {
@@ -21,6 +20,7 @@ export const useHotspotActivity = (address, pageSize = 20) => {
     const newTransactions = await list.take(pageSize)
     setTransactions(newTransactions)
     setIsLoadingMore(false)
+    setIsLoadingInitial(false)
     if (newTransactions.length < pageSize) {
       setHasMore(false)
     }

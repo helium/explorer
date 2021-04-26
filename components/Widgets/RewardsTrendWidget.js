@@ -1,28 +1,56 @@
+import { useMemo } from 'react'
 import { LineChart, Line, YAxis, ResponsiveContainer } from 'recharts'
+import { chunk, maxBy, minBy, sumBy, takeRight } from 'lodash'
+import classNames from 'classnames'
 
-import { first, last, maxBy, minBy, sumBy } from 'lodash'
+const RewardsTrendWidget = ({ title, series = [] }) => {
+  const [firstValue, lastValue] = useMemo(() => {
+    if (series.length <= 30) {
+      return [0, sumBy(series, 'total')]
+    }
+    return chunk(series, 30).map((s) => sumBy(s, 'total'))
+  }, [series])
 
-const RewardsTrendWidget = ({ title, series }) => {
-  const firstValue = first(series || [])?.total || 0
-  const lastValue = last(series || [])?.total || 0
-  const yMin = minBy(series || [], 'total')?.total || 0
-  const yMax = maxBy(series || [], 'total')?.total || 0
-  const valueSum = sumBy(series || [], 'total')
+  const chartSeries = useMemo(() => {
+    return takeRight(series, 30)
+  }, [series])
+
+  const [yMin, yMax] = useMemo(() => {
+    return [
+      minBy(chartSeries, 'total')?.total || 0,
+      maxBy(chartSeries, 'total')?.total || 0,
+    ]
+  }, [chartSeries])
+
+  const change = useMemo(() => {
+    return (lastValue - firstValue) / firstValue
+  }, [firstValue, lastValue])
 
   return (
-    <div className="bg-gray-200 p-3 rounded-lg col-span-2 flex">
+    <div className="bg-gray-200 p-3 rounded-lg col-span-2 flex h-28">
       <div className="w-1/3">
         <div className="text-gray-600 text-sm whitespace-nowrap">{title}</div>
         <div className="text-3xl font-medium my-1.5 tracking-tighter">
-          {valueSum.toLocaleString()}
+          {lastValue.toLocaleString()}
         </div>
-        <div className="text-green-500 text-sm font-medium">
-          +{(lastValue - firstValue).toLocaleString()}
-        </div>
+        {firstValue > 0 && (
+          <div
+            className={classNames('text-sm font-medium', {
+              'text-green-500': change > 0,
+              'text-navy-400': change < 0,
+            })}
+          >
+            {change > 0 ? '+' : ''}
+            {change.toLocaleString(undefined, {
+              style: 'percent',
+              maximumFractionDigits: 3,
+            })}
+          </div>
+        )}
       </div>
       <div className="w-full p-4 pr-0 relative">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart width={300} height={100} data={series}>
+          <LineChart width={300} height={100} data={chartSeries}>
             <YAxis hide domain={[yMin, yMax]} />
             <Line
               type="monotone"

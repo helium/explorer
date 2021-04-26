@@ -34,6 +34,8 @@ const HotspotsInfoBox = () => {
               title="% Online"
               series={stats?.onlinePct}
               isLoading={!stats}
+              valueType="percent"
+              changeType="percent"
             />
             <StatWidget
               title="Hotspot Owners"

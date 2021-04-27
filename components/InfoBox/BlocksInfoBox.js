@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import useSWR from 'swr'
 import InfoBox from './InfoBox'
 import TrendWidget from '../Widgets/TrendWidget'
@@ -6,14 +7,25 @@ import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import I18n from '../../copy/I18n'
 import LatestBlocksPane from './BlocksInfoPanes/LatestBlocks'
 
-// TODO: fix data fetching and delete
-import { blocks } from './temp_block_dummy_data'
-
 const HotspotsInfoBox = () => {
-  // const { data: blocks } = useSWR('/api/metrics/blocks')
+  let { data: blocks } = useSWR('/api/metrics/blocks')
+
+  blocks = { ...blocks, longFiData: [{ value: 2000 }, { value: 2010 }] }
+
+  // const renderBreadcrumbs = useCallback((txn) => {
+  //   return (
+  //     <span className="flex items-center space-x-1">
+  //       <Image src="/images/clock.svg" width={14} height={14} />
+  //       <Timestamp date={txn.time} className="tracking-tighter" />
+  //     </span>
+  //   )
+  // }, [])
 
   return (
-    <InfoBox title={<I18n t="blocks.title" />}>
+    <InfoBox
+      title={<I18n t="blocks.title" />}
+      // renderBreadcrumbs={renderBreadcrumbs}
+    >
       <TabNavbar basePath="blocks">
         <TabPane title="Statistics" key="1">
           <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll">

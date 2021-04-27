@@ -21,6 +21,17 @@ const BlocksList = ({
 
   const keyExtractor = useCallback((block) => block.hash, [])
 
+  // const LinkWrapper = ({ item, children }) => {
+  //   return (
+  //     <Link
+  //       to={`/blocks/${item.height}`}
+  //       className="text-black text-md font-semibold m-0 p-0"
+  //     >
+  //       {children}
+  //     </Link>
+  //   )
+  // }
+
   const renderTitle = useCallback((block) => {
     return (
       <p className="text-black text-md font-semibold m-0 p-0">
@@ -63,6 +74,7 @@ const BlocksList = ({
       renderTitle={renderTitle}
       renderSubtitle={renderSubtitle}
       renderDetails={renderDetails}
+      // LinkWrapper={LinkWrapper}
       blankTitle="No blocks"
       fetchMore={fetchMore}
       isLoadingMore={isLoadingMore}

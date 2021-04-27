@@ -1,8 +1,8 @@
 import useSWR from 'swr'
 import Client from '@helium/http'
+import client, { TAKE_MAX } from './client'
 
 export const fetchLatestBlocks = async (count = 100) => {
-  const client = new Client()
   const blocks = await (await client.blocks.list()).take(count)
 
   return JSON.parse(JSON.stringify(blocks))
@@ -39,4 +39,16 @@ export const useBlockHeight = (initialData) => {
     isLoading: !error && !data,
     isError: error,
   }
+}
+
+export const fetchBlock = async (height) => {
+  const block = await client.blocks.get(height)
+  return block
+}
+
+export const fetchBlockTxns = async (height) => {
+  const txns = await (await client.block(height).transactions.list()).take(
+    TAKE_MAX,
+  )
+  return txns
 }

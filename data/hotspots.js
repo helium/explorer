@@ -1,5 +1,6 @@
+import { useState, useCallback } from 'react'
+import { useAsync } from 'react-async-hook'
 import useSWR from 'swr'
-import Client from '@helium/http'
 import qs from 'qs'
 import client, { TAKE_MAX } from './client'
 import { fetchAll } from '../utils/pagination'
@@ -7,7 +8,6 @@ import camelcaseKeys from 'camelcase-keys'
 import { haversineDistance } from '../utils/location'
 
 export const fetchLatestHotspots = async (count = 20) => {
-  const client = new Client()
   const hotspots = await (await client.hotspots.list()).take(count)
 
   return JSON.parse(JSON.stringify(hotspots))
@@ -70,4 +70,36 @@ export const fetchWitnesses = async (address) => {
   const list = await client.hotspot(address).witnesses.list()
   const witnesses = await list.take(TAKE_MAX)
   return witnesses
+}
+
+export const useHotspots = (pageSize = 20) => {
+  const [list, setList] = useState()
+  const [hotspots, setHotspots] = useState([])
+  const [isLoadingInitial, setIsLoadingInitial] = useState(true)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
+
+  useAsync(async () => {
+    const newList = await client.hotspots.list()
+    setList(newList)
+  }, [])
+
+  useAsync(async () => {
+    if (!list) return
+    setIsLoadingMore(true)
+    const newHotspots = await list.take(pageSize)
+    setHotspots(newHotspots)
+    setIsLoadingMore(false)
+    setIsLoadingInitial(false)
+    if (newHotspots.length < pageSize) {
+      setHasMore(false)
+    }
+  }, [list])
+
+  const fetchMore = useCallback(async () => {
+    const newHotspots = await list.take(pageSize)
+    setHotspots([...hotspots, ...newHotspots])
+  }, [list, pageSize, hotspots])
+
+  return { hotspots, fetchMore, isLoadingInitial, isLoadingMore, hasMore }
 }

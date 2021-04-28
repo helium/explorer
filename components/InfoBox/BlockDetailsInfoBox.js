@@ -1,12 +1,13 @@
 import InfoBox from './InfoBox'
 import { useAsync } from 'react-async-hooks'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useParams } from 'react-router'
 import Timestamp from 'react-timestamp'
 import Image from 'next/image'
 import { fetchBlock, fetchBlockTxns } from '../../data/blocks'
 import SkeletonList from '../Lists/SkeletonList'
 import TransactionList from '../Lists/TransactionList'
+import ActivityList from '../Lists/ActivityList'
 
 const BlockDetailsInfoBox = () => {
   const { block: height } = useParams()
@@ -28,18 +29,18 @@ const BlockDetailsInfoBox = () => {
     getBlockDetails(height)
   }, [height])
 
+  const title = useMemo(() => `Block ${parseInt(height).toLocaleString()}`, [
+    block,
+  ])
+
   return (
-    <InfoBox
-      title={`Block ${
-        blockLoading ? 'loading...' : block.height.toLocaleString()
-      }`}
-    >
-      <div className="overflow-y-scroll px-4 py-5">
+    <InfoBox title={title}>
+      <div className="overflow-y-scroll">
         {blockLoading ? (
           <SkeletonList />
         ) : (
           <>
-            <div className="flex flex-col items-start text-gray-800">
+            <div className="flex flex-col items-start text-gray-800 p-5 pb-2">
               <span className="flex items-center justify-start">
                 <Image src="/images/clock.svg" width={14} height={14} />
                 <Timestamp
@@ -54,11 +55,7 @@ const BlockDetailsInfoBox = () => {
                 </p>
               </span>
             </div>
-            <TransactionList
-              transactions={block.txns}
-              isLoading={blockLoading}
-            />
-
+            <ActivityList transactions={block.txns} isLoading={blockLoading} />
             <div className="col-span-2 pb-1" />
           </>
         )}

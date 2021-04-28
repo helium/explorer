@@ -1,13 +1,23 @@
 import Image from 'next/image'
-import animalHash from 'angry-purple-tiger'
 import { times } from 'lodash'
 import Skeleton from '../Common/Skeleton'
+import classNames from 'classnames'
 
-const SkeletonList = ({ witnesses }) => {
+const SkeletonList = () => {
   return (
-    <div className="w-full grid grid-cols-1 divide-y divide-gray-400">
+    <div className="w-full grid grid-cols-1 p-3">
       {times(10).map((i) => (
-        <div key={i} className="border-solid py-2 px-4 flex">
+        <div
+          key={i}
+          className={classNames(
+            'py-2 px-4 flex border-solid border-gray-500 border-t border-l border-r',
+            {
+              'rounded-t-lg': i === 0,
+              'rounded-b-lg border-b': i === length - 1,
+              'border-b-0': i !== 0 && i !== length - 1,
+            },
+          )}
+        >
           <div className="w-full">
             <div className="text-base font-medium">
               <Skeleton />

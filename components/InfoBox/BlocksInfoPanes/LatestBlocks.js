@@ -14,7 +14,7 @@ const LatestBlocksPane = () => {
   } = useFetchList('', 'blocks')
   return (
     <div
-      className={classNames('grid grid-flow-row grid-cols-1 px-2', {
+      className={classNames('grid grid-flow-row grid-cols-1', {
         'overflow-y-scroll': !isLoadingInitial,
         'overflow-y-hidden': isLoadingInitial,
       })}
@@ -32,7 +32,7 @@ const LatestBlocksPane = () => {
             'border-solid',
             'border-gray-500',
             'rounded-lg',
-            'my-3',
+            'mt-3 mx-3',
           )}
         >
           <div

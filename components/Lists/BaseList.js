@@ -13,6 +13,7 @@ const BaseList = ({
   renderSubtitle,
   renderDetails,
   blankTitle,
+  noPadding,
   fetchMore,
   isLoadingMore,
   hasMore,
@@ -52,24 +53,19 @@ const BaseList = ({
 
   return (
     <div
-      className={classNames('w-full grid grid-cols-1 divide-y divide-gray-400')}
+      className={classNames('w-full grid grid-cols-1', {
+        'p-3': !noPadding,
+      })}
     >
-      {items.map((item, i) => (
+      {items.map((item, i, { length }) => (
         <div
           key={keyExtractor(item)}
           className={classNames(
-            'hover:bg-gray-100',
-            'cursor-pointer',
             'bg-white',
-            'relative',
-            'flex',
-            'border-t',
-            'border-l',
-            'border-r',
-            'py-2',
-            'px-4',
-            'border-solid',
-            'border-gray-500',
+            'hover:bg-gray-200 cursor-pointer transition-all duration-75',
+            'relative flex',
+            'px-4 py-2',
+            'border-solid border-gray-500 border-t border-l border-r',
             {
               'rounded-t-lg': i === 0,
               'rounded-b-lg border-b': i === length - 1,

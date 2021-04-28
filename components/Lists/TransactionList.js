@@ -35,7 +35,7 @@ const TransactionList = ({
   }, [])
 
   const renderDetails = useCallback((txn) => {
-    return <span>types</span>
+    return <span></span>
   }, [])
 
   return (

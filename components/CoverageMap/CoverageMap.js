@@ -96,40 +96,38 @@ const CoverageMap = ({ selectedHotspots, selectHotspots, showOffline }) => {
   }
 
   const handleClick = (_, e) => {
-    if (measuring) {
-      const coordinates = {
-        lat: e.lngLat.lat,
-        lng: e.lngLat.lng,
-      }
+    if (!measuring) return
 
-      let measurements
-      let distance
-
-      if (!measurements.from) {
-        measurements = {
-          from: coordinates,
-          to: null,
-        }
-        distance = ''
-      } else if (!measurements.to) {
-        measurements = {
-          from: measurements.from,
-          to: coordinates,
-        }
-        const from = turfPoint([measurements.from.lng, measurements.from.lat])
-        const to = turfPoint([coordinates.lng, coordinates.lat])
-        distance = turfDistance(from, to, { units: 'meters' })
-      } else {
-        measurements = {
-          from: null,
-          to: null,
-        }
-        distance = ''
-      }
-
-      setDistance(distance)
-      setMeasurements(measurements)
+    const coordinates = {
+      lat: e.lngLat.lat,
+      lng: e.lngLat.lng,
     }
+
+    if (!measurements.from) {
+      setMeasurements({
+        from: coordinates,
+        to: null,
+      })
+      setDistance('')
+      return
+    }
+
+    if (!measurements.to) {
+      setMeasurements({
+        from: measurements.from,
+        to: coordinates,
+      })
+      const from = turfPoint([measurements.from.lng, measurements.from.lat])
+      const to = turfPoint([coordinates.lng, coordinates.lat])
+      setDistance(turfDistance(from, to, { units: 'meters' }))
+      return
+    }
+
+    setMeasurements({
+      from: null,
+      to: null,
+    })
+    setDistance('')
   }
 
   const handleHotspotClick = (e) => {

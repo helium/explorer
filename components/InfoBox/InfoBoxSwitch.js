@@ -12,7 +12,7 @@ const InfoBoxSwitch = () => {
 
   return (
     <Switch>
-      <Route path={`${base}/hotspots/:address`}>
+      <Route path={`${base}/hotspots/:address([a-zA-Z0-9]{40,})`}>
         <HotspotDetailsInfoBox />
       </Route>
       <Route path={`${base}/hotspots`}>

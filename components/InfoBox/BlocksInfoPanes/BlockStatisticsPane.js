@@ -1,0 +1,49 @@
+import TrendWidget from '../../Widgets/TrendWidget'
+import StatWidget from '../../Widgets/StatWidget'
+
+const BlockStatisticsPane = ({ blocks }) => {
+  return (
+    <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll">
+      <TrendWidget
+        title="Transaction Rate"
+        series={blocks?.txnRate}
+        isLoading={!blocks}
+        periodLabel={'Last 100 Blocks'}
+      />
+      <StatWidget
+        title="Election Time (24hr)"
+        series={blocks?.electionTimeDay}
+        isLoading={!blocks}
+      />
+      <StatWidget
+        title="LongFi Data"
+        series={blocks?.longFiData}
+        suffix={'GB'}
+        isLoading={!blocks}
+      />
+      <StatWidget
+        title="Block Height"
+        series={blocks?.height}
+        isLoading={!blocks}
+      />
+      <StatWidget
+        title="Block Time (1hr)"
+        series={blocks?.blockTimeDay}
+        isLoading={!blocks}
+      />
+      <StatWidget
+        title="Block Time (7D)"
+        series={blocks?.blockTimeWeek}
+        isLoading={!blocks}
+      />
+      <StatWidget
+        title="Block Time (30D)"
+        series={blocks?.blockTimeMonth}
+        isLoading={!blocks}
+      />
+      <div className="col-span-2 pb-1" />
+    </div>
+  )
+}
+
+export default BlockStatisticsPane

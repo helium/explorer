@@ -1,12 +1,15 @@
 import '../wdyr'
-import withGA from 'next-ga'
 import { BrowserRouter as Router } from 'react-router-dom'
-
+import JavascriptTimeAgo from 'javascript-time-ago'
 import '../styles/index.css'
 import '../styles/Explorer.css'
 
 import { StateProvider } from '../store/store'
 import { SWRConfig } from 'swr'
+
+import en from 'javascript-time-ago/locale/en'
+
+JavascriptTimeAgo.addLocale(en)
 
 function MyApp({ Component, pageProps }) {
   return (

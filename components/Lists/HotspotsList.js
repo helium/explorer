@@ -19,7 +19,6 @@ const HotspotsList = ({
 
   const handleSelectHotspot = useCallback(
     (hotspot) => {
-      console.log('selecting hotspot', hotspot)
       selectHotspot(hotspot.address)
     },
     [selectHotspot],

@@ -18,6 +18,7 @@ export const TOGGLE_INFO_BOX = 'TOGGLE_INFO_BOX'
 export const TOGGLE_MAP_LAYERS = 'TOGGLE_MAP_LAYERS'
 export const SET_MAP_LAYER = 'SET_MAP_LAYER'
 export const SET_SELECTED_HOTSPOT = 'SET_SELECTED_HOTSPOT'
+export const SET_SELECTED_TXN = 'SET_SELECTED_TXN'
 export const SET_CURRENT_POSITION_LOADING = 'SET_CURRENT_POSITION_LOADING'
 export const SET_CURRENT_POSITION = 'SET_CURRENT_POSITION'
 
@@ -33,6 +34,8 @@ const StateProvider = ({ children }) => {
         return { ...state, showMapLayers: false, mapLayer: action.payload }
       case SET_SELECTED_HOTSPOT:
         return { ...state, selectedHotspot: action.payload }
+      case SET_SELECTED_TXN:
+        return { ...state, selectedTxn: action.payload }
       case SET_CURRENT_POSITION_LOADING:
         return {
           ...state,

@@ -6,6 +6,7 @@ import Timestamp from 'react-timestamp'
 import Image from 'next/image'
 import { fetchBlock, fetchBlockTxns } from '../../data/blocks'
 import SkeletonList from '../Lists/SkeletonList'
+import TransactionList from '../Lists/TransactionList'
 
 const BlockDetailsInfoBox = () => {
   const { block: height } = useParams()
@@ -53,6 +54,10 @@ const BlockDetailsInfoBox = () => {
                 </p>
               </span>
             </div>
+            <TransactionList
+              transactions={block.txns}
+              isLoading={blockLoading}
+            />
 
             <div className="col-span-2 pb-1" />
           </>

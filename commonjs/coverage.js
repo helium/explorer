@@ -45,8 +45,6 @@ const emptyCoverage = () => {
   return toGeoJSON([])
 }
 
-// const s3 = new AWS.S3({ apiVersion: '2006-03-01' })
-
 const latestCoverageUrl = () => {
   if (!process.env.AWS_ACCESS_KEY_ID) {
     return 'https://helium-explorer.s3-us-west-2.amazonaws.com/coverage/coverage.geojson'

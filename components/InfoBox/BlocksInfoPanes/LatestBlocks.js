@@ -14,7 +14,7 @@ const LatestBlocksPane = () => {
   } = useFetchBlocks()
   return (
     <div
-      className={classNames('grid grid-flow-row grid-cols-1', {
+      className={classNames('grid grid-flow-row grid-cols-1 no-scrollbar', {
         'overflow-y-scroll': !isLoadingInitial,
         'overflow-y-hidden': isLoadingInitial,
       })}
@@ -32,7 +32,7 @@ const LatestBlocksPane = () => {
             'border-solid',
             'border-gray-500',
             'rounded-lg',
-            'mt-3 mx-3',
+            'mt-3 mx-3 mb-4',
           )}
         >
           <div
@@ -53,7 +53,7 @@ const LatestBlocksPane = () => {
             <Image src="/images/consensus_c.svg" width={30} height={30} />
           </div>
           <div className="pl-12 py-2">
-            <p className="pl-2 mb-1 text-black font-medium">
+            <p className="pl-2 mb-1 text-base text-black text-md font-semibold">
               {(blocks[0].height + 1).toLocaleString()}
             </p>
             <p className="pl-2 text-gray-650 font-medium m-0">

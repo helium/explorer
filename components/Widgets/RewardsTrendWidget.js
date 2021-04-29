@@ -30,7 +30,7 @@ const RewardsTrendWidget = ({ title, series = [] }) => {
     <div className="bg-gray-200 p-3 rounded-lg col-span-2 flex h-28">
       <div className="w-1/3">
         <div className="text-gray-600 text-sm whitespace-nowrap">{title}</div>
-        <div className="text-3xl font-medium my-1.5 tracking-tighter">
+        <div className="text-3xl font-medium my-1.5 tracking-tight">
           {lastValue.toLocaleString()}
         </div>
         {firstValue > 0 && (

@@ -41,7 +41,7 @@ const ActivityList = ({
     return (
       <span className="flex items-center space-x-1">
         <img src="/images/clock.svg" className="w-3.5 h-3.5" />
-        <Timestamp date={txn.time} className="tracking-tighter" />
+        <Timestamp date={txn.time} className="tracking-tight" />
       </span>
     )
   }, [])
@@ -85,6 +85,7 @@ const ActivityList = ({
       fetchMore={fetchMore}
       isLoadingMore={isLoadingMore}
       hasMore={hasMore}
+      noPadding
     />
   )
 }

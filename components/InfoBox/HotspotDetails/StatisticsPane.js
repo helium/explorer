@@ -19,7 +19,7 @@ const StatisticsPane = ({ hotspot }) => {
     'week',
   )
   return (
-    <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll">
+    <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
       <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
       <RewardScaleWidget hotspot={hotspot} />
       <StatusWidget hotspot={hotspot} />

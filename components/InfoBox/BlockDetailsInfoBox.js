@@ -35,7 +35,7 @@ const BlockDetailsInfoBox = () => {
 
   return (
     <InfoBox title={title}>
-      <div className="overflow-y-scroll">
+      <div className="overflow-y-scroll no-scrollbar">
         {blockLoading ? (
           <SkeletonList />
         ) : (
@@ -45,12 +45,12 @@ const BlockDetailsInfoBox = () => {
                 <Image src="/images/clock.svg" width={14} height={14} />
                 <Timestamp
                   date={block.time}
-                  className="tracking-tighter text-gray-525 text-sm font-sans ml-1"
+                  className="tracking-tight text-gray-525 text-sm font-sans ml-1"
                 />
               </span>
               <span className="flex flex-row items-center justify-start">
                 <Image src="/images/txn.svg" width={14} height={14} />
-                <p className="tracking-tighter text-gray-525 text-sm font-sans m-0 ml-1">
+                <p className="tracking-tight text-gray-525 text-sm font-sans m-0 ml-1">
                   {block.transactionCount} transactions
                 </p>
               </span>

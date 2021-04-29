@@ -16,7 +16,7 @@ const TrendWidget = ({
     <div className="bg-gray-200 p-3 rounded-lg col-span-2 flex">
       <div className="w-1/3">
         <div className="text-gray-600 text-sm whitespace-nowrap">{title}</div>
-        <div className="text-3xl font-medium my-1.5 tracking-tighter">
+        <div className="text-3xl font-medium my-1.5 tracking-tight">
           {isLoading ? <Skeleton w="full" my="4" /> : yMax.toLocaleString()}
         </div>
         <div className="text-green-500 text-sm font-medium">

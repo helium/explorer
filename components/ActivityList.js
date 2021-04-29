@@ -227,7 +227,7 @@ class ActivityList extends Component {
                           </div>
 
                           <div
-                            className="bg-white pb-20 p-4 lg:overflow-y-scroll lg:rounded-b-xl"
+                            className="bg-white pb-20 p-4 lg:overflow-y-scroll no-scrollbar lg:rounded-b-xl"
                             style={{ overflowY: 'overlay' }}
                           >
                             {paths.map((path) => (

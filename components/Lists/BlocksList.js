@@ -33,12 +33,12 @@ const BlocksList = ({
           <Image src="/images/clock.svg" width={14} height={14} />
           <Timestamp
             date={block.time}
-            className="tracking-tighter text-gray-525 text-sm font-sans ml-1"
+            className="tracking-tight text-gray-525 text-sm font-sans ml-1"
           />
         </span>
         <span className="flex items-center justify-start ml-5">
           <Image src="/images/txn.svg" width={14} height={14} />
-          <p className="tracking-tighter text-gray-525 text-sm font-sans m-0 ml-1">
+          <p className="tracking-tight text-gray-525 text-sm font-sans m-0 ml-1">
             {block.transactionCount} transactions
           </p>
         </span>
@@ -64,6 +64,7 @@ const BlocksList = ({
       fetchMore={fetchMore}
       isLoadingMore={isLoadingMore}
       hasMore={hasMore}
+      noPadding
     />
   )
 }

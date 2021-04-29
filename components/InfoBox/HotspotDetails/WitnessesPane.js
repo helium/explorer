@@ -10,7 +10,7 @@ const WitnessesPane = ({ hotspot }) => {
 
   return (
     <div
-      className={classNames('grid grid-flow-row grid-cols-1', {
+      className={classNames('grid grid-flow-row grid-cols-1 no-scrollbar', {
         'overflow-y-scroll': !loading,
         'overflow-y-hidden': loading,
       })}

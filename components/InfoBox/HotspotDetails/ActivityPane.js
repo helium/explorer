@@ -62,7 +62,7 @@ const ActivityPane = ({ hotspot }) => {
   return (
     <div
       ref={scrollView}
-      className={classNames('', {
+      className={classNames('no-scrollbar', {
         'overflow-y-scroll': !isLoadingInitial,
         'overflow-y-hidden': isLoadingInitial,
       })}

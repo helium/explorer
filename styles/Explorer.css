@@ -53,6 +53,8 @@ body {
   margin: 24px;
 }
 
+
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -682,6 +684,16 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   display: none;
 }
 
+/* Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 /* Hide scrollbar for IE, Edge and Firefox */
 .hotspot-checklist-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
@@ -994,6 +1006,15 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   background-image: none !important;
   opacity: 1 !important;
   margin-bottom: 1rem;
+}
+
+.overflow-mask-fix {
+  /*
+ * There's a bug in Chrome/Safari using overflow:hidden with border-radius. This mask fixes it. 
+ * Solution: http://stackoverflow.com/questions/5736503/how-to-make-css3-rounded-corners-hide-overflow-in-chrome-opera/10296258#10296258
+ */
+  -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+
 }
 
 .consensus_map__zoom_buttons #zoomIn::after {

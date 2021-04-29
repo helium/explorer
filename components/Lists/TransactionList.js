@@ -30,7 +30,7 @@ const TransactionList = ({
     return (
       <span className="flex items-center space-x-1">
         <Image src="/images/clock.svg" width={14} height={14} />
-        <Timestamp date={txn.time} className="tracking-tighter" />
+        <Timestamp date={txn.time} className="tracking-tight" />
       </span>
     )
   }, [])
@@ -53,6 +53,7 @@ const TransactionList = ({
       fetchMore={fetchMore}
       isLoadingMore={isLoadingMore}
       hasMore={hasMore}
+      noPadding
     />
   )
 }

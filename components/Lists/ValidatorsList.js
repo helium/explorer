@@ -40,6 +40,7 @@ const ValidatorsList = ({ validators, recentGroups }) => {
       renderSubtitle={renderSubtitle}
       renderDetails={renderDetails}
       blankTitle="No validators"
+      noPadding
     />
   )
 }

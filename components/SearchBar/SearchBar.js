@@ -12,13 +12,13 @@ const SearchBar = () => {
   const input = useRef()
   const scroll = useRef()
   const { term, setTerm, results } = useSearchResults()
-  const [selectedResultIndex, setSelectedResultIndex] = useState(-1)
+  const [selectedResultIndex, setSelectedResultIndex] = useState(0)
   const { selectHotspot } = useSelectedHotspot()
 
   const handleChange = useCallback(
     (e) => {
       setTerm(e.target.value)
-      setSelectedResultIndex(-1)
+      setSelectedResultIndex(0)
     },
     [setTerm],
   )

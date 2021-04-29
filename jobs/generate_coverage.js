@@ -1,8 +1,5 @@
 const { fetchCoverage } = require('../commonjs/coverage')
-const AWS = require('aws-sdk')
-AWS.config.update({ region: 'us-west-2' })
-
-const s3 = new AWS.S3({ apiVersion: '2006-03-01' })
+const { s3 } = require('./aws')
 
 const uploadFile = (name, content) => {
   return new Promise((resolve, reject) => {

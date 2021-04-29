@@ -2,8 +2,7 @@ const { Client } = require('@helium/http')
 const geoJSON = require('geojson')
 const ColorHash = require('color-hash')
 const maxBy = require('lodash/maxBy')
-const AWS = require('aws-sdk')
-AWS.config.update({ region: 'us-west-2' })
+const { s3 } = require('./aws')
 
 // const colorHash = new ColorHash()
 const colorHash = new ColorHash({ saturation: 0.5 })
@@ -46,7 +45,7 @@ const emptyCoverage = () => {
   return toGeoJSON([])
 }
 
-const s3 = new AWS.S3({ apiVersion: '2006-03-01' })
+// const s3 = new AWS.S3({ apiVersion: '2006-03-01' })
 
 const latestCoverageUrl = () => {
   if (!process.env.AWS_ACCESS_KEY_ID) {

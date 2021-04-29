@@ -1,11 +1,34 @@
-const { setCache } = require('../commonjs/redis')
 const { getCoverageV2 } = require('../commonjs/coverage')
-const fs = require('fs')
+const AWS = require('aws-sdk')
+AWS.config.update({ region: 'us-west-2' })
+
+const s3 = new AWS.S3({ apiVersion: '2006-03-01' })
+
+const uploadFile = (name, content) => {
+  return new Promise((resolve, reject) => {
+    s3.upload(
+      {
+        Bucket: 'helium-explorer',
+        Key: `coverage/${name}`,
+        Body: content,
+        ACL: 'public-read',
+      },
+      (err, data) => {
+        if (err) {
+          console.error(err)
+          reject(err)
+        }
+
+        resolve(data)
+      },
+    )
+  })
+}
 
 const generateCoverage = async () => {
   const coverage = await getCoverageV2()
-  fs.writeFileSync('coverage.geojson', JSON.stringify(coverage))
-  // await setCache('coverageV2', await getCoverageV2())
+  const now = Date.now()
+  await uploadFile(`coverage-${now}.geojson`, JSON.stringify(coverage))
 
   return process.exit(0)
 }

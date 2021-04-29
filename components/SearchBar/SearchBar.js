@@ -1,19 +1,24 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import FlagLocation from '../Common/FlagLocation'
 import { formatHotspotName } from '../Hotspots/utils'
 import useSearchResults from './useSearchResults'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import useKeydown from '../../hooks/useKeydown'
+import { clamp } from 'lodash'
+import classNames from 'classnames'
 
 const SearchBar = () => {
   const input = useRef()
+  const scroll = useRef()
   const { term, setTerm, results } = useSearchResults()
+  const [selectedResultIndex, setSelectedResultIndex] = useState(-1)
   const { selectHotspot } = useSelectedHotspot()
 
   const handleChange = useCallback(
     (e) => {
       setTerm(e.target.value)
+      setSelectedResultIndex(-1)
     },
     [setTerm],
   )
@@ -32,6 +37,36 @@ const SearchBar = () => {
     },
   })
 
+  useKeydown(
+    {
+      ArrowDown: () => {
+        if (results.length === 0) return
+        setSelectedResultIndex(
+          clamp(selectedResultIndex + 1, 0, results.length - 1),
+        )
+      },
+      ArrowUp: () => {
+        if (results.length === 0) return
+        setSelectedResultIndex(
+          clamp(selectedResultIndex - 1, 0, results.length - 1),
+        )
+      },
+      Enter: () => {
+        handleSelectResult(results[selectedResultIndex])()
+      },
+    },
+    input,
+  )
+
+  useEffect(() => {
+    if (!scroll.current) return
+    scroll.current.children[selectedResultIndex].scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'nearest',
+    })
+  }, [selectedResultIndex])
+
   return (
     <div className="relative">
       <div className="relative bg-white rounded-full w-60 h-8 flex overflow-hidden">
@@ -47,11 +82,19 @@ const SearchBar = () => {
         />
       </div>
       {results.length > 0 && (
-        <div className="absolute bg-white max-h-72 w-80 right-0 top-12 rounded-lg divide-y divide-gray-400 overflow-y-scroll">
-          {results.map((r) => (
+        <div
+          ref={scroll}
+          className="absolute bg-white max-h-72 w-80 right-0 top-12 rounded-lg divide-y divide-gray-400 overflow-y-scroll"
+        >
+          {results.map((r, i) => (
             <div
               key={r.address}
-              className="border-solid py-2 px-4 flex hover:bg-gray-100 cursor-pointer"
+              className={classNames(
+                'border-solid py-2 px-4 flex hover:bg-gray-100 cursor-pointer',
+                {
+                  'bg-gray-200': selectedResultIndex === i,
+                },
+              )}
               onClick={handleSelectResult(r)}
             >
               <div className="w-full">

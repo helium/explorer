@@ -1,4 +1,4 @@
-const { getCoverageV2 } = require('../commonjs/coverage')
+const { fetchCoverage } = require('../commonjs/coverage')
 const AWS = require('aws-sdk')
 AWS.config.update({ region: 'us-west-2' })
 
@@ -26,7 +26,7 @@ const uploadFile = (name, content) => {
 }
 
 const generateCoverage = async () => {
-  const coverage = await getCoverageV2()
+  const coverage = await fetchCoverage()
   const now = Date.now()
   await uploadFile(`coverage-${now}.geojson`, JSON.stringify(coverage))
 

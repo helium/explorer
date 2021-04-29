@@ -7,7 +7,7 @@ import MetaTags from '../components/AppLayout/MetaTags'
 import MapLayersBox from '../components/Map/MapLayersBox'
 import MapControls from '../components/Map/MapControls'
 import InfoBoxSwitch from '../components/InfoBox/InfoBoxSwitch'
-import { latestCoverageUrl } from './api/coverage'
+import { latestCoverageUrl } from '../commonjs/coverage'
 import useKeydown from '../hooks/useKeydown'
 
 const Map = dynamic(() => import('../components/Map/Map'), {

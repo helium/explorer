@@ -138,7 +138,7 @@ const CoverageMap = ({ coverageUrl }) => {
 
   return (
     <Mapbox
-      style="mapbox://styles/petermain/ckmwdn50a1ebk17o3h5e6wwui"
+      style="mapbox://styles/petermain/cko1ewc0p0st918lecxa5c8go"
       className="h-full w-screen overflow-hidden"
       fitBounds={bounds}
       fitBoundsOptions={fitBoundsOptions}

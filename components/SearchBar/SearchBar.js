@@ -1,12 +1,13 @@
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import Image from 'next/image'
 import FlagLocation from '../Common/FlagLocation'
 import { formatHotspotName } from '../Hotspots/utils'
 import useSearchResults from './useSearchResults'
-import { Link } from 'react-router-dom'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
+import useKeydown from '../../hooks/useKeydown'
 
 const SearchBar = () => {
+  const input = useRef()
   const { term, setTerm, results } = useSearchResults()
   const { selectHotspot } = useSelectedHotspot()
 
@@ -25,6 +26,12 @@ const SearchBar = () => {
     [selectHotspot, setTerm],
   )
 
+  useKeydown({
+    '/': () => {
+      input.current.focus()
+    },
+  })
+
   return (
     <div className="relative">
       <div className="relative bg-white rounded-full w-60 h-8 flex overflow-hidden">
@@ -32,6 +39,7 @@ const SearchBar = () => {
           <Image src="/images/search.svg" width={16} height={16} />
         </div>
         <input
+          ref={input}
           type="search"
           value={term}
           onChange={handleChange}

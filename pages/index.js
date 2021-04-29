@@ -1,5 +1,6 @@
 import React from 'react'
 import dynamic from 'next/dynamic'
+import { useHistory, useLocation } from 'react-router'
 import Header from '../components/Nav/Header'
 import Page from '../components/CoverageMap/Page'
 import MetaTags from '../components/AppLayout/MetaTags'
@@ -7,8 +8,7 @@ import MapLayersBox from '../components/Map/MapLayersBox'
 import MapControls from '../components/Map/MapControls'
 import InfoBoxSwitch from '../components/InfoBox/InfoBoxSwitch'
 import { latestCoverageUrl } from './api/coverage'
-// const { getCache } = require('../commonjs/redis')
-// const { emptyCoverage } = require('../commonjs/coverage')
+import useKeydown from '../hooks/useKeydown'
 
 const Map = dynamic(() => import('../components/Map/Map'), {
   ssr: false,
@@ -16,6 +16,15 @@ const Map = dynamic(() => import('../components/Map/Map'), {
 })
 
 const Index = ({ coverageUrl }) => {
+  const history = useHistory()
+  const location = useLocation()
+
+  useKeydown({
+    Escape: () => {
+      history.push(location.pathname.split('/').slice(0, -1).join('/') || '/')
+    },
+  })
+
   return (
     <Page className="overflow-hidden">
       <MetaTags

@@ -1,28 +1,38 @@
 import classNames from 'classnames'
+import { useCallback } from 'react'
 
-const NavItem = ({ title, active = false }) => (
-  <span
-    className={classNames(
-      'py-1 px-2.5 inline-block font-medium text-base cursor-pointer',
-      {
-        'text-gray-700': !active,
-        'text-white bg-navy-400 rounded-full': active,
-      },
-    )}
-  >
-    {title}
-  </span>
-)
+const NavItem = ({ title, active = false, onClick }) => {
+  const handleClick = useCallback(() => {
+    onClick(title)
+  }, [onClick, title])
 
-const PillNavbar = () => {
   return (
-    <div className="flex md:hidden mt-5 px-2 overflow-x-scroll no-scrollbar">
-      <NavItem title="Overview" />
-      <NavItem title="Hotspots" active />
-      <NavItem title="Beacons" />
-      <NavItem title="Blocks" />
-      <NavItem title="Validators" />
-      <NavItem title="Market" />
+    <span
+      onClick={handleClick}
+      className={classNames(
+        'py-1 px-2.5 flex font-medium text-base cursor-pointer',
+        {
+          'text-gray-700': !active,
+          'text-white bg-orange-400 rounded-full': active,
+        },
+      )}
+    >
+      {title}
+    </span>
+  )
+}
+
+const PillNavbar = ({ navItems, activeItem, onClick }) => {
+  return (
+    <div className="flex px-2 py-3 bg-white overflow-x-scroll no-scrollbar border-b border-gray-400 border-solid">
+      {navItems.map((item) => (
+        <NavItem
+          key={item}
+          title={item}
+          active={item === activeItem}
+          onClick={onClick}
+        />
+      ))}
       <span className="pr-4" />
     </div>
   )

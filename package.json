@@ -59,6 +59,7 @@
     "react-scripts": "3.4.0",
     "react-social-icons": "^4.1.0",
     "react-textfit": "^1.1.1",
+    "react-time-ago": "^6.2.2",
     "react-timestamp": "^5.1.0",
     "react-typekit": "^1.1.4",
     "recharts": "^1.8.5",

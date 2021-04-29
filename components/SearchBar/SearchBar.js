@@ -1,12 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { clamp } from 'lodash'
-import classNames from 'classnames'
-import FlagLocation from '../Common/FlagLocation'
-import { formatHotspotName } from '../Hotspots/utils'
 import useSearchResults from './useSearchResults'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import useKeydown from '../../hooks/useKeydown'
+import SearchResult from './SearchResult'
 
 const SearchBar = () => {
   const input = useRef()
@@ -24,9 +22,11 @@ const SearchBar = () => {
   )
 
   const handleSelectResult = useCallback(
-    (result) => () => {
+    (result) => {
       setTerm('')
-      selectHotspot(result.address)
+      if (result.type === 'hotspot') {
+        selectHotspot(result.item.address)
+      }
     },
     [selectHotspot, setTerm],
   )
@@ -52,14 +52,15 @@ const SearchBar = () => {
         )
       },
       Enter: () => {
-        handleSelectResult(results[selectedResultIndex])()
+        handleSelectResult(results[selectedResultIndex])
       },
     },
     input,
   )
 
   useEffect(() => {
-    if (!scroll.current) return
+    if (!scroll?.current?.children?.[selectedResultIndex]) return
+
     scroll.current.children[selectedResultIndex].scrollIntoView({
       behavior: 'smooth',
       block: 'nearest',
@@ -84,31 +85,15 @@ const SearchBar = () => {
       {results.length > 0 && (
         <div
           ref={scroll}
-          className="absolute bg-white max-h-72 w-80 right-0 top-12 rounded-lg divide-y divide-gray-400 overflow-y-scroll no-scrollbar"
+          className="absolute bg-white max-h-72 w-96 right-0 top-12 rounded-lg divide-y divide-gray-400 overflow-y-scroll no-scrollbar"
         >
           {results.map((r, i) => (
-            <div
-              key={r.address}
-              className={classNames(
-                'border-solid py-2 px-4 flex hover:bg-gray-100 cursor-pointer',
-                {
-                  'bg-gray-200': selectedResultIndex === i,
-                },
-              )}
-              onClick={handleSelectResult(r)}
-            >
-              <div className="w-full">
-                <div className="font-medium text-base text-navy-1000">
-                  {formatHotspotName(r.name)}
-                </div>
-                <div className="text-gray-700 text-sm">
-                  <FlagLocation geocode={r.geocode} />
-                </div>
-              </div>
-              <div className="flex">
-                <Image src="/images/details-arrow.svg" width={10} height={10} />
-              </div>
-            </div>
+            <SearchResult
+              key={r.key}
+              result={r}
+              onSelect={handleSelectResult}
+              selected={selectedResultIndex === i}
+            />
           ))}
         </div>
       )}

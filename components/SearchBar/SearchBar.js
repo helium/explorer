@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import { clamp } from 'lodash'
+import classNames from 'classnames'
 import FlagLocation from '../Common/FlagLocation'
 import { formatHotspotName } from '../Hotspots/utils'
 import useSearchResults from './useSearchResults'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import useKeydown from '../../hooks/useKeydown'
-import { clamp } from 'lodash'
-import classNames from 'classnames'
 
 const SearchBar = () => {
   const input = useRef()

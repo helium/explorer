@@ -1,7 +1,11 @@
 import TrendWidget from '../../Widgets/TrendWidget'
 import StatWidget from '../../Widgets/StatWidget'
+import useSWR from 'swr'
 
-const BlockStatisticsPane = ({ blocks }) => {
+const BlockStatisticsPane = () => {
+  let { data: blocks } = useSWR('/api/metrics/blocks')
+  blocks = { ...blocks, longFiData: [{ value: 2000 }, { value: 2010 }] }
+
   return (
     <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll">
       <TrendWidget

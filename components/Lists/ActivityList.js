@@ -16,6 +16,10 @@ const ActivityList = ({
 
   const keyExtractor = useCallback((txn) => txn.hash, [])
 
+  const linkExtractor = useCallback((txn) => {
+    return `/txns/${txn.hash}`
+  }, [])
+
   const renderTitle = useCallback((txn) => {
     return <span>{txn.type}</span>
   }, [])
@@ -37,6 +41,7 @@ const ActivityList = ({
     <BaseList
       items={transactions}
       keyExtractor={keyExtractor}
+      linkExtractor={linkExtractor}
       onSelectItem={handleSelectTxn}
       isLoading={isLoading}
       renderTitle={renderTitle}

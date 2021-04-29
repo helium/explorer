@@ -2,8 +2,6 @@ import { useCallback } from 'react'
 import Image from 'next/image'
 import Timestamp from 'react-timestamp'
 import BaseList from './BaseList'
-import Link from 'react-router-i18n'
-import { useHistory } from 'react-router-dom'
 
 const BlocksList = ({
   blocks,
@@ -12,25 +10,13 @@ const BlocksList = ({
   isLoadingMore,
   hasMore,
 }) => {
-  let history = useHistory()
-
   const handleSelectBlock = useCallback((block) => {
-    console.log('selected block', block)
-    history.push(`/blocks/${block.height}`)
+    // console.log('selected block', block)
   }, [])
 
   const keyExtractor = useCallback((block) => block.hash, [])
 
-  // const LinkWrapper = ({ item, children }) => {
-  //   return (
-  //     <Link
-  //       to={`/blocks/${item.height}`}
-  //       className="text-black text-md font-semibold m-0 p-0"
-  //     >
-  //       {children}
-  //     </Link>
-  //   )
-  // }
+  const linkExtractor = useCallback((block) => `/blocks/${block.height}`, [])
 
   const renderTitle = useCallback((block) => {
     return (
@@ -66,15 +52,14 @@ const BlocksList = ({
 
   return (
     <BaseList
-      // TODO: add option for making each item a <Link> with a destination, perhaps renderItemWrapper or something
       items={blocks}
       keyExtractor={keyExtractor}
+      linkExtractor={linkExtractor}
       onSelectItem={handleSelectBlock}
       isLoading={isLoading}
       renderTitle={renderTitle}
       renderSubtitle={renderSubtitle}
       renderDetails={renderDetails}
-      // LinkWrapper={LinkWrapper}
       blankTitle="No blocks"
       fetchMore={fetchMore}
       isLoadingMore={isLoadingMore}

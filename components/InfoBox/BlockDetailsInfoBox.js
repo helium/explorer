@@ -6,7 +6,7 @@ import Timestamp from 'react-timestamp'
 import Image from 'next/image'
 import { fetchBlock, fetchBlockTxns } from '../../data/blocks'
 import SkeletonList from '../Lists/SkeletonList'
-import TransactionList from '../Lists/TransactionList'
+// import TransactionList from '../Lists/TransactionList'
 import ActivityList from '../Lists/ActivityList'
 
 const BlockDetailsInfoBox = () => {

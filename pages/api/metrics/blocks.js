@@ -57,8 +57,6 @@ export default async function handler(req, res) {
   const txnRate = await redis.range('txn_rate', range, undefined, agg)
   const height = await redis.range('height', range, undefined, agg)
 
-  await redis.disconnect()
-
   res.status(200).send({
     blockCount,
     // longFiData,

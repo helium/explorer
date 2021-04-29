@@ -6,7 +6,7 @@ import classNames from 'classnames'
 const SkeletonList = () => {
   return (
     <div className="w-full grid grid-cols-1 p-3">
-      {times(10).map((i) => (
+      {times(10).map((_i, i, { length }) => (
         <div
           key={i}
           className={classNames(

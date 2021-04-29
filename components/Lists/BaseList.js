@@ -3,10 +3,12 @@ import Image from 'next/image'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import SkeletonList from './SkeletonList'
 import classNames from 'classnames'
+import { Link } from 'react-router-i18n'
 
 const BaseList = ({
   items,
   keyExtractor,
+  linkExtractor,
   isLoading = true,
   onSelectItem,
   renderTitle,
@@ -58,7 +60,9 @@ const BaseList = ({
       })}
     >
       {items.map((item, i, { length }) => (
-        <div
+        <Link
+          to={linkExtractor ? linkExtractor(item) : ''}
+          onClick={handleSelectItem(item)}
           key={keyExtractor(item)}
           className={classNames(
             'bg-white',
@@ -72,7 +76,6 @@ const BaseList = ({
               'border-b-0': i !== 0 && i !== length - 1,
             },
           )}
-          onClick={handleSelectItem(item)}
         >
           <div className="w-full">
             <div className="text-base font-medium">{renderTitle(item)}</div>
@@ -84,7 +87,7 @@ const BaseList = ({
           <div className="flex">
             <Image src="/images/details-arrow.svg" width={10} height={10} />
           </div>
-        </div>
+        </Link>
       ))}
       {fetchMore && hasMore && (
         <div

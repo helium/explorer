@@ -15,11 +15,12 @@ const TransactionList = ({
 
   const handleSelectTxn = useCallback((txn) => {
     console.log('selected txn', txn)
-
-    if (txn.type === 'poc_receipts_v1') selectTxn(txn.hash)
+    // if (txn.type === 'poc_receipts_v1') selectTxn(txn.hash)
   }, [])
 
   const keyExtractor = useCallback((txn) => txn.hash, [])
+
+  const linkExtractor = useCallback((txn) => `/txns/${txn.hash}`, [])
 
   const renderTitle = useCallback((txn) => {
     return <span>{txn.type}</span>
@@ -42,6 +43,7 @@ const TransactionList = ({
     <BaseList
       items={transactions}
       keyExtractor={keyExtractor}
+      linkExtractor={linkExtractor}
       onSelectItem={handleSelectTxn}
       isLoading={isLoading}
       renderTitle={renderTitle}

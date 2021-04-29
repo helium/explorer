@@ -40,7 +40,7 @@ const EU_CN_BOUNDS = [
 const MOBILE_PADDING = { top: 10, left: 10, right: 10, bottom: 450 }
 const DESKTOP_PADDING = { top: 200, left: 600, right: 200, bottom: 200 }
 
-const CoverageMap = ({ initialCoverage }) => {
+const CoverageMap = ({ coverageUrl }) => {
   const isDesktopOrLaptop = useMediaQuery({ minDeviceWidth: 1224 })
   const map = useRef()
   const [styleLoaded, setStyledLoaded] = useState(false)
@@ -54,9 +54,6 @@ const CoverageMap = ({ initialCoverage }) => {
     isDesktopOrLaptop ? US_EU_BOUNDS : US_BOUNDS,
   )
 
-  const { data: coverage } = useSWR('/api/coverage', {
-    initialData: initialCoverage,
-  })
   const { data: validators } = useSWR('/api/validators')
 
   useEffect(() => {
@@ -152,7 +149,7 @@ const CoverageMap = ({ initialCoverage }) => {
       onMouseMove={handleMouseMove}
     >
       <CoverageLayer
-        hotspots={coverage}
+        coverageUrl={coverageUrl}
         minZoom={minZoom}
         maxZoom={maxZoom}
         onHotspotClick={handleHotspotClick}

@@ -1,6 +1,8 @@
-const { Client, Network } = require('@helium/http')
+const { Client } = require('@helium/http')
 const geoJSON = require('geojson')
 const ColorHash = require('color-hash')
+const maxBy = require('lodash/maxBy')
+const { s3 } = require('./aws')
 
 // const colorHash = new ColorHash()
 const colorHash = new ColorHash({ saturation: 0.5 })
@@ -8,12 +10,6 @@ const colorHash = new ColorHash({ saturation: 0.5 })
 const MAX_HOTSPOTS_TO_FETCH = 200000
 
 const toGeoJSON = (hotspots) =>
-  geoJSON.parse(hotspots, {
-    Point: ['lat', 'lng'],
-    include: ['address', 'owner', 'location', 'status'],
-  })
-
-const toGeoJSONv2 = (hotspots) =>
   geoJSON.parse(hotspots, {
     Point: ['lat', 'lng'],
     include: [
@@ -27,38 +23,8 @@ const toGeoJSONv2 = (hotspots) =>
     ],
   })
 
-const getCoverage = async () => {
-  // TODO switch back to prod API when things are better
-  const client = new Client(Network.staging)
-  const list = await client.hotspots.list()
-  const hotspots = await list.takeJSON(MAX_HOTSPOTS_TO_FETCH)
-  const hotspotsWithLocation = hotspots
-    .filter((h) => !!h.lat && !!h.lng)
-    .map((h) => ({
-      ...h,
-      location: [h.geocode.longCity, h.geocode.shortState]
-        .filter(Boolean)
-        .join(', '),
-      status: h.status.online,
-    }))
-  const onlineHotspots = hotspotsWithLocation.filter(
-    (h) => h.status === 'online',
-  )
-  const offlineHotspots = hotspotsWithLocation.filter(
-    (h) => h.status !== 'online',
-  )
-
-  // TODO don't split these into separate feature collections, just use conditional
-  // mapbox styles based on the included attributes
-  return {
-    online: toGeoJSON(onlineHotspots),
-    offline: toGeoJSON(offlineHotspots),
-  }
-}
-
-const getCoverageV2 = async () => {
-  // TODO switch back to prod API when things are better
-  const client = new Client(Network.staging)
+const fetchCoverage = async () => {
+  const client = new Client()
   const list = await client.hotspots.list()
   const hotspots = await list.takeJSON(MAX_HOTSPOTS_TO_FETCH)
   const hotspotsWithLocation = hotspots
@@ -72,11 +38,40 @@ const getCoverageV2 = async () => {
       ownerColor: colorHash.hex(h.owner),
     }))
 
-  return toGeoJSONv2(hotspotsWithLocation)
+  return toGeoJSON(hotspotsWithLocation)
 }
 
 const emptyCoverage = () => {
   return toGeoJSON([])
 }
 
-module.exports = { getCoverage, getCoverageV2, emptyCoverage }
+const latestCoverageUrl = () => {
+  if (!process.env.AWS_ACCESS_KEY_ID) {
+    return 'https://helium-explorer.s3-us-west-2.amazonaws.com/coverage/coverage.geojson'
+  }
+
+  return new Promise((resolve, reject) => {
+    s3.listObjects(
+      { Bucket: 'helium-explorer', Prefix: 'coverage/' },
+      (err, data) => {
+        if (err) {
+          reject(err)
+        }
+
+        const file = maxBy(data.Contents, ({ Key }) =>
+          parseInt(Key.match(/coverage-(\d+)\.geojson/)?.[1] || 0),
+        )
+
+        if (!file) {
+          reject('not found')
+        }
+
+        const url = `https://helium-explorer.s3-us-west-2.amazonaws.com/${file.Key}`
+
+        resolve(url)
+      },
+    )
+  })
+}
+
+module.exports = { fetchCoverage, emptyCoverage, latestCoverageUrl }

@@ -15,6 +15,7 @@ module.exports = {
       sans: ['Inter', 'sans-serif'],
     },
     colors: {
+      //TODO: get Pete to define a palette and do a full color audit
       transparent: 'transparent',
       white: '#FFFFFF',
       black: '#000000',
@@ -58,8 +59,10 @@ module.exports = {
         350: '#d5dcea',
         400: '#C1C7D4',
         500: '#D2D6DC',
+        525: '#9999C1',
         550: '#9CA9CA',
         600: '#8283B2',
+        650: '#717E98',
         700: '#66759C',
         800: '#617095',
       },

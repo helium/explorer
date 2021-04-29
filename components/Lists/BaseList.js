@@ -2,16 +2,20 @@ import { useCallback } from 'react'
 import Image from 'next/image'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import SkeletonList from './SkeletonList'
+import classNames from 'classnames'
+import { Link } from 'react-router-i18n'
 
 const BaseList = ({
   items,
   keyExtractor,
+  linkExtractor,
   isLoading = true,
   onSelectItem,
   renderTitle,
   renderSubtitle,
   renderDetails,
   blankTitle,
+  noPadding,
   fetchMore,
   isLoadingMore,
   hasMore,
@@ -50,12 +54,28 @@ const BaseList = ({
   }
 
   return (
-    <div className="w-full grid grid-cols-1 divide-y divide-gray-400">
-      {items.map((item) => (
-        <div
-          key={keyExtractor(item)}
-          className="cursor-pointer border-solid py-2 px-4 flex"
+    <div
+      className={classNames('w-full grid grid-cols-1', {
+        'p-3': !noPadding,
+      })}
+    >
+      {items.map((item, i, { length }) => (
+        <Link
+          to={linkExtractor ? linkExtractor(item) : ''}
           onClick={handleSelectItem(item)}
+          key={keyExtractor(item)}
+          className={classNames(
+            'bg-white',
+            'hover:bg-gray-200 cursor-pointer transition-all duration-75',
+            'relative flex',
+            'px-4 py-2',
+            'border-solid border-gray-500 border-t border-l border-r',
+            {
+              'rounded-t-lg': i === 0,
+              'rounded-b-lg border-b': i === length - 1,
+              'border-b-0': i !== 0 && i !== length - 1,
+            },
+          )}
         >
           <div className="w-full">
             <div className="text-base font-medium">{renderTitle(item)}</div>
@@ -67,7 +87,7 @@ const BaseList = ({
           <div className="flex items-center">
             <img src="/images/details-arrow.svg" />
           </div>
-        </div>
+        </Link>
       ))}
       {fetchMore && hasMore && (
         <div

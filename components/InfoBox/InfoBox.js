@@ -9,7 +9,9 @@ const InfoBox = ({ title, children }) => {
       style={{ transform: `translateY(${showInfoBox ? 0 : 120}%)` }}
     >
       <div className="absolute flex justify-between w-full -top-16 p-4 md:px-0">
-        <span className="text-white text-3xl font-semibold">{title}</span>
+        <span className="text-white text-3xl font-semibold font-sans">
+          {title}
+        </span>
         <div className="md:hidden" onClick={toggleInfoBox}>
           <Image src="/images/circle-arrow.svg" width={35} height={35} />
         </div>

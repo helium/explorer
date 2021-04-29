@@ -17,14 +17,13 @@ const HotspotsList = ({
 }) => {
   const { selectHotspot } = useSelectedHotspot()
 
-  const handleSelectHotspot = useCallback(
-    (hotspot) => {
-      selectHotspot(hotspot.address)
-    },
-    [selectHotspot],
-  )
+  const handleSelectHotspot = useCallback((hotspot) => {
+    selectHotspot(hotspot.address)
+  }, [])
 
-  const keyExtractor = useCallback((w) => w.address, [])
+  const keyExtractor = useCallback((h) => h.address, [])
+
+  const linkExtractor = useCallback((h) => `/hotspots/${h.address}`, [])
 
   const renderTitle = useCallback((h) => {
     return (
@@ -65,6 +64,7 @@ const HotspotsList = ({
     <BaseList
       items={hotspots}
       keyExtractor={keyExtractor}
+      linkExtractor={linkExtractor}
       onSelectItem={handleSelectHotspot}
       isLoading={isLoading}
       renderTitle={renderTitle}

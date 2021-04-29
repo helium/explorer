@@ -3,6 +3,8 @@ import OverviewInfoBox from './OverviewInfoBox'
 import HotspotsInfoBox from './HotspotsInfoBox'
 import HotspotDetailsInfoBox from './HotspotDetailsInfoBox'
 import ValidatorsInfoBox from './ValidatorsInfoBox'
+import BlocksInfoBox from './BlocksInfoBox'
+import BlockDetailsInfoBox from './BlockDetailsInfoBox'
 import BeaconsInfoBox from './BeaconsInfoBox'
 
 const InfoBoxSwitch = () => {
@@ -19,6 +21,12 @@ const InfoBoxSwitch = () => {
       </Route>
       <Route path={`${base}/validators`}>
         <ValidatorsInfoBox />
+      </Route>
+      <Route path={`${base}/blocks/:block(\\d+)`}>
+        <BlockDetailsInfoBox />
+      </Route>
+      <Route path={`${base}/blocks`}>
+        <BlocksInfoBox />
       </Route>
       <Route path={`${base}/beacons`}>
         <BeaconsInfoBox />

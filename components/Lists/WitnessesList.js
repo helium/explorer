@@ -12,14 +12,13 @@ import BaseList from './BaseList'
 const WitnessesList = ({ witnesses, isLoading = true }) => {
   const { selectHotspot } = useSelectedHotspot()
 
-  const handleSelectHotspot = useCallback(
-    (hotspot) => () => {
-      selectHotspot(hotspot.address)
-    },
-    [selectHotspot],
-  )
+  const handleSelectHotspot = useCallback((hotspot) => {
+    selectHotspot(hotspot.address)
+  }, [])
 
   const keyExtractor = useCallback((w) => w.address, [])
+
+  const linkExtractor = useCallback((w) => `/hotspots/${w.address}`, [])
 
   const renderTitle = useCallback((w) => {
     return (
@@ -58,6 +57,7 @@ const WitnessesList = ({ witnesses, isLoading = true }) => {
     <BaseList
       items={witnesses}
       keyExtractor={keyExtractor}
+      linkExtractor={linkExtractor}
       onSelectItem={handleSelectHotspot}
       isLoading={isLoading}
       renderTitle={renderTitle}

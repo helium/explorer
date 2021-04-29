@@ -8,6 +8,8 @@ import BaseList from './BaseList'
 const ValidatorsList = ({ validators, recentGroups }) => {
   const keyExtractor = useCallback((v) => v.address, [])
 
+  const linkExtractor = useCallback((v) => `/validators/${v.address}`, [])
+
   const renderTitle = useCallback((v) => {
     return `${animalHash(v.address)} (#${v.number})`
   }, [])
@@ -32,6 +34,7 @@ const ValidatorsList = ({ validators, recentGroups }) => {
     <BaseList
       items={validators}
       keyExtractor={keyExtractor}
+      linkExtractor={linkExtractor}
       isLoading={false}
       renderTitle={renderTitle}
       renderSubtitle={renderSubtitle}

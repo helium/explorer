@@ -84,8 +84,8 @@ const BaseList = ({
             </div>
           </div>
           <div className="flex items-center px-4">{renderDetails(item)}</div>
-          <div className="flex">
-            <Image src="/images/details-arrow.svg" width={10} height={10} />
+          <div className="flex items-center">
+            <img src="/images/details-arrow.svg" />
           </div>
         </Link>
       ))}

@@ -1,7 +1,10 @@
 import { useCallback } from 'react'
-import Image from 'next/image'
 import Timestamp from 'react-timestamp'
+import { uniq } from 'lodash'
 import BaseList from './BaseList'
+import FlagLocation from '../Common/FlagLocation'
+import WitnessPill from '../Common/WitnessPill'
+import Pill from '../Common/Pill'
 
 const ActivityList = ({
   transactions,
@@ -21,20 +24,51 @@ const ActivityList = ({
   }, [])
 
   const renderTitle = useCallback((txn) => {
-    return <span>{txn.type}</span>
+    switch (txn.type) {
+      case 'rewards_v1':
+      case 'rewards_v2':
+        return txn.totalAmount.toString(3)
+
+      case 'poc_receipts_v1':
+        return <FlagLocation geocode={txn.path[0].geocode} />
+
+      default:
+        return <span>{txn.type}</span>
+    }
   }, [])
 
   const renderSubtitle = useCallback((txn) => {
     return (
       <span className="flex items-center space-x-1">
-        <Image src="/images/clock.svg" width={14} height={14} />
+        <img src="/images/clock.svg" className="w-3.5 h-3.5" />
         <Timestamp date={txn.time} className="tracking-tighter" />
       </span>
     )
   }, [])
 
   const renderDetails = useCallback((txn) => {
-    return <span></span>
+    switch (txn.type) {
+      case 'rewards_v1':
+      case 'rewards_v2':
+        return (
+          <span className="flex space-x-2">
+            {uniq(txn.rewards.map((r) => r.type)).map((type) => (
+              <Pill
+                key={type}
+                title={rewardTypeText[type] || type}
+                tooltip={type}
+                color={rewardTypeColor[type]}
+              />
+            ))}
+          </span>
+        )
+
+      case 'poc_receipts_v1':
+        return <WitnessPill count={txn.path?.[0]?.witnesses?.length || 0} />
+
+      default:
+        return null
+    }
   }, [])
 
   return (
@@ -53,6 +87,22 @@ const ActivityList = ({
       hasMore={hasMore}
     />
   )
+}
+
+const rewardTypeText = {
+  poc_witnesses: 'Witness',
+  poc_challengers: 'Challenger',
+  poc_challengees: 'Beacon',
+  data_credits: 'Data',
+  consensus: 'Consensus',
+}
+
+const rewardTypeColor = {
+  poc_witnesses: 'yellow',
+  // poc_challengers: 'Challenger',
+  // poc_challengees: 'Beacon',
+  // data_credits: 'Data',
+  // consensus: 'Consensus',
 }
 
 export default ActivityList

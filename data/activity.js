@@ -1,8 +1,8 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useAsync } from 'react-async-hook'
 import client from './client'
 
-export const useHotspotActivity = (address, pageSize = 20) => {
+export const useHotspotActivity = (address, filters = [], pageSize = 20) => {
   const [list, setList] = useState()
   const [transactions, setTransactions] = useState([])
   const [isLoadingInitial, setIsLoadingInitial] = useState(true)
@@ -10,9 +10,11 @@ export const useHotspotActivity = (address, pageSize = 20) => {
   const [hasMore, setHasMore] = useState(true)
 
   useAsync(async () => {
-    const newList = await client.hotspot(address).activity.list()
+    const newList = await client
+      .hotspot(address)
+      .activity.list({ filterTypes: filters })
     setList(newList)
-  }, [address])
+  }, [address, filters])
 
   useAsync(async () => {
     if (!list) return
@@ -25,6 +27,11 @@ export const useHotspotActivity = (address, pageSize = 20) => {
       setHasMore(false)
     }
   }, [list])
+
+  useEffect(() => {
+    setIsLoadingInitial(true)
+    setIsLoadingMore(true)
+  }, [filters])
 
   const fetchMore = useCallback(async () => {
     const newTransactions = await list.take(pageSize)

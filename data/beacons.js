@@ -1,4 +1,6 @@
 import useSWR from 'swr'
+import { useState, useCallback } from 'react'
+import { useAsync } from 'react-async-hook'
 import client, { TAKE_MAX } from './client'
 
 export const fetchLatestBeacons = (count = 100) => async () => {
@@ -53,4 +55,43 @@ export const useHotspotBeaconSums = (
     isLoading: !error && !data,
     isError: error,
   }
+}
+
+export const useBeacons = (context, address, pageSize = 20) => {
+  const [list, setList] = useState()
+  const [items, setItems] = useState([])
+  const [isLoadingInitial, setIsLoadingInitial] = useState(true)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
+
+  useAsync(async () => {
+    let newList
+    if (context === undefined || address === undefined) {
+      newList = await client.challenges.list()
+    } else if (context === 'hotspot') {
+      newList = await client.hotspot(address).challenges.list()
+    } else if (context === 'account') {
+      newList = await client.account(address).challenges.list()
+    }
+    setList(newList)
+  }, [])
+
+  useAsync(async () => {
+    if (!list) return
+    setIsLoadingMore(true)
+    const newItems = await list.take(pageSize)
+    setItems(newItems)
+    setIsLoadingMore(false)
+    setIsLoadingInitial(false)
+    if (newItems.length < pageSize) {
+      setHasMore(false)
+    }
+  }, [list])
+
+  const fetchMore = useCallback(async () => {
+    const newItems = await list.take(pageSize)
+    setItems([...items, ...newItems])
+  }, [list, pageSize, items])
+
+  return { items, fetchMore, isLoadingInitial, isLoadingMore, hasMore }
 }

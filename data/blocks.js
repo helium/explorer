@@ -1,5 +1,6 @@
 import useSWR from 'swr'
-import Client from '@helium/http'
+import { useState, useCallback } from 'react'
+import { useAsync } from 'react-async-hook'
 import client, { TAKE_MAX } from './client'
 
 export const fetchLatestBlocks = async (count = 100) => {
@@ -51,4 +52,36 @@ export const fetchBlockTxns = async (height) => {
     TAKE_MAX,
   )
   return txns
+}
+
+export const useFetchBlocks = (pageSize = 20) => {
+  const [list, setList] = useState()
+  const [results, setResults] = useState([])
+  const [isLoadingInitial, setIsLoadingInitial] = useState(true)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
+
+  useAsync(async () => {
+    const newList = await client.blocks.list()
+    setList(newList)
+    setIsLoadingInitial(false)
+  }, [])
+
+  useAsync(async () => {
+    if (!list) return
+    setIsLoadingMore(true)
+    const newResults = await list.take(pageSize)
+    setResults(newResults)
+    setIsLoadingMore(false)
+    if (newResults.length < pageSize) {
+      setHasMore(false)
+    }
+  }, [list])
+
+  const fetchMore = useCallback(async () => {
+    const newResults = await list.take(pageSize)
+    setResults([...results, ...newResults])
+  }, [list, pageSize, results])
+
+  return { results, fetchMore, isLoadingInitial, isLoadingMore, hasMore }
 }

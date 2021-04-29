@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { useFetchList } from '../../../data/activity'
+import { useFetchBlocks } from '../../../data/blocks'
 import BlocksList from '../../Lists/BlocksList'
 import Image from 'next/image'
 import { Link } from 'react-router-i18n'
@@ -11,7 +11,7 @@ const LatestBlocksPane = () => {
     isLoadingInitial,
     isLoadingMore,
     hasMore,
-  } = useFetchList('', 'blocks')
+  } = useFetchBlocks()
   return (
     <div
       className={classNames('grid grid-flow-row grid-cols-1', {

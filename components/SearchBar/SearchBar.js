@@ -84,7 +84,7 @@ const SearchBar = () => {
       {results.length > 0 && (
         <div
           ref={scroll}
-          className="absolute bg-white max-h-72 w-80 right-0 top-12 rounded-lg divide-y divide-gray-400 overflow-y-scroll"
+          className="absolute bg-white max-h-72 w-80 right-0 top-12 rounded-lg divide-y divide-gray-400 overflow-y-scroll no-scrollbar"
         >
           {results.map((r, i) => (
             <div

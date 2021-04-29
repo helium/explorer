@@ -15,6 +15,7 @@ const NavItem = ({ title, active = false, href }) => (
     to={href}
     className={classNames(
       'mx-2 py-3 inline-block font-medium text-base cursor-pointer',
+      'hover:text-navy-400',
       {
         'text-gray-600': !active,
         'text-navy-400 border-navy-400 border-b-3 border-solid': active,
@@ -55,7 +56,7 @@ const TabNavbar = ({ children }) => {
   return (
     <>
       <div className="w-full bg-white z-10 rounded-t-xl">
-        <div className="border-b border-gray-400 border-solid mt-2 px-2 md:px-8 flex overflow-x-scroll">
+        <div className="border-b border-gray-400 border-solid mt-2 px-2 md:px-8 flex justify-center overflow-x-scroll no-scrollbar">
           {navItems.map((item) => (
             <NavItem
               key={item.key}

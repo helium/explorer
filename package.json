@@ -21,6 +21,7 @@
     "algoliasearch": "^4.5.1",
     "angry-purple-tiger": "1.0.5",
     "antd": "^4.8.0",
+    "aws-sdk": "^2.895.0",
     "camelcase-keys": "^6.2.2",
     "classnames": "^2.2.6",
     "color-hash": "^1.1.1",

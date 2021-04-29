@@ -28,7 +28,7 @@ const Widget = ({
         <div className="text-gray-600 text-sm">{title}</div>
         <div className="flex items-center">
           {icon && <div className="mr-1.5 flex items-center">{icon}</div>}
-          <div className="text-3xl font-medium text-black my-1.5 tracking-tighter w-full">
+          <div className="text-3xl font-medium text-black my-1.5 tracking-tight w-full">
             {isLoading ? <Skeleton /> : value}
           </div>
         </div>

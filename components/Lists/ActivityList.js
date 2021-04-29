@@ -19,6 +19,10 @@ const ActivityList = ({
 
   const keyExtractor = useCallback((txn) => txn.hash, [])
 
+  const linkExtractor = useCallback((txn) => {
+    return `/txns/${txn.hash}`
+  }, [])
+
   const renderTitle = useCallback((txn) => {
     switch (txn.type) {
       case 'rewards_v1':
@@ -37,7 +41,7 @@ const ActivityList = ({
     return (
       <span className="flex items-center space-x-1">
         <img src="/images/clock.svg" className="w-3.5 h-3.5" />
-        <Timestamp date={txn.time} className="tracking-tighter" />
+        <Timestamp date={txn.time} className="tracking-tight" />
       </span>
     )
   }, [])
@@ -71,6 +75,7 @@ const ActivityList = ({
     <BaseList
       items={transactions}
       keyExtractor={keyExtractor}
+      linkExtractor={linkExtractor}
       onSelectItem={handleSelectTxn}
       isLoading={isLoading}
       renderTitle={renderTitle}
@@ -80,6 +85,7 @@ const ActivityList = ({
       fetchMore={fetchMore}
       isLoadingMore={isLoadingMore}
       hasMore={hasMore}
+      noPadding
     />
   )
 }

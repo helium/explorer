@@ -1,10 +1,9 @@
 import { useMemo, memo } from 'react'
 import { GeoJSONLayer } from 'react-mapbox-gl'
 import { useBlockHeight } from '../../../data/blocks'
-import { emptyGeoJSON } from '../../../utils/location'
 
 const CoverageLayer = ({
-  hotspots,
+  coverageUrl,
   minZoom,
   maxZoom,
   onHotspotClick,
@@ -35,7 +34,7 @@ const CoverageLayer = ({
   return (
     <GeoJSONLayer
       id="hotspots"
-      data="https://helium-explorer.s3-us-west-2.amazonaws.com/coverage/coverage.geojson"
+      data={coverageUrl}
       circlePaint={onlineCircleLayout}
       circleOnClick={onHotspotClick}
     />

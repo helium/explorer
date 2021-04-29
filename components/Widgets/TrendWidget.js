@@ -3,7 +3,12 @@ import { LineChart, Line, YAxis, ResponsiveContainer } from 'recharts'
 import { first, last } from 'lodash'
 import Skeleton from '../Common/Skeleton'
 
-const TrendWidget = ({ title, series, isLoading = false }) => {
+const TrendWidget = ({
+  title,
+  series,
+  isLoading = false,
+  periodLabel = '30 Day Trend',
+}) => {
   const yMin = first(series || [])?.value || 0
   const yMax = last(series || [])?.value || 0
 
@@ -11,7 +16,7 @@ const TrendWidget = ({ title, series, isLoading = false }) => {
     <div className="bg-gray-200 p-3 rounded-lg col-span-2 flex">
       <div className="w-1/3">
         <div className="text-gray-600 text-sm whitespace-nowrap">{title}</div>
-        <div className="text-3xl font-medium my-1.5 tracking-tighter">
+        <div className="text-3xl font-medium my-1.5 tracking-tight">
           {isLoading ? <Skeleton w="full" my="4" /> : yMax.toLocaleString()}
         </div>
         <div className="text-green-500 text-sm font-medium">
@@ -32,7 +37,7 @@ const TrendWidget = ({ title, series, isLoading = false }) => {
           </LineChart>
         </ResponsiveContainer>
         <div className="absolute right-4 bottom-0 text-gray-550 text-xs">
-          30 Day Trend
+          {periodLabel}
         </div>
       </div>
     </div>

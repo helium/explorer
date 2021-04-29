@@ -13,7 +13,7 @@ const BeaconsPane = ({ context, address }) => {
 
   return (
     <div
-      className={classNames('grid grid-flow-row grid-cols-1', {
+      className={classNames('grid grid-flow-row grid-cols-1 no-scrollbar', {
         'overflow-y-scroll': !isLoadingInitial,
         'overflow-y-hidden': isLoadingInitial,
       })}

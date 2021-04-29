@@ -24,16 +24,16 @@ const HotspotDetailsRoute = () => {
 
   if (!hotspot) return null
 
-  return <HotspotDetailsInfoBox />
+  return <HotspotDetailsInfoBox address={address} />
 }
 
-const HotspotDetailsInfoBox = () => {
+const HotspotDetailsInfoBox = ({ address }) => {
   const {
     selectedHotspot: hotspot,
     clearSelectedHotspot,
   } = useSelectedHotspot()
 
-  const title = useMemo(() => animalHash(hotspot.address), [hotspot])
+  const title = useMemo(() => animalHash(address), [address])
 
   useEffect(() => {
     return () => {

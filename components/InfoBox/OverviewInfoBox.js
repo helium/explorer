@@ -11,7 +11,7 @@ const OverviewInfoBox = () => {
     <InfoBox title="Overview">
       <TabNavbar>
         <TabPane title="Overview" key="1">
-          <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll">
+          <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
             <TrendWidget
               title="Hotspots"
               series={stats?.count}

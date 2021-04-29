@@ -36,7 +36,7 @@ const ValidatorsInfoBox = () => {
     <InfoBox title="Validators">
       <TabNavbar basePath="validators">
         <TabPane title="Statistics" key="1">
-          <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll">
+          <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
             <Widget
               title="Total Validators"
               value={validators.length.toLocaleString()}
@@ -66,7 +66,7 @@ const ValidatorsInfoBox = () => {
           </div>
         </TabPane>
         <TabPane title="Consensus Group" key="2" path="consensus">
-          <div className="grid grid-flow-row grid-cols-1 overflow-y-scroll">
+          <div className="grid grid-flow-row grid-cols-1 overflow-y-scroll no-scrollbar">
             <ValidatorsList
               validators={consensusGroup}
               recentGroups={recentGroups}
@@ -75,7 +75,7 @@ const ValidatorsInfoBox = () => {
           </div>
         </TabPane>
         <TabPane title="All Validators" key="3" path="all">
-          <div className="grid grid-flow-row grid-cols-1 overflow-y-scroll">
+          <div className="grid grid-flow-row grid-cols-1 overflow-y-scroll no-scrollbar">
             <ValidatorsList
               validators={validators}
               recentGroups={recentGroups}

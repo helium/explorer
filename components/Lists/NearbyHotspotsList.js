@@ -10,14 +10,13 @@ import BaseList from './BaseList'
 const NearbyHotspotsList = ({ hotspots, isLoading = true }) => {
   const { selectHotspot } = useSelectedHotspot()
 
-  const handleSelectHotspot = useCallback(
-    (hotspot) => () => {
-      selectHotspot(hotspot.address)
-    },
-    [selectHotspot],
-  )
+  const handleSelectHotspot = useCallback((hotspot) => {
+    selectHotspot(hotspot.address)
+  }, [])
 
-  const keyExtractor = useCallback((w) => w.address, [])
+  const keyExtractor = useCallback((h) => h.address, [])
+
+  const linkExtractor = useCallback((h) => `/hotspots/${h.address}`, [])
 
   const renderTitle = useCallback((h) => {
     return (
@@ -54,12 +53,14 @@ const NearbyHotspotsList = ({ hotspots, isLoading = true }) => {
     <BaseList
       items={hotspots}
       keyExtractor={keyExtractor}
+      linkExtractor={linkExtractor}
       onSelectItem={handleSelectHotspot}
       isLoading={isLoading}
       renderTitle={renderTitle}
       renderSubtitle={renderSubtitle}
       renderDetails={renderDetails}
       blankTitle="No nearby Hotspots"
+      noPadding
     />
   )
 }

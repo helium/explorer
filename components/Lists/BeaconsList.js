@@ -43,7 +43,6 @@ const BeaconsList = ({
       fetchMore={fetchMore}
       isLoadingMore={isLoadingMore}
       hasMore={hasMore}
-      noPadding
     />
   )
 }

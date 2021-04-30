@@ -53,7 +53,6 @@ const TransactionList = ({
       fetchMore={fetchMore}
       isLoadingMore={isLoadingMore}
       hasMore={hasMore}
-      noPadding
     />
   )
 }

@@ -52,7 +52,7 @@ const HotspotDetailLayer = ({ hotspot }) => {
         data={witnessesData || emptyGeoJSON}
         circlePaint={witnessCircleLayout}
       />
-      {hotspot && (
+      {hotspot && hotspot.lat && hotspot.lng && (
         <Layer
           type="symbol"
           id="selected-hotspot"

@@ -4,10 +4,14 @@ import { useState, useMemo } from 'react'
 import { useParams } from 'react-router'
 import Timestamp from 'react-timestamp'
 import Image from 'next/image'
-import { fetchBlock, fetchBlockTxns } from '../../data/blocks'
-import SkeletonList from '../Lists/SkeletonList'
-// import TransactionList from '../Lists/TransactionList'
-import ActivityList from '../Lists/ActivityList'
+import {
+  fetchBlock,
+  fetchBlockTxns,
+  splitTransactionsByTypes,
+} from '../../data/blocks'
+import TransactionList from '../Lists/TransactionList'
+import TabNavbar, { TabPane } from '../Nav/TabNavbar'
+import classNames from 'classnames'
 
 const BlockDetailsInfoBox = () => {
   const { block: height } = useParams()
@@ -23,7 +27,7 @@ const BlockDetailsInfoBox = () => {
         fetchBlockTxns(height),
       ])
 
-      setBlock({ ...block, txns })
+      setBlock({ ...block, txns: splitTransactionsByTypes(txns) })
       setBlockLoading(false)
     }
     getBlockDetails(height)
@@ -35,31 +39,57 @@ const BlockDetailsInfoBox = () => {
 
   return (
     <InfoBox title={title}>
-      <div className="overflow-y-scroll no-scrollbar">
-        {blockLoading ? (
-          <SkeletonList />
-        ) : (
-          <>
-            <div className="flex flex-col items-start text-gray-800 p-5 pb-2">
-              <span className="flex items-center justify-start">
-                <Image src="/images/clock.svg" width={14} height={14} />
-                <Timestamp
-                  date={block.time}
-                  className="tracking-tight text-gray-525 text-sm font-sans ml-1"
+      {!blockLoading && (
+        <TabNavbar>
+          {block.txns.map((type) => {
+            return (
+              <TabPane
+                title={
+                  <div className="">
+                    <p
+                      className={
+                        // TODO: tidy up into util function
+                        classNames({
+                          'text-navy-400': type.type === 'poc_receipts_v1',
+                          'text-green-400': type.type === 'poc_request_v1',
+                          'text-gray-600': type.type === 'payment_v2',
+                        })
+                      }
+                    >
+                      {type.txns.length}
+                    </p>
+                    <p
+                      className={classNames('text-gray-600 text-sm', {
+                        'hover:text-navy-400': type.type === 'poc_receipts_v1',
+                        'hover:text-green-400': type.type === 'poc_request_v1',
+                        'hover:text-gray-600': type.type === 'payment_v2',
+                      })}
+                    >
+                      {type.type}
+                    </p>
+                  </div>
+                }
+                key={type.type}
+                customBorder
+                path={type.type}
+                activeClasses={classNames(
+                  'text-black border-b-3 border-solid',
+                  {
+                    'border-navy-400': type.type === 'poc_receipts_v1',
+                    'border-green-400': type.type === 'poc_request_v1',
+                    'border-gray-600': type.type === 'payment_v2',
+                  },
+                )}
+              >
+                <TransactionList
+                  transactions={type.txns}
+                  isLoading={blockLoading}
                 />
-              </span>
-              <span className="flex flex-row items-center justify-start">
-                <Image src="/images/txn.svg" width={14} height={14} />
-                <p className="tracking-tight text-gray-525 text-sm font-sans m-0 ml-1">
-                  {block.transactionCount} transactions
-                </p>
-              </span>
-            </div>
-            <ActivityList transactions={block.txns} isLoading={blockLoading} />
-            <div className="col-span-2 pb-1" />
-          </>
-        )}
-      </div>
+              </TabPane>
+            )
+          })}
+        </TabNavbar>
+      )}
     </InfoBox>
   )
 }

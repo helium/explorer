@@ -2,6 +2,7 @@ import useSWR from 'swr'
 import { useState, useCallback } from 'react'
 import { useAsync } from 'react-async-hook'
 import client, { TAKE_MAX } from './client'
+import { groupBy } from 'lodash'
 
 export const fetchLatestBlocks = async (count = 100) => {
   const blocks = await (await client.blocks.list()).take(count)
@@ -84,4 +85,9 @@ export const useFetchBlocks = (pageSize = 20) => {
   }, [list, pageSize, results])
 
   return { results, fetchMore, isLoadingInitial, isLoadingMore, hasMore }
+}
+
+export const splitTransactionsByTypes = (txns) => {
+  const obj = groupBy(txns, 'type')
+  return Object.keys(obj).map((type) => ({ type, txns: obj[type] }))
 }

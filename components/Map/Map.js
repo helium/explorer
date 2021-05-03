@@ -1,6 +1,9 @@
 import { useEffect, useState, useCallback, useRef, useMemo, memo } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import ReactMapboxGl from 'react-mapbox-gl'
+import { h3ToGeo } from 'h3-js'
+import { useAsync } from 'react-async-hook'
+import useSWR from 'swr'
 import { findBounds } from '../../utils/location'
 import CoverageLayer from './Layers/CoverageLayer'
 import HotspotDetailLayer from './Layers/HotspotDetailLayer'
@@ -8,8 +11,9 @@ import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import useMapLayer from '../../hooks/useMapLayer'
 import useInfoBox from '../../hooks/useInfoBox'
 import useGeolocation from '../../hooks/useGeolocation'
-import useSWR from 'swr'
 import ValidatorsLayer from './Layers/ValidatorsLayer'
+import useSelectedTxn from '../../hooks/useSelectedTxn'
+import { fetchHotspot } from '../../data/hotspots'
 
 const maxZoom = 14
 const minZoom = 2
@@ -44,10 +48,13 @@ const CoverageMap = ({ coverageUrl }) => {
   const isDesktopOrLaptop = useMediaQuery({ minDeviceWidth: 1224 })
   const map = useRef()
   const [styleLoaded, setStyledLoaded] = useState(false)
+  const [selectedTxnHotspot, setSelectedTxnHotspot] = useState()
+  const [selectedTxnWitnesses, setSelectedTxnWitnesses] = useState([])
 
   const { showInfoBox } = useInfoBox()
   const { mapLayer } = useMapLayer()
   const { selectHotspot, selectedHotspot } = useSelectedHotspot()
+  const { selectedTxn } = useSelectedTxn()
   const { currentPosition } = useGeolocation()
 
   const [bounds, setBounds] = useState(
@@ -80,6 +87,36 @@ const CoverageMap = ({ coverageUrl }) => {
     ])
     setBounds(selectionBounds)
   }, [selectedHotspot])
+
+  useEffect(() => {
+    if (!selectedTxnHotspot || !selectedTxnWitnesses) return
+
+    const selectionBounds = findBounds([
+      ...(selectedTxnWitnesses || []).map(({ lat, lng }) => ({
+        lat,
+        lng,
+      })),
+      { lat: selectedTxnHotspot.lat, lng: selectedTxnHotspot.lng },
+    ])
+    setBounds(selectionBounds)
+  }, [selectedTxnHotspot, selectedTxnWitnesses])
+
+  useAsync(async () => {
+    if (selectedTxn?.type === 'poc_receipts_v1') {
+      const target = selectedTxn.path[0].challengee
+      const targetHotspot = await fetchHotspot(target)
+      const witnesses = selectedTxn.path[0].witnesses.map((w) => {
+        const [lat, lng] = h3ToGeo(w.location)
+        return { ...w, lat, lng }
+      })
+
+      setSelectedTxnHotspot(targetHotspot)
+      setSelectedTxnWitnesses(witnesses)
+    } else {
+      setSelectedTxnHotspot(undefined)
+      setSelectedTxnWitnesses([])
+    }
+  }, [selectedTxn])
 
   const fitBoundsOptions = useMemo(() => {
     const animate = styleLoaded
@@ -155,7 +192,10 @@ const CoverageMap = ({ coverageUrl }) => {
         onHotspotClick={handleHotspotClick}
         layer={mapLayer}
       />
-      <HotspotDetailLayer hotspot={selectedHotspot} />
+      <HotspotDetailLayer
+        hotspot={selectedHotspot || selectedTxnHotspot}
+        witnesses={selectedHotspot?.witnesses || selectedTxnWitnesses || []}
+      />
       <ValidatorsLayer
         validators={validators}
         minZoom={minZoom}

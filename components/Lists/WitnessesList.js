@@ -1,7 +1,5 @@
 import { useCallback } from 'react'
-import Image from 'next/image'
 import animalHash from 'angry-purple-tiger'
-import SkeletonList from './SkeletonList'
 import StatusCircle from '../Hotspots/StatusCircle'
 import FlagLocation from '../Common/FlagLocation'
 import Hex from '../Hex'

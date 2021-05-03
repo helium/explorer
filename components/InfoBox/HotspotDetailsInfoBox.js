@@ -9,7 +9,6 @@ import ActivityPane from './HotspotDetails/ActivityPane'
 import WitnessesPane from './HotspotDetails/WitnessesPane'
 import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
-import BeaconsPane from './Beacons/BeaconsPane'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()

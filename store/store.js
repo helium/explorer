@@ -5,6 +5,7 @@ const initialState = {
   showMapLayers: false,
   mapLayer: null,
   selectedHotspot: null,
+  selectedTxn: null,
   geolocation: {
     currentPosition: { timestamp: 0 },
     isLoading: false,

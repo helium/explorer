@@ -1,12 +1,9 @@
 import { useMemo } from 'react'
 import useSWR from 'swr'
-import FlagLocation from '../../Common/FlagLocation'
-import { formatHotspotName } from '../../Hotspots/utils'
 import StatWidget from '../../Widgets/StatWidget'
 import TrendWidget from '../../Widgets/TrendWidget'
-import Widget from '../../Widgets/Widget'
 import { useLatestHotspots } from '../../../data/hotspots'
-import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
+import HotspotWidget from '../../Widgets/HotspotWidget'
 
 const StatisticsPane = () => {
   const { data: stats } = useSWR('/api/metrics/hotspots')
@@ -42,25 +39,9 @@ const StatisticsPane = () => {
         series={stats?.countriesCount}
         isLoading={!stats}
       />
-      <LatestHotspotWidget hotspot={latestHotspot} />
+      <HotspotWidget title="Latest Hotspot" hotspot={latestHotspot} />
       <div className="col-span-2 pb-1" />
     </div>
-  )
-}
-
-const LatestHotspotWidget = ({ hotspot }) => {
-  const { selectHotspot } = useSelectedHotspot()
-  if (!hotspot) return null
-
-  return (
-    <Widget
-      title="Latest Hotspot"
-      value={formatHotspotName(hotspot.name)}
-      subtitle={<FlagLocation geocode={hotspot.geocode} />}
-      span={2}
-      onClick={() => selectHotspot(hotspot.address)}
-      isLoading={!hotspot}
-    />
   )
 }
 

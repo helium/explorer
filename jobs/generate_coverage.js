@@ -1,5 +1,5 @@
 const { fetchCoverage } = require('../commonjs/coverage')
-const { s3 } = require('./aws')
+const { s3 } = require('../commonjs/aws')
 
 const uploadFile = (name, content) => {
   return new Promise((resolve, reject) => {

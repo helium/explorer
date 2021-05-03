@@ -39,7 +39,6 @@ const useSelectedHotspot = () => {
         type: SET_SELECTED_HOTSPOT,
         payload: { ...hotspot, witnesses: filteredWitnesses },
       })
-      // setShowInfoBox(true)
       history.push(`/hotspots/${hotspot.address}`)
     },
     [dispatch, history],

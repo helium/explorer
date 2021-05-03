@@ -3,9 +3,7 @@ import { GeoJSONLayer, Image, Layer, Feature } from 'react-mapbox-gl'
 import geoJSON from 'geojson'
 import { emptyGeoJSON } from '../../../utils/location'
 
-const HotspotDetailLayer = ({ hotspot }) => {
-  const witnesses = hotspot?.witnesses || []
-
+const HotspotDetailLayer = ({ hotspot, witnesses = [] }) => {
   const witnessCircleLayout = useMemo(() => {
     return {
       'circle-color': '#F1C40F',

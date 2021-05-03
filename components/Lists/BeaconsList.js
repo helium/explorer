@@ -17,6 +17,7 @@ const BeaconsList = ({
   }, [])
 
   const keyExtractor = useCallback((b) => b.hash, [])
+  const linkExtractor = useCallback((b) => `/txns/${b.hash}`, [])
 
   const renderTitle = useCallback((b) => {
     return <FlagLocation geocode={b.path[0].geocode} />
@@ -34,6 +35,7 @@ const BeaconsList = ({
     <BaseList
       items={beacons}
       keyExtractor={keyExtractor}
+      linkExtractor={linkExtractor}
       onSelectItem={handleSelectBeacon}
       isLoading={isLoading}
       renderTitle={renderTitle}

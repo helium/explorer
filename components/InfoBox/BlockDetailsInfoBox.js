@@ -14,6 +14,7 @@ import classNames from 'classnames'
 import TransactionTypesWidget from '../Widgets/TransactionTypesWidget'
 import SkeletonList from '../Lists/SkeletonList'
 import { useHistory } from 'react-router-dom'
+import Timestamp from 'react-timestamp'
 
 const BlockDetailsInfoBox = () => {
   const { block: height } = useParams()
@@ -30,9 +31,9 @@ const BlockDetailsInfoBox = () => {
         fetchBlockTxns(height),
       ])
       const splitTxns = splitTransactionsByTypes(txns)
-      history.push(`/blocks/${height}/${splitTxns[0].type}`)
+      if (splitTxns.length > 0)
+        history.push(`/blocks/${height}/${splitTxns[0].type}`)
       setBlock({ ...block, splitTxns, txns })
-
       setBlockLoading(false)
     }
     getBlockDetails(height)
@@ -46,58 +47,83 @@ const BlockDetailsInfoBox = () => {
     <InfoBox title={title}>
       {!blockLoading ? (
         <>
-          <TransactionTypesWidget txns={block.txns} />
-          <TabNavbar
-            centered={false}
-            customStyles
-            classes="w-full border-b border-gray-400 border-solid mt-0 px-2 md:px-4 flex overflow-x-scroll no-scrollbar"
-          >
-            {block.splitTxns.map((type) => {
-              return (
-                <TabPane
-                  title={
-                    <div className="">
-                      <p
-                        style={{ color: getTxnTypeColor(type.type) }}
-                        className={'mb-0 text-xl'}
+          <div className="flex flex-col items-start font-sans text-gray-800 p-5 pb-2">
+            <span className="flex items-center justify-start">
+              <img src="/images/clock.svg" className="w-4 h-auto" />
+              <Timestamp
+                date={block.time}
+                className="tracking-tight text-gray-525 text-sm font-sans ml-2"
+              />
+            </span>
+            <span className="flex flex-row items-center justify-start mt-2">
+              <img src="/images/txn.svg" className="w-4 h-auto" />
+              <p className="tracking-tight text-gray-525 text-sm font-sans m-0 ml-2">
+                {block.transactionCount} transactions
+              </p>
+            </span>
+          </div>
+          {block.txns?.length > 0 ? (
+            <>
+              <TransactionTypesWidget txns={block.txns} />
+              <TabNavbar
+                centered={false}
+                customStyles
+                classes="w-full border-b border-gray-400 border-solid mt-0 px-2 md:px-4 flex overflow-x-scroll no-scrollbar"
+              >
+                {block.splitTxns.map((type) => {
+                  return (
+                    <TabPane
+                      title={
+                        <div className="">
+                          <p
+                            style={{ color: getTxnTypeColor(type.type) }}
+                            className={'mb-0 text-xl'}
+                          >
+                            {type.txns.length}
+                          </p>
+                          <p
+                            className={classNames(
+                              'text-sm mb-0 whitespace-nowrap',
+                            )}
+                          >
+                            {getTxnTypeName(type.type)}
+                          </p>
+                        </div>
+                      }
+                      key={type.type}
+                      path={type.type}
+                      customStyles
+                      classes={'text-gray-600 hover:text-gray-800'}
+                      activeClasses={'border-b-3 border-solid'}
+                      activeStyles={{
+                        borderColor: getTxnTypeColor(type.type),
+                        color: 'black',
+                      }}
+                    >
+                      <div
+                        className={classNames(
+                          'grid grid-flow-row grid-cols-1 no-scrollbar',
+                          {
+                            'overflow-y-scroll': !blockLoading,
+                            'overflow-y-hidden': blockLoading,
+                          },
+                        )}
                       >
-                        {type.txns.length}
-                      </p>
-                      <p
-                        className={classNames('text-sm mb-0 whitespace-nowrap')}
-                      >
-                        {getTxnTypeName(type.type)}
-                      </p>
-                    </div>
-                  }
-                  key={type.type}
-                  path={type.type}
-                  customStyles
-                  classes={'text-gray-600 hover:text-gray-800'}
-                  activeClasses={'border-b-3 border-solid'}
-                  activeStyles={{
-                    borderColor: getTxnTypeColor(type.type),
-                    color: 'black',
-                  }}
-                >
-                  <div
-                    className={classNames(
-                      'grid grid-flow-row grid-cols-1 no-scrollbar',
-                      {
-                        'overflow-y-scroll': !blockLoading,
-                        'overflow-y-hidden': blockLoading,
-                      },
-                    )}
-                  >
-                    <TransactionList
-                      transactions={type.txns}
-                      isLoading={blockLoading}
-                    />
-                  </div>
-                </TabPane>
-              )
-            })}
-          </TabNavbar>
+                        <TransactionList
+                          transactions={type.txns}
+                          isLoading={blockLoading}
+                        />
+                      </div>
+                    </TabPane>
+                  )
+                })}
+              </TabNavbar>
+            </>
+          ) : (
+            <div className="py-10 px-3 flex items-center justify-center">
+              <p className="font-sans text-gray-600 text-lg">No transactions</p>
+            </div>
+          )}
         </>
       ) : (
         <SkeletonList />

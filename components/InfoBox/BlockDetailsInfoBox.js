@@ -12,9 +12,12 @@ import TransactionList from '../Lists/TransactionList'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import classNames from 'classnames'
 import TransactionTypesWidget from '../Widgets/TransactionTypesWidget'
+import SkeletonList from '../Lists/SkeletonList'
+import { useHistory } from 'react-router-dom'
 
 const BlockDetailsInfoBox = () => {
   const { block: height } = useParams()
+  const history = useHistory()
 
   const [block, setBlock] = useState({})
   const [blockLoading, setBlockLoading] = useState(true)
@@ -26,8 +29,10 @@ const BlockDetailsInfoBox = () => {
         fetchBlock(height),
         fetchBlockTxns(height),
       ])
+      const splitTxns = splitTransactionsByTypes(txns)
+      history.push(`/blocks/${height}/${splitTxns[0].type}`)
+      setBlock({ ...block, splitTxns, txns })
 
-      setBlock({ ...block, splitTxns: splitTransactionsByTypes(txns), txns })
       setBlockLoading(false)
     }
     getBlockDetails(height)
@@ -39,7 +44,7 @@ const BlockDetailsInfoBox = () => {
 
   return (
     <InfoBox title={title}>
-      {!blockLoading && (
+      {!blockLoading ? (
         <>
           <TransactionTypesWidget txns={block.txns} />
           <TabNavbar
@@ -94,6 +99,8 @@ const BlockDetailsInfoBox = () => {
             })}
           </TabNavbar>
         </>
+      ) : (
+        <SkeletonList />
       )}
     </InfoBox>
   )

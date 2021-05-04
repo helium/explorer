@@ -12,29 +12,39 @@ import { castArray } from 'lodash'
 
 const NavItem = ({
   title,
+  customStyles = false,
+  classes,
   activeClasses,
-  customBorder,
+  activeStyles,
   active = false,
   href,
-}) => (
-  <Link
-    to={href}
-    className={classNames(
-      'mx-2 py-3 inline-block font-medium text-base cursor-pointer',
-      'hover:text-navy-400',
-      active ? activeClasses : '',
-      {
-        'text-gray-600': !active,
-        'text-navy-400 border-navy-400 border-b-3 border-solid':
-          active && !customBorder,
-      },
-    )}
-  >
-    {title}
-  </Link>
-)
+}) => {
+  return (
+    <Link
+      to={href}
+      className={classNames(
+        classes,
+        active ? activeClasses : '',
+        'mx-2 py-3 inline-block font-medium text-base cursor-pointer',
+        {
+          'text-gray-600 hover:text-navy-400': !active && !customStyles,
+          'text-navy-400 border-navy-400 border-b-3 border-solid':
+            active && !customStyles,
+        },
+      )}
+      style={active ? activeStyles : {}}
+    >
+      {title}
+    </Link>
+  )
+}
 
-const TabNavbar = ({ children }) => {
+const TabNavbar = ({
+  centered = true,
+  customStyles = false,
+  classes,
+  children,
+}) => {
   const { path, url } = useRouteMatch()
   const location = useLocation()
 
@@ -45,8 +55,10 @@ const TabNavbar = ({ children }) => {
           key: c.key,
           title: c.props.title,
           path: c.props.path,
+          classes: c.props.classes,
           activeClasses: c.props.activeClasses,
-          customBorder: c.props.customBorder,
+          activeStyles: c.props.activeStyles,
+          customStyles: c.props.customStyles,
         }
     })
   }, [children])
@@ -69,13 +81,21 @@ const TabNavbar = ({ children }) => {
   return (
     <>
       <div className="w-full bg-white z-10 rounded-t-xl">
-        <div className="border-b border-gray-400 border-solid mt-2 px-2 md:px-8 flex justify-center overflow-x-scroll no-scrollbar">
+        <div
+          className={classNames(classes, {
+            'w-full border-b border-gray-400 border-solid mt-2 px-2 md:px-8 flex overflow-x-scroll no-scrollbar': !customStyles,
+            'justify-center': centered,
+            'justify-start': !centered,
+          })}
+        >
           {navItems.map((item) => (
             <NavItem
               key={item.key}
               title={item.title}
+              classes={item.classes}
               activeClasses={item.activeClasses}
-              customerBorder={item.customBorder}
+              activeStyles={item.activeStyles}
+              customStyles={item.customStyles}
               active={navMatch(item.path)}
               href={item.path ? `${url}/${item.path}` : url}
             />

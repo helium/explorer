@@ -2,16 +2,16 @@ import InfoBox from './InfoBox'
 import { useAsync } from 'react-async-hooks'
 import { useState, useMemo } from 'react'
 import { useParams } from 'react-router'
-import Timestamp from 'react-timestamp'
-import Image from 'next/image'
+import { fetchBlock, fetchBlockTxns } from '../../data/blocks'
 import {
-  fetchBlock,
-  fetchBlockTxns,
+  getTxnTypeName,
+  getTxnTypeColor,
   splitTransactionsByTypes,
-} from '../../data/blocks'
+} from '../../utils/txns'
 import TransactionList from '../Lists/TransactionList'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import classNames from 'classnames'
+import TransactionTypesWidget from '../Widgets/TransactionTypesWidget'
 
 const BlockDetailsInfoBox = () => {
   const { block: height } = useParams()
@@ -27,7 +27,7 @@ const BlockDetailsInfoBox = () => {
         fetchBlockTxns(height),
       ])
 
-      setBlock({ ...block, txns: splitTransactionsByTypes(txns) })
+      setBlock({ ...block, splitTxns: splitTransactionsByTypes(txns), txns })
       setBlockLoading(false)
     }
     getBlockDetails(height)
@@ -40,55 +40,60 @@ const BlockDetailsInfoBox = () => {
   return (
     <InfoBox title={title}>
       {!blockLoading && (
-        <TabNavbar>
-          {block.txns.map((type) => {
-            return (
-              <TabPane
-                title={
-                  <div className="">
-                    <p
-                      className={
-                        // TODO: tidy up into util function
-                        classNames({
-                          'text-navy-400': type.type === 'poc_receipts_v1',
-                          'text-green-400': type.type === 'poc_request_v1',
-                          'text-gray-600': type.type === 'payment_v2',
-                        })
-                      }
-                    >
-                      {type.txns.length}
-                    </p>
-                    <p
-                      className={classNames('text-gray-600 text-sm', {
-                        'hover:text-navy-400': type.type === 'poc_receipts_v1',
-                        'hover:text-green-400': type.type === 'poc_request_v1',
-                        'hover:text-gray-600': type.type === 'payment_v2',
-                      })}
-                    >
-                      {type.type}
-                    </p>
+        <>
+          <TransactionTypesWidget txns={block.txns} />
+          <TabNavbar
+            centered={false}
+            customStyles
+            classes="w-full border-b border-gray-400 border-solid mt-0 px-2 md:px-4 flex overflow-x-scroll no-scrollbar"
+          >
+            {block.splitTxns.map((type) => {
+              return (
+                <TabPane
+                  title={
+                    <div className="">
+                      <p
+                        style={{ color: getTxnTypeColor(type.type) }}
+                        className={'mb-0 text-xl'}
+                      >
+                        {type.txns.length}
+                      </p>
+                      <p
+                        className={classNames('text-sm mb-0 whitespace-nowrap')}
+                      >
+                        {getTxnTypeName(type.type)}
+                      </p>
+                    </div>
+                  }
+                  key={type.type}
+                  path={type.type}
+                  customStyles
+                  classes={'text-gray-600 hover:text-gray-800'}
+                  activeClasses={'border-b-3 border-solid'}
+                  activeStyles={{
+                    borderColor: getTxnTypeColor(type.type),
+                    color: 'black',
+                  }}
+                >
+                  <div
+                    className={classNames(
+                      'grid grid-flow-row grid-cols-1 no-scrollbar',
+                      {
+                        'overflow-y-scroll': !blockLoading,
+                        'overflow-y-hidden': blockLoading,
+                      },
+                    )}
+                  >
+                    <TransactionList
+                      transactions={type.txns}
+                      isLoading={blockLoading}
+                    />
                   </div>
-                }
-                key={type.type}
-                customBorder
-                path={type.type}
-                activeClasses={classNames(
-                  'text-black border-b-3 border-solid',
-                  {
-                    'border-navy-400': type.type === 'poc_receipts_v1',
-                    'border-green-400': type.type === 'poc_request_v1',
-                    'border-gray-600': type.type === 'payment_v2',
-                  },
-                )}
-              >
-                <TransactionList
-                  transactions={type.txns}
-                  isLoading={blockLoading}
-                />
-              </TabPane>
-            )
-          })}
-        </TabNavbar>
+                </TabPane>
+              )
+            })}
+          </TabNavbar>
+        </>
       )}
     </InfoBox>
   )

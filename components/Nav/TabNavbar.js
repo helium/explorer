@@ -4,7 +4,6 @@ import {
   Switch,
   Route,
   useRouteMatch,
-  useHistory,
   Link,
   useLocation,
 } from 'react-router-dom'
@@ -47,7 +46,6 @@ const TabNavbar = ({
   children,
 }) => {
   const { path, url } = useRouteMatch()
-  const history = useHistory()
   const location = useLocation()
 
   const navItems = useMemo(() => {
@@ -89,10 +87,7 @@ const TabNavbar = ({
             'justify-start': !centered,
           })}
         >
-          {navItems.map((item, i) => {
-            // if (i === 0) {
-            //   history.push(item.path ? `${url}/${item.path}` : url)
-            // }
+          {navItems.map((item) => {
             return (
               <NavItem
                 key={item.key}

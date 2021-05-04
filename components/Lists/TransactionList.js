@@ -43,13 +43,17 @@ const TransactionList = ({
         return (
           <span className="flex items-center">
             <img src="/images/poc_receipt_icon.svg" className="h-3 w-auto" />
-            <span className="ml-1">{animalHash(txn.challenger)}</span>
-            <span className="ml-3">
+            <span className="ml-1.5 whitespace-nowrap text-sm font-sans">
+              {animalHash(txn.challenger)}
+            </span>
+            <span className="ml-3 flex flex-row items-center justify-start">
               <img
                 src="/images/witness-yellow-mini.svg"
                 className="h-3 w-auto"
               />
-              <span className="ml-1">{txn.path[0].witnesses.length}</span>
+              <span className="ml-1.5 text-sm font-sans">
+                {txn.path[0].witnesses.length}
+              </span>
             </span>
           </span>
         )

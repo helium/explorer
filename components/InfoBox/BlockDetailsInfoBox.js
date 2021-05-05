@@ -54,7 +54,6 @@ const BlockDetailsInfoBox = () => {
               <TransactionTypesWidget txns={block.txns} />
               <TabNavbar
                 centered={false}
-                customStyles
                 classes="w-full border-b border-gray-400 border-solid mt-0 px-2 md:px-4 flex overflow-x-scroll no-scrollbar"
               >
                 {block.splitTxns.map((type) => {

@@ -39,12 +39,7 @@ const NavItem = ({
   )
 }
 
-const TabNavbar = ({
-  centered = true,
-  customStyles = false,
-  classes,
-  children,
-}) => {
+const TabNavbar = ({ centered = true, classes, children }) => {
   const { path, url } = useRouteMatch()
   const location = useLocation()
 
@@ -82,7 +77,7 @@ const TabNavbar = ({
       <div className="w-full bg-white z-10 rounded-t-xl">
         <div
           className={classNames(classes, {
-            'w-full border-b border-gray-400 border-solid mt-2 px-2 md:px-8 flex overflow-x-scroll no-scrollbar': !customStyles,
+            'w-full border-b border-gray-400 border-solid mt-2 px-2 md:px-8 flex overflow-x-scroll no-scrollbar': !classes,
             'justify-center': centered,
             'justify-start': !centered,
           })}

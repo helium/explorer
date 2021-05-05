@@ -64,7 +64,6 @@ const BlocksList = ({
       fetchMore={fetchMore}
       isLoadingMore={isLoadingMore}
       hasMore={hasMore}
-      noPadding
     />
   )
 }

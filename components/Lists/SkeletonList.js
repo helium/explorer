@@ -3,9 +3,9 @@ import { times } from 'lodash'
 import Skeleton from '../Common/Skeleton'
 import classNames from 'classnames'
 
-const SkeletonList = () => {
+const SkeletonList = ({ padding }) => {
   return (
-    <div className="w-full grid grid-cols-1 p-3">
+    <div className={classNames('w-full grid grid-cols-1', { 'p-3': padding })}>
       {times(10).map((_i, i, { length }) => (
         <div
           key={i}

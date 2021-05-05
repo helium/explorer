@@ -15,7 +15,7 @@ const BaseList = ({
   renderSubtitle,
   renderDetails,
   blankTitle,
-  noPadding,
+  padding,
   fetchMore,
   isLoadingMore,
   hasMore,
@@ -56,7 +56,7 @@ const BaseList = ({
   return (
     <div
       className={classNames('w-full grid grid-cols-1', {
-        'p-3': !noPadding,
+        'p-3': padding,
       })}
     >
       {items.map((item, i, { length }) => (

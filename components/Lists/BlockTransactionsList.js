@@ -46,7 +46,6 @@ const BlockTransactionsList = ({
       fetchMore={fetchMore}
       isLoadingMore={isLoadingMore}
       hasMore={hasMore}
-      noPadding
     />
   )
 }

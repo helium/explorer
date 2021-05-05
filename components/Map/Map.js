@@ -76,7 +76,9 @@ const CoverageMap = ({ coverageUrl }) => {
   }, [currentPosition.coords, currentPosition.timestamp])
 
   useEffect(() => {
-    if (!selectedHotspot) return
+    if (!selectedHotspot || !selectedHotspot.lat || !selectedHotspot.lng) {
+      return
+    }
 
     const selectionBounds = findBounds([
       ...(selectedHotspot.witnesses || []).map(({ lat, lng }) => ({

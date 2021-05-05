@@ -60,7 +60,6 @@ const NearbyHotspotsList = ({ hotspots, isLoading = true }) => {
       renderSubtitle={renderSubtitle}
       renderDetails={renderDetails}
       blankTitle="No nearby Hotspots"
-      noPadding
     />
   )
 }

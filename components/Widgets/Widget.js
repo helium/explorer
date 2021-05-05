@@ -17,9 +17,9 @@ const Widget = ({
   const inner = (
     <div
       className={classNames(
-        `bg-gray-200 p-3 rounded-lg col-span-${span} flex`,
+        `bg-gray-200 p-3 rounded-lg col-span-${span} flex transition-all`,
         {
-          'cursor-pointer': !!onClick,
+          'cursor-pointer hover:bg-gray-300': !!onClick,
         },
       )}
       onClick={onClick}

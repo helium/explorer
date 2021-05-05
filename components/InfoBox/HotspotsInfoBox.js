@@ -14,6 +14,9 @@ const HotspotsInfoBox = () => {
         <TabPane title="Latest Hotspots" key="latest" path="latest">
           <LatestHotspotsPane />
         </TabPane>
+        <TabPane title="All Hotspots" key="all" path="all">
+        <LatestHotspotsPane />
+        </TabPane>
       </TabNavbar>
     </InfoBox>
   )

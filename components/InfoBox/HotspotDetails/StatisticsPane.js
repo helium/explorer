@@ -37,7 +37,6 @@ const StatisticsPane = ({ hotspot }) => {
         dataKey="avg"
         changeType="percent"
       />
-      <div className="col-span-2 pb-1" />
     </div>
   )
 }

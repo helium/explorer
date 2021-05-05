@@ -37,7 +37,6 @@ const OverviewInfoBox = () => {
               series={stats?.countriesCount}
               isLoading={!stats}
             />
-            <div className="col-span-2 pb-1" />
           </div>
         </TabPane>
       </TabNavbar>

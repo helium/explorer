@@ -15,12 +15,12 @@ const withBlockHeight = (WrappedComponent) => {
     }
 
     loadBlockHeight = async () => {
-      await fetch('https://api.helium.io/v1/blocks/height')
-        .then((res) => res.json())
-        .then((res) =>
-          this.setState({ height: res.data.height, heightLoading: false }),
-        )
-        .catch((error) => console.log(error))
+      try {
+        const blockHeight = await this.client.blocks.getHeight()
+        this.setState({ height: blockHeight, heightLoading: false })
+      } catch (err) {
+        console.log(err)
+      }
     }
 
     render() {
@@ -35,6 +35,7 @@ const withBlockHeight = (WrappedComponent) => {
       )
     }
   }
+
   return BlockHeight
 }
 

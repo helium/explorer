@@ -87,17 +87,23 @@ const TabNavbar = ({
             'justify-start': !centered,
           })}
         >
-          {navItems.map((item) => {
+          {navItems.map((item, i, { length }) => {
             return (
-              <NavItem
-                key={item.key}
-                title={item.title}
-                classes={item.classes}
-                activeClasses={item.activeClasses}
-                activeStyles={item.activeStyles}
-                active={navMatch(item.path)}
-                href={item.path ? `${url}/${item.path}` : url}
-              />
+              <>
+                <NavItem
+                  key={item.key}
+                  title={item.title}
+                  classes={item.classes}
+                  activeClasses={item.activeClasses}
+                  activeStyles={item.activeStyles}
+                  active={navMatch(item.path)}
+                  href={item.path ? `${url}/${item.path}` : url}
+                />
+                {i > 4 && i === length - 1 && (
+                  // if there are more than 4 nav items, add a spacer after the last item so the right side of the container has padding
+                  <div className="px-2 md:px-4"></div>
+                )}
+              </>
             )
           })}
         </div>

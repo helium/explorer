@@ -1,6 +1,5 @@
-import { useAsync } from 'react-async-hook'
 import { useParams } from 'react-router'
-import { fetchAccount } from '../../../data/accounts'
+import { useAccount } from '../../../data/accounts'
 import { TAKE_MAX } from '../../../data/client'
 import { useHotspots } from '../../../data/hotspots'
 import QrWidget from '../../Widgets/QrWidget'
@@ -8,7 +7,7 @@ import Widget from '../../Widgets/Widget'
 
 const OverviewPane = () => {
   const { address } = useParams()
-  const { loading, result: account } = useAsync(fetchAccount, [address])
+  const { account, isLoading } = useAccount(address)
   const { hotspots, isLoadingInitial: loadingHotspots } = useHotspots(
     'account',
     address,
@@ -19,7 +18,7 @@ const OverviewPane = () => {
     <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
       <Widget
         title="HNT Balance"
-        isLoading={loading}
+        isLoading={isLoading}
         span={2}
         value={maybeShowNone(
           account?.balance?.toString(2, { showTicker: false }),
@@ -28,7 +27,7 @@ const OverviewPane = () => {
       <Widget
         title="DC"
         titleIcon={<img src="/images/dc.svg" />}
-        isLoading={loading}
+        isLoading={isLoading}
         value={maybeShowNone(
           account?.dcBalance?.toString(0, { showTicker: false }),
         )}
@@ -36,7 +35,7 @@ const OverviewPane = () => {
       <Widget
         title="HST"
         titleIcon={<img src="/images/hst.svg" />}
-        isLoading={loading}
+        isLoading={isLoading}
         value={maybeShowNone(
           account?.secBalance?.toString(2, { showTicker: false }),
         )}
@@ -49,7 +48,7 @@ const OverviewPane = () => {
       />
       <Widget
         title="Staked HNT"
-        isLoading={loading}
+        isLoading={isLoading}
         value={maybeShowNone('0')}
       />
       <QrWidget address={address} />

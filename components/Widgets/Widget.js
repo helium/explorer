@@ -13,6 +13,7 @@ const Widget = ({
   span = 1,
   isLoading = false,
   linkTo,
+  titleIcon,
 }) => {
   const inner = (
     <div
@@ -25,7 +26,10 @@ const Widget = ({
       onClick={onClick}
     >
       <div className="w-full">
-        <div className="text-gray-600 text-sm">{title}</div>
+        <div className="flex items-center space-x-1">
+          {titleIcon}
+          <div className="text-gray-600 text-sm">{title}</div>
+        </div>
         <div className="flex items-center">
           {icon && <div className="mr-1.5 flex items-center">{icon}</div>}
           <div className="text-3xl font-medium text-black my-1.5 tracking-tight w-full">

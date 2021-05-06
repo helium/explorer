@@ -72,15 +72,25 @@ export const fetchWitnesses = async (address) => {
   return witnesses
 }
 
-export const useHotspots = (pageSize = 20) => {
+export const useHotspots = (context, address, pageSize = 20) => {
   const [list, setList] = useState()
   const [hotspots, setHotspots] = useState([])
   const [isLoadingInitial, setIsLoadingInitial] = useState(true)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [hasMore, setHasMore] = useState(true)
 
+  const makeList = () => {
+    if (!context || !address) {
+      return client.hotspots.list()
+    }
+
+    if (context === 'account') {
+      return client.account(address).hotspots.list()
+    }
+  }
+
   useAsync(async () => {
-    const newList = await client.hotspots.list()
+    const newList = await makeList()
     setList(newList)
   }, [])
 

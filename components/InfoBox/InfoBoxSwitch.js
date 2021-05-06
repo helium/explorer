@@ -7,6 +7,8 @@ import BlocksInfoBox from './BlocksInfoBox'
 import BlockDetailsInfoBox from './BlockDetailsInfoBox'
 import BeaconsInfoBox from './BeaconsInfoBox'
 import TxnDetailsInfoBox from './TxnDetailsInfoBox'
+import AccountsInfoBox from './AccountsInfoBox'
+import AccountDetailsInfoBox from './AccountDetailsInfoBox'
 
 const InfoBoxSwitch = () => {
   // Match locales with regular expression containing each locale separated by `|`
@@ -19,6 +21,12 @@ const InfoBoxSwitch = () => {
       </Route>
       <Route path={`${base}/hotspots`}>
         <HotspotsInfoBox />
+      </Route>
+      <Route path={`${base}/accounts/:address([a-zA-Z0-9]{40,})`}>
+        <AccountDetailsInfoBox />
+      </Route>
+      <Route path={`${base}/accounts`}>
+        <AccountsInfoBox />
       </Route>
       <Route path={`${base}/validators`}>
         <ValidatorsInfoBox />

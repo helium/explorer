@@ -1,7 +1,9 @@
 import React from 'react'
 import { Tooltip } from 'antd'
+import { isInteger } from 'lodash'
 
 const AccountAddress = ({ address, truncate = false }) => {
+  const truncateAmount = isInteger(truncate) ? truncate : 10
   return (
     <Tooltip title={address}>
       <span
@@ -11,7 +13,11 @@ const AccountAddress = ({ address, truncate = false }) => {
             "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;'",
         }}
       >
-        {truncate ? `${address.slice(0, 10)}...${address.slice(-10)}` : address}
+        {truncate
+          ? `${address.slice(0, truncateAmount)}...${address.slice(
+              -truncateAmount,
+            )}`
+          : address}
       </span>
     </Tooltip>
   )

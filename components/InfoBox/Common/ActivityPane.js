@@ -1,23 +1,23 @@
 import classNames from 'classnames'
 import debounce from 'lodash.debounce'
 import { useEffect, useRef, useState, memo, useCallback } from 'react'
-import { useHotspotActivity } from '../../../data/activity'
+import { useActivity } from '../../../data/activity'
 import ActivityList from '../../Lists/ActivityList'
 import PillNavbar from '../../Nav/PillNavbar'
 
 const filters = {
+  'All Activity': [],
   Rewards: ['rewards_v1', 'rewards_v2'],
   Beacons: ['poc_receipts_v1'],
   Data: ['state_channel_close_v1'],
   Consensus: ['consensus_group_v1'],
-  'All Activity': [],
 }
 
-const ActivityPane = ({ hotspot }) => {
+const ActivityPane = ({ context, address }) => {
   const scrollView = useRef()
   const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
-  const [filter, setFilter] = useState('Rewards')
+  const [filter, setFilter] = useState('All Activity')
 
   const {
     transactions,
@@ -25,7 +25,7 @@ const ActivityPane = ({ hotspot }) => {
     isLoadingInitial,
     isLoadingMore,
     hasMore,
-  } = useHotspotActivity(hotspot.address, filters[filter])
+  } = useActivity(context, address, filters[filter])
 
   const setVisibility = useCallback(
     debounce(

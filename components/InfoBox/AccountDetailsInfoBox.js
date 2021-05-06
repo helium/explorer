@@ -23,10 +23,6 @@ const AccountDetailsInfoBox = () => {
         <TabPane title="Hotspots" key="hotspots" path="hotspots">
           <HotspotsPane address={address} />
         </TabPane>
-
-        {/* <TabPane title="Validators" key="validators" path="validators">
-          <OverviewPane />
-        </TabPane> */}
       </TabNavbar>
     </InfoBox>
   )

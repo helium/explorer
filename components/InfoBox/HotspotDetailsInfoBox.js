@@ -5,7 +5,7 @@ import { useParams } from 'react-router'
 import InfoBox from './InfoBox'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import StatisticsPane from './HotspotDetails/StatisticsPane'
-import ActivityPane from './HotspotDetails/ActivityPane'
+import ActivityPane from './Common/ActivityPane'
 import WitnessesPane from './HotspotDetails/WitnessesPane'
 import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
@@ -48,7 +48,7 @@ const HotspotDetailsInfoBox = ({ address }) => {
         </TabPane>
 
         <TabPane title="Activity" path="activity" key="activity">
-          <ActivityPane hotspot={hotspot} />
+          <ActivityPane context="hotspot" address={hotspot?.address} />
         </TabPane>
 
         <TabPane title="Witnesses" path="witnesses" key="witnesses">

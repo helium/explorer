@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useAsync } from 'react-async-hook'
 import client from './client'
 
-export const useHotspotActivity = (address, filters = [], pageSize = 20) => {
+export const useActivity = (context, address, filters = [], pageSize = 20) => {
   const [list, setList] = useState()
   const [transactions, setTransactions] = useState([])
   const [isLoadingInitial, setIsLoadingInitial] = useState(true)
@@ -10,9 +10,9 @@ export const useHotspotActivity = (address, filters = [], pageSize = 20) => {
   const [hasMore, setHasMore] = useState(true)
 
   useAsync(async () => {
-    const newList = await client
-      .hotspot(address)
-      .activity.list({ filterTypes: filters })
+    const clientContext =
+      context === 'hotspot' ? client.hotspot(address) : client.account(address)
+    const newList = await clientContext.activity.list({ filterTypes: filters })
     setList(newList)
   }, [address, filters])
 

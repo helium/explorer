@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import animalHash from 'angry-purple-tiger'
 import ConsensusIndicator from '../Validators/ConsensusIndicator'
 import ValidatorFlagLocation from '../Validators/ValidatorFlagLocation'
-import ValidatorStatusPill from '../Validators/ValidatorStatusPill'
+import ValidatorStatusDot from '../Validators/ValidatorStatusDot'
 import BaseList from './BaseList'
 
 const ValidatorsList = ({ validators, recentGroups }) => {
@@ -11,24 +11,33 @@ const ValidatorsList = ({ validators, recentGroups }) => {
   const linkExtractor = useCallback((v) => `/validators/${v.address}`, [])
 
   const renderTitle = useCallback((v) => {
-    return `${animalHash(v.address)} (#${v.number})`
+    return (
+      <div className="flex items-center space-x-1">
+        <ValidatorStatusDot status={v.status} />
+        <span>{`${animalHash(v.address)} (#${v.number})`}</span>
+      </div>
+    )
   }, [])
 
-  const renderSubtitle = useCallback(
+  const renderSubtitle = useCallback((v) => {
+    return (
+      <>
+        <ValidatorFlagLocation geo={v.geo} />
+        <div className="flex items-center space-x-1">
+          <img src="/images/hnt.svg" className="w-3" /> <span>0 HNT</span>
+        </div>
+      </>
+    )
+  }, [])
+
+  const renderDetails = useCallback(
     (v) => {
       return (
-        <>
-          <ValidatorFlagLocation geo={v.geo} />
-          <ConsensusIndicator address={v.address} recentGroups={recentGroups} />
-        </>
+        <ConsensusIndicator address={v.address} recentGroups={recentGroups} />
       )
     },
     [recentGroups],
   )
-
-  const renderDetails = useCallback((v) => {
-    return <ValidatorStatusPill status={v.status} />
-  }, [])
 
   return (
     <BaseList

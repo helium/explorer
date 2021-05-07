@@ -5,11 +5,26 @@ import { useRouteMatch } from 'react-router-dom'
 import { startCase } from 'lodash'
 import classNames from 'classnames'
 
-const InfoBox = ({ title, children }) => {
+const InfoBox = ({ title, children, breadcrumbs }) => {
   const { showInfoBox, toggleInfoBox } = useInfoBox()
 
-  const { url } = useRouteMatch()
-  const breadcrumbs = url.split('/')
+  const deriveBreadcrumbsFromUrl = () => {
+    const { url } = useRouteMatch()
+    const urlSections = url.split('/')
+    const derivedBreadcrumbs = []
+
+    urlSections.map((b, i) => {
+      if (i !== 0)
+        derivedBreadcrumbs.push({ title: startCase(b), path: `/${b}` })
+    })
+    return derivedBreadcrumbs
+  }
+
+  const breadcrumbsToDisplay = breadcrumbs
+    ? breadcrumbs
+    : deriveBreadcrumbsFromUrl()
+
+  console.log(breadcrumbsToDisplay)
 
   return (
     <div
@@ -29,16 +44,16 @@ const InfoBox = ({ title, children }) => {
       <div className="w-full flex flex-col items-end justify-end md:justify-start">
         <div className="flex justify-between w-full p-4 md:px-0">
           <div className="flex flex-col items-start justify-start">
-            {breadcrumbs &&
-              breadcrumbs.map((b, i, { length }) => {
-                if (b && i < length - 1)
+            {breadcrumbsToDisplay &&
+              breadcrumbsToDisplay.map((b, i, { length }) => {
+                if (i < length - 1)
                   return (
                     <span className="flex flex-row items-center justify-start pb-1">
                       <Link
                         className="text-gray-600 font-sans font-semibold"
-                        to={`/${b}`}
+                        to={b?.path}
                       >
-                        {startCase(b)}
+                        {b?.title}
                       </Link>
                       <p className="text-gray-700 mx-2 my-0 font-black text-md font-sans">
                         /

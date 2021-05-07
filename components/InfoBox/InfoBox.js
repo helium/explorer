@@ -24,8 +24,6 @@ const InfoBox = ({ title, children, breadcrumbs }) => {
     ? breadcrumbs
     : deriveBreadcrumbsFromUrl()
 
-  console.log(breadcrumbsToDisplay)
-
   return (
     <div
       className={classNames(

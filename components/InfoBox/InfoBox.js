@@ -13,8 +13,8 @@ const InfoBox = ({ title, children, breadcrumbs }) => {
     const urlSections = url.split('/')
     const derivedBreadcrumbs = []
 
-    urlSections.map((b, i) => {
-      if (i !== 0)
+    urlSections.map((b, i, { length }) => {
+      if (i !== 0 && i < length - 1)
         derivedBreadcrumbs.push({ title: startCase(b), path: `/${b}` })
     })
     return derivedBreadcrumbs
@@ -43,21 +43,21 @@ const InfoBox = ({ title, children, breadcrumbs }) => {
         <div className="flex justify-between w-full p-4 md:px-0">
           <div className="flex flex-col items-start justify-start">
             {breadcrumbsToDisplay &&
-              breadcrumbsToDisplay.map((b, i, { length }) => {
-                if (i < length - 1)
-                  return (
-                    <span className="flex flex-row items-center justify-start pb-1">
-                      <Link
-                        className="text-gray-600 font-sans font-semibold"
-                        to={b?.path}
-                      >
-                        {b?.title}
-                      </Link>
-                      <p className="text-gray-700 mx-2 my-0 font-black text-md font-sans">
-                        /
-                      </p>
-                    </span>
-                  )
+              breadcrumbsToDisplay.length > 0 &&
+              breadcrumbsToDisplay.map((b) => {
+                return (
+                  <span className="flex flex-row items-center justify-start pb-1">
+                    <Link
+                      className="text-gray-600 font-sans font-semibold"
+                      to={b.path}
+                    >
+                      {b.title}
+                    </Link>
+                    <p className="text-gray-700 mx-2 my-0 font-black text-md font-sans">
+                      /
+                    </p>
+                  </span>
+                )
               })}
             <span className="text-white text-3xl font-semibold font-sans tracking-tight">
               {title}

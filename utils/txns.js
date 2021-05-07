@@ -102,3 +102,8 @@ export const splitTransactionsByTypes = (txns) => {
     .sort((a, b) => b.txns.length - a.txns.length)
   return arr
 }
+
+export const formattedTxnHash = (hash) => {
+  // TODO add optional truncation amount
+  return `${hash.slice(0, 5)}...${hash.slice(-5)}`
+}

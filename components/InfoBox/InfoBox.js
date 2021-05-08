@@ -14,6 +14,7 @@ const InfoBox = ({ title, children, breadcrumbs }) => {
     const derivedBreadcrumbs = []
 
     urlSections.map((b, i, { length }) => {
+      // skip first and last (first is empty because it's the root, last is current page)
       if (i !== 0 && i < length - 1)
         derivedBreadcrumbs.push({ title: startCase(b), path: `/${b}` })
     })

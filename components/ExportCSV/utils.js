@@ -130,12 +130,12 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
       }
     }
     case 'add_gateway_v1': {
-      const paidByUser = txn.owner === txn.payer
+      const paidByHotspotOwner = txn.owner === txn.payer
       // the above logic check could also be done by using:
       // !(await isMakerAddress(txn.payer))
       // but this seems more efficient for now
       return {
-        'Sent Quantity': paidByUser
+        'Sent Quantity': paidByHotspotOwner
           ? await getFee(
               {
                 height: txn.height,
@@ -144,18 +144,18 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
               opts.convertFee,
             )
           : 0,
-        'Sent To': paidByUser ? 'Helium Network' : '',
+        'Sent To': paidByHotspotOwner ? 'Helium Network' : '',
         'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
         Tag: `add gateway payment (paid by ${
-          paidByUser ? 'user' : await getMakerName(txn.payer)
+          paidByHotspotOwner ? 'Hotspot owner' : await getMakerName(txn.payer)
         })`,
-        feePaid: paidByUser,
+        feePaid: paidByHotspotOwner,
       }
     }
     case 'assert_location_v1': {
-      const paidByUser = txn.owner === txn.payer
+      const paidByHotspotOwner = txn.owner === txn.payer
       return {
-        'Sent Quantity': paidByUser
+        'Sent Quantity': paidByHotspotOwner
           ? await getFee(
               {
                 height: txn.height,
@@ -164,18 +164,18 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
               opts.convertFee,
             )
           : 0,
-        'Sent To': paidByUser ? 'Helium Network' : '',
+        'Sent To': paidByHotspotOwner ? 'Helium Network' : '',
         'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
         Tag: `assert location payment (paid by ${
-          paidByUser ? 'user' : await getMakerName(txn.payer)
+          paidByHotspotOwner ? 'Hotspot owner' : await getMakerName(txn.payer)
         })`,
-        feePaid: paidByUser,
+        feePaid: paidByHotspotOwner,
       }
     }
     case 'assert_location_v2': {
-      const paidByUser = txn.owner === txn.payer
+      const paidByHotspotOwner = txn.owner === txn.payer
       return {
-        'Sent Quantity': paidByUser
+        'Sent Quantity': paidByHotspotOwner
           ? await getFee(
               {
                 height: txn.height,
@@ -184,12 +184,12 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
               opts.convertFee,
             )
           : 0,
-        'Sent To': paidByUser ? 'Helium Network' : '',
+        'Sent To': paidByHotspotOwner ? 'Helium Network' : '',
         'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
         Tag: `assert location payment (paid by ${
-          paidByUser ? 'user' : await getMakerName(txn.payer)
+          paidByHotspotOwner ? 'Hotspot owner' : await getMakerName(txn.payer)
         })`,
-        feePaid: paidByUser,
+        feePaid: paidByHotspotOwner,
       }
     }
     default: {

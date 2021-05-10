@@ -111,7 +111,6 @@ class ExportModal extends React.Component {
     const csvExporter = new ExportToCsv(options)
 
     if (data.length) {
-      console.log(data)
       csvExporter.generateCsv(data)
     } else {
       notification.info({

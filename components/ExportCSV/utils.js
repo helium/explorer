@@ -2,6 +2,7 @@ import animalHash from 'angry-purple-tiger'
 import Client from '@helium/http'
 import { Balance, CurrencyType } from '@helium/currency'
 import { fromUnixTime } from 'date-fns'
+import { getMakerName } from '../../components/Makers/utils'
 
 const getFee = async ({ height, fee }, convertFee) => {
   if (!fee) {
@@ -129,43 +130,66 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
       }
     }
     case 'add_gateway_v1': {
+      const paidByUser = txn.owner === txn.payer
+      // the above logic check could also be done by using:
+      // !(await isMakerAddress(txn.payer))
+      // but this seems more efficient for now
       return {
-        'Sent Quantity':
-          txn.payer === null
-            ? await getFee(
-                {
-                  height: txn.height,
-                  fee: {
-                    integerBalance: txn.stakingFee,
-                  },
-                },
-                opts.convertFee,
-              )
-            : 0,
-        'Sent To': txn.payer === null ? 'Helium Network' : '',
+        'Sent Quantity': paidByUser
+          ? await getFee(
+              {
+                height: txn.height,
+                fee: txn.stakingFee,
+              },
+              opts.convertFee,
+            )
+          : 0,
+        'Sent To': paidByUser ? 'Helium Network' : '',
         'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
-        Tag: 'add gateway payment',
-        feePaid: txn.payer === null,
+        Tag: `add gateway payment (paid by ${
+          paidByUser ? 'user' : await getMakerName(txn.payer)
+        })`,
+        feePaid: paidByUser,
       }
     }
     case 'assert_location_v1': {
+      const paidByUser = txn.owner === txn.payer
       return {
-        'Sent Quantity':
-          txn.payer === null
-            ? await getFee(
-                {
-                  height: txn.height,
-                  fee: {
-                    integerBalance: txn.stakingFee,
-                  },
-                },
-                opts.convertFee,
-              )
-            : 0,
-        'Sent To': txn.payer === null ? 'Helium Network' : '',
+        'Sent Quantity': paidByUser
+          ? await getFee(
+              {
+                height: txn.height,
+                fee: txn.stakingFee,
+              },
+              opts.convertFee,
+            )
+          : 0,
+        'Sent To': paidByUser ? 'Helium Network' : '',
         'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
-        Tag: 'assert location payment',
-        feePaid: txn.payer === null,
+        Tag: `assert location payment (paid by ${
+          paidByUser ? 'user' : await getMakerName(txn.payer)
+        })`,
+        feePaid: paidByUser,
+      }
+    }
+    case 'assert_location_v2': {
+      const paidByUser = txn.owner === txn.payer
+      return {
+        'Sent Quantity': paidByUser
+          ? await getFee(
+              {
+                height: txn.height,
+                fee: txn.stakingFee,
+              },
+              opts.convertFee,
+            )
+          : 0,
+        'Sent To': paidByUser ? 'Helium Network' : '',
+        'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
+        Tag: `assert location payment (paid by ${
+          paidByUser ? 'user' : await getMakerName(txn.payer)
+        })`,
+        feePaid: paidByUser,
       }
     }
     default: {

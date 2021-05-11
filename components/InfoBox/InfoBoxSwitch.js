@@ -9,6 +9,7 @@ import BeaconsInfoBox from './BeaconsInfoBox'
 import TxnDetailsInfoBox from './TxnDetailsInfoBox'
 import AccountsInfoBox from './AccountsInfoBox'
 import AccountDetailsInfoBox from './AccountDetailsInfoBox'
+import ValidatorDetailsInfoBox from './ValidatorDetailsInfoBox'
 
 const InfoBoxSwitch = () => {
   // Match locales with regular expression containing each locale separated by `|`
@@ -27,6 +28,9 @@ const InfoBoxSwitch = () => {
       </Route>
       <Route path={`${base}/accounts`}>
         <AccountsInfoBox />
+      </Route>
+      <Route path={`${base}/validators/:address([a-zA-Z0-9]{40,})`}>
+        <ValidatorDetailsInfoBox />
       </Route>
       <Route path={`${base}/validators`}>
         <ValidatorsInfoBox />

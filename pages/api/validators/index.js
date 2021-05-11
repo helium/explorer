@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
-import { getCache } from '../../utils/cache'
-import { fetchAll } from '../../utils/pagination'
+import { getCache } from '../../../utils/cache'
+import { fetchAll } from '../../../utils/pagination'
 
 const asyncForEach = async (array, callback) => {
   for (let index = 0; index < array.length; index++) {

@@ -1,5 +1,4 @@
 import { useCallback } from 'react'
-import Image from 'next/image'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import SkeletonList from './SkeletonList'
 import classNames from 'classnames'
@@ -36,6 +35,7 @@ const BaseList = ({
 
   const handleSelectItem = useCallback(
     (item) => () => {
+      if (!onSelectItem) return
       onSelectItem(item)
     },
     [onSelectItem],

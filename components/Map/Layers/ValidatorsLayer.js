@@ -43,6 +43,8 @@ const ValidatorsLayer = ({
       return {
         ...defaultStyle(minZoom, maxZoom),
         'circle-opacity': ['case', ['get', 'elected'], 1, 0],
+        'circle-stroke-width': ['case', ['get', 'elected'], 2, 0],
+        'circle-stroke-color': '#fff',
         'circle-radius': {
           stops: [
             [minZoom, 8],

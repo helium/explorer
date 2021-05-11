@@ -41,15 +41,16 @@ const OverviewPane = () => {
         )}
       />
       <Widget
+        title="Staked HNT"
+        titleIcon={<img src="/images/validator.svg" />}
+        isLoading={isLoading}
+        value={maybeShowNone('0')}
+      />
+      <Widget
         title="Hotspots"
         isLoading={loadingHotspots}
         value={maybeShowNone(hotspots.length)}
         linkTo={`/accounts/${address}/hotspots`}
-      />
-      <Widget
-        title="Staked HNT"
-        isLoading={isLoading}
-        value={maybeShowNone('0')}
       />
       <QrWidget address={address} />
       <div className="col-span-2 pb-1" />

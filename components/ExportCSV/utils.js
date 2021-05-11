@@ -117,7 +117,8 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
           'Sent Quantity': amountToSellerObject.toString().slice(0, -4),
           'Sent To': txn.seller,
           'Sent Currency': 'HNT',
-          Tag: 'gateway transfer payment',
+          Tag: 'payment',
+          Note: 'gateway transfer payment',
           feePaid: true,
         }
       } else {
@@ -125,7 +126,8 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
           'Received Quantity': amountToSellerObject.toString().slice(0, -4),
           'Received From': txn.buyer,
           'Received Currency': 'HNT',
-          Tag: 'gateway transfer payment',
+          Tag: 'payment',
+          Note: 'gateway transfer payment',
         }
       }
     }
@@ -146,7 +148,8 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
           : 0,
         'Sent To': paidByHotspotOwner ? 'Helium Network' : '',
         'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
-        Tag: `add gateway payment (paid by ${
+        Tag: 'payment',
+        Note: `assert location payment (paid by ${
           paidByHotspotOwner ? 'Hotspot owner' : await getMakerName(txn.payer)
         })`,
         feePaid: paidByHotspotOwner,
@@ -166,7 +169,8 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
           : 0,
         'Sent To': paidByHotspotOwner ? 'Helium Network' : '',
         'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
-        Tag: `assert location payment (paid by ${
+        Tag: 'payment',
+        Note: `assert location payment (paid by ${
           paidByHotspotOwner ? 'Hotspot owner' : await getMakerName(txn.payer)
         })`,
         feePaid: paidByHotspotOwner,
@@ -186,7 +190,8 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
           : 0,
         'Sent To': paidByHotspotOwner ? 'Helium Network' : '',
         'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
-        Tag: `assert location payment (paid by ${
+        Tag: 'payment',
+        Note: `assert location payment (paid by ${
           paidByHotspotOwner ? 'Hotspot owner' : await getMakerName(txn.payer)
         })`,
         feePaid: paidByHotspotOwner,
@@ -220,6 +225,7 @@ export const parseTxn = async (
     'Fee Amount': feePaid ? await getFee(txn, opts.convertFee) : 0,
     'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
     Tag: '',
+    Note: '',
     Hotspot: txn.gateway ? animalHash(txn.gateway) : '',
     'Reward Type': '',
     Block: txn.height,

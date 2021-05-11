@@ -27,7 +27,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
         breadcrumbsToDisplay.length > 0 &&
         breadcrumbsToDisplay.map((b) => {
           return (
-            <span className="flex flex-row items-center justify-start pb-1">
+            <span className="pointer-events-auto flex flex-row items-center justify-start pb-1">
               <Link
                 className="text-gray-600 font-sans font-semibold"
                 to={b.path}

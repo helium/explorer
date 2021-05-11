@@ -20,10 +20,10 @@ const InfoBox = ({ title, children, breadcrumbs }) => {
       )}
       style={{
         // the max height of the infobox + the height of the title & breadcrumbs
-        height: 650 + 94,
+        height: 650 + 120,
       }}
     >
-      <div className="w-full flex flex-col items-end justify-end md:justify-start h-auto max-h-90p">
+      <div className="w-full flex flex-col items-end justify-end md:justify-start h-full max-h-90p">
         <div className="flex justify-between w-full p-4 md:px-0">
           <div className="flex flex-col items-start justify-start">
             <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -43,7 +43,7 @@ const InfoBox = ({ title, children, breadcrumbs }) => {
             />
           </div>
         </div>
-        <div className="bg-white pointer-events-auto rounded-t-xl md:rounded-xl w-full flex flex-col overflow-mask-fix h-auto max-h-6/10 sm:max-h-90p infoboxshadow">
+        <div className="bg-white pointer-events-auto rounded-t-xl md:rounded-xl w-full flex flex-col overflow-mask-fix h-6/10 md:h-auto max-h-6/10 sm:max-h-90p infoboxshadow">
           {children}
         </div>
       </div>

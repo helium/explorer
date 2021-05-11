@@ -88,6 +88,12 @@ module.exports = {
       translate: {
         '120p': '120%',
       },
+      maxHeight: {
+        'vh-minus-nav': 'calc(100vh - 100px)',
+        '6/10': '60vh',
+        '90p': '90%',
+        '650px': '650px',
+      },
     },
   },
   variants: {

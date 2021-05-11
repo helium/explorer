@@ -16,10 +16,6 @@ body {
   box-shadow: 0px 47px 27px -24px rgba(9, 10, 19, 0.8);
 }
 
-.max-h-650px {
-  max-height: 650px;
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

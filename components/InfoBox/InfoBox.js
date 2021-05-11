@@ -29,18 +29,20 @@ const InfoBox = ({ title, children, breadcrumbs }) => {
     <div
       className={classNames(
         'fixed left-0 md:left-10 z-20 bottom-0 md:top-0 md:m-auto w-full md:w-120 flex flex-col items-center justify-end md:justify-start transform-gpu transition-all duration-200 ease-in-out',
-        // TODO: revisit Tailwind JIT mode. this is doable and much more flexible with Tailwind JIT and the [] syntax for arbitrary values, but for some reason it was breaking all Tailwind styles with Hot Module Reloading. for now we can extend the themes to use more manual values
+        // so that on a shorter browser window, the infobox won't go above the navbar
+        'max-h-vh-minus-nav',
+        // TODO: revisit Tailwind JIT mode. this is doable and much more flexible with Tailwind JIT and the [] syntax for arbitrary values, but for some reason it was breaking all Tailwind styles with Hot Module Reloading. for now we can extend the themes to use more manual values:
         {
           'translate-y-120p md:-translate-x-full md:translate-y-0 opacity-25': !showInfoBox,
           'translate-y-0': showInfoBox,
         },
       )}
       style={{
-        // the max height of the infobox, plus the height of the title + breadcrumbs
+        // the max height of the infobox + the height of the title & breadcrumbs
         height: 650 + 94,
       }}
     >
-      <div className="w-full flex flex-col items-end justify-end md:justify-start">
+      <div className="w-full flex flex-col items-end justify-end md:justify-start h-auto max-h-90p">
         <div className="flex justify-between w-full p-4 md:px-0">
           <div className="flex flex-col items-start justify-start">
             {breadcrumbsToDisplay &&
@@ -76,7 +78,7 @@ const InfoBox = ({ title, children, breadcrumbs }) => {
             />
           </div>
         </div>
-        <div className="bg-white rounded-t-xl md:rounded-xl w-full flex flex-col overflow-mask-fix h-auto max-h-650px infoboxshadow">
+        <div className="bg-white rounded-t-xl md:rounded-xl w-full flex flex-col overflow-mask-fix h-auto max-h-6/10 sm:max-h-90p infoboxshadow">
           {children}
         </div>
       </div>

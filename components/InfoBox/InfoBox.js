@@ -9,7 +9,7 @@ const InfoBox = ({ title, children, breadcrumbs }) => {
   return (
     <div
       className={classNames(
-        'fixed left-0 md:left-10 z-20 bottom-0 md:top-0 md:m-auto w-full md:w-120 flex flex-col items-center justify-end md:justify-start transform-gpu transition-all duration-200 ease-in-out',
+        'pointer-events-none fixed left-0 md:left-10 z-20 bottom-0 md:top-0 md:m-auto w-full md:w-120 flex flex-col items-center justify-end md:justify-start transform-gpu transition-all duration-200 ease-in-out',
         // so that on a shorter browser window, the infobox won't go above the navbar
         'max-h-vh-minus-nav',
         // TODO: revisit Tailwind JIT mode. this is doable and much more flexible with Tailwind JIT and the [] syntax for arbitrary values, but for some reason it was breaking all Tailwind styles with Hot Module Reloading. for now we can extend the themes to use more manual values:
@@ -35,7 +35,7 @@ const InfoBox = ({ title, children, breadcrumbs }) => {
             <Image
               src="/images/circle-arrow.svg"
               className={classNames(
-                'md:transform md:rotate-90 cursor-pointer',
+                'pointer-events-auto md:transform md:rotate-90 cursor-pointer',
                 { 'md:-rotate-90': !showInfoBox },
               )}
               width={35}
@@ -43,7 +43,7 @@ const InfoBox = ({ title, children, breadcrumbs }) => {
             />
           </div>
         </div>
-        <div className="bg-white rounded-t-xl md:rounded-xl w-full flex flex-col overflow-mask-fix h-auto max-h-6/10 sm:max-h-90p infoboxshadow">
+        <div className="bg-white pointer-events-auto rounded-t-xl md:rounded-xl w-full flex flex-col overflow-mask-fix h-auto max-h-6/10 sm:max-h-90p infoboxshadow">
           {children}
         </div>
       </div>

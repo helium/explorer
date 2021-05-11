@@ -1,6 +1,7 @@
 import { Link } from 'react-router-i18n'
 import { useRouteMatch } from 'react-router-dom'
 import { startCase } from 'lodash'
+import { memo } from 'react'
 
 const deriveBreadcrumbsFromUrl = () => {
   const { url } = useRouteMatch()
@@ -43,4 +44,4 @@ const Breadcrumbs = ({ breadcrumbs }) => {
   )
 }
 
-export default Breadcrumbs
+export default memo(Breadcrumbs)

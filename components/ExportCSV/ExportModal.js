@@ -57,9 +57,9 @@ class ExportModal extends React.Component {
     if (txn.includes('payment')) filterTypes.push('payment_v1', 'payment_v2')
     if (txn.includes('reward')) filterTypes.push('rewards_v1', 'rewards_v2')
     if (txn.includes('transfer')) filterTypes.push('transfer_hotspot_v1')
-    if (txn.includes('assert')) filterTypes.push('assert_location_v1')
+    if (txn.includes('assert'))
+      filterTypes.push('assert_location_v1', 'assert_location_v2')
     if (txn.includes('add')) filterTypes.push('add_gateway_v1')
-
     let service = null
     let list
 

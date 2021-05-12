@@ -1,4 +1,5 @@
 module.exports = {
+  // mode: 'jit',
   corePlugins: {
     preflight: false,
   },
@@ -83,6 +84,18 @@ module.exports = {
       spacing: {
         '108': '27rem',
         '120': '30rem',
+      },
+      translate: {
+        '120p': '120%',
+      },
+      height: {
+        '6/10': '60vh',
+      },
+      maxHeight: {
+        'vh-minus-nav': 'calc(100vh - 100px)',
+        '6/10': '60vh',
+        '90p': '90%',
+        '650px': '650px',
       },
     },
   },

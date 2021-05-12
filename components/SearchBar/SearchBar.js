@@ -79,7 +79,8 @@ const SearchBar = () => {
           type="search"
           value={term}
           onChange={handleChange}
-          className="w-full pl-8 border-none outline-none"
+          className="w-full pl-8 border-none outline-none text-base font-sans"
+          placeholder="Search..."
         />
       </div>
       {results.length > 0 && (

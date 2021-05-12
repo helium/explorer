@@ -13,11 +13,7 @@ body {
   pointer-events: none;
 }
 .infoboxshadow {
-box-shadow: 0px 47px 27px -24px rgba(9, 10, 19, 0.8);
-}
-
-.max-h-650 {
-  max-height: 650px;
+  box-shadow: 0px 47px 27px -24px rgba(9, 10, 19, 0.8);
 }
 
 @media (prefers-reduced-motion: no-preference) {

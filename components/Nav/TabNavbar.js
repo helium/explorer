@@ -94,7 +94,7 @@ const TabNavbar = ({ centered = true, classes, children }) => {
                   active={navMatch(item.path)}
                   href={item.path ? `${url}/${item.path}` : url}
                 />
-                {i > 4 && i === length - 1 && (
+                {i > 3 && i === length - 1 && (
                   // if there are more than 4 nav items, add a spacer after the last item so the right side of the container has padding
                   <div className="px-2 md:px-4"></div>
                 )}

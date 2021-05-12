@@ -6,7 +6,7 @@ import useInfoBox from '../../hooks/useInfoBox'
 import useMapLayer from '../../hooks/useMapLayer'
 
 const MapControls = () => {
-  const { toggleInfoBox } = useInfoBox()
+  const { showInfoBox, toggleInfoBox } = useInfoBox()
   const { showMapLayers, toggleMapLayers } = useMapLayer()
   const {
     isLoading: isLoadingCurrentPosition,
@@ -21,8 +21,10 @@ const MapControls = () => {
   return (
     <div
       className={classNames(
-        'fixed right-0 bottom-0 p-4 md:p-8 grid grid-flow-row gap-3 transform-gpu transition-transform duration-300 ease-in-out',
+        'fixed right-0 bottom-0 p-4 md:p-8 grid-flow-row gap-3 transform-gpu transition-transform duration-300 ease-in-out',
         {
+          grid: !showInfoBox,
+          'hidden md:grid': showInfoBox,
           'translate-x-20': showMapLayers,
         },
       )}

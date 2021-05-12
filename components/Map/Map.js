@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef, useMemo, memo } from 'react'
 import { useMediaQuery } from 'react-responsive'
-import ReactMapboxGl from 'react-mapbox-gl'
+import ReactMapboxGl, { Source, Layer } from 'react-mapbox-gl'
 import { h3ToGeo } from 'h3-js'
 import { useAsync } from 'react-async-hook'
 import useSWR from 'swr'
@@ -175,6 +175,11 @@ const CoverageMap = ({ coverageUrl }) => {
     }
   }, [])
 
+  const VECTOR_SOURCE_OPTIONS = {
+    type: 'vector',
+    url: 'https://hotspot-tileserver-martin.herokuapp.com/public.h3_res8.json',
+  }
+
   return (
     <Mapbox
       style="mapbox://styles/petermain/cko1ewc0p0st918lecxa5c8go"
@@ -202,6 +207,18 @@ const CoverageMap = ({ coverageUrl }) => {
         validators={validators}
         minZoom={minZoom}
         maxZoom={maxZoom}
+      />
+      <Source id="hexes_source" tileJsonSource={VECTOR_SOURCE_OPTIONS} />
+      <Layer
+        sourceLayer="public.h3_res8"
+        sourceId="hexes_source"
+        id="public.h3_res8"
+        type="fill"
+        paint={{
+          'fill-color': '#faf409',
+          'fill-outline-color': '#1C1E3B',
+          'fill-opacity': 0.5,
+        }}
       />
     </Mapbox>
   )

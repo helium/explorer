@@ -1,19 +1,21 @@
 import classNames from 'classnames'
-import Image from 'next/image'
 import { useCallback } from 'react'
 import useMapLayer from '../../hooks/useMapLayer'
 
 const Layer = ({ title, onClick, active = false }) => (
-  <div className="flex flex-col items-center cursor-pointer" onClick={onClick}>
-    <div className="bg-gray-500 w-20 h-20 rounded-xl mb-1" />
+  <div
+    className="flex items-center justify-end space-x-2 cursor-pointer"
+    onClick={onClick}
+  >
     <span
       className={classNames('text-sm', {
         'text-navy-400 font-semibold': active,
-        'text-gray-800': !active,
+        'text-white': !active,
       })}
     >
       {title}
     </span>
+    <div className="bg-gray-700 w-10 h-10 rounded-full mb-1" />
   </div>
 )
 
@@ -40,22 +42,27 @@ const MapLayersBox = () => {
   return (
     <div
       className={classNames(
-        'fixed bottom-0 bg-white w-full p-4 z-10 transform-gpu transition-transform duration-300 ease-in-out',
+        'fixed bottom-0 right-6 p-4 z-10 transform-gpu transition-transform duration-300 ease-in-out',
         {
-          'translate-y-96': !showMapLayers,
+          'translate-y-120': !showMapLayers,
         },
       )}
     >
-      <div className="absolute flex justify-end w-full -top-14 left-0 px-4 md:px-0">
+      {/* <div className="absolute flex justify-end w-full -top-14 left-0 px-4 md:px-0">
         <div
           className="md:hidden transform rotate-180"
           onClick={toggleMapLayers}
         >
           <Image src="/images/circle-arrow.svg" width={35} height={35} />
         </div>
-      </div>
-      <div className="text-base font-medium mb-3">Map Layers</div>
-      <div className="grid grid-cols-3 gap-4 md:grid-flow-col md:auto-cols-fr">
+      </div> */}
+      <div className="flex flex-col space-y-2">
+        <div
+          onClick={toggleMapLayers}
+          className="cursor-pointer w-10 h-10 flex items-center justify-center self-end"
+        >
+          <img src="/images/close.svg" />
+        </div>
         <Layer
           title="New Hotspots"
           onClick={handleClick('added')}

@@ -2,8 +2,9 @@ import Image from 'next/image'
 import useInfoBox from '../../hooks/useInfoBox'
 import classNames from 'classnames'
 import Breadcrumbs from './Breadcrumbs'
+import SubtitleSection from './Breadcrumbs'
 
-const InfoBox = ({ title, children, breadcrumbs }) => {
+const InfoBox = ({ title, children, breadcrumbs, subtitles }) => {
   const { showInfoBox, toggleInfoBox } = useInfoBox()
 
   return (
@@ -20,7 +21,7 @@ const InfoBox = ({ title, children, breadcrumbs }) => {
       )}
       style={{
         // the max height of the infobox + the height of the title & breadcrumbs
-        height: 650 + 120,
+        height: 650 + 170,
       }}
     >
       <div className="w-full flex flex-col items-end justify-end md:justify-start h-full max-h-90p">
@@ -30,6 +31,7 @@ const InfoBox = ({ title, children, breadcrumbs }) => {
             <span className="text-white text-3xl font-semibold font-sans tracking-tight">
               {title}
             </span>
+            <SubtitleSection subtitles={subtitles} />
           </div>
           <div onClick={toggleInfoBox}>
             <Image

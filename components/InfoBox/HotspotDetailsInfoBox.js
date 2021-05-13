@@ -9,6 +9,8 @@ import ActivityPane from './Common/ActivityPane'
 import WitnessesPane from './HotspotDetails/WitnessesPane'
 import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
+import { formatLocation } from '../Hotspots/utils'
+import { formattedAccountAddress } from '../../utils/accounts'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -40,8 +42,42 @@ const HotspotDetailsInfoBox = ({ address }) => {
     }
   }, [clearSelectedHotspot])
 
+  const generateSubtitles = (hotspot) => {
+    let subtitles = [
+      {
+        Icon: (
+          <img
+            src="/images/location-blue.svg"
+            className="h-2.5 w-auto mr-1.5"
+          />
+        ),
+        title: formatLocation(hotspot.geocode),
+      },
+      {
+        Icon: (
+          <img src="/images/location-hex.svg" className="h-2.5 w-auto mr-1.5" />
+        ),
+        title: hotspot.location,
+      },
+      {
+        Icon: (
+          <img
+            src="/images/account-green.svg"
+            className="h-2.5 w-auto mr-1.5"
+          />
+        ),
+        title: formattedAccountAddress(hotspot.owner),
+        path: `/accounts/${hotspot.owner}`,
+      },
+    ]
+    return subtitles
+  }
+
   return (
-    <InfoBox title={title}>
+    <InfoBox
+      title={title}
+      subtitles={hotspot ? generateSubtitles(hotspot) : []}
+    >
       <TabNavbar>
         <TabPane title="Statistics" key="statistics">
           <StatisticsPane hotspot={hotspot} />

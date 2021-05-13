@@ -2,7 +2,7 @@ import Image from 'next/image'
 import useInfoBox from '../../hooks/useInfoBox'
 import classNames from 'classnames'
 import Breadcrumbs from './Breadcrumbs'
-import SubtitleSection from './Breadcrumbs'
+import SubtitleSection from './SubtitleSection'
 
 const InfoBox = ({ title, children, breadcrumbs, subtitles }) => {
   const { showInfoBox, toggleInfoBox } = useInfoBox()

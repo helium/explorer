@@ -10,7 +10,9 @@ import WitnessIcon from './WitnessIcon'
 
 const MAX_WITNESS_DISTANCE_THRESHOLD = 200
 
-const Mapbox = ReactMapboxGl({})
+const Mapbox = ReactMapboxGl({
+  accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
+})
 
 const styles = {
   selectedMarker: {
@@ -79,7 +81,7 @@ const HotspotMapbox = ({
         <NoLocationPlaceholder />
       ) : (
         <Mapbox
-          style="https://api.maptiler.com/maps/2469a8ae-f7e5-4ed1-b856-cd312538e33b/style.json?key=kNomjOqCRi7kEjO4HbFF"
+          style={`mapbox://styles/petermain/cjyzlw0av4grj1ck97d8r0yrk`}
           container="map"
           className={classes}
           containerStyle={{

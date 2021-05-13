@@ -20,8 +20,9 @@ const MetaTags = ({
 
   // Help developers differentiate between dev & prod by displaying the React
   // logo in dev
-  const faviconSrc =
-    process.env.NODE_ENV === 'production' ? 'favicon.ico' : 'logo.svg'
+  const faviconSrc = process.env.NODE_ENV === 'production'
+  ? 'favicon.ico'
+  : 'logo.svg'
 
   return (
     <>

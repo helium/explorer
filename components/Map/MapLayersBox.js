@@ -2,10 +2,11 @@ import classNames from 'classnames'
 import { useCallback } from 'react'
 import useMapLayer from '../../hooks/useMapLayer'
 
-const Layer = ({ title, onClick, active = false }) => (
+const Layer = ({ title, onClick, active = false, style }) => (
   <div
-    className="flex items-center justify-end space-x-2 cursor-pointer"
+    className="flex items-center justify-end space-x-2 cursor-pointer absolute bottom-0 right-0 w-96 transform-gpu transition-transform duration-300 ease-in-out"
     onClick={onClick}
+    style={style}
   >
     <span
       className={classNames('text-sm', {
@@ -39,12 +40,31 @@ const MapLayersBox = () => {
     [mapLayer, setMapLayer],
   )
 
+  const layers = [
+    {
+      title: 'New Hotspots',
+      id: 'added',
+    },
+    {
+      title: 'Reward Scales',
+      id: 'rewardScale',
+    },
+    {
+      title: 'Owner',
+      id: 'owner',
+    },
+    {
+      title: 'Offline',
+      id: 'offline',
+    },
+  ]
+
   return (
     <div
       className={classNames(
-        'fixed bottom-0 right-6 p-4 z-10 transform-gpu transition-transform duration-300 ease-in-out',
+        'fixed bottom-0 right-6 p-4 transform-gpu transition-all duration-300 ease-in-out',
         {
-          'translate-y-120': !showMapLayers,
+          'opacity-0': !showMapLayers,
         },
       )}
     >
@@ -56,33 +76,31 @@ const MapLayersBox = () => {
           <Image src="/images/circle-arrow.svg" width={35} height={35} />
         </div>
       </div> */}
-      <div className="flex flex-col space-y-2">
+      <div className="relative">
         <div
           onClick={toggleMapLayers}
-          className="cursor-pointer w-10 h-10 flex items-center justify-center self-end"
+          className="cursor-pointer w-10 h-10 flex items-center justify-center self-end transform-gpu transition-transform duration-300 ease-in-out"
+          style={{
+            transform: showMapLayers
+              ? `translateY(-${50 * layers.length}px)`
+              : 'translateY(0)',
+          }}
         >
           <img src="/images/close.svg" />
         </div>
-        <Layer
-          title="New Hotspots"
-          onClick={handleClick('added')}
-          active={mapLayer === 'added'}
-        />
-        <Layer
-          title="Reward Scales"
-          onClick={handleClick('rewardScale')}
-          active={mapLayer === 'rewardScale'}
-        />
-        <Layer
-          title="Owner"
-          onClick={handleClick('owner')}
-          active={mapLayer === 'owner'}
-        />
-        <Layer
-          title="Offline"
-          onClick={handleClick('offline')}
-          active={mapLayer === 'offline'}
-        />
+        {layers.map(({ title, id }, i) => (
+          <Layer
+            key={id}
+            title={title}
+            onClick={handleClick(id)}
+            active={mapLayer === id}
+            style={{
+              transform: showMapLayers
+                ? `translateY(-${50 * i}px)`
+                : 'translateY(0)',
+            }}
+          />
+        ))}
       </div>
     </div>
   )

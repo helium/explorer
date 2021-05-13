@@ -9,6 +9,8 @@ const ScaleControl = () => (
       fontSize: 14,
       boxShadow: 'none',
       border: 'none',
+      paddingBottom: 12,
+      paddingRight: 14,
     }}
   />
 )

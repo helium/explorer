@@ -11,6 +11,13 @@ import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import { formatLocation } from '../Hotspots/utils'
 import { formattedAccountAddress } from '../../utils/accounts'
+import {
+  h3Distance,
+  h3GetResolution,
+  h3ToGeo,
+  h3ToChildren,
+  h3ToParent,
+} from 'h3-js'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -45,27 +52,17 @@ const HotspotDetailsInfoBox = ({ address }) => {
   const generateSubtitles = (hotspot) => {
     let subtitles = [
       {
-        Icon: (
-          <img
-            src="/images/location-blue.svg"
-            className="h-2.5 w-auto mr-1.5"
-          />
-        ),
+        iconPath: '/images/location-blue.svg',
+        path: `/cities/${hotspot.geocode.cityId}`,
         title: formatLocation(hotspot.geocode),
       },
       {
-        Icon: (
-          <img src="/images/location-hex.svg" className="h-2.5 w-auto mr-1.5" />
-        ),
+        iconPath: '/images/location-hex.svg',
+        path: `/hexes/${hotspot.location}`,
         title: hotspot.location,
       },
       {
-        Icon: (
-          <img
-            src="/images/account-green.svg"
-            className="h-2.5 w-auto mr-1.5"
-          />
-        ),
+        iconPath: '/images/account-green.svg',
         title: formattedAccountAddress(hotspot.owner),
         path: `/accounts/${hotspot.owner}`,
       },

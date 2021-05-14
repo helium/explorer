@@ -10,14 +10,17 @@ const SubtitleSection = ({ subtitles }) => {
           {subtitles.map((s, i, { length }) => {
             return (
               <span
-                className={classNames('pointer-events-auto inline-block', {
-                  'ml-5': i !== length - 1 && i !== 0,
+                className={classNames('pointer-events-auto mb-1 inline-block', {
+                  'ml-5': i < 2 && i !== 0,
+                  'w-full': i > 1,
                 })}
               >
-                {s.Icon && s.Icon}
+                {s.iconPath && (
+                  <img src={s.iconPath} className="h-2.5 w-auto mr-1.5" />
+                )}
                 <Link
                   className="ml-0.5 text-white font-sans font-regular"
-                  to={s.path}
+                  to={s.path ? s.path : ''}
                 >
                   {s.title}
                 </Link>

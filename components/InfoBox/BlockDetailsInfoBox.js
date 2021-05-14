@@ -14,7 +14,7 @@ import classNames from 'classnames'
 import TransactionTypesWidget from '../Widgets/TransactionTypesWidget'
 import SkeletonList from '../Lists/SkeletonList'
 import { useHistory } from 'react-router-dom'
-import BlockMetaData from '../InfoBox/BlockDetails/BlockMetaData'
+import Timestamp from 'react-timestamp'
 
 const BlockDetailsInfoBox = () => {
   const { block: height } = useParams()
@@ -43,12 +43,27 @@ const BlockDetailsInfoBox = () => {
     block,
   ])
 
+  const generateSubtitles = (block) => {
+    let subtitles = [
+      {
+        iconPath: '/images/clock.svg',
+        title: <Timestamp date={block.time} />,
+      },
+      {
+        iconPath: '/images/txn.svg',
+        title: `${block.transactionCount} transactions`,
+      },
+    ]
+    return subtitles
+  }
+
   return (
-    <InfoBox title={title}>
+    <InfoBox
+      title={title}
+      subtitles={!blockLoading ? generateSubtitles(block) : []}
+    >
       {!blockLoading ? (
         <>
-          <BlockMetaData block={block} />
-
           {block.txns?.length > 0 ? (
             <>
               <TransactionTypesWidget txns={block.txns} />

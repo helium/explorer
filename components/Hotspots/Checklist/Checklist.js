@@ -122,7 +122,7 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
           sortOrder: 2,
           title: 'Create a Challenge',
           infoTooltipText:
-            'Hotspots that are synced and online create a challenge automatically, every 120 blocks.',
+            'Hotspots that are synced and online create a challenge automatically, every 480 blocks.',
           detailText:
             activity.challengerTxn !== null
               ? `Hotspot issued a challenge ${(

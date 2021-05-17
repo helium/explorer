@@ -5,7 +5,10 @@ import StatWidget from '../Widgets/StatWidget'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 
 const OverviewInfoBox = () => {
-  const { data: stats } = useSWR('/api/metrics/hotspots')
+  const { data: stats } = useSWR(
+    'https://explorer-api.helium.com/api/metrics/hotspots',
+  )
+  console.log('stats', stats)
 
   return (
     <InfoBox title="Overview">

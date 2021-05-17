@@ -34,7 +34,6 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
         return defaultStyle(minZoom, maxZoom)
     }
   }, [minZoom, maxZoom, layer, height])
-  console.log('online circle layout', onlineCircleLayout)
 
   return (
     <>
@@ -45,7 +44,8 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
         id="public.h3_res8"
         type="fill"
         paint={{
-          'fill-color': '#faf409',
+          // 'fill-color': '#faf409',
+          'fill-color': '#29d391',
           'fill-outline-color': '#1C1E3B',
           'fill-opacity': 0.5,
         }}
@@ -78,7 +78,7 @@ const defaultStyle = (minZoom, maxZoom) => ({
     minZoom,
     0.2,
     maxZoom,
-    1,
+    0,
   ],
 })
 

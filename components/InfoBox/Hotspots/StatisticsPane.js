@@ -6,7 +6,9 @@ import { useLatestHotspots } from '../../../data/hotspots'
 import HotspotWidget from '../../Widgets/HotspotWidget'
 
 const StatisticsPane = () => {
-  const { data: stats } = useSWR('/api/metrics/hotspots')
+  const { data: stats } = useSWR(
+    'https://explorer-api.helium.com/api/metrics/hotspots',
+  )
   const { latestHotspots } = useLatestHotspots()
 
   const latestHotspot = useMemo(() => {

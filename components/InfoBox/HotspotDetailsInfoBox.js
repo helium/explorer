@@ -11,13 +11,6 @@ import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import { formatLocation } from '../Hotspots/utils'
 import { formattedAccountAddress } from '../../utils/accounts'
-import {
-  h3Distance,
-  h3GetResolution,
-  h3ToGeo,
-  h3ToChildren,
-  h3ToParent,
-} from 'h3-js'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -50,7 +43,8 @@ const HotspotDetailsInfoBox = ({ address }) => {
   }, [clearSelectedHotspot])
 
   const generateSubtitles = (hotspot) => {
-    let subtitles = [
+    if (!hotspot) return []
+    return [
       {
         iconPath: '/images/location-blue.svg',
         path: `/cities/${hotspot.geocode.cityId}`,
@@ -67,14 +61,10 @@ const HotspotDetailsInfoBox = ({ address }) => {
         path: `/accounts/${hotspot.owner}`,
       },
     ]
-    return subtitles
   }
 
   return (
-    <InfoBox
-      title={title}
-      subtitles={hotspot ? generateSubtitles(hotspot) : []}
-    >
+    <InfoBox title={title} subtitles={generateSubtitles(hotspot)}>
       <TabNavbar>
         <TabPane title="Statistics" key="statistics">
           <StatisticsPane hotspot={hotspot} />

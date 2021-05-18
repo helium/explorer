@@ -5,7 +5,6 @@ import AccountAddress from '../AccountAddress'
 import OverviewPane from './AccountDetails/OverviewPane'
 import ActivityPane from './Common/ActivityPane'
 import HotspotsPane from './AccountDetails/HotspotsPane'
-import { formattedAccountAddress } from '../../utils/accounts'
 
 const AccountDetailsInfoBox = () => {
   const { address } = useParams()
@@ -15,7 +14,7 @@ const AccountDetailsInfoBox = () => {
       title={<AccountAddress address={address} truncate={7} />}
       subtitles={[
         {
-          title: formattedAccountAddress(address),
+          title: <AccountAddress address={address} truncate={7} />,
           textToCopy: address,
           iconPath: '/images/account-green.svg',
         },

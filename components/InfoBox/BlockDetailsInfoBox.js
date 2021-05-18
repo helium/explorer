@@ -45,7 +45,8 @@ const BlockDetailsInfoBox = () => {
   ])
 
   const generateSubtitles = (block) => {
-    let subtitles = [
+    if (blockLoading) return []
+    return [
       {
         iconPath: '/images/clock.svg',
         title: <Timestamp date={block.time} />,
@@ -60,14 +61,10 @@ const BlockDetailsInfoBox = () => {
         textToCopy: block.hash,
       },
     ]
-    return subtitles
   }
 
   return (
-    <InfoBox
-      title={title}
-      subtitles={!blockLoading ? generateSubtitles(block) : []}
-    >
+    <InfoBox title={title} subtitles={generateSubtitles(block)}>
       {!blockLoading ? (
         <>
           {block.txns?.length > 0 ? (

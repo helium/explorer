@@ -7,6 +7,7 @@ import {
   getTxnTypeName,
   getTxnTypeColor,
   splitTransactionsByTypes,
+  formattedTxnHash,
 } from '../../utils/txns'
 import TransactionList from '../Lists/TransactionList'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
@@ -52,6 +53,11 @@ const BlockDetailsInfoBox = () => {
       {
         iconPath: '/images/txn.svg',
         title: `${block.transactionCount} transactions`,
+      },
+      {
+        iconPath: '/images/block-purple.svg',
+        title: `${formattedTxnHash(block.hash)}`,
+        textToCopy: block.hash,
       },
     ]
     return subtitles

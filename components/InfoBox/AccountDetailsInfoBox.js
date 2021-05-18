@@ -5,12 +5,23 @@ import AccountAddress from '../AccountAddress'
 import OverviewPane from './AccountDetails/OverviewPane'
 import ActivityPane from './Common/ActivityPane'
 import HotspotsPane from './AccountDetails/HotspotsPane'
+import { formattedAccountAddress } from '../../utils/accounts'
 
 const AccountDetailsInfoBox = () => {
   const { address } = useParams()
 
   return (
-    <InfoBox title={<AccountAddress address={address} truncate={7} />}>
+    <InfoBox
+      title={<AccountAddress address={address} truncate={7} />}
+      subtitles={[
+        {
+          title: formattedAccountAddress(address),
+          textToCopy: address,
+          iconPath: '/images/account-green.svg',
+        },
+      ]}
+      breadcrumbs={[{ title: 'Overview', path: '/' }]}
+    >
       <TabNavbar>
         <TabPane title="Overview" key="overview">
           <OverviewPane />

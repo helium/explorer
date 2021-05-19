@@ -1,4 +1,3 @@
-import { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router'
 import classNames from 'classnames'
 import InfoBox from './InfoBox'
@@ -13,7 +12,10 @@ const HexDetailsInfoBox = () => {
   const { result: hotspots, loading } = useAsync(fetchHexHotspots, [index])
 
   return (
-    <InfoBox title={`#${index}`}>
+    <InfoBox
+      title={`#${index}`}
+      breadcrumbs={[{ title: 'Hotspots / Hex', path: '/hotspots' }]}
+    >
       <TabNavbar>
         <TabPane title="Selected Hotspots" key="hotspots">
           <div

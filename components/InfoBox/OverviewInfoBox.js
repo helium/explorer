@@ -8,7 +8,6 @@ const OverviewInfoBox = () => {
   const { data: stats } = useSWR(
     'https://explorer-api.helium.com/api/metrics/hotspots',
   )
-  console.log('stats', stats)
 
   return (
     <InfoBox title="Overview">

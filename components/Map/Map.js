@@ -4,8 +4,8 @@ import ReactMapboxGl from 'react-mapbox-gl'
 import { h3ToGeo } from 'h3-js'
 import { useAsync } from 'react-async-hook'
 import useSWR from 'swr'
+import { useHistory } from 'react-router'
 import { findBounds } from '../../utils/location'
-import CoverageLayer from './Layers/CoverageLayer'
 import HotspotDetailLayer from './Layers/HotspotDetailLayer'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import useMapLayer from '../../hooks/useMapLayer'
@@ -45,7 +45,7 @@ const EU_CN_BOUNDS = [
 const MOBILE_PADDING = { top: 10, left: 10, right: 10, bottom: 450 }
 const DESKTOP_PADDING = { top: 200, left: 600, right: 200, bottom: 200 }
 
-const CoverageMap = ({ coverageUrl }) => {
+const CoverageMap = () => {
   const isDesktopOrLaptop = useMediaQuery({ minDeviceWidth: 768 })
   const map = useRef()
   const [styleLoaded, setStyledLoaded] = useState(false)
@@ -57,6 +57,7 @@ const CoverageMap = ({ coverageUrl }) => {
   const { selectHotspot, selectedHotspot } = useSelectedHotspot()
   const { selectedTxn } = useSelectedTxn()
   const { currentPosition } = useGeolocation()
+  const history = useHistory()
 
   const [bounds, setBounds] = useState(
     isDesktopOrLaptop ? US_EU_BOUNDS : US_BOUNDS,
@@ -134,46 +135,22 @@ const CoverageMap = ({ coverageUrl }) => {
   //   }, 5000)
   // }, [])
 
-  const handleHotspotClick = useCallback(
+  const handleHexClick = useCallback(
     (e) => {
       const features = map.current.queryRenderedFeatures(e.point, {
-        layers: ['hotspots-circle'],
+        layers: ['public.h3_res8'],
       })
-
-      if (features.length === 1) {
-        // if a single hotspot was clicked on, then select it
-        const [feature] = features
-        const selectedHotspot = {
-          lat: feature.geometry.coordinates[1],
-          lng: feature.geometry.coordinates[0],
-          ...feature.properties,
-        }
-        selectHotspot(selectedHotspot.address)
-      } else {
-        // if more than one hotspot was clicked on, adjust bounds to fit that cluster
-        const selectionBounds = findBounds(
-          features.map(({ geometry: { coordinates } }) => ({
-            lat: coordinates[1],
-            lng: coordinates[0],
-          })),
-        )
-        setBounds(selectionBounds)
+      if (features.length > 0) {
+        const [hexFeature] = features
+        history.push(`/hotspots/hex/${hexFeature.properties.id}`)
       }
-
-      map.current.getCanvas().style.cursor = ''
     },
-    [selectHotspot],
+    [history],
   )
 
-  const handleHexClick = useCallback((e) => {
-    const features = map.current.queryRenderedFeatures(e.point)
-    console.log('features', features)
-  }, [])
-
   const handleMouseMove = useCallback((map, e) => {
-    return
     const features = map.queryRenderedFeatures(e.point, {
-      layers: ['hotspots-circle'],
+      layers: ['public.h3_res8'],
     })
     if (features.length > 0) {
       map.getCanvas().style.cursor = 'pointer'
@@ -200,13 +177,6 @@ const CoverageMap = ({ coverageUrl }) => {
         onHexClick={handleHexClick}
         layer={mapLayer}
       />
-      {/* <CoverageLayer
-        coverageUrl={coverageUrl}
-        minZoom={minZoom}
-        maxZoom={maxZoom}
-        onHotspotClick={handleHotspotClick}
-        layer={mapLayer}
-      /> */}
       <HotspotDetailLayer
         hotspot={selectedHotspot || selectedTxnHotspot}
         witnesses={selectedHotspot?.witnesses || selectedTxnWitnesses || []}

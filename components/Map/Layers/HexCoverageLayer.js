@@ -1,6 +1,5 @@
 import { useMemo, memo } from 'react'
 import { Source, Layer } from 'react-mapbox-gl'
-import { useBlockHeight } from '../../../data/blocks'
 
 const HEX_SOURCE_OPTIONS = {
   type: 'vector',
@@ -13,27 +12,25 @@ const POINTS_SOURCE_OPTIONS = {
 }
 
 const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
-  const { height } = useBlockHeight()
-
-  const onlineCircleLayout = useMemo(() => {
+  const circleLayout = useMemo(() => {
     switch (layer) {
-      case 'offline':
-        return offlineStyle(minZoom, maxZoom)
-
-      case 'owner':
-        return ownerStyle(minZoom, maxZoom)
-
       case 'rewardScale':
         return rewardScaleStyle(minZoom, maxZoom)
-
-      case 'added':
-        if (!height) return defaultStyle(minZoom, maxZoom)
-        return addedStyle(minZoom, maxZoom, height)
 
       default:
         return defaultStyle(minZoom, maxZoom)
     }
-  }, [minZoom, maxZoom, layer, height])
+  }, [minZoom, maxZoom, layer])
+
+  const hexLayout = useMemo(() => {
+    switch (layer) {
+      case 'rewardScale':
+        return hexRewardScaleStyle()
+
+      default:
+        return hexDefaultStyle()
+    }
+  }, [layer])
 
   return (
     <>
@@ -43,12 +40,7 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
         sourceId="hexes_source"
         id="public.h3_res8"
         type="fill"
-        paint={{
-          // 'fill-color': '#faf409',
-          'fill-color': '#29d391',
-          'fill-outline-color': '#1C1E3B',
-          'fill-opacity': 0.5,
-        }}
+        paint={hexLayout}
         onClick={onHexClick}
       />
       <Source id="points_source" tileJsonSource={POINTS_SOURCE_OPTIONS} />
@@ -57,7 +49,21 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
         sourceId="points_source"
         id="public.points"
         type="circle"
-        paint={onlineCircleLayout}
+        paint={circleLayout}
+      />
+      <Layer
+        id="hex_label"
+        sourceLayer="public.points"
+        sourceId="points_source"
+        type="symbol"
+        minZoom={11}
+        layout={{
+          'text-field': ['get', 'hotspot_count'],
+          'text-allow-overlap': false,
+        }}
+        paint={{
+          'text-opacity': ['case', ['==', ['get', 'hotspot_count'], 1], 0, 1],
+        }}
       />
     </>
   )
@@ -82,73 +88,62 @@ const defaultStyle = (minZoom, maxZoom) => ({
   ],
 })
 
-const offlineStyle = (minZoom, maxZoom) => ({
-  ...defaultStyle(minZoom, maxZoom),
-  'circle-opacity': [
-    'interpolate',
-    ['exponential', 1.75],
-    ['zoom'],
-    minZoom,
-    0.7,
-    maxZoom,
-    1,
-  ],
-})
-
-const ownerStyle = (minZoom, maxZoom) => ({
-  ...defaultStyle(minZoom, maxZoom),
-  'circle-color': ['get', 'ownerColor'],
-})
-
 const rewardScaleStyle = (minZoom, maxZoom) => ({
   ...defaultStyle(minZoom, maxZoom),
   'circle-color': [
-    'interpolate',
-    ['linear'],
-    ['get', 'rewardScale'],
-    0,
-    '#FF6666',
-    0.2,
-    '#FC8745',
-    0.4,
-    '#FEA053',
-    0.6,
-    '#FCC945',
-    0.8,
-    '#9FE14A',
-    1,
-    '#29D344',
+    'case',
+    ['==', ['get', 'avg_reward_scale'], 0],
+    '#4F5293',
+    [
+      'interpolate',
+      ['linear'],
+      ['get', 'avg_reward_scale'],
+      0,
+      '#FF6666',
+      0.2,
+      '#FC8745',
+      0.4,
+      '#FEA053',
+      0.6,
+      '#FCC945',
+      0.8,
+      '#9FE14A',
+      1,
+      '#29D344',
+    ],
   ],
 })
 
-const addedStyle = (minZoom, maxZoom, height) => {
-  return {
-    ...defaultStyle(minZoom, maxZoom),
-    'circle-color': [
-      'case',
-      ['==', ['get', 'blockAdded'], 1],
-      '#B377F8',
-      ['>=', ['get', 'blockAdded'], height - 10000],
-      '#474DFF',
-      [
-        'interpolate',
-        ['linear'],
-        ['get', 'blockAdded'],
-        1,
-        '#FF6666',
-        height / 5,
-        '#FC8745',
-        (height / 5) * 2,
-        '#FEA053',
-        (height / 5) * 3,
-        '#FCC945',
-        (height / 5) * 4,
-        '#9FE14A',
-        height,
-        '#29D344',
-      ],
+const hexDefaultStyle = () => ({
+  'fill-color': '#29d391',
+  'fill-outline-color': '#1C1E3B',
+  'fill-opacity': 0.5,
+})
+
+const hexRewardScaleStyle = () => ({
+  ...hexDefaultStyle(),
+  'fill-color': [
+    'case',
+    ['==', ['get', 'avg_reward_scale'], 0],
+    '#4F5293',
+    [
+      'interpolate',
+      ['linear'],
+      ['get', 'avg_reward_scale'],
+      0,
+      '#FF6666',
+      0.2,
+      '#FC8745',
+      0.4,
+      '#FEA053',
+      0.6,
+      '#FCC945',
+      0.8,
+      '#9FE14A',
+      1,
+      '#29D344',
     ],
-  }
-}
+  ],
+})
 
 export default memo(HexCoverageLayer)

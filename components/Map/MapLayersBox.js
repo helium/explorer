@@ -23,22 +23,26 @@ const MapLayersBox = () => {
   )
 
   const layers = [
+    // {
+    //   title: 'New Hotspots',
+    //   id: 'added',
+    // },
     {
-      title: 'New Hotspots',
-      id: 'added',
+      title: 'Default',
+      id: 'default',
     },
     {
       title: 'Reward Scales',
       id: 'rewardScale',
     },
-    {
-      title: 'Owner',
-      id: 'owner',
-    },
-    {
-      title: 'Offline',
-      id: 'offline',
-    },
+    // {
+    //   title: 'Owner',
+    //   id: 'owner',
+    // },
+    // {
+    //   title: 'Offline',
+    //   id: 'offline',
+    // },
   ]
 
   return (

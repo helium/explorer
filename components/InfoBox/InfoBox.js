@@ -43,7 +43,7 @@ const InfoBox = ({ title, children, breadcrumbs }) => {
             />
           </div>
         </div>
-        <div className="bg-white pointer-events-auto rounded-t-xl md:rounded-xl w-full flex flex-col overflow-mask-fix h-6/10 md:h-auto max-h-6/10 sm:max-h-90p infoboxshadow">
+        <div className="bg-white pointer-events-auto rounded-t-xl md:rounded-xl w-full flex flex-col overflow-mask-fix h-6/10 md:h-auto max-h-6/10 sm:max-h-90p infoboxshadow flex-1">
           {children}
         </div>
       </div>

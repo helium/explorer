@@ -10,7 +10,17 @@ const AccountDetailsInfoBox = () => {
   const { address } = useParams()
 
   return (
-    <InfoBox title={<AccountAddress address={address} truncate={7} />}>
+    <InfoBox
+      title={<AccountAddress address={address} truncate={7} />}
+      subtitles={[
+        {
+          title: <AccountAddress address={address} truncate={7} />,
+          textToCopy: address,
+          iconPath: '/images/account-green.svg',
+        },
+      ]}
+      breadcrumbs={[{ title: 'Overview', path: '/' }]}
+    >
       <TabNavbar>
         <TabPane title="Overview" key="overview">
           <OverviewPane />

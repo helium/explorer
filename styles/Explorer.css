@@ -500,10 +500,6 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   background-color: #29d391;
 }
 
-.mapboxgl-ctrl-bottom-left,
-.mapboxgl-ctrl-bottom-right {
-  display: none !important;
-}
 .map-button {
   min-width: 127px;
 }

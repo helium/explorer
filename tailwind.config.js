@@ -92,9 +92,12 @@ module.exports = {
         '6/10': '60vh',
       },
       maxHeight: {
-        'vh-minus-nav': 'calc(100vh - 100px)',
+        'vh-minus-nav': 'calc(100vh - 80px)',
+        '5/10': '50vh',
         '6/10': '60vh',
+        '80p': '80%',
         '90p': '90%',
+        '550px': '550px',
         '650px': '650px',
       },
     },

@@ -55,7 +55,7 @@ const HotspotDetailsInfoBox = ({ address }) => {
       {
         iconPath: '/images/location-hex.svg',
         path: `/hotspots/hex/${tempTruncatedHex}`,
-        title: hotspot.location,
+        title: tempTruncatedHex,
       },
       {
         iconPath: '/images/account-green.svg',

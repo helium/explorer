@@ -1,9 +1,25 @@
 import InfoBox from './InfoBox'
 import { useParams } from 'react-router'
-import BeaconDetailsPane from './TxnDetails/BeaconDetailsPane'
+import {
+  BeaconDetailsPane,
+  PaymentV1,
+  PaymentV2,
+  PocReceiptsV1,
+  RewardsV1,
+  StateChannelCloseV1,
+  StateChannelOpenV1,
+  TransferHotspotV1,
+  ConsensusGroupV1,
+  AddGatewayV1,
+  AssertLocationV1,
+  PocRequestV1,
+  Fallback,
+  TokenBurnV1,
+} from './TxnDetails'
 import useSelectedTxn from '../../hooks/useSelectedTxn'
 import { useEffect } from 'react'
-import { formattedTxnHash } from '../../utils/txns'
+import { formattedTxnHash, getTxnTypeName } from '../../utils/txns'
+import classNames from 'classnames'
 
 const TxnDetailsInfoBox = () => {
   const { hash } = useParams()
@@ -21,21 +37,46 @@ const TxnDetailsInfoBox = () => {
     }
   }, [clearSelectedTxn])
 
+  const generateTitle = (txn) => {
+    if (!txn) return ''
+    return `${getTxnTypeName(selectedTxn.type)} transaction`
+  }
+
+  const generateBreadcrumbs = (txn) => {
+    if (!txn) return [{ title: 'Block ...' }]
+    return [
+      {
+        title: `Block ${selectedTxn.height.toLocaleString()}`,
+        path: `/blocks/${selectedTxn.height}`,
+      },
+    ]
+  }
+
+  const generateSubtitles = (txn) => {
+    if (!txn) return []
+    return [
+      {
+        title: formattedTxnHash(txn.hash),
+        textToCopy: txn.hash,
+        iconPath: '/images/address.svg',
+      },
+    ]
+  }
+
   return (
     <InfoBox
-      title={`Transaction ${formattedTxnHash(hash)}`}
-      breadcrumbs={[
-        selectedTxn
-          ? {
-              title: `Block ${selectedTxn.height.toLocaleString()}`,
-              path: `/blocks/${selectedTxn.height}`,
-            }
-          : {
-              title: `Block ...`,
-            },
-      ]}
+      title={generateTitle(selectedTxn)}
+      breadcrumbs={generateBreadcrumbs(selectedTxn)}
+      subtitles={generateSubtitles(selectedTxn)}
     >
-      <TxnDetailsSwitch txn={selectedTxn} isLoading={!selectedTxn} />
+      <div
+        className={classNames('grid grid-flow-row grid-cols-1 no-scrollbar', {
+          'overflow-y-scroll': selectedTxn,
+          'overflow-y-hidden': !selectedTxn,
+        })}
+      >
+        <TxnDetailsSwitch txn={selectedTxn} isLoading={!selectedTxn} />
+      </div>
     </InfoBox>
   )
 }
@@ -46,9 +87,36 @@ const TxnDetailsSwitch = ({ txn, isLoading }) => {
   switch (txn.type) {
     case 'poc_receipts_v1':
       return <BeaconDetailsPane txn={txn} />
-
+    case 'payment_v1':
+      return <PaymentV1 txn={txn} />
+    case 'payment_v2':
+      return <PaymentV2 txn={txn} />
+    case 'poc_request_v1':
+      return <PocRequestV1 txn={txn} />
+    // case 'poc_receipts_v1':
+    //   return <PocReceiptsV1 txn={txn} />
+    case 'rewards_v1':
+      return <Rewards txn={txn} />
+    case 'rewards_v2':
+      return <Rewards txn={txn} />
+    case 'consensus_group_v1':
+      return <ConsensusGroupV1 txn={txn} />
+    case 'state_channel_close_v1':
+      return <StateChannelCloseV1 txn={txn} />
+    case 'state_channel_open_v1':
+      return <StateChannelOpenV1 txn={txn} />
+    case 'transfer_hotspot_v1':
+      return <TransferHotspotV1 txn={txn} />
+    case 'add_gateway_v1':
+      return <AddGatewayV1 txn={txn} />
+    case 'assert_location_v1':
+      return <AssertLocationV1 txn={txn} />
+    case 'assert_location_v2':
+      return <AssertLocationV1 txn={txn} />
+    case 'token_burn_v1':
+      return <TokenBurnV1 txn={txn} />
     default:
-      return null
+      return <Fallback txn={txn} />
   }
 }
 

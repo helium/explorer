@@ -45,7 +45,6 @@ const HotspotDetailsInfoBox = ({ address }) => {
 
   const generateSubtitles = (hotspot) => {
     if (!hotspot) return []
-    const tempTruncatedHex = h3ToParent(hotspot.location, 8)
     return [
       {
         iconPath: '/images/location-blue.svg',
@@ -54,8 +53,8 @@ const HotspotDetailsInfoBox = ({ address }) => {
       },
       {
         iconPath: '/images/location-hex.svg',
-        path: `/hotspots/hex/${tempTruncatedHex}`,
-        title: tempTruncatedHex,
+        path: `/hotspots/hex/${hotspot.location}`,
+        title: hotspot.location,
       },
       {
         iconPath: '/images/account-green.svg',

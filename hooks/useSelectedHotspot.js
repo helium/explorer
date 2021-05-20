@@ -1,5 +1,6 @@
 import { useContext, useCallback } from 'react'
 import { useHistory } from 'react-router'
+import { hotspotToRes8 } from '../components/Hotspots/utils'
 import { fetchHotspot } from '../data/hotspots'
 import { store, SET_SELECTED_HOTSPOT } from '../store/store'
 import useDispatch from '../store/useDispatch'
@@ -30,14 +31,21 @@ const useSelectedHotspot = () => {
         fetchHotspot(address),
         getWitnesses(address),
       ])
-      const filteredWitnesses = fetchedWitnesses.filter(
-        (w) =>
-          haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <=
-          MAX_WITNESS_DISTANCE_THRESHOLD,
-      )
+
+      const filteredWitnesses = fetchedWitnesses
+        .filter(
+          (w) =>
+            haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <=
+            MAX_WITNESS_DISTANCE_THRESHOLD,
+        )
+        .map(hotspotToRes8)
+
       dispatch({
         type: SET_SELECTED_HOTSPOT,
-        payload: { ...hotspot, witnesses: filteredWitnesses },
+        payload: {
+          ...hotspot,
+          witnesses: filteredWitnesses,
+        },
       })
       history.push(`/hotspots/${hotspot.address}`)
     },

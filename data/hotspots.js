@@ -66,6 +66,12 @@ export const fetchHotspot = async (address) => {
   return JSON.parse(JSON.stringify(hotspot))
 }
 
+export const fetchHexHotspots = async (index) => {
+  const list = await client.hotspots.hex(index)
+  const hotspots = await list.take(TAKE_MAX)
+  return hotspots
+}
+
 export const fetchWitnesses = async (address) => {
   const list = await client.hotspot(address).witnesses.list()
   const witnesses = await list.take(TAKE_MAX)

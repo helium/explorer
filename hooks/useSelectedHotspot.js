@@ -1,3 +1,4 @@
+import { h3ToGeo, h3ToParent } from 'h3-js'
 import { useContext, useCallback } from 'react'
 import { useHistory } from 'react-router'
 import { fetchHotspot } from '../data/hotspots'
@@ -30,14 +31,23 @@ const useSelectedHotspot = () => {
         fetchHotspot(address),
         getWitnesses(address),
       ])
-      const filteredWitnesses = fetchedWitnesses.filter(
-        (w) =>
-          haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <=
-          MAX_WITNESS_DISTANCE_THRESHOLD,
-      )
+
+      const filteredWitnesses = fetchedWitnesses
+        .filter(
+          (w) =>
+            haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <=
+            MAX_WITNESS_DISTANCE_THRESHOLD,
+        )
+        .map(hotspotToRes8)
+
+      const res8Hotspot = hotspotToRes8(hotspot)
+
       dispatch({
         type: SET_SELECTED_HOTSPOT,
-        payload: { ...hotspot, witnesses: filteredWitnesses },
+        payload: {
+          ...res8Hotspot,
+          witnesses: filteredWitnesses,
+        },
       })
       history.push(`/hotspots/${hotspot.address}`)
     },
@@ -49,6 +59,18 @@ const useSelectedHotspot = () => {
   }, [dispatch])
 
   return { selectedHotspot, selectHotspot, clearSelectedHotspot }
+}
+
+const hotspotToRes8 = (hotspot) => {
+  const res8Location = h3ToParent(hotspot.location, 8)
+  const [res8Lat, res8Lng] = h3ToGeo(res8Location)
+
+  return {
+    ...hotspot,
+    location: res8Location,
+    lat: res8Lat,
+    lng: res8Lng,
+  }
 }
 
 export default useSelectedHotspot

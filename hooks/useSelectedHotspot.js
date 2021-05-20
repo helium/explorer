@@ -1,6 +1,6 @@
-import { h3ToGeo, h3ToParent } from 'h3-js'
 import { useContext, useCallback } from 'react'
 import { useHistory } from 'react-router'
+import { hotspotToRes8 } from '../components/Hotspots/utils'
 import { fetchHotspot } from '../data/hotspots'
 import { store, SET_SELECTED_HOTSPOT } from '../store/store'
 import useDispatch from '../store/useDispatch'
@@ -40,12 +40,10 @@ const useSelectedHotspot = () => {
         )
         .map(hotspotToRes8)
 
-      const res8Hotspot = hotspotToRes8(hotspot)
-
       dispatch({
         type: SET_SELECTED_HOTSPOT,
         payload: {
-          ...res8Hotspot,
+          ...hotspot,
           witnesses: filteredWitnesses,
         },
       })
@@ -59,18 +57,6 @@ const useSelectedHotspot = () => {
   }, [dispatch])
 
   return { selectedHotspot, selectHotspot, clearSelectedHotspot }
-}
-
-const hotspotToRes8 = (hotspot) => {
-  const res8Location = h3ToParent(hotspot.location, 8)
-  const [res8Lat, res8Lng] = h3ToGeo(res8Location)
-
-  return {
-    ...hotspot,
-    location: res8Location,
-    lat: res8Lat,
-    lng: res8Lng,
-  }
 }
 
 export default useSelectedHotspot

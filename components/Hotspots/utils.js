@@ -1,5 +1,6 @@
 import capitalize from 'lodash/capitalize'
 import camelcaseKeys from 'camelcase-keys'
+import { h3ToGeo, h3ToParent } from 'h3-js'
 
 export const formatHotspotName = (dashedName) =>
   dashedName.split('-').map(capitalize).join(' ')
@@ -106,3 +107,15 @@ export const witnessRssi = (histogram = {}) =>
     (a, b) => (histogram[a] > histogram[b] ? a : b),
     0,
   )
+
+export const hotspotToRes8 = (hotspot) => {
+  const res8Location = h3ToParent(hotspot.location, 8)
+  const [res8Lat, res8Lng] = h3ToGeo(res8Location)
+
+  return {
+    ...hotspot,
+    location: res8Location,
+    lat: res8Lat,
+    lng: res8Lng,
+  }
+}

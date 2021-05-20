@@ -15,6 +15,7 @@ import ValidatorsLayer from './Layers/ValidatorsLayer'
 import useSelectedTxn from '../../hooks/useSelectedTxn'
 import { fetchHotspot } from '../../data/hotspots'
 import HexCoverageLayer from './Layers/HexCoverageLayer'
+import { hotspotToRes8 } from '../Hotspots/utils'
 
 const maxZoom = 14
 const minZoom = 2
@@ -109,10 +110,7 @@ const CoverageMap = () => {
     if (selectedTxn?.type === 'poc_receipts_v1') {
       const target = selectedTxn.path[0].challengee
       const targetHotspot = await fetchHotspot(target)
-      const witnesses = selectedTxn.path[0].witnesses.map((w) => {
-        const [lat, lng] = h3ToGeo(w.location)
-        return { ...w, lat, lng }
-      })
+      const witnesses = selectedTxn.path[0].witnesses.map(hotspotToRes8)
 
       setSelectedTxnHotspot(targetHotspot)
       setSelectedTxnWitnesses(witnesses)

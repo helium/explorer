@@ -1,21 +1,6 @@
 import classNames from 'classnames'
-import Image from 'next/image'
 import { useCallback } from 'react'
 import useMapLayer from '../../hooks/useMapLayer'
-
-const Layer = ({ title, onClick, active = false }) => (
-  <div className="flex flex-col items-center cursor-pointer" onClick={onClick}>
-    <div className="bg-gray-500 w-20 h-20 rounded-xl mb-1" />
-    <span
-      className={classNames('text-sm', {
-        'text-navy-400 font-semibold': active,
-        'text-gray-800': !active,
-      })}
-    >
-      {title}
-    </span>
-  </div>
-)
 
 const MapLayersBox = () => {
   const {
@@ -37,48 +22,84 @@ const MapLayersBox = () => {
     [mapLayer, setMapLayer],
   )
 
+  const layers = [
+    // {
+    //   title: 'New Hotspots',
+    //   id: 'added',
+    // },
+    {
+      title: 'Default',
+      id: 'default',
+    },
+    {
+      title: 'Reward Scales',
+      id: 'rewardScale',
+    },
+    // {
+    //   title: 'Owner',
+    //   id: 'owner',
+    // },
+    // {
+    //   title: 'Offline',
+    //   id: 'offline',
+    // },
+  ]
+
   return (
     <div
       className={classNames(
-        'fixed bottom-0 bg-white w-full p-4 z-10 transform-gpu transition-transform duration-300 ease-in-out',
+        'fixed bottom-0 right-6 p-4 transform-gpu transition-all duration-300 ease-in-out',
         {
-          'translate-y-96': !showMapLayers,
+          'opacity-0': !showMapLayers,
         },
       )}
     >
-      <div className="absolute flex justify-end w-full -top-14 left-0 px-4 md:px-0">
+      <div className="relative">
         <div
-          className="md:hidden transform rotate-180"
           onClick={toggleMapLayers}
+          className="cursor-pointer w-10 h-10 flex items-center justify-center self-end transform-gpu transition-transform duration-300 ease-in-out"
+          style={{
+            transform: showMapLayers
+              ? `translateY(-${50 * layers.length}px)`
+              : 'translateY(0)',
+          }}
         >
-          <Image src="/images/circle-arrow.svg" width={35} height={35} />
+          <img src="/images/close.svg" />
         </div>
-      </div>
-      <div className="text-base font-medium mb-3">Map Layers</div>
-      <div className="grid grid-cols-3 gap-4 md:grid-flow-col md:auto-cols-fr">
-        <Layer
-          title="New Hotspots"
-          onClick={handleClick('added')}
-          active={mapLayer === 'added'}
-        />
-        <Layer
-          title="Reward Scales"
-          onClick={handleClick('rewardScale')}
-          active={mapLayer === 'rewardScale'}
-        />
-        <Layer
-          title="Owner"
-          onClick={handleClick('owner')}
-          active={mapLayer === 'owner'}
-        />
-        <Layer
-          title="Offline"
-          onClick={handleClick('offline')}
-          active={mapLayer === 'offline'}
-        />
+        {layers.map(({ title, id }, i) => (
+          <Layer
+            key={id}
+            title={title}
+            onClick={handleClick(id)}
+            active={mapLayer === id}
+            style={{
+              transform: showMapLayers
+                ? `translateY(-${50 * i}px)`
+                : 'translateY(0)',
+            }}
+          />
+        ))}
       </div>
     </div>
   )
 }
+
+const Layer = ({ title, onClick, active = false, style }) => (
+  <div
+    className="flex items-center justify-end space-x-2 cursor-pointer absolute bottom-0 right-0 w-96 transform-gpu transition-transform duration-300 ease-in-out"
+    onClick={onClick}
+    style={style}
+  >
+    <span
+      className={classNames('text-sm', {
+        'text-navy-400 font-semibold': active,
+        'text-white': !active,
+      })}
+    >
+      {title}
+    </span>
+    <div className="bg-gray-700 w-10 h-10 rounded-full mb-1" />
+  </div>
+)
 
 export default MapLayersBox

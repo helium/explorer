@@ -11,6 +11,7 @@ import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import { formatLocation } from '../Hotspots/utils'
 import { formattedAccountAddress } from '../../utils/accounts'
+import { h3ToParent } from 'h3-js'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -44,6 +45,7 @@ const HotspotDetailsInfoBox = ({ address }) => {
 
   const generateSubtitles = (hotspot) => {
     if (!hotspot) return []
+    const tempTruncatedHex = h3ToParent(hotspot.location, 8)
     return [
       {
         iconPath: '/images/location-blue.svg',
@@ -52,8 +54,8 @@ const HotspotDetailsInfoBox = ({ address }) => {
       },
       {
         iconPath: '/images/location-hex.svg',
-        path: `/hexes/${hotspot.location}`,
-        title: hotspot.location,
+        path: `/hotspots/hex/${tempTruncatedHex}`,
+        title: tempTruncatedHex,
       },
       {
         iconPath: '/images/account-green.svg',

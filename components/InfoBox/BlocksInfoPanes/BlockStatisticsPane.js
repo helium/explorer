@@ -3,7 +3,9 @@ import StatWidget from '../../Widgets/StatWidget'
 import useSWR from 'swr'
 
 const BlockStatisticsPane = () => {
-  let { data: blocks } = useSWR('/api/metrics/blocks')
+  let { data: blocks } = useSWR(
+    'https://explorer-api.helium.com/api/metrics/blocks',
+  )
   blocks = { ...blocks, longFiData: [{ value: 2000 }, { value: 2010 }] }
 
   return (

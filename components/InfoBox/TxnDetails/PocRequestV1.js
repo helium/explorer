@@ -1,42 +1,38 @@
-import React from 'react'
-import { Descriptions } from 'antd'
-import Link from 'next/link'
-import animalHash from 'angry-purple-tiger'
-import AccountIcon from '../../../components/AccountIcon'
+import { useState } from 'react'
+import { useAsync } from 'react-async-hook'
+import HotspotWidget from '../../Widgets/HotspotWidget'
+import { fetchHotspot } from '../../../data/hotspots'
+import classNames from 'classnames'
+import AccountWidget from '../../Widgets/AccountWidget'
+import Widget from '../../Widgets/Widget'
 
 const PocRequestV1 = ({ txn }) => {
+  const [challenger, setChallenger] = useState()
+  const [isLoadingInitial, setIsLoadingInitial] = useState()
+
+  useAsync(async () => {
+    setIsLoadingInitial(true)
+    const fetchedChallenger = await fetchHotspot(txn.challenger)
+    setChallenger(fetchedChallenger)
+    setIsLoadingInitial(false)
+  }, [])
+
   return (
-    <div>
-      <Descriptions bordered>
-        <Descriptions.Item label="Hotspot" span={3}>
-          <Link href={'/hotspots/' + txn.challenger}>
-            <a>{animalHash(txn.challenger)}</a>
-          </Link>
-        </Descriptions.Item>
-        <Descriptions.Item label="Owner" span={3}>
-          <div style={{ display: 'flex' }}>
-            <AccountIcon
-              address={txn.challengerOwner}
-              style={{ marginRight: 4, width: 24, height: 24 }}
-            />
-            <Link href={'/accounts/' + txn.challengerOwner}>
-              <a>{txn.challengerOwner}</a>
-            </Link>
-          </div>
-        </Descriptions.Item>
-        <Descriptions.Item label="Block Height" span={3}>
-          <Link href={'/blocks/' + txn.height}>
-            <a>{txn.height}</a>
-          </Link>
-        </Descriptions.Item>
-        {Object.entries(txn).map(([key, value]) => {
-          return (
-            <Descriptions.Item label={key} key={key} span={3}>
-              {value}
-            </Descriptions.Item>
-          )
-        })}
-      </Descriptions>
+    <div
+      className={classNames('grid grid-flow-row grid-cols-1 no-scrollbar', {
+        'overflow-y-scroll': !isLoadingInitial,
+        'overflow-y-hidden': isLoadingInitial,
+      })}
+    >
+      <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+        <HotspotWidget title="Challenger Hotspot" hotspot={challenger} />
+        <AccountWidget title="Challenger Owner" address={txn.challengerOwner} />
+        <Widget title="Version" value={txn.version} />
+        <Widget title="Secret Hash" value={txn.secretHash} />
+        <Widget title="Onion Key Hash" value={txn.onionKeyHash} />
+        <Widget title="Fee" value={txn?.fee} />
+        <Widget title="Block Hash" value={txn.blockHash} />
+      </div>
     </div>
   )
 }

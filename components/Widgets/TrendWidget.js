@@ -14,7 +14,7 @@ const TrendWidget = ({
 
   const renderChange = () => {
     if (isLoading) {
-      return <Skeleton w="1/3" />
+      return <Skeleton w="w-1/3" />
     }
 
     if (yMax === yMin) {
@@ -29,7 +29,11 @@ const TrendWidget = ({
       <div className="w-1/3">
         <div className="text-gray-600 text-sm whitespace-nowrap">{title}</div>
         <div className="text-3xl font-medium my-1.5 tracking-tight">
-          {isLoading ? <Skeleton w="full" my="4" /> : yMax.toLocaleString()}
+          {isLoading ? (
+            <Skeleton w="w-full" my="my-4" />
+          ) : (
+            yMax.toLocaleString()
+          )}
         </div>
         <div className="text-green-500 text-sm font-medium">
           {renderChange()}

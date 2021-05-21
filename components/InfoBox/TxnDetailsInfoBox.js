@@ -20,6 +20,7 @@ import useSelectedTxn from '../../hooks/useSelectedTxn'
 import { useEffect } from 'react'
 import { formattedTxnHash, getTxnTypeName } from '../../utils/txns'
 import classNames from 'classnames'
+import Timestamp from 'react-timestamp'
 
 const TxnDetailsInfoBox = () => {
   const { hash } = useParams()
@@ -55,6 +56,10 @@ const TxnDetailsInfoBox = () => {
   const generateSubtitles = (txn) => {
     if (!txn) return []
     return [
+      {
+        title: <Timestamp date={txn.time} />,
+        iconPath: '/images/clock.svg',
+      },
       {
         title: formattedTxnHash(txn.hash),
         textToCopy: txn.hash,

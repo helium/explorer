@@ -10,21 +10,13 @@ const Widget = ({
   subtitle,
   onClick,
   icon,
-  span = 1,
+  span = 'col-span-1',
   isLoading = false,
   linkTo,
   titleIcon,
 }) => {
   const inner = (
-    <div
-      className={classNames(
-        `bg-gray-200 p-3 rounded-lg col-span-${span} flex transition-all`,
-        {
-          'cursor-pointer hover:bg-gray-300': !!onClick,
-        },
-      )}
-      onClick={onClick}
-    >
+    <>
       <div className="w-full">
         <div className="flex items-center space-x-1">
           {titleIcon}
@@ -32,13 +24,13 @@ const Widget = ({
         </div>
         <div className="flex items-center">
           {icon && <div className="mr-1.5 flex items-center">{icon}</div>}
-          <div className="text-3xl font-medium text-black my-1.5 tracking-tight w-full">
+          <div className="text-2xl font-medium text-black my-1.5 tracking-tight w-full break-all">
             {isLoading ? <Skeleton /> : value}
           </div>
         </div>
         {change &&
           (isLoading ? (
-            <Skeleton w="1/4" />
+            <Skeleton w="w-1/4" />
           ) : (
             <div className="text-green-500 text-sm font-medium">
               {change > 0 ? '+' : ''}
@@ -53,12 +45,35 @@ const Widget = ({
           <Image src="/images/details-arrow.svg" width={14} height={14} />
         </div>
       )}
-    </div>
+    </>
   )
 
-  if (linkTo) return <Link to={linkTo}>{inner}</Link>
-
-  return inner
+  if (linkTo) {
+    return (
+      <Link
+        className={classNames(
+          `${span} bg-gray-200 p-3 rounded-lg flex transition-all cursor-pointer hover:bg-gray-300`,
+        )}
+        to={linkTo}
+      >
+        {inner}
+      </Link>
+    )
+  } else {
+    return (
+      <div
+        className={classNames(
+          `${span} bg-gray-200 p-3 rounded-lg flex transition-all`,
+          {
+            'cursor-pointer hover:bg-gray-300': !!onClick,
+          },
+        )}
+        onClick={onClick}
+      >
+        {inner}
+      </div>
+    )
+  }
 }
 
 export default Widget

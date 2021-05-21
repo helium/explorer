@@ -11,15 +11,17 @@ import { formatDistance, calculateDistance } from '../../../utils/distance'
 const BeaconDetailsPane = ({ txn }) => {
   const [challenger, setChallenger] = useState()
   const [target, setTarget] = useState()
-  const isLoadingInitial = false
+  const [isLoadingInitial, setIsLoadingInitial] = useState(false)
 
   useAsync(async () => {
+    setIsLoadingInitial(true)
     const [fetchedChallenger, fetchedTarget] = await Promise.all([
       fetchHotspot(txn.challenger),
       fetchHotspot(txn.path[0].challengee),
     ])
     setChallenger(fetchedChallenger)
     setTarget(fetchedTarget)
+    setIsLoadingInitial(false)
   }, [])
 
   return (

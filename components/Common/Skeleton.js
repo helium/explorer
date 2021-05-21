@@ -1,5 +1,7 @@
-const Skeleton = ({ w = '3/4', my = '2' }) => (
-  <div class={`animate-pulse h-4 bg-gray-400 my-${my} rounded w-${w}`} />
+import classNames from 'classnames'
+
+const Skeleton = ({ w = 'w-3/4', my = 'my-2' }) => (
+  <div className={classNames('animate-pulse h-4 bg-gray-400 rounded', my, w)} />
 )
 
 export default Skeleton

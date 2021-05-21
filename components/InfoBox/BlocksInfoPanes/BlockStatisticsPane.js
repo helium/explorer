@@ -47,6 +47,7 @@ const BlockStatisticsPane = () => {
         series={blocks?.blockTimeMonth}
         isLoading={!blocks}
       />
+      <div className="col-span-2 pb-1" />
     </div>
   )
 }

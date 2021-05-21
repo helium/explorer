@@ -62,6 +62,7 @@ const ValidatorsInfoBox = () => {
               isLoading={isLoading}
             />
             <VersionsWidget validators={validators} />
+            <div className="col-span-2 pb-1" />
           </div>
         </TabPane>
         <TabPane title="Consensus Group" key="2" path="consensus">
@@ -70,6 +71,7 @@ const ValidatorsInfoBox = () => {
               validators={consensusGroup}
               recentGroups={recentGroups}
             />
+            <div className="col-span-2 pb-1" />
           </div>
         </TabPane>
         <TabPane title="All Validators" key="3" path="all">
@@ -78,6 +80,7 @@ const ValidatorsInfoBox = () => {
               validators={validators}
               recentGroups={recentGroups}
             />
+            <div className="col-span-2 pb-1" />
           </div>
         </TabPane>
       </TabNavbar>

@@ -42,6 +42,7 @@ const StatisticsPane = () => {
         isLoading={!stats}
       />
       <HotspotWidget title="Latest Hotspot" hotspot={latestHotspot} />
+      <div className="col-span-2 pb-1" />
     </div>
   )
 }

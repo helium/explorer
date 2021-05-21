@@ -1,14 +1,12 @@
-import useSWR from 'swr'
 import InfoBox from './InfoBox'
 import TrendWidget from '../Widgets/TrendWidget'
 import StatWidget from '../Widgets/StatWidget'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import HalveningCountdownWidget from '../Widgets/HalvingCountdownWidget'
+import useApi from '../../hooks/useApi'
 
 const OverviewInfoBox = () => {
-  const { data: stats } = useSWR(
-    'https://explorer-api.helium.com/api/metrics/hotspots',
-  )
+  const { data: stats } = useApi('/metrics/hotspots')
 
   return (
     <InfoBox title="Helium Explorer">

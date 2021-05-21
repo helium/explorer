@@ -1,4 +1,3 @@
-import useSWR from 'swr'
 import InfoBox from './InfoBox'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import Widget from '../Widgets/Widget'
@@ -8,11 +7,12 @@ import { formatLargeNumber, formatPercent } from '../../utils/format'
 import VersionsWidget from '../Widgets/VersionsWidget'
 import { useElections } from '../../data/consensus'
 import ValidatorsList from '../Lists/ValidatorsList'
+import useApi from '../../hooks/useApi'
 
 const TICKER = 'TNT'
 
 const ValidatorsInfoBox = () => {
-  const { data: validators = [] } = useSWR('/api/validators')
+  const { data: validators = [] } = useApi('/validators')
   const { consensusGroups } = useElections(undefined, 'testnet')
   const isLoading = useMemo(() => validators.length === 0, [validators.length])
   const recentGroups = useMemo(() => consensusGroups?.recentElections || [], [

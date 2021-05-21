@@ -91,6 +91,10 @@ module.exports = {
       height: {
         '6/10': '60vh',
       },
+      minHeight: {
+        '1/2': '50vh',
+        '325px': '325px',
+      },
       maxHeight: {
         'vh-minus-nav': 'calc(100vh - 80px)',
         '5/10': '50vh',

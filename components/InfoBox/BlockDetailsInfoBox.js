@@ -16,8 +16,12 @@ import TransactionTypesWidget from '../Widgets/TransactionTypesWidget'
 import SkeletonList from '../Lists/SkeletonList'
 import { useHistory } from 'react-router-dom'
 import Timestamp from 'react-timestamp'
+import { Link } from 'react-router-i18n'
+import { useBlockHeight } from '../../data/blocks'
+import Skeleton from '../Common/Skeleton'
 
 const BlockDetailsInfoBox = () => {
+  const { height: currentHeight } = useBlockHeight()
   const { block: height } = useParams()
   const history = useHistory()
 
@@ -40,12 +44,76 @@ const BlockDetailsInfoBox = () => {
     getBlockDetails(height)
   }, [height])
 
-  const title = useMemo(() => `Block ${parseInt(height).toLocaleString()}`, [
-    block,
-  ])
+  const title = useMemo(() => {
+    const BlockNavButton = ({ linkPath, icon, classes }) => (
+      <Link
+        className={classNames(
+          'bg-gray-700 hover:bg-gray-650 transition-all duration-150 rounded-md h-6 w-6 flex items-center justify-center',
+          classes,
+        )}
+        to={linkPath}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4 text-white"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          {icon}
+        </svg>
+      </Link>
+    )
+    return (
+      <span className="flex items-end justify-start">
+        Block {parseInt(height).toLocaleString()}
+        <span className="ml-2 flex items-end justify-start mb-1">
+          <BlockNavButton
+            linkPath={`/blocks/${parseInt(height) - 1}`}
+            icon={
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            }
+          />
+          {currentHeight > parseInt(height) && (
+            <BlockNavButton
+              classes="ml-0.5"
+              linkPath={`/blocks/${parseInt(height) + 1}`}
+              icon={
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              }
+            />
+          )}
+        </span>
+      </span>
+    )
+  }, [block])
 
   const generateSubtitles = (block) => {
-    if (blockLoading) return []
+    if (blockLoading)
+      return [
+        {
+          iconPath: '/images/clock.svg',
+          loading: true,
+        },
+        {
+          iconPath: '/images/txn.svg',
+          loading: true,
+        },
+        {
+          iconPath: '/images/block-purple.svg',
+          loading: true,
+        },
+      ]
     return [
       {
         iconPath: '/images/clock.svg',
@@ -125,12 +193,16 @@ const BlockDetailsInfoBox = () => {
             </>
           ) : (
             <div className="py-10 px-3 flex items-center justify-center">
+              <Skeleton w="w-full" my="my-2" />
               <p className="font-sans text-gray-600 text-lg">No transactions</p>
             </div>
           )}
         </>
       ) : (
-        <SkeletonList />
+        <>
+          <div style={{ width: '100%', minHeight: 60 + 76 }}></div>
+          <SkeletonList />
+        </>
       )}
     </InfoBox>
   )

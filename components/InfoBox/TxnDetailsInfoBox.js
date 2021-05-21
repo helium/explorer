@@ -5,7 +5,7 @@ import {
   PaymentV1,
   PaymentV2,
   PocReceiptsV1,
-  RewardsV1,
+  Rewards,
   StateChannelCloseV1,
   StateChannelOpenV1,
   TransferHotspotV1,
@@ -39,7 +39,7 @@ const TxnDetailsInfoBox = () => {
   }, [clearSelectedTxn])
 
   const generateTitle = (txn) => {
-    if (!txn) return ''
+    if (!txn) return 'Loading transaction...'
     return `${getTxnTypeName(selectedTxn.type)} transaction`
   }
 
@@ -54,7 +54,17 @@ const TxnDetailsInfoBox = () => {
   }
 
   const generateSubtitles = (txn) => {
-    if (!txn) return []
+    if (!txn)
+      return [
+        {
+          iconPath: '/images/clock.svg',
+          loading: true,
+        },
+        {
+          iconPath: '/images/address.svg',
+          loading: true,
+        },
+      ]
     return [
       {
         title: <Timestamp date={txn.time} />,

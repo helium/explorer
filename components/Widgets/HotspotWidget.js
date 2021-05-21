@@ -6,12 +6,7 @@ import Skeleton from '../Common/Skeleton'
 
 const HotspotWidget = ({ title, hotspot }) => {
   const { selectHotspot } = useSelectedHotspot()
-  if (!hotspot)
-    return (
-      <span style={{ height: 110 }}>
-        <Skeleton />
-      </span>
-    )
+  if (!hotspot) return <Widget isLoading />
 
   return (
     <Widget
@@ -20,7 +15,6 @@ const HotspotWidget = ({ title, hotspot }) => {
       subtitle={<FlagLocation geocode={hotspot.geocode} />}
       span={'col-span-2'}
       onClick={() => selectHotspot(hotspot.address)}
-      isLoading={!hotspot}
     />
   )
 }

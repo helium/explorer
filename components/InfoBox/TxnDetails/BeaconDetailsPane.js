@@ -7,6 +7,7 @@ import HotspotWidget from '../../Widgets/HotspotWidget'
 import Pill from '../../Common/Pill'
 import { h3ToGeo } from 'h3-js'
 import { formatDistance, calculateDistance } from '../../../utils/distance'
+import { Link } from 'react-router-i18n'
 
 const BeaconDetailsPane = ({ txn }) => {
   const [challenger, setChallenger] = useState()
@@ -54,9 +55,12 @@ const WitnessesWidget = ({
           return (
             <div key={w.gateway} className="flex justify-between items-center">
               <div>
-                <div className="text-base leading-tight tracking-tight">
+                <Link
+                  to={`/hotspots/${w.gateway}`}
+                  className="text-base leading-tight tracking-tight text-navy-1000 hover:text-navy-400 transition-all duration-150"
+                >
                   {animalHash(w.gateway)}
-                </div>
+                </Link>
                 <div className="text-sm leading-tight tracking-tighter text-gray-600">
                   {challengeeLon &&
                     formatDistance(

@@ -35,52 +35,56 @@ const GenericObjectWidget = ({ title, value }) => {
 
 const Fallback = ({ txn }) => {
   return (
-    <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
-      {Object.entries(txn).map(([key, value]) => {
-        // these fields will show up in the title / breadcrumbs / subtitle, so no need to repeat them
-        if (
-          key === 'type' ||
-          key === 'time' ||
-          key === 'height' ||
-          key === 'hash'
-        ) {
-          return
-        }
+    <>
+      <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+        {Object.entries(txn).map(([key, value]) => {
+          // these fields will show up in the title / breadcrumbs / subtitle, so no need to repeat them
+          if (
+            key === 'type' ||
+            key === 'time' ||
+            key === 'height' ||
+            key === 'hash'
+          ) {
+            return
+          }
 
-        // don't show meta info
-        if (key === 'name' || key === 'color' || key === 'tooltip') {
-          return
-        }
+          // don't show meta info
+          if (key === 'name' || key === 'color' || key === 'tooltip') {
+            return
+          }
 
-        // TODO: use a better way to determine if the value is a wallet address
-        if (key === 'payer' || key === 'payee' || key === 'owner') {
-          return (
-            <AccountWidget title={key} address={value} span={'col-span-2'} />
-          )
-        }
-
-        if (key === 'amount' || key === 'fee') {
-          if (value === 0) {
-            return <Widget title={key} value={value} span={'col-span-2'} />
-          } else {
-            const balance = new Balance(value.integerBalance, value.type)
+          // TODO: use a better way to determine if the value is a wallet address
+          if (key === 'payer' || key === 'payee' || key === 'owner') {
             return (
-              <Widget
-                title={key}
-                value={balance.toString(2)}
-                span={'col-span-2'}
-              />
+              <AccountWidget title={key} address={value} span={'col-span-2'} />
             )
           }
-        }
 
-        if (typeof value === 'object') {
-          return <GenericObjectWidget title={key} value={value} />
-        }
+          if (key === 'amount' || key === 'fee') {
+            if (value === 0) {
+              return <Widget title={key} value={value} span={'col-span-2'} />
+            } else {
+              const balance = new Balance(value.integerBalance, value.type)
+              return (
+                <Widget
+                  title={key}
+                  value={balance.toString(2)}
+                  span={'col-span-2'}
+                />
+              )
+            }
+          }
 
-        return <Widget title={key} span={'col-span-2'} value={value} />
-      })}
-    </div>
+          if (typeof value === 'object') {
+            return <GenericObjectWidget title={key} value={value} />
+          }
+
+          return <Widget title={key} span={'col-span-2'} value={value} />
+        })}
+      </div>{' '}
+      {/* Spacer */}
+      <div className="py-2 px-2" />
+    </>
   )
 }
 

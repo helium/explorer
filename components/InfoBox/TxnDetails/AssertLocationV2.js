@@ -6,8 +6,9 @@ import AccountWidget from '../../Widgets/AccountWidget'
 import HotspotWidget from '../../Widgets/HotspotWidget'
 import Widget from '../../Widgets/Widget'
 import { getMakerName } from '../../Makers/utils'
+import { formatGain, formatElevation } from '../../Hotspots/utils'
 
-const AssertLocationV1 = ({ txn }) => {
+const AssertLocationV2 = ({ txn }) => {
   const [assertedHotspot, setAssertedHotspot] = useState()
   const [makerName, setMakerName] = useState()
   const [isLoadingInitial, setIsLoadingInitial] = useState(false)
@@ -63,6 +64,16 @@ const AssertLocationV1 = ({ txn }) => {
           />
         </>
       )}
+      <Widget
+        title={'Elevation'}
+        value={formatElevation(txn.elevation)}
+        isLoading={isLoadingInitial}
+      />
+      <Widget
+        title={'Gain'}
+        value={formatGain(txn.gain)}
+        isLoading={isLoadingInitial}
+      />
       <Widget title={'Nonce'} value={txn.nonce} isLoading={isLoadingInitial} />
       <Widget
         title={'Fee'}
@@ -92,4 +103,4 @@ const AssertLocationV1 = ({ txn }) => {
   )
 }
 
-export default AssertLocationV1
+export default AssertLocationV2

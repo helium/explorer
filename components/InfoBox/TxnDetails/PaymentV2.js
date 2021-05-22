@@ -1,8 +1,6 @@
-import React from 'react'
-import { Descriptions } from 'antd'
-import Link from 'next/link'
-import AccountIcon from '../../../components/AccountIcon'
 import { Balance, CurrencyType } from '@helium/currency'
+import Widget from '../../Widgets/Widget'
+import AccountWidget from '../../Widgets/AccountWidget'
 
 const PaymentV2 = ({ txn }) => {
   const totalAmountObject = new Balance(
@@ -11,51 +9,40 @@ const PaymentV2 = ({ txn }) => {
   )
   const feeObject = new Balance(txn.fee.integerBalance, CurrencyType.dataCredit)
   return (
-    <Descriptions bordered>
-      <Descriptions.Item
-        label="Payer"
-        span={3}
-        style={{ overflow: 'ellipsis' }}
-      >
-        <div style={{ display: 'flex' }}>
-          <AccountIcon
-            address={txn.payer}
-            style={{ marginRight: 4, maxHeight: 24 }}
-          />
-          <Link href={`/accounts/${txn.payer}`}>
-            <a>{txn.payer}</a>
-          </Link>
-        </div>
-      </Descriptions.Item>
-      <Descriptions.Item label="Total HNT" span={3}>
-        {totalAmountObject.toString(2)}
-      </Descriptions.Item>
-      {txn.payments.map((p, idx) => {
-        const paymentAmountObject = new Balance(
-          p.amount.integerBalance,
-          CurrencyType.networkToken,
-        )
-        return (
-          <Descriptions.Item label={'Payee ' + Number(idx + 1)} span={3}>
-            <div style={{ display: 'flex' }}>
-              <AccountIcon
-                address={p.payee}
-                style={{ marginRight: 4, maxHeight: 24 }}
+    <>
+      <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+        <AccountWidget title="Payer" address={txn.payer} />
+        <Widget
+          title={'Total HNT'}
+          value={totalAmountObject.toString(2)}
+          span={'col-span-2'}
+        />
+        <Widget
+          title={'Fee'}
+          value={feeObject.toString()}
+          span={'col-span-2'}
+        />
+
+        {txn.payments.map((p, idx) => {
+          const paymentAmountObject = new Balance(
+            p.amount.integerBalance,
+            CurrencyType.networkToken,
+          )
+          return (
+            <>
+              <AccountWidget title={`Payee ${idx + 1}`} address={p.payee} />
+              <Widget
+                title={`HNT sent to Payee ${idx + 1}`}
+                value={paymentAmountObject.toString(2)}
+                span={'col-span-2'}
               />
-              <Link href={`/accounts/${p.payee}`}>
-                <a>{`${p.payee} `}</a>
-              </Link>
-              <span style={{ marginLeft: 4 }}>
-                ({paymentAmountObject.toString(2)})
-              </span>
-            </div>
-          </Descriptions.Item>
-        )
-      })}
-      <Descriptions.Item label="Fee" span={3}>
-        {feeObject.toString()}
-      </Descriptions.Item>
-    </Descriptions>
+            </>
+          )
+        })}
+      </div>
+      {/* Spacer */}
+      <div className="py-2 px-2" />
+    </>
   )
 }
 

@@ -12,6 +12,7 @@ import {
   ConsensusGroupV1,
   AddGatewayV1,
   AssertLocationV1,
+  AssertLocationV2,
   PocRequestV1,
   Fallback,
   TokenBurnV1,
@@ -127,7 +128,7 @@ const TxnDetailsSwitch = ({ txn, isLoading }) => {
     case 'assert_location_v1':
       return <AssertLocationV1 txn={txn} />
     case 'assert_location_v2':
-      return <AssertLocationV1 txn={txn} />
+      return <AssertLocationV2 txn={txn} />
     case 'token_burn_v1':
       return <TokenBurnV1 txn={txn} />
     default:

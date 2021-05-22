@@ -1,8 +1,6 @@
-import React from 'react'
-import { Descriptions } from 'antd'
-import Link from 'next/link'
-import AccountIcon from '../../../components/AccountIcon'
 import { Balance, CurrencyType } from '@helium/currency'
+import Widget from '../../Widgets/Widget'
+import AccountWidget from '../../Widgets/AccountWidget'
 
 const PaymentV1 = ({ txn }) => {
   const txnAmountObject = new Balance(
@@ -15,40 +13,24 @@ const PaymentV1 = ({ txn }) => {
   )
 
   return (
-    <Descriptions bordered>
-      <Descriptions.Item
-        label="Payer"
-        span={3}
-        style={{ overflow: 'ellipsis' }}
-      >
-        <div style={{ display: 'flex' }}>
-          <AccountIcon
-            address={txn.payer}
-            style={{ marginRight: 4, maxHeight: 24 }}
-          />
-          <Link href={`/accounts/${txn.payer}`}>
-            <a>{txn.payer}</a>
-          </Link>
-        </div>
-      </Descriptions.Item>
-      <Descriptions.Item label="Payee" span={3}>
-        <div style={{ display: 'flex' }}>
-          <AccountIcon
-            address={txn.payee}
-            style={{ marginRight: 4, maxHeight: 24 }}
-          />
-          <Link href={`/accounts/${txn.payee}`}>
-            <a>{txn.payee}</a>
-          </Link>
-        </div>
-      </Descriptions.Item>
-      <Descriptions.Item label="Amount" span={3}>
-        {txnAmountObject.toString(2)}
-      </Descriptions.Item>
-      <Descriptions.Item label="Fee" span={3}>
-        {txnFeeObject.toString()}
-      </Descriptions.Item>
-    </Descriptions>
+    <>
+      <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+        <AccountWidget title="Payer" address={txn.payer} />
+        <AccountWidget title="Payee" address={txn.payee} />
+        <Widget
+          title={'Amount of HNT'}
+          value={txnAmountObject.toString(2)}
+          span={'col-span-2'}
+        />
+        <Widget
+          title={'Fee'}
+          value={txnFeeObject.toString()}
+          span={'col-span-2'}
+        />
+      </div>
+      {/* Spacer */}
+      <div className="py-2 px-2" />
+    </>
   )
 }
 

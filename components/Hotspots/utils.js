@@ -119,3 +119,11 @@ export const hotspotToRes8 = (hotspot) => {
     lng: res8Lng,
   }
 }
+
+export const formatGain = (gain) => {
+  return `${gain / 10} dBi`
+}
+
+export const formatElevation = (elevation) => {
+  return `${elevation} m`
+}

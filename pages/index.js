@@ -9,6 +9,7 @@ import MapControls from '../components/Map/MapControls'
 import InfoBoxSwitch from '../components/InfoBox/InfoBoxSwitch'
 import { latestCoverageUrl } from '../commonjs/coverage'
 import useKeydown from '../hooks/useKeydown'
+import useGA from '../hooks/useGA'
 
 const Map = dynamic(() => import('../components/Map/Map'), {
   ssr: false,
@@ -16,6 +17,7 @@ const Map = dynamic(() => import('../components/Map/Map'), {
 })
 
 const Index = ({ coverageUrl }) => {
+  useGA()
   const history = useHistory()
   const location = useLocation()
 

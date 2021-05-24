@@ -7,6 +7,8 @@ import SubtitleSection from './SubtitleSection'
 const InfoBox = ({ title, children, breadcrumbs, subtitles }) => {
   const { showInfoBox, toggleInfoBox } = useInfoBox()
 
+  const BUTTON_SIZE = 35
+
   return (
     <div
       className={classNames(
@@ -29,15 +31,18 @@ const InfoBox = ({ title, children, breadcrumbs, subtitles }) => {
             </span>
             <SubtitleSection subtitles={subtitles} />
           </div>
-          <div onClick={toggleInfoBox}>
+          <div
+            style={{ minWidth: BUTTON_SIZE, minHeight: BUTTON_SIZE }}
+            onClick={toggleInfoBox}
+          >
             <Image
               src="/images/circle-arrow.svg"
               className={classNames(
                 'pointer-events-auto md:transform md:rotate-90 cursor-pointer',
                 { 'md:-rotate-90': !showInfoBox },
               )}
-              width={35}
-              height={35}
+              width={BUTTON_SIZE}
+              height={BUTTON_SIZE}
             />
           </div>
         </div>

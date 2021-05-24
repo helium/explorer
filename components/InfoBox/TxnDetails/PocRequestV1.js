@@ -28,10 +28,14 @@ const PocRequestV1 = ({ txn }) => {
         <HotspotWidget title="Challenger Hotspot" hotspot={challenger} />
         <AccountWidget title="Challenger Owner" address={txn.challengerOwner} />
         <Widget title="Version" value={txn.version} />
-        <Widget title="Secret Hash" value={txn.secretHash} />
-        <Widget title="Onion Key Hash" value={txn.onionKeyHash} />
         <Widget title="Fee" value={txn?.fee} />
-        <Widget title="Block Hash" value={txn.blockHash} />
+        <Widget title="Secret Hash" value={txn.secretHash} span="col-span-2" />
+        <Widget
+          title="Onion Key Hash"
+          value={txn.onionKeyHash}
+          span="col-span-2"
+        />
+        <Widget title="Block Hash" value={txn.blockHash} span="col-span-2" />
       </div>
     </div>
   )

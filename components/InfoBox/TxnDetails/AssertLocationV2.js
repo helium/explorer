@@ -15,7 +15,7 @@ const AssertLocationV2 = ({ txn }) => {
 
   useAsync(async () => {
     setIsLoadingInitial(true)
-    const assertedHotspot = await fetchHotspot(txn.gateway)
+    const assertedHotspotFetched = await fetchHotspot(txn.gateway)
     let makerNameInfo = ''
     if (txn.stakingFeePayer === txn.owner || txn.payer === null) {
       makerNameInfo = 'Hotspot Owner'
@@ -24,7 +24,7 @@ const AssertLocationV2 = ({ txn }) => {
       makerNameInfo = makerNameFetched
     }
     setMakerName(makerNameInfo)
-    setAssertedHotspot(assertedHotspot)
+    setAssertedHotspot(assertedHotspotFetched)
     setIsLoadingInitial(false)
   }, [])
 
@@ -39,7 +39,6 @@ const AssertLocationV2 = ({ txn }) => {
 
   return (
     <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
-      {/* <AssertLocationMapbox txn={txn} /> */}
       <HotspotWidget
         hotspot={assertedHotspot}
         title="Asserted Hotspot"
@@ -50,15 +49,32 @@ const AssertLocationV2 = ({ txn }) => {
         title="Asserted Hotspot Owner"
         isLoading={isLoadingInitial}
       />
+      <Widget
+        title={'Staking Fee'}
+        value={stakingFeeObject.toString()}
+        span={'col-span-2'}
+        isLoading={isLoadingInitial}
+      />
+      <AccountWidget
+        title={'Staking Fee Payer'}
+        address={stakingFeePayer}
+        isLoading={isLoadingInitial}
+      />
+      <Widget
+        title={'Staking Fee Payer Name'}
+        value={makerName}
+        span={'col-span-2'}
+        isLoading={isLoadingInitial}
+      />
       {txn.lat && txn.lng && (
         <>
           <Widget
-            title={'Latitude'}
+            title={'Asserted Latitude'}
             value={txn.lat}
             isLoading={isLoadingInitial}
           />
           <Widget
-            title={'Longitude'}
+            title={'Asserted Longitude'}
             value={txn.lng}
             isLoading={isLoadingInitial}
           />
@@ -78,23 +94,6 @@ const AssertLocationV2 = ({ txn }) => {
       <Widget
         title={'Fee'}
         value={feeObject.toString()}
-        isLoading={isLoadingInitial}
-      />
-      <Widget
-        title={'Staking Fee'}
-        value={stakingFeeObject.toString()}
-        span={'col-span-2'}
-        isLoading={isLoadingInitial}
-      />
-      <AccountWidget
-        title={'Staking Fee Payer'}
-        address={stakingFeePayer}
-        isLoading={isLoadingInitial}
-      />
-      <Widget
-        title={'Staking Fee Payer Name'}
-        value={makerName}
-        span={'col-span-2'}
         isLoading={isLoadingInitial}
       />
       {/* Spacer */}

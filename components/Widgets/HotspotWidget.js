@@ -6,7 +6,7 @@ import Skeleton from '../Common/Skeleton'
 
 const HotspotWidget = ({ title, hotspot }) => {
   const { selectHotspot } = useSelectedHotspot()
-  if (!hotspot) return <Widget isLoading />
+  if (!hotspot) return <Widget span={'col-span-2'} isLoading />
 
   return (
     <Widget

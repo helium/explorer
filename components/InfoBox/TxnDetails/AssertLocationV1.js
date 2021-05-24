@@ -14,7 +14,7 @@ const AssertLocationV1 = ({ txn }) => {
 
   useAsync(async () => {
     setIsLoadingInitial(true)
-    const assertedHotspot = await fetchHotspot(txn.gateway)
+    const assertedHotspotFetched = await fetchHotspot(txn.gateway)
     let makerNameInfo = ''
     if (txn.stakingFeePayer === txn.owner || txn.payer === null) {
       makerNameInfo = 'Hotspot Owner'
@@ -23,7 +23,7 @@ const AssertLocationV1 = ({ txn }) => {
       makerNameInfo = makerNameFetched
     }
     setMakerName(makerNameInfo)
-    setAssertedHotspot(assertedHotspot)
+    setAssertedHotspot(assertedHotspotFetched)
     setIsLoadingInitial(false)
   }, [])
 
@@ -38,7 +38,6 @@ const AssertLocationV1 = ({ txn }) => {
 
   return (
     <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
-      {/* <AssertLocationMapbox txn={txn} /> */}
       <HotspotWidget
         hotspot={assertedHotspot}
         title="Asserted Hotspot"
@@ -47,26 +46,6 @@ const AssertLocationV1 = ({ txn }) => {
       <AccountWidget
         address={txn.owner}
         title="Asserted Hotspot Owner"
-        isLoading={isLoadingInitial}
-      />
-      {txn.lat && txn.lng && (
-        <>
-          <Widget
-            title={'Latitude'}
-            value={txn.lat}
-            isLoading={isLoadingInitial}
-          />
-          <Widget
-            title={'Longitude'}
-            value={txn.lng}
-            isLoading={isLoadingInitial}
-          />
-        </>
-      )}
-      <Widget title={'Nonce'} value={txn.nonce} isLoading={isLoadingInitial} />
-      <Widget
-        title={'Fee'}
-        value={feeObject.toString()}
         isLoading={isLoadingInitial}
       />
       <Widget
@@ -84,6 +63,26 @@ const AssertLocationV1 = ({ txn }) => {
         title={'Staking Fee Payer Name'}
         value={makerName}
         span={'col-span-2'}
+        isLoading={isLoadingInitial}
+      />
+      {txn.lat && txn.lng && (
+        <>
+          <Widget
+            title={'Asserted Latitude'}
+            value={txn.lat}
+            isLoading={isLoadingInitial}
+          />
+          <Widget
+            title={'Asserted Longitude'}
+            value={txn.lng}
+            isLoading={isLoadingInitial}
+          />
+        </>
+      )}
+      <Widget title={'Nonce'} value={txn.nonce} isLoading={isLoadingInitial} />
+      <Widget
+        title={'Fee'}
+        value={feeObject.toString()}
         isLoading={isLoadingInitial}
       />
       {/* Spacer */}

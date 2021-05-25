@@ -20,6 +20,7 @@ const MarketInfoBox = () => {
           <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
             <Widget
               title="Market Price"
+              tooltip="Based on data provided by CoinGecko"
               value={<Currency value={market?.price} />}
               change={round(market?.priceChange, 2)}
               changeSuffix="%"
@@ -27,6 +28,7 @@ const MarketInfoBox = () => {
             />
             <Widget
               title="Oracle Price"
+              tooltip="Oracle price is used to determine how many DC are produced when burning HNT"
               value={<Currency value={latestOraclePrice?.price / 100000000} />}
               change={round(
                 ((latestOraclePrice?.price - priorOraclePrice?.price) /
@@ -37,9 +39,14 @@ const MarketInfoBox = () => {
               changeSuffix="%"
               isLoading={!oraclePrices}
             />
-            <Widget title="Data Credit Price" value="$0.00001" />
+            <Widget
+              title="Data Credit Price"
+              tooltip="Data Credits are fixed at $0.00001 USD. Oracle price is used to compute how much HNT to burn."
+              value="$0.00001"
+            />
             <Widget
               title="DC per HNT"
+              tooltip="DC are used to transmit or receive 24 bytes of data over the Helium Network"
               value={(
                 latestOraclePrice?.price /
                 100000000 /
@@ -49,22 +56,28 @@ const MarketInfoBox = () => {
             />
             <Widget
               title="Volume"
+              tooltip="Based on data provided by CoinGecko"
               value={<Currency value={market?.volume} isLarge />}
               isLoading={!market}
             />
             <Widget
               title="Circulating Supply"
+              tooltip={`${round(
+                stats?.circulatingSupply,
+              ).toLocaleString()} HNT currently in circulation`}
               value={`${round(stats?.circulatingSupply / 1000000, 3)}M`}
               subtitle={<span className="text-gray-550">HNT</span>}
               isLoading={!stats}
             />
             <Widget
               title="Max Supply"
+              tooltip="There is an effective cap of 223M HNT due to reward halvings every 2 years"
               value="223M"
               subtitle={<span className="text-gray-550">HNT</span>}
             />
             <Widget
               title="Market Cap"
+              tooltip="Based on data provided by CoinGecko"
               value={
                 <Currency
                   value={market?.price * stats?.circulatingSupply}

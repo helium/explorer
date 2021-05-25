@@ -1,10 +1,13 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import Image from 'next/image'
+import { InfoCircleOutlined } from '@ant-design/icons'
 import Skeleton from '../Common/Skeleton'
+import { Tooltip } from 'antd'
 
 const Widget = ({
   title,
+  tooltip,
   value,
   change,
   changeSuffix,
@@ -30,6 +33,13 @@ const Widget = ({
         <div className="flex items-center space-x-1">
           {titleIcon}
           <div className="text-gray-600 text-sm">{title}</div>
+          {tooltip && (
+            <div className="text-gray-600 text-sm cursor-pointer">
+              <Tooltip title={tooltip}>
+                <InfoCircleOutlined />
+              </Tooltip>
+            </div>
+          )}
         </div>
         <div className="flex items-center">
           {icon && <div className="mr-1.5 flex items-center">{icon}</div>}

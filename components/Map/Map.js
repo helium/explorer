@@ -13,7 +13,7 @@ import useInfoBox from '../../hooks/useInfoBox'
 import useGeolocation from '../../hooks/useGeolocation'
 import ValidatorsLayer from './Layers/ValidatorsLayer'
 import useSelectedTxn from '../../hooks/useSelectedTxn'
-import { fetchHotspot } from '../../data/hotspots'
+import { fetchConsensusHotspots, fetchHotspot } from '../../data/hotspots'
 import HexCoverageLayer from './Layers/HexCoverageLayer'
 import { hotspotToRes8 } from '../Hotspots/utils'
 
@@ -114,6 +114,7 @@ const CoverageMap = () => {
 
       setSelectedTxnHotspot(targetHotspot)
       setSelectedTxnParticipants(witnesses)
+      return
     } else if (
       selectedTxn?.type === 'assert_location_v1' ||
       selectedTxn?.type === 'assert_location_v2'
@@ -122,9 +123,16 @@ const CoverageMap = () => {
       const targetHotspot = await fetchHotspot(target)
       setSelectedTxnHotspot(targetHotspot)
       setSelectedTxnParticipants([])
+      return
+    } else if (selectedTxn?.type === 'consensus_group_v1') {
+      const members = await fetchConsensusHotspots(txn.height)
+      setSelectedTxnHotspot(undefined)
+      setSelectedTxnParticipants(members)
+      return
     } else {
       setSelectedTxnHotspot(undefined)
       setSelectedTxnParticipants([])
+      return
     }
   }, [selectedTxn])
 
@@ -186,6 +194,11 @@ const CoverageMap = () => {
       <HotspotDetailLayer
         hotspot={selectedHotspot || selectedTxnHotspot}
         witnesses={selectedHotspot?.witnesses || selectedTxnParticipants || []}
+        members={
+          selectedTxn?.type === 'consensus_group_v1'
+            ? selectedTxnParticipants
+            : []
+        }
       />
       <ValidatorsLayer
         validators={validators}

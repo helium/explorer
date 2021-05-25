@@ -36,6 +36,8 @@ const BeaconDetailsPane = ({ txn }) => {
         <HotspotWidget title="Challenger" hotspot={challenger} />
         <HotspotWidget title="Target" hotspot={target} />
         <WitnessesWidget path={txn.path[0]} />
+        {/* Spacer */}
+        <div className="py-1 md:py-2 px-2" />
       </div>
     </div>
   )

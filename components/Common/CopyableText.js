@@ -62,7 +62,7 @@ const CopyableText = ({ textToCopy, classes, children }) => {
         })}
         onClick={() => copyTextToClipboard(textToCopy)}
       >
-        <span className="relative flex items-center justify-start">
+        <span className="relative flex items-center justify-start whitespace-nowrap">
           {children}
           {successStatus ? (
             <svg
@@ -90,7 +90,7 @@ const CopyableText = ({ textToCopy, classes, children }) => {
           ) : (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-auto ml-2 text-gray-600"
+              className="h-4 w-auto ml-2 text-gray-600 cursor-pointer"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

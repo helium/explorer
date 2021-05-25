@@ -2,10 +2,12 @@ import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import Image from 'next/image'
 import Skeleton from '../Common/Skeleton'
+import CopyableText from '../Common/CopyableText'
 
 const Widget = ({
   title,
   value,
+  copyableValue,
   change,
   subtitle,
   onClick,
@@ -25,7 +27,18 @@ const Widget = ({
         <div className="flex items-center">
           {icon && <div className="mr-1.5 flex items-center">{icon}</div>}
           <div className="text-2xl font-medium text-black my-1.5 tracking-tight w-full break-all">
-            {isLoading ? <Skeleton /> : value}
+            {isLoading ? (
+              <Skeleton />
+            ) : copyableValue ? (
+              // TODO: improve code readability, visual design, and UX of copyable widget value
+              <CopyableText textToCopy={copyableValue}>
+                <p className="cursor-pointer hover:text-gray-800 transition-all duration-150">
+                  {value}
+                </p>
+              </CopyableText>
+            ) : (
+              <p>{value}</p>
+            )}
           </div>
         </div>
         {change &&

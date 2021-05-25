@@ -1,85 +1,93 @@
-import React, { Component } from 'react'
-import { Descriptions } from 'antd'
-import Link from 'next/link'
+import classNames from 'classnames'
+import { useState } from 'react'
+import { useAsync } from 'react-async-hook'
 import animalHash from 'angry-purple-tiger'
-import TruncatedField from './TruncatedField'
-// import { formatLocation } from '../Hotspots/utils'
-// import ConsensusTable, {
-//   makeArrayWorkWithAntTable,
-//   generateColumns,
-// } from '../ConsensusTable'
+import { fetchConsensusHotspots } from '../../../data/hotspots'
+import { Link } from 'react-router-i18n'
+import Widget from '../../Widgets/Widget'
+import FlagLocation from '../../Common/FlagLocation'
+import AccountAddress from '../../AccountAddress'
+import AccountIcon from '../../AccountIcon'
+import { truncateHash } from '../../../utils/format'
 
-import dynamic from 'next/dynamic'
+const ConsensusGroupV1 = ({ txn }) => {
+  const [members, setMembers] = useState([])
+  const [isLoadingInitial, setIsLoadingInitial] = useState(false)
 
-// const ConsensusMapbox = dynamic(() => import('./ConsensusMapbox'), {
-//   ssr: false,
-//   loading: () => <div style={{ minHeight: '600px' }} />,
-// })
+  useAsync(async () => {
+    setIsLoadingInitial(true)
+    const membersFetched = await fetchConsensusHotspots(txn.height)
+    setMembers(membersFetched)
+    setIsLoadingInitial(false)
+  }, [])
 
-const initialState = {
-  loading: true,
-  consensusHotspots: [],
+  return (
+    <div
+      className={classNames('grid grid-flow-row grid-cols-1 no-scrollbar', {
+        'overflow-y-scroll': !isLoadingInitial,
+        'overflow-y-hidden': isLoadingInitial,
+      })}
+    >
+      <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+        <MembersWidget members={members} />
+        <Widget
+          title={'Delay'}
+          value={txn.delay}
+          span={'col-span-2'}
+          isLoading={isLoadingInitial}
+        />
+        <Widget
+          title={'Proof'}
+          value={truncateHash(txn.proof, 10)}
+          copyableValue={txn.proof}
+          isLoading={isLoadingInitial}
+          span={'col-span-2'}
+        />
+        {/* Spacer */}
+        <div className="py-1 md:py-2 px-2" />
+      </div>
+    </div>
+  )
 }
 
-class ConsensusGroupV1 extends Component {
-  constructor(props) {
-    super(props)
-  }
-
-  state = initialState
-
-  async componentDidMount() {
-    this.setState({ loading: true })
-    this.loadData()
-  }
-
-  loadData = async () => {
-    // TODO: convert this to helium-js
-    const res = await fetch(
-      `https://api.helium.io/v1/hotspots/elected/${this.props.txn.height}`,
-    )
-    const consensusHotspots = await res.json()
-    this.setState({ consensusHotspots: consensusHotspots.data })
-    this.setState({ loading: false })
-  }
-  render() {
-    const { loading, consensusHotspots } = this.state
-    const { txn } = this.props
-
-    return (
-      <div>
-        <div>
-          {/* {!loading && (
-            <div style={{ minHeight: '600px', backgroundColor: '#324b61' }}>
-              <ConsensusMapbox members={consensusHotspots} />
-            </div>
-          )} */}
-        </div>
-        <Descriptions bordered layout="vertical">
-          <Descriptions.Item label="Consensus Group Members">
-            {/* <ConsensusTable
-              loading={loading}
-              columns={generateColumns('current')}
-              dataSource={consensusHotspots}
-            /> */}
-          </Descriptions.Item>
-        </Descriptions>
-        <Descriptions bordered>
-          <Descriptions.Item label="Block Height" span={3}>
-            <Link href={'/blocks/' + txn.height}>
-              <a>{txn.height}</a>
-            </Link>
-          </Descriptions.Item>
-          <Descriptions.Item label="Delay" span={3}>
-            {txn.delay}
-          </Descriptions.Item>
-          <Descriptions.Item label="Proof" span={3}>
-            <TruncatedField value={txn.proof} />
-          </Descriptions.Item>
-        </Descriptions>
+const MembersWidget = ({ members }) => {
+  return (
+    <div className={classNames(`bg-gray-200 p-3 rounded-lg col-span-2`)}>
+      <div className="text-gray-600 text-sm leading-loose">
+        {members.length} Consensus Group Members
       </div>
-    )
-  }
+      <div className="space-y-3">
+        {members.map((m) => {
+          return (
+            <div key={m.address} className="flex justify-between items-center">
+              <div className="w-full">
+                <Link
+                  to={`/hotspots/${m.address}`}
+                  className="text-base leading-tight tracking-tight text-navy-1000 hover:text-navy-400 transition-all duration-150"
+                >
+                  {animalHash(m.address)}
+                </Link>
+                <div className="flex items-center w-full justify-between text-sm leading-tight tracking-tighter text-gray-600">
+                  <div className="">
+                    {m.geocode && <FlagLocation geocode={m.geocode} />}
+                  </div>
+                  <Link
+                    to={`/accounts/${m.owner}`}
+                    className="flex items-center justify-end text-gray-600 hover:text-navy-400"
+                  >
+                    <AccountIcon size={17} address={m.owner} />
+                    <span className="pl-1 ">
+                      <AccountAddress address={m.owner} truncate={4} mono />
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
 }
 
 export default ConsensusGroupV1

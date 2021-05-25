@@ -11,6 +11,16 @@ module.exports = {
     },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
+      mono: [
+        'ui-monospace',
+        'SFMono-Regular',
+        'Menlo',
+        'Monaco',
+        'Consolas',
+        'Liberation Mono',
+        'Courier New',
+        'monospace',
+      ],
     },
     colors: {
       //TODO: get Pete to define a palette and do a full color audit

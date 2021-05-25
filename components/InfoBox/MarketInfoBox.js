@@ -12,7 +12,7 @@ const MarketInfoBox = () => {
   const { market } = useMarket()
   const { stats } = useStats()
   const { oraclePrices } = useOraclePrices()
-  const [latestOraclePrice, priorOraclePrice] = oraclePrices || []
+  const [latestOraclePrice] = oraclePrices || []
 
   return (
     <InfoBox title="Market">
@@ -26,6 +26,14 @@ const MarketInfoBox = () => {
                   value: oraclePrice.price / 100000000,
                 }))
                 ?.reverse()}
+              locale="en-US"
+              toLocaleStringOpts={{
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }}
+              changeType="percent"
               periodLabel="30 Day Trend"
               isLoading={!oraclePrices}
             />
@@ -38,22 +46,10 @@ const MarketInfoBox = () => {
               isLoading={!market}
             />
             <Widget
-              title="Oracle Price"
-              tooltip="Oracle price is used to determine how many DC are produced when burning HNT"
-              value={<Currency value={latestOraclePrice?.price / 100000000} />}
-              change={round(
-                ((latestOraclePrice?.price - priorOraclePrice?.price) /
-                  latestOraclePrice?.price) *
-                  100,
-                2,
-              )}
-              changeSuffix="%"
-              isLoading={!oraclePrices}
-            />
-            <Widget
               title="Data Credit Price"
               tooltip="Data Credits are fixed at $0.00001 USD. Oracle price is used to compute how much HNT to burn."
               value="$0.00001"
+              subtitle={<span className="text-gray-550">fixed</span>}
             />
             <Widget
               title="DC per HNT"

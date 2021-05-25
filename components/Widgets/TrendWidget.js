@@ -1,48 +1,41 @@
 import { LineChart, Line, YAxis, ResponsiveContainer } from 'recharts'
-import classNames from 'classnames'
 import { first, last } from 'lodash'
 import Skeleton from '../Common/Skeleton'
 import { useMemo } from 'react'
+import WidgetChange from './WidgetChange'
 
 const TrendWidget = ({
   title,
   series,
+  valuePrefix,
+  locale,
+  toLocaleStringOpts = {},
+  changeType = 'difference',
   isLoading = false,
   periodLabel = '30 Day Trend',
 }) => {
   const yMin = first(series || [])?.value || 0
   const yMax = last(series || [])?.value || 0
 
-  const change = useMemo(() => yMax - yMin, [yMax, yMin])
-
-  const renderChange = () => {
-    if (isLoading) {
-      return <Skeleton w="1/3" />
-    }
-
-    if (yMax === yMin) {
-      return <span className="text-gray-550">No Change</span>
-    }
-
-    const prefix = change > 0 ? '+' : ''
-    return [prefix, change.toLocaleString()].join('')
-  }
-
   return (
     <div className="bg-gray-200 p-3 rounded-lg col-span-2 flex">
       <div className="w-1/3">
         <div className="text-gray-600 text-sm whitespace-nowrap">{title}</div>
         <div className="text-3xl font-medium my-1.5 tracking-tight">
-          {isLoading ? <Skeleton w="full" my="4" /> : yMax.toLocaleString()}
+          {isLoading ? (
+            <Skeleton w="full" my="4" />
+          ) : (
+            [valuePrefix, yMax.toLocaleString(locale, toLocaleStringOpts)].join(
+              '',
+            )
+          )}
         </div>
-        <div
-          className={classNames('text-sm font-medium', {
-            'text-green-500': change > 0,
-            'text-navy-400': change < 0,
-          })}
-        >
-          {renderChange()}
-        </div>
+        <WidgetChange
+          value={yMax}
+          initial={yMin}
+          type={changeType}
+          isLoading={isLoading}
+        />
       </div>
       <div className="w-full p-4 pr-0 relative">
         <ResponsiveContainer width="100%" height="100%">

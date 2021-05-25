@@ -1,7 +1,8 @@
 import { LineChart, Line, YAxis, ResponsiveContainer } from 'recharts'
-
+import classNames from 'classnames'
 import { first, last } from 'lodash'
 import Skeleton from '../Common/Skeleton'
+import { useMemo } from 'react'
 
 const TrendWidget = ({
   title,
@@ -12,6 +13,8 @@ const TrendWidget = ({
   const yMin = first(series || [])?.value || 0
   const yMax = last(series || [])?.value || 0
 
+  const change = useMemo(() => yMax - yMin, [yMax, yMin])
+
   const renderChange = () => {
     if (isLoading) {
       return <Skeleton w="1/3" />
@@ -21,7 +24,8 @@ const TrendWidget = ({
       return <span className="text-gray-550">No Change</span>
     }
 
-    return (yMax - yMin).toLocaleString()
+    const prefix = change > 0 ? '+' : ''
+    return [prefix, change.toLocaleString()].join('')
   }
 
   return (
@@ -31,7 +35,12 @@ const TrendWidget = ({
         <div className="text-3xl font-medium my-1.5 tracking-tight">
           {isLoading ? <Skeleton w="full" my="4" /> : yMax.toLocaleString()}
         </div>
-        <div className="text-green-500 text-sm font-medium">
+        <div
+          className={classNames('text-sm font-medium', {
+            'text-green-500': change > 0,
+            'text-navy-400': change < 0,
+          })}
+        >
           {renderChange()}
         </div>
       </div>

@@ -6,6 +6,7 @@ import Currency from '../Common/Currency'
 import { useStats } from '../../data/stats'
 import { round } from 'lodash'
 import { useOraclePrices } from '../../data/oracles'
+import TrendWidget from '../Widgets/TrendWidget'
 
 const MarketInfoBox = () => {
   const { market } = useMarket()
@@ -18,6 +19,16 @@ const MarketInfoBox = () => {
       <TabNavbar>
         <TabPane title="Statistics" key="statistics">
           <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+            <TrendWidget
+              title="Oracle Price"
+              series={oraclePrices
+                ?.map((oraclePrice) => ({
+                  value: oraclePrice.price / 100000000,
+                }))
+                ?.reverse()}
+              periodLabel="30 Day Trend"
+              isLoading={!oraclePrices}
+            />
             <Widget
               title="Market Price"
               tooltip="Based on data provided by CoinGecko"

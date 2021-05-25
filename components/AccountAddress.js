@@ -5,21 +5,21 @@ import classNames from 'classnames'
 
 const AccountAddress = ({ address, truncate = false, tooltip, mono }) => {
   const truncateAmount = isInteger(truncate) ? truncate : 10
-  const inner = (
-    <span
-      className={classNames('break-all cursor-pointer', { 'font-mono': mono })}
-    >
-      {truncate
-        ? `${address.slice(0, truncateAmount)}...${address.slice(
-            -truncateAmount,
-          )}`
-        : address}
-    </span>
+  return (
+    <Tooltip title={tooltip}>
+      <span
+        className={classNames('break-all cursor-pointer', {
+          'font-mono': mono,
+        })}
+      >
+        {truncate
+          ? `${address.slice(0, truncateAmount)}...${address.slice(
+              -truncateAmount,
+            )}`
+          : address}
+      </span>
+    </Tooltip>
   )
-
-  if (tooltip) return <Tooltip title={address}>{inner}</Tooltip>
-
-  return inner
 }
 
 export default AccountAddress

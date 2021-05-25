@@ -1,85 +1,25 @@
-import React, { Component } from 'react'
-import { Table } from 'antd'
-// import { TxnTag } from '.'
-import Link from 'next/link'
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-i18n'
 import AccountIcon from '../../../components/AccountIcon'
-import { Balance, CurrencyType } from '@helium/currency'
+import classNames from 'classnames'
+import AccountAddress from '../../../components/AccountAddress'
+import { getTxnTypeName } from '../../../utils/txns'
+import Widget from '../../Widgets/Widget'
 
-const columns = [
-  {
-    title: 'Account',
-    dataIndex: 'account',
-    key: 'account',
-    render: (address) => (
-      <div style={{ display: 'flex' }}>
-        <AccountIcon address={address} style={{ marginRight: 4 }} />
-        <Link href={'/accounts/' + address} prefetch={false}>
-          <a>{address}</a>
-        </Link>
-      </div>
-    ),
-  },
-  {
-    title: 'Rewards',
-    dataIndex: 'count',
-    key: 'count',
-  },
-  {
-    title: 'Total HNT',
-    dataIndex: 'amount',
-    key: 'amount',
-    render: (amount) => <span>{amount.toString()} HNT</span>,
-  },
-]
+const RewardsV1 = ({ txn }) => {
+  const [groupedRewards, setGroupedRewards] = useState([])
 
-const expandedColumns = [
-  {
-    title: 'Type',
-    dataIndex: 'type',
-    render: (type) => <TxnTag type={type}></TxnTag>,
-  },
-  {
-    title: 'HNT mined',
-    dataIndex: 'amount',
-    key: 'amount',
-    render: (amount) => {
-      const amountObject = new Balance(
-        amount.integerBalance,
-        CurrencyType.networkToken,
-      )
-      return <span>{amountObject.toString(2)}</span>
-    },
-  },
-]
+  const groupedRewardsArray = []
 
-class RewardsV1 extends Component {
-  state = {
-    groupedRewards: [],
-    expandedTable: {
-      expandedRowRender: (record) => (
-        <span className="ant-table-override">
-          <Table
-            pagination={{ pageSize: 50 }}
-            size="small"
-            columns={expandedColumns}
-            dataSource={record.rewards}
-          />
-        </span>
-      ),
-    },
-  }
-
-  componentDidMount() {
-    const { txn } = this.props
-    const { groupedRewards } = this.state
-
+  useEffect(() => {
     txn.rewards.forEach((r) => {
       const val = { account: r.account }
       val['rewards'] = txn.rewards.filter((obj) => {
         return obj.account === r.account
       })
       if (
-        groupedRewards.filter((e) => e.account === val.account).length === 0
+        groupedRewardsArray.filter((e) => e.account === val.account).length ===
+        0
       ) {
         val['count'] = val.rewards.length
         let amount = 0
@@ -89,40 +29,106 @@ class RewardsV1 extends Component {
         val['amount'] = amount.toLocaleString(undefined, {
           maximumFractionDigits: 2,
         })
-        groupedRewards.push(val)
+        groupedRewardsArray.push(val)
       }
     })
-    groupedRewards.sort((b, a) =>
+    groupedRewardsArray.sort((b, a) =>
       a.amount > b.amount ? 1 : b.amount > a.amount ? -1 : 0,
     )
-    this.setState({ groupedRewards: [...groupedRewards] })
-  }
+    setGroupedRewards(groupedRewardsArray)
+  }, [])
 
-  render() {
-    const { groupedRewards, expandedTable } = this.state
+  new Balance(txn.totalAmount.integerBalance, CurrencyType.networkToken)
 
-    return (
-      <div>
-        <div style={{ padding: '0 24px 50px' }}>
-          <h3 style={{ color: '#444' }}>About Mining Reward Transactions</h3>
-          <p>
-            Bundles multiple reward transactions at the end of each epoch and
-            distributes all HNT produced in that block to wallets that have
-            earned them.{' '}
-          </p>
-        </div>
-        <Table
-          dataSource={groupedRewards}
-          columns={columns}
-          size="small"
-          rowKey="account"
-          pagination={{ pageSize: 50 }}
-          scroll={{ x: true }}
-          expandable={expandedTable}
-        />
+  return (
+    <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+      <Widget title={'Total Amount'} value={txn.totalAmount} span={2} />
+      <RewardsRecipientsWidget rewardsRecipients={groupedRewards} />
+      {/* Spacer */}
+      <div className="py-1 md:py-2 px-2" />
+    </div>
+  )
+}
+
+const RewardsRecipientsWidget = ({ rewardsRecipients }) => {
+  return (
+    <div className={classNames(`bg-gray-200 p-3 rounded-lg col-span-2`)}>
+      <div className="text-gray-600 text-sm leading-loose">
+        Rewards Recipients ({rewardsRecipients?.length})
       </div>
-    )
-  }
+      <div className="space-y-4">
+        {rewardsRecipients.map((rr, i) => {
+          return <RewardRecipientRow rewardInfo={rr} />
+        })}
+      </div>
+    </div>
+  )
+}
+
+const RewardRecipientRow = ({ rewardInfo }) => {
+  const [expanded, setExpanded] = useState(false)
+
+  return (
+    <div className="flex flex-col">
+      <div
+        key={rewardInfo.address}
+        className="flex justify-between items-center"
+      >
+        <div className="w-full">
+          <Link
+            to={`/accounts/${rewardInfo.account}`}
+            className="text-base leading-tight tracking-tight text-navy-1000 hover:text-navy-400 transition-all duration-150 flex items-center justify-start"
+          >
+            <AccountIcon size={20} address={rewardInfo.account} />
+            <span className="pl-1 ">
+              <AccountAddress address={rewardInfo.account} truncate={7} mono />
+            </span>
+          </Link>
+          <div className="flex items-center w-full justify-between text-sm leading-tight tracking-tighter text-gray-600 mt-0.5">
+            <p className="flex items-center justify-end text-gray-600 font-mono">
+              {rewardInfo.amount} HNT
+            </p>
+            <button
+              className="flex items-center justify-start bg-gray-300 hover:bg-gray-350 outline-none rounded-full px-3 py-0.5"
+              onClick={() => {
+                setExpanded((prevSetting) => !prevSetting)
+              }}
+            >
+              <p className="flex items-center justify-end text-gray-600 hover:text-gray-700 text-sm">
+                {rewardInfo?.rewards?.length}{' '}
+                {rewardInfo?.rewards?.length === 1 ? 'reward' : 'rewards'}
+                <span className="ml-1">{expanded ? '-' : '+'}</span>
+              </p>
+            </button>
+          </div>
+        </div>
+      </div>
+      {expanded && (
+        <div className="my-2 space-y-0.5 divide-y-2 divide-gray-200">
+          {rewardInfo.rewards.map((r, i, { length }) => {
+            return (
+              <div
+                className={classNames(
+                  'bg-gray-300 flex px-2 py-0.5 items-center justify-between',
+                  {
+                    'rounded-t-md': i === 0,
+                    'rounded-b-md': i === length - 1,
+                  },
+                )}
+              >
+                <p className="text-gray-700 text-sm font-mono">
+                  {r.amount.toString(2)}
+                </p>
+                <p className="text-gray-800 text-sm font-sans">
+                  {getTxnTypeName(r.type)}
+                </p>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default RewardsV1

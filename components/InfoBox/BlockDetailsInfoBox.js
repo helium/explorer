@@ -16,9 +16,11 @@ import TransactionTypesWidget from '../Widgets/TransactionTypesWidget'
 import SkeletonList from '../Lists/SkeletonList'
 import { useHistory } from 'react-router-dom'
 import Timestamp from 'react-timestamp'
-import { Link } from 'react-router-i18n'
 import { useBlockHeight } from '../../data/blocks'
 import Skeleton from '../Common/Skeleton'
+import PreviousIcon from '../Icons/Previous'
+import NextIcon from '../Icons/Next'
+import InfoBoxTitleButton from './Common/InfoBoxTitleButton'
 
 const BlockDetailsInfoBox = () => {
   const { height: currentHeight } = useBlockHeight()
@@ -45,52 +47,21 @@ const BlockDetailsInfoBox = () => {
   }, [height])
 
   const title = useMemo(() => {
-    const BlockNavButton = ({ linkPath, icon, classes }) => (
-      <Link
-        className={classNames(
-          'bg-gray-700 hover:bg-gray-650 transition-all duration-150 rounded-md h-6 w-6 flex items-center justify-center',
-          classes,
-        )}
-        to={linkPath}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4 text-white"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          {icon}
-        </svg>
-      </Link>
-    )
+    const blockHeight = parseInt(height)
     return (
       <span className="flex items-end justify-start">
-        Block {parseInt(height).toLocaleString()}
+        Block {blockHeight.toLocaleString()}
         <span className="ml-2 flex items-end justify-start mb-1">
-          <BlockNavButton
-            linkPath={`/blocks/${parseInt(height) - 1}`}
-            icon={
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            }
+          <InfoBoxTitleButton
+            classes="opacity-75"
+            linkPath={`/blocks/${blockHeight - 1}`}
+            icon={<PreviousIcon classes="h-4 w-4 text-white" />}
           />
-          {currentHeight > parseInt(height) && (
-            <BlockNavButton
-              classes="ml-0.5"
-              linkPath={`/blocks/${parseInt(height) + 1}`}
-              icon={
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              }
+          {currentHeight > blockHeight && (
+            <InfoBoxTitleButton
+              classes="ml-0.5 opacity-75"
+              linkPath={`/blocks/${blockHeight + 1}`}
+              icon={<NextIcon classes="h-4 w-4 text-white" />}
             />
           )}
         </span>

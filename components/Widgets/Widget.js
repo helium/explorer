@@ -28,16 +28,17 @@ const Widget = ({
           {icon && <div className="mr-1.5 flex items-center">{icon}</div>}
           <div className="text-2xl font-medium text-black my-1.5 tracking-tight w-full break-all">
             {isLoading ? (
-              <Skeleton />
-            ) : copyableValue ? (
-              // TODO: improve code readability, visual design, and UX of copyable widget value
+              <Skeleton w="w-full" />
+            ) : (
               <CopyableText textToCopy={copyableValue}>
-                <p className="cursor-pointer hover:text-gray-800 transition-all duration-150">
+                <p
+                  className={classNames('flex items-center m-0 p-0', {
+                    'cursor-pointer hover:text-gray-800 transition-all duration-150': copyableValue,
+                  })}
+                >
                   {value}
                 </p>
               </CopyableText>
-            ) : (
-              <p>{value}</p>
             )}
           </div>
         </div>
@@ -76,23 +77,20 @@ const Widget = ({
         {inner}
       </Link>
     )
-  } else {
-    return (
-      <div
-        className={classNames(
-          'bg-gray-200 p-3 rounded-lg flex transition-all',
-          {
-            'col-span-1': span === 1,
-            'col-span-2': span === 2,
-            'cursor-pointer hover:bg-gray-300': !!onClick,
-          },
-        )}
-        onClick={onClick}
-      >
-        {inner}
-      </div>
-    )
   }
+
+  return (
+    <div
+      className={classNames('bg-gray-200 p-3 rounded-lg flex transition-all', {
+        'col-span-1': span === 1,
+        'col-span-2': span === 2,
+        'cursor-pointer hover:bg-gray-300': !!onClick,
+      })}
+      onClick={onClick}
+    >
+      {inner}
+    </div>
+  )
 }
 
 export default Widget

@@ -2,7 +2,6 @@ import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import FlagLocation from '../Common/FlagLocation'
 import { formatHotspotName } from '../Hotspots/utils'
 import Widget from './Widget'
-import Skeleton from '../Common/Skeleton'
 
 const HotspotWidget = ({ title, hotspot }) => {
   const { selectHotspot } = useSelectedHotspot()

@@ -54,6 +54,8 @@ const CopyableText = ({ textToCopy, classes, children }) => {
     )
   }
 
+  if (!textToCopy) return children
+
   return (
     <>
       <span

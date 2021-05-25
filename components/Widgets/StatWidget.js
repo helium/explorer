@@ -35,7 +35,7 @@ const Change = ({ value, initial, type }) => {
 
   return (
     <div
-      className={classNames(' text-sm font-medium', {
+      className={classNames('text-sm font-medium', {
         'text-green-500': change > 0,
         'text-navy-400': change < 0,
       })}

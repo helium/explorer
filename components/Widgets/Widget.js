@@ -7,6 +7,7 @@ const Widget = ({
   title,
   value,
   change,
+  changeSuffix,
   subtitle,
   onClick,
   icon,
@@ -40,9 +41,15 @@ const Widget = ({
           (isLoading ? (
             <Skeleton w="1/4" />
           ) : (
-            <div className="text-green-500 text-sm font-medium">
+            <div
+              className={classNames('text-sm font-medium', {
+                'text-green-500': change > 0,
+                'text-navy-400': change < 0,
+              })}
+            >
               {change > 0 ? '+' : ''}
               {change}
+              {changeSuffix}
             </div>
           ))}
         {subtitle}

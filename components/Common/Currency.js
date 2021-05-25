@@ -1,6 +1,8 @@
 import { round } from 'lodash'
 
 const Currency = ({ value, isLarge = false }) => {
+  if (!value) return 0
+
   if (isLarge) {
     const BILLION = 1_000_000_000
     const MILLION = 1_000_000

@@ -21,6 +21,7 @@ const MarketInfoBox = () => {
           <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
             <TrendWidget
               title="Oracle Price"
+              tooltip="Oracle price is used to determine how many DC are produced when burning HNT"
               series={oraclePrices
                 ?.map((oraclePrice) => ({
                   value: oraclePrice.price / 100000000,

@@ -19,7 +19,7 @@ const OverviewPane = () => {
       <Widget
         title="HNT Balance"
         isLoading={isLoading}
-        span={'col-span-2'}
+        span={2}
         value={maybeShowNone(
           account?.balance?.toString(2, { showTicker: false }),
         )}

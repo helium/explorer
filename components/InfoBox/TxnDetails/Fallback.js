@@ -55,23 +55,15 @@ const Fallback = ({ txn }) => {
 
           // TODO: use a better way to determine if the value is a wallet address
           if (key === 'payer' || key === 'payee' || key === 'owner') {
-            return (
-              <AccountWidget title={key} address={value} span={'col-span-2'} />
-            )
+            return <AccountWidget title={key} address={value} span={2} />
           }
 
           if (key === 'amount' || key === 'fee') {
             if (value === 0) {
-              return <Widget title={key} value={value} span={'col-span-2'} />
+              return <Widget title={key} value={value} span={2} />
             } else {
               const balance = new Balance(value.integerBalance, value.type)
-              return (
-                <Widget
-                  title={key}
-                  value={balance.toString(2)}
-                  span={'col-span-2'}
-                />
-              )
+              return <Widget title={key} value={balance.toString(2)} span={2} />
             }
           }
 
@@ -79,7 +71,7 @@ const Fallback = ({ txn }) => {
             return <GenericObjectWidget title={key} value={value} />
           }
 
-          return <Widget title={key} span={'col-span-2'} value={value} />
+          return <Widget title={key} span={2} value={value} />
         })}
       </div>{' '}
       {/* Spacer */}

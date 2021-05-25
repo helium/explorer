@@ -52,7 +52,7 @@ const AssertLocationV2 = ({ txn }) => {
       <Widget
         title={'Staking Fee'}
         value={stakingFeeObject.toString()}
-        span={'col-span-2'}
+        span={2}
         isLoading={isLoadingInitial}
       />
       <AccountWidget
@@ -63,7 +63,7 @@ const AssertLocationV2 = ({ txn }) => {
       <Widget
         title={'Staking Fee Payer Name'}
         value={makerName}
-        span={'col-span-2'}
+        span={2}
         isLoading={isLoadingInitial}
       />
       {txn.lat && txn.lng && (

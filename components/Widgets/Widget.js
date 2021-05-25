@@ -12,7 +12,7 @@ const Widget = ({
   subtitle,
   onClick,
   icon,
-  span = 'col-span-1',
+  span = 1,
   isLoading = false,
   linkTo,
   titleIcon,
@@ -65,7 +65,11 @@ const Widget = ({
     return (
       <Link
         className={classNames(
-          `${span} bg-gray-200 p-3 rounded-lg flex transition-all cursor-pointer hover:bg-gray-300`,
+          'bg-gray-200 p-3 rounded-lg flex transition-all cursor-pointer hover:bg-gray-300',
+          {
+            'col-span-1': span === 1,
+            'col-span-2': span === 2,
+          },
         )}
         to={linkTo}
       >

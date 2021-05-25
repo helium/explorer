@@ -33,7 +33,7 @@ const ConsensusGroupV1 = ({ txn }) => {
         <Widget
           title={'Delay'}
           value={txn.delay}
-          span={'col-span-2'}
+          span={2}
           isLoading={isLoadingInitial}
         />
         <Widget
@@ -41,7 +41,7 @@ const ConsensusGroupV1 = ({ txn }) => {
           value={truncateHash(txn.proof, 10)}
           copyableValue={txn.proof}
           isLoading={isLoadingInitial}
-          span={'col-span-2'}
+          span={2}
         />
         {/* Spacer */}
         <div className="py-1 md:py-2 px-2" />

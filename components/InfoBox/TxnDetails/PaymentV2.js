@@ -15,13 +15,9 @@ const PaymentV2 = ({ txn }) => {
         <Widget
           title={'Total HNT'}
           value={totalAmountObject.toString(2)}
-          span={'col-span-2'}
+          span={2}
         />
-        <Widget
-          title={'Fee'}
-          value={feeObject.toString()}
-          span={'col-span-2'}
-        />
+        <Widget title={'Fee'} value={feeObject.toString()} span={2} />
 
         {txn.payments.map((p, idx) => {
           const paymentAmountObject = new Balance(
@@ -34,7 +30,7 @@ const PaymentV2 = ({ txn }) => {
               <Widget
                 title={`HNT sent to Payee ${idx + 1}`}
                 value={paymentAmountObject.toString(2)}
-                span={'col-span-2'}
+                span={2}
               />
             </>
           )

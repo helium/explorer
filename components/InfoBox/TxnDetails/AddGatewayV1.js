@@ -51,7 +51,7 @@ const AddGatewayV1 = ({ txn }) => {
       <Widget
         title={'Staking Fee'}
         value={stakingFeeObject.toString()}
-        span={'col-span-2'}
+        span={2}
         isLoading={isLoadingInitial}
       />
       <AccountWidget
@@ -62,14 +62,14 @@ const AddGatewayV1 = ({ txn }) => {
       <Widget
         title={'Staking Fee Payer Name'}
         value={makerName}
-        span={'col-span-2'}
+        span={2}
         isLoading={isLoadingInitial}
       />
       <Widget
         title={'Fee'}
         value={feeObject.toString()}
         isLoading={isLoadingInitial}
-        span={'col-span-2'}
+        span={2}
       />
       {/* Spacer */}
       <div className="py-1 md:py-2 px-2" />

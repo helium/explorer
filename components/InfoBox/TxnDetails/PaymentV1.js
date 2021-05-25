@@ -20,13 +20,9 @@ const PaymentV1 = ({ txn }) => {
         <Widget
           title={'Amount of HNT'}
           value={txnAmountObject.toString(2)}
-          span={'col-span-2'}
+          span={2}
         />
-        <Widget
-          title={'Fee'}
-          value={txnFeeObject.toString()}
-          span={'col-span-2'}
-        />
+        <Widget title={'Fee'} value={txnFeeObject.toString()} span={2} />
       </div>
       {/* Spacer */}
       <div className="py-2 px-2" />

@@ -16,7 +16,7 @@ const AccountWidget = ({ title, address }) => {
           </span>
         </div>
       }
-      span={'col-span-2'}
+      span={2}
       linkTo={`/accounts/${address}`}
       isLoading={!address}
     />

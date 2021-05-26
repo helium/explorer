@@ -4,7 +4,9 @@ import useApi from '../../../hooks/useApi'
 
 const BlockStatisticsPane = () => {
   let { data: blocks } = useApi('/metrics/blocks')
-  blocks = { ...blocks, longFiData: [{ value: 2000 }, { value: 2010 }] }
+  blocks = !!blocks
+    ? { ...blocks, longFiData: [{ value: 2000 }, { value: 2010 }] }
+    : undefined
 
   return (
     <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">

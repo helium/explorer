@@ -1,6 +1,8 @@
 import { groupBy } from 'lodash'
 
 const CONFIG = {
+  state_channel_open_v1: { color: '#E68B00', name: 'State Channel Open' },
+  price_oracle_v1: { color: 'rebeccapurple', name: 'Price Oracle' },
   state_channel_close_v1: { color: 'teal', name: 'Packets Transferred' },
   payment_v1: { color: 'green', name: 'Payment' },
   payment_v2: { color: 'cyan', name: 'Payment' },

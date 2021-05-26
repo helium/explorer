@@ -36,7 +36,7 @@ const Widget = ({
                     'cursor-pointer hover:text-gray-800 transition-all duration-150': copyableValue,
                   })}
                 >
-                  {value}
+                  <span className="break-all">{value}</span>
                 </p>
               </CopyableText>
             )}

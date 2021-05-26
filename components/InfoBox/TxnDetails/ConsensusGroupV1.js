@@ -9,6 +9,7 @@ import FlagLocation from '../../Common/FlagLocation'
 import AccountAddress from '../../AccountAddress'
 import AccountIcon from '../../AccountIcon'
 import { truncateHash } from '../../../utils/format'
+import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
 const ConsensusGroupV1 = ({ txn }) => {
   const [members, setMembers] = useState([])
@@ -22,31 +23,22 @@ const ConsensusGroupV1 = ({ txn }) => {
   }, [])
 
   return (
-    <div
-      className={classNames('grid grid-flow-row grid-cols-1 no-scrollbar', {
-        'overflow-y-scroll': !isLoadingInitial,
-        'overflow-y-hidden': isLoadingInitial,
-      })}
-    >
-      <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
-        <MembersWidget members={members} />
-        <Widget
-          title={'Delay'}
-          value={txn.delay}
-          span={2}
-          isLoading={isLoadingInitial}
-        />
-        <Widget
-          title={'Proof'}
-          value={truncateHash(txn.proof, 10)}
-          copyableValue={txn.proof}
-          isLoading={isLoadingInitial}
-          span={2}
-        />
-        {/* Spacer */}
-        <div className="py-1 md:py-2 px-2" />
-      </div>
-    </div>
+    <InfoBoxPaneContainer>
+      <MembersWidget members={members} />
+      <Widget
+        title={'Delay'}
+        value={txn.delay}
+        span={2}
+        isLoading={isLoadingInitial}
+      />
+      <Widget
+        title={'Proof'}
+        value={truncateHash(txn.proof, 10)}
+        copyableValue={txn.proof}
+        isLoading={isLoadingInitial}
+        span={2}
+      />
+    </InfoBoxPaneContainer>
   )
 }
 

@@ -5,6 +5,7 @@ import StatWidget from '../../Widgets/StatWidget'
 import { useHotspotBeaconSums } from '../../../data/beacons'
 import { useHotspotRewards } from '../../../data/rewards'
 import { useHotspotWitnessSums } from '../../../data/witnesses'
+import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
 const StatisticsPane = ({ hotspot }) => {
   const { rewards } = useHotspotRewards(hotspot.address, 60, 'day')
@@ -19,7 +20,7 @@ const StatisticsPane = ({ hotspot }) => {
     'week',
   )
   return (
-    <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+    <InfoBoxPaneContainer>
       <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
       <RewardScaleWidget hotspot={hotspot} />
       <StatusWidget hotspot={hotspot} />
@@ -37,8 +38,7 @@ const StatisticsPane = ({ hotspot }) => {
         dataKey="avg"
         changeType="percent"
       />
-      <div className="col-span-2 pb-1" />
-    </div>
+    </InfoBoxPaneContainer>
   )
 }
 

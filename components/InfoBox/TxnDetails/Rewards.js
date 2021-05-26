@@ -8,6 +8,7 @@ import Widget from '../../Widgets/Widget'
 import TransactionTypesWidget from '../../Widgets/TransactionTypesWidget'
 import Skeleton from '../../Common/Skeleton'
 import { Pagination } from 'antd'
+import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
 const Rewards = ({ txn }) => {
   const [groupedRewards, setGroupedRewards] = useState([])
@@ -160,16 +161,14 @@ const Rewards = ({ txn }) => {
       <div className="px-1 md:px-3 pt-1 md:pt-3">
         <TransactionTypesWidget txns={txn.rewards} />
       </div>
-      <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+      <InfoBoxPaneContainer>
         <Widget
           title={'Total Amount'}
           value={txn.totalAmount.toString(2)}
           span={2}
         />
         <RewardsRecipientsWidget rewardsRecipients={currentPageOfRewards} />
-        {/* Spacer */}
-        <div className="py-1 md:py-2 px-2" />
-      </div>
+      </InfoBoxPaneContainer>
     </>
   )
 }

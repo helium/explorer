@@ -5,6 +5,7 @@ import { useBlockHeight } from '../../../data/blocks'
 import { useValidator } from '../../../data/validators'
 import TrendWidget from '../../Widgets/TrendWidget'
 import Widget from '../../Widgets/Widget'
+import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
 const OverviewPane = () => {
   const { address } = useParams()
@@ -12,7 +13,7 @@ const OverviewPane = () => {
   const { height, isLoading: blockHeightLoading } = useBlockHeight()
 
   return (
-    <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+    <InfoBoxPaneContainer>
       <TrendWidget title="30D Earnings" periodLabel={''} series={[]} />
       <Widget
         title="Total HNT Stake"
@@ -36,8 +37,7 @@ const OverviewPane = () => {
         isLoading={isLoading}
         value={validator?.versionHeartbeat}
       />
-      <div className="col-span-2 pb-1" />
-    </div>
+    </InfoBoxPaneContainer>
   )
 }
 

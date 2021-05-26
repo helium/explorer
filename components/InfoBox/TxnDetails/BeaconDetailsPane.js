@@ -8,38 +8,27 @@ import Pill from '../../Common/Pill'
 import { h3ToGeo } from 'h3-js'
 import { formatDistance, calculateDistance } from '../../../utils/distance'
 import { Link } from 'react-router-i18n'
+import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
 const BeaconDetailsPane = ({ txn }) => {
   const [challenger, setChallenger] = useState()
   const [target, setTarget] = useState()
-  const [isLoadingInitial, setIsLoadingInitial] = useState(false)
 
   useAsync(async () => {
-    setIsLoadingInitial(true)
     const [fetchedChallenger, fetchedTarget] = await Promise.all([
       fetchHotspot(txn.challenger),
       fetchHotspot(txn.path[0].challengee),
     ])
     setChallenger(fetchedChallenger)
     setTarget(fetchedTarget)
-    setIsLoadingInitial(false)
   }, [])
 
   return (
-    <div
-      className={classNames('grid grid-flow-row grid-cols-1 no-scrollbar', {
-        'overflow-y-scroll': !isLoadingInitial,
-        'overflow-y-hidden': isLoadingInitial,
-      })}
-    >
-      <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
-        <HotspotWidget title="Challenger" hotspot={challenger} />
-        <HotspotWidget title="Target" hotspot={target} />
-        <WitnessesWidget path={txn.path[0]} />
-        {/* Spacer */}
-        <div className="py-1 md:py-2 px-2" />
-      </div>
-    </div>
+    <InfoBoxPaneContainer>
+      <HotspotWidget title="Challenger" hotspot={challenger} />
+      <HotspotWidget title="Target" hotspot={target} />
+      <WitnessesWidget path={txn.path[0]} />
+    </InfoBoxPaneContainer>
   )
 }
 

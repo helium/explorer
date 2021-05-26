@@ -6,6 +6,7 @@ import AccountWidget from '../../Widgets/AccountWidget'
 import HotspotWidget from '../../Widgets/HotspotWidget'
 import Widget from '../../Widgets/Widget'
 import { getMakerName } from '../../Makers/utils'
+import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
 const AddGatewayV1 = ({ txn }) => {
   const [addedHotspot, setAddedHotspot] = useState()
@@ -34,7 +35,7 @@ const AddGatewayV1 = ({ txn }) => {
   const feeObject = new Balance(txn.fee.integerBalance, CurrencyType.dataCredit)
 
   return (
-    <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+    <InfoBoxPaneContainer>
       <HotspotWidget
         hotspot={addedHotspot}
         title="Added Hotspot"
@@ -63,9 +64,7 @@ const AddGatewayV1 = ({ txn }) => {
         isLoading={isLoadingInitial}
         span={2}
       />
-      {/* Spacer */}
-      <div className="py-1 md:py-2 px-2" />
-    </div>
+    </InfoBoxPaneContainer>
   )
 }
 

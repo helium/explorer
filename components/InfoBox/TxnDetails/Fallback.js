@@ -1,11 +1,9 @@
-import React from 'react'
-import { Descriptions } from 'antd'
-import animalHash from 'angry-purple-tiger'
 import classNames from 'classnames'
 import Widget from '../../Widgets/Widget'
 import AccountWidget from '../../Widgets/AccountWidget'
 
 import { Balance } from '@helium/currency'
+import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
 const GenericObjectWidget = ({ title, value }) => {
   return (
@@ -36,7 +34,7 @@ const GenericObjectWidget = ({ title, value }) => {
 const Fallback = ({ txn }) => {
   return (
     <>
-      <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+      <InfoBoxPaneContainer>
         {Object.entries(txn).map(([key, value]) => {
           // these fields will show up in the title / breadcrumbs / subtitle, so no need to repeat them
           if (
@@ -73,9 +71,7 @@ const Fallback = ({ txn }) => {
 
           return <Widget title={key} span={2} value={value} />
         })}
-      </div>{' '}
-      {/* Spacer */}
-      <div className="py-2 px-2" />
+      </InfoBoxPaneContainer>
     </>
   )
 }

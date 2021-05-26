@@ -29,8 +29,8 @@ const columns = [
   },
   {
     title: 'Reward Scale',
-    dataIndex: 'reward_scale',
-    key: 'reward_scale',
+    dataIndex: 'rewardScale',
+    key: 'rewardScale',
     render: (data) => (
       <span>
         {data
@@ -44,7 +44,7 @@ const columns = [
   },
   {
     title: 'RSSI',
-    dataIndex: 'witness_info',
+    dataIndex: 'witnessInfo',
     key: 'rssi',
     render: (data) => (
       <span>

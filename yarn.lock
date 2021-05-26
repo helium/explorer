@@ -1906,10 +1906,10 @@
   dependencies:
     bignumber.js "^9.0.0"
 
-"@helium/http@^3.31.0":
-  version "3.31.0"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.31.0.tgz#68c95326248ed0229d334dd7a45aa9df6e5821ca"
-  integrity sha512-MnHf2n4Ju0qsWois0+o/nlNpXAP5UBxtPx/ezzjkKSapzHwOAFynJ9PHL3xbye1phs8LdCsoRzfMxYIOFPrEyw==
+"@helium/http@^3.36.0":
+  version "3.36.0"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.36.0.tgz#be6c735ff8dc501022a9bf691f4a00cc048746bd"
+  integrity sha512-oAGC5BzPUmktimV/rx17gwDvXm7DsjZWePTKuAXRru6SEMtyFiBg14P1Obw36fgTomtHVy+Er4ZEtXS1VkO88w==
   dependencies:
     "@helium/currency" "^3.25.1"
     axios "^0.21.1"
@@ -7185,9 +7185,9 @@ follow-redirects@^1.0.0:
   integrity sha512-6mPTgLxYm3r6Bkkg0vNM0HTjfGrOEtsfbhagQvbxDEsEkpNhw582upBaoRZylzen6krEmxXJgt9Ju6HiI4O7BA==
 
 follow-redirects@^1.10.0:
-  version "1.13.3"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.3.tgz#e5598ad50174c1bc4e872301e82ac2cd97f90267"
-  integrity sha512-DUgl6+HDzB0iEptNQEXLx/KhTmDb8tZUHSeLqpnjpknR70H0nC2t9N73BK6fN4hOvJ84pKlIQVQ4k5FFlBedKA==
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.1.tgz#d9114ded0a1cfdd334e164e6662ad02bfd91ff43"
+  integrity sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==
 
 for-each@^0.3.3:
   version "0.3.3"

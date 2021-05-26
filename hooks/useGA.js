@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
+import Head from 'next/head'
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 
@@ -7,7 +8,7 @@ export const GAScript = () => {
   if (!GA_ID) return null
 
   return (
-    <>
+    <Head>
       <script
         async
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
@@ -21,7 +22,7 @@ export const GAScript = () => {
       `,
         }}
       />
-    </>
+    </Head>
   )
 }
 

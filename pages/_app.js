@@ -1,7 +1,6 @@
 import '../wdyr'
 import { BrowserRouter as Router } from 'react-router-dom'
 import JavascriptTimeAgo from 'javascript-time-ago'
-import Head from 'next/head'
 import '../styles/index.css'
 import '../styles/Explorer.css'
 
@@ -17,9 +16,7 @@ function MyApp({ Component, pageProps }) {
   return (
     // this #app div is used to increase the specificity of Tailwind's utility classes, making it easier to override styles without resorting to !important
     <div id="app" suppressHydrationWarning>
-      <Head>
-        <GAScript />
-      </Head>
+      <GAScript />
       {typeof window === 'undefined' ? null : (
         <Router>
           <StateProvider>

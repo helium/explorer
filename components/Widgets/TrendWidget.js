@@ -1,39 +1,52 @@
 import { LineChart, Line, YAxis, ResponsiveContainer } from 'recharts'
-
 import { first, last } from 'lodash'
+import { InfoCircleOutlined } from '@ant-design/icons'
+import { Tooltip } from 'antd'
 import Skeleton from '../Common/Skeleton'
+import WidgetChange from './WidgetChange'
 
 const TrendWidget = ({
   title,
+  tooltip,
   series,
+  valuePrefix,
+  locale,
+  toLocaleStringOpts = {},
+  changeType = 'difference',
   isLoading = false,
   periodLabel = '30 Day Trend',
 }) => {
   const yMin = first(series || [])?.value || 0
   const yMax = last(series || [])?.value || 0
 
-  const renderChange = () => {
-    if (isLoading) {
-      return <Skeleton w="1/3" />
-    }
-
-    if (yMax === yMin) {
-      return <span className="text-gray-550">No Change</span>
-    }
-
-    return (yMax - yMin).toLocaleString()
-  }
-
   return (
     <div className="bg-gray-200 p-3 rounded-lg col-span-2 flex">
       <div className="w-1/3">
-        <div className="text-gray-600 text-sm whitespace-nowrap">{title}</div>
+        <div className="text-gray-600 text-sm whitespace-nowrap flex space-x-1">
+          <span>{title}</span>
+          {tooltip && (
+            <div className="text-gray-600 text-sm cursor-pointer">
+              <Tooltip title={tooltip}>
+                <InfoCircleOutlined />
+              </Tooltip>
+            </div>
+          )}
+        </div>
         <div className="text-3xl font-medium my-1.5 tracking-tight">
-          {isLoading ? <Skeleton w="full" my="4" /> : yMax.toLocaleString()}
+          {isLoading ? (
+            <Skeleton w="full" my="4" />
+          ) : (
+            [valuePrefix, yMax.toLocaleString(locale, toLocaleStringOpts)].join(
+              '',
+            )
+          )}
         </div>
-        <div className="text-green-500 text-sm font-medium">
-          {renderChange()}
-        </div>
+        <WidgetChange
+          value={yMax}
+          initial={yMin}
+          type={changeType}
+          isLoading={isLoading}
+        />
       </div>
       <div className="w-full p-4 pr-0 relative">
         <ResponsiveContainer width="100%" height="100%">

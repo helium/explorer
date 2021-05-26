@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { clamp } from 'lodash'
+import { CloseCircleFilled } from '@ant-design/icons'
 import useSearchResults from './useSearchResults'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import useKeydown from '../../hooks/useKeydown'
@@ -30,6 +31,10 @@ const SearchBar = () => {
     },
     [selectHotspot, setTerm],
   )
+
+  const clearSearch = useCallback(() => {
+    setTerm('')
+  }, [setTerm])
 
   useKeydown({
     '/': () => {
@@ -82,11 +87,19 @@ const SearchBar = () => {
           className="w-full pl-8 border-none outline-none text-base font-sans"
           placeholder="Search..."
         />
+        {term.length > 0 && (
+          <div
+            className="absolute flex items-center right-2 h-full text-gray-550 cursor-pointer"
+            onClick={clearSearch}
+          >
+            <CloseCircleFilled />
+          </div>
+        )}
       </div>
       {results.length > 0 && (
         <div
           ref={scroll}
-          className="absolute bg-white max-h-72 w-96 right-0 top-12 rounded-lg divide-y divide-gray-400 overflow-y-scroll no-scrollbar"
+          className="absolute bg-white max-h-72 md:w-96 -left-12 md:left-auto -right-12 md:right-0 top-12 rounded-lg divide-y divide-gray-400 overflow-y-scroll no-scrollbar shadow-md"
         >
           {results.map((r, i) => (
             <SearchResult

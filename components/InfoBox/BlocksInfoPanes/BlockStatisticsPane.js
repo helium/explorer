@@ -5,7 +5,9 @@ import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
 const BlockStatisticsPane = () => {
   let { data: blocks } = useApi('/metrics/blocks')
-  blocks = { ...blocks, longFiData: [{ value: 2000 }, { value: 2010 }] }
+  blocks = !!blocks
+    ? { ...blocks, longFiData: [{ value: 2000 }, { value: 2010 }] }
+    : undefined
 
   return (
     <InfoBoxPaneContainer>

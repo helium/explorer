@@ -15,6 +15,7 @@ import { fetchConsensusHotspots, fetchHotspot } from '../../data/hotspots'
 import HexCoverageLayer from './Layers/HexCoverageLayer'
 import { hotspotToRes8 } from '../Hotspots/utils'
 import useApi from '../../hooks/useApi'
+import useSelectedHex from '../../hooks/useSelectedHex'
 
 const maxZoom = 14
 const minZoom = 2
@@ -54,10 +55,10 @@ const CoverageMap = () => {
 
   const { showInfoBox } = useInfoBox()
   const { mapLayer } = useMapLayer()
-  const { selectHotspot, selectedHotspot } = useSelectedHotspot()
+  const { selectedHotspot } = useSelectedHotspot()
+  const { selectHex, selectedHex } = useSelectedHex()
   const { selectedTxn } = useSelectedTxn()
   const { currentPosition } = useGeolocation()
-  const history = useHistory()
 
   const [bounds, setBounds] = useState(
     isDesktopOrLaptop ? US_EU_BOUNDS : US_BOUNDS,
@@ -93,7 +94,15 @@ const CoverageMap = () => {
   }, [selectedHotspot])
 
   useEffect(() => {
-    if (!selectedTxnHotspot || !selectedTxnParticipants) return
+    if (!selectedHex) return
+
+    const [lat, lng] = selectedHex.center
+    const selectionBounds = findBounds([{ lat, lng }])
+    setBounds(selectionBounds)
+  }, [selectedHex])
+
+  useEffect(() => {
+    if (!selectedTxnHotspot || !selectedTxnWitnesses) return
 
     const selectionBounds = findBounds([
       ...(selectedTxnParticipants || []).map(({ lat, lng }) => ({
@@ -151,10 +160,10 @@ const CoverageMap = () => {
       })
       if (features.length > 0) {
         const [hexFeature] = features
-        history.push(`/hotspots/hex/${hexFeature.properties.id}`)
+        selectHex(hexFeature.properties.id)
       }
     },
-    [history],
+    [selectHex],
   )
 
   const handleMouseMove = useCallback((map, e) => {

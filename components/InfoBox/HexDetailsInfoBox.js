@@ -5,11 +5,26 @@ import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import { useAsync } from 'react-async-hook'
 import { fetchHexHotspots } from '../../data/hotspots'
 import HotspotsList from '../Lists/HotspotsList'
+import { useEffect } from 'react'
+import useSelectedHex from '../../hooks/useSelectedHex'
 
 const HexDetailsInfoBox = () => {
   const { index } = useParams()
+  const { clearSelectedHex, selectHex, selectedHex } = useSelectedHex()
 
   const { result: hotspots, loading } = useAsync(fetchHexHotspots, [index])
+
+  useEffect(() => {
+    if (!selectedHex) {
+      selectHex(index)
+    }
+  }, [index, selectHex, selectedHex])
+
+  useEffect(() => {
+    return () => {
+      clearSelectedHex()
+    }
+  }, [clearSelectedHex])
 
   return (
     <InfoBox

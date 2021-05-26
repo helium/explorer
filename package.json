@@ -28,6 +28,7 @@
     "date-fns": "^2.16.1",
     "export-to-csv": "^0.2.1",
     "geojson": "^0.5.0",
+    "geojson2h3": "^1.1.1",
     "h3-js": "^3.7.0",
     "lodash": "^4.17.21",
     "mapbox-gl": "1.10.1",

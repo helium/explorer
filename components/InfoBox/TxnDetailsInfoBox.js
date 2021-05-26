@@ -109,8 +109,6 @@ const TxnDetailsSwitch = ({ txn, isLoading }) => {
       return <PaymentV2 txn={txn} />
     case 'poc_request_v1':
       return <PocRequestV1 txn={txn} />
-    // case 'poc_receipts_v1':
-    //   return <PocReceiptsV1 txn={txn} />
     case 'rewards_v1':
       return <Rewards txn={txn} />
     case 'rewards_v2':

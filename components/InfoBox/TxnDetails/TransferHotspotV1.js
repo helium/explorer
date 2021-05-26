@@ -1,73 +1,42 @@
-import React from 'react'
-import { Descriptions } from 'antd'
-import AccountIcon from '../../../components/AccountIcon'
-
-import Link from 'next/link'
+import { useState } from 'react'
+import Widget from '../../Widgets/Widget'
+import AccountWidget from '../../Widgets/AccountWidget'
+import HotspotWidget from '../../Widgets/HotspotWidget'
+import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
+import { useAsync } from 'react-async-hook'
 import animalHash from 'angry-purple-tiger'
-import { Balance, CurrencyType } from '@helium/currency'
+import { fetchHotspot } from '../../../data/hotspots'
 
 const TransferHotspotV1 = ({ txn }) => {
-  const amountToSellerObject = new Balance(
-    txn.amountToSeller.integerBalance,
-    CurrencyType.networkToken,
-  )
-  const feeObject = new Balance(txn.fee.integerBalance, CurrencyType.dataCredit)
+  const [transferredHotspot, setTransferredHotspot] = useState()
+
+  useAsync(async () => {
+    const fetchedHotspot = await fetchHotspot(txn.gateway)
+    setTransferredHotspot(fetchedHotspot)
+  }, [])
 
   return (
-    <>
-      <Descriptions bordered>
-        <Descriptions.Item label="Hotspot" span={3}>
-          <span
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-            }}
-          >
-            <Link href={`/hotspots/${txn.gateway}`}>
-              <a>{animalHash(txn.gateway)}</a>
-            </Link>
-          </span>
-        </Descriptions.Item>
-        <Descriptions.Item label="Seller" span={3}>
-          <span
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-            }}
-          >
-            <AccountIcon address={txn.seller} style={{ marginRight: 8 }} />
-            <Link href={`/accounts/${txn.seller}`}>
-              <a>{txn.seller}</a>
-            </Link>
-          </span>
-        </Descriptions.Item>
-        <Descriptions.Item label="Buyer" span={3}>
-          <span
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-            }}
-          >
-            <AccountIcon address={txn.buyer} style={{ marginRight: 8 }} />
-            <Link href={`/accounts/${txn.buyer}`}>
-              <a>{txn.buyer}</a>
-            </Link>
-          </span>
-        </Descriptions.Item>
-        <Descriptions.Item label="Payment to Seller" span={3}>
-          {amountToSellerObject.toString(2)}
-        </Descriptions.Item>
-        <Descriptions.Item label="Fee" span={3}>
-          {feeObject.toString()}
-        </Descriptions.Item>
-      </Descriptions>
-    </>
+    <InfoBoxPaneContainer>
+      {transferredHotspot ? (
+        <HotspotWidget
+          title="Transferred Hotspot"
+          hotspot={transferredHotspot}
+        />
+      ) : (
+        <Widget
+          title="Transferred Hotspot"
+          value={animalHash(txn.gateway)}
+          span={2}
+        />
+      )}
+      <AccountWidget title="Seller" address={txn.seller} />
+      <AccountWidget title="Buyer" address={txn.buyer} />
+      <Widget
+        title="Payment to Seller"
+        value={txn.amountToSeller.toString(2)}
+      />
+      <Widget title="Fee" value={txn.fee.toString()} />
+    </InfoBoxPaneContainer>
   )
 }
 

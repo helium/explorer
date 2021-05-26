@@ -8,6 +8,7 @@ import { StateProvider } from '../store/store'
 import { SWRConfig } from 'swr'
 
 import en from 'javascript-time-ago/locale/en'
+import { GAScript } from '../hooks/useGA'
 
 JavascriptTimeAgo.addLocale(en)
 
@@ -15,6 +16,7 @@ function MyApp({ Component, pageProps }) {
   return (
     // this #app div is used to increase the specificity of Tailwind's utility classes, making it easier to override styles without resorting to !important
     <div id="app" suppressHydrationWarning>
+      <GAScript />
       {typeof window === 'undefined' ? null : (
         <Router>
           <StateProvider>

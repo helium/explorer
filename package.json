@@ -32,7 +32,6 @@
     "lodash": "^4.17.21",
     "mapbox-gl": "1.10.1",
     "next": "^10.0.0",
-    "next-ga": "^2.3.4",
     "next-images": "^1.6.0",
     "node-fetch": "^2.6.1",
     "nprogress": "^0.2.0",

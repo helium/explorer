@@ -1,14 +1,12 @@
 import { useMemo } from 'react'
-import useSWR from 'swr'
 import StatWidget from '../../Widgets/StatWidget'
 import TrendWidget from '../../Widgets/TrendWidget'
 import { useLatestHotspots } from '../../../data/hotspots'
 import HotspotWidget from '../../Widgets/HotspotWidget'
+import useApi from '../../../hooks/useApi'
 
 const StatisticsPane = () => {
-  const { data: stats } = useSWR(
-    'https://explorer-api.helium.com/api/metrics/hotspots',
-  )
+  const { data: stats } = useApi('/metrics/hotspots')
   const { latestHotspots } = useLatestHotspots()
 
   const latestHotspot = useMemo(() => {
@@ -42,6 +40,7 @@ const StatisticsPane = () => {
         isLoading={!stats}
       />
       <HotspotWidget title="Latest Hotspot" hotspot={latestHotspot} />
+      <div className="col-span-2 pb-1" />
     </div>
   )
 }

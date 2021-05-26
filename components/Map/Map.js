@@ -1,9 +1,7 @@
 import { useEffect, useState, useCallback, useRef, useMemo, memo } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import ReactMapboxGl from 'react-mapbox-gl'
-import { h3ToGeo } from 'h3-js'
 import { useAsync } from 'react-async-hook'
-import useSWR from 'swr'
 import { useHistory } from 'react-router'
 import { findBounds } from '../../utils/location'
 import HotspotDetailLayer from './Layers/HotspotDetailLayer'
@@ -16,6 +14,7 @@ import useSelectedTxn from '../../hooks/useSelectedTxn'
 import { fetchConsensusHotspots, fetchHotspot } from '../../data/hotspots'
 import HexCoverageLayer from './Layers/HexCoverageLayer'
 import { hotspotToRes8 } from '../Hotspots/utils'
+import useApi from '../../hooks/useApi'
 
 const maxZoom = 14
 const minZoom = 2
@@ -64,7 +63,7 @@ const CoverageMap = () => {
     isDesktopOrLaptop ? US_EU_BOUNDS : US_BOUNDS,
   )
 
-  const { data: validators } = useSWR('/api/validators')
+  const { data: validators } = useApi('/validators')
 
   useEffect(() => {
     if (!currentPosition.coords) return

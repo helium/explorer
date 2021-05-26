@@ -1,11 +1,9 @@
 import TrendWidget from '../../Widgets/TrendWidget'
 import StatWidget from '../../Widgets/StatWidget'
-import useSWR from 'swr'
+import useApi from '../../../hooks/useApi'
 
 const BlockStatisticsPane = () => {
-  let { data: blocks } = useSWR(
-    'https://explorer-api.helium.com/api/metrics/blocks',
-  )
+  let { data: blocks } = useApi('/metrics/blocks')
   blocks = { ...blocks, longFiData: [{ value: 2000 }, { value: 2010 }] }
 
   return (
@@ -47,6 +45,7 @@ const BlockStatisticsPane = () => {
         series={blocks?.blockTimeMonth}
         isLoading={!blocks}
       />
+      <div className="col-span-2 pb-1" />
     </div>
   )
 }

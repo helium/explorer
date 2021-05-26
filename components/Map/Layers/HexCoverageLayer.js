@@ -1,6 +1,7 @@
 import { useMemo, memo } from 'react'
 import { Source, Layer, GeoJSONLayer } from 'react-mapbox-gl'
 import useSelectedHex from '../../../hooks/useSelectedHex'
+import { emptyGeoJSON } from '../../../utils/location'
 
 const HEX_SOURCE_OPTIONS = {
   type: 'vector',
@@ -68,14 +69,14 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
           'text-opacity': ['case', ['==', ['get', 'hotspot_count'], 1], 0, 1],
           'text-color': [
             'case',
-            ['==', ['get', 'id'], selectedHex.index],
+            ['==', ['get', 'id'], selectedHex?.index],
             '#ffffff',
             '#1C1E3B',
           ],
         }}
       />
       <GeoJSONLayer
-        data={selectedHex.feature}
+        data={selectedHex?.feature || emptyGeoJSON}
         linePaint={{
           'line-color': '#ffffff',
           'line-width': 4,

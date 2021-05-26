@@ -102,7 +102,7 @@ const CoverageMap = () => {
   }, [selectedHex])
 
   useEffect(() => {
-    if (!selectedTxnHotspot || !selectedTxnWitnesses) return
+    if (!selectedTxnHotspot || !selectedTxnParticipants) return
 
     const selectionBounds = findBounds([
       ...(selectedTxnParticipants || []).map(({ lat, lng }) => ({

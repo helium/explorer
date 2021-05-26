@@ -64,9 +64,11 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
         layout={{
           'text-field': ['get', 'hotspot_count'],
           'text-allow-overlap': false,
+         'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+          'text-size': 18,
         }}
         paint={{
-          'text-opacity': ['case', ['==', ['get', 'hotspot_count'], 1], 0, 1],
+          'text-opacity': ['case', ['==', ['get', 'hotspot_count'], 1], 0, 0.85],
           'text-color': [
             'case',
             ['==', ['get', 'id'], selectedHex?.index],

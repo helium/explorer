@@ -45,10 +45,21 @@ const TxnDetailsInfoBox = () => {
   }
 
   const generateBreadcrumbs = (txn) => {
-    if (!txn) return [{ title: 'Block ...' }]
+    if (!txn)
+      return [
+        {
+          title: 'Blocks',
+          path: '/blocks',
+        },
+        { title: '...' },
+      ]
     return [
       {
-        title: `Block ${selectedTxn.height.toLocaleString()}`,
+        title: 'Blocks',
+        path: '/blocks',
+      },
+      {
+        title: `${selectedTxn.height.toLocaleString()}`,
         path: `/blocks/${selectedTxn.height}`,
       },
     ]

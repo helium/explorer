@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Balance, CurrencyType } from '@helium/currency'
 import { useAsync } from 'react-async-hook'
 import { fetchHotspot } from '../../../data/hotspots'
 import AccountWidget from '../../Widgets/AccountWidget'
@@ -17,7 +16,7 @@ const AssertLocationV2 = ({ txn }) => {
   useAsync(async () => {
     setIsLoadingInitial(true)
     const assertedHotspotFetched = await fetchHotspot(txn.gateway)
-    if (txn.stakingFeePayer === txn.owner || txn.payer === null) {
+    if (txn.payer === txn.owner || txn.payer === null) {
       setMakerName('Hotspot Owner')
     } else {
       setMakerName(await getMakerName(txn.payer))
@@ -26,14 +25,8 @@ const AssertLocationV2 = ({ txn }) => {
     setIsLoadingInitial(false)
   }, [])
 
-  const stakingFeeObject = new Balance(
-    txn.stakingFee.integerBalance,
-    CurrencyType.dataCredit,
-  )
   const stakingFeePayer =
     txn.payer === txn.owner || txn.payer === null ? txn.owner : txn.payer
-
-  const feeObject = new Balance(txn.fee.integerBalance, CurrencyType.dataCredit)
 
   return (
     <InfoBoxPaneContainer>
@@ -49,7 +42,7 @@ const AssertLocationV2 = ({ txn }) => {
       />
       <Widget
         title={'Staking Fee'}
-        value={stakingFeeObject.toString()}
+        value={txn.stakingFee.toString()}
         span={2}
         isLoading={isLoadingInitial}
       />
@@ -86,7 +79,7 @@ const AssertLocationV2 = ({ txn }) => {
       <Widget title={'Nonce'} value={txn.nonce} isLoading={isLoadingInitial} />
       <Widget
         title={'Fee'}
-        value={feeObject.toString()}
+        value={txn.fee.toString()}
         isLoading={isLoadingInitial}
       />
     </InfoBoxPaneContainer>

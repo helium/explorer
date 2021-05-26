@@ -19,7 +19,7 @@ const PocRequestV1 = ({ txn }) => {
       <HotspotWidget title="Challenger Hotspot" hotspot={challenger} />
       <AccountWidget title="Challenger Owner" address={txn.challengerOwner} />
       <Widget title="Version" value={txn.version} />
-      <Widget title="Fee" value={txn?.fee} />
+      <Widget title="Fee" value={txn.fee.toString()} />
       <Widget
         title="Secret Hash"
         value={txn.secretHash}

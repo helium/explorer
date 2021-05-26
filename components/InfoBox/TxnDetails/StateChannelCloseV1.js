@@ -1,58 +1,63 @@
-import React, { Component } from 'react'
-import { Table, Descriptions } from 'antd'
-import Client from '@helium/http'
+import { useState, useEffect } from 'react'
 import animalHash from 'angry-purple-tiger'
-import dynamic from 'next/dynamic'
-import Link from 'next/link'
+import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
+import Widget from '../../Widgets/Widget'
+import AccountWidget from '../../Widgets/AccountWidget'
+import classNames from 'classnames'
+import { Pagination } from 'antd'
+import { Link } from 'react-router-i18n'
+import AccountIcon from '../../AccountIcon'
+import AccountAddress from '../../AccountAddress'
 
-// const SCCloseMapbox = dynamic(() => import('./SCCloseMapbox'), {
-//   ssr: false,
-//   loading: () => <div />,
-// })
+const StateChannelCloseV1 = ({ txn }) => {
+  const [totalPackets, setTotalPackets] = useState(0)
+  const [totalHotspots, setTotalHotspots] = useState(0)
+  const [totalDcs, setTotalDcs] = useState(0)
+  const [totalBytes, setTotalBytes] = useState(0)
 
-class StateChannelCloseV1 extends Component {
-  state = {
-    totalPackets: 0,
-    totalHotspots: 0,
-    totalDcs: 0,
-    totalBytes: 0,
-    columns: [
-      {
-        title: 'Hotspot',
-        dataIndex: 'client',
-        key: 'client',
-        render: (data) => (
-          <span>
-            <Link href={'/hotspots/' + data} prefetch={false}>
-              <a>{animalHash(data)}</a>
-            </Link>
-          </span>
-        ),
-      },
-      {
-        title: 'Packets Sent',
-        dataIndex: 'num_packets',
-        key: 'num_packets',
-        render: (data) => <span>{data.toLocaleString()}</span>,
-      },
-      {
-        title: 'Data Sent',
-        dataIndex: 'num_bytes',
-        key: 'num_bytes',
-        render: (data) => <span>{this.formatBytes(data)}</span>,
-      },
-      {
-        title: 'Data Credits',
-        dataIndex: 'num_dcs',
-        key: 'num_dcs',
-        render: (data) => <span>{data.toLocaleString()}</span>,
-      },
-    ],
-    data: [],
-    hotspots: [],
-  }
+  const [data, setData] = useState([])
 
-  formatBytes(bytes, decimals = 2) {
+  useEffect(() => {
+    const parsedData = []
+    let packetTally = 0
+    let dcTally = 0
+    let byteTally = 0
+    txn.stateChannel.summaries.forEach((s) => {
+      packetTally += s.num_packets
+      dcTally += s.num_dcs
+      byteTally += s.num_dcs * 24
+      parsedData.push({
+        client: s.client,
+        owner: s.owner,
+        num_packets: s.num_packets,
+        num_dcs: s.num_dcs,
+        num_bytes: s.num_dcs * 24,
+      })
+    })
+    parsedData.sort((b, a) =>
+      a.num_dcs > b.num_dcs ? 1 : b.num_dcs > a.num_dcs ? -1 : 0,
+    )
+    const hotspotTally = txn.stateChannel.summaries.length
+    setTotalPackets(packetTally)
+    setTotalDcs(dcTally)
+    setTotalBytes(byteTally)
+    setTotalHotspots(hotspotTally)
+    setData(parsedData)
+  }, [txn])
+
+  const PAGE_SIZE_DEFAULT = 20
+  const [pageSize, setPageSize] = useState(PAGE_SIZE_DEFAULT)
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const indexOfLast = currentPage * pageSize
+  const indexOfFirst = indexOfLast - pageSize
+
+  const currentPageOfStateChannelParticipants = data.slice(
+    indexOfFirst,
+    indexOfLast,
+  )
+
+  const formatBytes = (bytes, decimals = 2) => {
     if (bytes === 0) return '0 Bytes'
 
     const k = 1024
@@ -64,100 +69,93 @@ class StateChannelCloseV1 extends Component {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
   }
 
-  componentDidMount() {
-    this.tallyValues()
-    this.client = new Client()
-    this.loadData()
-  }
-
-  async loadData() {
-    const list = await this.client.hotspots.list()
-    const allSpots = await list.take(20000)
-    this.setState({ hotspots: allSpots })
-  }
-
-  tallyValues() {
-    const { txn } = this.props
-    let { totalPackets, totalHotspots, totalDcs, totalBytes, data } = this.state
-    txn.stateChannel.summaries.forEach((s) => {
-      totalPackets += s.num_packets
-      totalDcs += s.num_dcs
-      totalBytes += s.num_dcs * 24
-      data.push({
-        client: s.client,
-        num_packets: s.num_packets,
-        num_dcs: s.num_dcs,
-        num_bytes: s.num_dcs * 24,
-      })
-    })
-    data.sort((b, a) =>
-      a.num_dcs > b.num_dcs ? 1 : b.num_dcs > a.num_dcs ? -1 : 0,
-    )
-    totalHotspots = txn.stateChannel.summaries.length
-    this.setState({
-      totalPackets,
-      totalDcs,
-      totalHotspots,
-      totalBytes,
-      data: [...data],
-    })
-  }
-
-  render() {
-    const { txn } = this.props
-    const {
-      hotspots,
-      totalPackets,
-      totalDcs,
-      totalBytes,
-      totalHotspots,
-      columns,
-      data,
-    } = this.state
-
+  const StateChannelParticipantsWidget = ({ participants }) => {
     return (
-      <div>
-        {/* <SCCloseMapbox hotspots={hotspots} txn={txn} /> */}
-
-        <Descriptions bordered>
-          <Descriptions.Item label="Block Height" span={3}>
-            <Link href={'/blocks/' + txn.height}>
-              <a>{txn.height}</a>
-            </Link>
-          </Descriptions.Item>
-          <Descriptions.Item label="Total Packets" span={3}>
-            {totalPackets.toLocaleString()}
-          </Descriptions.Item>
-          <Descriptions.Item label="Total Data" span={3}>
-            {this.formatBytes(totalBytes)}
-          </Descriptions.Item>
-          <Descriptions.Item label="Data Credits Spent" span={3}>
-            {totalDcs.toLocaleString()}
-          </Descriptions.Item>
-          <Descriptions.Item label="Number of Hotspots" span={3}>
-            {totalHotspots.toLocaleString()}
-          </Descriptions.Item>
-          <Descriptions.Item label="State Channel Closer" span={3}>
-            <Link href={'/accounts/' + txn.closer}>
-              <a>{txn.closer}</a>
-            </Link>
-          </Descriptions.Item>
-          <Descriptions.Item label="State Channel Owner" span={3}>
-            <Link href={'/accounts/' + txn.stateChannel.owner}>
-              <a>{txn.stateChannel.owner}</a>
-            </Link>
-          </Descriptions.Item>
-        </Descriptions>
-
-        <Table
-          dataSource={data}
-          columns={columns}
-          style={{ marginTop: '10px' }}
-          pagination={false}
-        />
-      </div>
+      <>
+        <div className={classNames(`bg-gray-200 p-3 rounded-lg col-span-2`)}>
+          <div className="text-gray-600 text-sm leading-loose">
+            {participants.length.toLocaleString()} Participating Hotspots
+          </div>
+          <div className="space-y-4">
+            {currentPageOfStateChannelParticipants.map((p) => {
+              return (
+                <div
+                  key={p.client}
+                  className="flex items-start justify-between w-full"
+                >
+                  <div className="flex flex-col items-start justify-start">
+                    <Link
+                      to={`/hotspots/${p.client}`}
+                      className="text-base leading-tight tracking-tight text-navy-1000 hover:text-navy-400 transition-all duration-150"
+                    >
+                      {animalHash(p.client)}
+                    </Link>
+                    <Link
+                      to={`/accounts/${p.owner}`}
+                      className="flex items-center justify-start text-sm leading-tight tracking-tighter text-gray-600 hover:text-navy-400 pt-1"
+                    >
+                      <AccountIcon
+                        address={p.owner}
+                        size={14}
+                        className="mr-1"
+                      />
+                      <AccountAddress mono address={p.owner} truncate={5} />
+                    </Link>
+                  </div>
+                  <div className="flex flex-col items-end justify-center">
+                    <div className="text-sm leading-tight tracking-tighter text-navy-400 font-medium">
+                      <span className="pl-1.5">
+                        {p.num_dcs.toLocaleString()} DC
+                      </span>
+                    </div>
+                    <div className="text-sm leading-tight tracking-tighter text-gray-600 pt-1">
+                      {p.num_packets.toLocaleString()} packets{' '}
+                      <span className="text-navy-600 pl-1.5">
+                        {formatBytes(p.num_bytes)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+        <div className="bg-gray-300 col-span-2 w-full -mt-3 md:-mt-4 border-t border-navy-500 rounded-b-lg py-2">
+          <Pagination
+            current={currentPage}
+            showSizeChanger
+            showLessItems
+            size="small"
+            total={data.length}
+            pageSize={pageSize}
+            onChange={(page, pageSize) => {
+              setCurrentPage(page)
+              setPageSize(pageSize)
+            }}
+          />
+        </div>
+      </>
     )
   }
+
+  return (
+    <InfoBoxPaneContainer>
+      <Widget title="Total Packets" value={totalPackets.toLocaleString()} />
+      <Widget title="Total Data" value={formatBytes(totalBytes)} />
+      <Widget title="Total DC Spent" value={totalDcs.toLocaleString()} />
+      <Widget
+        title="Number of Hotspots"
+        value={totalHotspots.toLocaleString()}
+      />
+      <Widget title="State Channel ID" value={txn.stateChannel.id} span={2} />
+      <AccountWidget title="State Channel Closer" address={txn.closer} />
+      <AccountWidget
+        title="State Channel Owner"
+        address={txn.stateChannel.owner}
+      />
+      <StateChannelParticipantsWidget participants={data} />
+    </InfoBoxPaneContainer>
+  )
 }
 
 export default StateChannelCloseV1

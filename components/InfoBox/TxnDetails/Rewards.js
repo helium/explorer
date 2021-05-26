@@ -13,7 +13,7 @@ import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 const Rewards = ({ txn }) => {
   const [groupedRewards, setGroupedRewards] = useState([])
 
-  const PAGE_SIZE_DEFAULT = 10
+  const PAGE_SIZE_DEFAULT = 20
   const [pageSize, setPageSize] = useState(PAGE_SIZE_DEFAULT)
   const [currentPage, setCurrentPage] = useState(1)
 

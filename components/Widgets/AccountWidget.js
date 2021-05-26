@@ -2,7 +2,7 @@ import Widget from './Widget'
 import AccountAddress from '../AccountAddress'
 import AccountIcon from '../AccountIcon'
 
-const AccountWidget = ({ title, address }) => {
+const AccountWidget = ({ title, subtitle, address }) => {
   if (!address) return null
 
   return (
@@ -16,6 +16,7 @@ const AccountWidget = ({ title, address }) => {
           </span>
         </div>
       }
+      subtitle={subtitle}
       span={2}
       linkTo={`/accounts/${address}`}
       isLoading={!address}

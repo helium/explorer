@@ -11,7 +11,9 @@ import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import { formatLocation } from '../Hotspots/utils'
 import { formattedAccountAddress } from '../../utils/accounts'
-import { h3ToParent } from 'h3-js'
+import CopyableText from '../Common/CopyableText'
+import AccountIcon from '../AccountIcon'
+import AccountAddress from '../AccountAddress'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -35,7 +37,14 @@ const HotspotDetailsInfoBox = ({ address }) => {
     clearSelectedHotspot,
   } = useSelectedHotspot()
 
-  const title = useMemo(() => animalHash(address), [address])
+  const title = useMemo(
+    () => (
+      <CopyableText textToCopy={address} tooltip="Copy address">
+        {animalHash(address)}
+      </CopyableText>
+    ),
+    [address],
+  )
 
   useEffect(() => {
     return () => {
@@ -75,8 +84,10 @@ const HotspotDetailsInfoBox = ({ address }) => {
           : { title: 'Not set' }),
       },
       {
-        iconPath: '/images/account-green.svg',
-        title: formattedAccountAddress(hotspot.owner),
+        icon: (
+          <AccountIcon address={hotspot.owner} size={14} className="mr-1" />
+        ),
+        title: <AccountAddress address={hotspot.owner} truncate={7} mono />,
         path: `/accounts/${hotspot.owner}`,
       },
     ]

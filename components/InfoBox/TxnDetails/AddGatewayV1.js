@@ -15,14 +15,11 @@ const AddGatewayV1 = ({ txn }) => {
   useAsync(async () => {
     setIsLoadingInitial(true)
     const addedHotspotFetched = await fetchHotspot(txn.gateway)
-    let makerNameInfo = ''
     if (txn.stakingFeePayer === txn.owner || txn.payer === null) {
-      makerNameInfo = 'Hotspot Owner'
+      setMakerName('Hotspot Owner')
     } else {
-      const makerNameFetched = await getMakerName(txn.payer)
-      makerNameInfo = makerNameFetched
+      setMakerName(await getMakerName(txn.payer))
     }
-    setMakerName(makerNameInfo)
     setAddedHotspot(addedHotspotFetched)
     setIsLoadingInitial(false)
   }, [])
@@ -56,13 +53,8 @@ const AddGatewayV1 = ({ txn }) => {
       />
       <AccountWidget
         title={'Staking Fee Payer'}
+        subtitle={<span className="text-gray-700">{makerName}</span>}
         address={stakingFeePayer}
-        isLoading={isLoadingInitial}
-      />
-      <Widget
-        title={'Staking Fee Payer Name'}
-        value={makerName}
-        span={2}
         isLoading={isLoadingInitial}
       />
       <Widget

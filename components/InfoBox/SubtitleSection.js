@@ -3,6 +3,7 @@ import { memo } from 'react'
 import classNames from 'classnames'
 import CopyableText from '../Common/CopyableText'
 import Skeleton from '../Common/Skeleton'
+import { Tooltip } from 'antd'
 
 const SubtitleSection = ({ subtitles }) => {
   return (
@@ -17,7 +18,7 @@ const SubtitleSection = ({ subtitles }) => {
             )
 
             return (
-              <>
+              <Tooltip title={s.tooltip} placement={'bottom'}>
                 <span
                   className={classNames(
                     'pointer-events-auto mb-1 inline-flex items-center justify-start',
@@ -30,9 +31,10 @@ const SubtitleSection = ({ subtitles }) => {
                   {s.iconPath && (
                     <img
                       src={s.iconPath}
-                      className="h-2.5 w-auto mr-1 md:mr-1.5"
+                      className="h-3.5 w-auto mr-0.5 md:mr-1"
                     />
                   )}
+                  {s.icon && s.icon}
                   {s.loading ? (
                     <LoadingIndicator />
                   ) : (
@@ -42,19 +44,13 @@ const SubtitleSection = ({ subtitles }) => {
                       )}
                       {...(s.path ? { to: s.path } : {})}
                     >
-                      {s.textToCopy ? (
-                        <CopyableText
-                          textToCopy={s.textToCopy ? s.textToCopy : s.title}
-                        >
-                          {s.title}
-                        </CopyableText>
-                      ) : (
-                        <span>{s.title}</span>
-                      )}
+                      <CopyableText textToCopy={s.textToCopy}>
+                        {s.title}
+                      </CopyableText>
                     </Link>
                   )}
                 </span>
-              </>
+              </Tooltip>
             )
           })}
         </div>

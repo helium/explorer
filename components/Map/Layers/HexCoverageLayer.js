@@ -1,5 +1,7 @@
 import { useMemo, memo } from 'react'
-import { Source, Layer } from 'react-mapbox-gl'
+import { Source, Layer, GeoJSONLayer } from 'react-mapbox-gl'
+import useSelectedHex from '../../../hooks/useSelectedHex'
+import { emptyGeoJSON } from '../../../utils/location'
 
 const HEX_SOURCE_OPTIONS = {
   type: 'vector',
@@ -12,6 +14,8 @@ const POINTS_SOURCE_OPTIONS = {
 }
 
 const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
+  const { selectedHex } = useSelectedHex()
+
   const circleLayout = useMemo(() => {
     switch (layer) {
       case 'rewardScale':
@@ -60,9 +64,24 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
         layout={{
           'text-field': ['get', 'hotspot_count'],
           'text-allow-overlap': false,
+         'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+          'text-size': 18,
         }}
         paint={{
-          'text-opacity': ['case', ['==', ['get', 'hotspot_count'], 1], 0, 1],
+          'text-opacity': ['case', ['==', ['get', 'hotspot_count'], 1], 0, 0.85],
+          'text-color': [
+            'case',
+            ['==', ['get', 'id'], selectedHex?.index],
+            '#ffffff',
+            '#1C1E3B',
+          ],
+        }}
+      />
+      <GeoJSONLayer
+        data={selectedHex?.feature || emptyGeoJSON}
+        linePaint={{
+          'line-color': '#ffffff',
+          'line-width': 4,
         }}
       />
     </>

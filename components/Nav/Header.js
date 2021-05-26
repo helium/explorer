@@ -22,7 +22,7 @@ const MenuButton = () => (
 
 const Header = ({ activeNav }) => {
   return (
-    <header className="fixed w-full z-10 p-4 flex items-center justify-between">
+    <header className="fixed w-full z-30 p-4 flex items-center justify-between">
       <Link to="/">
         <a>
           <img src="/images/logo-sm.svg" />

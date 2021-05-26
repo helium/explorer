@@ -102,78 +102,76 @@ const BlockDetailsInfoBox = () => {
     ]
   }
 
+  if (blockLoading) {
+    return (
+      <InfoBox title={title} subtitles={generateSubtitles(block)}>
+        <div style={{ width: '100%', minHeight: 60 + 76 }} />
+        <SkeletonList />
+      </InfoBox>
+    )
+  }
+
   return (
     <InfoBox title={title} subtitles={generateSubtitles(block)}>
-      {!blockLoading ? (
+      {block.txns?.length > 0 ? (
         <>
-          {block.txns?.length > 0 ? (
-            <>
-              <TransactionTypesWidget txns={block.txns} />
-              <TabNavbar
-                centered={false}
-                classes="w-full border-b border-gray-400 border-solid mt-0 px-2 md:px-4 flex overflow-x-scroll no-scrollbar"
-              >
-                {block.splitTxns.map((type) => {
-                  return (
-                    <TabPane
-                      title={
-                        <div className="">
-                          <p
-                            style={{ color: getTxnTypeColor(type.type) }}
-                            className={'mb-0 text-xl'}
-                          >
-                            {type.txns.length}
-                          </p>
-                          <p
-                            className={classNames(
-                              'text-sm mb-0 whitespace-nowrap',
-                            )}
-                          >
-                            {getTxnTypeName(type.type)}
-                          </p>
-                        </div>
-                      }
-                      key={type.type}
-                      path={type.type}
-                      customStyles
-                      classes={'text-gray-600 hover:text-gray-800'}
-                      activeClasses={'border-b-3 border-solid'}
-                      activeStyles={{
-                        borderColor: getTxnTypeColor(type.type),
-                        color: 'black',
-                      }}
-                    >
-                      <div
-                        className={classNames(
-                          'grid grid-flow-row grid-cols-1 no-scrollbar',
-                          {
-                            'overflow-y-scroll': !blockLoading,
-                            'overflow-y-hidden': blockLoading,
-                          },
-                        )}
+          <TransactionTypesWidget txns={block.txns} />
+          <TabNavbar
+            centered={false}
+            classes="w-full border-b border-gray-400 border-solid mt-0 px-2 md:px-4 flex overflow-x-scroll no-scrollbar"
+          >
+            {block.splitTxns.map((type) => {
+              return (
+                <TabPane
+                  title={
+                    <div className="">
+                      <p
+                        style={{ color: getTxnTypeColor(type.type) }}
+                        className={'mb-0 text-xl'}
                       >
-                        <TransactionList
-                          transactions={type.txns}
-                          isLoading={blockLoading}
-                        />
-                      </div>
-                    </TabPane>
-                  )
-                })}
-              </TabNavbar>
-            </>
-          ) : (
-            <div className="py-10 px-3 flex items-center justify-center">
-              <Skeleton w="w-full" my="my-2" />
-              <p className="font-sans text-gray-600 text-lg">No transactions</p>
-            </div>
-          )}
+                        {type.txns.length}
+                      </p>
+                      <p
+                        className={classNames('text-sm mb-0 whitespace-nowrap')}
+                      >
+                        {getTxnTypeName(type.type)}
+                      </p>
+                    </div>
+                  }
+                  key={type.type}
+                  path={type.type}
+                  customStyles
+                  classes={'text-gray-600 hover:text-gray-800'}
+                  activeClasses={'border-b-3 border-solid'}
+                  activeStyles={{
+                    borderColor: getTxnTypeColor(type.type),
+                    color: 'black',
+                  }}
+                >
+                  <div
+                    className={classNames(
+                      'grid grid-flow-row grid-cols-1 no-scrollbar',
+                      {
+                        'overflow-y-scroll': !blockLoading,
+                        'overflow-y-hidden': blockLoading,
+                      },
+                    )}
+                  >
+                    <TransactionList
+                      transactions={type.txns}
+                      isLoading={blockLoading}
+                    />
+                  </div>
+                </TabPane>
+              )
+            })}
+          </TabNavbar>
         </>
       ) : (
-        <>
-          <div style={{ width: '100%', minHeight: 60 + 76 }}></div>
-          <SkeletonList />
-        </>
+        <div className="py-10 px-3 flex items-center justify-center">
+          <Skeleton w="w-full" my="my-2" />
+          <p className="font-sans text-gray-600 text-lg">No transactions</p>
+        </div>
       )}
     </InfoBox>
   )

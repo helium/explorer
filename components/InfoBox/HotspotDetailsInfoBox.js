@@ -87,7 +87,7 @@ const HotspotDetailsInfoBox = ({ address }) => {
         icon: (
           <AccountIcon address={hotspot.owner} size={14} className="mr-1" />
         ),
-        title: <AccountAddress address={hotspot.owner} truncate={7} mono />,
+        title: <AccountAddress address={hotspot.owner} truncate={5} mono />,
         path: `/accounts/${hotspot.owner}`,
       },
     ]

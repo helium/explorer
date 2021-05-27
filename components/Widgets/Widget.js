@@ -39,7 +39,7 @@ const Widget = ({
           {icon && <div className="mr-1.5 flex items-center">{icon}</div>}
           <div className="text-2xl font-medium text-black my-1.5 tracking-tight w-full break-all">
             {isLoading ? (
-              <Skeleton w="w-full" />
+              <Skeleton className="w-full" />
             ) : (
               <CopyableText textToCopy={copyableValue}>
                 <p
@@ -55,7 +55,7 @@ const Widget = ({
         </div>
         {change &&
           (isLoading ? (
-            <Skeleton w="w-1/4" />
+            <Skeleton className="w-1/4" />
           ) : (
             <div
               className={classNames('text-sm font-medium', {

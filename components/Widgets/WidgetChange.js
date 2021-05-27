@@ -3,7 +3,7 @@ import { memo } from 'react'
 import Skeleton from '../Common/Skeleton'
 
 const WidgetChange = ({ value, initial, type, isLoading = false }) => {
-  if (isLoading) return <Skeleton w="1/3" />
+  if (isLoading) return <Skeleton className="w-1/3" />
 
   if (value === initial) return <span className="text-gray-550">No Change</span>
 

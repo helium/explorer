@@ -1,7 +1,11 @@
 import classNames from 'classnames'
 
-const Skeleton = ({ w = 'w-3/4', my = 'my-2' }) => (
-  <div className={classNames('animate-pulse h-4 bg-gray-400 rounded', my, w)} />
+const Skeleton = ({ overrideDefaultClasses = false, className }) => (
+  <div
+    className={classNames('animate-pulse', className, {
+      'h-4 rounded bg-gray-400': !overrideDefaultClasses,
+    })}
+  />
 )
 
 export default Skeleton

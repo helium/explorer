@@ -12,7 +12,7 @@ const SubtitleSection = ({ subtitles }) => {
         'opacity-25': seeThrough,
       })}
     >
-      <Skeleton my="my-0" w="w-full" />
+      <Skeleton className="my-0 w-full" />
     </span>
   )
   return (

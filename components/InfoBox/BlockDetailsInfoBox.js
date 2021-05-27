@@ -169,7 +169,7 @@ const BlockDetailsInfoBox = () => {
         </>
       ) : (
         <div className="py-10 px-3 flex items-center justify-center">
-          <Skeleton w="w-full" my="my-2" />
+          <Skeleton className="w-full my-2" />
           <p className="font-sans text-gray-600 text-lg">No transactions</p>
         </div>
       )}

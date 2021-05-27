@@ -50,7 +50,7 @@ const Rewards = ({ txn }) => {
   }, [])
 
   const RewardsRecipientsWidget = ({ rewardsRecipients }) => {
-    if (!rewardsRecipients.length) return <Skeleton span="" w="w-full" />
+    if (!rewardsRecipients.length) return <Skeleton className="w-full" />
     return (
       <>
         <div className={classNames(`bg-gray-200 p-3 rounded-t-lg col-span-2`)}>

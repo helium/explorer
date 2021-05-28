@@ -97,7 +97,7 @@
     ]
   },
   "devDependencies": {
-    "@tailwindcss/postcss7-compat": "^2.1.0",
+    "@tailwindcss/postcss7-compat": "^2.1.2",
     "autoprefixer": "^9",
     "husky": "^4.2.5",
     "postcss": "^7",

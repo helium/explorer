@@ -15,6 +15,7 @@ JavascriptTimeAgo.addLocale(en)
 function MyApp({ Component, pageProps }) {
   return (
     // this #app div is used to increase the specificity of Tailwind's utility classes, making it easier to override styles without resorting to !important
+    // the corresponding value is in /tailwind.config.js: important: "#app"
     <div id="app" suppressHydrationWarning>
       <GAScript />
       {typeof window === 'undefined' ? null : (

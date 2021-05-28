@@ -83,7 +83,7 @@ const Widget = ({
     return (
       <Link
         className={classNames(
-          'bg-gray-200 p-3 rounded-lg flex transition-all cursor-pointer hover:bg-[#ff00ff]',
+          'bg-gray-200 p-3 rounded-lg flex transition-all cursor-pointer hover:bg-gray-300',
           {
             'col-span-1': span === 1,
             'col-span-2': span === 2,
@@ -98,14 +98,11 @@ const Widget = ({
 
   return (
     <div
-      className={classNames(
-        'bg-gray-200 p-[100px] rounded-lg flex  transition-all',
-        {
-          'col-span-1': span === 1,
-          'col-span-2': span === 2,
-          'cursor-pointer hover:bg-[#ff00ff]': !!onClick,
-        },
-      )}
+      className={classNames('bg-gray-200 p-3 rounded-lg flex  transition-all', {
+        'col-span-1': span === 1,
+        'col-span-2': span === 2,
+        'cursor-pointer hover:bg-gray-300': !!onClick,
+      })}
       onClick={onClick}
     >
       {inner}

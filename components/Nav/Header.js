@@ -3,13 +3,16 @@ import { useState } from 'react'
 import { Link } from 'react-router-i18n'
 import SearchBar from '../SearchBar/SearchBar'
 
-const NavLink = ({ href, title, onClick }) => (
-  <Link to={href} onClick={onClick}>
-    <a className="text-white font-medium text-base">{title}</a>
-  </Link>
-)
-
 const NavLinks = ({ className, children }) => {
+  const NavLink = ({ href, title, onClick }) => (
+    <Link
+      to={href}
+      onClick={onClick}
+      className="text-white font-medium text-base"
+    >
+      {title}
+    </Link>
+  )
   return (
     <div className={className}>
       <NavLink href="/hotspots" title="Hotspots" />
@@ -31,7 +34,16 @@ const MenuButton = () => {
   }
   return (
     <>
-      <div className="cursor-pointer md:hidden block" onClick={handleMenuClick}>
+      <div
+        className={classNames(
+          'cursor-pointer md:hidden block transition-all duration-200',
+          {
+            'opacity-100': !menuOpen,
+            'opacity-0': menuOpen,
+          },
+        )}
+        onClick={handleMenuClick}
+      >
         <img src="/images/menu.svg" />
       </div>
       <MobileMenu menuOpen={menuOpen} handleMenuClick={handleMenuClick} />
@@ -43,16 +55,16 @@ const MobileMenu = ({ menuOpen, handleMenuClick }) => {
   return (
     <div
       className={classNames(
-        'transform-gpu absolute transition-all duration-100 ease-in-out top-0 z-50 left-0 h-screen w-screen backdrop-filter backdrop-blur-lg bg-gray-800 opacity-75',
+        'transform-gpu absolute transition-all duration-100 ease-in-out top-0 z-50 left-0 h-screen w-screen filter grayscale bg-navy-900 opacity-90',
         { 'translate-x-full': !menuOpen, 'translate-x-0': menuOpen },
       )}
     >
       <div className="relative flex flex-col items-center justify-center h-screen w-full p-10">
         <button
-          className="absolute cursor-pointer top-5 right-5 w-10 h-10"
+          className="absolute cursor-pointer top-4 right-4 w-10 h-10 flex items-center justify-center"
           onClick={handleMenuClick}
         >
-          x
+          <img src="/images/close-menu.svg" />
         </button>
         <NavLinks className="flex flex-col items-center justify-center space-y-4">
           <button

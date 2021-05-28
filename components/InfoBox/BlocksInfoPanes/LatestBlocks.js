@@ -53,12 +53,14 @@ const LatestBlocksPane = () => {
             <Image src="/images/consensus_c.svg" width={30} height={30} />
           </div>
           <div className="pl-12 py-2">
-            <p className="pl-2 mb-1 text-base text-black text-md font-semibold">
-              {(blocks[0].height + 1).toLocaleString()}
-            </p>
-            <p className="pl-2 text-gray-650 font-medium m-0">
-              In Consensus...
-            </p>
+            <div className="pl-2 md:pl-3">
+              <p className="mb-1 text-md text-black text-md font-semibold leading-tight">
+                {(blocks[0].height + 1).toLocaleString()}
+              </p>
+              <p className="text-gray-650 font-medium m-0 leading-tight text-md">
+                In Consensus...
+              </p>
+            </div>
           </div>
         </Link>
       )}

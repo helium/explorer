@@ -22,7 +22,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
     : deriveBreadcrumbsFromUrl()
 
   return (
-    <>
+    <div className="flex flex-row items-center justify-start">
       {breadcrumbsToDisplay &&
         breadcrumbsToDisplay.length > 0 &&
         breadcrumbsToDisplay.map((b) => {
@@ -40,7 +40,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
             </span>
           )
         })}
-    </>
+    </div>
   )
 }
 

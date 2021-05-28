@@ -1,17 +1,24 @@
 import React from 'react'
 import { Tooltip } from 'antd'
 import { isInteger } from 'lodash'
+import classNames from 'classnames'
+import Skeleton from './Common/Skeleton'
 
-const AccountAddress = ({ address, truncate = false }) => {
+const AccountAddress = ({
+  address,
+  truncate = false,
+  tooltip,
+  mono,
+  classes,
+}) => {
   const truncateAmount = isInteger(truncate) ? truncate : 10
+  if (!address) return <Skeleton />
   return (
-    <Tooltip title={address}>
+    <Tooltip title={tooltip}>
       <span
-        style={{
-          cursor: 'pointer',
-          fontFamily:
-            "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;'",
-        }}
+        className={classNames('break-all cursor-pointer', classes, {
+          'font-mono': mono,
+        })}
       >
         {truncate
           ? `${address.slice(0, truncateAmount)}...${address.slice(

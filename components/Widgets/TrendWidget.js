@@ -34,7 +34,7 @@ const TrendWidget = ({
         </div>
         <div className="text-3xl font-medium my-1.5 tracking-tight">
           {isLoading ? (
-            <Skeleton w="full" my="4" />
+            <Skeleton className="w-full my-4" />
           ) : (
             [valuePrefix, yMax.toLocaleString(locale, toLocaleStringOpts)].join(
               '',

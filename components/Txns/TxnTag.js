@@ -18,7 +18,12 @@ const CONFIG = {
   rewards_v1: {
     color: '#E68B00',
     name: 'Mining Reward',
-    tooltip: 'Mining Reward',
+    tooltip: 'Mining Reward (v1)',
+  },
+  rewards_v2: {
+    color: '#E68B00',
+    name: 'Mining Reward',
+    tooltip: 'Mining Reward (v2)',
   },
   consensus_group_v1: {
     color: '#FF6666',
@@ -43,7 +48,12 @@ const CONFIG = {
   assert_location_v1: {
     color: '#16CEE8',
     name: 'Assert Location',
-    tooltip: 'Assert Location Transaction',
+    tooltip: 'Assert Location Transaction (v1)',
+  },
+  assert_location_v2: {
+    color: '#16CEE8',
+    name: 'Assert Location',
+    tooltip: 'Assert Location Transaction (v2)',
   },
   add_gateway_v1: {
     color: '#8597BB',

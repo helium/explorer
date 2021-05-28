@@ -16,3 +16,8 @@ export const formatPercent = (number, digits = 2) =>
     style: 'percent',
     maximumFractionDigits: digits,
   })
+
+export const truncateHash = (hashToTruncate, truncateAmount = 10) =>
+  `${hashToTruncate.slice(0, truncateAmount)}...${hashToTruncate.slice(
+    -truncateAmount,
+  )}`

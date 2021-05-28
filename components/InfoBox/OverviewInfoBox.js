@@ -4,6 +4,7 @@ import StatWidget from '../Widgets/StatWidget'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import HalveningCountdownWidget from '../Widgets/HalvingCountdownWidget'
 import useApi from '../../hooks/useApi'
+import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 
 const OverviewInfoBox = () => {
   const { data: stats } = useApi('/metrics/hotspots')
@@ -12,7 +13,7 @@ const OverviewInfoBox = () => {
     <InfoBox title="Helium Explorer">
       <TabNavbar>
         <TabPane title="Overview" key="1">
-          <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+          <InfoBoxPaneContainer>
             <TrendWidget
               title="Hotspots"
               series={stats?.count}
@@ -31,8 +32,7 @@ const OverviewInfoBox = () => {
               isLoading={!stats}
             />
             <HalveningCountdownWidget />
-            <div className="col-span-2 pb-1" />
-          </div>
+          </InfoBoxPaneContainer>
         </TabPane>
       </TabNavbar>
     </InfoBox>

@@ -23,7 +23,7 @@ const SkeletonList = ({ padding }) => {
               <Skeleton />
             </div>
             <div className="flex items-center space-x-4 h-8">
-              <Skeleton w="1/5" />
+              <Skeleton className="w-1/5" />
             </div>
           </div>
           <div className="flex">

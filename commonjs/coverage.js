@@ -1,6 +1,6 @@
 const { Client } = require('@helium/http')
 const geoJSON = require('geojson')
-const ColorHash = require('color-hash')
+const ColorHash = require('color-hash').default
 const maxBy = require('lodash/maxBy')
 const { s3 } = require('./aws')
 

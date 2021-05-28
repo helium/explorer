@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import classNames from 'classnames'
+import { Tooltip } from 'antd'
 
-const CopyableText = ({ textToCopy, classes, children }) => {
+const CopyableText = ({ textToCopy, tooltip, classes, children }) => {
   const [successStatus, setSuccessStatus] = useState(false)
 
   useEffect(() => {
@@ -54,6 +55,8 @@ const CopyableText = ({ textToCopy, classes, children }) => {
     )
   }
 
+  if (!textToCopy) return children
+
   return (
     <>
       <span
@@ -62,47 +65,51 @@ const CopyableText = ({ textToCopy, classes, children }) => {
         })}
         onClick={() => copyTextToClipboard(textToCopy)}
       >
-        <span className="relative flex items-center justify-start">
-          {children}
-          {successStatus ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-auto ml-2 text-green-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-              />
-              {/* TODO: add "Copied!" tooltip */}
-              {/* <span
+        <span className="relative inline-flex items-center justify-between">
+          <span className="mr-2">{children}</span>
+          <span className="flex-1">
+            {successStatus ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="inline-block h-4 w-auto text-green-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                />
+                {/* TODO: add "Copied!" tooltip */}
+                {/* <span
                 className={classNames(
                   'rounded-md opacity-75 bg-gray-800 p-1.5',
                 )}
               >
                 <p className="text-white text-xs font-sans">Copied!</p>
               </span> */}
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-auto ml-2 text-gray-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
-              />
-            </svg>
-          )}
+              </svg>
+            ) : (
+              <Tooltip title={tooltip}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="inline-block h-4 w-auto text-gray-600 cursor-pointer"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                  />
+                </svg>
+              </Tooltip>
+            )}
+          </span>{' '}
         </span>
       </span>
     </>

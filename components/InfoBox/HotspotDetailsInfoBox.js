@@ -11,7 +11,9 @@ import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import { formatLocation } from '../Hotspots/utils'
 import { formattedAccountAddress } from '../../utils/accounts'
-import { h3ToParent } from 'h3-js'
+import CopyableText from '../Common/CopyableText'
+import AccountIcon from '../AccountIcon'
+import AccountAddress from '../AccountAddress'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -35,7 +37,14 @@ const HotspotDetailsInfoBox = ({ address }) => {
     clearSelectedHotspot,
   } = useSelectedHotspot()
 
-  const title = useMemo(() => animalHash(address), [address])
+  const title = useMemo(
+    () => (
+      <CopyableText textToCopy={address} tooltip="Copy address">
+        {animalHash(address)}
+      </CopyableText>
+    ),
+    [address],
+  )
 
   useEffect(() => {
     return () => {
@@ -44,7 +53,21 @@ const HotspotDetailsInfoBox = ({ address }) => {
   }, [clearSelectedHotspot])
 
   const generateSubtitles = (hotspot) => {
-    if (!hotspot) return []
+    if (!hotspot)
+      return [
+        {
+          iconPath: '/images/location-blue.svg',
+          loading: true,
+        },
+        {
+          iconPath: '/images/location-hex.svg',
+          loading: true,
+        },
+        {
+          iconPath: '/images/account-green.svg',
+          loading: true,
+        },
+      ]
     return [
       {
         iconPath: '/images/location-blue.svg',
@@ -53,12 +76,18 @@ const HotspotDetailsInfoBox = ({ address }) => {
       },
       {
         iconPath: '/images/location-hex.svg',
-        path: `/hotspots/hex/${hotspot.location}`,
-        title: hotspot.location,
+        ...(hotspot.location
+          ? {
+              path: `/hotspots/hex/${hotspot.location}`,
+              title: hotspot.location,
+            }
+          : { title: 'Not set' }),
       },
       {
-        iconPath: '/images/account-green.svg',
-        title: formattedAccountAddress(hotspot.owner),
+        icon: (
+          <AccountIcon address={hotspot.owner} size={14} className="mr-1" />
+        ),
+        title: <AccountAddress address={hotspot.owner} truncate={5} mono />,
         path: `/accounts/${hotspot.owner}`,
       },
     ]

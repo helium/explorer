@@ -1,8 +1,5 @@
 module.exports = {
   // mode: 'jit',
-  corePlugins: {
-    preflight: false,
-  },
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
@@ -14,6 +11,16 @@ module.exports = {
     },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
+      mono: [
+        'ui-monospace',
+        'SFMono-Regular',
+        'Menlo',
+        'Monaco',
+        'Consolas',
+        'Liberation Mono',
+        'Courier New',
+        'monospace',
+      ],
     },
     colors: {
       //TODO: get Pete to define a palette and do a full color audit
@@ -90,6 +97,10 @@ module.exports = {
       },
       height: {
         '6/10': '60vh',
+      },
+      minHeight: {
+        '1/2': '50vh',
+        '325px': '325px',
       },
       maxHeight: {
         'vh-minus-nav': 'calc(100vh - 80px)',

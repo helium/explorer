@@ -8,6 +8,7 @@ import VersionsWidget from '../Widgets/VersionsWidget'
 import { useElections } from '../../data/consensus'
 import ValidatorsList from '../Lists/ValidatorsList'
 import useApi from '../../hooks/useApi'
+import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 
 const TICKER = 'TNT'
 
@@ -36,7 +37,7 @@ const ValidatorsInfoBox = () => {
     <InfoBox title="Validators">
       <TabNavbar basePath="validators">
         <TabPane title="Statistics" key="1">
-          <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+          <InfoBoxPaneContainer>
             <Widget
               title="Total Validators"
               value={validators.length.toLocaleString()}
@@ -62,26 +63,23 @@ const ValidatorsInfoBox = () => {
               isLoading={isLoading}
             />
             <VersionsWidget validators={validators} />
-            <div className="col-span-2 pb-1" />
-          </div>
+          </InfoBoxPaneContainer>
         </TabPane>
         <TabPane title="Consensus Group" key="2" path="consensus">
-          <div className="grid grid-flow-row grid-cols-1 overflow-y-scroll no-scrollbar">
+          <InfoBoxPaneContainer>
             <ValidatorsList
               validators={consensusGroup}
               recentGroups={recentGroups}
             />
-            <div className="col-span-2 pb-1" />
-          </div>
+          </InfoBoxPaneContainer>
         </TabPane>
         <TabPane title="All Validators" key="3" path="all">
-          <div className="grid grid-flow-row grid-cols-1 overflow-y-scroll no-scrollbar">
+          <InfoBoxPaneContainer>
             <ValidatorsList
               validators={validators}
               recentGroups={recentGroups}
             />
-            <div className="col-span-2 pb-1" />
-          </div>
+          </InfoBoxPaneContainer>
         </TabPane>
       </TabNavbar>
     </InfoBox>

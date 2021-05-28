@@ -5,7 +5,7 @@ import Widget from './Widget'
 
 const HotspotWidget = ({ title, hotspot }) => {
   const { selectHotspot } = useSelectedHotspot()
-  if (!hotspot) return null
+  if (!hotspot) return <Widget span={2} isLoading />
 
   return (
     <Widget
@@ -14,7 +14,6 @@ const HotspotWidget = ({ title, hotspot }) => {
       subtitle={<FlagLocation geocode={hotspot.geocode} />}
       span={2}
       onClick={() => selectHotspot(hotspot.address)}
-      isLoading={!hotspot}
     />
   )
 }

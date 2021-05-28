@@ -19,7 +19,6 @@ const useSelectedTxn = () => {
         type: SET_SELECTED_TXN,
         payload: { ...txn },
       })
-      history.push(`/txns/${txn.hash}`)
     },
     [dispatch, history],
   )

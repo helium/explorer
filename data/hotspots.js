@@ -68,6 +68,12 @@ export const fetchHotspot = async (address) => {
   return JSON.parse(JSON.stringify(res8Hotspot))
 }
 
+export const fetchConsensusHotspots = async (blockHeight) => {
+  const list = await client.hotspots.elected(blockHeight)
+  const elected = await list.take(TAKE_MAX)
+  return elected
+}
+
 export const fetchHexHotspots = async (index) => {
   const list = await client.hotspots.hex(index)
   const hotspots = await list.take(TAKE_MAX)

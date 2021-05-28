@@ -4,6 +4,7 @@ import { TAKE_MAX } from '../../../data/client'
 import { useHotspots } from '../../../data/hotspots'
 import QrWidget from '../../Widgets/QrWidget'
 import Widget from '../../Widgets/Widget'
+import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
 const OverviewPane = () => {
   const { address } = useParams()
@@ -15,7 +16,7 @@ const OverviewPane = () => {
   )
 
   return (
-    <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+    <InfoBoxPaneContainer>
       <Widget
         title="HNT Balance"
         isLoading={isLoading}
@@ -53,8 +54,7 @@ const OverviewPane = () => {
         linkTo={`/accounts/${address}/hotspots`}
       />
       <QrWidget address={address} />
-      <div className="col-span-2 pb-1" />
-    </div>
+    </InfoBoxPaneContainer>
   )
 }
 

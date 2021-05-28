@@ -11,7 +11,7 @@ import useInfoBox from '../../hooks/useInfoBox'
 import useGeolocation from '../../hooks/useGeolocation'
 import ValidatorsLayer from './Layers/ValidatorsLayer'
 import useSelectedTxn from '../../hooks/useSelectedTxn'
-import { fetchHotspot } from '../../data/hotspots'
+import { fetchConsensusHotspots, fetchHotspot } from '../../data/hotspots'
 import HexCoverageLayer from './Layers/HexCoverageLayer'
 import { hotspotToRes8 } from '../Hotspots/utils'
 import useApi from '../../hooks/useApi'
@@ -51,7 +51,7 @@ const CoverageMap = () => {
   const map = useRef()
   const [styleLoaded, setStyledLoaded] = useState(false)
   const [selectedTxnHotspot, setSelectedTxnHotspot] = useState()
-  const [selectedTxnWitnesses, setSelectedTxnWitnesses] = useState([])
+  const [selectedTxnParticipants, setSelectedTxnParticipants] = useState([])
 
   const { showInfoBox } = useInfoBox()
   const { mapLayer } = useMapLayer()
@@ -102,17 +102,17 @@ const CoverageMap = () => {
   }, [selectedHex])
 
   useEffect(() => {
-    if (!selectedTxnHotspot || !selectedTxnWitnesses) return
+    if (!selectedTxnHotspot || !selectedTxnParticipants) return
 
     const selectionBounds = findBounds([
-      ...(selectedTxnWitnesses || []).map(({ lat, lng }) => ({
+      ...(selectedTxnParticipants || []).map(({ lat, lng }) => ({
         lat,
         lng,
       })),
       { lat: selectedTxnHotspot.lat, lng: selectedTxnHotspot.lng },
     ])
     setBounds(selectionBounds)
-  }, [selectedTxnHotspot, selectedTxnWitnesses])
+  }, [selectedTxnHotspot, selectedTxnParticipants])
 
   useAsync(async () => {
     if (selectedTxn?.type === 'poc_receipts_v1') {
@@ -121,10 +121,22 @@ const CoverageMap = () => {
       const witnesses = selectedTxn.path[0].witnesses.map(hotspotToRes8)
 
       setSelectedTxnHotspot(targetHotspot)
-      setSelectedTxnWitnesses(witnesses)
+      setSelectedTxnParticipants(witnesses)
+    } else if (
+      selectedTxn?.type === 'assert_location_v1' ||
+      selectedTxn?.type === 'assert_location_v2'
+    ) {
+      const target = selectedTxn.gateway
+      const targetHotspot = await fetchHotspot(target)
+      setSelectedTxnHotspot(targetHotspot)
+      setSelectedTxnParticipants([])
+    } else if (selectedTxn?.type === 'consensus_group_v1') {
+      const members = await fetchConsensusHotspots(txn.height)
+      setSelectedTxnHotspot(undefined)
+      setSelectedTxnParticipants(members)
     } else {
       setSelectedTxnHotspot(undefined)
-      setSelectedTxnWitnesses([])
+      setSelectedTxnParticipants([])
     }
   }, [selectedTxn])
 
@@ -185,7 +197,7 @@ const CoverageMap = () => {
       />
       <HotspotDetailLayer
         hotspot={selectedHotspot || selectedTxnHotspot}
-        witnesses={selectedHotspot?.witnesses || selectedTxnWitnesses || []}
+        witnesses={selectedHotspot?.witnesses || selectedTxnParticipants || []}
       />
       <ValidatorsLayer
         validators={validators}

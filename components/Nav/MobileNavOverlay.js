@@ -1,6 +1,7 @@
 import NavLinks from './NavLinks'
 import classNames from 'classnames'
 import FocusTrap from 'focus-trap-react'
+
 const CloseButton = ({ className, closeFunction }) => (
   <button
     className={classNames(

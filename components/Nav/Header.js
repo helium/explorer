@@ -1,17 +1,13 @@
-import { useState } from 'react'
 import { Link } from 'react-router-i18n'
 import SearchBar from '../SearchBar/SearchBar'
 import MobileNavOverlay from './MobileNavOverlay'
 import NavLinks from './NavLinks'
 import classNames from 'classnames'
+import useToggle from '../../utils/useToggle'
 
 const MenuButton = () => {
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [menuOpen, toggleMenu] = useToggle()
 
-  const handleMenuClick = () => {
-    if (!menuOpen) setMenuOpen(true)
-    if (menuOpen) setMenuOpen(false)
-  }
   return (
     <>
       <div
@@ -22,11 +18,11 @@ const MenuButton = () => {
             'opacity-0': menuOpen,
           },
         )}
-        onClick={handleMenuClick}
+        onClick={toggleMenu}
       >
         <img src="/images/menu.svg" />
       </div>
-      <MobileNavOverlay menuOpen={menuOpen} handleMenuClick={handleMenuClick} />
+      <MobileNavOverlay menuOpen={menuOpen} toggleMenu={toggleMenu} />
     </>
   )
 }

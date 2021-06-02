@@ -13,7 +13,7 @@ const NavLink = ({ href, title, className, onClick }) => (
   </Link>
 )
 
-const NavLinks = ({ className, children, onNavLinkClick, navLinkClasses }) => {
+const NavLinks = ({ className, onNavLinkClick, navLinkClasses }) => {
   return (
     <div className={className}>
       <NavLink
@@ -46,7 +46,6 @@ const NavLinks = ({ className, children, onNavLinkClick, navLinkClasses }) => {
         className={navLinkClasses}
         onClick={onNavLinkClick}
       />
-      {children}
     </div>
   )
 }

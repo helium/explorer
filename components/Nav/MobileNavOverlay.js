@@ -2,13 +2,13 @@ import NavLinks from './NavLinks'
 import classNames from 'classnames'
 import FocusTrap from 'focus-trap-react'
 
-const CloseButton = ({ className, closeFunction }) => (
+const CloseButton = ({ className, onClick }) => (
   <button
     className={classNames(
       'cursor-pointer w-10 h-10 flex items-center justify-center outline-none border-solid border border-transparent focus:border-navy-400',
       className,
     )}
-    onClick={closeFunction}
+    onClick={onClick}
   >
     <img src="/images/close-menu.svg" />
   </button>
@@ -24,19 +24,17 @@ const MobileNavOverlay = ({ menuOpen, toggleMenu }) => {
         )}
         style={{ backdropFilter: 'blur(12px)' }}
       >
-        <div className="relative flex flex-col items-center justify-center h-screen w-full p-10">
+        <div className="relative flex flex-col items-center justify-center h-screen w-full p-10 space-y-20">
           <CloseButton
             className="absolute top-4 right-4"
-            closeFunction={toggleMenu}
+            onClick={toggleMenu}
           />
           <NavLinks
             className="flex flex-col items-center justify-center space-y-8"
             navLinkClasses="text-xl text-white font-sans font-semibold border-solid border border-transparent focus:border-navy-400 hover:text-gray-600"
             onNavLinkClick={toggleMenu}
-          >
-            <div className="pt-5" />
-            <CloseButton closeFunction={toggleMenu} />
-          </NavLinks>
+          />
+          <CloseButton onClick={toggleMenu} />
         </div>
       </div>
     </FocusTrap>

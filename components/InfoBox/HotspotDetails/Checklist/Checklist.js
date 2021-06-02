@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import ChecklistCard from './ChecklistCard'
 import { Tooltip } from 'antd'
-import withBlockHeight from '../../withBlockHeight'
+// import withBlockHeight from '../../withBlockHeight'
 import { Client } from '@helium/http'
+import classNames from 'classnames'
 
 const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
   const [activity, setActivity] = useState({})
@@ -25,7 +26,6 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
       })
       const challengerTxn = await challengerTxnList.take(1)
 
-      console.log(hotspot)
       // Get most recent challengee transaction
       const challengeeTxnList = await client.hotspot(hotspotid).activity.list({
         filterTypes: ['poc_receipts_v1'],
@@ -78,7 +78,7 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
         {
           sortOrder: 0,
           title: 'Blockchain Sync',
-          infoTooltipText: `Hotspots must be fully synced before they can mine. New Hotspots can take up to 48 hours to sync.`,
+          infoTooltipText: `Hotspots must be fully synced before they can mine. New Hotspots can take up to 96 hours to sync.`,
           detailText:
             isNaN(hotspot.status.height) || isNaN(height)
               ? `Hotspot is not yet synced.`
@@ -122,7 +122,7 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
           sortOrder: 2,
           title: 'Create a Challenge',
           infoTooltipText:
-            'Hotspots that are synced and online create a challenge automatically, every 120 blocks.',
+            'Hotspots that are synced and online create a challenge automatically, every 480 blocks (~8 hours).',
           detailText:
             activity.challengerTxn !== null
               ? `Hotspot issued a challenge ${(
@@ -130,7 +130,7 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
                 ).toLocaleString()} block${
                   height - activity.challengerTxn.height === 1 ? '' : 's'
                 } ago.`
-              : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically.`,
+              : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically every 480 blocks (~8 hours).`,
           condition: activity.challengerTxn !== null,
         },
         {
@@ -155,7 +155,7 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
                 }.`
               : `Hotspot has no witnesses.`,
           infoTooltipText:
-            'The number of witnesses for a Hotspot is based on a rolling 5-day window.',
+            'The number of witnesses for a Hotspot is based on a rolling 5-day window and resets when a Hotspot location or antenna is updated.',
           condition: witnesses.length > 0,
         },
         {
@@ -168,9 +168,9 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
                 ).toLocaleString()} block${
                   height - activity.challengeeTxn.height === 1 ? '' : 's'
                 } ago.`
-              : `Hotspot hasn’t participated in a challenge yet.`,
+              : `Hotspot hasn’t participated in a challenge yet. Hotspots are challenged every 480 blocks.`,
           infoTooltipText:
-            'Participation in a challenge depends on having witnesses. Use the checkbox to see Hotspots in your list. It can take a few hours for challenges to include this Hotspot once a witness list is built.',
+            'Participation in a challenge depends on having witnesses. Use the checkbox to see Hotspots in your list. It can take a few days for challenges to include this Hotspot once a witness list is built.',
           condition: activity.challengeeTxn !== null,
         },
         {
@@ -182,7 +182,7 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
                 `Hotspot has transferred data packets recently.`
               : `Hotspot hasn’t transfered data packets recently.`,
           infoTooltipText:
-            'Hotspots transfer encryped data on behalf of devices using the network. Device usage is expanding, and it is normal to have a Hotspot that does not transfer data. This likely means there are no devices using the network in the area.',
+            'Hotspots transfer encrypted data on behalf of devices using the network. Device usage is expanding, and it is normal to have a Hotspot that does not transfer data. This likely means there are no devices using the network in the area.',
           condition: activity.dataTransferTxn !== null,
         },
       ]
@@ -380,11 +380,47 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
     <div className={`${showChecklist ? 'pb-12' : 'pb-4'}`}>
       <button
         onClick={toggleShowChecklist}
-        className={`cursor-pointer text-gray-600 px-2 py-1 ml-4 bg-navy-600 rounded-full outline-none border-transparent text-xs ${
-          showChecklist ? 'mb-2' : ''
-        }`}
+        className={classNames(
+          'flex',
+          'flex-row',
+          'items-center',
+          'justify-between',
+          'w-32',
+          'cursor-pointer',
+          'text-gray-600',
+          'px-2',
+          'py-1',
+          'ml-5',
+          'bg-navy-600',
+          'rounded-full',
+          'outline-none',
+          'border-transparent',
+          'text-xs',
+          { 'mb-2': showChecklist },
+        )}
       >
         {showChecklist ? 'Hide' : 'Show'} checklist
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className={classNames(
+            'h-4',
+            'w-4',
+            'ml-1',
+            'transform duration-500',
+            'transition-all',
+            { 'rotate-180': !showChecklist },
+          )}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M5 15l7-7 7 7"
+          />
+        </svg>
       </button>
       {showChecklist && (
         <>
@@ -559,4 +595,4 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
   )
 }
 
-export default withBlockHeight(HotspotChecklist)
+export default HotspotChecklist

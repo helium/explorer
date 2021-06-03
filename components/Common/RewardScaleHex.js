@@ -21,7 +21,6 @@ const rewardScaleColor = (rewardScale) => {
 }
 
 const RewardScaleHex = ({ rewardScale }) => {
-  console.log(rewardScale)
   return (
     <span className="flex items-center w-12">
       <Hex width={10} height={12} fillColor={rewardScaleColor(rewardScale)} />

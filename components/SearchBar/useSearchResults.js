@@ -53,7 +53,6 @@ const useSearchResults = () => {
       async (term) => {
         try {
           const block = await client.blocks.get(term)
-          console.log('block', block)
           if (block) {
             setResults([toSearchResult(block, 'block'), ...results])
           }

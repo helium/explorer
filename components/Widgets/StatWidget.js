@@ -13,7 +13,7 @@ const StatWidget = ({
   const value = last(series || [])?.[dataKey]
   const initial = first(series || [])?.[dataKey]
 
-  const valueString = value?.toLocaleString()
+  const valueString = value?.toLocaleString(undefined, stringOpts[valueType])
 
   return (
     <Widget
@@ -25,6 +25,12 @@ const StatWidget = ({
       isLoading={isLoading}
     />
   )
+}
+
+const stringOpts = {
+  difference: undefined,
+  default: undefined,
+  percent: { style: 'percent', maximumFractionDigits: 3 },
 }
 
 export default StatWidget

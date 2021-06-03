@@ -1,12 +1,10 @@
 import { useContext, useCallback } from 'react'
-import { useHistory } from 'react-router'
 import { fetchTxnDetails } from '../data/txns'
 import { store, SET_SELECTED_TXN } from '../store/store'
 import useDispatch from '../store/useDispatch'
 
 const useSelectedTxn = () => {
   const dispatch = useDispatch()
-  const history = useHistory()
 
   const {
     state: { selectedTxn },
@@ -20,7 +18,7 @@ const useSelectedTxn = () => {
         payload: { ...txn },
       })
     },
-    [dispatch, history],
+    [dispatch],
   )
 
   const clearSelectedTxn = useCallback(() => {

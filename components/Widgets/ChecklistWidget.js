@@ -9,6 +9,7 @@ import { getChecklistItems } from '../../data/checklist'
 import { useBlockHeight } from '../../data/blocks'
 import useToggle from '../../utils/useToggle'
 import ChecklistSkeleton from '../InfoBox/HotspotDetails/ChecklistSkeleton'
+import ChecklistItems from '../InfoBox/HotspotDetails/ChecklistItems'
 
 const ChecklistWidget = ({ hotspot, witnesses }) => {
   const [activity, setActivity] = useState({})
@@ -142,8 +143,6 @@ const ChecklistWidget = ({ hotspot, witnesses }) => {
     return <ChecklistSkeleton />
   }
 
-  const sliceWidth = `${(1 / possibleChecklistItems.length) * 100}%`
-
   return (
     <div className="bg-gray-200 p-3 rounded-lg col-span-2">
       <div className="text-gray-600 text-sm whitespace-nowrap">{title}</div>
@@ -155,51 +154,13 @@ const ChecklistWidget = ({ hotspot, witnesses }) => {
           <ChecklistCheck className="ml-2" />
         )}
       </div>
-      <div className="flex items-center justify-center h-10 md:h-5">
-        {sortChecklistItems(possibleChecklistItems).map(
-          (checklistItem, index, { length }) => {
-            const isNextMilestone =
-              index === nextMilestoneIndex && nextMilestoneIndex !== -1
-            const isCompleted = checklistItem.completed
-            const isSelected = index === currentIndex
-
-            return (
-              <Tooltip
-                key={checklistItem.title}
-                placement={'bottom'}
-                title={checklistItem.title}
-              >
-                <div
-                  onClick={() => setCurrentIndex(index)}
-                  className={classNames(
-                    'h-8 md:h-4 p-2 cursor-pointer border-solid border-l border-gray-200',
-                    {
-                      'bg-navy-400': isCompleted && !isSelected,
-                      'bg-navy-300': isCompleted && isSelected,
-                      'animate-pulse opacity-25 bg-navy-400': isNextMilestone,
-                      'bg-gray-300':
-                        !isCompleted && !isNextMilestone && !isSelected,
-                      'bg-gray-350':
-                        !isCompleted && !isNextMilestone && isSelected,
-                      'rounded-l-md': index === 0,
-                      'rounded-r-md': index + 1 === length,
-                    },
-                  )}
-                  style={{
-                    width: sliceWidth,
-                  }}
-                />
-              </Tooltip>
-            )
-          },
-        )}
-      </div>
-      <p className="text-md font-sans text-black pt-2 m-0">
-        {selectedChecklistItemInfo.detailText}
-      </p>
-      <p className="text-xs font-sans text-gray-600 pt-2 m-0">
-        {selectedChecklistItemInfo.infoTooltipText}
-      </p>
+      <ChecklistItems
+        possibleChecklistItems={sortChecklistItems(possibleChecklistItems)}
+        selectedChecklistItemInfo={selectedChecklistItemInfo}
+        nextMilestoneIndex={nextMilestoneIndex}
+        currentIndex={currentIndex}
+        setCurrentIndex={setCurrentIndex}
+      />
     </div>
   )
 }

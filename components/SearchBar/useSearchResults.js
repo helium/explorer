@@ -53,6 +53,7 @@ const useSearchResults = () => {
       async (term) => {
         try {
           const block = await client.blocks.get(term)
+          console.log('block', block)
           if (block) {
             setResults([toSearchResult(block, 'block'), ...results])
           }
@@ -86,20 +87,20 @@ const useSearchResults = () => {
 
     const trimmedTerm = term.trim()
 
-    searchHotspot.current(trimmedTerm)
-
     if (isPositiveInt(trimmedTerm)) {
       // if term is an integer, assume it's a block height
       searchBlock.current(parseInt(trimmedTerm))
+    } else if (Address.isValid(trimmedTerm)) {
+      // if it's a valid address, it could be a hotspot or an account
+      searchAddress.current(trimmedTerm)
     } else if (trimmedTerm.length > 20 && isBase64Url(trimmedTerm)) {
       // if term is a base64 string, it could be a:
       // block hash
       searchBlock.current(trimmedTerm)
       // transaction hash
       searchTransaction.current(trimmedTerm)
-    } else if (Address.isValid(trimmedTerm)) {
-      // if it's a valid address, it could be a hotspot or an account
-      searchAddress.current(trimmedTerm)
+    } else {
+      searchHotspot.current(trimmedTerm)
     }
   }, [term])
 

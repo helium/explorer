@@ -6,6 +6,8 @@ import useSearchResults from './useSearchResults'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import useKeydown from '../../hooks/useKeydown'
 import SearchResult from './SearchResult'
+import { useHistory } from 'react-router'
+import useSelectedTxn from '../../hooks/useSelectedTxn'
 
 const SearchBar = () => {
   const input = useRef()
@@ -13,6 +15,8 @@ const SearchBar = () => {
   const { term, setTerm, results } = useSearchResults()
   const [selectedResultIndex, setSelectedResultIndex] = useState(0)
   const { selectHotspot } = useSelectedHotspot()
+  const { selectTxn } = useSelectedTxn()
+  const history = useHistory()
 
   const handleChange = useCallback(
     (e) => {
@@ -28,8 +32,18 @@ const SearchBar = () => {
       if (result.type === 'hotspot') {
         selectHotspot(result.item.address)
       }
+      if (result.type === 'account') {
+        history.push(`/accounts/${result.item.address}`)
+      }
+      if (result.type === 'block') {
+        history.push(`/blocks/${result.item.height}`)
+      }
+      if (result.type === 'transaction') {
+        selectTxn(result.item.hash)
+        history.push(`/txns/${result.item.hash}`)
+      }
     },
-    [selectHotspot, setTerm],
+    [history, selectHotspot, selectTxn, setTerm],
   )
 
   const clearSearch = useCallback(() => {

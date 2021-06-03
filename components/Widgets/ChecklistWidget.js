@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Tooltip } from 'antd'
 import classNames from 'classnames'
-import { getActivityForChecklist } from '../../data/activity'
 import { useAsync } from 'react-async-hook'
 import ChevronIcon from '../Icons/Chevron'
-import Skeleton from '../Common/Skeleton'
-import ChecklistCheck from '../InfoBox/HotspotDetails/Checklist/ChecklistCheck'
+import ChecklistCheck from '../Icons/ChecklistCheck'
+import { getActivityForChecklist } from '../../data/checklist'
+import { getChecklistItems } from '../../data/checklist'
 
 const ChecklistWidget = ({ hotspot, witnesses, height }) => {
   const [activity, setActivity] = useState({})
@@ -28,120 +28,13 @@ const ChecklistWidget = ({ hotspot, witnesses, height }) => {
     }
   }, [showChecklist, hotspot.address])
 
-  const possibleChecklistItems = loading
-    ? [{ sortOrder: 0 }]
-    : [
-        {
-          sortOrder: 0,
-          title: 'Blockchain Sync',
-          infoTooltipText: `Hotspots must be fully synced before they can mine. New Hotspots can take up to 96 hours to sync.`,
-          detailText:
-            isNaN(hotspot.status.height) || isNaN(height)
-              ? `Hotspot is not yet synced.`
-              : height - hotspot.status.height < 500
-              ? `Hotspot is fully synced.`
-              : `Hotspot is ${(
-                  height - hotspot.status.height
-                ).toLocaleString()} block${
-                  height - hotspot.status.height === 1 ? '' : 's'
-                } behind the Helium blockchain and is roughly ${(
-                  (hotspot.status.height / height) *
-                  100
-                )
-                  .toFixed(2)
-                  .toLocaleString()}% synced.`,
-          completed: height - hotspot.status.height < 500,
-        },
-        {
-          sortOrder: 1,
-          title: 'Hotspot Status',
-          infoTooltipText: 'Hotspots must be online to sync and mine.',
-          detailText:
-            hotspot.status.online === 'online' ? (
-              `Hotspot is online.`
-            ) : (
-              <p>
-                Hotspot is offline.{' '}
-                <a
-                  href="https://intercom.help/heliumnetwork/en/articles/3207912-troubleshooting-network-connection-issues"
-                  target="_blank"
-                  rel="noopener"
-                  rel="noreferrer"
-                >
-                  Read our troubleshooting guide.
-                </a>
-              </p>
-            ),
-          completed: hotspot.status.online === 'online',
-        },
-        {
-          sortOrder: 2,
-          title: 'Create a Challenge',
-          infoTooltipText:
-            'Hotspots that are synced and online create a challenge automatically, every 480 blocks (~8 hours).',
-          detailText:
-            activity.challengerTxn !== null
-              ? `Hotspot issued a challenge ${(
-                  height - activity.challengerTxn.height
-                ).toLocaleString()} block${
-                  height - activity.challengerTxn.height === 1 ? '' : 's'
-                } ago.`
-              : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically every 480 blocks (~8 hours).`,
-          completed: activity.challengerTxn !== null,
-        },
-        {
-          sortOrder: 3,
-          title: 'Witness a Challenge',
-          detailText:
-            activity.witnessTxn !== null
-              ? // TODO: make this message more specific (e.g. add: "x blocks ago") once the API has been updated to make that number easier to get
-                `Hotspot has witnessed a challenge recently.`
-              : `Hotspot hasn't witnessed a challenge recently.`,
-          infoTooltipText:
-            'Hotspots that are synced and online automatically witness challenges if they’re in range of other Hotspots. If there are no Hotspots nearby, they will not be able to witness.',
-          completed: activity.witnessTxn !== null,
-        },
-        {
-          sortOrder: 4,
-          title: 'Witnesses',
-          detailText:
-            witnesses?.length > 0
-              ? `Hotspot has been witnessed by ${witnesses.length} Hotspot${
-                  witnesses?.length === 1 ? '' : 's'
-                }.`
-              : `Hotspot has no witnesses.`,
-          infoTooltipText:
-            'The number of witnesses for a Hotspot is based on a rolling 5-day window and resets when a Hotspot location or antenna is updated.',
-          completed: witnesses?.length > 0,
-        },
-        {
-          sortOrder: 5,
-          title: 'Participate in a Challenge',
-          detailText:
-            activity.challengeeTxn !== null
-              ? `Hotspot last participated in a challenge ${(
-                  height - activity.challengeeTxn.height
-                ).toLocaleString()} block${
-                  height - activity.challengeeTxn.height === 1 ? '' : 's'
-                } ago.`
-              : `Hotspot hasn’t participated in a challenge yet. Hotspots are challenged every 480 blocks.`,
-          infoTooltipText:
-            'Participation in a challenge depends on having witnesses. Use the checkbox to see Hotspots in your list. It can take a few days for challenges to include this Hotspot once a witness list is built.',
-          completed: activity.challengeeTxn !== null,
-        },
-        {
-          sortOrder: 6,
-          title: 'Transferred Data',
-          detailText:
-            activity.dataTransferTxn !== null
-              ? // TODO: make this message more specific (e.g. add "x blocks ago") once the API has been updated to make that number easier to get
-                `Hotspot has transferred data packets recently.`
-              : `Hotspot hasn’t transfered data packets recently.`,
-          infoTooltipText:
-            'Hotspots transfer encrypted data on behalf of devices using the network. Device usage is expanding, and it is normal to have a Hotspot that does not transfer data. This likely means there are no devices using the network in the area.',
-          completed: activity.dataTransferTxn !== null,
-        },
-      ]
+  const possibleChecklistItems = getChecklistItems(
+    hotspot,
+    witnesses,
+    activity,
+    height,
+    loading,
+  )
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [nextMilestoneIndex, setNextMilestoneIndex] = useState()
@@ -149,9 +42,9 @@ const ChecklistWidget = ({ hotspot, witnesses, height }) => {
   const [title, setTitle] = useState('')
 
   useEffect(() => {
-    if (!nextMilestoneIndex) {
-      setTitle('Loading')
-    } else if (nextMilestoneIndex === -1) {
+    if (!nextMilestoneIndex) return
+
+    if (nextMilestoneIndex === -1) {
       setTitle('Completed Milestone')
     } else if (currentIndex === nextMilestoneIndex) {
       setTitle('Next Milestone')
@@ -162,9 +55,12 @@ const ChecklistWidget = ({ hotspot, witnesses, height }) => {
     }
   }, [currentIndex, nextMilestoneIndex])
 
+  const [processingChecklistItems, setProcessingChecklistItems] = useState(true)
+
   useEffect(() => {
     if (showChecklist && !loading) {
-      // show the furthest item that isn't completed yet
+      setProcessingChecklistItems(true)
+      // get the furthest milestone that isn't completed yet
       let targetIndex = possibleChecklistItems.length - 1
       sortChecklistItems(possibleChecklistItems).find(
         (checklistItem, index) => {
@@ -185,6 +81,7 @@ const ChecklistWidget = ({ hotspot, witnesses, height }) => {
         setNextMilestoneIndex(targetIndex)
       }
       setCurrentIndex(targetIndex)
+      setProcessingChecklistItems(false)
     }
   }, [showChecklist, loading])
 
@@ -213,8 +110,6 @@ const ChecklistWidget = ({ hotspot, witnesses, height }) => {
     return sortedChecklistItems
   }
 
-  const sliceWidth = `${(1 / possibleChecklistItems.length) * 100}%`
-
   if (!showChecklist) {
     return (
       <div
@@ -241,6 +136,37 @@ const ChecklistWidget = ({ hotspot, witnesses, height }) => {
     )
   }
 
+  if (processingChecklistItems) {
+    const SKELETON_SLICES = 7
+    const sliceWidth = `${(1 / SKELETON_SLICES) * 100}%`
+
+    return (
+      <div className="bg-gray-200 p-3 rounded-lg col-span-2">
+        <div className="text-gray-600 text-sm whitespace-nowrap">
+          Loading checklist data
+        </div>
+        <div className="flex items-center justify-center h-10 md:h-5 mt-2">
+          {Array.from({ length: SKELETON_SLICES }, (_, i) => (
+            <div
+              className={classNames(
+                'h-8 md:h-4 p-2 cursor-pointer border-solid border-l border-gray-200 animate-pulse opacity-25 bg-gray-350',
+                {
+                  'rounded-l-lg': i === 0,
+                  'rounded-r-lg': i === SKELETON_SLICES - 1,
+                },
+              )}
+              style={{
+                width: sliceWidth,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  const sliceWidth = `${(1 / possibleChecklistItems.length) * 100}%`
+
   return (
     <div className="bg-gray-200 p-3 rounded-lg col-span-2">
       <div className="text-gray-600 text-sm whitespace-nowrap">{title}</div>
@@ -261,7 +187,11 @@ const ChecklistWidget = ({ hotspot, witnesses, height }) => {
             const isSelected = index === currentIndex
 
             return (
-              <Tooltip key={checklistItem.title} title={checklistItem.title}>
+              <Tooltip
+                key={checklistItem.title}
+                placement={'bottom'}
+                title={checklistItem.title}
+              >
                 <div
                   onClick={() => setCurrentIndex(index)}
                   className={classNames(

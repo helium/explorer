@@ -4,7 +4,7 @@ import InfoBox from './InfoBox'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import { useAsync } from 'react-async-hook'
 import { fetchHexHotspots } from '../../data/hotspots'
-import HotspotsList from '../Lists/HotspotsList'
+import HexHotspotsList from '../Lists/HexHotspotsList'
 import { useEffect } from 'react'
 import useSelectedHex from '../../hooks/useSelectedHex'
 
@@ -42,7 +42,7 @@ const HexDetailsInfoBox = () => {
               },
             )}
           >
-            <HotspotsList
+            <HexHotspotsList
               hotspots={hotspots || []}
               isLoading={loading}
               hasMore={false}

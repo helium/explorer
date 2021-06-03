@@ -10,6 +10,7 @@ const BaseList = ({
   linkExtractor,
   isLoading = true,
   onSelectItem,
+  renderItem,
   renderTitle,
   renderSubtitle,
   renderDetails,
@@ -75,16 +76,24 @@ const BaseList = ({
             },
           )}
         >
-          <div className="w-full">
-            <div className="text-base font-medium">{renderTitle(item)}</div>
-            <div className="flex items-center space-x-4 h-6 text-gray-800">
-              {renderSubtitle(item)}
-            </div>
-          </div>
-          <div className="flex items-center px-4">{renderDetails(item)}</div>
-          <div className="flex items-center">
-            <img src="/images/details-arrow.svg" />
-          </div>
+          {renderItem ? (
+            renderItem(item)
+          ) : (
+            <>
+              <div className="w-full">
+                <div className="text-base font-medium">{renderTitle(item)}</div>
+                <div className="flex items-center space-x-4 h-6 text-gray-800">
+                  {renderSubtitle(item)}
+                </div>
+              </div>
+              <div className="flex items-center px-4">
+                {renderDetails(item)}
+              </div>
+              <div className="flex items-center">
+                <img src="/images/details-arrow.svg" />
+              </div>
+            </>
+          )}
         </Link>
       ))}
       {fetchMore && hasMore && (

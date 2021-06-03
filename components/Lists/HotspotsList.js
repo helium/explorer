@@ -17,9 +17,12 @@ const HotspotsList = ({
 }) => {
   const { selectHotspot } = useSelectedHotspot()
 
-  const handleSelectHotspot = useCallback((hotspot) => {
-    selectHotspot(hotspot.address)
-  }, [])
+  const handleSelectHotspot = useCallback(
+    (hotspot) => {
+      selectHotspot(hotspot.address)
+    },
+    [selectHotspot],
+  )
 
   const keyExtractor = useCallback((h) => h.address, [])
 

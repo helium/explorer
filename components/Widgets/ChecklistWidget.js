@@ -6,15 +6,16 @@ import ChevronIcon from '../Icons/Chevron'
 import ChecklistCheck from '../Icons/ChecklistCheck'
 import { getActivityForChecklist } from '../../data/checklist'
 import { getChecklistItems } from '../../data/checklist'
+import { useBlockHeight } from '../../data/blocks'
+import useToggle from '../../utils/useToggle'
 
-const ChecklistWidget = ({ hotspot, witnesses, height }) => {
+const ChecklistWidget = ({ hotspot, witnesses }) => {
   const [activity, setActivity] = useState({})
   const [loading, setActivityLoading] = useState(true)
-  const [showChecklist, setShowChecklist] = useState(false)
+  const [showChecklist, toggleShowChecklist] = useToggle()
   const [checklistFetched, setChecklistFetched] = useState(false)
 
-  const toggleShowChecklist = () =>
-    setShowChecklist((currentSetting) => !currentSetting)
+  const { height } = useBlockHeight()
 
   useAsync(async () => {
     const hotspotid = hotspot.address

@@ -1,26 +1,33 @@
-import React from 'react'
 import { Link } from 'react-router-i18n'
 import SearchBar from '../SearchBar/SearchBar'
+import MobileNavOverlay from './MobileNavOverlay'
+import NavLinks from './NavLinks'
+import classNames from 'classnames'
+import useToggle from '../../utils/useToggle'
 
-const NavLink = ({ href, title }) => (
-  <Link to={href}>
-    <a className="text-white font-medium text-base">{title}</a>
-  </Link>
-)
+const MenuButton = () => {
+  const [menuOpen, toggleMenu] = useToggle()
 
-const SearchButton = () => (
-  <div className="cursor-pointer">
-    <img src="/images/search.svg" />
-  </div>
-)
+  return (
+    <>
+      <div
+        className={classNames(
+          'cursor-pointer md:hidden block transition-all duration-200',
+          {
+            'opacity-100': !menuOpen,
+            'opacity-0': menuOpen,
+          },
+        )}
+        onClick={toggleMenu}
+      >
+        <img src="/images/menu.svg" />
+      </div>
+      <MobileNavOverlay menuOpen={menuOpen} toggleMenu={toggleMenu} />
+    </>
+  )
+}
 
-const MenuButton = () => (
-  <div className="cursor-pointer">
-    <img src="/images/menu.svg" />
-  </div>
-)
-
-const Header = ({ activeNav }) => {
+const Header = () => {
   return (
     <header className="fixed w-full z-30 p-4 flex items-center justify-between">
       <Link to="/">
@@ -30,14 +37,7 @@ const Header = ({ activeNav }) => {
       </Link>
 
       <div className="grid grid-flow-col gap-8 items-center">
-        <div className=" hidden md:grid grid-flow-col gap-4">
-          <NavLink href="/hotspots" title="Hotspots" />
-          <NavLink href="/beacons" title="Beacons" />
-          <NavLink href="/blocks" title="Blocks" />
-          <NavLink href="/validators" title="Validators" />
-          <NavLink href="/market" title="Market" />
-        </div>
-
+        <NavLinks className="hidden md:grid grid-flow-col gap-4" />
         <div className="grid grid-flow-col gap-4 items-center">
           <SearchBar />
           <MenuButton />

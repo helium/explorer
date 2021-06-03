@@ -116,6 +116,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
   important: '#app',
 }

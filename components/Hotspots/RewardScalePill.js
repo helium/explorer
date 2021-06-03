@@ -6,7 +6,7 @@ import { generateRewardScaleColor } from './utils'
 const RewardScalePill = ({ hotspot, className }) => (
   <Tooltip
     placement="top"
-    title={`A Hotspot's own reward scale does not impact its earnings. Hotspots witnessing this Hotspot will see their rewards scaled up or down according to this Hotspot's reward scale.`}
+    title={`When this Hotspot transmits a beacon, any Hotspots that hear it will have its mining rewards scaled by this number. This Hotspot's Challengee reward will also scale by this number.`}
   >
     <div
       className={classNames(

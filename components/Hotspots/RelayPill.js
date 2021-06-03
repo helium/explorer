@@ -13,7 +13,7 @@ const RelayPill = ({ className }) => {
             target="_blank"
             rel="noopener noreferrer"
             rel="noreferrer"
-            href="https://intercom.help/heliumnetwork/en/articles/3207912-troubleshooting-network-connection-issues"
+            href="https://docs.helium.com/troubleshooting/network-troubleshooting"
           >
             here
           </a>{' '}

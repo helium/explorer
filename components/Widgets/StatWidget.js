@@ -9,6 +9,7 @@ const StatWidget = ({
   dataKey = 'value',
   valueType = 'default',
   changeType = 'difference',
+  linkTo,
 }) => {
   const value = last(series || [])?.[dataKey]
   const initial = first(series || [])?.[dataKey]
@@ -23,6 +24,7 @@ const StatWidget = ({
         <WidgetChange value={value} initial={initial} type={changeType} />
       }
       isLoading={isLoading}
+      linkTo={linkTo}
     />
   )
 }

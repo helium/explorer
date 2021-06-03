@@ -691,53 +691,6 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   scrollbar-width: none; /* Firefox */
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
-.hotspot-checklist-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
-#hotspot-checklist-container {
-  border-radius: 20px;
-}
-
-.hotspot-checklist-padding-container {
-  padding: 0 20px;
-}
-
-#hotspot-checklist-inner-shadow {
-  border-radius: 0 20px 20px 0;
-}
-
-.hotspot-checklist-progress-bar-container {
-  padding: 0 20px;
-}
-
-.hotspot-checklist-progress-bar-slice:hover {
-  cursor: pointer;
-}
-
-.hotspot-checklist-nav-button {
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  top: 63.5px;
-  height: 40px;
-  min-width: 40px;
-  width: 40px;
-  border-radius: 30px;
-  outline: none;
-  border: none;
-  background-color: #35375c;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
-}
-
-.hotspot-checklist-nav-button:hover {
-  cursor: pointer;
-}
-
 @media screen and (max-width: 890px) {
   .block-view-summary-info {
     flex-direction: column;

@@ -6,6 +6,7 @@ import { useHotspotBeaconSums } from '../../../data/beacons'
 import { useHotspotRewards } from '../../../data/rewards'
 import { useHotspotWitnessSums } from '../../../data/witnesses'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
+import ChecklistWidget from '../../Widgets/ChecklistWidget'
 
 const StatisticsPane = ({ hotspot }) => {
   const { rewards } = useHotspotRewards(hotspot.address, 60, 'day')
@@ -19,6 +20,7 @@ const StatisticsPane = ({ hotspot }) => {
     2,
     'week',
   )
+
   return (
     <InfoBoxPaneContainer>
       <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
@@ -38,6 +40,7 @@ const StatisticsPane = ({ hotspot }) => {
         dataKey="avg"
         changeType="percent"
       />
+      <ChecklistWidget hotspot={hotspot} witnesses={witnesses} />
     </InfoBoxPaneContainer>
   )
 }

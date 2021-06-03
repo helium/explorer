@@ -13,7 +13,7 @@ const ChecklistSkeleton = () => {
         {Array.from({ length: SKELETON_SLICES }, (_, i) => (
           <div
             className={classNames(
-              'h-8 md:h-4 p-2 cursor-pointer border-solid border-l border-gray-200 animate-pulse opacity-25 bg-gray-350',
+              'h-8 md:h-4 p-2 border-solid border-l border-gray-200 animate-pulse opacity-25 bg-gray-350',
               {
                 'rounded-l-lg': i === 0,
                 'rounded-r-lg': i === SKELETON_SLICES - 1,

@@ -22,8 +22,9 @@ const HalveningCountdownWidget = () => {
           }
         />
       }
-      subtitle="August 1st, 2021"
+      subtitle={<span className="text-gray-600">August 1st, 2021 </span>}
       span={2}
+      linkTo="https://blog.helium.com/hip-20-on-hnt-max-supply-approved-by-the-community-fca15a161a80"
       // onClick={() => selectHotspot(hotspot.address)}
       // isLoading={!hotspot}
     />

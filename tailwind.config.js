@@ -1,6 +1,6 @@
 module.exports = {
-  // mode: 'jit',
-  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  mode: 'jit',
+  // purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
     screens: {
@@ -28,6 +28,7 @@ module.exports = {
       white: '#FFFFFF',
       black: '#000000',
       navy: {
+        300: '#0008FF',
         400: '#474DFF',
         500: '#222E46',
         600: '#182035',

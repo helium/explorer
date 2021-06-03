@@ -7,6 +7,7 @@ import { useHotspotRewards } from '../../../data/rewards'
 import { useHotspotWitnessSums } from '../../../data/witnesses'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import ChecklistWidget from '../../Widgets/ChecklistWidget'
+import { useBlockHeight } from '../../../data/blocks'
 
 const StatisticsPane = ({ hotspot }) => {
   const { rewards } = useHotspotRewards(hotspot.address, 60, 'day')
@@ -20,14 +21,11 @@ const StatisticsPane = ({ hotspot }) => {
     2,
     'week',
   )
+
+  const { height, isLoading: heightLoading } = useBlockHeight()
+
   return (
     <InfoBoxPaneContainer>
-      <ChecklistWidget
-        hotspot={hotspot}
-        witnesses={witnesses}
-        loading={isWitnessesLoading || isBeaconSumsLoading || !hotspot}
-        witnessesLoading={isWitnessesLoading}
-      />
       <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
       <RewardScaleWidget hotspot={hotspot} />
       <StatusWidget hotspot={hotspot} />
@@ -44,6 +42,12 @@ const StatisticsPane = ({ hotspot }) => {
         isLoading={isWitnessesLoading}
         dataKey="avg"
         changeType="percent"
+      />
+      <ChecklistWidget
+        hotspot={hotspot}
+        witnesses={witnesses}
+        height={height}
+        heightLoading={heightLoading}
       />
     </InfoBoxPaneContainer>
   )

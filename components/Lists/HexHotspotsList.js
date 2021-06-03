@@ -1,15 +1,13 @@
 import { useCallback } from 'react'
 import animalHash from 'angry-purple-tiger'
-import TimeAgo from 'react-time-ago'
 import { round, sumBy } from 'lodash'
 import StatusCircle from '../Hotspots/StatusCircle'
-import Hex from '../Hex'
-import { generateRewardScaleColor } from '../Hotspots/utils'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
 import { useHotspotRewards } from '../../data/rewards'
 import RewardScaleHex from '../Common/RewardScaleHex'
 import Skeleton from '../Common/Skeleton'
+import HotspotTimeAgo from '../Common/HotspotTimeAgo'
 
 const HexHotspotsList = ({
   hotspots,
@@ -79,7 +77,7 @@ const HotspotItem = ({ hotspot }) => {
       </div>
       <div className="flex items-center px-4">
         <span className="whitespace-nowrap text-gray-700">
-          <TimeAgo date={hotspot.timestampAdded} />
+          <HotspotTimeAgo hotspot={hotspot} />
         </span>
       </div>
       <div className="flex items-center">

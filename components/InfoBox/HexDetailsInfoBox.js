@@ -5,8 +5,9 @@ import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import { useAsync } from 'react-async-hook'
 import { fetchHexHotspots } from '../../data/hotspots'
 import HexHotspotsList from '../Lists/HexHotspotsList'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import useSelectedHex from '../../hooks/useSelectedHex'
+import { formatLocation } from '../Hotspots/utils'
 
 const HexDetailsInfoBox = () => {
   const { index } = useParams()
@@ -26,10 +27,28 @@ const HexDetailsInfoBox = () => {
     }
   }, [clearSelectedHex])
 
+  const generateSubtitles = useCallback((hotspot) => {
+    if (!hotspot)
+      return [
+        {
+          iconPath: '/images/location-blue.svg',
+          loading: true,
+        },
+      ]
+    return [
+      {
+        iconPath: '/images/location-blue.svg',
+        path: `/cities/${hotspot.geocode.cityId}`,
+        title: formatLocation(hotspot.geocode),
+      },
+    ]
+  }, [])
+
   return (
     <InfoBox
       title={`#${index}`}
       breadcrumbs={[{ title: 'Hotspots / Hex', path: '/hotspots' }]}
+      subtitles={generateSubtitles(hotspots?.[0])}
     >
       <TabNavbar>
         <TabPane title="Selected Hotspots" key="hotspots">

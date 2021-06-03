@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
 import animalHash from 'angry-purple-tiger'
-import TimeAgo from 'react-time-ago'
 import StatusCircle from '../Hotspots/StatusCircle'
 import FlagLocation from '../Common/FlagLocation'
 import Hex from '../Hex'
 import { generateRewardScaleColor } from '../Hotspots/utils'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
+import HotspotTimeAgo from '../Common/HotspotTimeAgo'
 
 const HotspotsList = ({
   hotspots,
@@ -58,7 +58,7 @@ const HotspotsList = ({
   const renderDetails = useCallback((h) => {
     return (
       <span className="whitespace-nowrap">
-        <TimeAgo date={h.timestampAdded} />
+        <HotspotTimeAgo hotspot={h} />
       </span>
     )
   }, [])

@@ -42,6 +42,78 @@ const BaseList = ({
     [onSelectItem],
   )
 
+  const baseRenderItem = useCallback(
+    (item, i, length) => {
+      const inner = renderItem ? (
+        renderItem(item)
+      ) : (
+        <>
+          <div className="w-full">
+            <div className="text-base font-medium">{renderTitle(item)}</div>
+            <div className="flex items-center space-x-4 h-6 text-gray-800">
+              {renderSubtitle(item)}
+            </div>
+          </div>
+          <div className="flex items-center px-4">{renderDetails(item)}</div>
+          {linkExtractor && (
+            <div className="flex items-center">
+              <img src="/images/details-arrow.svg" />
+            </div>
+          )}
+        </>
+      )
+
+      if (linkExtractor) {
+        return (
+          <Link
+            to={linkExtractor ? linkExtractor(item) : ''}
+            onClick={handleSelectItem(item)}
+            key={keyExtractor(item)}
+            className={classNames(
+              'bg-white',
+              'hover:bg-gray-200 cursor-pointer transition-all duration-75',
+              'relative flex',
+              'px-4 py-2',
+              'border-solid border-gray-500 border-t',
+              {
+                'border-t-0': i !== 0 && i !== length - 1,
+              },
+            )}
+          >
+            {inner}
+          </Link>
+        )
+      }
+
+      return (
+        <div
+          key={keyExtractor(item)}
+          className={classNames(
+            'bg-white',
+            'hover:bg-gray-200 transition-all duration-75',
+            'relative flex',
+            'px-4 py-2',
+            'border-solid border-gray-500 border-t',
+            {
+              'border-t-0': i !== 0 && i !== length - 1,
+            },
+          )}
+        >
+          {inner}
+        </div>
+      )
+    },
+    [
+      handleSelectItem,
+      keyExtractor,
+      linkExtractor,
+      renderDetails,
+      renderItem,
+      renderSubtitle,
+      renderTitle,
+    ],
+  )
+
   if (isLoading) {
     return <SkeletonList />
   }
@@ -60,42 +132,7 @@ const BaseList = ({
         'p-3': padding,
       })}
     >
-      {items.map((item, i, { length }) => (
-        <Link
-          to={linkExtractor ? linkExtractor(item) : ''}
-          onClick={handleSelectItem(item)}
-          key={keyExtractor(item)}
-          className={classNames(
-            'bg-white',
-            'hover:bg-gray-200 cursor-pointer transition-all duration-75',
-            'relative flex',
-            'px-4 py-2',
-            'border-solid border-gray-500 border-t',
-            {
-              'border-t-0': i !== 0 && i !== length - 1,
-            },
-          )}
-        >
-          {renderItem ? (
-            renderItem(item)
-          ) : (
-            <>
-              <div className="w-full">
-                <div className="text-base font-medium">{renderTitle(item)}</div>
-                <div className="flex items-center space-x-4 h-6 text-gray-800">
-                  {renderSubtitle(item)}
-                </div>
-              </div>
-              <div className="flex items-center px-4">
-                {renderDetails(item)}
-              </div>
-              <div className="flex items-center">
-                <img src="/images/details-arrow.svg" />
-              </div>
-            </>
-          )}
-        </Link>
-      ))}
+      {items.map((item, i, { length }) => baseRenderItem(item, i, length))}
       {fetchMore && hasMore && (
         <div
           ref={sentryRef}

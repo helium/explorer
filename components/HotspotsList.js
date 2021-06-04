@@ -30,7 +30,7 @@ const HotspotsList = ({ hotspots, rewardsLoading, hotspotsLoading }) => {
       render: (data) => <span>{formatLocation(data)}</span>,
     },
     {
-      title: 'Reward Scale',
+      title: 'Transmit Scale',
       dataIndex: 'rewardScale',
       key: 'rewardScale',
       render: (data) => {

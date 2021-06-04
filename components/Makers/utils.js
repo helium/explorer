@@ -111,3 +111,12 @@ export const getMakerInfo = async (payerAddress, ownerAddress) => {
     return makerName
   }
 }
+
+export const isMakerAddress = async (address) => {
+  if (address === null) return true
+
+  const response = await fetch('https://onboarding.dewi.org/api/v2/makers')
+  const { data: makers } = await response.json()
+  makers.push({ address: DEPRECATED_HELIUM_MAKER_ADDR })
+  return makers.find((m) => m.address === address) !== undefined
+}

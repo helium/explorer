@@ -78,7 +78,7 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
         {
           sortOrder: 0,
           title: 'Blockchain Sync',
-          infoTooltipText: `Hotspots must be fully synced before they can mine. New Hotspots can take up to 48 hours to sync.`,
+          infoTooltipText: `Hotspots must be fully synced before they can mine. New Hotspots can take up to 96 hours to sync.`,
           detailText:
             isNaN(hotspot.status.height) || isNaN(height)
               ? `Hotspot is not yet synced.`
@@ -107,7 +107,7 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
               <p>
                 Hotspot is offline.{' '}
                 <a
-                  href="https://intercom.help/heliumnetwork/en/articles/3207912-troubleshooting-network-connection-issues"
+                  href="https://docs.helium.com/troubleshooting/network-troubleshooting"
                   target="_blank"
                   rel="noopener"
                   rel="noreferrer"
@@ -122,7 +122,7 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
           sortOrder: 2,
           title: 'Create a Challenge',
           infoTooltipText:
-            'Hotspots that are synced and online create a challenge automatically, every 120 blocks.',
+            'Hotspots that are synced and online create a challenge automatically, every 480 blocks (~8 hours).',
           detailText:
             activity.challengerTxn !== null
               ? `Hotspot issued a challenge ${(
@@ -130,7 +130,7 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
                 ).toLocaleString()} block${
                   height - activity.challengerTxn.height === 1 ? '' : 's'
                 } ago.`
-              : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically.`,
+              : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically every 480 blocks (~8 hours).`,
           condition: activity.challengerTxn !== null,
         },
         {
@@ -155,7 +155,7 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
                 }.`
               : `Hotspot has no witnesses.`,
           infoTooltipText:
-            'The number of witnesses for a Hotspot is based on a rolling 5-day window.',
+            'The number of witnesses for a Hotspot is based on a rolling 5-day window and resets when a Hotspot location or antenna is updated.',
           condition: witnesses.length > 0,
         },
         {
@@ -168,9 +168,9 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
                 ).toLocaleString()} block${
                   height - activity.challengeeTxn.height === 1 ? '' : 's'
                 } ago.`
-              : `Hotspot hasn’t participated in a challenge yet.`,
+              : `Hotspot hasn’t participated in a challenge yet. Hotspots are challenged every 480 blocks.`,
           infoTooltipText:
-            'Participation in a challenge depends on having witnesses. Use the checkbox to see Hotspots in your list. It can take a few hours for challenges to include this Hotspot once a witness list is built.',
+            'Participation in a challenge depends on having witnesses. Use the checkbox to see Hotspots in your list. It can take a few days for challenges to include this Hotspot once a witness list is built.',
           condition: activity.challengeeTxn !== null,
         },
         {
@@ -182,7 +182,7 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
                 `Hotspot has transferred data packets recently.`
               : `Hotspot hasn’t transfered data packets recently.`,
           infoTooltipText:
-            'Hotspots transfer encryped data on behalf of devices using the network. Device usage is expanding, and it is normal to have a Hotspot that does not transfer data. This likely means there are no devices using the network in the area.',
+            'Hotspots transfer encrypted data on behalf of devices using the network. Device usage is expanding, and it is normal to have a Hotspot that does not transfer data. This likely means there are no devices using the network in the area.',
           condition: activity.dataTransferTxn !== null,
         },
       ]

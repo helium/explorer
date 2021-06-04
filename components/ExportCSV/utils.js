@@ -2,6 +2,7 @@ import animalHash from 'angry-purple-tiger'
 import Client from '@helium/http'
 import { Balance, CurrencyType } from '@helium/currency'
 import { fromUnixTime } from 'date-fns'
+import { getMakerName } from '../../components/Makers/utils'
 
 const getFee = async ({ height, fee }, convertFee) => {
   if (!fee) {
@@ -116,7 +117,8 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
           'Sent Quantity': amountToSellerObject.toString().slice(0, -4),
           'Sent To': txn.seller,
           'Sent Currency': 'HNT',
-          Tag: 'gateway transfer payment',
+          Tag: 'payment',
+          Note: 'gateway transfer payment',
           feePaid: true,
         }
       } else {
@@ -124,48 +126,75 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
           'Received Quantity': amountToSellerObject.toString().slice(0, -4),
           'Received From': txn.buyer,
           'Received Currency': 'HNT',
-          Tag: 'gateway transfer payment',
+          Tag: 'payment',
+          Note: 'gateway transfer payment',
         }
       }
     }
     case 'add_gateway_v1': {
+      const paidByHotspotOwner = txn.owner === txn.payer
+      // the above logic check could also be done by using:
+      // !(await isMakerAddress(txn.payer))
+      // but this seems more efficient for now
       return {
-        'Sent Quantity':
-          txn.payer === null
-            ? await getFee(
-                {
-                  height: txn.height,
-                  fee: {
-                    integerBalance: txn.stakingFee,
-                  },
-                },
-                opts.convertFee,
-              )
-            : 0,
-        'Sent To': txn.payer === null ? 'Helium Network' : '',
+        'Sent Quantity': paidByHotspotOwner
+          ? await getFee(
+              {
+                height: txn.height,
+                fee: txn.stakingFee,
+              },
+              opts.convertFee,
+            )
+          : 0,
+        'Sent To': paidByHotspotOwner ? 'Helium Network' : '',
         'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
-        Tag: 'add gateway payment',
-        feePaid: txn.payer === null,
+        Tag: 'payment',
+        Note: `assert location payment (paid by ${
+          paidByHotspotOwner ? 'Hotspot owner' : await getMakerName(txn.payer)
+        })`,
+        feePaid: paidByHotspotOwner,
       }
     }
     case 'assert_location_v1': {
+      const paidByHotspotOwner = txn.owner === txn.payer
       return {
-        'Sent Quantity':
-          txn.payer === null
-            ? await getFee(
-                {
-                  height: txn.height,
-                  fee: {
-                    integerBalance: txn.stakingFee,
-                  },
-                },
-                opts.convertFee,
-              )
-            : 0,
-        'Sent To': txn.payer === null ? 'Helium Network' : '',
+        'Sent Quantity': paidByHotspotOwner
+          ? await getFee(
+              {
+                height: txn.height,
+                fee: txn.stakingFee,
+              },
+              opts.convertFee,
+            )
+          : 0,
+        'Sent To': paidByHotspotOwner ? 'Helium Network' : '',
         'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
-        Tag: 'assert location payment',
-        feePaid: txn.payer === null,
+        Tag: 'payment',
+        Note: `assert location payment (paid by ${
+          paidByHotspotOwner ? 'Hotspot owner' : await getMakerName(txn.payer)
+        })`,
+        feePaid: paidByHotspotOwner,
+      }
+    }
+    case 'assert_location_v2': {
+      const paidByHotspotOwner = txn.owner === txn.payer
+      return {
+        'Sent Quantity': paidByHotspotOwner
+          ? await getFee(
+              {
+                height: txn.height,
+                fee: txn.stakingFee,
+              },
+              opts.convertFee,
+            )
+          : 0,
+        'Sent To': paidByHotspotOwner ? 'Helium Network' : '',
+        'Sent Currency': opts.convertFee ? 'HNT' : 'DC',
+        Tag: 'payment',
+        Note: `assert location payment (paid by ${
+          paidByHotspotOwner ? 'Hotspot owner' : await getMakerName(txn.payer)
+        })`,
+        feePaid: paidByHotspotOwner,
       }
     }
     default: {
@@ -196,6 +225,7 @@ export const parseTxn = async (
     'Fee Amount': feePaid ? await getFee(txn, opts.convertFee) : 0,
     'Fee Currency': opts.convertFee ? 'HNT' : 'DC',
     Tag: '',
+    Note: '',
     Hotspot: txn.gateway ? animalHash(txn.gateway) : '',
     'Reward Type': '',
     Block: txn.height,

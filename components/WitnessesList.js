@@ -28,9 +28,9 @@ const columns = [
     render: (data) => <span>{formatNearbyLocation(data)}</span>,
   },
   {
-    title: 'Reward Scale',
-    dataIndex: 'reward_scale',
-    key: 'reward_scale',
+    title: 'Transmit Scale',
+    dataIndex: 'rewardScale',
+    key: 'rewardScale',
     render: (data) => (
       <span>
         {data
@@ -44,7 +44,7 @@ const columns = [
   },
   {
     title: 'RSSI',
-    dataIndex: 'witness_info',
+    dataIndex: 'witnessInfo',
     key: 'rssi',
     render: (data) => (
       <span>

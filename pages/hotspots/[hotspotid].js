@@ -55,12 +55,15 @@ const HotspotView = ({ hotspot }) => {
 
     async function getWitnesses() {
       setWitnessesLoading(true)
-      // // TODO convert to use @helium/http
-      const witnesses = await fetch(
-        `https://api.helium.io/v1/hotspots/${hotspotid}/witnesses`,
-      )
-        .then((res) => res.json())
-        .then((json) => json.data.filter((w) => !(w.address === hotspotid)))
+      const client = new Client()
+      const witnessesList = await client.hotspot(hotspotid).witnesses.list()
+      let witnesses = []
+      for await (const w of witnessesList) {
+        const witness = JSON.parse(JSON.stringify(w))
+        if (!(w.address === hotspotid)) {
+          witnesses.push(witness)
+        }
+      }
       setWitnesses(witnesses)
       setWitnessesLoading(false)
     }

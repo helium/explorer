@@ -72,7 +72,7 @@ const MakersDashboard = ({ makers }) => {
                   <p className="text-sm ml-1 font-semibold m-0 text-gray-700">
                     {m.txns.addGatewayTxns.toLocaleString()}
                     <span className="ml-1 font-light text-gray-600">
-                      Hotspots Added
+                      Hotspots Onboarded
                     </span>
                   </p>
                 </div>

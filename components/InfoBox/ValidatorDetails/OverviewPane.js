@@ -3,6 +3,7 @@ import { truncate, upperCase } from 'lodash'
 import { useParams } from 'react-router'
 import { useBlockHeight } from '../../../data/blocks'
 import { useValidator } from '../../../data/validators'
+import PenaltyWidget from '../../Widgets/PenaltyWidget'
 import TrendWidget from '../../Widgets/TrendWidget'
 import Widget from '../../Widgets/Widget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
@@ -27,6 +28,7 @@ const OverviewPane = () => {
         isLoading={isLoading || blockHeightLoading}
         value={(height - validator?.lastHeartbeat).toLocaleString()}
       />
+      <PenaltyWidget validator={validator} />
       <Widget
         title="ISP"
         isLoading={isLoading}

@@ -3,6 +3,7 @@ import animalHash from 'angry-purple-tiger'
 import InfoBox from './InfoBox'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import OverviewPane from './ValidatorDetails/OverviewPane'
+import PenaltiesPane from './ValidatorDetails/PenaltiesPane'
 
 const ValidatorDetailsInfoBox = () => {
   const { address } = useParams()
@@ -12,6 +13,9 @@ const ValidatorDetailsInfoBox = () => {
       <TabNavbar>
         <TabPane title="Overview" key="overview">
           <OverviewPane />
+        </TabPane>
+        <TabPane title="Penalties" key="penalties" path="penalties">
+          <PenaltiesPane />
         </TabPane>
       </TabNavbar>
     </InfoBox>

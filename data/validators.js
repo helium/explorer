@@ -3,7 +3,7 @@ import Balance, { CurrencyType } from '@helium/currency'
 import { API_BASE } from '../hooks/useApi'
 
 export const fetchValidator = async (address) => {
-  const response = await fetch(`${API_BASE}/api/validators/${address}`)
+  const response = await fetch(`${API_BASE}/validators/${address}`)
   const validator = await response.json()
   const stake = new Balance(validator.stake, CurrencyType.networkToken)
   return { ...validator, stake }

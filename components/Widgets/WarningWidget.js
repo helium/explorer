@@ -1,4 +1,4 @@
-const WarningWidget = ({ warningCondition, warningText, link }) => {
+const WarningWidget = ({ warningCondition, warningText, link, linkText }) => {
   if (!warningCondition) return null
 
   return (
@@ -15,7 +15,9 @@ const WarningWidget = ({ warningCondition, warningText, link }) => {
             {warningText}
           </div>
         </span>
-        <p className="text-gray-600 font-sans m-0">{'Get help ->'}</p>
+        <p className="text-gray-600 font-sans m-0">
+          {linkText} {'->'}
+        </p>
       </div>
     </a>
   )

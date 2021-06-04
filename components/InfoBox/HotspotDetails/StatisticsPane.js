@@ -29,6 +29,7 @@ const StatisticsPane = ({ hotspot }) => {
         warningCondition={isRelay(hotspot.status.listenAddrs)}
         warningText={'Hotspot is being Relayed.'}
         link={'https://docs.helium.com/troubleshooting/network-troubleshooting'}
+        linkText={'Get help'}
       />
       <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
       <RewardScaleWidget hotspot={hotspot} />

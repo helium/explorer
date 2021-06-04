@@ -1,5 +1,6 @@
 import RewardScaleWidget from '../../Widgets/RewardScaleWidget'
 import RewardsTrendWidget from '../../Widgets/RewardsTrendWidget'
+import RelayedWarningWidget from '../../Widgets/RelayedWarningWidget'
 import StatusWidget from '../../Widgets/StatusWidget'
 import StatWidget from '../../Widgets/StatWidget'
 import { useHotspotBeaconSums } from '../../../data/beacons'
@@ -23,6 +24,7 @@ const StatisticsPane = ({ hotspot }) => {
 
   return (
     <InfoBoxPaneContainer>
+      <RelayedWarningWidget hotspot={hotspot} />
       <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
       <RewardScaleWidget hotspot={hotspot} />
       <StatusWidget hotspot={hotspot} />

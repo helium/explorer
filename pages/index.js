@@ -10,6 +10,7 @@ import InfoBoxSwitch from '../components/InfoBox/InfoBoxSwitch'
 import { latestCoverageUrl } from '../commonjs/coverage'
 import useKeydown from '../hooks/useKeydown'
 import useGA from '../hooks/useGA'
+import FeedbackBubble from '../components/FeedbackBubble'
 
 const Map = dynamic(() => import('../components/Map/Map'), {
   ssr: false,
@@ -38,6 +39,7 @@ const Index = ({ coverageUrl }) => {
         url={'https://explorer.helium.com/coverage'}
       />
       <title>Helium Network - Coverage</title>
+      <FeedbackBubble />
       <Header activeNav="coverage" />
       <Map coverageUrl={coverageUrl} />
       <InfoBoxSwitch />

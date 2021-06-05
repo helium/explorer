@@ -64,7 +64,7 @@ const ChecklistItemDetails = ({ selectedChecklistItemInfo }) => {
         )}
         onClick={toggleShowDetails}
       >
-        <p className="text-gray-600 font-sans text-sm p-2">
+        <p className="text-gray-600 font-sans text-sm p-2 m-0">
           {showDetails ? 'Hide' : 'Show'} details
         </p>
         <ChevronIcon

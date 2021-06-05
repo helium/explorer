@@ -1,6 +1,7 @@
 import React from 'react'
 import { Row, Col, Card, Button } from 'antd'
 import AppLayout, { Content } from '../components/AppLayout'
+import { fetchDataCredits, useDataCredits } from '../data/datacredits'
 import { fetchMarket, useMarket } from '../data/market'
 import { fetchStats, useStats } from '../data/stats'
 import { fetchOraclePrices, useOraclePrices } from '../data/oracles'
@@ -27,10 +28,12 @@ const MiniCoverageMap = dynamic(
 const Index = ({
   market: initialMarket,
   stats: initialStats,
+  dataCredits: initialDatacredits,
   oraclePrices: initialOraclePrices,
 }) => {
   const { market } = useMarket(initialMarket)
   const { stats } = useStats(initialStats)
+  const { dataCredits } = useDataCredits(initialDatacredits)
   const { oraclePrices } = useOraclePrices(initialOraclePrices)
 
   const latestOraclePrice = (oraclePrices[0].price / 100000000).toLocaleString(
@@ -188,12 +191,21 @@ const Index = ({
             </Col>
             <Col xs={24} md={8}>
               <Widget
-                title="Data Credits Spent (30d)"
-                value={stats.dataCredits.toLocaleString()}
-                subtitle={
-                  ((stats.dataCredits * 24) / 1073741824).toFixed(3) + ' GB'
+                title="Data Credits Spent (7d)"
+                value={
+                  (Math.abs(Number(dataCredits.totalWeek)) / 1.0e9).toFixed(2) +
+                  'B'
                 }
-                tooltip="Data credits are spent to send and receive data over the Helium Network. HNT are burned to receive DC."
+                subtitle={(dataCredits.totalWeek * 0.00001).toLocaleString(
+                  'en-US',
+                  {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  },
+                )}
+                tooltip="Data credits are spent for transaction fees and to send data over the Helium Network. HNT are burned to create DC."
                 footer="View Market Data"
                 href="/market"
               />
@@ -225,9 +237,10 @@ const Index = ({
 }
 
 export async function getStaticProps() {
-  const [market, stats, oraclePrices] = await Promise.all([
+  const [market, stats, dataCredits, oraclePrices] = await Promise.all([
     fetchMarket(),
     fetchStats(),
+    fetchDataCredits(),
     fetchOraclePrices(),
   ])
 
@@ -235,6 +248,7 @@ export async function getStaticProps() {
     props: {
       market,
       stats,
+      dataCredits,
       oraclePrices,
     },
     revalidate: 10,

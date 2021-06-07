@@ -6,6 +6,7 @@
   "dependencies": {
     "@ensdomains/address-encoder": "^0.2.6",
     "@ensdomains/ensjs": "^2.0.0",
+    "@feedback-fish/react": "^1.2.1",
     "@helium/crypto": "^3.1.0",
     "@helium/currency": "^3.25.1",
     "@helium/http": "^3.36.1",

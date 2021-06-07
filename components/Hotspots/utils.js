@@ -23,7 +23,7 @@ export const formatDistance = (meters) => {
   )
 }
 
-export const formatLocation = (geocode0, length = 'long') => {
+export const formatLocation = (geocode0, shortened = false) => {
   const geocode = camelcaseKeys(geocode0)
 
   if (!geocode?.longCity && !geocode?.shortState && !geocode?.longCountry) {
@@ -36,13 +36,11 @@ export const formatLocation = (geocode0, length = 'long') => {
     locationTerms.push(geocode?.longCity)
   }
 
-  if (length === 'long' && geocode?.shortState) {
+  if (!shortened && geocode?.shortState) {
     locationTerms.push(geocode?.shortState)
   }
 
-  locationTerms.push(
-    length === 'short' ? geocode?.shortCountry : geocode?.longCountry,
-  )
+  locationTerms.push(shortened ? geocode?.shortCountry : geocode?.longCountry)
 
   return locationTerms.join(', ')
 }

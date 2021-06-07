@@ -34,10 +34,7 @@ const WitnessesList = ({ witnesses, isLoading = true }) => {
   const renderSubtitle = useCallback((w) => {
     return (
       <>
-        <span className="flex items-center justify-start">
-          <FlagLocation geocode={w.geocode} showLocationName={false} />
-          {formatLocation(w.geocode, 'short')}
-        </span>
+        <FlagLocation geocode={h.geocode} shortenedLocationName />
         <span className="flex items-center">
           <Hex
             width={10}

@@ -1,37 +1,22 @@
-import camelcaseKeys from 'camelcase-keys'
 import ReactCountryFlag from 'react-country-flag'
+import { formatLocation } from '../Hotspots/utils'
 
 const FlagLocation = ({
   geocode,
-  country = 'short',
   showLocationName = true,
+  shortenedLocationName,
 }) => {
-  if (!geocode) {
-    return <span>No location set</span>
-  }
-
-  const { longCity, shortState, shortCountry, longCountry } = camelcaseKeys(
-    geocode,
-  )
-
-  if (!longCity && !shortState && !shortCountry) {
-    return <span>No location set</span>
-  }
-
-  const locationTerms = [longCity]
-
-  if (shortState !== null && shortState !== undefined) {
-    locationTerms.push(shortState)
-  }
-
-  locationTerms.push(country === 'short' ? shortCountry : longCountry)
+  const locationName = formatLocation(geocode, shortenedLocationName)
+  const shortCountry = geocode?.shortCountry
 
   return (
     <span className="flex flex-row items-center justify-start">
-      <span className="mr-2 flex flex-row items-center justify-start">
-        <ReactCountryFlag countryCode={shortCountry} svg />
-      </span>
-      {showLocationName && locationTerms.join(', ')}
+      {shortCountry && (
+        <span className="mr-2 flex flex-row items-center justify-start">
+          <ReactCountryFlag countryCode={shortCountry} svg />
+        </span>
+      )}
+      {showLocationName && locationName}
     </span>
   )
 }

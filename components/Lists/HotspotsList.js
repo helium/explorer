@@ -40,10 +40,7 @@ const HotspotsList = ({
   const renderSubtitle = useCallback((h) => {
     return (
       <>
-        <span className="flex items-center justify-start">
-          <FlagLocation geocode={h.geocode} showLocationName={false} />
-          {formatLocation(h.geocode, 'short')}
-        </span>
+        <FlagLocation geocode={h.geocode} shortenedLocationName />
         {h.rewardScale && (
           <span className="flex items-center">
             <Hex

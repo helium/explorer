@@ -158,7 +158,7 @@ const HotspotView = ({ hotspot }) => {
                     {hotspot.rewardScale && (
                       <RewardScalePill hotspot={hotspot} className="ml-2.5" />
                     )}
-                    {isRelay(hotspot.status.listen_addrs) && (
+                    {isRelay(hotspot.status.listenAddrs) && (
                       <RelayPill className="ml-2.5" />
                     )}
                   </div>

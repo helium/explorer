@@ -40,7 +40,7 @@ const AccountDetailsInfoBox = () => {
         <span className="flex items-center justify-start">
           <AccountIcon address={address} size={28} className="mr-2 mt-0.5" />
           <CopyableText textToCopy={address} tooltip="Copy address">
-            <AccountAddress address={address} truncate={5} mono />
+            <AccountAddress address={address} truncate={5} />
           </CopyableText>
         </span>
       }

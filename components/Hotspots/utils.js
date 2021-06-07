@@ -23,20 +23,26 @@ export const formatDistance = (meters) => {
   )
 }
 
-export const formatLocation = (geocode0) => {
+export const formatLocation = (geocode0, length = 'long') => {
   const geocode = camelcaseKeys(geocode0)
 
   if (!geocode?.longCity && !geocode?.shortState && !geocode?.longCountry) {
     return 'No location set'
   }
 
-  const locationTerms = [geocode?.longCity]
+  const locationTerms = []
 
-  if (geocode?.shortState !== null && geocode?.shortState !== undefined) {
+  if (geocode?.longCity) {
+    locationTerms.push(geocode?.longCity)
+  }
+
+  if (length === 'long' && geocode?.shortState) {
     locationTerms.push(geocode?.shortState)
   }
 
-  locationTerms.push(geocode?.longCountry)
+  locationTerms.push(
+    length === 'short' ? geocode?.shortCountry : geocode?.longCountry,
+  )
 
   return locationTerms.join(', ')
 }
@@ -118,6 +124,16 @@ export const hotspotToRes8 = (hotspot) => {
     lat: res8Lat,
     lng: res8Lng,
   }
+}
+
+export const isRelay = (listenAddrs) => {
+  const IP = /ip4/g
+
+  return !!(
+    listenAddrs &&
+    listenAddrs.length > 0 &&
+    !listenAddrs.find((a) => a.match(IP))
+  )
 }
 
 export const formatGain = (gain) => {

@@ -12,7 +12,7 @@ const SubtitleSection = ({ subtitles }) => {
         'opacity-25': seeThrough,
       })}
     >
-      <Skeleton className="my-0 w-full" />
+      <Skeleton className="my-0 w-full h-3 md:h-4" defaultSize={false} />
     </span>
   )
   return (
@@ -38,7 +38,7 @@ const SubtitleSection = ({ subtitles }) => {
                 )}
                 {s.icon && s.icon}
                 {s.loading ? (
-                  <SubtitleLoadingIndicator />
+                  <SubtitleLoadingIndicator seeThrough />
                 ) : (
                   <Link
                     className={classNames(
@@ -46,7 +46,10 @@ const SubtitleSection = ({ subtitles }) => {
                     )}
                     {...(s.path ? { to: s.path } : {})}
                   >
-                    <CopyableText textToCopy={s.textToCopy}>
+                    <CopyableText
+                      className="text-shadow"
+                      textToCopy={s.textToCopy}
+                    >
                       {s.title}
                     </CopyableText>
                   </Link>

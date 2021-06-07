@@ -8,6 +8,7 @@ import HexHotspotsList from '../Lists/HexHotspotsList'
 import { useCallback, useEffect } from 'react'
 import useSelectedHex from '../../hooks/useSelectedHex'
 import { formatLocation } from '../Hotspots/utils'
+import FlagLocation from '../Common/FlagLocation'
 
 const HexDetailsInfoBox = () => {
   const { index } = useParams()
@@ -37,7 +38,9 @@ const HexDetailsInfoBox = () => {
       ]
     return [
       {
-        iconPath: '/images/location-blue.svg',
+        icon: (
+          <FlagLocation geocode={hotspot.geocode} showLocationName={false} />
+        ),
         path: `/cities/${hotspot.geocode.cityId}`,
         title: formatLocation(hotspot.geocode),
       },
@@ -46,12 +49,20 @@ const HexDetailsInfoBox = () => {
 
   return (
     <InfoBox
-      title={`#${index}`}
-      breadcrumbs={[{ title: 'Hotspots / Hex', path: '/hotspots' }]}
+      title={
+        <div className="flex items-center justify-center">
+          <img
+            src="/images/location-hex.svg"
+            className="h-7 w-auto mr-0.5 md:mr-2"
+          />
+          {index}
+        </div>
+      }
+      breadcrumbs={[{ title: 'Hotspots', path: '/hotspots' }]}
       subtitles={generateSubtitles(hotspots?.[0])}
     >
       <TabNavbar>
-        <TabPane title="Selected Hotspots" key="hotspots">
+        <TabPane title="Hotspots in Hex" key="hotspots">
           <div
             className={classNames(
               'grid grid-flow-row grid-cols-1 no-scrollbar',

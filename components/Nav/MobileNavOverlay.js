@@ -20,10 +20,9 @@ const MobileNavOverlay = ({ menuOpen, toggleMenu }) => {
     <FocusTrap active={menuOpen}>
       <div
         className={classNames(
-          'md:hidden transform-gpu absolute transition-all duration-100 ease-in-out top-0 z-50 left-0 h-screen w-screen bg-navy-900 opacity-90',
+          'md:hidden transform-gpu absolute transition-all duration-100 ease-in-out top-0 z-50 left-0 h-screen w-screen mobilenav-blur',
           { 'translate-x-full': !menuOpen, 'translate-x-0': menuOpen },
         )}
-        style={{ backdropFilter: 'blur(12px)' }}
       >
         <div className="relative flex flex-col items-center justify-center h-screen w-full p-10 space-y-20">
           <CloseButton

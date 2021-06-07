@@ -19,7 +19,7 @@ const SkeletonList = ({ padding }) => {
         >
           <div className="w-full">
             <div className="text-base font-medium">
-              <Skeleton />
+              <Skeleton defaultBackground={false} className="bg-gray-400" />
             </div>
             <div className="flex items-center space-x-4 h-8">
               <Skeleton className="w-1/5" />

@@ -1,8 +1,15 @@
 import classNames from 'classnames'
 
-const Skeleton = ({ className }) => (
+const Skeleton = ({
+  className,
+  defaultSizing = true,
+  defaultBackground = true,
+}) => (
   <div
-    className={classNames(className, 'animate-pulse h-4 rounded bg-gray-200')}
+    className={classNames(className, 'animate-pulse rounded', {
+      'h-4': defaultSizing,
+      'bg-gray-200': defaultBackground,
+    })}
   />
 )
 

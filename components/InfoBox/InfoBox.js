@@ -23,7 +23,7 @@ const InfoBox = ({ title, children, breadcrumbs, subtitles }) => {
       )}
     >
       <div className="w-full flex flex-col items-end justify-end md:justify-start h-full max-h-90p">
-        <div className="flex justify-between w-full p-4 rounded-t-2xl titlebox">
+        <div className="flex justify-between w-full p-4 rounded-t-2xl titlebox-blur">
           <div className="flex flex-col items-start justify-start">
             <Breadcrumbs breadcrumbs={breadcrumbs} />
             <span className="pointer-events-auto text-white text-3xl font-semibold font-sans tracking-tight">

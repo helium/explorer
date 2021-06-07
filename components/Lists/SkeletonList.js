@@ -10,9 +10,8 @@ const SkeletonList = ({ padding }) => {
         <div
           key={i}
           className={classNames(
-            'py-2 px-4 flex border-solid border-gray-500 border-t border-l border-r',
+            'py-2 px-4 flex border-solid border-gray-500 border-b',
             {
-              'rounded-t-lg': i === 0,
               'rounded-b-lg border-b': i === length - 1,
               'border-b-0': i !== 0 && i !== length - 1,
             },

@@ -19,7 +19,7 @@ const TransactionTypesWidget = ({ txns }) => {
           Object.keys(txnCounts)
             .sort((a, b) => txnCounts[b] - txnCounts[a])
             .map((type, i) => (
-              <Tooltip title={`${getTxnTypeName(type)} (${txnCounts[type]})`}>
+              <Tooltip placement="bottom" title={`${getTxnTypeName(type)} (${txnCounts[type]})`}>
                 <div
                   key={type}
                   style={{

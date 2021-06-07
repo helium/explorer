@@ -78,7 +78,7 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
             'case',
             ['==', ['get', 'id'], selectedHex?.index],
             '#ffffff',
-            '#1C1E3B',
+            '#10192d',
           ],
         }}
       />

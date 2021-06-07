@@ -118,7 +118,7 @@ const Rewards = ({ txn }) => {
             </div>
           </div>
           <button
-            className="flex items-center justify-start transition-all duration-150 outline-none rounded-full border border-gray-600 hover:bg-gray-300 hover:border-gray-700"
+            className="flex items-center justify-start transition-all duration-150 outline-none rounded-full border border-gray-400 hover:bg-gray-300 hover:border-gray-700"
            
           >
             <p className="whitespace-nowrap flex items-center justify-end text-gray-600 hover:text-gray-700 text-md my-0 px-3 py-1"  onClick={() => {

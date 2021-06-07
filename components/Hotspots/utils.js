@@ -120,6 +120,16 @@ export const hotspotToRes8 = (hotspot) => {
   }
 }
 
+export const isRelay = (listenAddrs) => {
+  const IP = /ip4/g
+
+  return !!(
+    listenAddrs &&
+    listenAddrs.length > 0 &&
+    !listenAddrs.find((a) => a.match(IP))
+  )
+}
+
 export const formatGain = (gain) => {
   return `${gain / 10} dBi`
 }

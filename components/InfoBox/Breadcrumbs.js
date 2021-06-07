@@ -29,13 +29,13 @@ const Breadcrumbs = ({ breadcrumbs }) => {
           return (
             <span className="pointer-events-auto flex flex-row items-center justify-start pb-1">
               <Link
-                className="text-gray-600 font-sans font-semibold text-shadow"
+                className="text-gray-600 font-sans font-semibold hover:text-gray-200"
                 to={b.path}
               >
                 {b.title}
               </Link>
-              <p className="text-gray-600 mx-2 my-0 font-black text-md font-sans text-shadow">
-                /
+              <p className="text-gray-700 opacity-30 mx-2 my-0 font-bold text-md font-sans">
+                |
               </p>
             </span>
           )

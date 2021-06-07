@@ -1,13 +1,15 @@
 import classNames from 'classnames'
 
-const Skeleton = ({ className, customSizeClasses }) => (
+const Skeleton = ({
+  className,
+  defaultSize = true,
+  defaultBackground = true,
+}) => (
   <div
-    className={classNames(
-      className,
-      customSizeClasses,
-      'animate-pulse rounded bg-gray-400',
-      { 'h-4': !customSizeClasses },
-    )}
+    className={classNames(className, 'animate-pulse rounded', {
+      'h-4': defaultSize,
+      'bg-gray-200': defaultBackground,
+    })}
   />
 )
 

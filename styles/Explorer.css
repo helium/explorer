@@ -16,6 +16,15 @@ body {
   box-shadow: 0px 47px 27px -24px rgba(9, 10, 19, 0.8);
 }
 
+.titlebox-blur {
+  background-color: rgb(0, 0, 0, 0.5);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+.mobilenav-blur {
+  background-color: rgb(0, 0, 0, 0.85);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -929,10 +938,6 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   height: 0;
   padding-top: 0;
   padding-bottom: 0;
-}
-
-.text-shadow {
-  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5), 0 0 5px rgba(50, 50, 50, 0.75);
 }
 
 .consensus_map__zoom_buttons {

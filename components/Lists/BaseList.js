@@ -74,7 +74,7 @@ const BaseList = ({
               'hover:bg-gray-200 cursor-pointer transition-all duration-75',
               'relative flex',
               'px-4 py-2',
-              'border-solid border-gray-500 border-t',
+              'border-solid border-gray-500 border-b',
               {
                 'border-t-0': i !== 0 && i !== length - 1,
               },
@@ -136,7 +136,7 @@ const BaseList = ({
       {fetchMore && hasMore && (
         <div
           ref={sentryRef}
-          className="text-center text-base text-gray-700 pb-4"
+          className="text-center text-base text-gray-700 py-2"
         >
           Loading more...
         </div>

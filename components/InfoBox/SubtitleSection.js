@@ -12,7 +12,7 @@ const SubtitleSection = ({ subtitles }) => {
         'opacity-25': seeThrough,
       })}
     >
-      <Skeleton className="my-0 w-full" customSizeClasses="h-3 md:h-4" />
+      <Skeleton className="my-0 w-full h-3 md:h-4" defaultSize={false} />
     </span>
   )
   return (

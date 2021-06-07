@@ -51,7 +51,7 @@ const HexDetailsInfoBox = () => {
       subtitles={generateSubtitles(hotspots?.[0])}
     >
       <TabNavbar>
-        <TabPane title="Selected Hotspots" key="hotspots">
+        <TabPane title="Hotspots in Hex" key="hotspots">
           <div
             className={classNames(
               'grid grid-flow-row grid-cols-1 no-scrollbar',

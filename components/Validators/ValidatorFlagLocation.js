@@ -1,7 +1,7 @@
 import ReactCountryFlag from 'react-country-flag'
 
 const ValidatorFlagLocation = ({ geo }) => {
-  if (!geo.country_code) {
+  if (!geo?.country_code) {
     return (
       <span className="flex items-center text-gray-800">
         <span role="img" className="text-xl">
@@ -12,15 +12,10 @@ const ValidatorFlagLocation = ({ geo }) => {
     )
   }
   return (
-    <span className="text-gray-800">
-      <ReactCountryFlag
-        countryCode={geo.country_code}
-        style={{
-          fontSize: '1.5em',
-          marginRight: '6px',
-          lineHeight: '1.5em',
-        }}
-      />
+    <span className="flex flex-row items-center justify-start">
+      <span className="mr-2 flex flex-row items-center justify-start text-gray-800">
+        <ReactCountryFlag countryCode={geo.country_code} svg />
+      </span>
       {[geo.city, geo.region_code, geo.country_code]
         .filter((g) => !!g)
         .join(', ')}

@@ -66,7 +66,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading }) => {
       {
         iconPath: '/images/location-blue.svg',
         path: `/cities/${hotspot.geocode.cityId}`,
-        title: formatLocation(hotspot.geocode, 'short'),
+        title: formatLocation(hotspot.geocode, true),
       },
       {
         iconPath: '/images/account-green.svg',

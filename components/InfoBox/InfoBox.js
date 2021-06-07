@@ -18,7 +18,7 @@ const InfoBox = ({ title, children, breadcrumbs, subtitles }) => {
         // TODO: revisit Tailwind JIT mode. this is doable and much more flexible with Tailwind JIT and the [] syntax for arbitrary values, but for some reason it was breaking all Tailwind styles with Hot Module Reloading. for now we can extend the themes to use more manual values:
         {
           'translate-y-120p md:-translate-x-full md:translate-y-0': !showInfoBox,
-          'translate-y-0' : showInfoBox,
+          'translate-y-0': showInfoBox,
         },
       )}
     >

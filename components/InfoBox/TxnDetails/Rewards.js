@@ -53,8 +53,7 @@ const Rewards = ({ txn }) => {
     if (!rewardsRecipients.length) return <Skeleton className="w-full" />
     return (
       <>
-        
-          <div className={classNames(` col-span-2`)}>
+        <div className="col-span-2">
           <div className="bg-gray-200 p-3 rounded-t-lg col-span-2 text-gray-600 text-sm mb-1">
             Rewards Recipients (
             {!rewardsRecipients.length ? 'Loading...' : groupedRewards.length})
@@ -100,11 +99,7 @@ const Rewards = ({ txn }) => {
             >
               <AccountIcon size={18} address={rewardInfo.account} />
               <span className="pl-1 ">
-                <AccountAddress
-                  address={rewardInfo.account}
-                  truncate={4}
-                  
-                />
+                <AccountAddress address={rewardInfo.account} truncate={4} />
               </span>
             </Link>
             <div className="flex items-center w-full justify-between text-sm leading-tight tracking-tighter text-gray-600 mt-0.5">
@@ -117,13 +112,13 @@ const Rewards = ({ txn }) => {
               </p>
             </div>
           </div>
-          <button
-            className="flex items-center justify-start transition-all duration-150 outline-none rounded-full border border-gray-400 hover:bg-gray-300 hover:border-gray-700"
-           
-          >
-            <p className="whitespace-nowrap flex items-center justify-end text-gray-600 hover:text-gray-700 text-md my-0 px-3 py-1"  onClick={() => {
-              setExpanded((prevSetting) => !prevSetting)
-            }}>
+          <button className="flex items-center justify-start transition-all duration-150 outline-none rounded-full border border-gray-400 hover:bg-gray-300 hover:border-gray-700">
+            <p
+              className="whitespace-nowrap flex items-center justify-end text-gray-600 hover:text-gray-700 text-md my-0 px-3 py-1"
+              onClick={() => {
+                setExpanded((prevSetting) => !prevSetting)
+              }}
+            >
               {rewardInfo?.rewards?.length}{' '}
               {rewardInfo?.rewards?.length === 1 ? 'Reward' : 'Rewards'}
               <span className="ml-1 w-3">{expanded ? '-' : '+'}</span>
@@ -160,7 +155,7 @@ const Rewards = ({ txn }) => {
 
   return (
     <>
-          <div className="px-1 md:px-3 pt-1 -mb-6 md:pt-3">
+      <div className="px-1 md:px-3 pt-1 -mb-6 md:pt-3">
         <TransactionTypesWidget txns={txn.rewards} />
       </div>
       <InfoBoxPaneContainer>

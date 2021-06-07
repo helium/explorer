@@ -17,7 +17,7 @@ body {
 }
 
 .titlebox {
-  background-color: rgb(0,0,0,0.5);
+  background-color: rgb(0, 0, 0, 0.5);
   backdrop-filter: saturate(180%) blur(20px);
 }
 

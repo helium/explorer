@@ -1,6 +1,7 @@
 import NavLinks from './NavLinks'
 import classNames from 'classnames'
 import FocusTrap from 'focus-trap-react'
+import { Link } from 'react-router-i18n'
 
 const CloseButton = ({ className, onClick }) => (
   <button
@@ -29,12 +30,17 @@ const MobileNavOverlay = ({ menuOpen, toggleMenu }) => {
             className="absolute top-4 right-4"
             onClick={toggleMenu}
           />
+          <Link to="/" onClick={toggleMenu}>
+            <img
+              src="/images/logo-sm.svg"
+              className="border-solid border border-transparent focus:border-navy-400"
+            />
+          </Link>
           <NavLinks
             className="flex flex-col items-center justify-center space-y-8"
             navLinkClasses="text-xl text-white font-sans font-semibold border-solid border border-transparent focus:border-navy-400 hover:text-gray-600"
             onNavLinkClick={toggleMenu}
           />
-          <CloseButton onClick={toggleMenu} />
         </div>
       </div>
     </FocusTrap>

@@ -19,7 +19,7 @@ const InfoBoxPaneContainer = ({
       )}
     >
       {children}
-        </div>
+    </div>
   )
 }
 export default InfoBoxPaneContainer

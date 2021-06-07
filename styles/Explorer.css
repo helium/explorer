@@ -16,6 +16,11 @@ body {
   box-shadow: 0px 47px 27px -24px rgba(9, 10, 19, 0.8);
 }
 
+.titlebox {
+  background-color: rgb(0,0,0,0.5);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

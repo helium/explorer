@@ -32,15 +32,11 @@ export const formatLocation = (geocode0, length = 'long') => {
 
   const locationTerms = []
 
-  if (geocode?.longCity !== null && geocode?.longCity !== undefined) {
+  if (geocode?.longCity) {
     locationTerms.push(geocode?.longCity)
   }
 
-  if (
-    length === 'long' &&
-    geocode?.shortState !== null &&
-    geocode?.shortState !== undefined
-  ) {
+  if (length === 'long' && geocode?.shortState) {
     locationTerms.push(geocode?.shortState)
   }
 

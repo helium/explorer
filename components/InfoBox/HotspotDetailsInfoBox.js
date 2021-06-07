@@ -13,6 +13,7 @@ import { formatLocation } from '../Hotspots/utils'
 import CopyableText from '../Common/CopyableText'
 import AccountIcon from '../AccountIcon'
 import AccountAddress from '../AccountAddress'
+import SkeletonList from '../Lists/SkeletonList'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -25,12 +26,10 @@ const HotspotDetailsRoute = () => {
     }
   }, [hotspot, address])
 
-  if (!hotspot) return null
-
-  return <HotspotDetailsInfoBox address={address} />
+  return <HotspotDetailsInfoBox address={address} isLoading={!hotspot} />
 }
 
-const HotspotDetailsInfoBox = ({ address }) => {
+const HotspotDetailsInfoBox = ({ address, isLoading }) => {
   const {
     selectedHotspot: hotspot,
     clearSelectedHotspot,
@@ -39,7 +38,7 @@ const HotspotDetailsInfoBox = ({ address }) => {
   const title = useMemo(
     () => (
       <CopyableText textToCopy={address} tooltip="Copy address">
-        {animalHash(address)}
+        {address && animalHash(address)}
       </CopyableText>
     ),
     [address],
@@ -56,10 +55,6 @@ const HotspotDetailsInfoBox = ({ address }) => {
       return [
         {
           iconPath: '/images/location-blue.svg',
-          loading: true,
-        },
-        {
-          iconPath: '/images/location-hex.svg',
           loading: true,
         },
         {
@@ -113,19 +108,24 @@ const HotspotDetailsInfoBox = ({ address }) => {
     >
       <TabNavbar>
         <TabPane title="Statistics" key="statistics">
-          <StatisticsPane hotspot={hotspot} />
+          {isLoading ? <SkeletonList /> : <StatisticsPane hotspot={hotspot} />}
         </TabPane>
-
         <TabPane title="Activity" path="activity" key="activity">
-          <ActivityPane context="hotspot" address={hotspot?.address} />
+          {isLoading ? (
+            <SkeletonList />
+          ) : (
+            <ActivityPane context="hotspot" address={hotspot?.address} />
+          )}
         </TabPane>
-
         <TabPane title="Witnesses" path="witnesses" key="witnesses">
-          <WitnessesPane hotspot={hotspot} />
+          {isLoading ? <SkeletonList /> : <WitnessesPane hotspot={hotspot} />}
         </TabPane>
-
         <TabPane title="Nearby" path="nearby" key="nearby">
-          <NearbyHotspotsPane hotspot={hotspot} />
+          {isLoading ? (
+            <SkeletonList />
+          ) : (
+            <NearbyHotspotsPane hotspot={hotspot} />
+          )}
         </TabPane>
       </TabNavbar>
     </InfoBox>

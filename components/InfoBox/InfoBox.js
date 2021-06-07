@@ -7,18 +7,18 @@ import SubtitleSection from './SubtitleSection'
 const InfoBox = ({ title, children, breadcrumbs, subtitles }) => {
   const { showInfoBox, toggleInfoBox } = useInfoBox()
 
-  const BUTTON_SIZE = 35
+  const BUTTON_SIZE = 30
 
   return (
     <div
       className={classNames(
-        'pointer-events-none fixed left-0 md:left-10 z-20 bottom-0 md:top-0 md:m-auto w-full md:w-120 flex flex-col items-center justify-end transform-gpu transition-all duration-200 ease-in-out',
+        'pointer-events-none fixed left-0 md:left-16 z-20 bottom-0 md:top-0 md:m-auto w-full md:w-120 flex flex-col items-center justify-end transform-gpu transition-all duration-200 ease-in-out',
         // so that on a shorter browser window, the infobox won't go above the navbar
         'max-h-vh-minus-nav',
         // TODO: revisit Tailwind JIT mode. this is doable and much more flexible with Tailwind JIT and the [] syntax for arbitrary values, but for some reason it was breaking all Tailwind styles with Hot Module Reloading. for now we can extend the themes to use more manual values:
         {
-          'translate-y-120p md:-translate-x-full md:translate-y-0 opacity-25': !showInfoBox,
-          'translate-y-0': showInfoBox,
+          'translate-y-120p md:-translate-x-full md:translate-y-0': !showInfoBox,
+          'translate-y-0' : showInfoBox,
         },
       )}
     >

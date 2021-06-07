@@ -19,9 +19,7 @@ const InfoBoxPaneContainer = ({
       )}
     >
       {children}
-      {/* Spacer for end of list */}
-      <div className="py-1 md:py-2 px-2 col-span-2" />
-    </div>
+        </div>
   )
 }
 export default InfoBoxPaneContainer

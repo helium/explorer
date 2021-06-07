@@ -1,7 +1,11 @@
 import camelcaseKeys from 'camelcase-keys'
 import ReactCountryFlag from 'react-country-flag'
 
-const FlagLocation = ({ geocode, country = 'short' }) => {
+const FlagLocation = ({
+  geocode,
+  country = 'short',
+  showLocationName = true,
+}) => {
   if (!geocode) {
     return <span>No location set</span>
   }
@@ -27,7 +31,7 @@ const FlagLocation = ({ geocode, country = 'short' }) => {
       <span className="mr-2 flex flex-row items-center justify-start">
         <ReactCountryFlag countryCode={shortCountry} svg />
       </span>
-      {locationTerms.join(', ')}
+      {showLocationName && locationTerms.join(', ')}
     </span>
   )
 }

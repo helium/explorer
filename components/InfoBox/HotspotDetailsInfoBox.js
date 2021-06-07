@@ -13,6 +13,7 @@ import { formatLocation } from '../Hotspots/utils'
 import CopyableText from '../Common/CopyableText'
 import AccountIcon from '../AccountIcon'
 import AccountAddress from '../AccountAddress'
+import SkeletonList from '../Lists/SkeletonList'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -25,12 +26,10 @@ const HotspotDetailsRoute = () => {
     }
   }, [hotspot, address])
 
-  if (!hotspot) return null
-
-  return <HotspotDetailsInfoBox address={address} />
+  return <HotspotDetailsInfoBox address={address} isLoading={!hotspot} />
 }
 
-const HotspotDetailsInfoBox = ({ address }) => {
+const HotspotDetailsInfoBox = ({ address, isLoading }) => {
   const {
     selectedHotspot: hotspot,
     clearSelectedHotspot,
@@ -39,7 +38,7 @@ const HotspotDetailsInfoBox = ({ address }) => {
   const title = useMemo(
     () => (
       <CopyableText textToCopy={address} tooltip="Copy address">
-        {animalHash(address)}
+        {address && animalHash(address)}
       </CopyableText>
     ),
     [address],
@@ -59,10 +58,6 @@ const HotspotDetailsInfoBox = ({ address }) => {
           loading: true,
         },
         {
-          iconPath: '/images/location-hex.svg',
-          loading: true,
-        },
-        {
           iconPath: '/images/account-green.svg',
           loading: true,
         },
@@ -71,44 +66,66 @@ const HotspotDetailsInfoBox = ({ address }) => {
       {
         iconPath: '/images/location-blue.svg',
         path: `/cities/${hotspot.geocode.cityId}`,
-        title: formatLocation(hotspot.geocode),
+        title: formatLocation(hotspot.geocode, 'short'),
       },
       {
-        iconPath: '/images/location-hex.svg',
-        ...(hotspot.location
-          ? {
-              path: `/hotspots/hex/${hotspot.location}`,
-              title: hotspot.location,
-            }
-          : { title: 'Not set' }),
-      },
-      {
-        icon: (
-          <AccountIcon address={hotspot.owner} size={14} className="mr-0.5" />
-        ),
+        iconPath: '/images/account-green.svg',
         title: <AccountAddress address={hotspot.owner} truncate={5} />,
         path: `/accounts/${hotspot.owner}`,
       },
     ]
   }
 
+  const generateBreadcrumbs = (hotspot) => {
+    if (!hotspot) return [{ title: 'Hotspots', path: '/hotspots' }]
+    return [
+      { title: 'Hotspots', path: '/hotspots' },
+      ...(hotspot.location
+        ? // if the hotspot has a hex, show a breadcrumb for it
+          [
+            {
+              title: (
+                <div className="flex items-center justify-center">
+                  <img
+                    src="/images/location-hex.svg"
+                    className="h-3.5 w-auto mr-0.5 md:mr-1"
+                  />
+                  {hotspot.location}
+                </div>
+              ),
+              path: `/hotspots/hex/${hotspot.location}`,
+            },
+          ]
+        : []),
+    ]
+  }
+
   return (
-    <InfoBox title={title} subtitles={generateSubtitles(hotspot)}>
+    <InfoBox
+      title={title}
+      subtitles={generateSubtitles(hotspot)}
+      breadcrumbs={generateBreadcrumbs(hotspot)}
+    >
       <TabNavbar>
         <TabPane title="Statistics" key="statistics">
-          <StatisticsPane hotspot={hotspot} />
+          {isLoading ? <SkeletonList /> : <StatisticsPane hotspot={hotspot} />}
         </TabPane>
-
         <TabPane title="Activity" path="activity" key="activity">
-          <ActivityPane context="hotspot" address={hotspot?.address} />
+          {isLoading ? (
+            <SkeletonList />
+          ) : (
+            <ActivityPane context="hotspot" address={hotspot?.address} />
+          )}
         </TabPane>
-
         <TabPane title="Witnesses" path="witnesses" key="witnesses">
-          <WitnessesPane hotspot={hotspot} />
+          {isLoading ? <SkeletonList /> : <WitnessesPane hotspot={hotspot} />}
         </TabPane>
-
         <TabPane title="Nearby" path="nearby" key="nearby">
-          <NearbyHotspotsPane hotspot={hotspot} />
+          {isLoading ? (
+            <SkeletonList />
+          ) : (
+            <NearbyHotspotsPane hotspot={hotspot} />
+          )}
         </TabPane>
       </TabNavbar>
     </InfoBox>

@@ -2,12 +2,12 @@ import classNames from 'classnames'
 
 const Skeleton = ({
   className,
-  defaultSizing = true,
+  defaultSize = true,
   defaultBackground = true,
 }) => (
   <div
     className={classNames(className, 'animate-pulse rounded', {
-      'h-4': defaultSizing,
+      'h-4': defaultSize,
       'bg-gray-200': defaultBackground,
     })}
   />

@@ -931,6 +931,10 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   padding-bottom: 0;
 }
 
+.text-shadow {
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5), 0 0 5px rgba(50, 50, 50, 0.75);
+}
+
 .consensus_map__zoom_buttons {
   box-shadow: none !important;
   border: none !important;

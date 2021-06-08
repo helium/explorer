@@ -30,10 +30,12 @@ const MapLayersBox = () => {
     {
       title: 'Default',
       id: 'default',
+      iconPath: '/images/hex-green.png',
     },
     {
       title: 'Reward Scales',
       id: 'rewardScale',
+      iconPath: '/images/reward-scale.svg',
     },
     // {
     //   title: 'Owner',
@@ -66,10 +68,11 @@ const MapLayersBox = () => {
         >
           <img src="/images/close.svg" />
         </div>
-        {layers.map(({ title, id }, i) => (
+        {layers.map(({ title, id, iconPath }, i) => (
           <Layer
             key={id}
             title={title}
+            iconPath={iconPath}
             onClick={handleClick(id)}
             active={mapLayer === id}
             style={{
@@ -84,7 +87,7 @@ const MapLayersBox = () => {
   )
 }
 
-const Layer = ({ title, onClick, active = false, style }) => (
+const Layer = ({ title, onClick, iconPath, active = false, style }) => (
   <div
     className="flex items-center justify-end space-x-2 cursor-pointer absolute bottom-0 right-0 w-96 transform-gpu transition-transform duration-300 ease-in-out"
     onClick={onClick}
@@ -92,13 +95,20 @@ const Layer = ({ title, onClick, active = false, style }) => (
   >
     <span
       className={classNames('text-sm', {
-        'text-navy-400 font-semibold': active,
-        'text-white': !active,
+        'text-white font-semibold': active,
+        'text-gray-600': !active,
       })}
     >
       {title}
     </span>
-    <div className="bg-gray-700 w-10 h-10 rounded-full mb-1" />
+    <div
+      className={classNames(
+        'w-10 h-10 rounded-full mb-1 flex items-center justify-center',
+        { 'bg-gray-700': !active, 'bg-gray-200': active },
+      )}
+    >
+      <img className="w-5 h-5" src={iconPath} />
+    </div>
   </div>
 )
 

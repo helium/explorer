@@ -79,7 +79,12 @@ const CoverageMap = () => {
   }, [currentPosition.coords, currentPosition.timestamp])
 
   useEffect(() => {
-    if (!selectedHotspot || !selectedHotspot.lat || !selectedHotspot.lng) {
+    if (
+      !selectedHotspot ||
+      !selectedHotspot.lat ||
+      !selectedHotspot.lng ||
+      !selectedHotspot.location
+    ) {
       return
     }
 

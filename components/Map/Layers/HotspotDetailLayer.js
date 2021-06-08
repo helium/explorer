@@ -50,7 +50,7 @@ const HotspotDetailLayer = ({ hotspot, witnesses = [] }) => {
         data={witnessesData || emptyGeoJSON}
         circlePaint={witnessCircleLayout}
       />
-      {hotspot && hotspot.lat && hotspot.lng && (
+      {hotspot && hotspot.lat && hotspot.lng && hotspot.location && (
         <Layer
           type="symbol"
           id="selected-hotspot"

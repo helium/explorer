@@ -4,6 +4,7 @@ import Hotspot from './Hotspot'
 import Link from 'next/link'
 import withSearchResults from '../SearchBar/withSearchResults'
 import { Checkbox } from 'antd'
+import BetaBanner from '../BetaBanner/BetaBanner'
 
 const hotspotToObj = (hotspot) => ({
   ...hotspot,
@@ -21,6 +22,8 @@ const HotspotSidebar = ({
   searchTerm,
   showOffline,
   setShowOffline,
+  showBetaBanner,
+  toggleBetaBanner,
   ...props
 }) => {
   const updateFilter = (e) => {
@@ -49,8 +52,17 @@ const HotspotSidebar = ({
   }
 
   return (
-    <span className="coverage-map-sidebar">
-      <Sidebar>
+    <span
+      className="coverage-map-sidebar"
+      style={{ paddingTop: showBetaBanner ? '120px' : '64px' }}
+    >
+      {showBetaBanner && (
+        <BetaBanner
+          toggleBetaBanner={toggleBetaBanner}
+          showBetaBanner={showBetaBanner}
+        />
+      )}
+      <Sidebar showBetaBanner={showBetaBanner}>
         <SidebarHeader>
           {selectedHotspots.length > 0 ? (
             <div className="header-search">

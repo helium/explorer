@@ -13,6 +13,8 @@ const TrendWidget = ({
   series,
   valuePrefix,
   valueSuffix,
+  changeInitial = 'first',
+  changeSuffix,
   locale,
   toLocaleStringOpts = {},
   changeType = 'difference',
@@ -20,7 +22,13 @@ const TrendWidget = ({
   periodLabel = '30 Day Trend',
   linkTo,
 }) => {
-  const yMin = first(series || [])?.value || 0
+  const secondLastValue =
+    series && series.length > 1 ? series[series?.length - 2]?.value : 0
+
+  const yMin =
+    changeInitial === 'second_last'
+      ? secondLastValue
+      : first(series || [])?.value || 0
   const yMax = last(series || [])?.value || 0
 
   const inner = (
@@ -50,6 +58,7 @@ const TrendWidget = ({
         <WidgetChange
           value={yMax}
           initial={yMin}
+          changeSuffix={changeSuffix}
           type={changeType}
           isLoading={isLoading}
         />

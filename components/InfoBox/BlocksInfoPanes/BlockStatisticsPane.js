@@ -15,31 +15,35 @@ const BlockStatisticsPane = () => {
   // const [blockTimeMonth, setBlockTimeMonth] = useState()
 
   useEffect(() => {
-    setProcessingData(true)
-    const electionTimesArray = blocks?.electionTimeDay.map((et) => {
-      et.value = round(et.value / 60, 0)
-      return et
-    })
-    setElectionTimes(electionTimesArray)
+    if (!!blocks) {
+      setProcessingData(true)
+      const electionTimesArray = blocks?.electionTimeDay
+      setElectionTimes(
+        electionTimesArray.map((et) => ({
+          ...et,
+          value: round(et.value / 60, 1),
+        })),
+      )
 
-    const blockTimeDayArray = blocks?.blockTimeDay.map((bt) => {
-      bt.value = round(bt.value, 2)
-      return bt
-    })
-    setBlockTimeDay(blockTimeDayArray)
+      const blockTimeDayArray = blocks?.blockTimeDay.map((bt) => {
+        bt.value = round(bt.value, 2)
+        return bt
+      })
+      setBlockTimeDay(blockTimeDayArray)
 
-    // const blockTimeWeekArray = blocks?.blockTimeWeek.map((bt) => {
-    //   bt.value = round(bt.value, 2)
-    //   return bt
-    // })
-    // setBlockTimeWeek(blockTimeWeekArray)
+      // const blockTimeWeekArray = blocks?.blockTimeWeek.map((bt) => {
+      //   bt.value = round(bt.value, 2)
+      //   return bt
+      // })
+      // setBlockTimeWeek(blockTimeWeekArray)
 
-    // const blockTimeMonthArray = blocks?.blockTimeMonth.map((bt) => {
-    //   bt.value = round(bt.value, 2)
-    //   return bt
-    // })
-    // setBlockTimeMonth(blockTimeMonthArray)
-    setProcessingData(false)
+      // const blockTimeMonthArray = blocks?.blockTimeMonth.map((bt) => {
+      //   bt.value = round(bt.value, 2)
+      //   return bt
+      // })
+      // setBlockTimeMonth(blockTimeMonthArray)
+      setProcessingData(false)
+    }
   }, [blocks])
 
   return (
@@ -56,15 +60,19 @@ const BlockStatisticsPane = () => {
         isLoading={!blocks}
       />
       <StatWidget
-        title="Block Time (1hr)"
+        title="Block Time (24hr)"
         series={blockTimeDay}
         valueSuffix={' sec'}
+        changeInitial="second_last"
+        changeSuffix={' sec'}
         isLoading={processingData}
       />
       <TrendWidget
         title="Election Time (24hr)"
         series={electionTimes}
         valueSuffix=" min"
+        changeInitial="second_last"
+        changeSuffix=" min"
         isLoading={processingData}
         periodLabel={`${blocks?.electionTimeDay.length} days`}
       />

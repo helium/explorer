@@ -9,12 +9,20 @@ const StatWidget = ({
   dataKey = 'value',
   valueType = 'default',
   changeType = 'difference',
+  changeInitial = 'first',
   linkTo,
   span = 1,
   valueSuffix,
+  changeSuffix,
 }) => {
+  const secondLastValue =
+    series && series.length > 1 ? series[series.length - 2]?.[dataKey] : 0
+
   const value = last(series || [])?.[dataKey]
-  const initial = first(series || [])?.[dataKey]
+  const initial =
+    changeInitial === 'second_last'
+      ? secondLastValue
+      : first(series || [])?.[dataKey]
 
   const valueString = value?.toLocaleString(undefined, stringOpts[valueType])
 
@@ -23,7 +31,12 @@ const StatWidget = ({
       title={title}
       value={valueString}
       subtitle={
-        <WidgetChange value={value} initial={initial} type={changeType} />
+        <WidgetChange
+          value={value}
+          initial={initial}
+          type={changeType}
+          changeSuffix={changeSuffix}
+        />
       }
       isLoading={isLoading}
       linkTo={linkTo}

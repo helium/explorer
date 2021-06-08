@@ -12,6 +12,9 @@ const TrendWidget = ({
   tooltip,
   series,
   valuePrefix,
+  valueSuffix,
+  changeInitial = 'first',
+  changeSuffix,
   locale,
   toLocaleStringOpts = {},
   changeType = 'difference',
@@ -19,7 +22,13 @@ const TrendWidget = ({
   periodLabel = '30 Day Trend',
   linkTo,
 }) => {
-  const yMin = first(series || [])?.value || 0
+  const secondLastValue =
+    series && series.length > 1 ? series[series?.length - 2]?.value : 0
+
+  const yMin =
+    changeInitial === 'second_last'
+      ? secondLastValue
+      : first(series || [])?.value || 0
   const yMax = last(series || [])?.value || 0
 
   const inner = (
@@ -39,14 +48,17 @@ const TrendWidget = ({
           {isLoading ? (
             <Skeleton className="w-full my-4" />
           ) : (
-            [valuePrefix, yMax.toLocaleString(locale, toLocaleStringOpts)].join(
-              '',
-            )
+            [
+              valuePrefix,
+              yMax.toLocaleString(locale, toLocaleStringOpts),
+              valueSuffix,
+            ].join('')
           )}
         </div>
         <WidgetChange
           value={yMax}
           initial={yMin}
+          changeSuffix={changeSuffix}
           type={changeType}
           isLoading={isLoading}
         />

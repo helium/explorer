@@ -2,7 +2,13 @@ import classNames from 'classnames'
 import { memo } from 'react'
 import Skeleton from '../Common/Skeleton'
 
-const WidgetChange = ({ value, initial, type, isLoading = false }) => {
+const WidgetChange = ({
+  value,
+  initial,
+  type,
+  isLoading = false,
+  changeSuffix,
+}) => {
   if (isLoading) return <Skeleton className="w-1/3" />
 
   if (value === initial) return <span className="text-gray-550">No Change</span>
@@ -21,6 +27,7 @@ const WidgetChange = ({ value, initial, type, isLoading = false }) => {
     >
       {change > 0 ? '+' : ''}
       {changeString}
+      {changeSuffix && changeSuffix}
     </div>
   )
 }

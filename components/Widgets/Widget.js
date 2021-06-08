@@ -13,6 +13,7 @@ const Widget = ({
   copyableValue,
   change,
   changeSuffix,
+  valueSuffix,
   subtitle,
   onClick,
   icon,
@@ -47,7 +48,10 @@ const Widget = ({
                     'cursor-pointer hover:text-gray-800 transition-all duration-150': copyableValue,
                   })}
                 >
-                  <span className="break-all">{value}</span>
+                  <span className="break-all">
+                    {value}
+                    {valueSuffix && valueSuffix}
+                  </span>
                 </p>
               </CopyableText>
             )}

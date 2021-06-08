@@ -12,6 +12,7 @@ const TrendWidget = ({
   tooltip,
   series,
   valuePrefix,
+  valueSuffix,
   locale,
   toLocaleStringOpts = {},
   changeType = 'difference',
@@ -39,9 +40,11 @@ const TrendWidget = ({
           {isLoading ? (
             <Skeleton className="w-full my-4" />
           ) : (
-            [valuePrefix, yMax.toLocaleString(locale, toLocaleStringOpts)].join(
-              '',
-            )
+            [
+              valuePrefix,
+              yMax.toLocaleString(locale, toLocaleStringOpts),
+              valueSuffix,
+            ].join('')
           )}
         </div>
         <WidgetChange

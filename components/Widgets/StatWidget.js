@@ -10,6 +10,8 @@ const StatWidget = ({
   valueType = 'default',
   changeType = 'difference',
   linkTo,
+  span = 1,
+  valueSuffix,
 }) => {
   const value = last(series || [])?.[dataKey]
   const initial = first(series || [])?.[dataKey]
@@ -25,6 +27,8 @@ const StatWidget = ({
       }
       isLoading={isLoading}
       linkTo={linkTo}
+      span={span}
+      valueSuffix={valueSuffix}
     />
   )
 }

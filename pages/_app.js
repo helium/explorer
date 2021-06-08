@@ -33,11 +33,7 @@ function MyApp({ Component, pageProps }) {
         <BetaBannerContext.Provider
           value={{ showBetaBanner, toggleBetaBanner }}
         >
-          <Component
-            showBetaBanner={showBetaBanner}
-            toggleBetaBanner={toggleBetaBanner}
-            {...pageProps}
-          />
+          <Component {...pageProps} />
         </BetaBannerContext.Provider>
         <script src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js"></script>
       </Container>

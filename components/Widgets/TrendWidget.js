@@ -1,4 +1,10 @@
-import { LineChart, Line, YAxis, ResponsiveContainer } from 'recharts'
+import {
+  LineChart,
+  Line,
+  YAxis,
+  ResponsiveContainer,
+  Tooltip as RCTooltip,
+} from 'recharts'
 import { first, last } from 'lodash'
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { Tooltip } from 'antd'
@@ -6,6 +12,21 @@ import Image from 'next/image'
 import Skeleton from '../Common/Skeleton'
 import WidgetChange from './WidgetChange'
 import { Link } from 'react-router-dom'
+import classNames from 'classnames'
+
+const CustomTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white opacity-90 backdrop-filter blur-md px-2 py-1">
+        <p className="text-sm font-sans font-medium text-darkgray-800">
+          {payload[0].value.toLocaleString()}
+        </p>
+      </div>
+    )
+  }
+
+  return null
+}
 
 const TrendWidget = ({
   title,
@@ -63,9 +84,19 @@ const TrendWidget = ({
           isLoading={isLoading}
         />
       </div>
-      <div className="flex-1 p-4 pr-0 relative">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart width={300} height={100} data={series}>
+      <div
+        className={classNames('flex-1 p-4 pr-0 relative', {
+          'cursor-pointer': linkTo,
+        })}
+        style={{ maxWidth: 278 }}
+      >
+        <ResponsiveContainer width="99%" aspect={4} height="100%">
+          <LineChart
+            width={300}
+            height={100}
+            data={series}
+            style={linkTo ? { cursor: 'pointer' } : {}}
+          >
             <YAxis hide domain={[yMin, yMax]} />
             <Line
               type="monotone"
@@ -74,6 +105,7 @@ const TrendWidget = ({
               strokeWidth={3}
               dot={false}
             />
+            <RCTooltip content={<CustomTooltip />} />
           </LineChart>
         </ResponsiveContainer>
         <div className="absolute right-4 bottom-0 text-gray-550 text-xs">

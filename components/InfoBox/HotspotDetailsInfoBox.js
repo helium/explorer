@@ -11,7 +11,6 @@ import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import { formatLocation } from '../Hotspots/utils'
 import CopyableText from '../Common/CopyableText'
-import AccountIcon from '../AccountIcon'
 import AccountAddress from '../AccountAddress'
 import SkeletonList from '../Lists/SkeletonList'
 
@@ -100,13 +99,18 @@ const HotspotDetailsInfoBox = ({ address, isLoading }) => {
     ]
   }
 
+  const metaTitle = useMemo(() => {
+    return `Hotspot ${animalHash(address)}`
+  }, [address])
+
   return (
     <InfoBox
       title={title}
+      metaTitle={metaTitle}
       subtitles={generateSubtitles(hotspot)}
       breadcrumbs={generateBreadcrumbs(hotspot)}
     >
-      <TabNavbar>
+      <TabNavbar metaTitle={metaTitle}>
         <TabPane title="Statistics" key="statistics">
           {isLoading ? <SkeletonList /> : <StatisticsPane hotspot={hotspot} />}
         </TabPane>

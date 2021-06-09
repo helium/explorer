@@ -6,8 +6,8 @@ import LatestHotspotsPane from './Hotspots/LatestHotspotsPane'
 
 const HotspotsInfoBox = () => {
   return (
-    <InfoBox title={<I18n t="hotspots.title" />}>
-      <TabNavbar>
+    <InfoBox title={<I18n t="hotspots.title" />} metaTitle="Hotspots">
+      <TabNavbar metaTitle="Hotspots">
         <TabPane title="Statistics" key="statistics">
           <StatisticsPane />
         </TabPane>
@@ -15,7 +15,7 @@ const HotspotsInfoBox = () => {
           <LatestHotspotsPane />
         </TabPane>
         <TabPane title="All Hotspots" key="all" path="all">
-        <LatestHotspotsPane />
+          <LatestHotspotsPane />
         </TabPane>
       </TabNavbar>
     </InfoBox>

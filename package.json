@@ -46,6 +46,7 @@
     "react-country-flag": "^2.3.0",
     "react-dom": "^17.0.1",
     "react-grid-system": "^6.3.1",
+    "react-helmet": "^6.1.0",
     "react-hotkeys": "^2.0.0",
     "react-identicon-variety-pack": "https://github.com/allenan/react-identicon-variety-pack.git",
     "react-infinite-scroll-hook": "^4.0.1",

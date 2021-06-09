@@ -33,9 +33,9 @@ const MetaTags = ({
         <link rel="manifest" href="https://explorer.helium.com/manifest.json" />
 
         {/* Primary Meta Tags */}
-        <title>{titleTag}</title>
+        {/* <title>{titleTag}</title> */}
 
-        <meta name="title" content={metaTitle} />
+        {/* <meta name="title" content={metaTitle} /> */}
         <meta name="description" content={metaDescription} />
 
         {/* Item Props */}

@@ -15,8 +15,8 @@ const MarketInfoBox = () => {
   const [latestOraclePrice] = oraclePrices || []
 
   return (
-    <InfoBox title="Market">
-      <TabNavbar>
+    <InfoBox title="Market" metaTitle="Market">
+      <TabNavbar metaTitle="Market">
         <TabPane title="Statistics" key="statistics">
           <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
             <TrendWidget

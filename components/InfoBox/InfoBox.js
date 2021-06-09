@@ -1,10 +1,11 @@
 import Image from 'next/image'
+import { Helmet } from 'react-helmet'
 import useInfoBox from '../../hooks/useInfoBox'
 import classNames from 'classnames'
 import Breadcrumbs from './Breadcrumbs'
 import SubtitleSection from './SubtitleSection'
 
-const InfoBox = ({ title, children, breadcrumbs, subtitles }) => {
+const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
   const { showInfoBox, toggleInfoBox } = useInfoBox()
 
   const BUTTON_SIZE = 30
@@ -22,6 +23,11 @@ const InfoBox = ({ title, children, breadcrumbs, subtitles }) => {
         },
       )}
     >
+      <Helmet>
+        <title>
+          {metaTitle ? `${metaTitle} — Helium Explorer` : 'Helium Explorer'}
+        </title>
+      </Helmet>
       <div className="w-full flex flex-col items-end justify-end md:justify-start h-full max-h-90p">
         <div className="flex justify-between w-full p-4 rounded-t-2xl titlebox-blur">
           <div className="flex flex-col items-start justify-start">

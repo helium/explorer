@@ -8,7 +8,7 @@ const Skeleton = ({
   <div
     className={classNames(className, 'animate-pulse rounded', {
       'h-4': defaultSize,
-      'bg-gray-200': defaultBackground,
+      'bg-gray-400': defaultBackground,
     })}
   />
 )

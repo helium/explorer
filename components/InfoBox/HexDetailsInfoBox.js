@@ -9,6 +9,7 @@ import { useCallback, useEffect } from 'react'
 import useSelectedHex from '../../hooks/useSelectedHex'
 import { formatLocation } from '../Hotspots/utils'
 import FlagLocation from '../Common/FlagLocation'
+import { useMemo } from 'react'
 
 const HexDetailsInfoBox = () => {
   const { index } = useParams()
@@ -47,6 +48,10 @@ const HexDetailsInfoBox = () => {
     ]
   }, [])
 
+  const metaTitle = useMemo(() => {
+    return `Hex ${index}`
+  }, [index])
+
   return (
     <InfoBox
       title={
@@ -58,11 +63,11 @@ const HexDetailsInfoBox = () => {
           {index}
         </div>
       }
-      metaTitle={`Hex ${index}`}
+      metaTitle={metaTitle}
       breadcrumbs={[{ title: 'Hotspots', path: '/hotspots' }]}
       subtitles={generateSubtitles(hotspots?.[0])}
     >
-      <TabNavbar>
+      <TabNavbar metaTitle={metaTitle}>
         <TabPane title="Hotspots in Hex" key="hotspots">
           <div
             className={classNames(

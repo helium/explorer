@@ -5,7 +5,7 @@ import BeaconsPane from './Beacons/BeaconsPane'
 const BeaconsInfoBox = () => {
   return (
     <InfoBox title="Beacons" metaTitle="Beacons">
-      <TabNavbar>
+      <TabNavbar metaTitle="Beacons">
         <TabPane title="All Beacons">
           <BeaconsPane />
         </TabPane>

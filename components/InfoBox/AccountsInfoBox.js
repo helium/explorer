@@ -4,7 +4,7 @@ import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 const AccountsInfoBox = () => {
   return (
     <InfoBox title="Accounts" metaTitle="Accounts">
-      <TabNavbar>
+      <TabNavbar metaTitle="Accounts">
         <TabPane title="Overview" key="overview">
           <div />
         </TabPane>

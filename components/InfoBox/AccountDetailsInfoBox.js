@@ -34,6 +34,8 @@ const AccountDetailsInfoBox = () => {
     return []
   }, [makerName])
 
+  const metaTitle = `Account ${address}`
+
   return (
     <InfoBox
       title={
@@ -44,20 +46,30 @@ const AccountDetailsInfoBox = () => {
           </CopyableText>
         </span>
       }
-      metaTitle={`Account ${address}`}
+      metaTitle={metaTitle}
       subtitles={subtitles}
       breadcrumbs={[{ title: 'Overview', path: '/' }]}
     >
-      <TabNavbar>
-        <TabPane title="Overview" key="overview">
+      <TabNavbar metaTitle={metaTitle}>
+        <TabPane title="Overview" metaTitle={metaTitle} key="overview">
           <OverviewPane />
         </TabPane>
 
-        <TabPane title="Activity" key="activity" path="activity">
+        <TabPane
+          title="Activity"
+          metaTitle={metaTitle}
+          key="activity"
+          path="activity"
+        >
           <ActivityPane context="account" address={address} />
         </TabPane>
 
-        <TabPane title="Hotspots" key="hotspots" path="hotspots">
+        <TabPane
+          title="Hotspots"
+          metaTitle={metaTitle}
+          key="hotspots"
+          path="hotspots"
+        >
           <HotspotsPane address={address} />
         </TabPane>
       </TabNavbar>

@@ -99,14 +99,18 @@ const HotspotDetailsInfoBox = ({ address, isLoading }) => {
     ]
   }
 
+  const metaTitle = useMemo(() => {
+    return `Hotspot ${animalHash(address)}`
+  }, [address])
+
   return (
     <InfoBox
       title={title}
-      metaTitle={`Hotspot ${animalHash(address)}`}
+      metaTitle={metaTitle}
       subtitles={generateSubtitles(hotspot)}
       breadcrumbs={generateBreadcrumbs(hotspot)}
     >
-      <TabNavbar>
+      <TabNavbar metaTitle={metaTitle}>
         <TabPane title="Statistics" key="statistics">
           {isLoading ? <SkeletonList /> : <StatisticsPane hotspot={hotspot} />}
         </TabPane>

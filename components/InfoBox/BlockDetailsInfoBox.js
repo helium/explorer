@@ -102,9 +102,17 @@ const BlockDetailsInfoBox = () => {
     ]
   }
 
+  const metaTitle = useMemo(() => {
+    return `Block ${parseInt(height).toLocaleString()}`
+  }, [height])
+
   if (blockLoading) {
     return (
-      <InfoBox title={title} subtitles={generateSubtitles(block)}>
+      <InfoBox
+        title={title}
+        metaTitle={metaTitle}
+        subtitles={generateSubtitles(block)}
+      >
         <div style={{ width: '100%', minHeight: 60 + 76 }} />
         <SkeletonList />
       </InfoBox>
@@ -114,13 +122,14 @@ const BlockDetailsInfoBox = () => {
   return (
     <InfoBox
       title={title}
-      metaTitle={`Block ${parseInt(height).toLocaleString()}`}
+      metaTitle={metaTitle}
       subtitles={generateSubtitles(block)}
     >
       {block.txns?.length > 0 ? (
         <>
           <TransactionTypesWidget txns={block.txns} />
           <TabNavbar
+            metaTitle={metaTitle}
             centered={false}
             classes="w-full border-b border-gray-400 border-solid mt-0 px-2 md:px-4 flex overflow-x-scroll no-scrollbar"
           >

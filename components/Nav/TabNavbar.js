@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom'
 import classNames from 'classnames'
 import { castArray } from 'lodash'
+import { Helmet } from 'react-helmet'
 
 const NavItem = ({
   title,
@@ -39,7 +40,7 @@ const NavItem = ({
   )
 }
 
-const TabNavbar = ({ centered = false, classes, children }) => {
+const TabNavbar = ({ centered = false, classes, children, metaTitle }) => {
   const { path, url } = useRouteMatch()
   const location = useLocation()
 
@@ -111,6 +112,13 @@ const TabNavbar = ({ centered = false, classes, children }) => {
             exact
             path={pane.props.path ? `${path}/${pane.props.path}` : path}
           >
+            <Helmet>
+              <title>
+                {metaTitle
+                  ? `${metaTitle} — Helium Explorer`
+                  : 'Helium Explorer'}
+              </title>
+            </Helmet>
             {pane}
           </Route>
         ))}

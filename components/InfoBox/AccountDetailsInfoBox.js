@@ -44,6 +44,7 @@ const AccountDetailsInfoBox = () => {
           </CopyableText>
         </span>
       }
+      metaTitle={`Account ${address}`}
       subtitles={subtitles}
       breadcrumbs={[{ title: 'Overview', path: '/' }]}
     >

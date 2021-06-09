@@ -42,4 +42,9 @@ const useGA = () => {
   }, [history])
 }
 
+export const trackEvent = (action) => {
+  if (!window || !GA_ID) return
+  window.gtag('event', action)
+}
+
 export default useGA

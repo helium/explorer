@@ -77,6 +77,7 @@ const TxnDetailsInfoBox = () => {
   return (
     <InfoBox
       title={generateTitle(selectedTxn)}
+      metaTitle={`Transaction ${hash}`}
       breadcrumbs={generateBreadcrumbs(selectedTxn)}
       subtitles={generateSubtitles(selectedTxn)}
     >

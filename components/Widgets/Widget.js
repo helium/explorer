@@ -10,6 +10,7 @@ const Widget = ({
   title,
   tooltip,
   value,
+  emptyValue = false,
   copyableValue,
   change,
   changeSuffix,
@@ -46,6 +47,7 @@ const Widget = ({
                 <p
                   className={classNames('flex items-center m-0 p-0', {
                     'cursor-pointer hover:text-gray-800 transition-all duration-150': copyableValue,
+                    'text-gray-400 text-md font-light': emptyValue,
                   })}
                 >
                   <span className="break-all">

@@ -49,12 +49,16 @@ const BaseList = ({
       ) : (
         <>
           <div className="w-full">
-            <div className="text-base font-medium">{renderTitle(item)}</div>
-            <div className="flex items-center space-x-4 h-6 text-gray-800">
+            <div className="text-sm md:text-base whitespace-nowrap font-medium text-darkgray-800 font-sans">
+              {renderTitle(item)}
+            </div>
+            <div className="flex items-center space-x-4 h-6 text-gray-525 text-xs md:text-sm whitespace-nowrap">
               {renderSubtitle(item)}
             </div>
           </div>
-          <div className="flex items-center px-4">{renderDetails(item)}</div>
+          <div className="flex items-center px-4 text-xs md:text-sm font-sans text-gray-525">
+            {renderDetails(item)}
+          </div>
           {linkExtractor && (
             <div className="flex items-center">
               <img src="/images/details-arrow.svg" />

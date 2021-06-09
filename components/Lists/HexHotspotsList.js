@@ -66,17 +66,17 @@ const HotspotItem = ({ hotspot }) => {
   return (
     <>
       <div className="w-full">
-        <div className="text-base font-medium">
+        <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans">
           <StatusCircle status={hotspot.status} />
           {animalHash(hotspot.address)}
         </div>
-        <div className="flex items-center space-x-4 h-6 text-gray-800">
+        <div className="flex items-center space-x-4 h-6 text-gray-525 text-xs md:text-sm whitespace-nowrap">
           <RewardScaleHex rewardScale={hotspot?.rewardScale} />
           <HotspotRewards address={hotspot.address} />
         </div>
       </div>
       <div className="flex items-center px-4">
-        <span className="whitespace-nowrap text-gray-700">
+        <span className="whitespace-nowrap text-xs md:text-sm font-sans text-gray-525">
           <HotspotTimeAgo hotspot={hotspot} />
         </span>
       </div>

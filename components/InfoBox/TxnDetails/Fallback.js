@@ -1,8 +1,6 @@
 import classNames from 'classnames'
 import Widget from '../../Widgets/Widget'
 import AccountWidget from '../../Widgets/AccountWidget'
-
-import { Balance } from '@helium/currency'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
 const GenericObjectWidget = ({ title, value }) => {
@@ -13,6 +11,9 @@ const GenericObjectWidget = ({ title, value }) => {
       </div>
       <div className="space-y-2">
         {Object.entries(value).map(([key, value]) => {
+          if (typeof value === 'object') {
+            return JSON.stringify(value)
+          }
           return (
             <div key={key} className="flex justify-between items-center">
               <div>
@@ -56,12 +57,11 @@ const Fallback = ({ txn }) => {
             return <AccountWidget title={key} address={value} span={2} />
           }
 
-          if (key === 'amount' || key === 'fee') {
+          if (key === 'amount' || key === 'fee' || key === 'stakingFee') {
             if (value === 0) {
               return <Widget title={key} value={value} span={2} />
             } else {
-              const balance = new Balance(value.integerBalance, value.type)
-              return <Widget title={key} value={balance.toString(2)} span={2} />
+              return <Widget title={key} value={value.toString(2)} span={2} />
             }
           }
 

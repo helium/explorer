@@ -168,8 +168,7 @@ const BlockDetailsInfoBox = () => {
           </TabNavbar>
         </>
       ) : (
-        <div className="py-10 px-3 flex items-center justify-center">
-          <Skeleton className="w-full my-2" />
+        <div className="py-10 px-3 flex flex-col items-center justify-center">
           <p className="font-sans text-gray-600 text-lg">No transactions</p>
         </div>
       )}

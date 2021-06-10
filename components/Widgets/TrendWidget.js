@@ -105,7 +105,7 @@ const TrendWidget = ({
               strokeWidth={3}
               dot={false}
             />
-            <RCTooltip content={<CustomTooltip />} />
+            {!linkTo && <RCTooltip content={<CustomTooltip />} />}
           </LineChart>
         </ResponsiveContainer>
         <div className="absolute right-4 bottom-0 text-gray-550 text-xs">

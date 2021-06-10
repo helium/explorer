@@ -191,12 +191,13 @@ const Index = ({
             </Col>
             <Col xs={24} md={8}>
               <Widget
-                title="Data Credits Spent (7d)"
+                title="Data Credits Spent (30d)"
                 value={
-                  (Math.abs(Number(dataCredits.totalWeek)) / 1.0e9).toFixed(2) +
-                  'B'
+                  (Math.abs(Number(dataCredits.totalMonth)) / 1.0e9).toFixed(
+                    2,
+                  ) + ' bn'
                 }
-                subtitle={(dataCredits.totalWeek * 0.00001).toLocaleString(
+                subtitle={(dataCredits.totalMonth * 0.00001).toLocaleString(
                   'en-US',
                   {
                     style: 'currency',
@@ -205,7 +206,7 @@ const Index = ({
                     maximumFractionDigits: 2,
                   },
                 )}
-                tooltip="Data credits are spent for transaction fees and to send data over the Helium Network. HNT are burned to create DC."
+                tooltip="Data Credits are spent for transaction fees and to send data over the Helium Network. HNT are burned to create DC."
                 footer="View Market Data"
                 href="/market"
               />

@@ -42,19 +42,6 @@ const columns = [
       </span>
     ),
   },
-  {
-    title: 'RSSI',
-    dataIndex: 'witnessInfo',
-    key: 'rssi',
-    render: (data) => (
-      <span>
-        {Object.keys(data.histogram).reduce((a, b) =>
-          data.histogram[a] > data.histogram[b] ? a : b,
-        )}{' '}
-        dBm
-      </span>
-    ),
-  },
 ]
 
 const WitnessesList = ({ witnesses, witnessesLoading }) => {

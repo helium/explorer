@@ -53,7 +53,7 @@ const OverviewInfoBox = () => {
               linkTo="/market"
             />
             <Widget
-              title="Data Credits Spent"
+              title="Data Credits Spent (30d)"
               tooltip="Data Credits are spent for transaction fees and to send data over the Helium Network. HNT are burned to create DC."
               value={
                 (Math.abs(Number(dataCredits?.totalMonth)) / 1.0e9).toFixed(2) +
@@ -75,7 +75,7 @@ const OverviewInfoBox = () => {
               title="TNT Staked"
               tooltip="The amount of TNT being staked by ~Testnet~ Validators"
               value={formatLargeNumber(totalStaked)}
-              change={<Currency value={market?.price * totalStaked} />}
+              change={<Currency value={market?.price * 0} />}
               isLoading={!market}
               linkTo="/validators"
             />

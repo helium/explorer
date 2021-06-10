@@ -5,7 +5,7 @@ import { useActivity } from '../../../data/activity'
 import ActivityList from '../../Lists/ActivityList'
 import PillNavbar from '../../Nav/PillNavbar'
 
-const filters = {
+const hotspotFilters = {
   'All Activity': [],
   Rewards: ['rewards_v1', 'rewards_v2'],
   Beacons: ['poc_receipts_v1'],
@@ -13,11 +13,20 @@ const filters = {
   Consensus: ['consensus_group_v1'],
 }
 
+const accountFilters = {
+  'All Activity': [],
+  Payments: ['payment_v1', 'payment_v2'],
+  'Hotspot Transfers': ['transfer_hotspot_v1'],
+  'Token Burns': ['token_burn_v1'],
+}
+
 const ActivityPane = ({ context, address }) => {
   const scrollView = useRef()
   const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
   const [filter, setFilter] = useState('All Activity')
+
+  const filters = context === 'hotspot' ? hotspotFilters : accountFilters
 
   const {
     transactions,
@@ -74,7 +83,10 @@ const ActivityPane = ({ context, address }) => {
         )}
       >
         <PillNavbar
-          navItems={Object.keys(filters)}
+          navItems={Object.entries(filters).map(([key, value]) => ({
+            key,
+            value,
+          }))}
           activeItem={filter}
           onClick={handleUpdateFilter}
         />

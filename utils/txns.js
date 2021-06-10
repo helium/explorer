@@ -82,7 +82,7 @@ const CONFIG = {
     tooltip: 'Mining Reward for Security Token holders',
   },
   token_burn_v1: { color: '#E86161', name: 'Token Burn' },
-  default: { color: 'blue' },
+  default: { color: '#474DFF' },
 }
 
 export const getTxnTypeName = (id) => {

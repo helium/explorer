@@ -1,7 +1,8 @@
 import classNames from 'classnames'
 import { useCallback } from 'react'
+import { getTxnTypeColor } from '../../utils/txns'
 
-const NavItem = ({ title, active = false, onClick }) => {
+const NavItem = ({ title, active = false, onClick, type }) => {
   const handleClick = useCallback(() => {
     onClick(title)
   }, [onClick, title])
@@ -10,12 +11,13 @@ const NavItem = ({ title, active = false, onClick }) => {
     <span
       onClick={handleClick}
       className={classNames(
-        'py-1 px-2.5 flex font-medium text-base cursor-pointer whitespace-nowrap',
+        'py-1 px-2.5 flex font-medium text-base cursor-pointer whitespace-nowrap transition-all transform duration-200',
         {
           'text-gray-700': !active,
-          'text-white bg-orange-400 rounded-full': active,
+          'text-white rounded-full': active,
         },
       )}
+      style={active ? { backgroundColor: getTxnTypeColor(type) } : {}}
     >
       {title}
     </span>
@@ -27,9 +29,10 @@ const PillNavbar = ({ navItems, activeItem, onClick }) => {
     <div className="flex px-2 py-3 bg-white overflow-x-scroll no-scrollbar border-b border-gray-400 border-solid">
       {navItems.map((item) => (
         <NavItem
-          key={item}
-          title={item}
-          active={item === activeItem}
+          key={item.key}
+          title={item.key}
+          type={item.value[0]}
+          active={item.key === activeItem}
           onClick={onClick}
         />
       ))}

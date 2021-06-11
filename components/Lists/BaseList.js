@@ -49,7 +49,7 @@ const BaseList = ({
       ) : (
         <>
           <div className="w-full">
-            <div className="text-sm md:text-base whitespace-nowrap font-medium text-darkgray-800 font-sans">
+            <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans">
               {renderTitle(item)}
             </div>
             <div className="flex items-center space-x-4 h-6 text-gray-525 text-xs md:text-sm whitespace-nowrap">

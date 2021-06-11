@@ -30,7 +30,9 @@ const ActivityList = ({
         return txn.totalAmount.toString(3)
 
       case 'poc_receipts_v1':
-        return <FlagLocation geocode={txn.path[0].geocode} />
+        return (
+          <FlagLocation geocode={txn.path[0].geocode} shortenedLocationName />
+        )
 
       default:
         return <span>{txn.type}</span>

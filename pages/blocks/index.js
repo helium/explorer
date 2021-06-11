@@ -49,35 +49,25 @@ function Blocks({ stats: initialStats, latestBlocks: initialLatestBlocks }) {
           }}
         >
           <Row gutter={[20, 20]}>
-            <Col xs={24} md={6}>
+            <Col xs={24} md={8}>
+              <Widget
+                title="Block Height"
+                value={latestBlocks[0].height.toLocaleString()}
+                tooltip="The current height of the blocks in the blockchain"
+              />
+            </Col>
+            <Col xs={24} md={8}>
               <Widget
                 title="Transaction Rate"
                 value={`${txnRate}`}
                 tooltip="Average number of transactions per block"
               />
             </Col>
-            <Col xs={24} md={6}>
+            <Col xs={24} md={8}>
               <Widget
                 title="Election Time (24h)"
                 value={`${round(stats.electionTime / 60, 1)} min`}
                 tooltip="The consensus group elects new members roughly every 30 min"
-              />
-            </Col>
-            <Col xs={24} md={6}>
-              <Widget
-                title="LongFi data (30d)"
-                value={`${(
-                  (stats.dataCredits * 24) /
-                  10e8
-                ).toLocaleString()} GB`}
-                tooltip="The amount of data transmitted over the Helium network in the past 30 days"
-              />
-            </Col>
-            <Col xs={24} md={6}>
-              <Widget
-                title="Block Height"
-                value={latestBlocks[0].height.toLocaleString()}
-                tooltip="The current height of the blocks in the blockchain"
               />
             </Col>
           </Row>
@@ -142,6 +132,13 @@ function Blocks({ stats: initialStats, latestBlocks: initialLatestBlocks }) {
               <Row gutter={[20, 20]}>
                 <Col xs={24} md={6}>
                   <Widget
+                    title="Block Height"
+                    value={latestBlocks[0].height.toLocaleString()}
+                    tooltip="The current height of the blocks in the blockchain"
+                  />
+                </Col>
+                <Col xs={24} md={6}>
+                  <Widget
                     title="Transaction Rate"
                     value={`${txnRate}`}
                     tooltip="Average number of transactions per block"
@@ -152,23 +149,6 @@ function Blocks({ stats: initialStats, latestBlocks: initialLatestBlocks }) {
                     title="Election Time (24h)"
                     value={`${round(stats.electionTime / 60, 1)} min`}
                     tooltip="The consensus group elects new members roughly every 30 min"
-                  />
-                </Col>
-                <Col xs={24} md={6}>
-                  <Widget
-                    title="LongFi data (30d)"
-                    value={`${(
-                      (stats.dataCredits * 24) /
-                      10e8
-                    ).toLocaleString()} GB`}
-                    tooltip="The amount of data transmitted over the Helium network in the past 30 days"
-                  />
-                </Col>
-                <Col xs={24} md={6}>
-                  <Widget
-                    title="Block Height"
-                    value={latestBlocks[0].height.toLocaleString()}
-                    tooltip="The current height of the blocks in the blockchain"
                   />
                 </Col>
               </Row>

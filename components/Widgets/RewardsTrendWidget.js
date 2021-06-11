@@ -6,10 +6,11 @@ import { Balance, CurrencyType } from '@helium/currency'
 
 const RewardTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
-    const amount = new Balance(
-      payload[0].value * 100000000,
+    const amount = Balance.fromFloat(
+      payload[0].value,
       CurrencyType.networkToken,
     )
+
     return (
       <div className="bg-white opacity-90 backdrop-filter blur-md px-2 py-1">
         <p className="text-sm font-sans font-medium text-darkgray-800">

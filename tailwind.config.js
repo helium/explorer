@@ -76,6 +76,9 @@ module.exports = {
         700: '#66759C',
         800: '#617095',
       },
+      darkgray: {
+        800: '#171E2D',
+      },
       bluegray: {
         100: '#E9EAFF2',
       },

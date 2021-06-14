@@ -57,7 +57,7 @@ const HotspotsList = ({
 
   const renderDetails = useCallback((h) => {
     return (
-      <span className="whitespace-nowrap">
+      <span className="whitespace-nowrap text-xs">
         <HotspotTimeAgo hotspot={h} />
       </span>
     )

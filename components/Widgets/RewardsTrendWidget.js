@@ -1,7 +1,27 @@
 import { useMemo } from 'react'
-import { LineChart, Line, YAxis, ResponsiveContainer } from 'recharts'
+import { LineChart, Line, YAxis, ResponsiveContainer, Tooltip } from 'recharts'
 import { chunk, maxBy, minBy, sumBy, takeRight } from 'lodash'
 import classNames from 'classnames'
+import { Balance, CurrencyType } from '@helium/currency'
+
+const RewardTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    const amount = Balance.fromFloat(
+      payload[0].value,
+      CurrencyType.networkToken,
+    )
+
+    return (
+      <div className="bg-white opacity-90 backdrop-filter blur-md px-2 py-1">
+        <p className="text-sm font-sans font-medium text-darkgray-800">
+          {amount.toString(2)}
+        </p>
+      </div>
+    )
+  }
+
+  return null
+}
 
 const RewardsTrendWidget = ({ title, series = [] }) => {
   const [firstValue, lastValue] = useMemo(() => {
@@ -59,6 +79,7 @@ const RewardsTrendWidget = ({ title, series = [] }) => {
               strokeWidth={3}
               dot={false}
             />
+            <Tooltip content={<RewardTooltip />} />
           </LineChart>
         </ResponsiveContainer>
         <div className="absolute right-4 bottom-0 text-gray-550 text-xs">

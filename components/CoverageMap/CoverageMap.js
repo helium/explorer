@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactMapboxGl, { GeoJSONLayer, Image } from 'react-mapbox-gl'
-import { setRTLTextPlugin } from 'mapbox-gl'
 import geoJSON from 'geojson'
 import GeolocationButton from './GeolocationButton'
 import fetch from 'node-fetch'
@@ -15,12 +14,6 @@ const maxZoom = 14
 const minZoom = 2
 
 const measuringColor = '#5850EB'
-
-setRTLTextPlugin(
-  'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js',
-  null,
-  true,
-)
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,

@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef, useMemo, memo } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import ReactMapboxGl from 'react-mapbox-gl'
+import { setRTLTextPlugin } from 'mapbox-gl'
 import { h3ToGeo } from 'h3-js'
 import { useAsync } from 'react-async-hook'
 import useSWR from 'swr'
@@ -17,6 +18,12 @@ import { fetchHotspot } from '../../data/hotspots'
 
 const maxZoom = 14
 const minZoom = 2
+
+setRTLTextPlugin(
+  'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js',
+  null,
+  true,
+)
 
 const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,

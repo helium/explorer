@@ -25,7 +25,6 @@ const useSelectedHex = () => {
         type: SET_SELECTED_HEX,
         payload: { ...hex },
       })
-      history.push(`/hotspots/hex/${index}`)
     },
     [dispatch, history],
   )

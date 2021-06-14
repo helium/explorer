@@ -31,6 +31,7 @@ const SearchBar = () => {
       setTerm('')
       if (result.type === 'hotspot') {
         selectHotspot(result.item.address)
+        history.push(`/hotspots/${result.item.address}`)
       }
       if (result.type === 'account') {
         history.push(`/accounts/${result.item.address}`)

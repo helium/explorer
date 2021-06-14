@@ -3,12 +3,17 @@ import { groupBy } from 'lodash'
 const CONFIG = {
   state_channel_open_v1: { color: '#E68B00', name: 'State Channel Open' },
   price_oracle_v1: { color: 'rebeccapurple', name: 'Price Oracle' },
-  state_channel_close_v1: { color: 'teal', name: 'Packets Transferred' },
+  state_channel_close_v1: {
+    color: 'teal',
+    hotspotContextName: 'Packets Transferred',
+    name: 'State Channel Close',
+  },
   payment_v1: { color: 'green', name: 'Payment' },
   payment_v2: { color: 'cyan', name: 'Payment' },
   poc_request_v1: {
     color: '#29D391',
-    name: 'PoC Challenger',
+    name: 'PoC Challenge',
+    hotspotContextName: 'Created Challenge',
     tooltip: 'Proof of Coverage Challenge',
   },
   poc_receipts_v1: {
@@ -85,7 +90,11 @@ const CONFIG = {
   default: { color: '#474DFF' },
 }
 
-export const getTxnTypeName = (id) => {
+export const getTxnTypeName = (id, context = 'block') => {
+  if (context === 'hotspot')
+    return CONFIG[id]?.hotspotContextName || CONFIG[id]?.name || id
+  if (context === 'account')
+    return CONFIG[id]?.accountContextName || CONFIG[id]?.name || id
   return CONFIG[id]?.name || id
 }
 

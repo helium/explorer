@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import debounce from 'lodash.debounce'
 import { useEffect, useRef, useState, memo, useCallback } from 'react'
 import { useActivity } from '../../../data/activity'
-import ActivityList from '../../Lists/ActivityList'
+import ActivityList from '../../Lists/ActivityList/ActivityList'
 import PillNavbar from '../../Nav/PillNavbar'
 
 const hotspotFilters = {

@@ -1,12 +1,13 @@
 import { useMemo } from 'react'
-import useSWR from 'swr'
 import StatWidget from '../../Widgets/StatWidget'
 import TrendWidget from '../../Widgets/TrendWidget'
 import { useLatestHotspots } from '../../../data/hotspots'
 import HotspotWidget from '../../Widgets/HotspotWidget'
+import useApi from '../../../hooks/useApi'
+import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
 const StatisticsPane = () => {
-  const { data: stats } = useSWR('/api/metrics/hotspots')
+  const { data: stats } = useApi('/metrics/hotspots')
   const { latestHotspots } = useLatestHotspots()
 
   const latestHotspot = useMemo(() => {
@@ -15,7 +16,7 @@ const StatisticsPane = () => {
   }, [latestHotspots])
 
   return (
-    <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+    <InfoBoxPaneContainer>
       <TrendWidget title="Hotspots" series={stats?.count} isLoading={!stats} />
       <StatWidget
         title="% Online"
@@ -40,7 +41,7 @@ const StatisticsPane = () => {
         isLoading={!stats}
       />
       <HotspotWidget title="Latest Hotspot" hotspot={latestHotspot} />
-    </div>
+    </InfoBoxPaneContainer>
   )
 }
 

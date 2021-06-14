@@ -39,7 +39,7 @@ const NavItem = ({
   )
 }
 
-const TabNavbar = ({ centered = true, classes, children }) => {
+const TabNavbar = ({ centered = false, classes, children }) => {
   const { path, url } = useRouteMatch()
   const location = useLocation()
 
@@ -77,7 +77,7 @@ const TabNavbar = ({ centered = true, classes, children }) => {
       <div className="w-full bg-white z-10 rounded-t-xl">
         <div
           className={classNames(classes, {
-            'w-full border-b border-gray-400 border-solid mt-2 px-2 md:px-8 flex overflow-x-scroll no-scrollbar': !classes,
+            'w-full border-b border-gray-400 border-solid mt-2 px-2 md:px-3 flex overflow-x-scroll no-scrollbar': !classes,
             'justify-center': centered,
             'justify-start': !centered,
           })}
@@ -94,9 +94,9 @@ const TabNavbar = ({ centered = true, classes, children }) => {
                   active={navMatch(item.path)}
                   href={item.path ? `${url}/${item.path}` : url}
                 />
-                {i > 3 && i === length - 1 && (
-                  // if there are more than 4 nav items, add a spacer after the last item so the right side of the container has padding
-                  <div className="px-2 md:px-4"></div>
+                {i === length - 1 && (
+                  // add a spacer after the last item so the right side of the container has padding
+                  <div className="px-2 py-2 md:px-4" />
                 )}
               </>
             )

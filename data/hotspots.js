@@ -6,6 +6,7 @@ import client, { TAKE_MAX } from './client'
 import { fetchAll } from '../utils/pagination'
 import camelcaseKeys from 'camelcase-keys'
 import { haversineDistance } from '../utils/location'
+import { hotspotToRes8 } from '../components/Hotspots/utils'
 
 export const fetchLatestHotspots = async (count = 20) => {
   const hotspots = await (await client.hotspots.list()).take(count)
@@ -63,7 +64,20 @@ export const fetchNearbyHotspots = async (lat, lon, distance = 1000) => {
 
 export const fetchHotspot = async (address) => {
   const hotspot = await client.hotspots.get(address)
-  return JSON.parse(JSON.stringify(hotspot))
+  const res8Hotspot = hotspotToRes8(hotspot)
+  return JSON.parse(JSON.stringify(res8Hotspot))
+}
+
+export const fetchConsensusHotspots = async (blockHeight) => {
+  const list = await client.hotspots.elected(blockHeight)
+  const elected = await list.take(TAKE_MAX)
+  return elected
+}
+
+export const fetchHexHotspots = async (index) => {
+  const list = await client.hotspots.hex(index)
+  const hotspots = await list.take(TAKE_MAX)
+  return hotspots
 }
 
 export const fetchWitnesses = async (address) => {

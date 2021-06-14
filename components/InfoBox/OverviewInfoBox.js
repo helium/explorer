@@ -1,43 +1,99 @@
-import useSWR from 'swr'
+import { round, sumBy } from 'lodash'
+import { useMemo } from 'react'
 import InfoBox from './InfoBox'
 import TrendWidget from '../Widgets/TrendWidget'
 import StatWidget from '../Widgets/StatWidget'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
+import HalveningCountdownWidget from '../Widgets/HalvingCountdownWidget'
+import useApi from '../../hooks/useApi'
+import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
+import { formatLargeNumber } from '../../utils/format'
+import Widget from '../Widgets/Widget'
+import Currency from '../Common/Currency'
+import { useMarket } from '../../data/market'
+import { useStats } from '../../data/stats'
+import { useDataCredits } from '../../data/datacredits'
 
 const OverviewInfoBox = () => {
-  const { data: stats } = useSWR('/api/metrics/hotspots')
+  const { data: hotspots } = useApi('/metrics/hotspots')
+  const { data: blocks } = useApi('/metrics/blocks')
+  const { data: validators = [] } = useApi('/validators')
+  const { market } = useMarket()
+  const { stats } = useStats()
+  const { dataCredits } = useDataCredits()
+
+  const totalStaked = useMemo(() => sumBy(validators, 'stake') / 100000000, [
+    validators,
+  ])
 
   return (
-    <InfoBox title="Overview">
+    <InfoBox title="Helium Explorer">
       <TabNavbar>
         <TabPane title="Overview" key="1">
-          <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+          <InfoBoxPaneContainer>
             <TrendWidget
               title="Hotspots"
-              series={stats?.count}
-              isLoading={!stats}
+              series={hotspots?.count}
+              isLoading={!hotspots}
+              linkTo="/hotspots"
             />
             <StatWidget
-              title="% Online"
-              series={stats?.onlinePct}
-              isLoading={!stats}
+              title="Block Height"
+              series={blocks?.height}
+              isLoading={!blocks}
+              linkTo="/blocks"
             />
-            <StatWidget
-              title="Hotspot Owners"
-              series={stats?.ownersCount}
-              isLoading={!stats}
+            <Widget
+              title="Market Price"
+              tooltip="Based on data provided by CoinGecko"
+              value={<Currency value={market?.price} />}
+              change={round(market?.priceChange, 2)}
+              changeSuffix="%"
+              isLoading={!market}
+              linkTo="/market"
             />
-            <StatWidget
-              title="Cities"
-              series={stats?.citiesCount}
+            <Widget
+              title="Data Credits Spent (30d)"
+              tooltip="Data Credits are spent for transaction fees and to send data over the Helium Network. HNT are burned to create DC."
+              value={
+                (Math.abs(Number(dataCredits?.totalMonth)) / 1.0e9).toFixed(2) +
+                ' bn'
+              }
+              change={(dataCredits?.totalMonth * 0.00001).toLocaleString(
+                'en-US',
+                {
+                  style: 'currency',
+                  currency: 'USD',
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                },
+              )}
               isLoading={!stats}
+              linkTo="/market"
             />
-            <StatWidget
-              title="Countries"
-              series={stats?.countriesCount}
+            <Widget
+              title="TNT Staked"
+              tooltip="The amount of TNT being staked by ~Testnet~ Validators"
+              value={formatLargeNumber(totalStaked)}
+              change={<Currency value={market?.price * 0} />}
+              isLoading={!market}
+              linkTo="/validators"
+            />
+            <HalveningCountdownWidget />
+
+            <Widget
+              title="Total Beacons"
+              value={stats?.challenges?.toLocaleString()}
               isLoading={!stats}
+              linkTo="/beacons"
             />
-          </div>
+            <Widget
+              title="Total Validators"
+              value={validators.length.toLocaleString()}
+              isLoading={!validators}
+              linkTo="/validators"
+            />
+          </InfoBoxPaneContainer>
         </TabPane>
       </TabNavbar>
     </InfoBox>

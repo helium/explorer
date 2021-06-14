@@ -1,9 +1,6 @@
 module.exports = {
-  // mode: 'jit',
-  corePlugins: {
-    preflight: false,
-  },
-  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  mode: 'jit',
+  // purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
     screens: {
@@ -14,6 +11,16 @@ module.exports = {
     },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
+      mono: [
+        'ui-monospace',
+        'SFMono-Regular',
+        'Menlo',
+        'Monaco',
+        'Consolas',
+        'Liberation Mono',
+        'Courier New',
+        'monospace',
+      ],
     },
     colors: {
       //TODO: get Pete to define a palette and do a full color audit
@@ -21,6 +28,7 @@ module.exports = {
       white: '#FFFFFF',
       black: '#000000',
       navy: {
+        300: '#0008FF',
         400: '#474DFF',
         500: '#222E46',
         600: '#182035',
@@ -49,6 +57,7 @@ module.exports = {
       yellow: {
         400: '#f4cb5e',
         500: '#FCC945',
+        700: '#F9BD25',
       },
       pink: {
         500: '#A667F6',
@@ -66,6 +75,9 @@ module.exports = {
         650: '#717E98',
         700: '#66759C',
         800: '#617095',
+      },
+      darkgray: {
+        800: '#171E2D',
       },
       bluegray: {
         100: '#E9EAFF2',
@@ -91,10 +103,17 @@ module.exports = {
       height: {
         '6/10': '60vh',
       },
+      minHeight: {
+        '1/2': '50vh',
+        '325px': '325px',
+      },
       maxHeight: {
-        'vh-minus-nav': 'calc(100vh - 100px)',
+        'vh-minus-nav': 'calc(100vh - 80px)',
+        '5/10': '50vh',
         '6/10': '60vh',
+        '80p': '80%',
         '90p': '90%',
+        '550px': '550px',
         '650px': '650px',
       },
     },
@@ -102,6 +121,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
   important: '#app',
 }

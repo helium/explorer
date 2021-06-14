@@ -1,4 +1,3 @@
-import useSWR from 'swr'
 import InfoBox from './InfoBox'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import Widget from '../Widgets/Widget'
@@ -8,11 +7,13 @@ import { formatLargeNumber, formatPercent } from '../../utils/format'
 import VersionsWidget from '../Widgets/VersionsWidget'
 import { useElections } from '../../data/consensus'
 import ValidatorsList from '../Lists/ValidatorsList'
+import useApi from '../../hooks/useApi'
+import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 
 const TICKER = 'TNT'
 
 const ValidatorsInfoBox = () => {
-  const { data: validators = [] } = useSWR('/api/validators')
+  const { data: validators = [] } = useApi('/validators')
   const { consensusGroups } = useElections(undefined, 'testnet')
   const isLoading = useMemo(() => validators.length === 0, [validators.length])
   const recentGroups = useMemo(() => consensusGroups?.recentElections || [], [
@@ -33,10 +34,10 @@ const ValidatorsInfoBox = () => {
   ])
 
   return (
-    <InfoBox title="Validators">
+    <InfoBox title="~Testnet~ Validators">
       <TabNavbar basePath="validators">
-        <TabPane title="Statistics" key="1">
-          <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
+        <TabPane title="Statistics" key="statistics">
+          <InfoBoxPaneContainer>
             <Widget
               title="Total Validators"
               value={validators.length.toLocaleString()}
@@ -62,23 +63,23 @@ const ValidatorsInfoBox = () => {
               isLoading={isLoading}
             />
             <VersionsWidget validators={validators} />
-          </div>
+          </InfoBoxPaneContainer>
         </TabPane>
-        <TabPane title="Consensus Group" key="2" path="consensus">
-          <div className="grid grid-flow-row grid-cols-1 overflow-y-scroll no-scrollbar">
+        <TabPane title="Consensus Group" key="consensus" path="consensus">
+          <InfoBoxPaneContainer span={1} padding={false}>
             <ValidatorsList
               validators={consensusGroup}
               recentGroups={recentGroups}
             />
-          </div>
+          </InfoBoxPaneContainer>
         </TabPane>
-        <TabPane title="All Validators" key="3" path="all">
-          <div className="grid grid-flow-row grid-cols-1 overflow-y-scroll no-scrollbar">
+        <TabPane title="All Validators" key="all" path="all">
+          <InfoBoxPaneContainer span={1} padding={false}>
             <ValidatorsList
               validators={validators}
               recentGroups={recentGroups}
             />
-          </div>
+          </InfoBoxPaneContainer>
         </TabPane>
       </TabNavbar>
     </InfoBox>

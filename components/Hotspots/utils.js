@@ -1,5 +1,6 @@
 import capitalize from 'lodash/capitalize'
 import camelcaseKeys from 'camelcase-keys'
+import { h3ToGeo } from 'h3-js'
 
 export const formatHotspotName = (dashedName) =>
   dashedName.split('-').map(capitalize).join(' ')
@@ -22,20 +23,24 @@ export const formatDistance = (meters) => {
   )
 }
 
-export const formatLocation = (geocode0) => {
+export const formatLocation = (geocode0, shortened = false) => {
   const geocode = camelcaseKeys(geocode0)
 
   if (!geocode?.longCity && !geocode?.shortState && !geocode?.longCountry) {
     return 'No location set'
   }
 
-  const locationTerms = [geocode?.longCity]
+  const locationTerms = []
 
-  if (geocode?.shortState !== null && geocode?.shortState !== undefined) {
+  if (geocode?.longCity) {
+    locationTerms.push(geocode?.longCity)
+  }
+
+  if (!shortened && geocode?.shortState) {
     locationTerms.push(geocode?.shortState)
   }
 
-  locationTerms.push(geocode?.longCountry)
+  locationTerms.push(shortened ? geocode?.shortCountry : geocode?.longCountry)
 
   return locationTerms.join(', ')
 }
@@ -106,3 +111,33 @@ export const witnessRssi = (histogram = {}) =>
     (a, b) => (histogram[a] > histogram[b] ? a : b),
     0,
   )
+
+export const hotspotToRes8 = (hotspot) => {
+  const res8Location = hotspot.locationHex || hotspot.location_hex
+  const [res8Lat, res8Lng] = h3ToGeo(res8Location)
+
+  return {
+    ...hotspot,
+    location: res8Location,
+    lat: res8Lat,
+    lng: res8Lng,
+  }
+}
+
+export const isRelay = (listenAddrs) => {
+  const IP = /ip4/g
+
+  return !!(
+    listenAddrs &&
+    listenAddrs.length > 0 &&
+    !listenAddrs.find((a) => a.match(IP))
+  )
+}
+
+export const formatGain = (gain) => {
+  return `${gain / 10} dBi`
+}
+
+export const formatElevation = (elevation) => {
+  return `${elevation} m`
+}

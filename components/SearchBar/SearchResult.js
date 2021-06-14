@@ -74,9 +74,9 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
 const BaseSearchResult = ({ title, subtitle, type, onSelect, selected }) => (
   <div
     className={classNames(
-      'border-solid py-2 px-4 flex hover:bg-gray-100 cursor-pointer',
+      'border-solid py-2 px-4 flex hover:bg-gray-350 cursor-pointer',
       {
-        'bg-gray-200': selected,
+        'bg-gray-350': selected,
       },
     )}
     onClick={onSelect}

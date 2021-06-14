@@ -2,11 +2,9 @@ import { useEffect, useState, useCallback, useRef, useMemo, memo } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import ReactMapboxGl from 'react-mapbox-gl'
 import { setRTLTextPlugin } from 'mapbox-gl'
-import { h3ToGeo } from 'h3-js'
 import { useAsync } from 'react-async-hook'
-import useSWR from 'swr'
+import { useHistory } from 'react-router'
 import { findBounds } from '../../utils/location'
-import CoverageLayer from './Layers/CoverageLayer'
 import HotspotDetailLayer from './Layers/HotspotDetailLayer'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import useMapLayer from '../../hooks/useMapLayer'
@@ -14,7 +12,11 @@ import useInfoBox from '../../hooks/useInfoBox'
 import useGeolocation from '../../hooks/useGeolocation'
 import ValidatorsLayer from './Layers/ValidatorsLayer'
 import useSelectedTxn from '../../hooks/useSelectedTxn'
-import { fetchHotspot } from '../../data/hotspots'
+import { fetchConsensusHotspots, fetchHotspot } from '../../data/hotspots'
+import HexCoverageLayer from './Layers/HexCoverageLayer'
+import { hotspotToRes8 } from '../Hotspots/utils'
+import useApi from '../../hooks/useApi'
+import useSelectedHex from '../../hooks/useSelectedHex'
 
 const maxZoom = 14
 const minZoom = 2
@@ -51,16 +53,17 @@ const EU_CN_BOUNDS = [
 const MOBILE_PADDING = { top: 10, left: 10, right: 10, bottom: 450 }
 const DESKTOP_PADDING = { top: 200, left: 600, right: 200, bottom: 200 }
 
-const CoverageMap = ({ coverageUrl }) => {
+const CoverageMap = () => {
   const isDesktopOrLaptop = useMediaQuery({ minDeviceWidth: 768 })
   const map = useRef()
   const [styleLoaded, setStyledLoaded] = useState(false)
   const [selectedTxnHotspot, setSelectedTxnHotspot] = useState()
-  const [selectedTxnWitnesses, setSelectedTxnWitnesses] = useState([])
+  const [selectedTxnParticipants, setSelectedTxnParticipants] = useState([])
 
   const { showInfoBox } = useInfoBox()
   const { mapLayer } = useMapLayer()
-  const { selectHotspot, selectedHotspot } = useSelectedHotspot()
+  const { selectedHotspot } = useSelectedHotspot()
+  const { selectHex, selectedHex } = useSelectedHex()
   const { selectedTxn } = useSelectedTxn()
   const { currentPosition } = useGeolocation()
 
@@ -68,7 +71,7 @@ const CoverageMap = ({ coverageUrl }) => {
     isDesktopOrLaptop ? US_EU_BOUNDS : US_BOUNDS,
   )
 
-  const { data: validators } = useSWR('/api/validators')
+  const { data: validators } = useApi('/validators')
 
   useEffect(() => {
     if (!currentPosition.coords) return
@@ -83,7 +86,12 @@ const CoverageMap = ({ coverageUrl }) => {
   }, [currentPosition.coords, currentPosition.timestamp])
 
   useEffect(() => {
-    if (!selectedHotspot || !selectedHotspot.lat || !selectedHotspot.lng) {
+    if (
+      !selectedHotspot ||
+      !selectedHotspot.lat ||
+      !selectedHotspot.lng ||
+      !selectedHotspot.location
+    ) {
       return
     }
 
@@ -98,32 +106,49 @@ const CoverageMap = ({ coverageUrl }) => {
   }, [selectedHotspot])
 
   useEffect(() => {
-    if (!selectedTxnHotspot || !selectedTxnWitnesses) return
+    if (!selectedHex) return
+
+    const [lat, lng] = selectedHex.center
+    const selectionBounds = findBounds([{ lat, lng }])
+    setBounds(selectionBounds)
+  }, [selectedHex])
+
+  useEffect(() => {
+    if (!selectedTxnHotspot || !selectedTxnParticipants) return
 
     const selectionBounds = findBounds([
-      ...(selectedTxnWitnesses || []).map(({ lat, lng }) => ({
+      ...(selectedTxnParticipants || []).map(({ lat, lng }) => ({
         lat,
         lng,
       })),
       { lat: selectedTxnHotspot.lat, lng: selectedTxnHotspot.lng },
     ])
     setBounds(selectionBounds)
-  }, [selectedTxnHotspot, selectedTxnWitnesses])
+  }, [selectedTxnHotspot, selectedTxnParticipants])
 
   useAsync(async () => {
     if (selectedTxn?.type === 'poc_receipts_v1') {
       const target = selectedTxn.path[0].challengee
       const targetHotspot = await fetchHotspot(target)
-      const witnesses = selectedTxn.path[0].witnesses.map((w) => {
-        const [lat, lng] = h3ToGeo(w.location)
-        return { ...w, lat, lng }
-      })
+      const witnesses = selectedTxn.path[0].witnesses.map(hotspotToRes8)
 
       setSelectedTxnHotspot(targetHotspot)
-      setSelectedTxnWitnesses(witnesses)
+      setSelectedTxnParticipants(witnesses)
+    } else if (
+      selectedTxn?.type === 'assert_location_v1' ||
+      selectedTxn?.type === 'assert_location_v2'
+    ) {
+      const target = selectedTxn.gateway
+      const targetHotspot = await fetchHotspot(target)
+      setSelectedTxnHotspot(targetHotspot)
+      setSelectedTxnParticipants([])
+    } else if (selectedTxn?.type === 'consensus_group_v1') {
+      const members = await fetchConsensusHotspots(txn.height)
+      setSelectedTxnHotspot(undefined)
+      setSelectedTxnParticipants(members)
     } else {
       setSelectedTxnHotspot(undefined)
-      setSelectedTxnWitnesses([])
+      setSelectedTxnParticipants([])
     }
   }, [selectedTxn])
 
@@ -140,40 +165,22 @@ const CoverageMap = ({ coverageUrl }) => {
   //   }, 5000)
   // }, [])
 
-  const handleHotspotClick = useCallback(
+  const handleHexClick = useCallback(
     (e) => {
       const features = map.current.queryRenderedFeatures(e.point, {
-        layers: ['hotspots-circle'],
+        layers: ['public.h3_res8'],
       })
-
-      if (features.length === 1) {
-        // if a single hotspot was clicked on, then select it
-        const [feature] = features
-        const selectedHotspot = {
-          lat: feature.geometry.coordinates[1],
-          lng: feature.geometry.coordinates[0],
-          ...feature.properties,
-        }
-        selectHotspot(selectedHotspot.address)
-      } else {
-        // if more than one hotspot was clicked on, adjust bounds to fit that cluster
-        const selectionBounds = findBounds(
-          features.map(({ geometry: { coordinates } }) => ({
-            lat: coordinates[1],
-            lng: coordinates[0],
-          })),
-        )
-        setBounds(selectionBounds)
+      if (features.length > 0) {
+        const [hexFeature] = features
+        selectHex(hexFeature.properties.id)
       }
-
-      map.current.getCanvas().style.cursor = ''
     },
-    [selectHotspot],
+    [selectHex],
   )
 
   const handleMouseMove = useCallback((map, e) => {
     const features = map.queryRenderedFeatures(e.point, {
-      layers: ['hotspots-circle'],
+      layers: ['public.h3_res8'],
     })
     if (features.length > 0) {
       map.getCanvas().style.cursor = 'pointer'
@@ -194,16 +201,15 @@ const CoverageMap = ({ coverageUrl }) => {
       }}
       onMouseMove={handleMouseMove}
     >
-      <CoverageLayer
-        coverageUrl={coverageUrl}
+      <HexCoverageLayer
         minZoom={minZoom}
         maxZoom={maxZoom}
-        onHotspotClick={handleHotspotClick}
+        onHexClick={handleHexClick}
         layer={mapLayer}
       />
       <HotspotDetailLayer
         hotspot={selectedHotspot || selectedTxnHotspot}
-        witnesses={selectedHotspot?.witnesses || selectedTxnWitnesses || []}
+        witnesses={selectedHotspot?.witnesses || selectedTxnParticipants || []}
       />
       <ValidatorsLayer
         validators={validators}

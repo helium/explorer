@@ -3,7 +3,11 @@ import animalHash from 'angry-purple-tiger'
 import StatusCircle from '../Hotspots/StatusCircle'
 import FlagLocation from '../Common/FlagLocation'
 import Hex from '../Hex'
-import { generateRewardScaleColor, witnessRssi } from '../Hotspots/utils'
+import {
+  formatLocation,
+  generateRewardScaleColor,
+  witnessRssi,
+} from '../Hotspots/utils'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
 
@@ -30,7 +34,7 @@ const WitnessesList = ({ witnesses, isLoading = true }) => {
   const renderSubtitle = useCallback((w) => {
     return (
       <>
-        <FlagLocation geocode={w.geocode} />
+        <FlagLocation geocode={w.geocode} shortenedLocationName />
         <span className="flex items-center">
           <Hex
             width={10}

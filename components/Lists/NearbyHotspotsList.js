@@ -3,7 +3,11 @@ import animalHash from 'angry-purple-tiger'
 import StatusCircle from '../Hotspots/StatusCircle'
 import FlagLocation from '../Common/FlagLocation'
 import Hex from '../Hex'
-import { formatDistance, generateRewardScaleColor } from '../Hotspots/utils'
+import {
+  formatDistance,
+  formatLocation,
+  generateRewardScaleColor,
+} from '../Hotspots/utils'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
 
@@ -30,7 +34,7 @@ const NearbyHotspotsList = ({ hotspots, isLoading = true }) => {
   const renderSubtitle = useCallback((h) => {
     return (
       <>
-        <FlagLocation geocode={h.geocode} />
+        <FlagLocation geocode={h.geocode} shortenedLocationName />
         <span className="flex items-center">
           <Hex
             width={10}

@@ -4,15 +4,15 @@ import { useAsync } from 'react-async-hook'
 import animalHash from 'angry-purple-tiger'
 import { fetchHotspot } from '../../../data/hotspots'
 import HotspotWidget from '../../Widgets/HotspotWidget'
-import WitnessesList from '../../Lists/WitnessesList'
 import Pill from '../../Common/Pill'
 import { h3ToGeo } from 'h3-js'
 import { formatDistance, calculateDistance } from '../../../utils/distance'
+import { Link } from 'react-router-i18n'
+import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
 const BeaconDetailsPane = ({ txn }) => {
   const [challenger, setChallenger] = useState()
   const [target, setTarget] = useState()
-  const isLoadingInitial = false
 
   useAsync(async () => {
     const [fetchedChallenger, fetchedTarget] = await Promise.all([
@@ -24,18 +24,11 @@ const BeaconDetailsPane = ({ txn }) => {
   }, [])
 
   return (
-    <div
-      className={classNames('grid grid-flow-row grid-cols-1 no-scrollbar', {
-        'overflow-y-scroll': !isLoadingInitial,
-        'overflow-y-hidden': isLoadingInitial,
-      })}
-    >
-      <div className="grid grid-flow-row grid-cols-2 gap-3 md:gap-4 p-4 md:p-8 overflow-y-scroll no-scrollbar">
-        <HotspotWidget title="Challenger" hotspot={challenger} />
-        <HotspotWidget title="Target" hotspot={target} />
-        <WitnessesWidget path={txn.path[0]} />
-      </div>
-    </div>
+    <InfoBoxPaneContainer>
+      <HotspotWidget title="Challenger" hotspot={challenger} />
+      <HotspotWidget title="Target" hotspot={target} />
+      <WitnessesWidget path={txn.path[0]} />
+    </InfoBoxPaneContainer>
   )
 }
 
@@ -53,9 +46,12 @@ const WitnessesWidget = ({
           return (
             <div key={w.gateway} className="flex justify-between items-center">
               <div>
-                <div className="text-base leading-tight tracking-tight">
+                <Link
+                  to={`/hotspots/${w.gateway}`}
+                  className="text-base leading-tight tracking-tight text-navy-1000 hover:text-navy-400 transition-all duration-150"
+                >
                   {animalHash(w.gateway)}
-                </div>
+                </Link>
                 <div className="text-sm leading-tight tracking-tighter text-gray-600">
                   {challengeeLon &&
                     formatDistance(

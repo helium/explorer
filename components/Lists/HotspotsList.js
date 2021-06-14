@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
 import animalHash from 'angry-purple-tiger'
-import TimeAgo from 'react-time-ago'
 import StatusCircle from '../Hotspots/StatusCircle'
 import FlagLocation from '../Common/FlagLocation'
 import Hex from '../Hex'
-import { generateRewardScaleColor } from '../Hotspots/utils'
+import { formatLocation, generateRewardScaleColor } from '../Hotspots/utils'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
+import HotspotTimeAgo from '../Common/HotspotTimeAgo'
 
 const HotspotsList = ({
   hotspots,
@@ -17,9 +17,12 @@ const HotspotsList = ({
 }) => {
   const { selectHotspot } = useSelectedHotspot()
 
-  const handleSelectHotspot = useCallback((hotspot) => {
-    selectHotspot(hotspot.address)
-  }, [])
+  const handleSelectHotspot = useCallback(
+    (hotspot) => {
+      selectHotspot(hotspot.address)
+    },
+    [selectHotspot],
+  )
 
   const keyExtractor = useCallback((h) => h.address, [])
 
@@ -37,7 +40,7 @@ const HotspotsList = ({
   const renderSubtitle = useCallback((h) => {
     return (
       <>
-        <FlagLocation geocode={h.geocode} />
+        <FlagLocation geocode={h.geocode} shortenedLocationName />
         {h.rewardScale && (
           <span className="flex items-center">
             <Hex
@@ -54,8 +57,8 @@ const HotspotsList = ({
 
   const renderDetails = useCallback((h) => {
     return (
-      <span className="whitespace-nowrap">
-        <TimeAgo date={h.timestampAdded} />
+      <span className="whitespace-nowrap text-xs">
+        <HotspotTimeAgo hotspot={h} />
       </span>
     )
   }, [])

@@ -1,11 +1,17 @@
 import classNames from 'classnames'
 import Widget from '../../Widgets/Widget'
 import AccountWidget from '../../Widgets/AccountWidget'
-
-import { Balance } from '@helium/currency'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
 const GenericObjectWidget = ({ title, value }) => {
+  if (Array.isArray(value)) {
+    if (value.length === 0) {
+      return <Widget title={title} value={'Empty array'} span={2} emptyValue />
+    }
+    value.map((v, i) => {
+      return <Widget title={i} value={JSON.stringify(v)} span={2} />
+    })
+  }
   return (
     <div className={classNames(`bg-gray-200 p-3 rounded-lg col-span-2`)}>
       <div className="text-xl font-medium text-black my-1.5 tracking-tight w-full break-all pb-4">
@@ -13,6 +19,9 @@ const GenericObjectWidget = ({ title, value }) => {
       </div>
       <div className="space-y-2">
         {Object.entries(value).map(([key, value]) => {
+          if (typeof value === 'object') {
+            return JSON.stringify(value)
+          }
           return (
             <div key={key} className="flex justify-between items-center">
               <div>
@@ -53,22 +62,31 @@ const Fallback = ({ txn }) => {
 
           // TODO: use a better way to determine if the value is a wallet address
           if (key === 'payer' || key === 'payee' || key === 'owner') {
+            // some txns have a value that is actually the string "undefined"
+            if (value === 'undefined')
+              return <Widget title={key} value={value} span={2} emptyValue />
             return <AccountWidget title={key} address={value} span={2} />
           }
 
-          if (key === 'amount' || key === 'fee') {
+          if (key === 'amount' || key === 'fee' || key === 'stakingFee') {
             if (value === 0) {
               return <Widget title={key} value={value} span={2} />
             } else {
-              const balance = new Balance(value.integerBalance, value.type)
-              return <Widget title={key} value={balance.toString(2)} span={2} />
+              return <Widget title={key} value={value.toString(2)} span={2} />
             }
           }
+
+          // TODO: have a special widget for key === 'geocode'
 
           if (typeof value === 'object') {
             return <GenericObjectWidget title={key} value={value} />
           }
 
+          if (value === '') {
+            return (
+              <Widget title={key} span={2} value={'Empty string'} emptyValue />
+            )
+          }
           return <Widget title={key} span={2} value={value} />
         })}
       </InfoBoxPaneContainer>

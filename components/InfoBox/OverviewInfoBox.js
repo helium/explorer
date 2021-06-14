@@ -53,7 +53,7 @@ const OverviewInfoBox = () => {
               linkTo="/market"
             />
             <Widget
-              title="Data Credits Spent (30d)"
+              title="DC Spent (30d)"
               tooltip="Data Credits are spent for transaction fees and to send data over the Helium Network. HNT are burned to create DC."
               value={
                 (Math.abs(Number(dataCredits?.totalMonth)) / 1.0e9).toFixed(2) +

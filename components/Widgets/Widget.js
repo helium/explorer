@@ -115,6 +115,7 @@ const Widget = ({
           },
         )}
         to={linkTo}
+        onClick={onClick}
       >
         {inner}
       </Link>

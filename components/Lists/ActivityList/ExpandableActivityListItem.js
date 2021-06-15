@@ -49,7 +49,7 @@ const ExpandableListItem = ({
   const [expanded, toggleExpanded] = useToggle()
 
   const { selectedTxn, selectTxn, clearSelectedTxn } = useSelectedTxn()
-  const { selectHotspot } = useSelectedHotspot()
+  const { selectHotspot, clearSelectedHotspot } = useSelectedHotspot()
 
   return (
     <div
@@ -89,6 +89,8 @@ const ExpandableListItem = ({
           {expandedContent}
           <Link
             to={linkTo}
+            // clear selected hotspot when navigating to selected transaction, this was causing a Mapbox error on mobile
+            onClick={clearSelectedHotspot}
             className={classNames(
               'w-full bg-gray-300 hover:bg-gray-350 transition-all duration-200 cursor-pointer rounded-lg mt-2 flex items-center justify-center',
             )}

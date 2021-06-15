@@ -209,7 +209,11 @@ const CoverageMap = () => {
       />
       <HotspotDetailLayer
         hotspot={selectedHotspot || selectedTxnHotspot}
-        witnesses={selectedHotspot?.witnesses || selectedTxnParticipants || []}
+        witnesses={
+          selectedHotspot && selectedTxn
+            ? selectedTxnParticipants
+            : selectedHotspot?.witnesses || selectedTxnParticipants || []
+        }
       />
       <ValidatorsLayer
         validators={validators}

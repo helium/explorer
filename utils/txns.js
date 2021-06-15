@@ -49,6 +49,7 @@ const CONFIG = {
   poc_challengees: {
     color: '#595A9A',
     name: 'Beacon',
+    hotspotContextName: 'Beaconer',
     tooltip: 'PoC challengee',
   },
   assert_location_v1: {
@@ -117,4 +118,26 @@ export const splitTransactionsByTypes = (txns) => {
 export const formattedTxnHash = (hash) => {
   // TODO add optional truncation amount
   return `${hash.slice(0, 5)}...${hash.slice(-5)}`
+}
+
+export const getPocReceiptRole = (txn, address) => {
+  let role = ''
+  if (txn.challenger === address) {
+    role = 'poc_challengers'
+    return role
+  }
+  txn.path.map((p) => {
+    if (p.challengee === address) {
+      role = 'poc_challengees'
+      return role
+    }
+    p.witnesses.map((w) => {
+      if (w.gateway === address) {
+        role = w.isValid ? 'poc_witnesses_valid' : 'poc_witnesses_invalid'
+        return role
+      }
+    })
+  })
+
+  return role
 }

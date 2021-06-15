@@ -5,11 +5,17 @@ import BaseList from '../BaseList'
 import FlagLocation from '../../Common/FlagLocation'
 import WitnessPill from '../../Common/WitnessPill'
 import Pill from '../../Common/Pill'
-import { getTxnTypeColor, getTxnTypeName } from '../../../utils/txns'
+import {
+  getPocReceiptRole,
+  getTxnTypeColor,
+  getTxnTypeName,
+} from '../../../utils/txns'
 import ExpandableListItem from './ExpandableActivityListItem'
 import ActivityListItem from './ActivityListItem'
 
 const ActivityList = ({
+  address,
+  context,
   transactions,
   isLoading = true,
   fetchMore,
@@ -43,8 +49,10 @@ const ActivityList = ({
 
       case 'poc_receipts_v1':
         return (
-          <span>{getTxnTypeName(txn.type)}</span>
-          // <FlagLocation geocode={txn.path[0].geocode} shortenedLocationName />
+          // <span>
+          //   {getTxnTypeName(getPocReceiptRole(txn, address), 'hotspot')}
+          // </span>
+          <FlagLocation geocode={txn.path[0].geocode} shortenedLocationName />
         )
 
       default:
@@ -65,7 +73,11 @@ const ActivityList = ({
         return (
           <>
             {timestamp}
-            <span>{`+${txn.totalAmount.toString(3)}`}</span>
+            {/* <span>{`+${txn.totalAmount.toString(3)}`}</span> */}
+            <span>
+              {txn?.rewards?.length}{' '}
+              {txn?.rewards?.length === 1 ? 'reward' : 'rewards'}
+            </span>
           </>
         )
 
@@ -73,7 +85,7 @@ const ActivityList = ({
         return (
           <>
             {timestamp}
-            <FlagLocation geocode={txn.path[0].geocode} shortenedLocationName />
+            <WitnessPill count={txn.path?.[0]?.witnesses?.length || 0} />
           </>
         )
 
@@ -82,39 +94,30 @@ const ActivityList = ({
     }
   }
 
-  const renderDetails = useCallback((txn) => {
+  const generateDetails = (txn) => {
     switch (txn.type) {
-      case 'rewards_v1':
-      case 'rewards_v2':
-        return (
-          <span className="flex space-x-2">
-            {uniq(txn.rewards.map((r) => r.type)).map((type) => (
-              <Pill
-                key={type}
-                title={rewardTypeText[type] || type}
-                tooltip={type}
-                color={rewardTypeColor[type]}
-              />
-            ))}
-          </span>
-        )
+      // case 'rewards_v1':
+      // case 'rewards_v2':
+      //   return getTxnTypeName(getPocReceiptRole(txn.type), 'hotspot')
 
       case 'poc_receipts_v1':
-        return <WitnessPill count={txn.path?.[0]?.witnesses?.length || 0} />
+        return getTxnTypeName(getPocReceiptRole(txn, address), 'hotspot')
 
       default:
-        return null
+        return getTxnTypeName(txn.type, 'hotspot')
     }
-  }, [])
+  }
 
   const renderItem = useCallback((txn) => {
     if (isExpandable(txn))
       return (
         <ExpandableListItem
           txn={txn}
+          address={address}
+          context={context}
           title={generateTitle(txn)} // getTxnTypeName(txn.type, 'hotspot')}
           subtitle={generateSubtitle(txn)}
-          details={getTxnTypeName(txn.type, 'block')}
+          details={generateDetails(txn)} //getTxnTypeName(txn.type, 'hotspot')}
           linkTo={`/txns/${txn.hash}`}
           pillColor={getTxnTypeColor(txn.type)}
           pillClasses={'text-white text-sm'}

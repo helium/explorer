@@ -3,6 +3,7 @@ import useToggle from '../../../utils/useToggle'
 import ChevronIcon from '../../Icons/Chevron'
 import { Link } from 'react-router-i18n'
 import useSelectedTxn from '../../../hooks/useSelectedTxn'
+import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
 
 const ExpandButtonPill = ({
   className,
@@ -17,7 +18,7 @@ const ExpandButtonPill = ({
         className={classNames('whitespace-nowrap', className)}
         style={{ backgroundColor: pillColor }}
       >
-        <span className="m-0">{details}</span>
+        <span className="m-0 pr-2 pl-1">{details}</span>
       </div>
       <span
         className={classNames(
@@ -43,16 +44,22 @@ const ExpandableListItem = ({
   pillClasses,
   pillSymbolClasses,
   expandedContent,
+  address,
 }) => {
   const [expanded, toggleExpanded] = useToggle()
 
-  const { selectTxn } = useSelectedTxn()
+  const { selectedTxn, selectTxn, clearSelectedTxn } = useSelectedTxn()
+  const { selectHotspot } = useSelectedHotspot()
 
   return (
     <div
       className="w-full flex flex-col"
       onClick={() => {
-        selectTxn(txn.hash)
+        if (!expanded) selectTxn(txn.hash)
+        if (expanded) {
+          clearSelectedTxn()
+          selectHotspot(address)
+        }
         toggleExpanded()
       }}
     >

@@ -93,6 +93,8 @@ const ActivityPane = ({ context, address }) => {
       </div>
       <div className="grid grid-flow-row grid-cols-1">
         <ActivityList
+          context={context}
+          address={address}
           transactions={transactions}
           isLoading={isLoadingInitial}
           isLoadingMore={isLoadingMore}

@@ -12,6 +12,7 @@ import {
 } from '../../../utils/txns'
 import ExpandableListItem from './ExpandableActivityListItem'
 import ActivityListItem from './ActivityListItem'
+import animalHash from 'angry-purple-tiger'
 
 const ActivityList = ({
   address,
@@ -51,8 +52,14 @@ const ActivityList = ({
         return (
           // <span>
           //   {getTxnTypeName(getPocReceiptRole(txn, address), 'hotspot')}
-          // </span>
-          <FlagLocation geocode={txn.path[0].geocode} shortenedLocationName />
+          // </span
+          <div className="flex items-center justify-start">
+            <img
+              src="/images/poc_receipt_icon.svg"
+              className="h-3 w-auto mr-2"
+            />
+            <FlagLocation geocode={txn.path[0].geocode} condensedView />
+          </div>
         )
 
       default:
@@ -74,7 +81,8 @@ const ActivityList = ({
           <>
             {timestamp}
             {/* <span>{`+${txn.totalAmount.toString(3)}`}</span> */}
-            <span>
+            <span className="flex items-center justify-start">
+              <img src="/images/hnt.svg" className="w-4 mr-1" />
               {txn?.rewards?.length}{' '}
               {txn?.rewards?.length === 1 ? 'reward' : 'rewards'}
             </span>
@@ -85,7 +93,13 @@ const ActivityList = ({
         return (
           <>
             {timestamp}
-            <WitnessPill count={txn.path?.[0]?.witnesses?.length || 0} />
+            <div className="flex items-center justify-start">
+              <img
+                src="/images/witness-yellow-mini.svg"
+                className="h-3 w-auto mr-1"
+              />
+              <span className="">{txn.path?.[0]?.witnesses?.length || 0}</span>
+            </div>
           </>
         )
 
@@ -109,7 +123,55 @@ const ActivityList = ({
   }
 
   const renderItem = useCallback((txn) => {
-    if (isExpandable(txn))
+    if (isExpandable(txn)) {
+      const expandableContent =
+        txn.type === 'rewards_v1' || txn.type === 'rewards_v2' ? (
+          <div className="flex flex-row items-start w-full my-0.5">
+            {uniq(txn.rewards.map((r) => r.type)).map((type) => (
+              <span className="mr-1">
+                <Pill
+                  key={type}
+                  title={rewardTypeText[type] || type}
+                  tooltip={type}
+                  color={rewardTypeColor[type]}
+                />
+              </span>
+            ))}
+          </div>
+        ) : (
+          <div className="bg-gray-300 w-full rounded-md px-2 py-1">
+            <div>
+              <span className="flex items-center font-sans font-thin text-darkgray-800">
+                Challenger
+              </span>
+              <span className="flex items-center text-black font-sans font-medium">
+                {animalHash(txn.challenger)}
+              </span>
+            </div>
+            <div className="flex-col items-center justify-start mt-4">
+              <span className="font-sans font-thin text-darkgray-800">
+                Beaconer
+              </span>
+              <span className="flex items-center">
+                <img
+                  src="/images/poc_receipt_icon.svg"
+                  className="h-3 w-auto"
+                />
+                <span className="ml-1.5 whitespace-nowrap text-sm font-sans text-black">
+                  {animalHash(txn.path[0].challengee)}
+                </span>
+              </span>
+            </div>
+            <div className="flex flex-row items-center justify-start mt-4">
+              <span className="font-sans font-thin text-darkgray-800">
+                Witnesses
+              </span>
+              <span className="ml-1.5 text-sm font-sans">
+                {txn.path[0].witnesses.length}
+              </span>
+            </div>
+          </div>
+        )
       return (
         <ExpandableListItem
           txn={txn}
@@ -122,24 +184,10 @@ const ActivityList = ({
           pillColor={getTxnTypeColor(txn.type)}
           pillClasses={'text-white text-sm'}
           pillSymbolClasses={'text-white text-sm'}
-          expandedContent={
-            txn.type === 'rewards_v1' || txn.type === 'rewards_v2' ? (
-              <div className="flex flex-row items-start w-full my-0.5">
-                {uniq(txn.rewards.map((r) => r.type)).map((type) => (
-                  <span className="mr-1">
-                    <Pill
-                      key={type}
-                      title={rewardTypeText[type] || type}
-                      tooltip={type}
-                      color={rewardTypeColor[type]}
-                    />
-                  </span>
-                ))}
-              </div>
-            ) : null
-          }
+          expandedContent={expandableContent}
         />
       )
+    }
 
     return (
       <ActivityListItem

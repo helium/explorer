@@ -17,6 +17,7 @@ import HexCoverageLayer from './Layers/HexCoverageLayer'
 import { hotspotToRes8 } from '../Hotspots/utils'
 import useApi from '../../hooks/useApi'
 import useSelectedHex from '../../hooks/useSelectedHex'
+import { getPocReceiptRole } from '../../utils/txns'
 
 const maxZoom = 14
 const minZoom = 2
@@ -132,8 +133,8 @@ const CoverageMap = () => {
       const targetHotspot = await fetchHotspot(target)
       const witnesses = selectedTxn.path[0].witnesses.map(hotspotToRes8)
 
-      setSelectedTxnHotspot(targetHotspot)
       setSelectedTxnParticipants(witnesses)
+      setSelectedTxnHotspot(targetHotspot)
     } else if (
       selectedTxn?.type === 'assert_location_v1' ||
       selectedTxn?.type === 'assert_location_v2'
@@ -208,7 +209,7 @@ const CoverageMap = () => {
         layer={mapLayer}
       />
       <HotspotDetailLayer
-        hotspot={selectedHotspot || selectedTxnHotspot}
+        hotspot={selectedTxnHotspot || selectedHotspot}
         witnesses={
           selectedHotspot && selectedTxn
             ? selectedTxnParticipants

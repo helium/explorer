@@ -29,7 +29,7 @@ const FlagLocation = ({
     return (
       <span className="flex flex-row items-center justify-start">
         {showLocationName && geocodeInfo.shortCity}
-        <Flag className="ml-2" />
+        <Flag className="ml-1" />
       </span>
     )
 

@@ -13,6 +13,8 @@ import {
 import ExpandableListItem from './ExpandableActivityListItem'
 import ActivityListItem from './ActivityListItem'
 import animalHash from 'angry-purple-tiger'
+import classNames from 'classnames'
+import TimeAgo from 'react-time-ago'
 
 const ActivityList = ({
   address,
@@ -44,22 +46,11 @@ const ActivityList = ({
 
   const generateTitle = (txn) => {
     switch (txn.type) {
-      case 'rewards_v1':
-      case 'rewards_v2':
-        return `+${txn.totalAmount.toString(3)}`
-
       case 'poc_receipts_v1':
         return (
-          // <span>
-          //   {getTxnTypeName(getPocReceiptRole(txn, address), 'hotspot')}
-          // </span
-          <div className="flex items-center justify-start">
-            <img
-              src="/images/poc_receipt_icon.svg"
-              className="h-3 w-auto mr-2"
-            />
-            <FlagLocation geocode={txn.path[0].geocode} condensedView />
-          </div>
+          <span>
+            {getTxnTypeName(getPocReceiptRole(txn, address), 'hotspot')}
+          </span>
         )
 
       default:
@@ -71,7 +62,9 @@ const ActivityList = ({
     const timestamp = (
       <span className="flex items-center space-x-1">
         <img src="/images/clock.svg" className="w-3.5 h-3.5" />
-        <Timestamp date={txn.time} className="tracking-tight" />
+        <span>
+          <TimeAgo date={txn.time * 1000} timeStyle="mini" /> ago
+        </span>
       </span>
     )
     switch (txn.type) {
@@ -80,11 +73,9 @@ const ActivityList = ({
         return (
           <>
             {timestamp}
-            {/* <span>{`+${txn.totalAmount.toString(3)}`}</span> */}
             <span className="flex items-center justify-start">
               <img src="/images/hnt.svg" className="w-4 mr-1" />
-              {txn?.rewards?.length}{' '}
-              {txn?.rewards?.length === 1 ? 'reward' : 'rewards'}
+              <span>{`+${txn.totalAmount.toString(3)}`}</span>
             </span>
           </>
         )
@@ -93,6 +84,13 @@ const ActivityList = ({
         return (
           <>
             {timestamp}
+            <div className="flex items-center justify-start">
+              <img
+                src="/images/poc_receipt_icon.svg"
+                className="h-3 w-auto mr-1"
+              />
+              <FlagLocation geocode={txn.path[0].geocode} condensedView />
+            </div>
             <div className="flex items-center justify-start">
               <img
                 src="/images/witness-yellow-mini.svg"
@@ -110,64 +108,147 @@ const ActivityList = ({
 
   const generateDetails = (txn) => {
     switch (txn.type) {
-      // case 'rewards_v1':
-      // case 'rewards_v2':
-      //   return getTxnTypeName(getPocReceiptRole(txn.type), 'hotspot')
-
       case 'poc_receipts_v1':
-        return getTxnTypeName(getPocReceiptRole(txn, address), 'hotspot')
+        return getTxnTypeName(txn.type)
 
       default:
-        return getTxnTypeName(txn.type, 'hotspot')
+        return getTxnTypeName(txn.type)
     }
   }
 
   const renderItem = useCallback((txn) => {
     if (isExpandable(txn)) {
+      const role =
+        txn.type === 'poc_receipts_v1' ? getPocReceiptRole(txn, address) : ''
+
       const expandableContent =
         txn.type === 'rewards_v1' || txn.type === 'rewards_v2' ? (
-          <div className="flex flex-row items-start w-full my-0.5">
-            {uniq(txn.rewards.map((r) => r.type)).map((type) => (
-              <span className="mr-1">
-                <Pill
-                  key={type}
-                  title={rewardTypeText[type] || type}
-                  tooltip={type}
-                  color={rewardTypeColor[type]}
-                />
-              </span>
-            ))}
+          <div className="flex flex-col items-start w-full space-y-1 my-0.5">
+            {txn.rewards.map((r, i) => {
+              return (
+                <span
+                  className={classNames(
+                    'mr-1 bg-gray-300 w-full px-2 py-1 flex rounded-md justify-between items-center',
+                  )}
+                >
+                  <div className="flex items-start justify-start flex-col">
+                    <span className="text-black font-sans text-sm">
+                      {`+${r.amount.toString(3)}`}
+                    </span>
+                    <span className="text-black font-sans text-sm font-thin">
+                      {animalHash(r.gateway)}
+                    </span>
+                  </div>
+                  <Pill
+                    key={r.type}
+                    title={rewardTypeText[r.type] || r.type}
+                    tooltip={r.type}
+                    styleColor={rewardTypeColor[r.type]}
+                  />
+                </span>
+              )
+            })}
           </div>
         ) : (
-          <div className="bg-gray-300 w-full rounded-md px-2 py-1">
-            <div>
-              <span className="flex items-center font-sans font-thin text-darkgray-800">
+          <div className="bg-gray-300 w-full rounded-md px-2 py-2">
+            <div className="flex-col items-center justify-start">
+              <span className="flex items-center font-sans text-xs font-thin text-darkgray-800">
                 Challenger
               </span>
-              <span className="flex items-center text-black font-sans font-medium">
-                {animalHash(txn.challenger)}
+              <span className="flex items-center font-medium">
+                <img src="/images/challenger-icon.svg" className="h-3 w-auto" />
+                <span
+                  className={classNames(
+                    'ml-1.5 flex items-center text-sm font-sans font-medium',
+                    {
+                      'bg-purple-500 text-white opacity-75 px-2 py-0.5 rounded-md':
+                        role === 'poc_challengers',
+                      'text-black': role !== 'poc_challengers',
+                    },
+                  )}
+                >
+                  {animalHash(txn.challenger)}
+                </span>
               </span>
             </div>
-            <div className="flex-col items-center justify-start mt-4">
-              <span className="font-sans font-thin text-darkgray-800">
+            <div className="flex-col items-center justify-start mt-2">
+              <span className="font-sans font-thin text-xs text-darkgray-800">
                 Beaconer
               </span>
-              <span className="flex items-center">
+              <span className="flex items-center font-medium">
                 <img
                   src="/images/poc_receipt_icon.svg"
                   className="h-3 w-auto"
                 />
-                <span className="ml-1.5 whitespace-nowrap text-sm font-sans text-black">
+                <span
+                  className={classNames(
+                    'ml-1.5 whitespace-nowrap text-sm font-sans font-medium',
+                    {
+                      'bg-blue-500 text-white opacity-75 px-2 py-0.5 rounded-md':
+                        role === 'poc_challengees',
+                      'text-black': role !== 'poc_challengees',
+                    },
+                  )}
+                >
                   {animalHash(txn.path[0].challengee)}
                 </span>
               </span>
             </div>
-            <div className="flex flex-row items-center justify-start mt-4">
-              <span className="font-sans font-thin text-darkgray-800">
+            <div className="flex flex-col items-start justify-start mt-2">
+              <span className="font-sans font-thin text-xs text-darkgray-800">
                 Witnesses
               </span>
-              <span className="ml-1.5 text-sm font-sans">
-                {txn.path[0].witnesses.length}
+              <span className="flex flex-col">
+                {!(
+                  role === 'poc_witnesses_valid' ||
+                  role === 'poc_witnesses_invalid'
+                ) ? (
+                  <span className="flex flex-row items-center justify-start">
+                    <img
+                      src="/images/witness-yellow-mini.svg"
+                      className="h-3 w-auto mr-1.5"
+                    />
+                    <span className="whitespace-nowrap text-sm font-sans font-medium text-black">
+                      {`${txn.path[0].witnesses.length} hotspots`}
+                    </span>
+                  </span>
+                ) : (
+                  <>
+                    <span className="flex flex-row items-center justify-start">
+                      <img
+                        src="/images/witness-yellow-mini.svg"
+                        className="h-3 w-auto mr-1.5"
+                      />
+                      <span
+                        className={classNames(
+                          'whitespace-nowrap text-sm font-sans font-medium opacity-75 px-2 py-0.5 rounded-md',
+                          {
+                            'bg-yellow-500 text-black':
+                              role === 'poc_witnesses_valid',
+                            'bg-gray-800 text-white':
+                              role === 'poc_witnesses_invalid',
+                          },
+                        )}
+                      >
+                        {`${animalHash(address)}`}
+                      </span>
+                    </span>
+                    {role === 'poc_witnesses_invalid' && (
+                      <span className="text-xs font-sans font-thin text-darkgray-800 mt-1.5">
+                        (Invalid:{' '}
+                        {
+                          txn.path[0].witnesses.find(
+                            (w) => w.gateway === address,
+                          ).invalidReason
+                        }
+                        )
+                      </span>
+                    )}
+                    <span className="whitespace-nowrap text-sm font-sans font-thin text-gray-800 mt-1">{`... and ${
+                      txn.path[0].witnesses.length - 1
+                    } other hotspots`}</span>
+                  </>
+                )}
               </span>
             </div>
           </div>
@@ -177,13 +258,13 @@ const ActivityList = ({
           txn={txn}
           address={address}
           context={context}
-          title={generateTitle(txn)} // getTxnTypeName(txn.type, 'hotspot')}
+          title={generateTitle(txn)}
           subtitle={generateSubtitle(txn)}
-          details={generateDetails(txn)} //getTxnTypeName(txn.type, 'hotspot')}
+          details={generateDetails(txn)}
           linkTo={`/txns/${txn.hash}`}
           pillColor={getTxnTypeColor(txn.type)}
-          pillClasses={'text-white text-sm'}
-          pillSymbolClasses={'text-white text-sm'}
+          pillClasses={'text-white text-xs md:text-sm'}
+          pillSymbolClasses={'text-white text-xs md:text-sm'}
           expandedContent={expandableContent}
         />
       )
@@ -191,13 +272,13 @@ const ActivityList = ({
 
     return (
       <ActivityListItem
-        title={generateTitle(txn)} //getTxnTypeName(txn.type, 'hotspot')}
+        title={generateTitle(txn)}
         subtitle={generateSubtitle(txn)}
         details={getTxnTypeName(txn.type, 'block')}
         linkTo={`/txns/${txn.hash}`}
         pillColor={getTxnTypeColor(txn.type)}
-        pillClasses={'text-white text-sm'}
-        pillSymbolClasses={'bg-orange-600 text-white text-sm'}
+        pillClasses={'text-white text-xs md:text-sm'}
+        pillSymbolClasses={'text-white text-xs md:text-sm'}
       />
     )
   }, [])
@@ -228,11 +309,11 @@ const rewardTypeText = {
 }
 
 const rewardTypeColor = {
-  poc_witnesses: 'yellow',
-  // poc_challengers: 'Challenger',
-  // poc_challengees: 'Beacon',
-  // data_credits: 'Data',
-  // consensus: 'Consensus',
+  poc_witnesses: '#FFC769',
+  poc_challengers: '#BE73FF',
+  poc_challengees: '#595A9A',
+  data_credits: 'teal',
+  consensus: '#FF6666',
 }
 
 export default ActivityList

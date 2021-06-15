@@ -51,7 +51,8 @@ const EU_CN_BOUNDS = [
   [-14.10009, 23.898041],
 ]
 
-const MOBILE_PADDING = { top: 10, left: 10, right: 10, bottom: 450 }
+const MOBILE_PADDING = { top: 80, left: 10, right: 10, bottom: 400 }
+const MOBILE_PADDING_FULL = { top: 80, left: 10, right: 10, bottom: 80 }
 const DESKTOP_PADDING = { top: 200, left: 600, right: 200, bottom: 200 }
 
 const CoverageMap = () => {
@@ -128,6 +129,11 @@ const CoverageMap = () => {
   }, [selectedTxnHotspot, selectedTxnParticipants])
 
   useAsync(async () => {
+    if (selectedTxn && selectedHex) {
+      setSelectedTxnHotspot(undefined)
+      setSelectedTxnParticipants([])
+      return
+    }
     if (selectedTxn?.type === 'poc_receipts_v1') {
       const target = selectedTxn.path[0].challengee
       const targetHotspot = await fetchHotspot(target)
@@ -151,13 +157,13 @@ const CoverageMap = () => {
       setSelectedTxnHotspot(undefined)
       setSelectedTxnParticipants([])
     }
-  }, [selectedTxn])
+  }, [selectedTxn, selectedHotspot, selectedHex])
 
   const fitBoundsOptions = useMemo(() => {
     const animate = styleLoaded
     if (isDesktopOrLaptop) return { padding: DESKTOP_PADDING, animate }
     if (showInfoBox) return { padding: MOBILE_PADDING, animate }
-    return { padding: 10, animate }
+    return { padding: MOBILE_PADDING_FULL, animate }
   }, [isDesktopOrLaptop, showInfoBox, styleLoaded])
 
   // useEffect(() => {

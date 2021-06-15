@@ -15,26 +15,36 @@ const ExpandButtonPill = ({
   return (
     <div className="cursor-pointer flex items-center justify-end">
       <div
-        className={classNames('whitespace-nowrap', className)}
+        className={classNames('whitespace-nowrap hidden md:flex', className)}
         style={{ backgroundColor: pillColor }}
       >
         <span className="m-0 pr-2 pl-1">{details}</span>
       </div>
       <span
         className={classNames(
-          'pr-2 pl-1 py-0.5 flex items-center justify-center rounded-r-full w-7 relative',
+          'px-2 md:pl-1 md:pr-2 py-0.5 flex items-center justify-center rounded-full md:rounded-l-none md:rounded-r-full w-7 relative',
           pillSymbolClasses,
         )}
         style={{ backgroundColor: pillColor }}
       >
-        <span className="bg-black opacity-20 absolute left-0 top-0 rounded-r-full w-7 h-full" />
-        <span className="text-white z-10">{expanded ? '-' : '+'}</span>
+        <span className="bg-black opacity-20 hidden md:block absolute left-0 top-0 rounded-full md:rounded-l-none md:rounded-r-full w-7 h-full" />
+        <span className="text-white z-10 hidden md:block">
+          {expanded ? '-' : '+'}
+        </span>
+        <ChevronIcon
+          className={classNames(
+            'block md:hidden transition-all duration-200 w-4 transform h-3 text-white',
+            { 'rotate-0': expanded, 'rotate-180': !expanded },
+          )}
+        />
       </span>
     </div>
   )
 }
 
 const ExpandableListItem = ({
+  address,
+  context,
   txn,
   title,
   subtitle,
@@ -44,11 +54,10 @@ const ExpandableListItem = ({
   pillClasses,
   pillSymbolClasses,
   expandedContent,
-  address,
 }) => {
   const [expanded, toggleExpanded] = useToggle()
 
-  const { selectedTxn, selectTxn, clearSelectedTxn } = useSelectedTxn()
+  const { selectTxn, clearSelectedTxn } = useSelectedTxn()
   const { selectHotspot, clearSelectedHotspot } = useSelectedHotspot()
 
   return (
@@ -58,7 +67,7 @@ const ExpandableListItem = ({
         if (!expanded) selectTxn(txn.hash)
         if (expanded) {
           clearSelectedTxn()
-          selectHotspot(address)
+          if (context === 'hotspot') selectHotspot(address)
         }
         toggleExpanded()
       }}
@@ -68,7 +77,7 @@ const ExpandableListItem = ({
           <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans">
             {title}
           </div>
-          <div className="flex items-center space-x-4 h-6 text-gray-525 text-xs md:text-sm whitespace-nowrap">
+          <div className="flex items-center space-x-2 md:space-x-4 h-6 text-gray-525 text-xs md:text-sm whitespace-nowrap">
             {subtitle}
           </div>
         </div>

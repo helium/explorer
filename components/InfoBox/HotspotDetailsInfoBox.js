@@ -14,6 +14,7 @@ import CopyableText from '../Common/CopyableText'
 import AccountIcon from '../AccountIcon'
 import AccountAddress from '../AccountAddress'
 import SkeletonList from '../Lists/SkeletonList'
+import FlagLocation from '../Common/FlagLocation'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -66,7 +67,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading }) => {
       {
         iconPath: '/images/location-blue.svg',
         path: `/cities/${hotspot.geocode.cityId}`,
-        title: formatLocation(hotspot.geocode, true),
+        title: <FlagLocation geocode={hotspot.geocode} condensedView />,
       },
       {
         iconPath: '/images/account-green.svg',

@@ -27,6 +27,9 @@ module.exports = {
       transparent: 'transparent',
       white: '#FFFFFF',
       black: '#000000',
+      blue: {
+        500: '#1D91F8',
+      },
       navy: {
         300: '#0008FF',
         400: '#474DFF',
@@ -102,6 +105,8 @@ module.exports = {
         '120p': '120%',
       },
       height: {
+        '5/10': '50vh',
+        '4/10': '40vh',
         '6/10': '60vh',
       },
       minHeight: {

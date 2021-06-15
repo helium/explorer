@@ -9,6 +9,7 @@ import { h3ToGeo } from 'h3-js'
 import { formatDistance, calculateDistance } from '../../../utils/distance'
 import { Link } from 'react-router-i18n'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
+import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
 
 const BeaconDetailsPane = ({ txn }) => {
   const [challenger, setChallenger] = useState()
@@ -35,6 +36,7 @@ const BeaconDetailsPane = ({ txn }) => {
 const WitnessesWidget = ({
   path: { witnesses = [], challengeeLon, challengeeLat },
 }) => {
+  const { selectHotspot } = useSelectedHotspot()
   return (
     <div className={classNames(`bg-gray-200 p-3 rounded-lg col-span-2`)}>
       <div className="text-gray-600 text-sm leading-loose">
@@ -48,6 +50,7 @@ const WitnessesWidget = ({
               <div>
                 <Link
                   to={`/hotspots/${w.gateway}`}
+                  onClick={() => selectHotspot(w.gateway)}
                   className="text-base leading-tight tracking-tight text-navy-1000 hover:text-navy-400 transition-all duration-150"
                 >
                   {animalHash(w.gateway)}

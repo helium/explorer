@@ -3,7 +3,7 @@ import animalHash from 'angry-purple-tiger'
 import classNames from 'classnames'
 import Pill from '../../Common/Pill'
 
-const ExpandableActivityContent = ({ txn, address, context }) => {
+const ExpandableActivityContent = ({ txn, address }) => {
   const role =
     txn.type === 'poc_receipts_v1' ? getPocReceiptRole(txn, address) : ''
 

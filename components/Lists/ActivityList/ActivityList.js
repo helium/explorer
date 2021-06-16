@@ -9,7 +9,8 @@ import {
 import ExpandableListItem from './ExpandableActivityListItem'
 import ActivityListItem from './ActivityListItem'
 import TimeAgo from 'react-time-ago'
-import ExpandableActivityContent from './ExpandableActivityContent'
+import ExpandedPoCReceiptContent from './ExpandedPoCReceiptContent'
+import ExpandedRewardContent from './ExpandedRewardContent'
 
 const ActivityList = ({
   address,
@@ -126,7 +127,11 @@ const ActivityList = ({
           pillClasses={'text-white text-xs md:text-sm'}
           pillSymbolClasses={'text-white text-xs md:text-sm'}
           expandedContent={
-            <ExpandableActivityContent txn={txn} address={address} />
+            txn.type === 'rewards_v1' || txn.type === 'rewards_v2' ? (
+              <ExpandedRewardContent txn={txn} address={address} />
+            ) : (
+              <ExpandedPoCReceiptContent txn={txn} address={address} />
+            )
           }
         />
       )

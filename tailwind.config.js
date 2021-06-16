@@ -27,6 +27,14 @@ module.exports = {
       transparent: 'transparent',
       white: '#FFFFFF',
       black: '#000000',
+      'reward-scale': {
+        0: '#FF6666',
+        0.2: '#FC8745',
+        0.4: '#FEA053',
+        0.6: '#FCC945',
+        0.8: '#9FE14A',
+        1: '#29D344',
+      },
       navy: {
         300: '#0008FF',
         400: '#474DFF',

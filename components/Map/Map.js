@@ -80,6 +80,10 @@ const CoverageMap = () => {
           lng: currentPosition.coords.longitude,
           lat: currentPosition.coords.latitude,
         },
+        ...paddingPoints({
+          lng: currentPosition.coords.longitude,
+          lat: currentPosition.coords.latitude,
+        }),
       ]),
     )
   }, [currentPosition.coords, currentPosition.timestamp])

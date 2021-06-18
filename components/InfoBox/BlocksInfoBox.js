@@ -6,7 +6,7 @@ import BlockStatisticsPane from './BlocksInfoPanes/BlockStatisticsPane'
 
 const BlocksInfoBox = () => {
   return (
-    <InfoBox title={<I18n t="blocks.title" />}>
+    <InfoBox title={<I18n t="blocks.title" />} metaTitle="Blocks">
       <TabNavbar basePath="blocks">
         <TabPane title="Statistics" key="statistics">
           <BlockStatisticsPane />

@@ -17,6 +17,7 @@ import HexCoverageLayer from './Layers/HexCoverageLayer'
 import { hotspotToRes8 } from '../Hotspots/utils'
 import useApi from '../../hooks/useApi'
 import useSelectedHex from '../../hooks/useSelectedHex'
+import { trackEvent } from '../../hooks/useGA'
 
 const maxZoom = 14
 const minZoom = 2
@@ -71,6 +72,10 @@ const CoverageMap = () => {
   )
 
   const { data: validators } = useApi('/validators')
+
+  useEffect(() => {
+    trackEvent('map_load')
+  }, [])
 
   useEffect(() => {
     if (!currentPosition.coords) return

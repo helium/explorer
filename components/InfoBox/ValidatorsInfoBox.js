@@ -34,7 +34,7 @@ const ValidatorsInfoBox = () => {
   ])
 
   return (
-    <InfoBox title="~Testnet~ Validators">
+    <InfoBox title="~Testnet~ Validators" metaTitle="Validators">
       <TabNavbar basePath="validators">
         <TabPane title="Statistics" key="statistics">
           <InfoBoxPaneContainer>

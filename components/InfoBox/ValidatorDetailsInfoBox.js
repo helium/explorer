@@ -9,7 +9,10 @@ const ValidatorDetailsInfoBox = () => {
   const { address } = useParams()
 
   return (
-    <InfoBox title={animalHash(address)}>
+    <InfoBox
+      title={animalHash(address)}
+      metaTitle={`Validator ${animalHash(address)}`}
+    >
       <TabNavbar>
         <TabPane title="Overview" key="overview">
           <OverviewPane />

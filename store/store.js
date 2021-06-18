@@ -3,7 +3,7 @@ import { createContext, useReducer } from 'react'
 const initialState = {
   showInfoBox: true,
   showMapLayers: false,
-  mapLayer: null,
+  mapLayer: 'default',
   selectedHotspot: null,
   selectedTxn: null,
   selectedHex: null,
@@ -27,7 +27,6 @@ export const SET_CURRENT_POSITION = 'SET_CURRENT_POSITION'
 
 const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
-    console.log(action)
     switch (action.type) {
       case TOGGLE_INFO_BOX:
         return { ...state, showInfoBox: !state.showInfoBox }

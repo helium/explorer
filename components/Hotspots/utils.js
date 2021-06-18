@@ -113,7 +113,10 @@ export const witnessRssi = (histogram = {}) =>
   )
 
 export const hotspotToRes8 = (hotspot) => {
-  const res8Location = h3ToParent(hotspot.location, 8)
+  const res8Location =
+    hotspot.locationHex ||
+    hotspot.location_hex ||
+    h3ToParent(hotspot.location, 8)
   const [res8Lat, res8Lng] = h3ToGeo(res8Location)
 
   return {

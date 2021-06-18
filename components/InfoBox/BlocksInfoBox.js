@@ -11,7 +11,7 @@ const BlocksInfoBox = () => {
         <TabPane title="Statistics" key="statistics">
           <BlockStatisticsPane />
         </TabPane>
-        <TabPane title="Lastest Blocks" key="latest" path="latest">
+        <TabPane title="Latest Blocks" key="latest" path="latest">
           <LatestBlocksPane />
         </TabPane>
       </TabNavbar>

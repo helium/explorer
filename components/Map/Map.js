@@ -4,7 +4,7 @@ import ReactMapboxGl from 'react-mapbox-gl'
 import { setRTLTextPlugin } from 'mapbox-gl'
 import { useAsync } from 'react-async-hook'
 import { useHistory } from 'react-router'
-import { findBounds } from '../../utils/location'
+import { findBounds, paddingPoints } from '../../utils/location'
 import HotspotDetailLayer from './Layers/HotspotDetailLayer'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import useMapLayer from '../../hooks/useMapLayer'
@@ -31,7 +31,6 @@ const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
   interactive: true,
   touchZoomRotate: true,
-  maxZoom: maxZoom,
   minZoom: minZoom,
 })
 
@@ -81,6 +80,10 @@ const CoverageMap = () => {
           lng: currentPosition.coords.longitude,
           lat: currentPosition.coords.latitude,
         },
+        ...paddingPoints({
+          lng: currentPosition.coords.longitude,
+          lat: currentPosition.coords.latitude,
+        }),
       ]),
     )
   }, [currentPosition.coords, currentPosition.timestamp])
@@ -101,6 +104,7 @@ const CoverageMap = () => {
         lng,
       })),
       { lat: selectedHotspot.lat, lng: selectedHotspot.lng },
+      ...paddingPoints({ lat: selectedHotspot.lat, lng: selectedHotspot.lng }),
     ])
     setBounds(selectionBounds)
   }, [selectedHotspot])
@@ -109,7 +113,10 @@ const CoverageMap = () => {
     if (!selectedHex) return
 
     const [lat, lng] = selectedHex.center
-    const selectionBounds = findBounds([{ lat, lng }])
+    const selectionBounds = findBounds([
+      { lat, lng },
+      ...paddingPoints({ lat, lng }),
+    ])
     setBounds(selectionBounds)
   }, [selectedHex])
 
@@ -122,6 +129,10 @@ const CoverageMap = () => {
         lng,
       })),
       { lat: selectedTxnHotspot.lat, lng: selectedTxnHotspot.lng },
+      ...paddingPoints({
+        lat: selectedTxnHotspot.lat,
+        lng: selectedTxnHotspot.lng,
+      }),
     ])
     setBounds(selectionBounds)
   }, [selectedTxnHotspot, selectedTxnParticipants])

@@ -10,7 +10,7 @@ const WarningWidget = ({ warningCondition, warningText, link, linkText }) => {
     >
       <div className="flex items-center justify-between">
         <span className="flex items-center justify-start">
-          <img className="h-3 mr-1" src="/images/warning.svg" />
+          <img alt="" className="h-3 mr-1" src="/images/warning.svg" />
           <div className="text-yellow-700 text-sm font-semibold whitespace-nowrap">
             {warningText}
           </div>

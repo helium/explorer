@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Card, Table } from 'antd'
 import Link from 'next/link'
-import { StatusCircle } from './Hotspots'
 import {
   formatDistance,
   formatHotspotName,

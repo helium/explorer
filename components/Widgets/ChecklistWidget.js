@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { Tooltip } from 'antd'
 import classNames from 'classnames'
 import { useAsync } from 'react-async-hook'
 import ChevronIcon from '../Icons/Chevron'
@@ -71,6 +70,7 @@ const ChecklistWidget = ({ hotspot, witnesses }) => {
             targetIndex = index
             return checklistItem
           }
+          return null
         },
       )
       setCurrentIndex(targetIndex)
@@ -86,13 +86,13 @@ const ChecklistWidget = ({ hotspot, witnesses }) => {
       setCurrentIndex(targetIndex)
       setProcessingChecklistItems(false)
     }
-  }, [showChecklist, loading])
+  }, [possibleChecklistItems, showChecklist, loading])
 
   const [selectedChecklistItemInfo, setSelectedChecklistItemInfo] = useState({})
 
   useEffect(() => {
     setSelectedChecklistItemInfo(possibleChecklistItems[currentIndex])
-  }, [currentIndex])
+  }, [currentIndex, possibleChecklistItems])
 
   const sortChecklistItems = (checklistItems) => {
     const unsortedChecklistItems = checklistItems

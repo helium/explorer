@@ -1,8 +1,6 @@
 import { useCallback } from 'react'
-import Image from 'next/image'
 import Timestamp from 'react-timestamp'
 import BaseList from './BaseList'
-import useSelectedTxn from '../../hooks/useSelectedTxn'
 import { getTxnTypeName } from '../../utils/txns'
 import animalHash from 'angry-purple-tiger'
 
@@ -42,12 +40,17 @@ const TransactionList = ({
       case 'poc_receipts_v1':
         return (
           <span className="flex items-center">
-            <img src="/images/poc_receipt_icon.svg" className="h-3 w-auto" />
+            <img
+              alt=""
+              src="/images/poc_receipt_icon.svg"
+              className="h-3 w-auto"
+            />
             <span className="ml-1.5 whitespace-nowrap text-sm font-sans">
               {animalHash(txn.challenger)}
             </span>
             <span className="ml-3 flex flex-row items-center justify-start">
               <img
+                alt=""
                 src="/images/witness-yellow-mini.svg"
                 className="h-3 w-auto"
               />
@@ -61,7 +64,7 @@ const TransactionList = ({
       default:
         return (
           <span className="flex items-center space-x-1">
-            <img src="/images/clock.svg" className="h-3 w-auto" />
+            <img alt="" src="/images/clock.svg" className="h-3 w-auto" />
             <Timestamp date={txn.time} className="tracking-tight" />
           </span>
         )

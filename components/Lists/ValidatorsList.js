@@ -24,7 +24,8 @@ const ValidatorsList = ({ validators, recentGroups }) => {
       <>
         <ValidatorFlagLocation geo={v.geo} />
         <div className="flex items-center space-x-1">
-          <img src="/images/hnt.svg" className="w-3" /> <span>0 HNT</span>
+          <img alt="" src="/images/hnt.svg" className="w-3" />{' '}
+          <span>0 HNT</span>
         </div>
       </>
     )

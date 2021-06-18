@@ -132,9 +132,6 @@ const Page = ({ children, backgroundColor = '#212E3A', className }) => (
         border-collapse: collapse;
         border-spacing: 0;
       }
-      \* {
-        -webkit-font-smoothing: antialiased;
-      }
       body {
         margin: 0;
         font-family: 'Inter', Helvetica, Arial, sans-serif;

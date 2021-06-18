@@ -61,7 +61,7 @@ const BaseList = ({
           </div>
           {linkExtractor && (
             <div className="flex items-center">
-              <img src="/images/details-arrow.svg" />
+              <img alt="" src="/images/details-arrow.svg" />
             </div>
           )}
         </>

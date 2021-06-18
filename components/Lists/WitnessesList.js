@@ -3,20 +3,19 @@ import animalHash from 'angry-purple-tiger'
 import StatusCircle from '../Hotspots/StatusCircle'
 import FlagLocation from '../Common/FlagLocation'
 import Hex from '../Hex'
-import {
-  formatLocation,
-  generateRewardScaleColor,
-  witnessRssi,
-} from '../Hotspots/utils'
+import { generateRewardScaleColor, witnessRssi } from '../Hotspots/utils'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
 
 const WitnessesList = ({ witnesses, isLoading = true }) => {
   const { selectHotspot } = useSelectedHotspot()
 
-  const handleSelectHotspot = useCallback((hotspot) => {
-    selectHotspot(hotspot.address)
-  }, [])
+  const handleSelectHotspot = useCallback(
+    (hotspot) => {
+      selectHotspot(hotspot.address)
+    },
+    [selectHotspot],
+  )
 
   const keyExtractor = useCallback((w) => w.address, [])
 

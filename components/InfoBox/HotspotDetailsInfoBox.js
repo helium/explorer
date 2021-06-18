@@ -11,7 +11,6 @@ import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import { formatLocation } from '../Hotspots/utils'
 import CopyableText from '../Common/CopyableText'
-import AccountIcon from '../AccountIcon'
 import AccountAddress from '../AccountAddress'
 import SkeletonList from '../Lists/SkeletonList'
 
@@ -87,6 +86,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading }) => {
               title: (
                 <div className="flex items-center justify-center">
                   <img
+                    alt=""
                     src="/images/location-hex.svg"
                     className="h-3.5 w-auto mr-0.5 md:mr-1"
                   />

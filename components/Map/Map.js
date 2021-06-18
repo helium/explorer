@@ -3,7 +3,6 @@ import { useMediaQuery } from 'react-responsive'
 import ReactMapboxGl from 'react-mapbox-gl'
 import { setRTLTextPlugin } from 'mapbox-gl'
 import { useAsync } from 'react-async-hook'
-import { useHistory } from 'react-router'
 import { findBounds } from '../../utils/location'
 import HotspotDetailLayer from './Layers/HotspotDetailLayer'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
@@ -45,10 +44,10 @@ const US_EU_BOUNDS = [
   [-125, 33],
 ]
 
-const EU_CN_BOUNDS = [
-  [143.61, 62.2],
-  [-14.10009, 23.898041],
-]
+// const EU_CN_BOUNDS = [
+//   [143.61, 62.2],
+//   [-14.10009, 23.898041],
+// ]
 
 const MOBILE_PADDING = { top: 10, left: 10, right: 10, bottom: 450 }
 const DESKTOP_PADDING = { top: 200, left: 600, right: 200, bottom: 200 }
@@ -143,7 +142,7 @@ const CoverageMap = () => {
       setSelectedTxnHotspot(targetHotspot)
       setSelectedTxnParticipants([])
     } else if (selectedTxn?.type === 'consensus_group_v1') {
-      const members = await fetchConsensusHotspots(txn.height)
+      const members = await fetchConsensusHotspots(selectedTxn?.height)
       setSelectedTxnHotspot(undefined)
       setSelectedTxnParticipants(members)
     } else {
@@ -191,7 +190,7 @@ const CoverageMap = () => {
 
   return (
     <Mapbox
-      style="mapbox://styles/petermain/cko1ewc0p0st918lecxa5c8go"
+      style={`mapbox://styles/petermain/cko1ewc0p0st918lecxa5c8go`}
       className="h-full w-screen overflow-hidden"
       fitBounds={bounds}
       fitBoundsOptions={fitBoundsOptions}

@@ -69,6 +69,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "lint": "next lint",
     "start": "next start -p $PORT",
     "pretty": "prettier --write \"./**/*.{js,jsx,json,css}\"",
     "job": "eval $(cat .env) node"
@@ -82,7 +83,8 @@
   "eslintConfig": {
     "extends": "react-app",
     "rules": {
-      "react/react-in-jsx-scope": "off"
+      "react/react-in-jsx-scope": "off",
+      "jsx-a11y/anchor-is-valid": "off"
     }
   },
   "browserslist": {
@@ -99,6 +101,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.2.6",
+    "eslint-config-next": "^11.0.0",
     "husky": "^6.0.0",
     "postcss": "^8.3.0",
     "prettier": "2.3.1",

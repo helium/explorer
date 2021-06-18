@@ -52,12 +52,12 @@ const Fallback = ({ txn }) => {
             key === 'height' ||
             key === 'hash'
           ) {
-            return
+            return null
           }
 
           // don't show meta info
           if (key === 'name' || key === 'color' || key === 'tooltip') {
-            return
+            return null
           }
 
           // TODO: use a better way to determine if the value is a wallet address

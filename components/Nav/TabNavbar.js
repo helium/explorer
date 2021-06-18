@@ -54,6 +54,7 @@ const TabNavbar = ({ centered = false, classes, children }) => {
           activeClasses: c.props.activeClasses,
           activeStyles: c.props.activeStyles,
         }
+      return null
     })
   }, [children])
 

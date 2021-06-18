@@ -28,14 +28,15 @@ const ActivityPane = ({ context, address }) => {
   } = useActivity(context, address, filters[filter])
 
   const setVisibility = useCallback(
-    debounce(
-      (currentPos, prevPos) => {
-        setIsVisible(prevPos > currentPos)
-        setPrevScrollPos(currentPos)
-      },
-      100,
-      { leading: true, trailing: true },
-    ),
+    () =>
+      debounce(
+        (currentPos, prevPos) => {
+          setIsVisible(prevPos > currentPos)
+          setPrevScrollPos(currentPos)
+        },
+        100,
+        { leading: true, trailing: true },
+      ),
     [],
   )
 

@@ -22,7 +22,7 @@ const MenuButton = () => {
         )}
         onClick={toggleMenu}
       >
-        <img src="/images/menu.svg" />
+        <img alt="Menu icon" src="/images/menu.svg" />
       </div>
       <MobileNavOverlay menuOpen={menuOpen} toggleMenu={toggleMenu} />
     </>
@@ -34,7 +34,7 @@ const Header = () => {
     <header className="fixed w-full z-30 p-4 flex items-center justify-between">
       <Link to="/">
         <a>
-          <img src="/images/logo-sm.svg" />
+          <img alt="Helium Logo" src="/images/logo-sm.svg" />
         </a>
       </Link>
 

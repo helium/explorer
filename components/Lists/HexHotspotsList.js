@@ -56,7 +56,7 @@ const HotspotRewards = ({ address }) => {
 
   return (
     <span className="flex items-center">
-      <img src="/images/hnt.svg" className="w-4 mr-1" />+
+      <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />+
       {rewards && round(sumBy(rewards, 'total'), 2)} HNT (30d)
     </span>
   )
@@ -81,7 +81,7 @@ const HotspotItem = ({ hotspot }) => {
         </span>
       </div>
       <div className="flex items-center">
-        <img src="/images/details-arrow.svg" />
+        <img alt="" src="/images/details-arrow.svg" />
       </div>
     </>
   )

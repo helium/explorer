@@ -1,11 +1,14 @@
 import RewardScaleWidget from '../../Widgets/RewardScaleWidget'
 import RewardsTrendWidget from '../../Widgets/RewardsTrendWidget'
+import RelayedWarningWidget from '../../Widgets/WarningWidget'
 import StatusWidget from '../../Widgets/StatusWidget'
 import StatWidget from '../../Widgets/StatWidget'
 import { useHotspotBeaconSums } from '../../../data/beacons'
 import { useHotspotRewards } from '../../../data/rewards'
 import { useHotspotWitnessSums } from '../../../data/witnesses'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
+import ChecklistWidget from '../../Widgets/ChecklistWidget'
+import { isRelay } from '../../Hotspots/utils'
 
 const StatisticsPane = ({ hotspot }) => {
   const { rewards } = useHotspotRewards(hotspot.address, 60, 'day')
@@ -19,8 +22,15 @@ const StatisticsPane = ({ hotspot }) => {
     2,
     'week',
   )
+
   return (
     <InfoBoxPaneContainer>
+      <RelayedWarningWidget
+        warningCondition={isRelay(hotspot.status.listenAddrs)}
+        warningText={'Hotspot is being Relayed.'}
+        link={'https://docs.helium.com/troubleshooting/network-troubleshooting'}
+        linkText={'Get help'}
+      />
       <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
       <RewardScaleWidget hotspot={hotspot} />
       <StatusWidget hotspot={hotspot} />
@@ -38,6 +48,7 @@ const StatisticsPane = ({ hotspot }) => {
         dataKey="avg"
         changeType="percent"
       />
+      <ChecklistWidget hotspot={hotspot} witnesses={witnesses} />
     </InfoBoxPaneContainer>
   )
 }

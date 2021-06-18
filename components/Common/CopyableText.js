@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import classNames from 'classnames'
 import { Tooltip } from 'antd'
 
-const CopyableText = ({ textToCopy, tooltip, classes, children }) => {
+const CopyableText = ({ textToCopy, tooltip, className, children }) => {
   const [successStatus, setSuccessStatus] = useState(false)
 
   useEffect(() => {
@@ -55,18 +55,16 @@ const CopyableText = ({ textToCopy, tooltip, classes, children }) => {
     )
   }
 
-  if (!textToCopy) return children
+  if (!textToCopy) return <span className={className}>{children}</span>
 
   return (
     <>
       <span
-        className={classNames('relative inline-block', {
-          classes,
-        })}
+        className="relative inline-block"
         onClick={() => copyTextToClipboard(textToCopy)}
       >
         <span className="relative inline-flex items-center justify-between">
-          <span className="mr-2">{children}</span>
+          <span className={classNames('mr-2', className)}>{children}</span>
           <span className="flex-1">
             {successStatus ? (
               <svg
@@ -109,7 +107,7 @@ const CopyableText = ({ textToCopy, tooltip, classes, children }) => {
                 </svg>
               </Tooltip>
             )}
-          </span>{' '}
+          </span>
         </span>
       </span>
     </>

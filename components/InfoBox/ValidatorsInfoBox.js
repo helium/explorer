@@ -34,9 +34,9 @@ const ValidatorsInfoBox = () => {
   ])
 
   return (
-    <InfoBox title="Validators">
+    <InfoBox title="~Testnet~ Validators">
       <TabNavbar basePath="validators">
-        <TabPane title="Statistics" key="1">
+        <TabPane title="Statistics" key="statistics">
           <InfoBoxPaneContainer>
             <Widget
               title="Total Validators"
@@ -65,16 +65,16 @@ const ValidatorsInfoBox = () => {
             <VersionsWidget validators={validators} />
           </InfoBoxPaneContainer>
         </TabPane>
-        <TabPane title="Consensus Group" key="2" path="consensus">
-          <InfoBoxPaneContainer>
+        <TabPane title="Consensus Group" key="consensus" path="consensus">
+          <InfoBoxPaneContainer span={1} padding={false}>
             <ValidatorsList
               validators={consensusGroup}
               recentGroups={recentGroups}
             />
           </InfoBoxPaneContainer>
         </TabPane>
-        <TabPane title="All Validators" key="3" path="all">
-          <InfoBoxPaneContainer>
+        <TabPane title="All Validators" key="all" path="all">
+          <InfoBoxPaneContainer span={1} padding={false}>
             <ValidatorsList
               validators={validators}
               recentGroups={recentGroups}

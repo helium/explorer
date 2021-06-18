@@ -1,6 +1,10 @@
 module.exports = {
   mode: 'jit',
-  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  purge: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+    './styles/*.css',
+  ],
   darkMode: false, // or 'media' or 'class'
   theme: {
     screens: {
@@ -28,6 +32,7 @@ module.exports = {
       white: '#FFFFFF',
       black: '#000000',
       navy: {
+        300: '#0008FF',
         400: '#474DFF',
         500: '#222E46',
         600: '#182035',
@@ -56,6 +61,7 @@ module.exports = {
       yellow: {
         400: '#f4cb5e',
         500: '#FCC945',
+        700: '#F9BD25',
       },
       pink: {
         500: '#A667F6',
@@ -73,6 +79,9 @@ module.exports = {
         650: '#717E98',
         700: '#66759C',
         800: '#617095',
+      },
+      darkgray: {
+        800: '#171E2D',
       },
       bluegray: {
         100: '#E9EAFF2',
@@ -116,6 +125,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
   important: '#app',
 }

@@ -10,9 +10,11 @@ const Widget = ({
   title,
   tooltip,
   value,
+  emptyValue = false,
   copyableValue,
   change,
   changeSuffix,
+  valueSuffix,
   subtitle,
   onClick,
   icon,
@@ -28,7 +30,7 @@ const Widget = ({
           {titleIcon}
           <div className="text-gray-600 text-sm">{title}</div>
           {tooltip && (
-            <div className="text-gray-600 text-sm cursor-pointer">
+            <div className="text-gray-600 text-sm cursor-pointer flex">
               <Tooltip title={tooltip}>
                 <InfoCircleOutlined />
               </Tooltip>
@@ -45,9 +47,13 @@ const Widget = ({
                 <p
                   className={classNames('flex items-center m-0 p-0', {
                     'cursor-pointer hover:text-gray-800 transition-all duration-150': copyableValue,
+                    'text-gray-400 text-md font-light': emptyValue,
                   })}
                 >
-                  <span className="break-all">{value}</span>
+                  <span className="break-all">
+                    {value}
+                    {valueSuffix && valueSuffix}
+                  </span>
                 </p>
               </CopyableText>
             )}
@@ -78,6 +84,25 @@ const Widget = ({
       )}
     </>
   )
+
+  if (linkTo && /^https?:\/\//.test(linkTo)) {
+    return (
+      <a
+        href={linkTo}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={classNames(
+          'bg-gray-200 p-3 rounded-lg flex transition-all cursor-pointer hover:bg-gray-300',
+          {
+            'col-span-1': span === 1,
+            'col-span-2': span === 2,
+          },
+        )}
+      >
+        {inner}
+      </a>
+    )
+  }
 
   if (linkTo) {
     return (

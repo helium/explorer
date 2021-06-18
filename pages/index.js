@@ -38,7 +38,9 @@ const Index = ({ coverageUrl }) => {
         url={'https://explorer.helium.com/coverage'}
       />
       <title>Helium Network - Coverage</title>
+      {/* <span id="explorer-map"> */}
       <Header activeNav="coverage" />
+      {/* </span> */}
       <Map coverageUrl={coverageUrl} />
       <InfoBoxSwitch />
       <MapLayersBox />

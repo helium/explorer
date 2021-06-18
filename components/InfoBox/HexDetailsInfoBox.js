@@ -4,9 +4,11 @@ import InfoBox from './InfoBox'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import { useAsync } from 'react-async-hook'
 import { fetchHexHotspots } from '../../data/hotspots'
-import HotspotsList from '../Lists/HotspotsList'
-import { useEffect } from 'react'
+import HexHotspotsList from '../Lists/HexHotspotsList'
+import { useCallback, useEffect } from 'react'
 import useSelectedHex from '../../hooks/useSelectedHex'
+import { formatLocation } from '../Hotspots/utils'
+import FlagLocation from '../Common/FlagLocation'
 
 const HexDetailsInfoBox = () => {
   const { index } = useParams()
@@ -26,13 +28,41 @@ const HexDetailsInfoBox = () => {
     }
   }, [clearSelectedHex])
 
+  const generateSubtitles = useCallback((hotspot) => {
+    if (!hotspot)
+      return [
+        {
+          iconPath: '/images/location-blue.svg',
+          loading: true,
+        },
+      ]
+    return [
+      {
+        icon: (
+          <FlagLocation geocode={hotspot.geocode} showLocationName={false} />
+        ),
+        path: `/cities/${hotspot.geocode.cityId}`,
+        title: formatLocation(hotspot.geocode),
+      },
+    ]
+  }, [])
+
   return (
     <InfoBox
-      title={`#${index}`}
-      breadcrumbs={[{ title: 'Hotspots / Hex', path: '/hotspots' }]}
+      title={
+        <div className="flex items-center justify-center">
+          <img
+            src="/images/location-hex.svg"
+            className="h-7 w-auto mr-0.5 md:mr-2"
+          />
+          {index}
+        </div>
+      }
+      breadcrumbs={[{ title: 'Hotspots', path: '/hotspots' }]}
+      subtitles={generateSubtitles(hotspots?.[0])}
     >
       <TabNavbar>
-        <TabPane title="Selected Hotspots" key="hotspots">
+        <TabPane title="Hotspots in Hex" key="hotspots">
           <div
             className={classNames(
               'grid grid-flow-row grid-cols-1 no-scrollbar',
@@ -42,7 +72,7 @@ const HexDetailsInfoBox = () => {
               },
             )}
           >
-            <HotspotsList
+            <HexHotspotsList
               hotspots={hotspots || []}
               isLoading={loading}
               hasMore={false}

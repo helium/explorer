@@ -59,7 +59,7 @@ const TransactionList = ({
         return (
           <span className="flex items-center">
             <span className="flex items-center text-black font-sans font-medium">
-              {txn.totalAmount.toString(2)}
+              {txn.amount.toString(2)}
             </span>
           </span>
         )
@@ -143,7 +143,7 @@ const TransactionList = ({
         )
       case 'payment_v1':
         return (
-          <span className="flex items-center space-x-1">
+          <span className="flex items-center space-x-3">
             <div className="flex items-center justify-end text-gray-600">
               <AccountIcon size={12} address={txn.payer} />
               <span className="pl-1 ">
@@ -155,7 +155,18 @@ const TransactionList = ({
                 />
               </span>
             </div>
-            {'->'}
+            <span>{'->'}</span>
+            <div className="flex items-center justify-end text-gray-600">
+              <AccountIcon size={12} address={txn.payee} />
+              <span className="pl-1 ">
+                <AccountAddress
+                  clickable={false}
+                  address={txn.payee}
+                  truncate={4}
+                  mono
+                />
+              </span>
+            </div>
           </span>
         )
       case 'payment_v2':
@@ -187,7 +198,7 @@ const TransactionList = ({
               </div>
             ) : (
               <div className="flex items-center justify-end text-gray-600">
-                Multiple payees
+                {txn.payments.length} payees
               </div>
             )}
           </span>

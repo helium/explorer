@@ -11,6 +11,9 @@ import ActivityListItem from './ActivityListItem'
 import TimeAgo from 'react-time-ago'
 import ExpandedPoCReceiptContent from './ExpandedPoCReceiptContent'
 import ExpandedRewardContent from './ExpandedRewardContent'
+import AccountIcon from '../../AccountIcon'
+import AccountAddress from '../../AccountAddress'
+import MakerIcon from '../../Icons/Maker'
 
 const ActivityList = ({
   address,
@@ -47,6 +50,11 @@ const ActivityList = ({
           <span>
             {getTxnTypeName(getPocReceiptRole(txn, address), 'hotspot')}
           </span>
+        )
+      case 'payment_v1':
+      case 'payment_v2':
+        return (
+          <span>{txn.payer === address ? 'Sent HNT' : 'Received HNT'}</span>
         )
 
       default:
@@ -97,6 +105,127 @@ const ActivityList = ({
           </>
         )
 
+      case 'payment_v1':
+        return (
+          <>
+            {timestamp}
+            <div className="flex items-center justify-start">
+              {txn.payer === address ? (
+                <>
+                  <span className="flex items-center space-x-3">
+                    <span className="flex items-center justify-start space-x-1">
+                      <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
+                      {txn.amount.toString(2)}
+                    </span>
+                    <span>{'->'}</span>
+                    <div className="flex items-center justify-end text-gray-600">
+                      <AccountIcon size={12} address={txn.payee} />
+                      <span className="pl-1 ">
+                        <AccountAddress
+                          showSecondHalf={false}
+                          address={txn.payee}
+                          truncate={5}
+                          mono
+                        />
+                      </span>
+                    </div>
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="flex items-center space-x-3">
+                    <span className="flex items-center justify-start space-x-1">
+                      <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
+                      {txn.amount.toString(2)}
+                    </span>
+                    <span>{'<-'}</span>
+                    <div className="flex items-center justify-end text-gray-600">
+                      <AccountIcon size={12} address={txn.payer} />
+                      <span className="pl-1 ">
+                        <AccountAddress
+                          showSecondHalf={false}
+                          address={txn.payer}
+                          truncate={5}
+                          mono
+                        />
+                      </span>
+                    </div>
+                  </span>
+                </>
+              )}
+            </div>
+          </>
+        )
+
+      case 'payment_v2':
+        return (
+          <>
+            {timestamp}
+            <div className="flex items-center justify-start">
+              {txn.payer === address ? (
+                <span className="flex items-center space-x-3">
+                  <span className="flex items-center justify-start space-x-1">
+                    <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
+                    {txn.totalAmount.toString(2)}
+                  </span>
+                  <span>{'->'}</span>
+                  <div className="flex items-center justify-end text-gray-600">
+                    <AccountIcon size={12} address={txn.payments[0].payee} />
+                    <span className="pl-1 ">
+                      <AccountAddress
+                        showSecondHalf={false}
+                        address={txn.payments[0].payee}
+                        truncate={5}
+                        mono
+                      />
+                    </span>
+                  </div>
+                </span>
+              ) : (
+                <span className="flex items-center space-x-3">
+                  <span className="flex items-center justify-start space-x-1">
+                    <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
+                    {txn.totalAmount.toString(2)}
+                  </span>
+                  <span>{'<-'}</span>
+                  <div className="flex items-center justify-end text-gray-600">
+                    <AccountIcon size={12} address={txn.payer} />
+                    <span className="pl-1 ">
+                      <AccountAddress
+                        showSecondHalf={false}
+                        address={txn.payer}
+                        truncate={5}
+                        mono
+                      />
+                    </span>
+                  </div>
+                </span>
+              )}
+            </div>
+          </>
+        )
+
+      case 'state_channel_close_v1':
+        const summary = txn?.stateChannel?.summaries
+        return (
+          <>
+            {timestamp}
+            <span className="flex items-center justify-start space-x-2 md:space-x-4">
+              <span className="flex items-center justify-start md:space-x-1">
+                <MakerIcon classes="h-4 w-auto" />
+                <span>
+                  {`${summary[0]?.num_packets} packet${
+                    summary[0]?.num_packets === 1 ? '' : 's'
+                  }`}
+                </span>
+              </span>
+              <span className="flex items-center justify-start">
+                <img alt="" src="/images/dc.svg" className="h-3 w-auto mr-1" />
+                {txn.stateChannel.summaries[0].num_dcs} DC
+              </span>
+            </span>
+          </>
+        )
       default:
         return timestamp
     }

@@ -9,6 +9,7 @@ const AccountAddress = ({
   truncate = false,
   tooltip,
   mono,
+  showSecondHalf = true,
   classes,
 }) => {
   const truncateAmount = isInteger(truncate) ? truncate : 10
@@ -21,9 +22,9 @@ const AccountAddress = ({
         })}
       >
         {truncate
-          ? `${address.slice(0, truncateAmount)}...${address.slice(
-              -truncateAmount,
-            )}`
+          ? `${address.slice(0, truncateAmount)}...${
+              showSecondHalf ? address.slice(-truncateAmount) : ''
+            }`
           : address}
       </span>
     </Tooltip>

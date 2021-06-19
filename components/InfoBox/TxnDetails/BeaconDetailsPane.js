@@ -26,8 +26,32 @@ const BeaconDetailsPane = ({ txn }) => {
 
   return (
     <InfoBoxPaneContainer>
-      <HotspotWidget title="Challenger" hotspot={challenger} />
-      <HotspotWidget title="Target" hotspot={target} />
+      <HotspotWidget
+        title={
+          <span className="flex items-center justify-start">
+            <img
+              alt=""
+              src="/images/challenger-icon.svg"
+              className="h-4 w-auto mr-1"
+            />
+            Challenger
+          </span>
+        }
+        hotspot={challenger}
+      />
+      <HotspotWidget
+        title={
+          <span className="flex items-center justify-start">
+            <img
+              alt=""
+              src="/images/poc_receipt_icon.svg"
+              className="h-4 w-auto mr-1"
+            />
+            Beaconer
+          </span>
+        }
+        hotspot={target}
+      />
       <WitnessesWidget path={txn.path[0]} />
     </InfoBoxPaneContainer>
   )
@@ -40,7 +64,14 @@ const WitnessesWidget = ({
   return (
     <div className={classNames(`bg-gray-200 p-3 rounded-lg col-span-2`)}>
       <div className="text-gray-600 text-sm leading-loose">
-        {witnesses.length} Witnesses
+        <span className="flex items-center justify-start">
+          <img
+            alt=""
+            src="/images/witness-yellow-mini.svg"
+            className="h-4 w-auto mr-1"
+          />
+          {witnesses.length} Witnesses
+        </span>
       </div>
       <div className="space-y-2">
         {witnesses.map((w) => {

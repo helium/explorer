@@ -5,7 +5,7 @@ const CONFIG = {
   price_oracle_v1: { color: 'rebeccapurple', name: 'Price Oracle' },
   state_channel_close_v1: {
     color: 'teal',
-    hotspotContextName: 'Packets Transferred',
+    hotspotContextName: 'Transferred Packets',
     name: 'State Channel Close',
   },
   payment_v1: { color: '#1D91F8', name: 'Payment' },
@@ -71,6 +71,7 @@ const CONFIG = {
   add_gateway_v1: {
     color: '#8597BB',
     name: 'Add Hotspot',
+    hotspotContextName: 'Added to Blockchain',
     tooltip: 'Add Gateway Transaction',
   },
   poc_witnesses: {

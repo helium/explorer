@@ -3,9 +3,12 @@ import useInfiniteScroll from 'react-infinite-scroll-hook'
 import SkeletonList from './SkeletonList'
 import classNames from 'classnames'
 import { Link } from 'react-router-i18n'
+import InfoBoxPaneTitleSection from '../InfoBox/Common/InfoBoxPaneTitleSection'
 
 const BaseList = ({
   items,
+  listHeaderTitle,
+  listHeaderDescription,
   keyExtractor,
   linkExtractor,
   isLoading = true,
@@ -136,6 +139,12 @@ const BaseList = ({
         'p-3': padding,
       })}
     >
+      {(listHeaderTitle || listHeaderDescription) && (
+        <InfoBoxPaneTitleSection
+          listHeaderTitle={listHeaderTitle}
+          listHeaderDescription={listHeaderDescription}
+        />
+      )}
       {items.map((item, i, { length }) => baseRenderItem(item, i, length))}
       {fetchMore && hasMore && (
         <div

@@ -10,7 +10,7 @@ const NavItem = ({ title, active = false, onClick }) => {
     <span
       onClick={handleClick}
       className={classNames(
-        'py-1 px-2.5 flex font-medium text-base cursor-pointer whitespace-nowrap',
+        'py-1 px-2.5 flex font-medium text-sm md:text-base cursor-pointer whitespace-nowrap',
         {
           'text-gray-700': !active,
           'text-white bg-orange-400 rounded-full': active,

@@ -11,7 +11,12 @@ import {
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
 
-const NearbyHotspotsList = ({ hotspots, isLoading = true }) => {
+const NearbyHotspotsList = ({
+  hotspots,
+  isLoading = true,
+  title,
+  description,
+}) => {
   const { selectHotspot } = useSelectedHotspot()
 
   const handleSelectHotspot = useCallback((hotspot) => {
@@ -56,6 +61,8 @@ const NearbyHotspotsList = ({ hotspots, isLoading = true }) => {
   return (
     <BaseList
       items={hotspots}
+      listHeaderTitle={title}
+      listHeaderDescription={description}
       keyExtractor={keyExtractor}
       linkExtractor={linkExtractor}
       onSelectItem={handleSelectHotspot}

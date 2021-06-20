@@ -23,7 +23,12 @@ const NearbyHotspotsPane = ({ hotspot }) => {
         'overflow-y-hidden': loading,
       })}
     >
-      <NearbyHotspotsList hotspots={hotspots || []} isLoading={loading} />
+      <NearbyHotspotsList
+        hotspots={hotspots || []}
+        isLoading={loading}
+        title={`Nearby Hotspots (${nearbyHotspots?.length})`}
+        // description="[Nearby Hotspots description text]"
+      />
     </div>
   )
 }

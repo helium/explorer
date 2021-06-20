@@ -15,7 +15,12 @@ const WitnessesPane = ({ hotspot }) => {
         'overflow-y-hidden': loading,
       })}
     >
-      <WitnessesList witnesses={witnesses || []} isLoading={loading} />
+      <WitnessesList
+        witnesses={witnesses || []}
+        isLoading={loading}
+        title={`Witnesses (${witnesses?.length})`}
+        // description="[Witnesses description text]"
+      />
     </div>
   )
 }

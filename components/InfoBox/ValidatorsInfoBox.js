@@ -70,6 +70,7 @@ const ValidatorsInfoBox = () => {
             <ValidatorsList
               validators={consensusGroup}
               recentGroups={recentGroups}
+              title={`Currently Elected Validators (${consensusGroup?.length})`}
             />
           </InfoBoxPaneContainer>
         </TabPane>
@@ -78,6 +79,7 @@ const ValidatorsInfoBox = () => {
             <ValidatorsList
               validators={validators}
               recentGroups={recentGroups}
+              title={`All Validators (${validators?.length})`} // maybe redundant because of the #XXX next to each validator?
             />
           </InfoBoxPaneContainer>
         </TabPane>

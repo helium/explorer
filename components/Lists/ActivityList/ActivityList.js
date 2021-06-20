@@ -14,6 +14,7 @@ import ExpandedRewardContent from './ExpandedRewardContent'
 import AccountIcon from '../../AccountIcon'
 import AccountAddress from '../../AccountAddress'
 import MakerIcon from '../../Icons/Maker'
+import ChevronIcon from '../../Icons/Chevron'
 
 const ActivityList = ({
   address,
@@ -111,13 +112,14 @@ const ActivityList = ({
             {timestamp}
             <div className="flex items-center justify-start">
               {txn.payer === address ? (
+                // this account was the payer
                 <>
-                  <span className="flex items-center space-x-3">
+                  <span className="flex items-center space-x-2">
                     <span className="flex items-center justify-start space-x-1">
                       <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
                       {txn.amount.toString(2)}
                     </span>
-                    <span>{'->'}</span>
+                    <ChevronIcon className="text-gray-600 rotate-90 transform h-3 w-auto" />
                     <div className="flex items-center justify-end text-gray-600">
                       <AccountIcon size={12} address={txn.payee} />
                       <span className="pl-1 ">
@@ -132,13 +134,14 @@ const ActivityList = ({
                   </span>
                 </>
               ) : (
+                // this account was the recipient
                 <>
-                  <span className="flex items-center space-x-3">
+                  <span className="flex items-center space-x-2">
                     <span className="flex items-center justify-start space-x-1">
                       <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
                       {txn.amount.toString(2)}
                     </span>
-                    <span>{'<-'}</span>
+                    <ChevronIcon className="text-gray-600 -rotate-90 transform h-3 w-auto" />
                     <div className="flex items-center justify-end text-gray-600">
                       <AccountIcon size={12} address={txn.payer} />
                       <span className="pl-1 ">
@@ -163,31 +166,44 @@ const ActivityList = ({
             {timestamp}
             <div className="flex items-center justify-start">
               {txn.payer === address ? (
-                <span className="flex items-center space-x-3">
+                // this account was the payer
+                <span className="flex items-center space-x-2">
                   <span className="flex items-center justify-start space-x-1">
                     <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
                     {txn.totalAmount.toString(2)}
                   </span>
-                  <span>{'->'}</span>
+                  <ChevronIcon className="text-gray-600 rotate-90 transform h-3 w-auto" />
                   <div className="flex items-center justify-end text-gray-600">
-                    <AccountIcon size={12} address={txn.payments[0].payee} />
-                    <span className="pl-1 ">
-                      <AccountAddress
-                        showSecondHalf={false}
-                        address={txn.payments[0].payee}
-                        truncate={5}
-                        mono
-                      />
-                    </span>
+                    {txn.payments.length === 1 ? (
+                      <>
+                        <AccountIcon
+                          size={12}
+                          address={txn.payments[0].payee}
+                        />
+                        <span className="pl-1 ">
+                          <AccountAddress
+                            showSecondHalf={false}
+                            address={txn.payments[0].payee}
+                            truncate={5}
+                            mono
+                          />
+                        </span>
+                      </>
+                    ) : (
+                      <span>{txn.payments.length} payees</span>
+                    )}
                   </div>
                 </span>
               ) : (
-                <span className="flex items-center space-x-3">
+                // this account was a recipient
+                <span className="flex items-center space-x-2">
                   <span className="flex items-center justify-start space-x-1">
                     <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
-                    {txn.totalAmount.toString(2)}
+                    {txn.payments
+                      .find((p) => p.payee === address)
+                      .amount.toString(2)}
                   </span>
-                  <span>{'<-'}</span>
+                  <ChevronIcon className="text-gray-600 -rotate-90 transform h-3 w-auto" />
                   <div className="flex items-center justify-end text-gray-600">
                     <AccountIcon size={12} address={txn.payer} />
                     <span className="pl-1 ">
@@ -210,18 +226,15 @@ const ActivityList = ({
         return (
           <>
             {timestamp}
-            <span className="flex items-center justify-start space-x-2 md:space-x-4">
-              <span className="flex items-center justify-start md:space-x-1">
-                <MakerIcon classes="h-4 w-auto" />
-                <span>
-                  {`${summary[0]?.num_packets} packet${
-                    summary[0]?.num_packets === 1 ? '' : 's'
-                  }`}
-                </span>
-              </span>
-              <span className="flex items-center justify-start">
-                <img alt="" src="/images/dc.svg" className="h-3 w-auto mr-1" />
+            <span className="flex items-center justify-start">
+              <img alt="" src="/images/dc.svg" className="h-3 w-auto mr-1" />
+              <span className="mr-1">
                 {txn.stateChannel.summaries[0].num_dcs} DC
+              </span>
+              <span>
+                {`(${summary[0]?.num_packets} packet${
+                  summary[0]?.num_packets === 1 ? '' : 's'
+                })`}
               </span>
             </span>
           </>

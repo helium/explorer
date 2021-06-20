@@ -5,6 +5,7 @@ import { getTxnTypeName } from '../../utils/txns'
 import animalHash from 'angry-purple-tiger'
 import AccountIcon from '../AccountIcon'
 import AccountAddress from '../AccountAddress'
+import ChevronIcon from '../Icons/Chevron'
 
 const TransactionList = ({
   transactions,
@@ -143,7 +144,7 @@ const TransactionList = ({
         )
       case 'payment_v1':
         return (
-          <span className="flex items-center space-x-3">
+          <span className="flex items-center space-x-2">
             <div className="flex items-center justify-end text-gray-600">
               <AccountIcon size={12} address={txn.payer} />
               <span className="pl-1 ">
@@ -155,7 +156,7 @@ const TransactionList = ({
                 />
               </span>
             </div>
-            <span>{'->'}</span>
+            <ChevronIcon className="text-gray-600 rotate-90 transform h-3 w-auto" />
             <div className="flex items-center justify-end text-gray-600">
               <AccountIcon size={12} address={txn.payee} />
               <span className="pl-1 ">
@@ -171,7 +172,7 @@ const TransactionList = ({
         )
       case 'payment_v2':
         return (
-          <span className="flex items-center space-x-3">
+          <span className="flex items-center space-x-2">
             <div className="flex items-center justify-end text-gray-600">
               <AccountIcon size={12} address={txn.payer} />
               <span className="pl-1 ">
@@ -183,7 +184,7 @@ const TransactionList = ({
                 />
               </span>
             </div>
-            <span className="">{'->'}</span>
+            <ChevronIcon className="text-gray-600 rotate-90 transform h-3 w-auto" />
             {txn.payments.length === 1 ? (
               <div className="flex items-center justify-end text-gray-600">
                 <AccountIcon size={12} address={txn.payments[0].payee} />

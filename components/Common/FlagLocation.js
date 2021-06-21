@@ -1,7 +1,6 @@
-import ReactCountryFlag from 'react-country-flag'
 import { formatLocation } from '../Hotspots/utils'
 import camelcaseKeys from 'camelcase-keys'
-import classNames from 'classnames'
+import Flag from './Flag'
 
 const FlagLocation = ({
   geocode,
@@ -13,29 +12,17 @@ const FlagLocation = ({
   const shortCountry = geocodeInfo?.shortCountry
   const locationName = formatLocation(geocodeInfo, shortenedLocationName)
 
-  const Flag = ({ className }) =>
-    shortCountry ? (
-      <span
-        className={classNames(
-          'flex flex-row items-center justify-start',
-          className,
-        )}
-      >
-        <ReactCountryFlag countryCode={shortCountry} svg />
-      </span>
-    ) : null
-
   if (condensedView)
     return (
       <span className="flex flex-row items-center justify-start">
-        {showLocationName && geocodeInfo.shortCity}
-        <Flag className="ml-1" />
+        {showLocationName && geocodeInfo?.shortCity}
+        <Flag className="ml-1" countryCode={shortCountry} />
       </span>
     )
 
   return (
     <span className="flex flex-row items-center justify-start">
-      <Flag className="mr-2" />
+      <Flag className="mr-2" countryCode={shortCountry} />
       {showLocationName && locationName}
     </span>
   )

@@ -82,9 +82,9 @@ const ExpandedPoCReceiptContent = ({ txn, address }) => {
         roleTitle="Witnesses"
         isActive={isWitness}
         participantText={
-          !isWitness
-            ? `${txn.path[0].witnesses.length} hotspots`
-            : animalHash(address)
+          isWitness
+            ? animalHash(address)
+            : `${txn.path[0].witnesses.length} hotspots`
         }
         activeParticipantClasses={
           role === 'poc_witnesses_valid'

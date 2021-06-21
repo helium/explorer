@@ -26,11 +26,11 @@ const ExpandableListItem = ({
   const { selectHotspot, clearSelectedHotspot } = useSelectedHotspot()
 
   const handleItemClick = useCallback(() => {
-    if (!expanded) {
-      selectTxn(txn.hash)
-    } else {
+    if (expanded) {
       clearSelectedTxn()
       if (context === 'hotspot') selectHotspot(address)
+    } else {
+      selectTxn(txn.hash)
     }
     toggleExpanded()
   }, [

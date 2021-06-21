@@ -14,6 +14,7 @@ import ExpandedRewardContent from './ExpandedRewardContent'
 import AccountIcon from '../../AccountIcon'
 import AccountAddress from '../../AccountAddress'
 import ChevronIcon from '../../Icons/Chevron'
+import PaymentSubtitle from './PaymentSubtitle'
 
 const isExpandable = (txn) => {
   return (
@@ -112,62 +113,23 @@ const ActivityList = ({
           )
 
         case 'payment_v1':
+          // case 'payment_v2':
           return (
             <>
               {timestamp}
               <div className="flex items-center justify-start">
                 {txn.payer === address ? (
-                  // this account was the payer
-                  <>
-                    <span className="flex items-center space-x-2">
-                      <span className="flex items-center justify-start space-x-1">
-                        <img
-                          alt=""
-                          src="/images/hnt.svg"
-                          className="w-4 mr-1"
-                        />
-                        {txn.amount.toString(2)}
-                      </span>
-                      <ChevronIcon className="text-gray-600 rotate-90 transform h-3 w-auto" />
-                      <div className="flex items-center justify-end text-gray-600">
-                        <AccountIcon size={12} address={txn.payee} />
-                        <span className="pl-1 ">
-                          <AccountAddress
-                            showSecondHalf={false}
-                            address={txn.payee}
-                            truncate={5}
-                            mono
-                          />
-                        </span>
-                      </div>
-                    </span>
-                  </>
+                  <PaymentSubtitle
+                    addressIsPayer
+                    amount={txn.amount.toString(2)}
+                    otherPartyAddress={txn.payee}
+                  />
                 ) : (
                   // this account was the recipient
-                  <>
-                    <span className="flex items-center space-x-2">
-                      <span className="flex items-center justify-start space-x-1">
-                        <img
-                          alt=""
-                          src="/images/hnt.svg"
-                          className="w-4 mr-1"
-                        />
-                        {txn.amount.toString(2)}
-                      </span>
-                      <ChevronIcon className="text-gray-600 -rotate-90 transform h-3 w-auto" />
-                      <div className="flex items-center justify-end text-gray-600">
-                        <AccountIcon size={12} address={txn.payer} />
-                        <span className="pl-1 ">
-                          <AccountAddress
-                            showSecondHalf={false}
-                            address={txn.payer}
-                            truncate={5}
-                            mono
-                          />
-                        </span>
-                      </div>
-                    </span>
-                  </>
+                  <PaymentSubtitle
+                    amount={txn.amount.toString(2)}
+                    otherPartyAddress={txn.payer}
+                  />
                 )}
               </div>
             </>
@@ -180,55 +142,23 @@ const ActivityList = ({
               <div className="flex items-center justify-start">
                 {txn.payer === address ? (
                   // this account was the payer
-                  <span className="flex items-center space-x-2">
-                    <span className="flex items-center justify-start space-x-1">
-                      <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
-                      {txn.totalAmount.toString(2)}
-                    </span>
-                    <ChevronIcon className="text-gray-600 rotate-90 transform h-3 w-auto" />
-                    <div className="flex items-center justify-end text-gray-600">
-                      {txn.payments.length === 1 ? (
-                        <>
-                          <AccountIcon
-                            size={12}
-                            address={txn.payments[0].payee}
-                          />
-                          <span className="pl-1 ">
-                            <AccountAddress
-                              showSecondHalf={false}
-                              address={txn.payments[0].payee}
-                              truncate={5}
-                              mono
-                            />
-                          </span>
-                        </>
-                      ) : (
-                        <span>{txn.payments.length} payees</span>
-                      )}
-                    </div>
-                  </span>
+                  <PaymentSubtitle
+                    addressIsPayer
+                    amount={txn.totalAmount.toString(2)}
+                    otherPartyString={
+                      txn.payments.length === 1
+                        ? txn.payments[0].payee
+                        : `${txn.payments.length} payees`
+                    }
+                  />
                 ) : (
                   // this account was a recipient
-                  <span className="flex items-center space-x-2">
-                    <span className="flex items-center justify-start space-x-1">
-                      <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
-                      {txn.payments
-                        .find((p) => p.payee === address)
-                        .amount.toString(2)}
-                    </span>
-                    <ChevronIcon className="text-gray-600 -rotate-90 transform h-3 w-auto" />
-                    <div className="flex items-center justify-end text-gray-600">
-                      <AccountIcon size={12} address={txn.payer} />
-                      <span className="pl-1 ">
-                        <AccountAddress
-                          showSecondHalf={false}
-                          address={txn.payer}
-                          truncate={5}
-                          mono
-                        />
-                      </span>
-                    </div>
-                  </span>
+                  <PaymentSubtitle
+                    amount={txn.payments
+                      .find((p) => p.payee === address)
+                      .amount.toString(2)}
+                    otherPartyAddress={txn.payer}
+                  />
                 )}
               </div>
             </>

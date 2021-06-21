@@ -9,6 +9,7 @@ import { useHotspotWitnessSums } from '../../../data/witnesses'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import ChecklistWidget from '../../Widgets/ChecklistWidget'
 import { isRelay } from '../../Hotspots/utils'
+import Widget from '../../Widgets/Widget'
 
 const StatisticsPane = ({ hotspot }) => {
   const { rewards } = useHotspotRewards(hotspot.address, 60, 'day')
@@ -23,14 +24,17 @@ const StatisticsPane = ({ hotspot }) => {
     'week',
   )
 
+  console.log('hotspot', hotspot)
+
   return (
     <InfoBoxPaneContainer>
       <RelayedWarningWidget
-        warningCondition={isRelay(hotspot.status.listenAddrs)}
+        isVisible={isRelay(hotspot.status.listenAddrs)}
         warningText={'Hotspot is being Relayed.'}
         link={'https://docs.helium.com/troubleshooting/network-troubleshooting'}
         linkText={'Get help'}
       />
+      <ChecklistWidget hotspot={hotspot} witnesses={witnesses} />
       <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
       <RewardScaleWidget hotspot={hotspot} />
       <StatusWidget hotspot={hotspot} />
@@ -48,7 +52,16 @@ const StatisticsPane = ({ hotspot }) => {
         dataKey="avg"
         changeType="percent"
       />
-      <ChecklistWidget hotspot={hotspot} witnesses={witnesses} />
+      <Widget
+        title="Gain"
+        value={hotspot?.gain / 10}
+        valueSuffix={<span className="text-xl ml-1">dBi</span>}
+      />
+      <Widget
+        title="Elevation"
+        value={hotspot?.elevation}
+        valueSuffix={<span className="text-xl ml-1">m</span>}
+      />
     </InfoBoxPaneContainer>
   )
 }

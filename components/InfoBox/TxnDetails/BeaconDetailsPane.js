@@ -27,29 +27,13 @@ const BeaconDetailsPane = ({ txn }) => {
   return (
     <InfoBoxPaneContainer>
       <HotspotWidget
-        title={
-          <span className="flex items-center justify-start">
-            <img
-              alt=""
-              src="/images/challenger-icon.svg"
-              className="h-4 w-auto mr-1"
-            />
-            Challenger
-          </span>
-        }
+        title="Challenger"
+        titleIconPath="/images/challenger-icon.svg"
         hotspot={challenger}
       />
       <HotspotWidget
-        title={
-          <span className="flex items-center justify-start">
-            <img
-              alt=""
-              src="/images/poc_receipt_icon.svg"
-              className="h-4 w-auto mr-1"
-            />
-            Beaconer
-          </span>
-        }
+        title="Beaconer"
+        titleIconPath="/images/poc_receipt_icon.svg"
         hotspot={target}
       />
       <WitnessesWidget path={txn.path[0]} />

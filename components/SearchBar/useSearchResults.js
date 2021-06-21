@@ -99,7 +99,7 @@ const useSearchResults = () => {
       // transaction hash
       searchTransaction.current(trimmedTerm)
     } else {
-      searchHotspot.current(trimmedTerm)
+      searchHotspot.current(trimmedTerm.replace(/-/g, ' '))
     }
   }, [term])
 

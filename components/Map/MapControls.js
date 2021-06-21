@@ -12,7 +12,7 @@ const MapControls = () => {
     <>
       <div
         className={classNames(
-          'fixed right-0 bottom-8 md:bottom-0 p-4 md:p-8 grid-flow-row gap-3 transform-gpu transition-transform duration-300 ease-in-out',
+          'fixed right-0 bottom-8 md:bottom-0 p-4 md:p-8 md:pr-4 grid-flow-row gap-3 transform-gpu transition-transform duration-300 ease-in-out',
           {
             grid: !showInfoBox,
             'hidden md:grid': showInfoBox,
@@ -39,23 +39,31 @@ const MapControls = () => {
           <Image src="/images/layer.svg" width={20} height={20} />
         </div>
       </div>
-      {mapLayer === 'rewardScale' && !showMapLayers && (
-        <div className="fixed bottom-10 md:bottom-7 right-14 px-4 md:px-8 py-1 md:py-0.5 w-3/4 max-w-xs md:max-w-sm">
-          <div className="rounded-lg flex flex-row items-center justify-between titlebox-blur">
-            <span className="text-white font-sans text-sm pl-2 pr-2 md:pr-8 whitespace-nowrap">
-              Reward Scale
-            </span>
-            <div className="flex flex-col p-2 pb-1 w-full">
-              <div className="bg-gradient-to-r from-reward-scale-0 via-reward-scale-0.6 to-reward-scale-1 rounded-full h-2.5 w-full" />
-              <div className="flex items-center justify-between mt-1">
-                <span className="text-white text-xs font-sans">0</span>
-                <span className="text-white text-xs font-sans">0.5</span>
-                <span className="text-white text-xs font-sans">1</span>
-              </div>
+      <div
+        className={classNames(
+          'fixed bottom-10 md:bottom-7 right-14 px-4 md:px-8 py-1 md:py-0.5 w-3/4 max-w-xs md:max-w-sm transform-gpu transition-all duration-300 ease-in-out',
+          {
+            'opacity-100 pointer-events-auto':
+              mapLayer === 'rewardScale' && !showMapLayers,
+            'opacity-0 pointer-events-none translate-y-10':
+              mapLayer !== 'rewardScale' || showMapLayers,
+          },
+        )}
+      >
+        <div className="rounded-lg flex flex-row items-center justify-between titlebox-blur">
+          <span className="text-white font-sans text-sm pl-2 pr-2 md:pr-8 whitespace-nowrap">
+            Reward Scale
+          </span>
+          <div className="flex flex-col p-2 pb-1 w-full">
+            <div className="bg-gradient-to-r from-reward-scale-0 via-reward-scale-0.6 to-reward-scale-1 rounded-full h-2.5 w-full" />
+            <div className="flex items-center justify-between mt-1">
+              <span className="text-white text-xs font-sans">0</span>
+              <span className="text-white text-xs font-sans">0.5</span>
+              <span className="text-white text-xs font-sans">1</span>
             </div>
           </div>
         </div>
-      )}
+      </div>
     </>
   )
 }

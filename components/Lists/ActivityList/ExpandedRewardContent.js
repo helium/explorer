@@ -12,11 +12,11 @@ const ExpandedRewardContent = ({ txn }) => {
   }
 
   const rewardTypeColor = {
-    poc_witnesses: '#FFC769',
-    poc_challengers: '#BE73FF',
-    poc_challengees: '#595A9A',
-    data_credits: 'teal',
-    consensus: '#FF6666',
+    poc_witnesses: 'witness',
+    poc_challengers: 'challenger',
+    poc_challengees: 'challengee',
+    data_credits: 'data',
+    consensus: 'consensus',
   }
 
   return (
@@ -40,7 +40,7 @@ const ExpandedRewardContent = ({ txn }) => {
               key={r.type}
               title={rewardTypeText[r.type] || r.type}
               tooltip={r.type}
-              styleColor={rewardTypeColor[r.type]}
+              color={rewardTypeColor[r.type]}
             />
           </span>
         )

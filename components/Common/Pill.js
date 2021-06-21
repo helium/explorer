@@ -1,18 +1,24 @@
 import { Tooltip } from 'antd'
 import classNames from 'classnames'
 
-const Pill = ({ title, color = 'gray', styleColor, tooltip }) => (
+const Pill = ({ title, color = 'gray', tooltip }) => (
   <Tooltip title={tooltip}>
     <span
       className={classNames(
         'px-2 py-1 text-white text-xs font-medium rounded-full',
         {
-          'bg-green-500': !styleColor && color === 'green',
-          'bg-gray-700': !styleColor && color === 'gray',
-          'bg-yellow-500': !styleColor && color === 'yellow',
+          // generic colors based on status
+          'bg-green-500': color === 'green',
+          'bg-gray-700': color === 'gray',
+          'bg-yellow-500': color === 'yellow',
+          // colors based on reward type
+          'bg-reward-witness': color === 'witness',
+          'bg-reward-challenger': color === 'challenger',
+          'bg-reward-challengee': color === 'challengee',
+          'bg-reward-data': color === 'data',
+          'bg-reward-consensus': color === 'consensus',
         },
       )}
-      style={{ backgroundColor: styleColor }}
     >
       {title}
     </span>

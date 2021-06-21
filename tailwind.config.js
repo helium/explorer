@@ -86,6 +86,13 @@ module.exports = {
       bluegray: {
         100: '#E9EAFF2',
       },
+      reward: {
+        witness: '#FFC769',
+        challenger: '#BE73FF',
+        challengee: '#1d91f8',
+        data: 'teal',
+        consensus: '#FF6666',
+      },
     },
     borderWidth: {
       DEFAULT: '1px',

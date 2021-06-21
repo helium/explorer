@@ -16,9 +16,9 @@ const InfoBoxPaneTitleSection = ({
       )}
     >
       <div className="flex items-center justify-between">
-        <p className="font-sans text-800 m-0 font-medium text-sm md:text-base">
+        <span className="font-sans text-800 font-medium text-sm md:text-base">
           {listHeaderTitle}
-        </p>
+        </span>
         {listHeaderDescription && listHeaderTitle && (
           <button
             className="px-2 py-1 bg-gray-300 shadow-sm rounded-full border-transparent border-solid border outline-none focus:border-gray-400"
@@ -41,9 +41,9 @@ const InfoBoxPaneTitleSection = ({
       </div>
       {/* if there's a description AND a title, hide the description behind the "Details button", otherwise if there's a description and NO title just show the description */}
       {(showDescription || (listHeaderDescription && !listHeaderTitle)) && (
-        <p className="font-sans text-gray-600 m-0 text-xs md:text-sm pt-1">
+        <span className="font-sans text-gray-600 text-xs md:text-sm pt-1">
           {listHeaderDescription}
-        </p>
+        </span>
       )}
     </div>
   )

@@ -131,17 +131,16 @@ export const formattedTxnHash = (hash) => {
 }
 
 export const getPocReceiptRole = (txn, address) => {
-  let role = ''
   if (txn.challenger === address) {
-    role = 'poc_challengers'
-    return role
+    return 'poc_challengers'
   }
-  txn.path.map((p) => {
+  let role = ''
+  txn.path.forEach((p) => {
     if (p.challengee === address) {
       role = 'poc_challengees'
       return role
     }
-    p.witnesses.map((w) => {
+    p.witnesses.forEach((w) => {
       if (w.gateway === address) {
         role = w.isValid ? 'poc_witnesses_valid' : 'poc_witnesses_invalid'
         return role

@@ -5,7 +5,7 @@ import classNames from 'classnames'
 const RoleParticipant = ({
   className,
   roleTitle,
-  activeCondition,
+  isActive,
   participantText,
   participantDetails,
   inactiveParticipantClasses,
@@ -17,13 +17,13 @@ const RoleParticipant = ({
       {roleTitle}
     </span>
     <span className="flex items-center font-medium">
-      <img src={iconPath} className="h-3 w-auto" />
+      <img alt="" src={iconPath} className="h-3 w-auto" />
       <span
         className={classNames(
           'ml-1.5 flex items-center text-sm font-sans font-medium',
           {
-            [`${activeParticipantClasses} px-2 py-0.5 rounded-md`]: activeCondition,
-            [`${inactiveParticipantClasses}`]: !activeCondition,
+            [`${activeParticipantClasses} px-2 py-0.5 rounded-md`]: isActive,
+            [`${inactiveParticipantClasses}`]: !isActive,
           },
         )}
       >
@@ -34,14 +34,35 @@ const RoleParticipant = ({
   </div>
 )
 
+const WitnessesDetails = ({ txn, role, address, isWitness }) => (
+  <div className="flex flex-col">
+    {/* if this hotspot is a witness and is invalid, display the reason why */}
+    {role === 'poc_witnesses_invalid' && (
+      <span className="text-xs font-sans font-semibold text-red-500 my-0.5 ml-6">
+        {txn.path[0].witnesses.find((w) => w.gateway === address).invalidReason}
+      </span>
+    )}
+    {/* if this hotspot is in the witnesses list for this PoC Receipt */}
+    {isWitness &&
+      // and there are other witnesses in the list with it
+      txn.path[0].witnesses.length > 1 && (
+        <span className="whitespace-nowrap text-xs font-sans font-thin text-gray-800 mt-0.5">
+          {`and ${txn.path[0].witnesses.length - 1} other hotspots`}
+        </span>
+      )}
+  </div>
+)
+
 const ExpandedPoCReceiptContent = ({ txn, address }) => {
   const role = getPocReceiptRole(txn, address)
+  const isWitness =
+    role === 'poc_witnesses_valid' || role === 'poc_witnesses_invalid'
 
   return (
     <div className="bg-gray-300 w-full rounded-md px-2 py-2">
       <RoleParticipant
         roleTitle="Challenger"
-        activeCondition={role === 'poc_challengers'}
+        isActive={role === 'poc_challengers'}
         participantText={animalHash(txn.challenger)}
         activeParticipantClasses="bg-purple-500 text-white"
         inactiveParticipantClasses="text-black"
@@ -50,7 +71,7 @@ const ExpandedPoCReceiptContent = ({ txn, address }) => {
       <RoleParticipant
         className="mt-2"
         roleTitle="Beaconer"
-        activeCondition={role === 'poc_challengees'}
+        isActive={role === 'poc_challengees'}
         participantText={animalHash(txn.path[0].challengee)}
         activeParticipantClasses="bg-blue-500 text-white"
         inactiveParticipantClasses="text-black"
@@ -59,11 +80,9 @@ const ExpandedPoCReceiptContent = ({ txn, address }) => {
       <RoleParticipant
         className="mt-2"
         roleTitle="Witnesses"
-        activeCondition={
-          role === 'poc_witnesses_valid' || role === 'poc_witnesses_invalid'
-        }
+        isActive={isWitness}
         participantText={
-          !(role === 'poc_witnesses_valid' || role === 'poc_witnesses_invalid')
+          !isWitness
             ? `${txn.path[0].witnesses.length} hotspots`
             : animalHash(address)
         }
@@ -75,28 +94,12 @@ const ExpandedPoCReceiptContent = ({ txn, address }) => {
         inactiveParticipantClasses="text-black"
         iconPath="/images/witness-yellow-mini.svg"
         participantDetails={
-          <div className="flex flex-col">
-            {/* if this hotspot is a witness and is invalid, display the reason why */}
-            {role === 'poc_witnesses_invalid' && (
-              <span className="text-xs font-sans font-thin text-darkgray-800 mt-1.5">
-                (Invalid:{' '}
-                {
-                  txn.path[0].witnesses.find((w) => w.gateway === address)
-                    .invalidReason
-                }
-                )
-              </span>
-            )}
-            {/* if this hotspot is in the witnesses list for this PoC Receipt */}
-            {(role === 'poc_witnesses_invalid' ||
-              role === 'poc_witnesses_valid') &&
-              // and there are other witnesses in the list with it
-              txn.path[0].witnesses.length > 1 && (
-                <span className="whitespace-nowrap text-xs font-sans font-thin text-gray-800 mt-0.5">
-                  {`and ${txn.path[0].witnesses.length - 1} other hotspots`}
-                </span>
-              )}
-          </div>
+          <WitnessesDetails
+            txn={txn}
+            role={role}
+            address={address}
+            isWitness={isWitness}
+          />
         }
       />
     </div>

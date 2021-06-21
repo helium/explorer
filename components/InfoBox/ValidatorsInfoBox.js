@@ -9,12 +9,13 @@ import { useElections } from '../../data/consensus'
 import ValidatorsList from '../Lists/ValidatorsList'
 import useApi from '../../hooks/useApi'
 import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
+import WarningWidget from '../Widgets/WarningWidget'
 
-const TICKER = 'TNT'
+const TICKER = 'HNT'
 
 const ValidatorsInfoBox = () => {
   const { data: validators = [] } = useApi('/validators')
-  const { consensusGroups } = useElections(undefined, 'testnet')
+  const { consensusGroups } = useElections()
   const isLoading = useMemo(() => validators.length === 0, [validators.length])
   const recentGroups = useMemo(() => consensusGroups?.recentElections || [], [
     consensusGroups,
@@ -34,10 +35,14 @@ const ValidatorsInfoBox = () => {
   ])
 
   return (
-    <InfoBox title="~Testnet~ Validators" metaTitle="Validators">
+    <InfoBox title="Validators" metaTitle="Validators">
       <TabNavbar basePath="validators">
         <TabPane title="Statistics" key="statistics">
           <InfoBoxPaneContainer>
+            <WarningWidget
+              warningText="Note: Validators are not currently active."
+              subtitle="When activated, Validators will take over block production from Hotspots"
+            />
             <Widget
               title="Total Validators"
               value={validators.length.toLocaleString()}

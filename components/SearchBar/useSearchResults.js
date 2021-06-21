@@ -1,77 +1,116 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { debounce } from 'lodash'
+import qs from 'qs'
 import client from '../../data/client'
 import { Address } from '@helium/crypto'
+import camelcaseKeys from 'camelcase-keys'
 
 const useSearchResults = () => {
   const [term, setTerm] = useState('')
   const [results, setResults] = useState([])
 
-  const searchHotspot = useRef(
-    debounce(
-      async (term) => {
-        try {
-          const list = await client.hotspots.search(term)
-          const hotspots = (await list.take(20)).map((h) =>
-            toSearchResult(h, 'hotspot'),
-          )
-          setResults([...results, ...hotspots])
-        } catch {}
-      },
-      500,
-      { trailing: true },
-    ),
+  const searchHotspot = useCallback(async (term) => {
+    try {
+      const list = await client.hotspots.search(term)
+      const hotspots = (await list.take(20)).map((h) =>
+        toSearchResult(h, 'hotspot'),
+      )
+      return hotspots
+    } catch {}
+  }, [])
+
+  const searchValidator = useCallback(async (term) => {
+    try {
+      const fetchResult = await fetch(
+        `https://testnet-api.helium.wtf/v1/validators/name?${qs.stringify({
+          search: term,
+        })}`,
+      )
+      const { data } = await fetchResult.json()
+      const validators = camelcaseKeys(data).map((v) =>
+        toSearchResult(v, 'validator'),
+      )
+      return validators
+    } catch {}
+  }, [])
+
+  const searchName = useCallback(
+    async (term) => {
+      try {
+        const [hotspots, validators] = await Promise.all([
+          searchHotspot(term),
+          searchValidator(term),
+        ])
+        setResults([...results, ...validators, ...hotspots])
+      } catch {}
+    },
+    [results, searchHotspot, searchValidator],
   )
 
-  const searchAddress = useRef(
-    debounce(
-      async (term) => {
-        let hotspot
-        let account
+  const searchAddress = useCallback(
+    async (term) => {
+      let hotspot
+      let account
 
-        try {
-          hotspot = await client.hotspots.get(term)
-        } catch {}
+      try {
+        hotspot = await client.hotspots.get(term)
+      } catch {}
 
-        try {
-          account = await client.accounts.get(term)
-        } catch {}
+      try {
+        account = await client.accounts.get(term)
+      } catch {}
 
-        if (hotspot) {
-          setResults([toSearchResult(hotspot, 'hotspot'), ...results])
-        } else if (account) {
-          setResults([toSearchResult(account, 'account'), ...results])
+      if (hotspot) {
+        setResults([toSearchResult(hotspot, 'hotspot'), ...results])
+      } else if (account) {
+        setResults([toSearchResult(account, 'account'), ...results])
+      }
+    },
+    [results],
+  )
+
+  const searchBlock = useCallback(
+    async (term) => {
+      try {
+        const block = await client.blocks.get(term)
+        if (block) {
+          setResults([toSearchResult(block, 'block'), ...results])
         }
-      },
-      500,
-      { trailing: true },
-    ),
+      } catch {}
+    },
+    [results],
   )
 
-  const searchBlock = useRef(
-    debounce(
-      async (term) => {
-        try {
-          const block = await client.blocks.get(term)
-          if (block) {
-            setResults([toSearchResult(block, 'block'), ...results])
-          }
-        } catch {}
-      },
-      500,
-      { trailing: true },
-    ),
+  const searchTransaction = useCallback(
+    async (term) => {
+      try {
+        const txn = await client.transactions.get(term)
+        if (txn) {
+          setResults([toSearchResult(txn, 'transaction'), ...results])
+        }
+      } catch {}
+    },
+    [results],
   )
 
-  const searchTransaction = useRef(
+  const doSearch = useRef(
     debounce(
-      async (term) => {
-        try {
-          const txn = await client.transactions.get(term)
-          if (txn) {
-            setResults([toSearchResult(txn, 'transaction'), ...results])
-          }
-        } catch {}
+      (term) => {
+        if (isPositiveInt(term)) {
+          // if term is an integer, assume it's a block height
+          searchBlock(parseInt(term))
+        } else if (Address.isValid(term)) {
+          // if it's a valid address, it could be a hotspot or an account
+          searchAddress(term)
+        } else if (term.length > 20 && isBase64Url(term)) {
+          // if term is a base64 string, it could be a:
+          // block hash
+          searchBlock(term)
+          // transaction hash
+          searchTransaction(term)
+        } else {
+          searchName(term.replace(/-/g, ' '))
+        }
       },
       500,
       { trailing: true },
@@ -85,22 +124,7 @@ const useSearchResults = () => {
     }
 
     const trimmedTerm = term.trim()
-
-    if (isPositiveInt(trimmedTerm)) {
-      // if term is an integer, assume it's a block height
-      searchBlock.current(parseInt(trimmedTerm))
-    } else if (Address.isValid(trimmedTerm)) {
-      // if it's a valid address, it could be a hotspot or an account
-      searchAddress.current(trimmedTerm)
-    } else if (trimmedTerm.length > 20 && isBase64Url(trimmedTerm)) {
-      // if term is a base64 string, it could be a:
-      // block hash
-      searchBlock.current(trimmedTerm)
-      // transaction hash
-      searchTransaction.current(trimmedTerm)
-    } else {
-      searchHotspot.current(trimmedTerm.replace(/-/g, ' '))
-    }
+    doSearch.current(trimmedTerm)
   }, [term])
 
   return { term, setTerm, results }
@@ -115,6 +139,7 @@ const makeSearchResultKey = (item, type) => {
   switch (type) {
     case 'hotspot':
     case 'account':
+    case 'validator':
       return item.address
 
     case 'block':

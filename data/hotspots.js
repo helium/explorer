@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useAsync } from 'react-async-hook'
 import useSWR from 'swr'
-import qs from 'qs'
 import client, { TAKE_MAX } from './client'
 import { fetchAll } from '../utils/pagination'
 import camelcaseKeys from 'camelcase-keys'

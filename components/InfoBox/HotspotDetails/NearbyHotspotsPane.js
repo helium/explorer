@@ -26,7 +26,8 @@ const NearbyHotspotsPane = ({ hotspot }) => {
       <NearbyHotspotsList
         hotspots={hotspots || []}
         isLoading={loading}
-        title={`Nearby Hotspots (${nearbyHotspots?.length})`}
+        title="Nearby Hotspots"
+        showCount
         // description="[Nearby Hotspots description text]"
       />
     </div>

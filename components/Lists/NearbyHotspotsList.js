@@ -16,6 +16,7 @@ const NearbyHotspotsList = ({
   isLoading = true,
   title,
   description,
+  showCount,
 }) => {
   const { selectHotspot } = useSelectedHotspot()
 
@@ -62,6 +63,7 @@ const NearbyHotspotsList = ({
     <BaseList
       items={hotspots}
       listHeaderTitle={title}
+      listHeaderShowCount={showCount}
       listHeaderDescription={description}
       keyExtractor={keyExtractor}
       linkExtractor={linkExtractor}

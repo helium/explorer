@@ -11,7 +11,13 @@ import {
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
 
-const WitnessesList = ({ witnesses, isLoading = true, title, description }) => {
+const WitnessesList = ({
+  witnesses,
+  isLoading = true,
+  title,
+  description,
+  showCount,
+}) => {
   const { selectHotspot } = useSelectedHotspot()
 
   const handleSelectHotspot = useCallback((hotspot) => {
@@ -60,6 +66,7 @@ const WitnessesList = ({ witnesses, isLoading = true, title, description }) => {
       items={witnesses}
       listHeaderTitle={title}
       listHeaderDescription={description}
+      listHeaderShowCount={showCount}
       keyExtractor={keyExtractor}
       linkExtractor={linkExtractor}
       onSelectItem={handleSelectHotspot}

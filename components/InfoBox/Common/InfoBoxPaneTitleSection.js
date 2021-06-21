@@ -2,10 +2,7 @@ import classNames from 'classnames'
 import useToggle from '../../../utils/useToggle'
 import ChevronIcon from '../../Icons/Chevron'
 
-const InfoBoxPaneTitleSection = ({
-  listHeaderTitle,
-  listHeaderDescription,
-}) => {
+const InfoBoxPaneTitleSection = ({ title, description }) => {
   const [showDescription, toggleDescription] = useToggle()
 
   return (
@@ -17,9 +14,9 @@ const InfoBoxPaneTitleSection = ({
     >
       <div className="flex items-center justify-between">
         <span className="font-sans text-800 font-medium text-sm md:text-base">
-          {listHeaderTitle}
+          {title}
         </span>
-        {listHeaderDescription && listHeaderTitle && (
+        {description && title && (
           <button
             className="px-2 py-1 bg-gray-300 shadow-sm rounded-full border-transparent border-solid border outline-none focus:border-gray-400"
             onClick={toggleDescription}
@@ -40,9 +37,9 @@ const InfoBoxPaneTitleSection = ({
         )}
       </div>
       {/* if there's a description AND a title, hide the description behind the "Details button", otherwise if there's a description and NO title just show the description */}
-      {(showDescription || (listHeaderDescription && !listHeaderTitle)) && (
+      {(showDescription || (description && !title)) && (
         <span className="font-sans text-gray-600 text-xs md:text-sm pt-1">
-          {listHeaderDescription}
+          {description}
         </span>
       )}
     </div>

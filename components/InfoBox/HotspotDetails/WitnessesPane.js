@@ -18,7 +18,8 @@ const WitnessesPane = ({ hotspot }) => {
       <WitnessesList
         witnesses={witnesses || []}
         isLoading={loading}
-        title={`Witnesses (${witnesses?.length})`}
+        title="Witnesses"
+        showCount
         // description="[Witnesses description text]"
       />
     </div>

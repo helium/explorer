@@ -15,6 +15,9 @@ const HexHotspotsList = ({
   fetchMore,
   isLoadingMore,
   hasMore,
+  title,
+  description,
+  showCount,
 }) => {
   const { selectHotspot } = useSelectedHotspot()
 
@@ -34,6 +37,9 @@ const HexHotspotsList = ({
   return (
     <BaseList
       items={hotspots}
+      listHeaderTitle={title}
+      listHeaderShowCount={showCount}
+      listHeaderDescription={description}
       keyExtractor={keyExtractor}
       linkExtractor={linkExtractor}
       onSelectItem={handleSelectHotspot}

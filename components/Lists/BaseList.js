@@ -9,6 +9,7 @@ const BaseList = ({
   items,
   listHeaderTitle,
   listHeaderDescription,
+  listHeaderShowCount,
   keyExtractor,
   linkExtractor,
   isLoading = true,
@@ -141,8 +142,12 @@ const BaseList = ({
     >
       {(listHeaderTitle || listHeaderDescription) && (
         <InfoBoxPaneTitleSection
-          listHeaderTitle={listHeaderTitle}
-          listHeaderDescription={listHeaderDescription}
+          title={
+            listHeaderShowCount
+              ? `${listHeaderTitle} (${items.length})`
+              : listHeaderTitle
+          }
+          description={listHeaderDescription}
         />
       )}
       {items.map((item, i, { length }) => baseRenderItem(item, i, length))}

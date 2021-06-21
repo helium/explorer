@@ -72,7 +72,7 @@ const ActivityList = ({
         <span className="flex items-center space-x-1">
           <img src="/images/clock.svg" className="w-3.5 h-3.5" />
           <span>
-            <TimeAgo date={txn.time * 1000} timeStyle="mini" /> ago
+            <TimeAgo date={txn.time * 1000} timeStyle="mini" />
           </span>
         </span>
       )

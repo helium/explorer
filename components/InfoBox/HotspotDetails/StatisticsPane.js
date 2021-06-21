@@ -24,8 +24,6 @@ const StatisticsPane = ({ hotspot }) => {
     'week',
   )
 
-  console.log('hotspot', hotspot)
-
   return (
     <InfoBoxPaneContainer>
       <RelayedWarningWidget

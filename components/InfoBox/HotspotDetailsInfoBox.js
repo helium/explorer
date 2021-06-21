@@ -11,7 +11,6 @@ import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import { formatLocation } from '../Hotspots/utils'
 import CopyableText from '../Common/CopyableText'
-import AccountIcon from '../AccountIcon'
 import AccountAddress from '../AccountAddress'
 import SkeletonList from '../Lists/SkeletonList'
 import FlagLocation from '../Common/FlagLocation'
@@ -104,6 +103,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading }) => {
   return (
     <InfoBox
       title={title}
+      metaTitle={`Hotspot ${animalHash(address)}`}
       subtitles={generateSubtitles(hotspot)}
       breadcrumbs={generateBreadcrumbs(hotspot)}
     >

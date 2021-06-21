@@ -58,6 +58,7 @@ const HexDetailsInfoBox = () => {
           {index}
         </div>
       }
+      metaTitle={`Hex ${index}`}
       breadcrumbs={[{ title: 'Hotspots', path: '/hotspots' }]}
       subtitles={generateSubtitles(hotspots?.[0])}
     >

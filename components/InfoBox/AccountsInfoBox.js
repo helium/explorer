@@ -3,7 +3,7 @@ import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 
 const AccountsInfoBox = () => {
   return (
-    <InfoBox title="Overview">
+    <InfoBox title="Accounts" metaTitle="Accounts">
       <TabNavbar>
         <TabPane title="Overview" key="overview">
           <div />

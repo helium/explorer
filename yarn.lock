@@ -13168,12 +13168,27 @@ react-error-overlay@^6.0.7:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.9.tgz#3c743010c9359608c375ecd6bc76f35d93995b0a"
   integrity sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==
 
+react-fast-compare@^3.1.1:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
+  integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
+
 react-grid-system@^6.3.1:
   version "6.4.2"
   resolved "https://registry.yarnpkg.com/react-grid-system/-/react-grid-system-6.4.2.tgz#3caea1feb3daa10306fb2a6ff3e3ff83ba352676"
   integrity sha512-zQxczLIAUyFfXJOySQlQEptwZj65hxyoEvS+siTupFW76a3AKUhqrhMJ90xKDcSCF9jb9D71zjoPw13Xe1+EKA==
   dependencies:
     prop-types "^15.7.2"
+
+react-helmet@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-6.1.0.tgz#a750d5165cb13cf213e44747502652e794468726"
+  integrity sha512-4uMzEY9nlDlgxr61NL3XbKRy1hEkXmKNXhjbAIOVw5vcFrsdYbH2FEwcNyWvWinl103nXgzYNlns9ca+8kFiWw==
+  dependencies:
+    object-assign "^4.1.1"
+    prop-types "^15.7.2"
+    react-fast-compare "^3.1.1"
+    react-side-effect "^2.1.0"
 
 react-hotkeys@^2.0.0:
   version "2.0.0"
@@ -13374,6 +13389,11 @@ react-scripts@3.4.0:
     workbox-webpack-plugin "4.3.1"
   optionalDependencies:
     fsevents "2.1.2"
+
+react-side-effect@^2.1.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-side-effect/-/react-side-effect-2.1.1.tgz#66c5701c3e7560ab4822a4ee2742dee215d72eb3"
+  integrity sha512-2FoTQzRNTncBVtnzxFOk2mCpcfxQpenBMbk5kSVBg5UcPqV9fRbgY2zhb7GTWWOlpFmAxhClBDlIq8Rsubz1yQ==
 
 react-smooth@^1.0.5:
   version "1.0.5"

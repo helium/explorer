@@ -1,5 +1,5 @@
-const WarningWidget = ({ warningCondition, warningText, link, linkText }) => {
-  if (!warningCondition) return null
+const WarningWidget = ({ isVisible = true, warningText, link, linkText }) => {
+  if (!isVisible) return null
 
   return (
     <a

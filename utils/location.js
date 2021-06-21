@@ -28,6 +28,11 @@ export const findBounds = (arrayOfLatsAndLons) => {
   }
 }
 
+export const paddingPoints = ({ lat, lng }, paddingDistance = 0.01) => [
+  { lat: lat + paddingDistance, lng },
+  { lat: lat - paddingDistance, lng },
+]
+
 export const emptyGeoJSON = geoJSON.parse([], {
   Point: ['lat', 'lng'],
 })

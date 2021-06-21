@@ -112,7 +112,11 @@ const BlockDetailsInfoBox = () => {
   }
 
   return (
-    <InfoBox title={title} subtitles={generateSubtitles(block)}>
+    <InfoBox
+      title={title}
+      metaTitle={`Block ${parseInt(height).toLocaleString()}`}
+      subtitles={generateSubtitles(block)}
+    >
       {block.txns?.length > 0 ? (
         <>
           <TransactionTypesWidget txns={block.txns} />

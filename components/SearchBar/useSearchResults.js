@@ -22,7 +22,7 @@ const useSearchResults = () => {
   const searchValidator = useCallback(async (term) => {
     try {
       const fetchResult = await fetch(
-        `https://testnet-api.helium.wtf/v1/validators/name?${qs.stringify({
+        `https://api.helium.io/v1/validators/name?${qs.stringify({
           search: term,
         })}`,
       )

@@ -14,15 +14,15 @@ import WarningWidget from '../Widgets/WarningWidget'
 const TICKER = 'HNT'
 
 const ValidatorsInfoBox = () => {
-  const { data: validators = [] } = useApi('/validators')
+  const { data: validators } = useApi('/validators')
   const { consensusGroups } = useElections()
-  const isLoading = useMemo(() => validators.length === 0, [validators.length])
+  const isLoading = useMemo(() => validators === undefined, [validators])
   const recentGroups = useMemo(() => consensusGroups?.recentElections || [], [
     consensusGroups,
   ])
 
   const activeValidators = useMemo(
-    () => validators.filter((v) => v?.status?.online === 'online').length,
+    () => validators?.filter((v) => v?.status?.online === 'online')?.length,
     [validators],
   )
 
@@ -30,7 +30,7 @@ const ValidatorsInfoBox = () => {
     validators,
   ])
 
-  const consensusGroup = useMemo(() => validators.filter((v) => v.elected), [
+  const consensusGroup = useMemo(() => validators?.filter((v) => v.elected), [
     validators,
   ])
 
@@ -45,21 +45,25 @@ const ValidatorsInfoBox = () => {
             />
             <Widget
               title="Total Validators"
-              value={validators.length.toLocaleString()}
+              value={validators?.length?.toLocaleString()}
               isLoading={isLoading}
               linkTo="/validators/all"
             />
             <Widget
               title="Consensus Size"
               value={validators
-                .filter((v) => v.elected)
-                .length.toLocaleString()}
+                ?.filter((v) => v.elected)
+                ?.length?.toLocaleString()}
               isLoading={isLoading}
               linkTo="/validators/consensus"
             />
             <Widget
               title="% Online"
-              value={formatPercent(activeValidators / validators.length)}
+              value={formatPercent(
+                validators?.length > 0
+                  ? activeValidators / validators.length
+                  : 0,
+              )}
               isLoading={isLoading}
             />
             <Widget
@@ -67,7 +71,7 @@ const ValidatorsInfoBox = () => {
               value={formatLargeNumber(totalStaked)}
               isLoading={isLoading}
             />
-            <VersionsWidget validators={validators} />
+            <VersionsWidget validators={validators} isLoading={isLoading} />
           </InfoBoxPaneContainer>
         </TabPane>
         <TabPane title="Consensus Group" key="consensus" path="consensus">

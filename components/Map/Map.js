@@ -19,6 +19,7 @@ import useApi from '../../hooks/useApi'
 import useSelectedHex from '../../hooks/useSelectedHex'
 import { trackEvent } from '../../hooks/useGA'
 import ScaleLegend from './ScaleLegend'
+import ZoomControls from './ZoomControls'
 
 const maxZoom = 14
 const minZoom = 2
@@ -218,6 +219,7 @@ const CoverageMap = () => {
       }}
       onMouseMove={handleMouseMove}
     >
+      <ZoomControls />
       <ScaleLegend />
       <HexCoverageLayer
         minZoom={minZoom}

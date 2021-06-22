@@ -103,6 +103,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading }) => {
   return (
     <InfoBox
       title={title}
+      metaTitle={`Hotspot ${animalHash(address)}`}
       subtitles={generateSubtitles(hotspot)}
       breadcrumbs={generateBreadcrumbs(hotspot)}
     >

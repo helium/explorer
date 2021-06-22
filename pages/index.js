@@ -1,6 +1,7 @@
 import React from 'react'
 import dynamic from 'next/dynamic'
 import { useHistory, useLocation } from 'react-router'
+import { Helmet } from 'react-helmet'
 import Header from '../components/Nav/Header'
 import Page from '../components/CoverageMap/Page'
 import MetaTags from '../components/AppLayout/MetaTags'
@@ -37,15 +38,16 @@ const Index = ({ coverageUrl }) => {
         />
       </Head>
       <MetaTags
-        title={'Coverage Map'}
+        // title={'Coverage Map'}
         description={`View an interactive map of the Helium network and all the hotspots currently active around the world`}
         openGraphImageAbsoluteUrl={
           'https://explorer.helium.com/images/og/coverage.png'
         }
         url={'https://explorer.helium.com/coverage'}
       />
-      <title>Helium Network - Coverage</title>
-      {/* <span id="explorer-map"> */}
+      <Helmet>
+        <title>Helium Explorer</title>
+      </Helmet>
       <Header activeNav="coverage" />
       {/* </span> */}
       <Map coverageUrl={coverageUrl} />

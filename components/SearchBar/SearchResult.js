@@ -6,6 +6,7 @@ import Pill from '../Common/Pill'
 import { capitalize } from 'lodash'
 import { useCallback } from 'react'
 import AccountAddress from '../AccountAddress'
+import ValidatorFlagLocation from '../Validators/ValidatorFlagLocation'
 
 const SearchResult = ({ result, onSelect, selected = false }) => {
   const handleSelect = useCallback(() => {
@@ -17,6 +18,18 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
       <BaseSearchResult
         title={formatHotspotName(result.item.name)}
         subtitle={<FlagLocation geocode={result.item.geocode} />}
+        type={result.type}
+        selected={selected}
+        onSelect={handleSelect}
+      />
+    )
+  }
+
+  if (result.type === 'validator') {
+    return (
+      <BaseSearchResult
+        title={formatHotspotName(result.item.name)}
+        subtitle={<ValidatorFlagLocation geocode={result.item.geo} />}
         type={result.type}
         selected={selected}
         onSelect={handleSelect}

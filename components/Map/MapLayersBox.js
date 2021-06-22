@@ -50,9 +50,9 @@ const MapLayersBox = () => {
   return (
     <div
       className={classNames(
-        'fixed bottom-0 right-6 p-4 transform-gpu transition-all duration-300 ease-in-out',
+        'fixed right-0 bottom-8 md:bottom-0 p-4 md:p-8 md:pr-4 transform-gpu transition-all duration-300 ease-in-out',
         {
-          'opacity-0': !showMapLayers,
+          'opacity-0 pointer-events-none': !showMapLayers,
         },
       )}
     >

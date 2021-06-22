@@ -3,7 +3,7 @@ import { useMediaQuery } from 'react-responsive'
 import ReactMapboxGl from 'react-mapbox-gl'
 import { setRTLTextPlugin } from 'mapbox-gl'
 import { useAsync } from 'react-async-hook'
-import { findBounds } from '../../utils/location'
+import { findBounds, paddingPoints } from '../../utils/location'
 import HotspotDetailLayer from './Layers/HotspotDetailLayer'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import useMapLayer from '../../hooks/useMapLayer'
@@ -16,6 +16,8 @@ import HexCoverageLayer from './Layers/HexCoverageLayer'
 import { hotspotToRes8 } from '../Hotspots/utils'
 import useApi from '../../hooks/useApi'
 import useSelectedHex from '../../hooks/useSelectedHex'
+import { trackEvent } from '../../hooks/useGA'
+import ScaleLegend from './ScaleLegend'
 
 const maxZoom = 14
 const minZoom = 2
@@ -30,7 +32,6 @@ const Mapbox = ReactMapboxGl({
   accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
   interactive: true,
   touchZoomRotate: true,
-  maxZoom: maxZoom,
   minZoom: minZoom,
 })
 
@@ -73,6 +74,10 @@ const CoverageMap = () => {
   const { data: validators } = useApi('/validators')
 
   useEffect(() => {
+    trackEvent('map_load')
+  }, [])
+
+  useEffect(() => {
     if (!currentPosition.coords) return
     setBounds(
       findBounds([
@@ -80,6 +85,10 @@ const CoverageMap = () => {
           lng: currentPosition.coords.longitude,
           lat: currentPosition.coords.latitude,
         },
+        ...paddingPoints({
+          lng: currentPosition.coords.longitude,
+          lat: currentPosition.coords.latitude,
+        }),
       ]),
     )
   }, [currentPosition.coords, currentPosition.timestamp])
@@ -100,6 +109,7 @@ const CoverageMap = () => {
         lng,
       })),
       { lat: selectedHotspot.lat, lng: selectedHotspot.lng },
+      ...paddingPoints({ lat: selectedHotspot.lat, lng: selectedHotspot.lng }),
     ])
     setBounds(selectionBounds)
   }, [selectedHotspot])
@@ -108,7 +118,10 @@ const CoverageMap = () => {
     if (!selectedHex) return
 
     const [lat, lng] = selectedHex.center
-    const selectionBounds = findBounds([{ lat, lng }])
+    const selectionBounds = findBounds([
+      { lat, lng },
+      ...paddingPoints({ lat, lng }),
+    ])
     setBounds(selectionBounds)
   }, [selectedHex])
 
@@ -121,6 +134,10 @@ const CoverageMap = () => {
         lng,
       })),
       { lat: selectedTxnHotspot.lat, lng: selectedTxnHotspot.lng },
+      ...paddingPoints({
+        lat: selectedTxnHotspot.lat,
+        lng: selectedTxnHotspot.lng,
+      }),
     ])
     setBounds(selectionBounds)
   }, [selectedTxnHotspot, selectedTxnParticipants])
@@ -200,6 +217,7 @@ const CoverageMap = () => {
       }}
       onMouseMove={handleMouseMove}
     >
+      <ScaleLegend />
       <HexCoverageLayer
         minZoom={minZoom}
         maxZoom={maxZoom}

@@ -32,6 +32,9 @@ const SearchBar = () => {
       if (result.type === 'hotspot') {
         selectHotspot(result.item.address)
       }
+      if (result.type === 'validator') {
+        history.push(`/validators/${result.item.address}`)
+      }
       if (result.type === 'account') {
         history.push(`/accounts/${result.item.address}`)
       }

@@ -45,7 +45,10 @@ const ExpandableListItem = ({
   ])
 
   return (
-    <div className="w-full flex flex-col" onClick={handleItemClick}>
+    <div
+      className="w-full flex flex-col cursor-pointer px-4 py-2"
+      onClick={handleItemClick}
+    >
       <div className="w-full flex justify-between">
         <div className="w-full">
           <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans">

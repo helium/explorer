@@ -20,8 +20,11 @@ const rewardTypeColor = {
 const ExpandedRewardContent = ({ txn }) => {
   return (
     <div className="flex flex-col items-start w-full space-y-1 my-0.5">
-      {txn.rewards.map((r) => (
-        <span className="mr-1 bg-gray-300 w-full px-2 py-1 flex rounded-md justify-between items-center">
+      {txn.rewards.map((r, i) => (
+        <span
+          key={i}
+          className="mr-1 bg-gray-300 w-full px-2 py-1 flex rounded-md justify-between items-center"
+        >
           <div className="flex items-start justify-start flex-col">
             <span className="text-black font-sans text-sm">
               {`+${r.amount.toString(3)}`}

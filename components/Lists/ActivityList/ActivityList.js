@@ -40,7 +40,7 @@ const ActivityList = ({
   const keyExtractor = useCallback((txn) => txn.hash, [])
 
   const linkExtractor = useCallback((txn) => {
-    if (isExpandable(txn)) return
+    if (isExpandable(txn)) return false
     return `/txns/${txn.hash}`
   }, [])
 
@@ -240,11 +240,16 @@ const ActivityList = ({
     [address, context, generateDetails, generateSubtitle, generateTitle],
   )
 
+  const expandableItem = useCallback((txn) => {
+    if (isExpandable(txn)) return true
+  }, [])
+
   return (
     <BaseList
       items={transactions}
       keyExtractor={keyExtractor}
       linkExtractor={linkExtractor}
+      expandableItem={expandableItem}
       onSelectItem={handleSelectTxn}
       isLoading={isLoading}
       renderItem={renderItem}
@@ -252,7 +257,7 @@ const ActivityList = ({
       fetchMore={fetchMore}
       isLoadingMore={isLoadingMore}
       hasMore={hasMore}
-      noPadding
+      itemPadding={false}
     />
   )
 }

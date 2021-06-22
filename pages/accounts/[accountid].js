@@ -43,8 +43,7 @@ const AccountView = ({ account }) => {
   const [hotspotsLoading, setLoadingHotspots] = useState(true)
   const [rewardsLoading, setLoadingRewards] = useState(true)
 
-  const isMakerAccount = account.makerName !== undefined
-  let makerAccountName = isMakerAccount ? account.makerName : ''
+  const [makerAccountName, setMakerAccountName] = useState('')
 
   useEffect(() => {
     async function getHotspots() {
@@ -90,6 +89,15 @@ const AccountView = ({ account }) => {
       setHotspots(hotspotsWithRewards)
       setLoadingRewards(false)
     }
+    const getMakerInfo = async () => {
+      try {
+        const makerName = await getMakerName(account.address)
+        if (makerName !== 'Unknown Maker') setMakerAccountName(makerName)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    getMakerInfo()
     getHotspots()
   }, [])
 
@@ -191,7 +199,7 @@ const AccountView = ({ account }) => {
         <Fade bottom delay={1000}>
           <Content style={{ maxWidth: 850, margin: '0 auto' }}>
             <div className="flex flex-col md:flex-row items-center justify-center">
-              {isMakerAccount && (
+              {makerAccountName !== '' && (
                 <Tooltip placement="bottom" title="This is a Maker Account">
                   <div className="mb-4 md:mb-0 mr-0 md:mr-5 flex flex-row items-center justify-start">
                     <ToolOutlined
@@ -271,13 +279,10 @@ export async function getServerSideProps({ params }) {
   const { accountid } = params
 
   let account
-  let makerName
   try {
     account = await client.accounts.get(accountid)
-    makerName = await getMakerName(account.address)
-    if (makerName !== 'Unknown Maker') account.makerName = makerName
   } catch (e) {
-    if (e.response.status === 404) {
+    if (e?.response?.status === 404) {
       // serve the 404 page if it's a 404 error, otherwise it'll throw the appropriate server error
       return { notFound: true }
     }

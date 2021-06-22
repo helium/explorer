@@ -72,8 +72,8 @@ const OverviewInfoBox = () => {
               linkTo="/market"
             />
             <Widget
-              title="TNT Staked"
-              tooltip="The amount of TNT being staked by ~Testnet~ Validators"
+              title="HNT Staked"
+              tooltip="The amount of HNT being staked by Validators"
               value={formatLargeNumber(totalStaked)}
               change={<Currency value={market?.price * 0} />}
               isLoading={!market}

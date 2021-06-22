@@ -145,11 +145,9 @@ const ActivityList = ({
                   <PaymentSubtitle
                     addressIsPayer
                     amount={txn.totalAmount.toString(2)}
-                    otherPartyString={
-                      txn.payments.length === 1
-                        ? txn.payments[0].payee
-                        : `${txn.payments.length} payees`
-                    }
+                    {...(txn.payments.length === 1
+                      ? { otherPartyAddress: txn.payments[0].payee }
+                      : { otherPartyString: `${txn.payments.length} payees` })}
                   />
                 ) : (
                   // this account was a recipient

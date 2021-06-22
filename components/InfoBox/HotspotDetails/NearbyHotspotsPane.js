@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { useAsync } from 'react-async-hook'
 import { fetchNearbyHotspots } from '../../../data/hotspots'
 import NearbyHotspotsList from '../../Lists/NearbyHotspotsList'
+import animalHash from 'angry-purple-tiger'
 
 const NearbyHotspotsPane = ({ hotspot }) => {
   const { result: nearbyHotspots, loading } = useAsync(fetchNearbyHotspots, [
@@ -27,8 +28,10 @@ const NearbyHotspotsPane = ({ hotspot }) => {
         hotspots={hotspots || []}
         isLoading={loading}
         title="Nearby Hotspots"
+        description={`Hotspots on the Helium network that are within an appropriate physical distance to witness ${animalHash(
+          hotspot.address,
+        )}'s beacons, or to have their beacons witnessed by it.`}
         showCount
-        // description="[Nearby Hotspots description text]"
       />
     </div>
   )

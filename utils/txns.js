@@ -134,19 +134,18 @@ export const getPocReceiptRole = (txn, address) => {
   if (txn.challenger === address) {
     return 'poc_challengers'
   }
-  let role = ''
-  txn.path.forEach((p) => {
-    if (p.challengee === address) {
-      role = 'poc_challengees'
-      return role
-    }
-    p.witnesses.forEach((w) => {
-      if (w.gateway === address) {
-        role = w.isValid ? 'poc_witnesses_valid' : 'poc_witnesses_invalid'
-        return role
-      }
-    })
-  })
 
-  return role
+  if (txn.path.some((p) => p.challengee === address)) {
+    return 'poc_challengees'
+  }
+
+  if (
+    txn.path.some((p) =>
+      p.witnesses.some((w) => w.gateway === address && w.isValid),
+    )
+  ) {
+    return 'poc_witnesses_valid'
+  }
+
+  return 'poc_witnesses_invalid'
 }

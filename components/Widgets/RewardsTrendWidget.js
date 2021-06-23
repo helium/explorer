@@ -3,19 +3,30 @@ import { LineChart, Line, YAxis, ResponsiveContainer, Tooltip } from 'recharts'
 import { chunk, maxBy, minBy, sumBy, takeRight } from 'lodash'
 import classNames from 'classnames'
 import { Balance, CurrencyType } from '@helium/currency'
+import LargeBalance from '../Common/LargeBalance'
 
-const RewardTooltip = ({ active, payload }) => {
+const RewardTooltip = ({ active, payload, showTarget = false }) => {
   if (active && payload && payload.length) {
-    const amount = Balance.fromFloat(
-      payload[0].value,
-      CurrencyType.networkToken,
-    )
+    let amount
+    let target
+
+    if (showTarget) {
+      amount = Balance.fromFloat(payload[1].value, CurrencyType.networkToken)
+      target = Balance.fromFloat(payload[0].value, CurrencyType.networkToken)
+    } else {
+      amount = Balance.fromFloat(payload[0].value, CurrencyType.networkToken)
+    }
 
     return (
-      <div className="bg-white opacity-90 backdrop-filter blur-md px-2 py-1">
-        <p className="text-sm font-sans font-medium text-darkgray-800">
-          {amount.toString(2)}
-        </p>
+      <div className="bg-white bg-opacity-95 backdrop-filter blur-md px-2 py-1 rounded-md shadow-md">
+        <div className="text-sm font-sans font-medium text-darkgray-800">
+          Amount: {amount.toString(2)}
+        </div>
+        {showTarget && (
+          <div className="text-sm font-sans font-medium text-darkgray-800">
+            Target: {target.toString(2)}
+          </div>
+        )}
       </div>
     )
   }
@@ -23,7 +34,7 @@ const RewardTooltip = ({ active, payload }) => {
   return null
 }
 
-const RewardsTrendWidget = ({ title, series = [] }) => {
+const RewardsTrendWidget = ({ title, series = [], showTarget = false }) => {
   const [firstValue, lastValue] = useMemo(() => {
     if (series.length <= 30) {
       return [0, sumBy(series, 'total')]
@@ -51,7 +62,7 @@ const RewardsTrendWidget = ({ title, series = [] }) => {
       <div className="w-1/3">
         <div className="text-gray-600 text-sm whitespace-nowrap">{title}</div>
         <div className="text-3xl font-medium my-1.5 tracking-tight">
-          {lastValue.toLocaleString()}
+          <LargeBalance value={lastValue} />
         </div>
         {firstValue > 0 && (
           <div
@@ -72,6 +83,15 @@ const RewardsTrendWidget = ({ title, series = [] }) => {
         <ResponsiveContainer width="100%" height="100%">
           <LineChart width={300} height={100} data={chartSeries}>
             <YAxis hide domain={[yMin, yMax]} />
+            {showTarget && (
+              <Line
+                type="monotone"
+                dataKey="target"
+                stroke="#D2D6DC"
+                strokeWidth={2}
+                dot={false}
+              />
+            )}
             <Line
               type="monotone"
               dataKey="total"
@@ -79,7 +99,7 @@ const RewardsTrendWidget = ({ title, series = [] }) => {
               strokeWidth={3}
               dot={false}
             />
-            <Tooltip content={<RewardTooltip />} />
+            <Tooltip content={<RewardTooltip showTarget={showTarget} />} />
           </LineChart>
         </ResponsiveContainer>
         <div className="absolute right-4 bottom-0 text-gray-550 text-xs">

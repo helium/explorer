@@ -10,6 +10,7 @@ import ValidatorsList from '../Lists/ValidatorsList'
 import useApi from '../../hooks/useApi'
 import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 import WarningWidget from '../Widgets/WarningWidget'
+import SkeletonList from '../Lists/SkeletonList'
 
 const TICKER = 'HNT'
 
@@ -76,18 +77,26 @@ const ValidatorsInfoBox = () => {
         </TabPane>
         <TabPane title="Consensus Group" key="consensus" path="consensus">
           <InfoBoxPaneContainer span={1} padding={false}>
-            <ValidatorsList
-              validators={consensusGroup}
-              recentGroups={recentGroups}
-            />
+            {isLoading ? (
+              <SkeletonList />
+            ) : (
+              <ValidatorsList
+                validators={consensusGroup}
+                recentGroups={recentGroups}
+              />
+            )}
           </InfoBoxPaneContainer>
         </TabPane>
         <TabPane title="All Validators" key="all" path="all">
           <InfoBoxPaneContainer span={1} padding={false}>
-            <ValidatorsList
-              validators={validators}
-              recentGroups={recentGroups}
-            />
+            {isLoading ? (
+              <SkeletonList />
+            ) : (
+              <ValidatorsList
+                validators={validators}
+                recentGroups={recentGroups}
+              />
+            )}
           </InfoBoxPaneContainer>
         </TabPane>
       </TabNavbar>

@@ -6,6 +6,7 @@ import AccountAddress from '../AccountAddress'
 import OverviewPane from './AccountDetails/OverviewPane'
 import ActivityPane from './Common/ActivityPane'
 import HotspotsPane from './AccountDetails/HotspotsPane'
+import ValidatorsPane from './AccountDetails/ValidatorsPane'
 import AccountIcon from '../AccountIcon'
 import { getMakerName } from '../Makers/utils'
 import MakerIcon from '../Icons/Maker'
@@ -59,6 +60,10 @@ const AccountDetailsInfoBox = () => {
 
         <TabPane title="Hotspots" key="hotspots" path="hotspots">
           <HotspotsPane address={address} />
+        </TabPane>
+
+        <TabPane title="Validators" key="validators" path="validators">
+          <ValidatorsPane address={address} />
         </TabPane>
       </TabNavbar>
     </InfoBox>

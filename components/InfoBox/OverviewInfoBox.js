@@ -59,15 +59,7 @@ const OverviewInfoBox = () => {
                 (Math.abs(Number(dataCredits?.totalMonth)) / 1.0e9).toFixed(2) +
                 ' bn'
               }
-              change={(dataCredits?.totalMonth * 0.00001).toLocaleString(
-                'en-US',
-                {
-                  style: 'currency',
-                  currency: 'USD',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                },
-              )}
+              change={<Currency value={dataCredits?.totalMonth * 0.00001} />}
               isLoading={!stats}
               linkTo="/market"
             />

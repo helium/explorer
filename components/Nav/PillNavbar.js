@@ -11,7 +11,7 @@ const NavItem = ({ title, active = false, onClick, type }) => {
     <span
       onClick={handleClick}
       className={classNames(
-        'py-1 px-2.5 flex font-medium text-base cursor-pointer whitespace-nowrap transition-all transform duration-200',
+        'py-1 px-2.5 mr-0 md:mr-1 flex font-medium text-sm md:text-base cursor-pointer whitespace-nowrap transition-all transform duration-200',
         {
           'text-gray-700': !active,
           'text-white rounded-full': active,
@@ -26,7 +26,7 @@ const NavItem = ({ title, active = false, onClick, type }) => {
 
 const PillNavbar = ({ navItems, activeItem, onClick }) => {
   return (
-    <div className="flex px-2 py-3 bg-white overflow-x-scroll no-scrollbar border-b border-gray-400 border-solid">
+    <div className="flex px-2 md:px-4 py-2 md:py-3 bg-white overflow-x-scroll no-scrollbar border-b border-gray-400 border-solid">
       {navItems.map((item) => (
         <NavItem
           key={item.key}

@@ -18,6 +18,7 @@ import { hotspotToRes8 } from '../Hotspots/utils'
 import useApi from '../../hooks/useApi'
 import useSelectedHex from '../../hooks/useSelectedHex'
 import { trackEvent } from '../../hooks/useGA'
+import ScaleLegend from './ScaleLegend'
 
 const maxZoom = 14
 const minZoom = 2
@@ -223,6 +224,7 @@ const CoverageMap = () => {
       }}
       onMouseMove={handleMouseMove}
     >
+      <ScaleLegend />
       <HexCoverageLayer
         minZoom={minZoom}
         maxZoom={maxZoom}

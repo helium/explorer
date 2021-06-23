@@ -78,19 +78,32 @@ const TransactionList = ({
   }, [])
 
   const renderSubtitle = useCallback((txn) => {
+    const timestamp = (
+      <span className="flex items-center space-x-1">
+        <img alt="" src="/images/clock.svg" className="h-3 w-auto" />
+        <Timestamp date={txn.time} className="tracking-tight" />
+      </span>
+    )
     switch (txn.type) {
       case 'poc_request_v1':
+        const address = txn.challengerOwner ? txn.challengerOwner : txn.owner
         return (
           <div className="flex items-center justify-end text-gray-600">
-            <AccountIcon size={12} address={txn.challengerOwner} />
-            <span className="pl-1 ">
-              <AccountAddress
-                clickable={false}
-                address={txn.challengerOwner}
-                truncate={4}
-                mono
-              />
-            </span>
+            {address ? (
+              <>
+                <AccountIcon size={12} address={address} />
+                <span className="pl-1 ">
+                  <AccountAddress
+                    clickable={false}
+                    address={address}
+                    truncate={4}
+                    mono
+                  />
+                </span>
+              </>
+            ) : (
+              timestamp
+            )}
           </div>
         )
       case 'add_gateway_v1':
@@ -205,12 +218,7 @@ const TransactionList = ({
           </span>
         )
       default:
-        return (
-          <span className="flex items-center space-x-1">
-            <img alt="" src="/images/clock.svg" className="h-3 w-auto" />
-            <Timestamp date={txn.time} className="tracking-tight" />
-          </span>
-        )
+        return timestamp
     }
   }, [])
 

@@ -3,12 +3,17 @@ import { groupBy } from 'lodash'
 const CONFIG = {
   state_channel_open_v1: { color: '#E68B00', name: 'State Channel Open' },
   price_oracle_v1: { color: 'rebeccapurple', name: 'Price Oracle' },
-  state_channel_close_v1: { color: 'teal', name: 'Packets Transferred' },
-  payment_v1: { color: 'green', name: 'Payment' },
-  payment_v2: { color: 'cyan', name: 'Payment' },
+  state_channel_close_v1: {
+    color: 'teal',
+    hotspotContextName: 'Transferred Packets',
+    name: 'State Channel Close',
+  },
+  payment_v1: { color: '#1D91F8', name: 'Payment' },
+  payment_v2: { color: '#1D91F8', name: 'Payment' },
   poc_request_v1: {
     color: '#29D391',
-    name: 'PoC Challenger',
+    name: 'PoC Challenge',
+    hotspotContextName: 'Created Challenge',
     tooltip: 'Proof of Coverage Challenge',
   },
   poc_receipts_v1: {
@@ -19,16 +24,19 @@ const CONFIG = {
   rewards_v1: {
     color: '#E68B00',
     name: 'Mining Reward',
+    hotspotContextName: 'Received Mining Rewards',
     tooltip: 'Mining Reward (v1)',
   },
   rewards_v2: {
     color: '#E68B00',
     name: 'Mining Reward',
+    hotspotContextName: 'Received Mining Rewards',
     tooltip: 'Mining Reward (v2)',
   },
   consensus_group_v1: {
     color: '#FF6666',
     name: 'Consensus Election',
+    hotspotContextName: 'Participated in Consensus',
     tooltip: 'Consensus Election',
   },
   transfer_hotspot_v1: {
@@ -39,41 +47,49 @@ const CONFIG = {
   poc_challengers: {
     color: '#BE73FF',
     name: 'Challenger',
+    hotspotContextName: 'Created Challenge',
     tooltip: 'PoC challenger',
   },
   poc_challengees: {
     color: '#595A9A',
     name: 'Beacon',
+    hotspotContextName: 'Sent Beacon',
     tooltip: 'PoC challengee',
   },
   assert_location_v1: {
     color: '#16CEE8',
     name: 'Assert Location',
+    hotspotContextName: 'Asserted Location',
     tooltip: 'Assert Location Transaction (v1)',
   },
   assert_location_v2: {
     color: '#16CEE8',
     name: 'Assert Location',
+    hotspotContextName: 'Asserted Location',
     tooltip: 'Assert Location Transaction (v2)',
   },
   add_gateway_v1: {
     color: '#8597BB',
     name: 'Add Hotspot',
+    hotspotContextName: 'Added to Blockchain',
     tooltip: 'Add Gateway Transaction',
   },
   poc_witnesses: {
     color: '#FFC769',
     name: 'Witness',
+    hotspotContextName: 'Witnessed Beacon',
     tooltip: 'PoC witness',
   },
   poc_witnesses_valid: {
     color: '#FFC769',
     name: 'Witness',
+    hotspotContextName: 'Witnessed Beacon',
     tooltip: 'PoC witness (Valid)',
   },
   poc_witnesses_invalid: {
     color: '#717E98',
     name: 'Witness',
+    hotspotContextName: 'Witnessed Beacon (Invalid)',
     tooltip: 'PoC witness (Invalid)',
   },
   securities: {
@@ -82,10 +98,14 @@ const CONFIG = {
     tooltip: 'Mining Reward for Security Token holders',
   },
   token_burn_v1: { color: '#E86161', name: 'Token Burn' },
-  default: { color: 'blue' },
+  default: { color: '#474DFF' },
 }
 
-export const getTxnTypeName = (id) => {
+export const getTxnTypeName = (id, context = 'block') => {
+  if (context === 'hotspot')
+    return CONFIG[id]?.hotspotContextName || CONFIG[id]?.name || id
+  if (context === 'account')
+    return CONFIG[id]?.accountContextName || CONFIG[id]?.name || id
   return CONFIG[id]?.name || id
 }
 
@@ -108,4 +128,24 @@ export const splitTransactionsByTypes = (txns) => {
 export const formattedTxnHash = (hash) => {
   // TODO add optional truncation amount
   return `${hash.slice(0, 5)}...${hash.slice(-5)}`
+}
+
+export const getPocReceiptRole = (txn, address) => {
+  if (txn.challenger === address) {
+    return 'poc_challengers'
+  }
+
+  if (txn.path.some((p) => p.challengee === address)) {
+    return 'poc_challengees'
+  }
+
+  if (
+    txn.path.some((p) =>
+      p.witnesses.some((w) => w.gateway === address && w.isValid),
+    )
+  ) {
+    return 'poc_witnesses_valid'
+  }
+
+  return 'poc_witnesses_invalid'
 }

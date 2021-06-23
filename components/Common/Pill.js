@@ -7,9 +7,16 @@ const Pill = ({ title, color = 'gray', tooltip }) => (
       className={classNames(
         'px-2 py-1 text-white text-xs font-medium rounded-full',
         {
+          // generic colors based on status
           'bg-green-500': color === 'green',
           'bg-gray-700': color === 'gray',
           'bg-yellow-500': color === 'yellow',
+          // colors based on reward type
+          'bg-reward-witness': color === 'witness',
+          'bg-reward-challenger': color === 'challenger',
+          'bg-reward-challengee': color === 'challengee',
+          'bg-reward-data': color === 'data',
+          'bg-reward-consensus': color === 'consensus',
         },
       )}
     >

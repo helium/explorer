@@ -9,6 +9,7 @@ import { h3ToGeo } from 'h3-js'
 import { formatDistance, calculateDistance } from '../../../utils/distance'
 import { Link } from 'react-router-i18n'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
+import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
 
 const BeaconDetailsPane = ({ txn }) => {
   const [challenger, setChallenger] = useState()
@@ -25,8 +26,16 @@ const BeaconDetailsPane = ({ txn }) => {
 
   return (
     <InfoBoxPaneContainer>
-      <HotspotWidget title="Challenger" hotspot={challenger} />
-      <HotspotWidget title="Target" hotspot={target} />
+      <HotspotWidget
+        title="Challenger"
+        titleIconPath="/images/challenger-icon.svg"
+        hotspot={challenger}
+      />
+      <HotspotWidget
+        title="Beaconer"
+        titleIconPath="/images/poc_receipt_icon.svg"
+        hotspot={target}
+      />
       <WitnessesWidget path={txn.path[0]} />
     </InfoBoxPaneContainer>
   )
@@ -35,10 +44,18 @@ const BeaconDetailsPane = ({ txn }) => {
 const WitnessesWidget = ({
   path: { witnesses = [], challengeeLon, challengeeLat },
 }) => {
+  const { selectHotspot } = useSelectedHotspot()
   return (
     <div className={classNames(`bg-gray-200 p-3 rounded-lg col-span-2`)}>
       <div className="text-gray-600 text-sm leading-loose">
-        {witnesses.length} Witnesses
+        <span className="flex items-center justify-start">
+          <img
+            alt=""
+            src="/images/witness-yellow-mini.svg"
+            className="h-4 w-auto mr-1"
+          />
+          {witnesses.length} Witnesses
+        </span>
       </div>
       <div className="space-y-2">
         {witnesses.map((w) => {
@@ -48,6 +65,7 @@ const WitnessesWidget = ({
               <div>
                 <Link
                   to={`/hotspots/${w.gateway}`}
+                  onClick={() => selectHotspot(w.gateway)}
                   className="text-base leading-tight tracking-tight text-navy-1000 hover:text-navy-400 transition-all duration-150"
                 >
                   {animalHash(w.gateway)}

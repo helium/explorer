@@ -47,7 +47,6 @@ const useSelectedHotspot = () => {
           witnesses: filteredWitnesses,
         },
       })
-      history.push(`/hotspots/${hotspot.address}`)
     },
     [dispatch, history],
   )

@@ -75,7 +75,7 @@ const OverviewInfoBox = () => {
               title="HNT Staked"
               tooltip="The amount of HNT being staked by Validators"
               value={formatLargeNumber(totalStaked)}
-              change={<Currency value={market?.price * 0} />}
+              change={<Currency value={market?.price * totalStaked} />}
               isLoading={!market}
               linkTo="/validators"
             />

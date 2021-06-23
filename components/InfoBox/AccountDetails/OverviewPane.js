@@ -15,6 +15,7 @@ const OverviewPane = () => {
     TAKE_MAX,
   )
 
+  console.log('account', account)
   return (
     <InfoBoxPaneContainer>
       <Widget
@@ -45,7 +46,9 @@ const OverviewPane = () => {
         title="Staked HNT"
         titleIcon={<img src="/images/validator.svg" />}
         isLoading={isLoading}
-        value={maybeShowNone('0')}
+        value={maybeShowNone(
+          account?.stakedBalance?.toString(2, { showTicker: false }),
+        )}
       />
       <Widget
         title="Hotspots"

@@ -57,7 +57,7 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
             'pointer-events-auto flex w-full md:h-auto max-h-650px md:min-h-325px',
             {
               'md:max-h-5/10 h-5/10': subtitles,
-              'md:max-h-6/10 h-6/10': !subtitles,
+              'md:max-h-8/10 h-8/10': !subtitles,
             },
           )}
         >

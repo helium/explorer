@@ -37,7 +37,7 @@ const ValidatorDetailsInfoBox = () => {
         path: `/accounts/${validator.owner}`,
       },
     ]
-  }, [isLoading, validator.geo, validator.owner])
+  }, [isLoading, validator])
 
   return (
     <InfoBox

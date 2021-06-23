@@ -3,7 +3,6 @@ import { useMemo } from 'react'
 import InfoBox from './InfoBox'
 import TrendWidget from '../Widgets/TrendWidget'
 import StatWidget from '../Widgets/StatWidget'
-import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import HalveningCountdownWidget from '../Widgets/HalvingCountdownWidget'
 import useApi from '../../hooks/useApi'
 import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
@@ -70,7 +69,6 @@ const OverviewInfoBox = () => {
           linkTo="/validators"
         />
         <HalveningCountdownWidget />
-
         <Widget
           title="Total Beacons"
           value={stats?.challenges?.toLocaleString()}

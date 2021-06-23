@@ -25,7 +25,7 @@ const Widget = ({
 }) => {
   const inner = (
     <>
-      <div className="w-full">
+      <div className="w-full text-gray-800">
         <div className="flex items-center space-x-1">
           {titleIcon}
           <div className="text-gray-600 text-sm">{title}</div>
@@ -115,6 +115,7 @@ const Widget = ({
           },
         )}
         to={linkTo}
+        onClick={onClick}
       >
         {inner}
       </Link>

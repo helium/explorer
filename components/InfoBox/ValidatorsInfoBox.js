@@ -10,6 +10,7 @@ import ValidatorsList from '../Lists/ValidatorsList'
 import useApi from '../../hooks/useApi'
 import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 import WarningWidget from '../Widgets/WarningWidget'
+import SkeletonList from '../Lists/SkeletonList'
 
 const TICKER = 'HNT'
 
@@ -42,6 +43,7 @@ const ValidatorsInfoBox = () => {
             <WarningWidget
               warningText="Note: Validators are not currently active."
               subtitle="When activated, Validators will take over block production from Hotspots"
+              link="https://blog.helium.com/validator-staking-is-now-live-on-helium-mainnet-2c429d0f7f4e"
             />
             <Widget
               title="Total Validators"
@@ -76,18 +78,26 @@ const ValidatorsInfoBox = () => {
         </TabPane>
         <TabPane title="Consensus Group" key="consensus" path="consensus">
           <InfoBoxPaneContainer span={1} padding={false}>
-            <ValidatorsList
-              validators={consensusGroup}
-              recentGroups={recentGroups}
-            />
+            {isLoading ? (
+              <SkeletonList />
+            ) : (
+              <ValidatorsList
+                validators={consensusGroup}
+                recentGroups={recentGroups}
+              />
+            )}
           </InfoBoxPaneContainer>
         </TabPane>
         <TabPane title="All Validators" key="all" path="all">
           <InfoBoxPaneContainer span={1} padding={false}>
-            <ValidatorsList
-              validators={validators}
-              recentGroups={recentGroups}
-            />
+            {isLoading ? (
+              <SkeletonList />
+            ) : (
+              <ValidatorsList
+                validators={validators}
+                recentGroups={recentGroups}
+              />
+            )}
           </InfoBoxPaneContainer>
         </TabPane>
       </TabNavbar>

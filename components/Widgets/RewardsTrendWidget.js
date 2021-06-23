@@ -85,7 +85,7 @@ const RewardsTrendWidget = ({ title, series = [], showTarget = false }) => {
             <YAxis hide domain={[yMin, yMax]} />
             {showTarget && (
               <Line
-                type="monotone"
+                type="step"
                 dataKey="target"
                 stroke="#D2D6DC"
                 strokeWidth={2}

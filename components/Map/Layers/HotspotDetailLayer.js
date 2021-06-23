@@ -35,15 +35,19 @@ const HotspotDetailLayer = ({ hotspot, witnesses = [] }) => {
           'line-opacity': 0.3,
         }}
       >
-        {witnesses.map((w) => (
-          <Feature
-            key={`witness-line-${w.address}`}
-            coordinates={[
-              [w.lng, w.lat],
-              [hotspot.lng, hotspot.lat],
-            ]}
-          />
-        ))}
+        {hotspot &&
+          hotspot.lat &&
+          hotspot.lng &&
+          hotspot.location &&
+          witnesses.map((w) => (
+            <Feature
+              key={`witness-line-${w.address}`}
+              coordinates={[
+                [w.lng, w.lat],
+                [hotspot.lng, hotspot.lat],
+              ]}
+            />
+          ))}
       </Layer>
       <GeoJSONLayer
         id="witnesses"

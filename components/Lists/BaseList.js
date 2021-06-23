@@ -19,6 +19,8 @@ const BaseList = ({
   fetchMore,
   isLoadingMore,
   hasMore,
+  itemPadding = true,
+  expandableItem = () => false,
 }) => {
   const [sentryRef] = useInfiniteScroll({
     loading: isLoadingMore,
@@ -43,7 +45,7 @@ const BaseList = ({
   )
 
   const baseRenderItem = useCallback(
-    (item, i, length) => {
+    (item, i, { length }) => {
       const inner = renderItem ? (
         renderItem(item)
       ) : (
@@ -67,19 +69,19 @@ const BaseList = ({
         </>
       )
 
-      if (linkExtractor) {
+      if (linkExtractor && !expandableItem(item)) {
         return (
           <Link
-            to={linkExtractor ? linkExtractor(item) : ''}
+            to={linkExtractor(item)}
             onClick={handleSelectItem(item)}
             key={keyExtractor(item)}
             className={classNames(
               'bg-white',
               'hover:bg-gray-200 cursor-pointer transition-all duration-75',
               'relative flex',
-              'px-4 py-2',
               'border-solid border-gray-500 border-b',
               {
+                'px-4 py-2': itemPadding,
                 'border-t-0': i !== 0 && i !== length - 1,
               },
             )}
@@ -96,9 +98,9 @@ const BaseList = ({
             'bg-white',
             'hover:bg-gray-200 transition-all duration-75',
             'relative flex',
-            'px-4 py-2',
-            'border-solid border-gray-500 border-t',
+            'border-solid border-gray-500 border-b',
             {
+              'px-4 py-2': itemPadding,
               'border-t-0': i !== 0 && i !== length - 1,
             },
           )}
@@ -108,6 +110,7 @@ const BaseList = ({
       )
     },
     [
+      expandableItem,
       handleSelectItem,
       keyExtractor,
       linkExtractor,
@@ -122,7 +125,7 @@ const BaseList = ({
     return <SkeletonList />
   }
 
-  if (items.length === 0) {
+  if (items && items.length === 0) {
     return (
       <div className="flex items-center justify-center text-gray-600 py-6 text-base">
         {blankTitle}

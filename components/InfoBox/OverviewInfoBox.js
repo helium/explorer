@@ -12,8 +12,6 @@ import Currency from '../Common/Currency'
 import { useMarket } from '../../data/market'
 import { useStats } from '../../data/stats'
 import { useDataCredits } from '../../data/datacredits'
-import { useNetworkRewards } from '../../data/rewards'
-import RewardsTrendWidget from '../Widgets/RewardsTrendWidget'
 
 const OverviewInfoBox = () => {
   const { data: hotspots } = useApi('/metrics/hotspots')
@@ -22,7 +20,6 @@ const OverviewInfoBox = () => {
   const { market } = useMarket()
   const { stats } = useStats()
   const { dataCredits } = useDataCredits()
-  const { rewards: networkRewards } = useNetworkRewards()
 
   const totalStaked = useMemo(() => sumBy(validators, 'stake') / 100000000, [
     validators,
@@ -59,12 +56,7 @@ const OverviewInfoBox = () => {
             (Math.abs(Number(dataCredits?.totalMonth)) / 1.0e9).toFixed(2) +
             ' bn'
           }
-          change={(dataCredits?.totalMonth * 0.00001).toLocaleString('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
+          change={<Currency value={dataCredits?.totalMonth * 0.00001} />}
           isLoading={!stats}
           linkTo="/market"
         />
@@ -72,7 +64,7 @@ const OverviewInfoBox = () => {
           title="HNT Staked"
           tooltip="The amount of HNT being staked by Validators"
           value={formatLargeNumber(totalStaked)}
-          change={<Currency value={market?.price * 0} />}
+          change={<Currency value={market?.price * totalStaked} />}
           isLoading={!market}
           linkTo="/validators"
         />
@@ -88,11 +80,6 @@ const OverviewInfoBox = () => {
           value={validators.length.toLocaleString()}
           isLoading={!validators}
           linkTo="/validators"
-        />
-        <RewardsTrendWidget
-          title="Network Rewards"
-          series={networkRewards}
-          showTarget
         />
       </InfoBoxPaneContainer>
     </InfoBox>

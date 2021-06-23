@@ -2,6 +2,7 @@ import { useParams } from 'react-router'
 import { useAccount } from '../../../data/accounts'
 import { TAKE_MAX } from '../../../data/client'
 import { useHotspots } from '../../../data/hotspots'
+import { useAccountValidators } from '../../../data/validators'
 import QrWidget from '../../Widgets/QrWidget'
 import Widget from '../../Widgets/Widget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
@@ -14,9 +15,13 @@ const OverviewPane = () => {
     address,
     TAKE_MAX,
   )
+  const { validators, isLoading: isLoadingValidators } = useAccountValidators(
+    address,
+  )
 
   return (
     <InfoBoxPaneContainer>
+      <QrWidget address={address} />
       <Widget
         title="HNT Balance"
         isLoading={isLoading}
@@ -45,7 +50,9 @@ const OverviewPane = () => {
         title="Staked HNT"
         titleIcon={<img src="/images/validator.svg" />}
         isLoading={isLoading}
-        value={maybeShowNone('0')}
+        value={maybeShowNone(
+          account?.stakedBalance?.toString(2, { showTicker: false }),
+        )}
       />
       <Widget
         title="Hotspots"
@@ -53,7 +60,12 @@ const OverviewPane = () => {
         value={maybeShowNone(hotspots.length)}
         linkTo={`/accounts/${address}/hotspots`}
       />
-      <QrWidget address={address} />
+      <Widget
+        title="Validators"
+        isLoading={isLoadingValidators}
+        value={maybeShowNone(validators?.length)}
+        linkTo={`/accounts/${address}/validators`}
+      />
     </InfoBoxPaneContainer>
   )
 }

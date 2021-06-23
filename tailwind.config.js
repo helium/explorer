@@ -27,6 +27,9 @@ module.exports = {
       transparent: 'transparent',
       white: '#FFFFFF',
       black: '#000000',
+      blue: {
+        500: '#1D91F8',
+      },
       'reward-scale': {
         0: '#FF6666',
         0.2: '#FC8745',
@@ -61,6 +64,7 @@ module.exports = {
       orange: {
         300: '#FF9D66',
         400: '#DA8F32',
+        600: '#b97d1d',
       },
       yellow: {
         400: '#f4cb5e',
@@ -90,6 +94,13 @@ module.exports = {
       bluegray: {
         100: '#E9EAFF2',
       },
+      reward: {
+        witness: '#FFC769',
+        challenger: '#BE73FF',
+        challengee: '#1d91f8',
+        data: 'teal',
+        consensus: '#FF6666',
+      },
     },
     borderWidth: {
       DEFAULT: '1px',
@@ -109,7 +120,10 @@ module.exports = {
         '120p': '120%',
       },
       height: {
+        '5/10': '50vh',
+        '4/10': '40vh',
         '6/10': '60vh',
+        '8/10': '80vh',
       },
       minHeight: {
         '1/2': '50vh',
@@ -119,6 +133,7 @@ module.exports = {
         'vh-minus-nav': 'calc(100vh - 80px)',
         '5/10': '50vh',
         '6/10': '60vh',
+        '8/10': '80vh',
         '80p': '80%',
         '90p': '90%',
         '550px': '550px',

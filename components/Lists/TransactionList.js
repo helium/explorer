@@ -1,10 +1,11 @@
 import { useCallback } from 'react'
-import Image from 'next/image'
 import Timestamp from 'react-timestamp'
 import BaseList from './BaseList'
-import useSelectedTxn from '../../hooks/useSelectedTxn'
 import { getTxnTypeName } from '../../utils/txns'
 import animalHash from 'angry-purple-tiger'
+import AccountIcon from '../AccountIcon'
+import AccountAddress from '../AccountAddress'
+import ChevronIcon from '../Icons/Chevron'
 
 const TransactionList = ({
   transactions,
@@ -26,10 +27,49 @@ const TransactionList = ({
 
   const renderTitle = useCallback((txn) => {
     switch (txn.type) {
+      case 'poc_request_v1':
+        return (
+          <span className="flex items-center">
+            <span className="flex items-center text-black font-sans font-medium">
+              {animalHash(txn.challenger)}
+            </span>
+          </span>
+        )
       case 'poc_receipts_v1':
         return (
+          <span className="flex items-center">
+            <span className="flex items-center text-black font-sans font-medium">
+              {animalHash(txn.path[0].challengee)}
+            </span>
+          </span>
+        )
+      case 'add_gateway_v1':
+        return (
           <span className="flex items-center text-black font-sans font-medium">
-            {animalHash(txn.path[0].challengee)}
+            {animalHash(txn.gateway)}
+          </span>
+        )
+      case 'assert_location_v1':
+      case 'assert_location_v2':
+        return (
+          <span className="flex items-center text-black font-sans font-medium">
+            {animalHash(txn.gateway)}
+          </span>
+        )
+      case 'payment_v1':
+        return (
+          <span className="flex items-center">
+            <span className="flex items-center text-black font-sans font-medium">
+              {txn.amount.toString(2)}
+            </span>
+          </span>
+        )
+      case 'payment_v2':
+        return (
+          <span className="flex items-center">
+            <span className="flex items-center text-black font-sans font-medium">
+              {txn.totalAmount.toString(2)}
+            </span>
           </span>
         )
       default:
@@ -38,16 +78,62 @@ const TransactionList = ({
   }, [])
 
   const renderSubtitle = useCallback((txn) => {
+    const timestamp = (
+      <span className="flex items-center space-x-1">
+        <img alt="" src="/images/clock.svg" className="h-3 w-auto" />
+        <Timestamp date={txn.time} className="tracking-tight" />
+      </span>
+    )
     switch (txn.type) {
+      case 'poc_request_v1':
+        const address = txn.challengerOwner ? txn.challengerOwner : txn.owner
+        return (
+          <div className="flex items-center justify-end text-gray-600">
+            {address ? (
+              <>
+                <AccountIcon size={12} address={address} />
+                <span className="pl-1 ">
+                  <AccountAddress
+                    clickable={false}
+                    address={address}
+                    truncate={4}
+                    mono
+                  />
+                </span>
+              </>
+            ) : (
+              timestamp
+            )}
+          </div>
+        )
+      case 'add_gateway_v1':
+        return (
+          <div className="flex items-center justify-end text-gray-600">
+            <AccountIcon size={12} address={txn.owner} />
+            <span className="pl-1 ">
+              <AccountAddress
+                clickable={false}
+                address={txn.owner}
+                truncate={4}
+                mono
+              />
+            </span>
+          </div>
+        )
       case 'poc_receipts_v1':
         return (
           <span className="flex items-center">
-            <img src="/images/poc_receipt_icon.svg" className="h-3 w-auto" />
+            <img
+              alt=""
+              src="/images/challenger-icon.svg"
+              className="h-3 w-auto"
+            />
             <span className="ml-1.5 whitespace-nowrap text-sm font-sans">
               {animalHash(txn.challenger)}
             </span>
             <span className="ml-3 flex flex-row items-center justify-start">
               <img
+                alt=""
                 src="/images/witness-yellow-mini.svg"
                 className="h-3 w-auto"
               />
@@ -57,14 +143,82 @@ const TransactionList = ({
             </span>
           </span>
         )
-      // TODO: add all other common txn types here as cases
-      default:
+      case 'assert_location_v1':
+      case 'assert_location_v2':
         return (
           <span className="flex items-center space-x-1">
-            <img src="/images/clock.svg" className="h-3 w-auto" />
-            <Timestamp date={txn.time} className="tracking-tight" />
+            <img
+              alt=""
+              src="/images/location-hex.svg"
+              className="h-3 w-auto mr-1"
+            />
+            {txn.location}
           </span>
         )
+      case 'payment_v1':
+        return (
+          <span className="flex items-center space-x-2">
+            <div className="flex items-center justify-end text-gray-600">
+              <AccountIcon size={12} address={txn.payer} />
+              <span className="pl-1 ">
+                <AccountAddress
+                  clickable={false}
+                  address={txn.payer}
+                  truncate={4}
+                  mono
+                />
+              </span>
+            </div>
+            <ChevronIcon className="text-gray-600 rotate-90 transform h-3 w-auto" />
+            <div className="flex items-center justify-end text-gray-600">
+              <AccountIcon size={12} address={txn.payee} />
+              <span className="pl-1 ">
+                <AccountAddress
+                  clickable={false}
+                  address={txn.payee}
+                  truncate={4}
+                  mono
+                />
+              </span>
+            </div>
+          </span>
+        )
+      case 'payment_v2':
+        return (
+          <span className="flex items-center space-x-2">
+            <div className="flex items-center justify-end text-gray-600">
+              <AccountIcon size={12} address={txn.payer} />
+              <span className="pl-1 ">
+                <AccountAddress
+                  clickable={false}
+                  address={txn.payer}
+                  truncate={4}
+                  mono
+                />
+              </span>
+            </div>
+            <ChevronIcon className="text-gray-600 rotate-90 transform h-3 w-auto" />
+            {txn.payments.length === 1 ? (
+              <div className="flex items-center justify-end text-gray-600">
+                <AccountIcon size={12} address={txn.payments[0].payee} />
+                <span className="pl-1 ">
+                  <AccountAddress
+                    clickable={false}
+                    address={txn.payments[0].payee}
+                    truncate={4}
+                    mono
+                  />
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center justify-end text-gray-600">
+                {txn.payments.length} payees
+              </div>
+            )}
+          </span>
+        )
+      default:
+        return timestamp
     }
   }, [])
 

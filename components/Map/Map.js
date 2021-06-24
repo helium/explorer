@@ -19,6 +19,7 @@ import useApi from '../../hooks/useApi'
 import useSelectedHex from '../../hooks/useSelectedHex'
 import { trackEvent } from '../../hooks/useGA'
 import ScaleLegend from './ScaleLegend'
+import ZoomControls from './ZoomControls'
 
 const maxZoom = 14
 const minZoom = 2
@@ -165,10 +166,6 @@ const CoverageMap = () => {
       const targetHotspot = await fetchHotspot(target)
       setSelectedTxnHotspot(targetHotspot)
       setSelectedTxnParticipants([])
-    } else if (selectedTxn?.type === 'consensus_group_v1') {
-      const members = await fetchConsensusHotspots(txn.height)
-      setSelectedTxnHotspot(undefined)
-      setSelectedTxnParticipants(members)
     } else {
       setSelectedTxnHotspot(undefined)
       setSelectedTxnParticipants([])
@@ -224,6 +221,7 @@ const CoverageMap = () => {
       }}
       onMouseMove={handleMouseMove}
     >
+      <ZoomControls />
       <ScaleLegend />
       <HexCoverageLayer
         minZoom={minZoom}

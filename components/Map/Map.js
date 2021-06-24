@@ -160,10 +160,6 @@ const CoverageMap = () => {
       const targetHotspot = await fetchHotspot(target)
       setSelectedTxnHotspot(targetHotspot)
       setSelectedTxnParticipants([])
-    } else if (selectedTxn?.type === 'consensus_group_v1') {
-      const members = await fetchConsensusHotspots(txn.height)
-      setSelectedTxnHotspot(undefined)
-      setSelectedTxnParticipants(members)
     } else {
       setSelectedTxnHotspot(undefined)
       setSelectedTxnParticipants([])

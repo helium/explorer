@@ -14,10 +14,9 @@ const versionColor = (version, index) => {
   return green
 }
 
-const VersionsWidget = ({ validators }) => {
+const VersionsWidget = ({ validators = [], isLoading = false }) => {
   const versionCounts = countBy(validators, 'versionHeartbeat')
   const totalValidators = validators.length
-  const isLoading = useMemo(() => validators.length === 0, [validators.length])
 
   return (
     <div className="bg-gray-200 p-3 rounded-lg col-span-2">
@@ -51,7 +50,7 @@ const VersionsWidget = ({ validators }) => {
         ) : (
           <span className="font-mono text-gray-800 text-sm">
             Latest Version:
-            {maxBy(validators, 'versionHeartbeat').versionHeartbeat}
+            {maxBy(validators, 'versionHeartbeat')?.versionHeartbeat || ' N/A'}
           </span>
         )}
       </div>

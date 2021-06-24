@@ -12,7 +12,21 @@ const RewardScaleWidget = ({ hotspot }) => {
     : 'N/A'
   return (
     <Widget
-      title="Reward Scaling"
+      title="Transmit Scale"
+      tooltip={
+        <>
+          <div>
+            Transmit scale is a multiplier that is applied to rewards of any
+            Hotspots that witness you. The scale also affects how many rewards
+            you receive as a Challengee.
+          </div>
+          <div style={{ marginTop: '10px' }}>
+            Low Transmit scale does not mean your Hotspot earnings will be low.
+            Make sure you have a great setup so you can witness Hotspots with
+            1.0 Transmit scales.
+          </div>
+        </>
+      }
       value={valueString}
       icon={
         <Hex

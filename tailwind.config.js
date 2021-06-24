@@ -101,6 +101,9 @@ module.exports = {
         data: 'teal',
         consensus: '#FF6666',
       },
+      txn: {
+        stake: '#a235fa',
+      },
     },
     borderWidth: {
       DEFAULT: '1px',

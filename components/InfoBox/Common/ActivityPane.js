@@ -16,6 +16,7 @@ const filtersByContext = {
   account: {
     'All Activity': [],
     Payments: ['payment_v1', 'payment_v2'],
+    Stakes: ['stake_validator_v1'],
     'Hotspot Transfers': ['transfer_hotspot_v1'],
     'Token Burns': ['token_burn_v1'],
   },

@@ -1,5 +1,7 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-i18n'
+import FeedbackBubble from '../FeedbackBubble'
+import FeedbackIcon from '../Icons/Feedback'
 
 const NavLink = ({ href, title, className, onClick }) => (
   <Link
@@ -46,6 +48,14 @@ const NavLinks = ({ className, onNavLinkClick, navLinkClasses }) => {
         className={navLinkClasses}
         onClick={onNavLinkClick}
       />
+      <FeedbackBubble className="hidden md:flex -mr-3">
+        <div className="bg-navy-400 hover:bg-navy-300 px-3 py-1 cursor-pointer rounded-lg">
+          <span className="text-sm text-white flex items-center">
+            Feedback
+            <FeedbackIcon className="ml-1 h-4 w-4 text-white" />
+          </span>
+        </div>
+      </FeedbackBubble>
     </div>
   )
 }

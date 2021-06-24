@@ -4,6 +4,9 @@ import AccountWidget from '../../Widgets/AccountWidget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
 const GenericObjectWidget = ({ title, value }) => {
+  if (value === null) {
+    return <Widget title={title} value={'null'} span={2} emptyValue />
+  }
   if (Array.isArray(value)) {
     if (value.length === 0) {
       return <Widget title={title} value={'Empty array'} span={2} emptyValue />

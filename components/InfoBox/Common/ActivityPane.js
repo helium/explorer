@@ -2,15 +2,23 @@ import classNames from 'classnames'
 import debounce from 'lodash.debounce'
 import { useEffect, useRef, useState, memo, useCallback } from 'react'
 import { useActivity } from '../../../data/activity'
-import ActivityList from '../../Lists/ActivityList'
+import ActivityList from '../../Lists/ActivityList/ActivityList'
 import PillNavbar from '../../Nav/PillNavbar'
 
-const filters = {
-  'All Activity': [],
-  Rewards: ['rewards_v1', 'rewards_v2'],
-  Beacons: ['poc_receipts_v1'],
-  Data: ['state_channel_close_v1'],
-  Consensus: ['consensus_group_v1'],
+const filtersByContext = {
+  hotspot: {
+    'All Activity': [],
+    Rewards: ['rewards_v1', 'rewards_v2'],
+    Beacons: ['poc_receipts_v1'],
+    Data: ['state_channel_close_v1'],
+    Consensus: ['consensus_group_v1'],
+  },
+  account: {
+    'All Activity': [],
+    Payments: ['payment_v1', 'payment_v2'],
+    'Hotspot Transfers': ['transfer_hotspot_v1'],
+    'Token Burns': ['token_burn_v1'],
+  },
 }
 
 const ActivityPane = ({ context, address }) => {
@@ -18,6 +26,8 @@ const ActivityPane = ({ context, address }) => {
   const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
   const [filter, setFilter] = useState('All Activity')
+
+  const filters = filtersByContext[context]
 
   const {
     transactions,
@@ -75,13 +85,18 @@ const ActivityPane = ({ context, address }) => {
         )}
       >
         <PillNavbar
-          navItems={Object.keys(filters)}
+          navItems={Object.entries(filters).map(([key, value]) => ({
+            key,
+            value,
+          }))}
           activeItem={filter}
           onClick={handleUpdateFilter}
         />
       </div>
       <div className="grid grid-flow-row grid-cols-1">
         <ActivityList
+          context={context}
+          address={address}
           transactions={transactions}
           isLoading={isLoadingInitial}
           isLoadingMore={isLoadingMore}

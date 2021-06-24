@@ -11,16 +11,19 @@ import useApi from '../../hooks/useApi'
 import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 import WarningWidget from '../Widgets/WarningWidget'
 import SkeletonList from '../Lists/SkeletonList'
+import StatWidget from '../Widgets/StatWidget'
 
 const TICKER = 'HNT'
 
 const ValidatorsInfoBox = () => {
   const { data: validators } = useApi('/validators')
+  const { data: stats } = useApi('/metrics/validators')
   const { consensusGroups } = useElections()
   const isLoading = useMemo(() => validators === undefined, [validators])
   const recentGroups = useMemo(() => consensusGroups?.recentElections || [], [
     consensusGroups,
   ])
+  console.log('stats', stats)
 
   const activeValidators = useMemo(
     () => validators?.filter((v) => v?.status?.online === 'online')?.length,
@@ -45,10 +48,10 @@ const ValidatorsInfoBox = () => {
               subtitle="When activated, Validators will take over block production from Hotspots"
               link="https://blog.helium.com/validator-staking-is-now-live-on-helium-mainnet-2c429d0f7f4e"
             />
-            <Widget
+            <StatWidget
               title="Total Validators"
-              value={validators?.length?.toLocaleString()}
-              isLoading={isLoading}
+              series={stats?.count}
+              isLoading={!stats}
               linkTo="/validators/all"
             />
             <Widget
@@ -72,6 +75,20 @@ const ValidatorsInfoBox = () => {
               title={`Total Staked (${TICKER})`}
               value={formatLargeNumber(totalStaked)}
               isLoading={isLoading}
+            />
+            <StatWidget
+              title="% Supply Staked"
+              series={stats?.stakedPct}
+              isLoading={!stats}
+              valueType="percent"
+              changeType="percent"
+            />
+            <StatWidget
+              title="Estimated APY"
+              series={stats?.apy}
+              isLoading={!stats}
+              valueType="percent"
+              changeType="percent"
             />
             <VersionsWidget validators={validators} isLoading={isLoading} />
           </InfoBoxPaneContainer>

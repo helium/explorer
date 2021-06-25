@@ -55,6 +55,8 @@ const MOBILE_PADDING = { top: 80, left: 10, right: 10, bottom: 400 }
 const MOBILE_PADDING_FULL = { top: 80, left: 10, right: 10, bottom: 80 }
 const DESKTOP_PADDING = { top: 200, left: 600, right: 200, bottom: 200 }
 
+const HIDE_TILES = process.env.NEXT_PUBLIC_HIDE_TILES === 'true'
+
 const CoverageMap = () => {
   const isDesktopOrLaptop = useMediaQuery({ minDeviceWidth: 768 })
   const map = useRef()
@@ -222,12 +224,14 @@ const CoverageMap = () => {
     >
       <ZoomControls />
       <ScaleLegend />
-      <HexCoverageLayer
-        minZoom={minZoom}
-        maxZoom={maxZoom}
-        onHexClick={handleHexClick}
-        layer={mapLayer}
-      />
+      {!HIDE_TILES && (
+        <HexCoverageLayer
+          minZoom={minZoom}
+          maxZoom={maxZoom}
+          onHexClick={handleHexClick}
+          layer={mapLayer}
+        />
+      )}
       <HotspotDetailLayer
         hotspot={selectedTxnHotspot || selectedHotspot}
         witnesses={

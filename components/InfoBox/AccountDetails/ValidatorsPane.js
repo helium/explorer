@@ -1,5 +1,4 @@
 import classNames from 'classnames'
-import { unionBy } from 'lodash'
 import { useMemo } from 'react'
 import { useElections } from '../../../data/consensus'
 import { useAccountValidators } from '../../../data/validators'

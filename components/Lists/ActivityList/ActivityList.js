@@ -11,9 +11,6 @@ import ActivityListItem from './ActivityListItem'
 import TimeAgo from 'react-time-ago'
 import ExpandedPoCReceiptContent from './ExpandedPoCReceiptContent'
 import ExpandedRewardContent from './ExpandedRewardContent'
-import AccountIcon from '../../AccountIcon'
-import AccountAddress from '../../AccountAddress'
-import ChevronIcon from '../../Icons/Chevron'
 import PaymentSubtitle from './PaymentSubtitle'
 
 const isExpandable = (txn) => {
@@ -70,7 +67,7 @@ const ActivityList = ({
     (txn) => {
       const timestamp = (
         <span className="flex items-center space-x-1">
-          <img src="/images/clock.svg" className="w-3.5 h-3.5" />
+          <img alt="" src="/images/clock.svg" className="w-3.5 h-3.5" />
           <span>
             <TimeAgo date={txn.time * 1000} timeStyle="mini" />
           </span>
@@ -83,7 +80,7 @@ const ActivityList = ({
             <>
               {timestamp}
               <span className="flex items-center justify-start">
-                <img src="/images/hnt.svg" className="w-4 mr-1" />
+                <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
                 <span>{`+${txn.totalAmount.toString(3)}`}</span>
               </span>
             </>
@@ -95,6 +92,7 @@ const ActivityList = ({
               {timestamp}
               <div className="flex items-center justify-start">
                 <img
+                  alt=""
                   src="/images/poc_receipt_icon.svg"
                   className="h-3 w-auto mr-1"
                 />
@@ -102,6 +100,7 @@ const ActivityList = ({
               </div>
               <div className="flex items-center justify-start">
                 <img
+                  alt=""
                   src="/images/witness-yellow-mini.svg"
                   className="h-3 w-auto mr-1"
                 />

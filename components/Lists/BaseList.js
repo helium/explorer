@@ -112,6 +112,7 @@ const BaseList = ({
     [
       expandableItem,
       handleSelectItem,
+      itemPadding,
       keyExtractor,
       linkExtractor,
       renderDetails,

@@ -1,6 +1,5 @@
 import { countBy, maxBy } from 'lodash'
 import { Tooltip } from 'antd'
-import { useMemo } from 'react'
 
 const makePercent = (count, total) => (count / total) * 100 + '%'
 

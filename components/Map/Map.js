@@ -212,7 +212,8 @@ const CoverageMap = () => {
 
   return (
     <Mapbox
-      style={`mapbox://styles/petermain/cko1ewc0p0st918lecxa5c8go`}
+      // eslint-disable-next-line react/style-prop-object
+      style="mapbox://styles/petermain/cko1ewc0p0st918lecxa5c8go"
       className="h-full w-screen overflow-hidden"
       fitBounds={bounds}
       fitBoundsOptions={fitBoundsOptions}

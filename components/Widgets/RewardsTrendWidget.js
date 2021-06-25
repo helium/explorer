@@ -18,7 +18,7 @@ const RewardTooltip = ({ active, payload, showTarget = false }) => {
     }
 
     return (
-      <div className="bg-white bg-opacity-95 backdrop-filter blur-md px-2 py-1 rounded-md shadow-md">
+      <div className="bg-white bg-opacity-95 px-2 py-1 rounded-md shadow-md">
         <div className="text-sm font-sans font-medium text-darkgray-800">
           Amount: {amount.toString(2)}
         </div>

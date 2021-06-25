@@ -997,3 +997,47 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.zoom-controls #zoomIn::after {
+  content: '+';
+}
+.zoom-controls #zoomOut::after {
+  content: '-';
+}
+.zoom-controls #zoomIn::after,
+.zoom-controls #zoomOut::after {
+  font-size: 16px;
+  font-family: 'Inter';
+  color: white;
+}
+
+.zoom-controls #zoomIn {
+  border-radius: 10px 10px 0 0 !important;
+}
+.zoom-controls #zoomOut {
+  border-radius: 0 0 10px 10px !important;
+}
+.zoom-controls #zoomIn,
+.zoom-controls #zoomOut {
+  background-color: rgba(16, 23, 37, 0.75) !important;
+  backdrop-filter: saturate(180%) blur(20px);
+  width: 30px !important;
+  height: 30px !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  opacity: 100% !important;
+  pointer-events: auto;
+}
+
+@media (min-width: 768px) {
+  .zoom-controls #zoomIn,
+  .zoom-controls #zoomOut {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .zoom-controls #zoomIn::after,
+  .zoom-controls #zoomOut::after {
+    font-size: 18px;
+  }
+}

@@ -12,13 +12,14 @@ import useInfoBox from '../../hooks/useInfoBox'
 import useGeolocation from '../../hooks/useGeolocation'
 import ValidatorsLayer from './Layers/ValidatorsLayer'
 import useSelectedTxn from '../../hooks/useSelectedTxn'
-import { fetchConsensusHotspots, fetchHotspot } from '../../data/hotspots'
+import { fetchHotspot } from '../../data/hotspots'
 import HexCoverageLayer from './Layers/HexCoverageLayer'
 import { hotspotToRes8 } from '../Hotspots/utils'
 import useApi from '../../hooks/useApi'
 import useSelectedHex from '../../hooks/useSelectedHex'
 import { trackEvent } from '../../hooks/useGA'
 import ScaleLegend from './ScaleLegend'
+import ZoomControls from './ZoomControls'
 
 const maxZoom = 14
 const minZoom = 2
@@ -54,6 +55,8 @@ const EU_CN_BOUNDS = [
 const MOBILE_PADDING = { top: 80, left: 10, right: 10, bottom: 400 }
 const MOBILE_PADDING_FULL = { top: 80, left: 10, right: 10, bottom: 80 }
 const DESKTOP_PADDING = { top: 200, left: 600, right: 200, bottom: 200 }
+
+const HIDE_TILES = process.env.NEXT_PUBLIC_HIDE_TILES === 'true'
 
 const CoverageMap = () => {
   const isDesktopOrLaptop = useMediaQuery({ minDeviceWidth: 768 })
@@ -165,10 +168,6 @@ const CoverageMap = () => {
       const targetHotspot = await fetchHotspot(target)
       setSelectedTxnHotspot(targetHotspot)
       setSelectedTxnParticipants([])
-    } else if (selectedTxn?.type === 'consensus_group_v1') {
-      const members = await fetchConsensusHotspots(txn.height)
-      setSelectedTxnHotspot(undefined)
-      setSelectedTxnParticipants(members)
     } else {
       setSelectedTxnHotspot(undefined)
       setSelectedTxnParticipants([])
@@ -224,13 +223,16 @@ const CoverageMap = () => {
       }}
       onMouseMove={handleMouseMove}
     >
+      <ZoomControls />
       <ScaleLegend />
-      <HexCoverageLayer
-        minZoom={minZoom}
-        maxZoom={maxZoom}
-        onHexClick={handleHexClick}
-        layer={mapLayer}
-      />
+      {!HIDE_TILES && (
+        <HexCoverageLayer
+          minZoom={minZoom}
+          maxZoom={maxZoom}
+          onHexClick={handleHexClick}
+          layer={mapLayer}
+        />
+      )}
       <HotspotDetailLayer
         hotspot={selectedTxnHotspot || selectedHotspot}
         witnesses={

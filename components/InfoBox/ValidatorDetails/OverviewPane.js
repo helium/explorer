@@ -1,12 +1,14 @@
 import { Tooltip } from 'antd'
-import { truncate, upperCase } from 'lodash'
+import { truncate, upperCase, upperFirst } from 'lodash'
 import { useParams } from 'react-router'
 import { useBlockHeight } from '../../../data/blocks'
 import { useValidator } from '../../../data/validators'
+import ValidatorStatusDot from '../../Validators/ValidatorStatusDot'
 import PenaltyWidget from '../../Widgets/PenaltyWidget'
 import TrendWidget from '../../Widgets/TrendWidget'
 import Widget from '../../Widgets/Widget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
+import { getStatus } from '../../Validators/utils'
 
 const OverviewPane = () => {
   const { address } = useParams()
@@ -15,7 +17,28 @@ const OverviewPane = () => {
 
   return (
     <InfoBoxPaneContainer>
-      <TrendWidget title="30D Earnings" periodLabel={''} series={[]} />
+      <Widget
+        title={'Status'}
+        isLoading={isLoading}
+        value={
+          <div className="flex items-center space-x-1.5">
+            <ValidatorStatusDot includeStatusText status={validator?.status} />
+            <span>
+              {upperFirst(
+                getStatus(
+                  validator?.status?.online,
+                  validator?.status?.listen_addrs,
+                ),
+              )}
+            </span>
+          </div>
+        }
+      />
+      <Widget
+        title="Last Heartbeat"
+        isLoading={isLoading || blockHeightLoading}
+        value={(height - validator?.lastHeartbeat).toLocaleString()}
+      />
       <Widget
         title="Total HNT Stake"
         isLoading={isLoading}
@@ -24,20 +47,17 @@ const OverviewPane = () => {
         )}
       />
       <Widget
-        title="Last Heartbeat"
-        isLoading={isLoading || blockHeightLoading}
-        value={(height - validator?.lastHeartbeat).toLocaleString()}
+        title="Version"
+        isLoading={isLoading}
+        value={validator?.versionHeartbeat}
       />
+      <TrendWidget title="30D Earnings" periodLabel={''} series={[]} />
       <PenaltyWidget validator={validator} />
       <Widget
         title="ISP"
         isLoading={isLoading}
+        span={2}
         value={<ISP validator={validator} />}
-      />
-      <Widget
-        title="Version"
-        isLoading={isLoading}
-        value={validator?.versionHeartbeat}
       />
     </InfoBoxPaneContainer>
   )

@@ -1,31 +1,13 @@
 import React from 'react'
 import classNames from 'classnames'
 import { Tooltip } from 'antd'
-
-function isRelay(listen_addrs) {
-  return !!(
-    listen_addrs &&
-    listen_addrs.length > 0 &&
-    listen_addrs[0].match('p2p-circuit')
-  )
-}
-
-const circleColor = {
-  relay: 'yellow',
-  online: 'green',
-  offline: 'gray',
-}
+import { getStatus, statusCircleColor } from './utils'
 
 const tooltipTitle = {
   relay:
     'Validators operating behind a relay are not directly reachable and may degrade consensus performance',
   online: 'Validator is online',
   offline: 'Validator is offline',
-}
-
-function getStatus(online, listen_addrs) {
-  if (isRelay(listen_addrs)) return 'relay'
-  return online
 }
 
 const ValidatorStatusDot = ({
@@ -36,7 +18,7 @@ const ValidatorStatusDot = ({
   },
 }) => {
   const status = getStatus(online, listen_addrs)
-  const color = circleColor[status]
+  const color = statusCircleColor[status]
   return (
     <Tooltip title={tooltipTitle[status]}>
       <div

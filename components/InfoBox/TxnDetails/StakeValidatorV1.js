@@ -10,7 +10,12 @@ const StakeValidatorV1 = ({ txn }) => {
       <Widget title={'Stake'} value={txn.stake.toString(2)} />
       <Widget title={'Fee'} value={txn.fee.toString()} />
       <ValidatorWidget title="Validator" address={txn.address} />
-      <Widget title={'Owner Signature'} value={txn.ownerSignature} span={2} />
+      <Widget
+        title={'Owner Signature'}
+        value={txn.ownerSignature}
+        copyableValue={txn.ownerSignature}
+        span={2}
+      />
     </InfoBoxPaneContainer>
   )
 }

@@ -85,10 +85,10 @@ const ValidatorsInfoBox = () => {
               changeType="percent"
             />
             <Widget
-              title="Estimated APY"
+              title="Estimated APR"
               value={formatPercent(calculateValidatorAPY(validators?.length))}
               isLoading={isLoading}
-              tooltip="Annual percent yield accounting for the halving on 8/1/21"
+              tooltip="Annual percent return accounting for the halving on 8/1/21. Note that unstaking tokens invokes a 250,000 block (~5 mo.) cooldown period where no returns will be earned before the staked tokens become liquid again. Earned rewards are immediately liquid."
             />
             <VersionsWidget validators={validators} isLoading={isLoading} />
           </InfoBoxPaneContainer>

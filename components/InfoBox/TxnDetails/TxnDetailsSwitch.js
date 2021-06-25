@@ -14,6 +14,7 @@ import {
   Fallback,
   TokenBurnV1,
   StakeValidatorV1,
+  ValidatorHeartbeatV1,
 } from './index'
 
 const TxnDetailsSwitch = ({ txn, isLoading }) => {
@@ -50,6 +51,8 @@ const TxnDetailsSwitch = ({ txn, isLoading }) => {
       return <TokenBurnV1 txn={txn} />
     case 'stake_validator_v1':
       return <StakeValidatorV1 txn={txn} />
+    case 'validator_heartbeat_v1':
+      return <ValidatorHeartbeatV1 txn={txn} />
     default:
       return <Fallback txn={txn} />
   }

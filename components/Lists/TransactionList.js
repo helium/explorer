@@ -73,6 +73,7 @@ const TransactionList = ({
           </span>
         )
       case 'stake_validator_v1':
+      case 'validator_heartbeat_v1':
         return (
           <span className="flex items-center">
             <span className="flex items-center text-black font-sans font-medium">
@@ -243,6 +244,24 @@ const TransactionList = ({
               <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
               {txn.stake.toString(2)}
             </span>
+          </span>
+        )
+      case 'validator_heartbeat_v1':
+        return (
+          <span className="flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-3 w-3 text-txn-heartbeat"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span className="ml-1">{txn.version}</span>
           </span>
         )
       default:

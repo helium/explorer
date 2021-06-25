@@ -103,6 +103,7 @@ module.exports = {
       },
       txn: {
         stake: '#a235fa',
+        heartbeat: '#A984FF',
       },
     },
     borderWidth: {

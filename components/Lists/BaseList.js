@@ -3,9 +3,13 @@ import useInfiniteScroll from 'react-infinite-scroll-hook'
 import SkeletonList from './SkeletonList'
 import classNames from 'classnames'
 import { Link } from 'react-router-i18n'
+import InfoBoxPaneTitleSection from '../InfoBox/Common/InfoBoxPaneTitleSection'
 
 const BaseList = ({
   items,
+  listHeaderTitle,
+  listHeaderDescription,
+  listHeaderShowCount,
   keyExtractor,
   linkExtractor,
   isLoading = true,
@@ -77,7 +81,7 @@ const BaseList = ({
             key={keyExtractor(item)}
             className={classNames(
               'bg-white',
-              'hover:bg-gray-200 cursor-pointer transition-all duration-75',
+              'hover:bg-gray-200 focus:bg-gray-200 cursor-pointer transition-all duration-75',
               'relative flex',
               'border-solid border-gray-500 border-b',
               {
@@ -96,7 +100,7 @@ const BaseList = ({
           key={keyExtractor(item)}
           className={classNames(
             'bg-white',
-            'hover:bg-gray-200 transition-all duration-75',
+            'hover:bg-gray-200 focus:bg-gray-200 transition-all duration-75',
             'relative flex',
             'border-solid border-gray-500 border-b',
             {
@@ -139,6 +143,16 @@ const BaseList = ({
         'p-3': padding,
       })}
     >
+      {(listHeaderTitle || listHeaderDescription) && (
+        <InfoBoxPaneTitleSection
+          title={
+            listHeaderShowCount
+              ? `${listHeaderTitle} (${items.length})`
+              : listHeaderTitle
+          }
+          description={listHeaderDescription}
+        />
+      )}
       {items.map((item, i, { length }) => baseRenderItem(item, i, length))}
       {fetchMore && hasMore && (
         <div

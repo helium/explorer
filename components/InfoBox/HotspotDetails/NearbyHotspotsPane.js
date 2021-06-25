@@ -28,9 +28,9 @@ const NearbyHotspotsPane = ({ hotspot }) => {
         hotspots={hotspots || []}
         isLoading={loading}
         title="Nearby Hotspots"
-        description={`Hotspots on the Helium network that are within an appropriate physical distance to witness ${animalHash(
+        description={`Hotspots that are close enough that ${animalHash(
           hotspot.address,
-        )}'s beacons, or to have their beacons witnessed by it.`}
+        )} could witness them or have its beacons witnessed by them. The probability of Hotspots interacting with each other depends on antenna location, position, and elevation.`}
         showCount
       />
     </div>

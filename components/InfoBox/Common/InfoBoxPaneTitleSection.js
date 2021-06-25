@@ -12,13 +12,17 @@ const InfoBoxPaneTitleSection = ({ title, description }) => {
         { 'pb-4': showDescription },
       )}
     >
-      <div className="flex items-center justify-between">
+      <div
+        className={classNames('flex items-center justify-between', {
+          'pb-2': showDescription,
+        })}
+      >
         <span className="font-sans text-800 font-medium text-sm md:text-base">
           {title}
         </span>
         {description && title && (
           <button
-            className="px-2 py-1 bg-gray-300 shadow-sm rounded-full border-transparent border-solid border outline-none focus:border-gray-400"
+            className="px-2 py-0.5 bg-gray-200 focus:bg-gray-300 rounded-md border-gray-400 border-solid border outline-none focus:border-gray-400"
             onClick={toggleDescription}
           >
             <span className="flex items-center justify-end">

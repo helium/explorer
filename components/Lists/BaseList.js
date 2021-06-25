@@ -81,7 +81,7 @@ const BaseList = ({
             key={keyExtractor(item)}
             className={classNames(
               'bg-white',
-              'hover:bg-gray-200 cursor-pointer transition-all duration-75',
+              'hover:bg-gray-200 focus:bg-gray-200 cursor-pointer transition-all duration-75',
               'relative flex',
               'border-solid border-gray-500 border-b',
               {
@@ -100,7 +100,7 @@ const BaseList = ({
           key={keyExtractor(item)}
           className={classNames(
             'bg-white',
-            'hover:bg-gray-200 transition-all duration-75',
+            'hover:bg-gray-200 focus:bg-gray-200 transition-all duration-75',
             'relative flex',
             'border-solid border-gray-500 border-b',
             {

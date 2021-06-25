@@ -97,6 +97,15 @@ const CONFIG = {
     name: 'Security Token Reward',
     tooltip: 'Mining Reward for Security Token holders',
   },
+  stake_validator_v1: {
+    color: '#a235fa',
+    name: 'Stake Validator',
+    accountContextName: 'Staked Validator',
+  },
+  validator_heartbeat_v1: {
+    color: '#A984FF',
+    name: 'Validator Heartbeat',
+  },
   token_burn_v1: { color: '#E86161', name: 'Token Burn' },
   default: { color: '#474DFF' },
 }

@@ -20,6 +20,7 @@ import useSelectedHex from '../../hooks/useSelectedHex'
 import { trackEvent } from '../../hooks/useGA'
 import ScaleLegend from './ScaleLegend'
 import ZoomControls from './ZoomControls'
+import MapControls from './MapControls'
 
 const maxZoom = 14
 const minZoom = 2
@@ -223,6 +224,8 @@ const CoverageMap = () => {
       }}
       onMouseMove={handleMouseMove}
     >
+      <MapControls />
+
       <ZoomControls />
       <ScaleLegend />
       {!HIDE_TILES && (

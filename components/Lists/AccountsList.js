@@ -31,7 +31,7 @@ const AccountsList = ({ accounts }) => {
         </BalanceContainer>
         <BalanceContainer title="Staked Balance">
           {a.stakedBalance.floatBalance === 0 ? (
-            <span>none</span>
+            <span className="text-gray-550">none</span>
           ) : (
             <>
               <img src="/images/hnt.svg" className="w-3" />
@@ -45,7 +45,7 @@ const AccountsList = ({ accounts }) => {
         </BalanceContainer>
         <BalanceContainer title="HST Balance">
           {a.secBalance.floatBalance === 0 ? (
-            <span>none</span>
+            <span className="text-gray-550">none</span>
           ) : (
             <>
               <img src="/images/hst.svg" className="w-3" />
@@ -101,7 +101,7 @@ const AccountsList = ({ accounts }) => {
 const BalanceContainer = ({ title, children }) => (
   <div className="w-1/3 flex flex-col">
     <span className="text-xs uppercase tracking-wider">{title}</span>
-    <span className="flex space-x-0.5">{children}</span>
+    <span className="flex space-x-0.5 text-black">{children}</span>
   </div>
 )
 

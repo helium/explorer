@@ -1,20 +1,23 @@
 import { round } from 'lodash'
 
-const LargeBalance = ({ value }) => {
-  if (!value) return 0
-
+const LargeBalance = ({ value, precision = 3 }) => {
   const BILLION = 1_000_000_000
   const MILLION = 1_000_000
+  const THOUSAND = 1_000
+
+  let formattedValue
 
   if (value >= BILLION) {
-    return [round(value / BILLION, 3), 'B'].join('')
+    formattedValue = [round(value / BILLION, precision), 'B'].join('')
+  } else if (value >= MILLION) {
+    formattedValue = [round(value / MILLION, precision), 'M'].join('')
+  } else if (value >= THOUSAND) {
+    formattedValue = [round(value / THOUSAND, precision), 'K'].join('')
+  } else {
+    formattedValue = round(value, precision).toLocaleString()
   }
 
-  if (value >= MILLION) {
-    return [round(value / MILLION, 3), 'M'].join('')
-  }
-
-  return round(value, 3)
+  return <span>{formattedValue}</span>
 }
 
 export default LargeBalance

@@ -8,8 +8,6 @@ import SkeletonList from '../Lists/SkeletonList'
 const AccountsInfoBox = () => {
   const { accounts, isLoading } = useRichestAccounts()
 
-  console.log('rich', accounts)
-
   return (
     <InfoBox title="Accounts" metaTitle="Accounts">
       <TabNavbar>

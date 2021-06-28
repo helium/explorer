@@ -93,9 +93,6 @@ const AccountsList = ({ accounts }) => {
       linkExtractor={linkExtractor}
       isLoading={false}
       renderItem={renderItem}
-      // renderTitle={renderTitle}
-      // renderSubtitle={renderSubtitle}
-      // renderDetails={renderDetails}
       blankTitle="No accounts"
     />
   )

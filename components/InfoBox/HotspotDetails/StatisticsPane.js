@@ -10,6 +10,8 @@ import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import ChecklistWidget from '../../Widgets/ChecklistWidget'
 import { isRelay } from '../../Hotspots/utils'
 import Widget from '../../Widgets/Widget'
+import { fetchWitnesses } from '../../../data/hotspots'
+import { useAsync } from 'react-async-hook'
 
 const StatisticsPane = ({ hotspot }) => {
   const { rewards } = useHotspotRewards(hotspot.address, 60, 'day')
@@ -24,6 +26,8 @@ const StatisticsPane = ({ hotspot }) => {
     'week',
   )
 
+  const { result: witnessesData } = useAsync(fetchWitnesses, [hotspot.address])
+
   return (
     <InfoBoxPaneContainer>
       <RelayedWarningWidget
@@ -32,7 +36,7 @@ const StatisticsPane = ({ hotspot }) => {
         link={'https://docs.helium.com/troubleshooting/network-troubleshooting'}
         linkText={'Get help'}
       />
-      <ChecklistWidget hotspot={hotspot} witnesses={witnesses} />
+      <ChecklistWidget hotspot={hotspot} witnesses={witnessesData} />
       <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
       <RewardScaleWidget hotspot={hotspot} />
       <StatusWidget hotspot={hotspot} />

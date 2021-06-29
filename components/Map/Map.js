@@ -21,6 +21,8 @@ import { trackEvent } from '../../hooks/useGA'
 import ScaleLegend from './ScaleLegend'
 import ZoomControls from './ZoomControls'
 import MapControls from './MapControls'
+import useMeasuringTool from '../../hooks/useMeasuringTool'
+import MeasuringPointsLayer from './Layers/MeasuringPointsLayer'
 
 const maxZoom = 14
 const minZoom = 2
@@ -72,6 +74,14 @@ const CoverageMap = () => {
   const { selectHex, selectedHex } = useSelectedHex()
   const { selectedTxn } = useSelectedTxn()
   const { currentPosition } = useGeolocation()
+  const {
+    measuring,
+    measurementStart,
+    measurementEnd,
+    setStartPoint,
+    setEndPoint,
+    clearPoints,
+  } = useMeasuringTool()
 
   const [bounds, setBounds] = useState(
     isDesktopOrLaptop ? US_EU_BOUNDS : US_BOUNDS,
@@ -193,24 +203,58 @@ const CoverageMap = () => {
       const features = map.current.queryRenderedFeatures(e.point, {
         layers: ['public.h3_res8'],
       })
-      if (features.length > 0) {
+      if (features.length > 0 && !measuring) {
         const [hexFeature] = features
         selectHex(hexFeature.properties.id)
       }
     },
-    [selectHex],
+    [selectHex, measuring],
   )
 
-  const handleMouseMove = useCallback((map, e) => {
-    const features = map.queryRenderedFeatures(e.point, {
-      layers: ['public.h3_res8'],
-    })
-    if (features.length > 0) {
-      map.getCanvas().style.cursor = 'pointer'
-    } else {
-      map.getCanvas().style.cursor = ''
-    }
-  }, [])
+  const handleMouseMove = useCallback(
+    (map, e) => {
+      const features = map.queryRenderedFeatures(e.point, {
+        layers: ['public.h3_res8'],
+      })
+      if (measuring) {
+        map.getCanvas().style.cursor = 'crosshair'
+      } else if (features.length > 0) {
+        map.getCanvas().style.cursor = 'pointer'
+      } else {
+        map.getCanvas().style.cursor = ''
+      }
+    },
+    [measuring],
+  )
+
+  const handleClick = useCallback(
+    (_, e) => {
+      if (!measuring) return
+
+      const coordinates = {
+        lat: e.lngLat.lat,
+        lng: e.lngLat.lng,
+      }
+
+      if (!measurementStart && !measurementEnd) {
+        setStartPoint(coordinates)
+        return
+      } else if (measurementStart && !measurementEnd) {
+        setEndPoint(coordinates)
+        return
+      } else {
+        clearPoints()
+      }
+    },
+    [
+      clearPoints,
+      measurementStart,
+      measurementEnd,
+      measuring,
+      setStartPoint,
+      setEndPoint,
+    ],
+  )
 
   return (
     <Mapbox
@@ -223,9 +267,9 @@ const CoverageMap = () => {
         setStyledLoaded(true)
       }}
       onMouseMove={handleMouseMove}
+      onClick={handleClick}
     >
       <MapControls />
-
       <ZoomControls />
       <ScaleLegend />
       {!HIDE_TILES && (
@@ -248,6 +292,11 @@ const CoverageMap = () => {
         validators={validators}
         minZoom={minZoom}
         maxZoom={maxZoom}
+      />
+      <MeasuringPointsLayer
+        active={measuring}
+        from={measurementStart}
+        to={measurementEnd}
       />
     </Mapbox>
   )

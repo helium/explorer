@@ -8,7 +8,7 @@ import PenaltyWidget from '../../Widgets/PenaltyWidget'
 import TrendWidget from '../../Widgets/TrendWidget'
 import Widget from '../../Widgets/Widget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
-import { getStatus } from '../../Validators/utils'
+import { formatVersion, getStatus } from '../../Validators/utils'
 
 const OverviewPane = () => {
   const { address } = useParams()
@@ -38,6 +38,7 @@ const OverviewPane = () => {
         title="Last Heartbeat"
         isLoading={isLoading || blockHeightLoading}
         value={(height - validator?.lastHeartbeat).toLocaleString()}
+        subtitle={<span className="text-gray-600">blocks ago</span>}
       />
       <Widget
         title="Total HNT Stake"
@@ -49,7 +50,7 @@ const OverviewPane = () => {
       <Widget
         title="Version"
         isLoading={isLoading}
-        value={validator?.versionHeartbeat}
+        value={formatVersion(validator?.versionHeartbeat)}
       />
       <TrendWidget title="30D Earnings" periodLabel={''} series={[]} />
       <PenaltyWidget validator={validator} />

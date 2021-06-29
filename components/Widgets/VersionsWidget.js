@@ -1,6 +1,6 @@
 import { countBy, maxBy } from 'lodash'
 import { Tooltip } from 'antd'
-import { useMemo } from 'react'
+import { formatVersion } from '../Validators/utils'
 
 const makePercent = (count, total) => (count / total) * 100 + '%'
 
@@ -31,7 +31,9 @@ const VersionsWidget = ({ validators = [], isLoading = false }) => {
             .sort()
             .reverse()
             .map((version, i) => (
-              <Tooltip title={`${version} (${versionCounts[version]})`}>
+              <Tooltip
+                title={`${formatVersion(version)} (${versionCounts[version]})`}
+              >
                 <div
                   key={version}
                   style={{
@@ -49,8 +51,10 @@ const VersionsWidget = ({ validators = [], isLoading = false }) => {
           <div className="animate-pulse bg-gray-400 w-1/4 h-4 rounded-md" />
         ) : (
           <span className="font-mono text-gray-800 text-sm">
-            Latest Version:
-            {maxBy(validators, 'versionHeartbeat')?.versionHeartbeat || ' N/A'}
+            Latest Version:{' '}
+            {formatVersion(
+              maxBy(validators, 'versionHeartbeat')?.versionHeartbeat,
+            ) || ' N/A'}
           </span>
         )}
       </div>

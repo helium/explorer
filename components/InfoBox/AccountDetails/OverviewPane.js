@@ -23,11 +23,13 @@ const OverviewPane = () => {
     <InfoBoxPaneContainer>
       <QrWidget address={address} />
       <Widget
-        title="HNT Balance"
+        title="Total HNT Balance"
         isLoading={isLoading}
         span={2}
         value={maybeShowNone(
-          account?.balance?.toString(2, { showTicker: false }),
+          account?.balance
+            ?.plus(account?.stakedBalance)
+            ?.toString(2, { showTicker: false }),
         )}
       />
       <Widget

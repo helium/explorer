@@ -22,24 +22,22 @@ const AccountsList = ({ accounts }) => {
     return (
       <div className="flex items-center space-x-2 w-full mt-2">
         <BalanceContainer title="Total Balance">
-          <img src="/images/hnt.svg" className="w-3" />
+          <img src="/images/hnt.svg" className="w-3 mr-0.5" />
           <LargeBalance
             value={a.balance.floatBalance + a.stakedBalance.floatBalance}
             precision={2}
           />
-          <span>HNT</span>
         </BalanceContainer>
         <BalanceContainer title="Staked Balance">
           {a.stakedBalance.floatBalance === 0 ? (
             <span className="text-gray-550">none</span>
           ) : (
             <>
-              <img src="/images/hnt.svg" className="w-3" />
+              <img src="/images/hnt.svg" className="w-3 mr-0.5" />
               <LargeBalance
                 value={a.stakedBalance.floatBalance}
                 precision={2}
               />
-              <span>HNT</span>
             </>
           )}
         </BalanceContainer>
@@ -48,9 +46,8 @@ const AccountsList = ({ accounts }) => {
             <span className="text-gray-550">none</span>
           ) : (
             <>
-              <img src="/images/hst.svg" className="w-3" />
+              <img src="/images/hst.svg" className="w-3 mr-0.5" />
               <LargeBalance value={a.secBalance.floatBalance} precision={2} />
-              <span>HST</span>
             </>
           )}
         </BalanceContainer>

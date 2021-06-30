@@ -7,7 +7,7 @@ const MeasuringPointsLayer = ({ from, to }) => {
   const measuringCircle = useMemo(() => {
     return {
       'circle-color': '#FFFFFF',
-      'circle-radius': 7,
+      'circle-radius': 6,
       'circle-opacity': 1,
       'circle-blur': 0.1,
     }
@@ -38,9 +38,9 @@ const MeasuringPointsLayer = ({ from, to }) => {
         }}
         paint={{
           'line-color': '#FFFFFF',
-          'line-width': 2,
-          'line-dasharray': [5, 5],
-          'line-opacity': 0.75,
+          'line-width': 4,
+          'line-dasharray': [2, 2],
+          'line-opacity': 0.9,
         }}
       >
         {from?.lng && from?.lat && to?.lng && to?.lat && (

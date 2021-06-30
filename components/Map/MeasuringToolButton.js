@@ -59,7 +59,7 @@ const MeasuringToolButton = () => {
       </div>
       {measuring && (
         <div className="absolute right-10 mr-2 top-2">
-          <span className="text-white font-sans text-sm whitespace-nowrap">
+          <span className="text-white font-sans font-semibold text-sm whitespace-nowrap p-1 rounded-md measuring-helptext-blur">
             {generateMeasurementString(measurementStart, measurementEnd)}
           </span>
         </div>

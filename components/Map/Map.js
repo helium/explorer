@@ -238,10 +238,8 @@ const CoverageMap = () => {
 
       if (!measurementStart && !measurementEnd) {
         setStartPoint(coordinates)
-        return
       } else if (measurementStart && !measurementEnd) {
         setEndPoint(coordinates)
-        return
       } else {
         clearPoints()
       }

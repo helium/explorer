@@ -24,6 +24,10 @@ body {
   background-color: rgb(0, 0, 0, 0.85);
   backdrop-filter: saturate(180%) blur(20px);
 }
+.measuring-helptext-blur {
+  background-color: rgba(71, 77, 255, 0.75);
+  backdrop-filter: saturate(180%) blur(20px);
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

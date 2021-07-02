@@ -11,6 +11,11 @@ const initialState = {
     currentPosition: { timestamp: 0 },
     isLoading: false,
   },
+  measuring: false,
+  measurementStart: null,
+  measurementHover: null,
+  measurementEnd: null,
+  distance: null,
 }
 
 const store = createContext(initialState)
@@ -24,6 +29,9 @@ export const SET_SELECTED_TXN = 'SET_SELECTED_TXN'
 export const SET_SELECTED_HEX = 'SET_SELECTED_HEX'
 export const SET_CURRENT_POSITION_LOADING = 'SET_CURRENT_POSITION_LOADING'
 export const SET_CURRENT_POSITION = 'SET_CURRENT_POSITION'
+export const SET_MEASUREMENT_START = 'SET_MEASUREMENT_START'
+export const SET_MEASUREMENT_END = 'SET_MEASUREMENT_END'
+export const TOGGLE_MEASUREMENT_TOOL = 'TOGGLE_MEASUREMENT_TOOL'
 
 const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
@@ -52,6 +60,24 @@ const StateProvider = ({ children }) => {
         return {
           ...state,
           geolocation: { currentPosition: action.payload, isLoading: false },
+        }
+      case SET_MEASUREMENT_START:
+        return { ...state, measurementStart: action.payload }
+      case SET_MEASUREMENT_END:
+        return { ...state, measurementEnd: action.payload }
+      case TOGGLE_MEASUREMENT_TOOL:
+        if (state.measuring) {
+          return {
+            ...state,
+            measuring: false,
+            measurementStart: null,
+            measurementEnd: null,
+          }
+        } else {
+          return {
+            ...state,
+            measuring: true,
+          }
         }
       default:
         throw new Error()

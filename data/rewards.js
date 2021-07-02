@@ -63,7 +63,7 @@ export const getNetworkRewardsBuckets = async (numBack, bucketType) => {
   })
   const rewardsWithTarget = rewards.map((r) => ({
     ...r,
-    target: (getTargetProduction(r.timestamp) * 12) / 365,
+    target: getTargetProduction(r.timestamp) / 30,
   }))
   return rewardsWithTarget.reverse()
 }

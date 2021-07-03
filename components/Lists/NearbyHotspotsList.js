@@ -7,7 +7,13 @@ import { formatDistance, generateRewardScaleColor } from '../Hotspots/utils'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
 
-const NearbyHotspotsList = ({ hotspots, isLoading = true }) => {
+const NearbyHotspotsList = ({
+  hotspots,
+  isLoading = true,
+  title,
+  description,
+  showCount,
+}) => {
   const { selectHotspot } = useSelectedHotspot()
 
   const handleSelectHotspot = useCallback(
@@ -55,6 +61,9 @@ const NearbyHotspotsList = ({ hotspots, isLoading = true }) => {
   return (
     <BaseList
       items={hotspots}
+      listHeaderTitle={title}
+      listHeaderShowCount={showCount}
+      listHeaderDescription={description}
       keyExtractor={keyExtractor}
       linkExtractor={linkExtractor}
       onSelectItem={handleSelectHotspot}

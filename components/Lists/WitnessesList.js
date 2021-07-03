@@ -7,7 +7,13 @@ import { generateRewardScaleColor, witnessRssi } from '../Hotspots/utils'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
 
-const WitnessesList = ({ witnesses, isLoading = true }) => {
+const WitnessesList = ({
+  witnesses,
+  isLoading = true,
+  title,
+  description,
+  showCount,
+}) => {
   const { selectHotspot } = useSelectedHotspot()
 
   const handleSelectHotspot = useCallback(
@@ -57,6 +63,9 @@ const WitnessesList = ({ witnesses, isLoading = true }) => {
   return (
     <BaseList
       items={witnesses}
+      listHeaderTitle={title}
+      listHeaderDescription={description}
+      listHeaderShowCount={showCount}
       keyExtractor={keyExtractor}
       linkExtractor={linkExtractor}
       onSelectItem={handleSelectHotspot}

@@ -12,6 +12,7 @@ import TimeAgo from 'react-time-ago'
 import ExpandedPoCReceiptContent from './ExpandedPoCReceiptContent'
 import ExpandedRewardContent from './ExpandedRewardContent'
 import PaymentSubtitle from './PaymentSubtitle'
+import animalHash from 'angry-purple-tiger'
 
 const isExpandable = (txn) => {
   return (
@@ -57,10 +58,10 @@ const ActivityList = ({
           )
 
         default:
-          return <span>{getTxnTypeName(txn.type, 'hotspot')}</span>
+          return <span>{getTxnTypeName(txn.type, context)}</span>
       }
     },
-    [address],
+    [address, context],
   )
 
   const generateSubtitle = useCallback(
@@ -176,6 +177,16 @@ const ActivityList = ({
                     summary[0]?.num_packets === 1 ? '' : 's'
                   })`}
                 </span>
+              </span>
+            </>
+          )
+        case 'stake_validator_v1':
+          return (
+            <>
+              {timestamp}
+              <span className="flex items-center justify-start">
+                <div className="h-2 w-2 rounded-full bg-txn-stake mr-1" />
+                <span className="mr-1">{animalHash(txn.address)}</span>
               </span>
             </>
           )

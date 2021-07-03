@@ -5,7 +5,7 @@ import ValidatorFlagLocation from '../Validators/ValidatorFlagLocation'
 import ValidatorStatusDot from '../Validators/ValidatorStatusDot'
 import BaseList from './BaseList'
 
-const ValidatorsList = ({ validators, recentGroups }) => {
+const ValidatorsList = ({ validators, recentGroups, title, description }) => {
   const keyExtractor = useCallback((v) => v.address, [])
 
   const linkExtractor = useCallback((v) => `/validators/${v.address}`, [])
@@ -43,6 +43,8 @@ const ValidatorsList = ({ validators, recentGroups }) => {
   return (
     <BaseList
       items={validators}
+      listHeaderTitle={title}
+      listHeaderDescription={description}
       keyExtractor={keyExtractor}
       linkExtractor={linkExtractor}
       isLoading={false}

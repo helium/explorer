@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { debounce } from 'lodash'
+import Fuse from 'fuse.js'
 import qs from 'qs'
 import client from '../../data/client'
 import { Address } from '@helium/crypto'
@@ -41,7 +42,14 @@ const useSearchResults = () => {
           searchHotspot(term),
           searchValidator(term),
         ])
-        setResults([...results, ...validators, ...hotspots])
+        const items = [...hotspots, ...validators]
+        const fuse = new Fuse(items, {
+          includeScore: true,
+          keys: ['item.name'],
+        })
+        const fuseResults = fuse.search(term)
+        const sortedItems = fuseResults.map((r) => r.item)
+        setResults([...results, ...sortedItems])
       } catch {}
     },
     [results, searchHotspot, searchValidator],

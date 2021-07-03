@@ -84,6 +84,11 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
   return null
 }
 
+const pillColors = {
+  validator: 'purple',
+  hotspot: 'green',
+}
+
 const BaseSearchResult = ({ title, subtitle, type, onSelect, selected }) => (
   <div
     className={classNames(
@@ -99,7 +104,7 @@ const BaseSearchResult = ({ title, subtitle, type, onSelect, selected }) => (
       <div className="text-gray-700 text-sm">{subtitle}</div>
     </div>
     <div className="flex items-center px-2">
-      <Pill title={capitalize(type)} />
+      <Pill title={capitalize(type)} color={pillColors[type] || 'gray'} />
     </div>
     <div className="flex">
       <img alt="" src="/images/details-arrow.svg" />

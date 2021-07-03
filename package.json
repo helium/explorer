@@ -28,6 +28,7 @@
     "date-fns": "^2.22.1",
     "export-to-csv": "^0.2.1",
     "focus-trap-react": "^8.5.0",
+    "fuse.js": "^6.4.6",
     "geojson": "^0.5.0",
     "geojson2h3": "^1.1.1",
     "h3-js": "^3.7.2",

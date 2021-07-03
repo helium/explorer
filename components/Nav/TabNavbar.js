@@ -25,7 +25,7 @@ const NavItem = ({
       className={classNames(
         classes,
         active ? activeClasses : '',
-        'mx-2 py-3 inline-block font-medium text-base cursor-pointer whitespace-nowrap',
+        'mx-2 py-3 inline-block font-medium text-sm md:text-base cursor-pointer whitespace-nowrap',
         {
           'text-gray-600 hover:text-navy-400': !active && !customStyles,
           'text-navy-400 border-navy-400 border-b-3 border-solid':

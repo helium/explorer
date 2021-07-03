@@ -23,11 +23,14 @@
     "angry-purple-tiger": "1.0.5",
     "antd": "^4.8.0",
     "aws-sdk": "^2.895.0",
+    "body-parser": "^1.19.0",
     "camelcase-keys": "^6.2.2",
     "classnames": "^2.2.6",
     "color-hash": "^1.1.1",
+    "compression": "^1.7.4",
     "date-fns": "^2.16.1",
     "export-to-csv": "^0.2.1",
+    "express": "^4.17.1",
     "focus-trap-react": "^8.5.0",
     "fuse.js": "^6.4.6",
     "geojson": "^0.5.0",
@@ -70,9 +73,9 @@
     "use-deep-compare-effect": "^1.6.1"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start -p $PORT",
+    "start": "NODE_ENV=production node server.js",
     "pretty": "prettier --write \"./**/*.{js,jsx,json,css}\"",
     "job": "eval $(cat .env) node"
   },

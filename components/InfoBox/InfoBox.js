@@ -38,6 +38,7 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
             <SubtitleSection subtitles={subtitles} />
           </div>
           <div
+            className="md:hidden"
             style={{ minWidth: BUTTON_SIZE, minHeight: BUTTON_SIZE }}
             onClick={toggleInfoBox}
           >

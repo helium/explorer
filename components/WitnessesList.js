@@ -27,7 +27,7 @@ const columns = [
     render: (data) => <span>{formatLocation(data)}</span>,
   },
   {
-    title: 'Reward Scale',
+    title: 'Transmit Scale',
     dataIndex: 'reward_scale',
     key: 'reward_scale',
     render: (data) => (

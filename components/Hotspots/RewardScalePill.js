@@ -10,7 +10,7 @@ const RewardScalePill = ({ hotspot, className }) => (
       className,
     )}
   >
-    <Tooltip placement="top" title={`Reward scale: ${hotspot.rewardScale}`}>
+    <Tooltip placement="top" title={`Transmit scale: ${hotspot.rewardScale}`}>
       <span className="flex items-center justify-center">
         <Hex
           width={10.5}
@@ -22,7 +22,7 @@ const RewardScalePill = ({ hotspot, className }) => (
 
     <Tooltip
       placement="top"
-      title={`A Hotspot's own reward scale does not impact its earnings. Hotspots witnessing this Hotspot will see their rewards scaled up or down according to this Hotspot's reward scale.`}
+      title={`A Hotspot's own transmit scale does not impact its earnings. Hotspots witnessing this Hotspot will see their rewards scaled up or down according to this Hotspot's transmit scale.`}
     >
       <p className="mb-0 text-gray-600 ml-2">
         {hotspot.rewardScale.toLocaleString(undefined, {

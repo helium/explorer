@@ -53,9 +53,15 @@ const MapControls = () => {
         )}
       >
         <div className="rounded-lg flex flex-row items-center justify-between titlebox-blur">
-          <span className="text-white font-sans text-sm pl-2 pr-2 md:pr-8 whitespace-nowrap">
-            Reward Scale
-          </span>
+          <a
+            href="https://docs.helium.com/wallets/app-wallet/hexagons/#transmit-scale"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span className="text-white font-sans text-sm pl-2 pr-2 md:pr-8 whitespace-nowrap">
+              Transmit Scale
+            </span>
+          </a>
           <div className="flex flex-col p-2 pb-1 w-full">
             <div className="bg-gradient-to-r from-reward-scale-0 via-reward-scale-0.6 to-reward-scale-1 rounded-full h-2.5 w-full" />
             <div className="flex items-center justify-between mt-1">

@@ -3,6 +3,7 @@ import Image from 'next/image'
 import useInfoBox from '../../hooks/useInfoBox'
 import useMapLayer from '../../hooks/useMapLayer'
 import MapLocationButton from './MapLocationButton'
+import MeasuringToolButton from './MeasuringToolButton'
 
 const MapControls = () => {
   const { showInfoBox, toggleInfoBox } = useInfoBox()
@@ -31,6 +32,7 @@ const MapControls = () => {
             height={18}
           />
         </div>
+        <MeasuringToolButton />
         <MapLocationButton />
         <div
           className="cursor-pointer bg-white w-10 h-10 rounded-full flex items-center justify-center shadow-md"

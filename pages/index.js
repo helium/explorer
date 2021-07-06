@@ -53,7 +53,6 @@ const Index = ({ coverageUrl }) => {
       <Map coverageUrl={coverageUrl} />
       <InfoBoxSwitch />
       <MapLayersBox />
-      <MapControls />
 
       <style jsx global>{`
         #__next,

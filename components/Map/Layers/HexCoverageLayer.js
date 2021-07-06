@@ -5,12 +5,12 @@ import { emptyGeoJSON } from '../../../utils/location'
 
 const HEX_SOURCE_OPTIONS = {
   type: 'vector',
-  url: 'https://hotspot-tileserver-martin.herokuapp.com/public.h3_res8.json',
+  url: 'https://tileserver.helium.com/public.h3_res8.json',
 }
 
 const POINTS_SOURCE_OPTIONS = {
   type: 'vector',
-  url: 'https://hotspot-tileserver-martin.herokuapp.com/public.points.json',
+  url: 'https://tileserver.helium.com/public.points.json',
 }
 
 const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {

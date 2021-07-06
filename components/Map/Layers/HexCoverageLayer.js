@@ -3,14 +3,18 @@ import { Source, Layer, GeoJSONLayer } from 'react-mapbox-gl'
 import useSelectedHex from '../../../hooks/useSelectedHex'
 import { emptyGeoJSON } from '../../../utils/location'
 
+const TILESERVER_URL =
+  process.env.NEXT_PUBLIC_TILESERVER_URL ||
+  'https://hotspot-tileserver-martin.herokuapp.com'
+
 const HEX_SOURCE_OPTIONS = {
   type: 'vector',
-  url: 'https://hotspot-tileserver-martin.herokuapp.com/public.h3_res8.json',
+  url: `${TILESERVER_URL}/public.h3_res8.json`,
 }
 
 const POINTS_SOURCE_OPTIONS = {
   type: 'vector',
-  url: 'https://hotspot-tileserver-martin.herokuapp.com/public.points.json',
+  url: `${TILESERVER_URL}/public.points.json`,
 }
 
 const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {

@@ -78,7 +78,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading }) => {
   const generateBreadcrumbs = (hotspot) => {
     if (!hotspot) return [{ title: 'Hotspots', path: '/hotspots' }]
     return [
-      { title: 'Hotspots', path: '/hotspots' },
+      { title: 'Hotspots', path: '/hotspots/latest' },
       ...(hotspot.location
         ? // if the hotspot has a hex, show a breadcrumb for it
           [

@@ -115,6 +115,7 @@ const BlockDetailsInfoBox = () => {
       title={title}
       metaTitle={`Block ${parseInt(height).toLocaleString()}`}
       subtitles={generateSubtitles(block)}
+      breadcrumbs={[{ title: 'Blocks', path: '/blocks/latest' }]}
     >
       {block.txns?.length > 0 ? (
         <>

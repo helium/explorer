@@ -24,7 +24,6 @@ const ValidatorsInfoBox = () => {
   const recentGroups = useMemo(() => consensusGroups?.recentElections || [], [
     consensusGroups,
   ])
-  console.log('stats', stats)
 
   const activeValidators = useMemo(
     () => validators?.filter((v) => v?.status?.online === 'online')?.length,

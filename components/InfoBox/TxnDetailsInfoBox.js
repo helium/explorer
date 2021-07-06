@@ -33,14 +33,14 @@ const TxnDetailsInfoBox = () => {
       return [
         {
           title: 'Blocks',
-          path: '/blocks',
+          path: '/blocks/latest',
         },
         { title: '...' },
       ]
     return [
       {
         title: 'Blocks',
-        path: '/blocks',
+        path: '/blocks/latest',
       },
       {
         title: `${selectedTxn.height.toLocaleString()}`,

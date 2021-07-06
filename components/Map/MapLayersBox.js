@@ -33,7 +33,7 @@ const MapLayersBox = () => {
       iconPath: '/images/hex-green.png',
     },
     {
-      title: 'Reward Scales',
+      title: 'Transmit Scales',
       id: 'rewardScale',
       iconPath: '/images/reward-scale.svg',
     },

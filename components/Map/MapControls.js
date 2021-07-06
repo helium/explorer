@@ -55,6 +55,7 @@ const MapControls = () => {
         <div className="rounded-lg flex flex-row items-center justify-between titlebox-blur">
           <a
             href="https://docs.helium.com/wallets/app-wallet/hexagons/#transmit-scale"
+            rel="noopener noreferrer"
             target="_blank"
           >
             <span className="text-white font-sans text-sm pl-2 pr-2 md:pr-8 whitespace-nowrap">

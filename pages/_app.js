@@ -9,30 +9,44 @@ import { SWRConfig } from 'swr'
 
 import en from 'javascript-time-ago/locale/en'
 import { GAScript } from '../hooks/useGA'
+import BannerContext from '../components/Common/Banner/BannerContext'
+import { useState, useEffect } from 'react'
 
 JavascriptTimeAgo.addLocale(en)
 
 function MyApp({ Component, pageProps }) {
+  const [showBanner, setShowBanner] = useState(false)
+  const toggleBanner = () => setShowBanner((prevState) => !prevState)
+
+  useEffect(() => {
+    const PERCENT_OF_USERS_TO_SHOW_BANNER_TO = 100
+    if (Math.random() * 100 <= PERCENT_OF_USERS_TO_SHOW_BANNER_TO) {
+      setShowBanner(true)
+    }
+  }, [])
+
   return (
     // this #app div is used to increase the specificity of Tailwind's utility classes, making it easier to override styles without resorting to !important
     <div id="app" suppressHydrationWarning>
-      <GAScript />
-      {typeof window === 'undefined' ? null : (
-        <Router>
-          <StateProvider>
-            <SWRConfig
-              value={{
-                refreshInterval: 1000 * 60,
-                fetcher: (resource, init) =>
-                  fetch(resource, init).then((res) => res.json()),
-              }}
-            >
-              <Component {...pageProps} />
-            </SWRConfig>
-          </StateProvider>
-        </Router>
-      )}
-      <script src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js"></script>
+      <BannerContext.Provider value={{ showBanner, toggleBanner }}>
+        <GAScript />
+        {typeof window === 'undefined' ? null : (
+          <Router>
+            <StateProvider>
+              <SWRConfig
+                value={{
+                  refreshInterval: 1000 * 60,
+                  fetcher: (resource, init) =>
+                    fetch(resource, init).then((res) => res.json()),
+                }}
+              >
+                <Component {...pageProps} />
+              </SWRConfig>
+            </StateProvider>
+          </Router>
+        )}
+        <script src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js"></script>
+      </BannerContext.Provider>
     </div>
   )
 }

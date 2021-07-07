@@ -9,8 +9,8 @@ const ValidatorsList = ({ validators, recentGroups, title, description }) => {
   const [index, setIndex] = useState(20)
 
   const fetchMore = useCallback(() => {
-    setIndex(index + 20)
-  }, [index])
+    setIndex((prevIndex) => prevIndex + 20)
+  }, [])
 
   const validatorsToDisplay = useMemo(() => validators.slice(0, index), [
     index,

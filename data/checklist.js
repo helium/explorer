@@ -1,24 +1,21 @@
 import client from './client'
 
 export const getActivityForChecklist = async (address) => {
-  const [
-    challengerTxnList,
-    challengeeTxnList,
-    rewardTxnsList,
-  ] = await Promise.all([
-    // Get most recent challenger transaction
-    client.hotspot(address).activity.list({
-      filterTypes: ['poc_request_v1'],
-    }),
-    // Get most recent challengee transaction
-    client.hotspot(address).activity.list({
-      filterTypes: ['poc_receipts_v1'],
-    }),
-    // Get most recent rewards transactions to search for witness / data activity
-    client.hotspot(address).activity.list({
-      filterTypes: ['rewards_v1'],
-    }),
-  ])
+  const [challengerTxnList, challengeeTxnList, rewardTxnsList] =
+    await Promise.all([
+      // Get most recent challenger transaction
+      client.hotspot(address).activity.list({
+        filterTypes: ['poc_request_v1'],
+      }),
+      // Get most recent challengee transaction
+      client.hotspot(address).activity.list({
+        filterTypes: ['poc_receipts_v1'],
+      }),
+      // Get most recent rewards transactions to search for witness / data activity
+      client.hotspot(address).activity.list({
+        filterTypes: ['rewards_v1', 'rewards_v2'],
+      }),
+    ])
   const [challengerTxn, challengeeTxn, rewardTxns] = await Promise.all([
     challengerTxnList.take(1),
     challengeeTxnList.take(1),
@@ -27,22 +24,22 @@ export const getActivityForChecklist = async (address) => {
 
   let witnessTxn = null
   // most recent witness transaction
-  rewardTxns.some(function (txn) {
-    return txn.rewards.some(function (txnReward) {
+  rewardTxns.some((txn) => {
+    return txn.rewards.some((txnReward) => {
       if (txnReward.type === 'poc_witnesses') {
         witnessTxn = txn
-        return
       }
+      return null
     })
   })
   let dataTransferTxn = null
   // most recent data credit transaction
   rewardTxns.some(function (txn) {
-    return txn.rewards.some(function (txnReward) {
+    return txn.rewards.some((txnReward) => {
       if (txnReward.type === 'data_credits') {
         dataTransferTxn = txn
-        return
       }
+      return null
     })
   })
   return {
@@ -96,8 +93,7 @@ export const getChecklistItems = (
             <a
               href="https://intercom.help/heliumnetwork/en/articles/3207912-troubleshooting-network-connection-issues"
               target="_blank"
-              rel="noopener"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               Read our troubleshooting guide.
             </a>

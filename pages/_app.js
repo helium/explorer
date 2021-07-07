@@ -6,29 +6,24 @@ import '../styles/Explorer.css'
 
 import { StateProvider } from '../store/store'
 import { SWRConfig } from 'swr'
+import createPersistedState from 'use-persisted-state'
 
 import en from 'javascript-time-ago/locale/en'
 import { GAScript } from '../hooks/useGA'
 import BannerContext from '../components/Common/Banner/BannerContext'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 
 JavascriptTimeAgo.addLocale(en)
+const useShowBannerState = createPersistedState('old-explorer-banner')
 
 function MyApp({ Component, pageProps }) {
-  const [showBanner, setShowBanner] = useState(false)
-  const toggleBanner = () => setShowBanner((prevState) => !prevState)
-
-  useEffect(() => {
-    const PERCENT_OF_USERS_TO_SHOW_BANNER_TO = 100
-    if (Math.random() * 100 <= PERCENT_OF_USERS_TO_SHOW_BANNER_TO) {
-      setShowBanner(true)
-    }
-  }, [])
+  const [showBanner, setShowBanner] = useShowBannerState(true)
+  const hideBanner = () => setShowBanner(false)
 
   return (
     // this #app div is used to increase the specificity of Tailwind's utility classes, making it easier to override styles without resorting to !important
     <div id="app" suppressHydrationWarning>
-      <BannerContext.Provider value={{ showBanner, toggleBanner }}>
+      <BannerContext.Provider value={{ showBanner, hideBanner }}>
         <GAScript />
         {typeof window === 'undefined' ? null : (
           <Router>

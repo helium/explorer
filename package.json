@@ -70,7 +70,8 @@
     "react-typekit": "^1.1.4",
     "recharts": "^1.8.5",
     "swr": "^0.3.9",
-    "use-deep-compare-effect": "^1.6.1"
+    "use-deep-compare-effect": "^1.6.1",
+    "use-persisted-state": "^0.3.3"
   },
   "scripts": {
     "dev": "node server.js",

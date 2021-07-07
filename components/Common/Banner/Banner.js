@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import BannerContext from './BannerContext'
 
 const Banner = () => {
-  const { toggleBanner } = useContext(BannerContext)
+  const { hideBanner } = useContext(BannerContext)
   return (
     <div className="fixed top-0 mx-auto w-full z-50">
       <div className="relative w-full">
@@ -19,7 +19,7 @@ const Banner = () => {
         </a>
         <button
           className="border border-solid absolute right-0 top-0 border-transparent hover:bg-navy-600 w-10 h-full z-40 cursor-pointer bg-navy-500 focus:outline-none focus:border-navy-400 flex items-center justify-center"
-          onClick={toggleBanner}
+          onClick={hideBanner}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

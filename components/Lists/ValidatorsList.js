@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import animalHash from 'angry-purple-tiger'
 import ConsensusIndicator from '../Validators/ConsensusIndicator'
 import ValidatorFlagLocation from '../Validators/ValidatorFlagLocation'
@@ -11,6 +11,11 @@ const ValidatorsList = ({ validators, recentGroups, title, description }) => {
   const fetchMore = useCallback(() => {
     setIndex(index + 20)
   }, [index])
+
+  const validatorsToDisplay = useMemo(() => validators.slice(0, index), [
+    index,
+    validators,
+  ])
 
   const keyExtractor = useCallback((v) => v.address, [])
 
@@ -47,7 +52,7 @@ const ValidatorsList = ({ validators, recentGroups, title, description }) => {
 
   return (
     <BaseList
-      items={validators.slice(0, index)}
+      items={validatorsToDisplay}
       fetchMore={fetchMore}
       hasMore={index < validators.length - 1}
       listHeaderTitle={title}

@@ -1,24 +1,21 @@
 import client from './client'
 
 export const getActivityForChecklist = async (address) => {
-  const [
-    challengerTxnList,
-    challengeeTxnList,
-    rewardTxnsList,
-  ] = await Promise.all([
-    // Get most recent challenger transaction
-    client.hotspot(address).activity.list({
-      filterTypes: ['poc_request_v1'],
-    }),
-    // Get most recent challengee transaction
-    client.hotspot(address).activity.list({
-      filterTypes: ['poc_receipts_v1'],
-    }),
-    // Get most recent rewards transactions to search for witness / data activity
-    client.hotspot(address).activity.list({
-      filterTypes: ['rewards_v1'],
-    }),
-  ])
+  const [challengerTxnList, challengeeTxnList, rewardTxnsList] =
+    await Promise.all([
+      // Get most recent challenger transaction
+      client.hotspot(address).activity.list({
+        filterTypes: ['poc_request_v1'],
+      }),
+      // Get most recent challengee transaction
+      client.hotspot(address).activity.list({
+        filterTypes: ['poc_receipts_v1'],
+      }),
+      // Get most recent rewards transactions to search for witness / data activity
+      client.hotspot(address).activity.list({
+        filterTypes: ['rewards_v1', 'rewards_v2'],
+      }),
+    ])
   const [challengerTxn, challengeeTxn, rewardTxns] = await Promise.all([
     challengerTxnList.take(1),
     challengeeTxnList.take(1),

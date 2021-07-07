@@ -210,8 +210,11 @@ const CoverageMap = () => {
     [selectHex, measuring],
   )
 
+  console.log('measuring 1:', measuring)
+
   const handleMouseMove = useCallback(
     (map, e) => {
+      console.log('measuring 2:', measuring)
       const features = map.queryRenderedFeatures(e.point, {
         layers: ['public.h3_res8'],
       })

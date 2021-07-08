@@ -21,33 +21,31 @@ const ValidatorsInfoBox = () => {
   const { data: stats } = useApi('/metrics/validators')
   const { consensusGroups } = useElections()
   const isLoading = useMemo(() => validators === undefined, [validators])
-  const recentGroups = useMemo(() => consensusGroups?.recentElections || [], [
-    consensusGroups,
-  ])
+  const recentGroups = useMemo(
+    () => consensusGroups?.recentElections || [],
+    [consensusGroups],
+  )
 
   const activeValidators = useMemo(
     () => validators?.filter((v) => v?.status?.online === 'online')?.length,
     [validators],
   )
 
-  const totalStaked = useMemo(() => sumBy(validators, 'stake') / 100000000, [
-    validators,
-  ])
+  const totalStaked = useMemo(
+    () => sumBy(validators, 'stake') / 100000000,
+    [validators],
+  )
 
-  const consensusGroup = useMemo(() => validators?.filter((v) => v.elected), [
-    validators,
-  ])
+  const consensusGroup = useMemo(
+    () => validators?.filter((v) => v.elected),
+    [validators],
+  )
 
   return (
     <InfoBox title="Validators" metaTitle="Validators">
       <TabNavbar basePath="validators">
         <TabPane title="Statistics" key="statistics">
           <InfoBoxPaneContainer>
-            <WarningWidget
-              warningText="Note: Validators are not currently active."
-              subtitle="When activated, Validators will take over block production from Hotspots"
-              link="https://blog.helium.com/validator-staking-is-now-live-on-helium-mainnet-2c429d0f7f4e"
-            />
             <StatWidget
               title="Total Validators"
               series={stats?.count}

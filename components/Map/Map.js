@@ -3,7 +3,6 @@ import { useMediaQuery } from 'react-responsive'
 import ReactMapboxGl from 'react-mapbox-gl'
 import { setRTLTextPlugin } from 'mapbox-gl'
 import { useAsync } from 'react-async-hook'
-import { useHistory } from 'react-router'
 import { findBounds, paddingPoints } from '../../utils/location'
 import HotspotDetailLayer from './Layers/HotspotDetailLayer'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
@@ -15,7 +14,6 @@ import useSelectedTxn from '../../hooks/useSelectedTxn'
 import { fetchHotspot } from '../../data/hotspots'
 import HexCoverageLayer from './Layers/HexCoverageLayer'
 import { hotspotToRes8 } from '../Hotspots/utils'
-import useApi from '../../hooks/useApi'
 import useSelectedHex from '../../hooks/useSelectedHex'
 import { trackEvent } from '../../hooks/useGA'
 import ScaleLegend from './ScaleLegend'
@@ -23,6 +21,7 @@ import ZoomControls from './ZoomControls'
 import MapControls from './MapControls'
 import useMeasuringTool from '../../hooks/useMeasuringTool'
 import MeasuringPointsLayer from './Layers/MeasuringPointsLayer'
+import { useRouteMatch } from 'react-router-dom'
 
 const maxZoom = 14
 const minZoom = 2
@@ -87,7 +86,7 @@ const CoverageMap = () => {
     isDesktopOrLaptop ? US_EU_BOUNDS : US_BOUNDS,
   )
 
-  const { data: validators } = useApi('/validators')
+  const validatorsMatch = useRouteMatch('/validators')
 
   useEffect(() => {
     trackEvent('map_load')
@@ -286,11 +285,9 @@ const CoverageMap = () => {
             : selectedHotspot?.witnesses || selectedTxnParticipants || []
         }
       />
-      <ValidatorsLayer
-        validators={validators}
-        minZoom={minZoom}
-        maxZoom={maxZoom}
-      />
+      {validatorsMatch && (
+        <ValidatorsLayer minZoom={minZoom} maxZoom={maxZoom} />
+      )}
       <MeasuringPointsLayer
         active={measuring}
         from={measurementStart}

@@ -77,7 +77,7 @@ const OverviewInfoBox = () => {
           linkTo="/beacons"
         />
         <Widget
-          title="Total Validators"
+          title="Staked Validators"
           value={countValidators(validators)}
           isLoading={!validators}
           linkTo="/validators"

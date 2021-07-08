@@ -8,6 +8,7 @@ import AccountAddress from '../AccountAddress'
 import { useValidator } from '../../data/validators'
 import { useCallback } from 'react'
 import ValidatorFlagLocation from '../Validators/ValidatorFlagLocation'
+import SkeletonList from '../Lists/SkeletonList'
 
 const ValidatorDetailsInfoBox = () => {
   const { address } = useParams()
@@ -51,7 +52,7 @@ const ValidatorDetailsInfoBox = () => {
           <OverviewPane />
         </TabPane>
         <TabPane title="Penalties" key="penalties" path="penalties">
-          <PenaltiesPane />
+          {isLoading ? <SkeletonList /> : <PenaltiesPane />}
         </TabPane>
       </TabNavbar>
     </InfoBox>

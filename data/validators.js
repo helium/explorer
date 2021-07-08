@@ -48,3 +48,24 @@ export const useAccountValidators = (address) => {
     isError: error,
   }
 }
+
+export const fetchValidatorStats = async () => {
+  const response = await fetch('https://api.helium.io/v1/validators/stats')
+  const { data } = await response.json()
+  return data
+}
+
+export const useValidatorStats = () => {
+  const key = 'validators/stats'
+  const fetcher = () => fetchValidatorStats()
+
+  const { data, error } = useSWR(key, fetcher, {
+    refreshInterval: 1000 * 60,
+  })
+
+  return {
+    stats: data,
+    isLoading: !error && !data,
+    isError: error,
+  }
+}

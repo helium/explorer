@@ -83,3 +83,36 @@ export const useNetworkRewards = (numBack = 30, bucketType = 'day') => {
     isError: error,
   }
 }
+
+export const getValidatorRewardsBuckets = async (
+  address,
+  numBack,
+  bucketType,
+) => {
+  // TODO add to helium-js
+  const rewards = await fetchAll(`/validators/${address}/rewards/sum`, {
+    min_time: `-${numBack} ${bucketType}`,
+    bucket: bucketType,
+  })
+  return rewards.reverse()
+}
+
+export const useValidatorRewards = (
+  address,
+  numBack = 30,
+  bucketType = 'day',
+) => {
+  const key = `rewards/validators/${address}/${numBack}/${bucketType}`
+  const fetcher = (address, numBack, bucketType) => () =>
+    getValidatorRewardsBuckets(address, numBack, bucketType)
+
+  const { data, error } = useSWR(key, fetcher(address, numBack, bucketType), {
+    refreshInterval: 1000 * 60 * 10,
+  })
+
+  return {
+    rewards: data,
+    isLoading: !error && !data,
+    isError: error,
+  }
+}

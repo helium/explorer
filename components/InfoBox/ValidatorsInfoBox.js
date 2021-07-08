@@ -9,10 +9,11 @@ import { useElections } from '../../data/consensus'
 import ValidatorsList from '../Lists/ValidatorsList'
 import useApi from '../../hooks/useApi'
 import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
-import WarningWidget from '../Widgets/WarningWidget'
 import SkeletonList from '../Lists/SkeletonList'
 import StatWidget from '../Widgets/StatWidget'
 import { differenceInDays } from 'date-fns'
+import { filterEligibleValidators } from '../Validators/utils'
+import { useValidatorStats } from '../../data/validators'
 
 const TICKER = 'HNT'
 
@@ -20,7 +21,10 @@ const ValidatorsInfoBox = () => {
   const { data: validators } = useApi('/validators')
   const { data: stats } = useApi('/metrics/validators')
   const { consensusGroups } = useElections()
+  const { stats: validatorStats } = useValidatorStats()
+
   const isLoading = useMemo(() => validators === undefined, [validators])
+
   const recentGroups = useMemo(() => consensusGroups?.recentElections || [], [
     consensusGroups,
   ])
@@ -43,15 +47,10 @@ const ValidatorsInfoBox = () => {
       <TabNavbar basePath="validators">
         <TabPane title="Statistics" key="statistics">
           <InfoBoxPaneContainer>
-            <WarningWidget
-              warningText="Note: Validators are not currently active."
-              subtitle="When activated, Validators will take over block production from Hotspots"
-              link="https://blog.helium.com/validator-staking-is-now-live-on-helium-mainnet-2c429d0f7f4e"
-            />
-            <StatWidget
-              title="Total Validators"
-              series={stats?.count}
-              isLoading={!stats}
+            <Widget
+              title="Staked Validators"
+              value={validatorStats?.staked?.count?.toLocaleString()}
+              isLoading={!validatorStats}
               linkTo="/validators/all"
             />
             <Widget
@@ -85,9 +84,9 @@ const ValidatorsInfoBox = () => {
             />
             <Widget
               title="Estimated APR"
-              value={formatPercent(calculateValidatorAPY(validators?.length))}
+              value={formatPercent(calculateValidatorAPY(validators))}
               isLoading={isLoading}
-              tooltip="Annual percent return accounting for the halving on 8/1/21. Note that unstaking tokens invokes a 250,000 block (~5 mo.) cooldown period where no returns will be earned before the staked tokens become liquid again. Earned rewards are immediately liquid."
+              tooltip="Annual percent return of eligible validators (staked and online) accounting for the halving on 8/1/21. Note that unstaking tokens invokes a 250,000 block (~5 mo.) cooldown period where no returns will be earned before the staked tokens become liquid again. Earned rewards are immediately liquid."
             />
             <VersionsWidget validators={validators} isLoading={isLoading} />
           </InfoBoxPaneContainer>
@@ -123,8 +122,10 @@ const ValidatorsInfoBox = () => {
   )
 }
 
-const calculateValidatorAPY = (numValidators) => {
-  if (!numValidators) return 0
+const calculateValidatorAPY = (validators) => {
+  if (!validators) return 0
+
+  const numValidators = validators.filter(filterEligibleValidators).length
 
   const preHalvingTokensPerDay = 300000 / 30
   const postHalvingTokensPerDay = preHalvingTokensPerDay / 2

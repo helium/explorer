@@ -3,13 +3,10 @@ import { GeoJSONLayer } from 'react-mapbox-gl'
 import geoJSON from 'geojson'
 import { emptyGeoJSON } from '../../../utils/location'
 import { useRouteMatch } from 'react-router-dom'
+import useApi from '../../../hooks/useApi'
 
-const ValidatorsLayer = ({
-  validators,
-  minZoom,
-  maxZoom,
-  onValidatorClick,
-}) => {
+const ValidatorsLayer = ({ minZoom, maxZoom, onValidatorClick }) => {
+  const { data: validators } = useApi('/validators')
   const validatorsMatch = useRouteMatch('/validators')
   const consensusMatch = useRouteMatch('/validators/consensus')
 

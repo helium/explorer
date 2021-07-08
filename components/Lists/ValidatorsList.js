@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 import animalHash from 'angry-purple-tiger'
+import { round } from 'lodash'
+import { Tooltip } from 'antd'
 import ConsensusIndicator from '../Validators/ConsensusIndicator'
 import ValidatorFlagLocation from '../Validators/ValidatorFlagLocation'
 import ValidatorStatusDot from '../Validators/ValidatorStatusDot'
@@ -34,10 +36,12 @@ const ValidatorsList = ({ validators, recentGroups, title, description }) => {
     return (
       <>
         <ValidatorFlagLocation geo={v.geo} />
-        <div className="flex items-center space-x-1">
-          <img alt="" src="/images/hnt.svg" className="w-3" />{' '}
-          <span>0 HNT</span>
-        </div>
+        <Tooltip title="HNT earned (30 days)">
+          <div className="flex items-center space-x-1">
+            <img alt="" src="/images/hnt.svg" className="w-3" />{' '}
+            <span>{round(v.rewards.month.total, 2)} HNT</span>
+          </div>
+        </Tooltip>
       </>
     )
   }, [])

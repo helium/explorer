@@ -5,15 +5,17 @@ import { useBlockHeight } from '../../../data/blocks'
 import { useValidator } from '../../../data/validators'
 import ValidatorStatusDot from '../../Validators/ValidatorStatusDot'
 import PenaltyWidget from '../../Widgets/PenaltyWidget'
-import TrendWidget from '../../Widgets/TrendWidget'
 import Widget from '../../Widgets/Widget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import { formatVersion, getStatus } from '../../Validators/utils'
+import RewardsTrendWidget from '../../Widgets/RewardsTrendWidget'
+import { useValidatorRewards } from '../../../data/rewards'
 
 const OverviewPane = () => {
   const { address } = useParams()
   const { validator, isLoading } = useValidator(address)
   const { height, isLoading: blockHeightLoading } = useBlockHeight()
+  const { rewards } = useValidatorRewards(address, 60, 'day')
 
   return (
     <InfoBoxPaneContainer>
@@ -52,7 +54,7 @@ const OverviewPane = () => {
         isLoading={isLoading}
         value={formatVersion(validator?.versionHeartbeat)}
       />
-      <TrendWidget title="30D Earnings" periodLabel={''} series={[]} />
+      <RewardsTrendWidget title="30D Earnings" series={rewards} />
       <PenaltyWidget validator={validator} />
       <Widget
         title="ISP"

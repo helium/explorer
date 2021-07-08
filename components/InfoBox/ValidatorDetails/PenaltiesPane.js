@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { useParams } from 'react-router'
 import { useValidator } from '../../../data/validators'
 import BaseList from '../../Lists/BaseList'
+import PenaltyDescription from '../../Validators/PenaltyDescription'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
 const PenaltiesPane = () => {
@@ -32,8 +33,11 @@ const PenaltiesPane = () => {
   return (
     <InfoBoxPaneContainer span={1} padding={false}>
       <BaseList
-        items={validator.penalties}
+        items={validator?.penalties}
         keyExtractor={keyExtractor}
+        listHeaderShowCount
+        listHeaderTitle="Validator penalties"
+        listHeaderDescription={<PenaltyDescription />}
         isLoading={isLoading}
         renderTitle={renderTitle}
         renderSubtitle={renderSubtitle}

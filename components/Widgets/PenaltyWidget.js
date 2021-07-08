@@ -1,5 +1,6 @@
 import { Tooltip } from 'antd'
 import { capitalize, round, sum } from 'lodash'
+import PenaltyDescription from '../Validators/PenaltyDescription'
 import Widget from './Widget'
 
 const PenaltyWidget = ({ validator }) => {
@@ -11,6 +12,7 @@ const PenaltyWidget = ({ validator }) => {
       subtitle={<PenaltyGraph validator={validator} />}
       isLoading={!validator}
       linkTo={`/validators/${validator?.address}/penalties`}
+      tooltip={<PenaltyDescription />}
     />
   )
 }

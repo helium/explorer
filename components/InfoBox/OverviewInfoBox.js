@@ -16,7 +16,7 @@ import { useDataCredits } from '../../data/datacredits'
 const OverviewInfoBox = () => {
   const { data: hotspots } = useApi('/metrics/hotspots')
   const { data: blocks } = useApi('/metrics/blocks')
-  const { data: validators = [] } = useApi('/validators')
+  const { data: validators } = useApi('/validators')
   const { market } = useMarket()
   const { stats } = useStats()
   const { dataCredits } = useDataCredits()
@@ -65,7 +65,7 @@ const OverviewInfoBox = () => {
           tooltip="The amount of HNT being staked by Validators"
           value={formatLargeNumber(totalStaked)}
           change={<Currency value={market?.price * totalStaked} />}
-          isLoading={!market}
+          isLoading={!market || !validators}
           linkTo="/validators"
         />
         <HalveningCountdownWidget />
@@ -77,7 +77,7 @@ const OverviewInfoBox = () => {
         />
         <Widget
           title="Total Validators"
-          value={validators.length.toLocaleString()}
+          value={validators?.length?.toLocaleString()}
           isLoading={!validators}
           linkTo="/validators"
         />

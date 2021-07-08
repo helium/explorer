@@ -12,6 +12,7 @@ import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 import SkeletonList from '../Lists/SkeletonList'
 import StatWidget from '../Widgets/StatWidget'
 import { differenceInDays } from 'date-fns'
+import { countValidators, filterEligibleValidators } from '../Validators/utils'
 
 const TICKER = 'HNT'
 
@@ -19,36 +20,35 @@ const ValidatorsInfoBox = () => {
   const { data: validators } = useApi('/validators')
   const { data: stats } = useApi('/metrics/validators')
   const { consensusGroups } = useElections()
+
   const isLoading = useMemo(() => validators === undefined, [validators])
-  const recentGroups = useMemo(
-    () => consensusGroups?.recentElections || [],
-    [consensusGroups],
-  )
+
+  const recentGroups = useMemo(() => consensusGroups?.recentElections || [], [
+    consensusGroups,
+  ])
 
   const activeValidators = useMemo(
     () => validators?.filter((v) => v?.status?.online === 'online')?.length,
     [validators],
   )
 
-  const totalStaked = useMemo(
-    () => sumBy(validators, 'stake') / 100000000,
-    [validators],
-  )
+  const totalStaked = useMemo(() => sumBy(validators, 'stake') / 100000000, [
+    validators,
+  ])
 
-  const consensusGroup = useMemo(
-    () => validators?.filter((v) => v.elected),
-    [validators],
-  )
+  const consensusGroup = useMemo(() => validators?.filter((v) => v.elected), [
+    validators,
+  ])
 
   return (
     <InfoBox title="Validators" metaTitle="Validators">
       <TabNavbar basePath="validators">
         <TabPane title="Statistics" key="statistics">
           <InfoBoxPaneContainer>
-            <StatWidget
-              title="Total Validators"
-              series={stats?.count}
-              isLoading={!stats}
+            <Widget
+              title="Staked Validators"
+              value={countValidators(validators)}
+              isLoading={isLoading}
               linkTo="/validators/all"
             />
             <Widget
@@ -82,9 +82,9 @@ const ValidatorsInfoBox = () => {
             />
             <Widget
               title="Estimated APR"
-              value={formatPercent(calculateValidatorAPY(validators?.length))}
+              value={formatPercent(calculateValidatorAPY(validators))}
               isLoading={isLoading}
-              tooltip="Annual percent return accounting for the halving on 8/1/21. Note that unstaking tokens invokes a 250,000 block (~5 mo.) cooldown period where no returns will be earned before the staked tokens become liquid again. Earned rewards are immediately liquid."
+              tooltip="Annual percent return of eligible validators (staked and online) accounting for the halving on 8/1/21. Note that unstaking tokens invokes a 250,000 block (~5 mo.) cooldown period where no returns will be earned before the staked tokens become liquid again. Earned rewards are immediately liquid."
             />
             <VersionsWidget validators={validators} isLoading={isLoading} />
           </InfoBoxPaneContainer>
@@ -120,8 +120,10 @@ const ValidatorsInfoBox = () => {
   )
 }
 
-const calculateValidatorAPY = (numValidators) => {
-  if (!numValidators) return 0
+const calculateValidatorAPY = (validators) => {
+  if (!validators) return 0
+
+  const numValidators = validators.filter(filterEligibleValidators).length
 
   const preHalvingTokensPerDay = 300000 / 30
   const postHalvingTokensPerDay = preHalvingTokensPerDay / 2

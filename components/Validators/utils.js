@@ -1,3 +1,5 @@
+import { filter } from 'lodash'
+
 export const isRelay = (listen_addrs) => {
   return !!(
     listen_addrs &&
@@ -28,3 +30,11 @@ export const formatVersion = (versionHeartbeat) => {
 
   return [major, minor, patch].join('.')
 }
+
+export const countValidators = (validators) => {
+  if (!validators) return null
+  return filter(validators, { stakeStatus: 'staked' }).length.toLocaleString()
+}
+
+export const filterEligibleValidators = (v) =>
+  v.stakeStatus === 'staked' && v?.status?.online === 'online'

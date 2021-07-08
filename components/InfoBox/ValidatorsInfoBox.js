@@ -9,7 +9,6 @@ import { useElections } from '../../data/consensus'
 import ValidatorsList from '../Lists/ValidatorsList'
 import useApi from '../../hooks/useApi'
 import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
-import WarningWidget from '../Widgets/WarningWidget'
 import SkeletonList from '../Lists/SkeletonList'
 import StatWidget from '../Widgets/StatWidget'
 import { differenceInDays } from 'date-fns'
@@ -43,11 +42,6 @@ const ValidatorsInfoBox = () => {
       <TabNavbar basePath="validators">
         <TabPane title="Statistics" key="statistics">
           <InfoBoxPaneContainer>
-            <WarningWidget
-              warningText="Note: Validators are currently in activation mode."
-              subtitle="Over the next several elections, Validators will take over block production from Hotspots"
-              link="https://blog.helium.com/validator-staking-is-now-live-on-helium-mainnet-2c429d0f7f4e"
-            />
             <StatWidget
               title="Total Validators"
               series={stats?.count}

@@ -1,6 +1,6 @@
 import { countBy, maxBy } from 'lodash'
 import { Tooltip } from 'antd'
-import { formatVersion } from '../Validators/utils'
+import { filterEligibleValidators, formatVersion } from '../Validators/utils'
 import { useMemo } from 'react'
 
 const makePercent = (count, total) => (count / total) * 100 + '%'
@@ -17,10 +17,7 @@ const versionColor = (version, index) => {
 
 const VersionsWidget = ({ validators = [], isLoading = false }) => {
   const eligibleValidators = useMemo(
-    () =>
-      validators.filter(
-        (v) => v.stakeStatus === 'staked' && v?.status?.online === 'online',
-      ),
+    () => validators.filter(filterEligibleValidators),
     [validators],
   )
 

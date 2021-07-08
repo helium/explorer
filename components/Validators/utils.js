@@ -35,3 +35,6 @@ export const countValidators = (validators) => {
   if (!validators) return null
   return filter(validators, { stakeStatus: 'staked' }).length.toLocaleString()
 }
+
+export const filterEligibleValidators = (v) =>
+  v.stakeStatus === 'staked' && v?.status?.online === 'online'

@@ -12,7 +12,7 @@ import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 import SkeletonList from '../Lists/SkeletonList'
 import StatWidget from '../Widgets/StatWidget'
 import { differenceInDays } from 'date-fns'
-import { countValidators } from '../Validators/utils'
+import { countValidators, filterEligibleValidators } from '../Validators/utils'
 
 const TICKER = 'HNT'
 
@@ -123,9 +123,7 @@ const ValidatorsInfoBox = () => {
 const calculateValidatorAPY = (validators) => {
   if (!validators) return 0
 
-  const numValidators = validators.filter(
-    (v) => v.stakeStatus === 'staked' && v?.status?.online === 'online',
-  ).length
+  const numValidators = validators.filter(filterEligibleValidators).length
 
   const preHalvingTokensPerDay = 300000 / 30
   const postHalvingTokensPerDay = preHalvingTokensPerDay / 2

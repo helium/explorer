@@ -1,4 +1,4 @@
-import { round, sumBy } from 'lodash'
+import { filter, round, sumBy } from 'lodash'
 import { useMemo } from 'react'
 import InfoBox from './InfoBox'
 import TrendWidget from '../Widgets/TrendWidget'
@@ -77,13 +77,18 @@ const OverviewInfoBox = () => {
         />
         <Widget
           title="Total Validators"
-          value={validators?.length?.toLocaleString()}
+          value={countValidators(validators)}
           isLoading={!validators}
           linkTo="/validators"
         />
       </InfoBoxPaneContainer>
     </InfoBox>
   )
+}
+
+const countValidators = (validators) => {
+  if (!validators) return null
+  return filter(validators, { stakeStatus: 'staked' }).length.toLocaleString()
 }
 
 export default OverviewInfoBox

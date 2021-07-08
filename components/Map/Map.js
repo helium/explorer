@@ -210,11 +210,8 @@ const CoverageMap = () => {
     [selectHex, measuring],
   )
 
-  console.log('measuring 1:', measuring)
-
   const handleMouseMove = useCallback(
     (map, e) => {
-      console.log('measuring 2:', measuring)
       const features = map.queryRenderedFeatures(e.point, {
         layers: ['public.h3_res8'],
       })
@@ -228,6 +225,9 @@ const CoverageMap = () => {
     },
     [measuring],
   )
+
+  const handleMouseMoveRef = useRef(handleMouseMove)
+  handleMouseMoveRef.current = handleMouseMove
 
   const handleClick = useCallback(
     (_, e) => {
@@ -256,6 +256,9 @@ const CoverageMap = () => {
     ],
   )
 
+  const handleClickRef = useRef(handleClick)
+  handleClickRef.current = handleClick
+
   return (
     <Mapbox
       // eslint-disable-next-line react/style-prop-object
@@ -267,8 +270,11 @@ const CoverageMap = () => {
         map.current = mapInstance
         setStyledLoaded(true)
       }}
-      onMouseMove={handleMouseMove}
-      onClick={handleClick}
+      // temp fix, there's a bug with react-mapbox-gl where onClick doesn't update the function on state changes:
+      // https://github.com/alex3165/react-mapbox-gl/issues/963
+      // TODO: once the above issue is fixed, replace the below 2 lines with direct functions instead of refs
+      onMouseMove={(map, event) => handleMouseMoveRef.current(map, event)}
+      onClick={(map, event) => handleClickRef.current(map, event)}
     >
       <MapControls />
       <ZoomControls />

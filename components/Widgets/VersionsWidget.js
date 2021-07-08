@@ -1,6 +1,7 @@
 import { countBy, maxBy } from 'lodash'
 import { Tooltip } from 'antd'
 import { formatVersion } from '../Validators/utils'
+import { useMemo } from 'react'
 
 const makePercent = (count, total) => (count / total) * 100 + '%'
 
@@ -15,8 +16,20 @@ const versionColor = (version, index) => {
 }
 
 const VersionsWidget = ({ validators = [], isLoading = false }) => {
-  const versionCounts = countBy(validators, 'versionHeartbeat')
-  const totalValidators = validators.length
+  const eligibleValidators = useMemo(
+    () =>
+      validators.filter(
+        (v) => v.stakeStatus === 'staked' && v?.status?.online === 'online',
+      ),
+    [validators],
+  )
+
+  const versionCounts = useMemo(
+    () => countBy(eligibleValidators, 'versionHeartbeat'),
+    [eligibleValidators],
+  )
+
+  const totalValidators = eligibleValidators.length
 
   return (
     <div className="bg-gray-200 p-3 rounded-lg col-span-2">
@@ -53,7 +66,7 @@ const VersionsWidget = ({ validators = [], isLoading = false }) => {
           <span className="font-mono text-gray-800 text-sm">
             Latest Version:{' '}
             {formatVersion(
-              maxBy(validators, 'versionHeartbeat')?.versionHeartbeat,
+              maxBy(eligibleValidators, 'versionHeartbeat')?.versionHeartbeat,
             ) || ' N/A'}
           </span>
         )}

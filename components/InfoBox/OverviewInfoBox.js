@@ -1,4 +1,4 @@
-import { filter, round, sumBy } from 'lodash'
+import { round, sumBy } from 'lodash'
 import { useMemo } from 'react'
 import InfoBox from './InfoBox'
 import TrendWidget from '../Widgets/TrendWidget'
@@ -12,6 +12,7 @@ import Currency from '../Common/Currency'
 import { useMarket } from '../../data/market'
 import { useStats } from '../../data/stats'
 import { useDataCredits } from '../../data/datacredits'
+import { countValidators } from '../Validators/utils'
 
 const OverviewInfoBox = () => {
   const { data: hotspots } = useApi('/metrics/hotspots')
@@ -84,11 +85,6 @@ const OverviewInfoBox = () => {
       </InfoBoxPaneContainer>
     </InfoBox>
   )
-}
-
-const countValidators = (validators) => {
-  if (!validators) return null
-  return filter(validators, { stakeStatus: 'staked' }).length.toLocaleString()
 }
 
 export default OverviewInfoBox

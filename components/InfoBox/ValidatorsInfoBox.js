@@ -12,7 +12,8 @@ import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 import SkeletonList from '../Lists/SkeletonList'
 import StatWidget from '../Widgets/StatWidget'
 import { differenceInDays } from 'date-fns'
-import { countValidators, filterEligibleValidators } from '../Validators/utils'
+import { filterEligibleValidators } from '../Validators/utils'
+import { useValidatorStats } from '../../data/validators'
 
 const TICKER = 'HNT'
 
@@ -20,6 +21,7 @@ const ValidatorsInfoBox = () => {
   const { data: validators } = useApi('/validators')
   const { data: stats } = useApi('/metrics/validators')
   const { consensusGroups } = useElections()
+  const { stats: validatorStats } = useValidatorStats()
 
   const isLoading = useMemo(() => validators === undefined, [validators])
 
@@ -47,8 +49,8 @@ const ValidatorsInfoBox = () => {
           <InfoBoxPaneContainer>
             <Widget
               title="Staked Validators"
-              value={countValidators(validators)}
-              isLoading={isLoading}
+              value={validatorStats?.staked?.count?.toLocaleString()}
+              isLoading={!validatorStats}
               linkTo="/validators/all"
             />
             <Widget

@@ -1,5 +1,4 @@
-import { round, sumBy } from 'lodash'
-import { useMemo } from 'react'
+import { round } from 'lodash'
 import InfoBox from './InfoBox'
 import TrendWidget from '../Widgets/TrendWidget'
 import StatWidget from '../Widgets/StatWidget'
@@ -12,19 +11,15 @@ import Currency from '../Common/Currency'
 import { useMarket } from '../../data/market'
 import { useStats } from '../../data/stats'
 import { useDataCredits } from '../../data/datacredits'
-import { countValidators } from '../Validators/utils'
+import { useValidatorStats } from '../../data/validators'
 
 const OverviewInfoBox = () => {
   const { data: hotspots } = useApi('/metrics/hotspots')
   const { data: blocks } = useApi('/metrics/blocks')
-  const { data: validators } = useApi('/validators')
+  const { stats: validatorStats } = useValidatorStats()
   const { market } = useMarket()
   const { stats } = useStats()
   const { dataCredits } = useDataCredits()
-
-  const totalStaked = useMemo(() => sumBy(validators, 'stake') / 100000000, [
-    validators,
-  ])
 
   return (
     <InfoBox title="Helium Explorer">
@@ -64,9 +59,11 @@ const OverviewInfoBox = () => {
         <Widget
           title="HNT Staked"
           tooltip="The amount of HNT being staked by Validators"
-          value={formatLargeNumber(totalStaked)}
-          change={<Currency value={market?.price * totalStaked} />}
-          isLoading={!market || !validators}
+          value={formatLargeNumber(validatorStats?.staked?.amount)}
+          change={
+            <Currency value={market?.price * validatorStats?.staked?.amount} />
+          }
+          isLoading={!market || !validatorStats}
           linkTo="/validators"
         />
         <HalveningCountdownWidget />
@@ -78,8 +75,8 @@ const OverviewInfoBox = () => {
         />
         <Widget
           title="Staked Validators"
-          value={countValidators(validators)}
-          isLoading={!validators}
+          value={validatorStats?.staked?.count?.toLocaleString()}
+          isLoading={!validatorStats}
           linkTo="/validators"
         />
       </InfoBoxPaneContainer>

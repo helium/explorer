@@ -10,7 +10,7 @@ export const fetchOraclePrices = async () => {
   var { data: data, cursor: cursor } = await response.json()
   const now = new Date();
   var failsafe = 0;
-  while(1) {
+  while(true) {
     if (failsafe++ >= 20) {
       return prices;
     }

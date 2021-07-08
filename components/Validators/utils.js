@@ -13,6 +13,7 @@ export const statusCircleColor = {
 }
 
 export const getStatus = (online, listen_addrs) => {
+  if (online === null) return 'offline'
   if (isRelay(listen_addrs)) return 'relay'
   return online
 }

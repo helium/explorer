@@ -1,24 +1,36 @@
 import { useMemo, memo } from 'react'
 import { Source, Layer, GeoJSONLayer } from 'react-mapbox-gl'
+import GeoJSON from 'geojson'
+import { h3ToGeo } from 'h3-js'
+import { h3SetToFeatureCollection } from 'geojson2h3'
+import useApi from '../../../hooks/useApi'
 import useSelectedHex from '../../../hooks/useSelectedHex'
 import { emptyGeoJSON } from '../../../utils/location'
-
-const TILESERVER_URL =
-  process.env.NEXT_PUBLIC_TILESERVER_URL ||
-  'https://hotspot-tileserver-martin.herokuapp.com'
-
-const HEX_SOURCE_OPTIONS = {
-  type: 'vector',
-  url: `${TILESERVER_URL}/public.h3_res8.json`,
-}
-
-const POINTS_SOURCE_OPTIONS = {
-  type: 'vector',
-  url: `${TILESERVER_URL}/public.points.json`,
-}
+import { keyBy } from 'lodash'
 
 const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
   const { selectedHex } = useSelectedHex()
+  const { data: hexes } = useApi('/hexes')
+
+  const pointsSource = useMemo(() => {
+    if (!hexes) return emptyGeoJSON
+
+    const points = hexes.map((h) => {
+      const [lat, lng] = h3ToGeo(h.hex)
+      return { ...h, lat, lng }
+    })
+
+    return GeoJSON.parse(points, { Point: ['lat', 'lng'] })
+  }, [hexes])
+
+  const hexesSource = useMemo(() => {
+    if (!hexes) return emptyGeoJSON
+    const hexLookup = keyBy(hexes, 'hex')
+    return h3SetToFeatureCollection(
+      Object.keys(hexLookup),
+      (h3Index) => hexLookup[h3Index],
+    )
+  }, [hexes])
 
   const circleLayout = useMemo(() => {
     switch (layer) {
@@ -42,45 +54,38 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
 
   return (
     <>
-      <Source id="hexes_source" tileJsonSource={HEX_SOURCE_OPTIONS} />
+      <Source
+        id="points"
+        geoJsonSource={{ type: 'geojson', data: pointsSource }}
+      />
+      <Layer sourceId="points" id="points" type="circle" paint={circleLayout} />
+      <Source
+        id="hexes"
+        geoJsonSource={{ type: 'geojson', data: hexesSource }}
+      />
       <Layer
-        sourceLayer="public.h3_res8"
-        sourceId="hexes_source"
-        id="public.h3_res8"
+        sourceId="hexes"
+        id="hexes"
         type="fill"
         paint={hexLayout}
         onClick={onHexClick}
       />
-      <Source id="points_source" tileJsonSource={POINTS_SOURCE_OPTIONS} />
       <Layer
-        sourceLayer="public.points"
-        sourceId="points_source"
-        id="public.points"
-        type="circle"
-        paint={circleLayout}
-      />
-      <Layer
-        id="hex_label"
-        sourceLayer="public.points"
-        sourceId="points_source"
+        sourceId="points"
+        id="labels"
         type="symbol"
         minZoom={11}
         layout={{
-          'text-field': ['get', 'hotspot_count'],
+          'text-field': ['get', 'count'],
           'text-allow-overlap': false,
           'text-font': ['Inter Semi Bold', 'Arial Unicode MS Bold'],
           'text-size': 23,
         }}
         paint={{
-          'text-opacity': [
-            'case',
-            ['==', ['get', 'hotspot_count'], 1],
-            0,
-            0.85,
-          ],
+          'text-opacity': ['case', ['==', ['get', 'count'], 1], 0, 0.85],
           'text-color': [
             'case',
-            ['==', ['get', 'id'], selectedHex?.index],
+            ['==', ['get', 'hex'], selectedHex?.index],
             '#ffffff',
             '#10192d',
           ],
@@ -120,12 +125,12 @@ const rewardScaleStyle = (minZoom, maxZoom) => ({
   ...defaultStyle(minZoom, maxZoom),
   'circle-color': [
     'case',
-    ['==', ['get', 'avg_reward_scale'], 0],
+    ['==', ['get', 'scale'], 0],
     '#4F5293',
     [
       'interpolate',
       ['linear'],
-      ['get', 'avg_reward_scale'],
+      ['get', 'scale'],
       0,
       '#FF6666',
       0.2,
@@ -152,12 +157,12 @@ const hexRewardScaleStyle = () => ({
   ...hexDefaultStyle(),
   'fill-color': [
     'case',
-    ['==', ['get', 'avg_reward_scale'], 0],
+    ['==', ['get', 'scale'], 0],
     '#4F5293',
     [
       'interpolate',
       ['linear'],
-      ['get', 'avg_reward_scale'],
+      ['get', 'scale'],
       0,
       '#FF6666',
       0.2,

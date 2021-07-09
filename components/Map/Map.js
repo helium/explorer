@@ -200,11 +200,11 @@ const CoverageMap = () => {
   const handleHexClick = useCallback(
     (e) => {
       const features = map.current.queryRenderedFeatures(e.point, {
-        layers: ['public.h3_res8'],
+        layers: ['hexes'],
       })
       if (features.length > 0 && !measuring) {
         const [hexFeature] = features
-        selectHex(hexFeature.properties.id)
+        selectHex(hexFeature.properties.hex)
       }
     },
     [selectHex, measuring],
@@ -212,8 +212,9 @@ const CoverageMap = () => {
 
   const handleMouseMove = useCallback(
     (map, e) => {
+      // console.log('map points', map.queryRenderedFeatures(e.point))
       const features = map.queryRenderedFeatures(e.point, {
-        layers: ['public.h3_res8'],
+        layers: ['hexes'],
       })
       if (measuring) {
         map.getCanvas().style.cursor = 'crosshair'

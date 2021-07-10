@@ -212,7 +212,6 @@ const CoverageMap = () => {
 
   const handleMouseMove = useCallback(
     (map, e) => {
-      // console.log('map points', map.queryRenderedFeatures(e.point))
       const features = map.queryRenderedFeatures(e.point, {
         layers: ['hexes'],
       })

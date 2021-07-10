@@ -24,7 +24,8 @@ export const fetchOraclePrices = async () => {
     for (const el of data) {
       const fromEl = new Date(el.timestamp);
       const diff = now.getTime() - fromEl.getTime();
-      const diffInDays = Math.floor(diff / (1000 * 3600 * 24));
+      const MILLISECONDS_IN_A_DAY = 1000 * 3600 * 24
+      const diffInDays = Math.floor(diff / MILLISECONDS_IN_A_DAY);
       if (diffInDays <= 30) {
         prices.push(el)
       } else {

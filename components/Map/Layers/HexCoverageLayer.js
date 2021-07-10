@@ -10,7 +10,7 @@ import { keyBy } from 'lodash'
 
 const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
   const { selectedHex } = useSelectedHex()
-  const { data: hexes } = useApi('/hexes')
+  const { data: hexes } = useApi('/hexes', { dedupingInterval: 1000 * 60 })
 
   const pointsSource = useMemo(() => {
     if (!hexes) return emptyGeoJSON

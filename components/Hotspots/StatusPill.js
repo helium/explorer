@@ -7,13 +7,17 @@ const StatusPill = ({ hotspot }) => {
     <Tooltip
       placement="top"
       title={`Hotspot is ${status}. ${
-        status === 'online' && hotspot.status.height === null
-          ? 'Beginning to sync'
+        status === 'online' &&
+        hotspot.status.height !== null &&
+        hotspot.block - hotspot.status?.height <= 1500
+          ? 'Synced.'
           : status === 'online' && hotspot.status.height !== null
           ? `Syncing block ${hotspot.status?.height.toLocaleString()}. `
           : 'Hotspot is not syncing. '
       }${
-        status === 'online' && hotspot.status.height !== null
+        status === 'online' &&
+        hotspot.status.height !== null &&
+        hotspot.block - hotspot.status?.height >= 1500
           ? `Blocks remaining: ${(
               hotspot.block - hotspot.status?.height
             ).toLocaleString()}.`

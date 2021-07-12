@@ -40,6 +40,9 @@ class ExportModal extends React.Component {
   handleCancel = () => this.setState(initialState)
 
   onDateChange = (dates) => {
+    if (!dates) {
+      return
+    }
     this.setState({
       startDate: getUnixTime(dates[0]),
       endDate: getUnixTime(dates[1]),

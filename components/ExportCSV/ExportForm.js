@@ -9,6 +9,7 @@ import {
   endOfYear,
   subMonths,
   subYears,
+  isAfter,
 } from 'date-fns'
 
 const { RangePicker } = DatePicker
@@ -53,6 +54,7 @@ const ExportForm = ({ onDateChange, onTxnChange, onFeeChange, type }) => {
         </div>
         <div>
           <RangePicker
+            disabledDate={(date) => isAfter(date, new Date())}
             ranges={{
               Today: [startOfDay(now), now],
               'This Month': [startOfMonth(now), now],

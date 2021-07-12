@@ -30,7 +30,7 @@ const StatusPill = ({ hotspot }) => {
         <p className="text-gray-600 ml-2 mb-0">
           {status === 'offline'
             ? `Offline`
-            : hotspot.block - hotspot.status?.height >= 500 ||
+            : hotspot.block - hotspot.status?.height >= 1500 ||
               hotspot.status.height === null
             ? `Syncing`
             : `Synced`}

@@ -10,7 +10,7 @@ export const fetchElections = (network = 'production') => async () => {
 
   const url =
     network === 'production'
-      ? 'https://api.helium.io/v1/hotspots/elected'
+      ? 'https://api.helium.io/v1/validators/elected'
       : 'https://testnet-api.helium.wtf/v1/validators/elected'
 
   // TODO: convert this to helium-js

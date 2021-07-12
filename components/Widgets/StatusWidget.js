@@ -10,7 +10,7 @@ const StatusWidget = ({ hotspot }) => {
       return 'Offline'
     }
     if (
-      hotspot.block - hotspot.status?.height >= 500 ||
+      hotspot.block - hotspot.status?.height >= 1500 ||
       hotspot.status.height === null
     ) {
       return 'Syncing'
@@ -31,9 +31,11 @@ const StatusWidget = ({ hotspot }) => {
         />
       }
       subtitle={
-        <span className="text-gray-550">
-          At block {hotspot?.status?.height?.toLocaleString()}
-        </span>
+        value == 'Syncing' && (
+          <span className="text-gray-550">
+            At block {hotspot?.status?.height?.toLocaleString()}
+          </span>
+        )
       }
     />
   )

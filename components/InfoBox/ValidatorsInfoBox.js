@@ -2,7 +2,7 @@ import InfoBox from './InfoBox'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import Widget from '../Widgets/Widget'
 import { useMemo } from 'react'
-import { clamp, sumBy } from 'lodash'
+import { clamp } from 'lodash'
 import { formatLargeNumber, formatPercent } from '../../utils/format'
 import VersionsWidget from '../Widgets/VersionsWidget'
 import { useElections } from '../../data/consensus'
@@ -12,8 +12,9 @@ import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 import SkeletonList from '../Lists/SkeletonList'
 import StatWidget from '../Widgets/StatWidget'
 import { differenceInDays } from 'date-fns'
-import { filterEligibleValidators } from '../Validators/utils'
 import { useValidatorStats } from '../../data/validators'
+import Currency from '../Common/Currency'
+import { useMarket } from '../../data/market'
 
 const TICKER = 'HNT'
 
@@ -22,20 +23,12 @@ const ValidatorsInfoBox = () => {
   const { data: stats } = useApi('/metrics/validators')
   const { consensusGroups } = useElections()
   const { stats: validatorStats } = useValidatorStats()
+  const { market } = useMarket()
 
   const isLoading = useMemo(() => validators === undefined, [validators])
 
   const recentGroups = useMemo(() => consensusGroups?.recentElections || [], [
     consensusGroups,
-  ])
-
-  const activeValidators = useMemo(
-    () => validators?.filter((v) => v?.status?.online === 'online')?.length,
-    [validators],
-  )
-
-  const totalStaked = useMemo(() => sumBy(validators, 'stake') / 100000000, [
-    validators,
   ])
 
   const consensusGroup = useMemo(() => validators?.filter((v) => v.elected), [
@@ -55,25 +48,40 @@ const ValidatorsInfoBox = () => {
             />
             <Widget
               title="Consensus Size"
-              value={validators
-                ?.filter((v) => v.elected)
-                ?.length?.toLocaleString()}
-              isLoading={isLoading}
+              value={consensusGroups?.currentElection?.length}
+              isLoading={!consensusGroups}
               linkTo="/validators/consensus"
             />
             <Widget
               title="% Online"
               value={formatPercent(
-                validators?.length > 0
-                  ? activeValidators / validators.length
-                  : 0,
+                validatorStats?.active / validatorStats?.staked?.count,
               )}
-              isLoading={isLoading}
+              tooltip={
+                <div>
+                  <div>Active: {validatorStats?.active}</div>
+                  <div>Staked: {validatorStats?.staked?.count}</div>
+                </div>
+              }
+              isLoading={!validatorStats}
+            />
+            <Widget
+              title="Estimated APR"
+              value={formatPercent(
+                calculateValidatorAPY(validatorStats?.active),
+              )}
+              isLoading={!validatorStats}
+              tooltip="Annual percent return of eligible validators (staked and online) accounting for the halving on 8/1/21. Note that unstaking tokens invokes a 250,000 block (~5 mo.) cooldown period where no returns will be earned before the staked tokens become liquid again. Earned rewards are immediately liquid."
             />
             <Widget
               title={`Total Staked (${TICKER})`}
-              value={formatLargeNumber(totalStaked)}
-              isLoading={isLoading}
+              value={formatLargeNumber(validatorStats?.staked?.amount)}
+              change={
+                <Currency
+                  value={market?.price * validatorStats?.staked?.amount}
+                />
+              }
+              isLoading={!market || !validatorStats}
             />
             <StatWidget
               title="% Supply Staked"
@@ -81,12 +89,6 @@ const ValidatorsInfoBox = () => {
               isLoading={!stats}
               valueType="percent"
               changeType="percent"
-            />
-            <Widget
-              title="Estimated APR"
-              value={formatPercent(calculateValidatorAPY(validators))}
-              isLoading={isLoading}
-              tooltip="Annual percent return of eligible validators (staked and online) accounting for the halving on 8/1/21. Note that unstaking tokens invokes a 250,000 block (~5 mo.) cooldown period where no returns will be earned before the staked tokens become liquid again. Earned rewards are immediately liquid."
             />
             <VersionsWidget validators={validators} isLoading={isLoading} />
           </InfoBoxPaneContainer>
@@ -122,10 +124,8 @@ const ValidatorsInfoBox = () => {
   )
 }
 
-const calculateValidatorAPY = (validators) => {
-  if (!validators) return 0
-
-  const numValidators = validators.filter(filterEligibleValidators).length
+const calculateValidatorAPY = (numValidators) => {
+  if (!numValidators) return 0
 
   const preHalvingTokensPerDay = 300000 / 30
   const postHalvingTokensPerDay = preHalvingTokensPerDay / 2

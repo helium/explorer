@@ -1,27 +1,42 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import classNames from 'classnames'
 import Widget from './Widget'
+import { useAsync } from 'react-async-hook'
 
 const StatusWidget = ({ hotspot }) => {
   const status = hotspot?.status?.online
+
+  const {
+    result: syncHeight,
+    loading: syncHeightLoading,
+  } = useAsync(async () => {
+    const timestamp = hotspot?.status?.timestamp
+
+    if (!timestamp) {
+      return 1
+    }
+
+    const height = await fetchHeightByTimestamp(timestamp)
+    return height
+  }, [hotspot.status.timestamp])
 
   const value = useMemo(() => {
     if (status === 'offline') {
       return 'Offline'
     }
-    if (
-      hotspot.block - hotspot.status?.height >= 1500 ||
-      hotspot.status.height === null
-    ) {
+
+    if (hotspot.block - syncHeight >= 1500 || hotspot.status.height === null) {
       return 'Syncing'
     }
+
     return 'Synced'
-  }, [hotspot.block, hotspot.status.height, status])
+  }, [hotspot.block, hotspot.status.height, status, syncHeight])
 
   return (
     <Widget
       title="Sync Status"
       value={value}
+      isLoading={syncHeightLoading}
       icon={
         <div
           className={classNames('rounded-full w-5 h-5', {
@@ -31,9 +46,9 @@ const StatusWidget = ({ hotspot }) => {
         />
       }
       subtitle={
-        value == 'Syncing' && (
+        value === 'Syncing' && (
           <span className="text-gray-550">
-            At block {hotspot?.status?.height?.toLocaleString()}
+            At block {syncHeight?.toLocaleString()}
           </span>
         )
       }
@@ -41,4 +56,14 @@ const StatusWidget = ({ hotspot }) => {
   )
 }
 
-export default StatusWidget
+const fetchHeightByTimestamp = async (timestamp) => {
+  const response = await fetch(
+    `https://api.helium.io/v1/blocks/height?max_time=${timestamp}`,
+  )
+  const {
+    data: { height },
+  } = await response.json()
+  return height
+}
+
+export default memo(StatusWidget)

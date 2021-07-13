@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import Widget from './Widget'
 import { useAsync } from 'react-async-hook'
 import { fetchHeightByTimestamp } from '../../data/blocks'
+import { SYNC_BUFFER_BLOCKS } from '../Hotspots/utils'
 
 const StatusWidget = ({ hotspot }) => {
   const status = hotspot?.status?.online
@@ -26,7 +27,10 @@ const StatusWidget = ({ hotspot }) => {
       return 'Offline'
     }
 
-    if (hotspot.block - syncHeight >= 1500 || hotspot.status.height === null) {
+    if (
+      hotspot.block - syncHeight >= SYNC_BUFFER_BLOCKS ||
+      hotspot.status.height === null
+    ) {
       return 'Syncing'
     }
 

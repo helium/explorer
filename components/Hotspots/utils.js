@@ -2,6 +2,8 @@ import capitalize from 'lodash/capitalize'
 import camelcaseKeys from 'camelcase-keys'
 import { h3ToGeo, h3ToParent } from 'h3-js'
 
+export const SYNC_BUFFER_BLOCKS = 1500
+
 export const formatHotspotName = (dashedName) =>
   dashedName.split('-').map(capitalize).join(' ')
 

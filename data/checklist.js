@@ -1,3 +1,4 @@
+import { SYNC_BUFFER_BLOCKS } from '../components/Hotspots/utils'
 import client from './client'
 
 export const getActivityForChecklist = async (address) => {
@@ -70,7 +71,7 @@ export const getChecklistItems = (
       detailText:
         isNaN(syncHeight) || isNaN(height)
           ? `Hotspot is not yet synced.`
-          : height - syncHeight < 500
+          : height - syncHeight < SYNC_BUFFER_BLOCKS
           ? `Hotspot is fully synced.`
           : `Hotspot is ${(height - syncHeight).toLocaleString()} block${
               height - syncHeight === 1 ? '' : 's'
@@ -80,7 +81,7 @@ export const getChecklistItems = (
             )
               .toFixed(2)
               .toLocaleString()}% synced.`,
-      completed: height - syncHeight < 500,
+      completed: height - syncHeight < SYNC_BUFFER_BLOCKS,
     },
     {
       sortOrder: 1,

@@ -3,7 +3,7 @@ import { useAsync } from 'react-async-hook'
 import ChecklistCheck from '../Icons/ChecklistCheck'
 import { getActivityForChecklist } from '../../data/checklist'
 import { getChecklistItems } from '../../data/checklist'
-import { useBlockHeight } from '../../data/blocks'
+import { fetchHeightByTimestamp, useBlockHeight } from '../../data/blocks'
 import ChecklistSkeleton from '../InfoBox/HotspotDetails/ChecklistSkeleton'
 import ChecklistItems from '../InfoBox/HotspotDetails/ChecklistItems'
 
@@ -26,10 +26,38 @@ const ChecklistWidget = ({ hotspot, witnesses }) => {
     }
   }, [hotspot.address])
 
-  const possibleChecklistItems = useMemo(
-    () => getChecklistItems(hotspot, witnesses, activity, height, loading),
-    [activity, height, hotspot, loading, witnesses],
-  )
+  const {
+    result: syncHeight,
+    loading: syncHeightLoading,
+  } = useAsync(async () => {
+    const timestamp = hotspot?.status?.timestamp
+
+    if (!timestamp) {
+      return 1
+    }
+
+    const height = await fetchHeightByTimestamp(timestamp)
+    return height
+  }, [hotspot.status.timestamp])
+
+  const possibleChecklistItems = useMemo(() => {
+    return getChecklistItems(
+      hotspot,
+      witnesses,
+      activity,
+      height,
+      syncHeight,
+      loading || syncHeightLoading,
+    )
+  }, [
+    activity,
+    height,
+    hotspot,
+    loading,
+    syncHeight,
+    syncHeightLoading,
+    witnesses,
+  ])
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [nextMilestoneIndex, setNextMilestoneIndex] = useState()

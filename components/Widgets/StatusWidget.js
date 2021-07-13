@@ -2,6 +2,7 @@ import { memo, useMemo } from 'react'
 import classNames from 'classnames'
 import Widget from './Widget'
 import { useAsync } from 'react-async-hook'
+import { fetchHeightByTimestamp } from '../../data/blocks'
 
 const StatusWidget = ({ hotspot }) => {
   const status = hotspot?.status?.online
@@ -54,16 +55,6 @@ const StatusWidget = ({ hotspot }) => {
       }
     />
   )
-}
-
-const fetchHeightByTimestamp = async (timestamp) => {
-  const response = await fetch(
-    `https://api.helium.io/v1/blocks/height?max_time=${timestamp}`,
-  )
-  const {
-    data: { height },
-  } = await response.json()
-  return height
 }
 
 export default memo(StatusWidget)

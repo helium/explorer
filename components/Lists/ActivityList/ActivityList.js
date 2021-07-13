@@ -11,9 +11,6 @@ import ActivityListItem from './ActivityListItem'
 import TimeAgo from 'react-time-ago'
 import ExpandedPoCReceiptContent from './ExpandedPoCReceiptContent'
 import ExpandedRewardContent from './ExpandedRewardContent'
-import AccountIcon from '../../AccountIcon'
-import AccountAddress from '../../AccountAddress'
-import ChevronIcon from '../../Icons/Chevron'
 import PaymentSubtitle from './PaymentSubtitle'
 import animalHash from 'angry-purple-tiger'
 
@@ -26,6 +23,8 @@ const isExpandable = (txn) => {
 }
 
 const ActivityList = ({
+  title,
+  description,
   address,
   context,
   transactions,
@@ -255,6 +254,8 @@ const ActivityList = ({
 
   return (
     <BaseList
+      listHeaderTitle={title}
+      listHeaderDescription={description}
       items={transactions}
       keyExtractor={keyExtractor}
       linkExtractor={linkExtractor}

@@ -10,8 +10,9 @@ import { useBlockHeight } from '../../data/blocks'
 import useToggle from '../../utils/useToggle'
 import ChecklistSkeleton from '../InfoBox/HotspotDetails/ChecklistSkeleton'
 import ChecklistItems from '../InfoBox/HotspotDetails/ChecklistItems'
+import { useMemo } from 'react'
 
-const ChecklistWidget = ({ hotspot, witnesses }) => {
+const ChecklistWidget = ({ hotspot, witnesses, isDataOnly }) => {
   const [activity, setActivity] = useState({})
   const [loading, setActivityLoading] = useState(true)
   const [showChecklist, toggleShowChecklist] = useToggle()
@@ -31,22 +32,25 @@ const ChecklistWidget = ({ hotspot, witnesses }) => {
     }
   }, [showChecklist, hotspot.address])
 
-  const possibleChecklistItems = getChecklistItems(
-    hotspot,
-    witnesses,
-    activity,
-    height,
-    loading,
+  const possibleChecklistItems = useMemo(
+    () =>
+      getChecklistItems(
+        hotspot,
+        witnesses,
+        activity,
+        height,
+        loading,
+        isDataOnly,
+      ),
+    [activity, height, hotspot, isDataOnly, loading, witnesses],
   )
 
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [nextMilestoneIndex, setNextMilestoneIndex] = useState()
+  const [nextMilestoneIndex, setNextMilestoneIndex] = useState(0)
 
   const [title, setTitle] = useState('')
 
   useEffect(() => {
-    if (!nextMilestoneIndex) return
-
     if (nextMilestoneIndex === -1) {
       setTitle('Completed Milestone')
     } else if (currentIndex === nextMilestoneIndex) {
@@ -86,13 +90,13 @@ const ChecklistWidget = ({ hotspot, witnesses }) => {
       setCurrentIndex(targetIndex)
       setProcessingChecklistItems(false)
     }
-  }, [showChecklist, loading])
+  }, [showChecklist, loading, possibleChecklistItems, nextMilestoneIndex])
 
   const [selectedChecklistItemInfo, setSelectedChecklistItemInfo] = useState({})
 
   useEffect(() => {
     setSelectedChecklistItemInfo(possibleChecklistItems[currentIndex])
-  }, [currentIndex])
+  }, [currentIndex, possibleChecklistItems])
 
   const sortChecklistItems = (checklistItems) => {
     const unsortedChecklistItems = checklistItems

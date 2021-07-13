@@ -13,6 +13,7 @@ import CopyableText from '../Common/CopyableText'
 import AccountAddress from '../AccountAddress'
 import SkeletonList from '../Lists/SkeletonList'
 import FlagLocation from '../Common/FlagLocation'
+import { isDataOnly } from '../Hotspots/utils'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -25,14 +26,22 @@ const HotspotDetailsRoute = () => {
     }
   }, [hotspot, address])
 
-  return <HotspotDetailsInfoBox address={address} isLoading={!hotspot} />
+  return (
+    <HotspotDetailsInfoBox
+      address={address}
+      isLoading={!hotspot}
+      hotspot={hotspot}
+    />
+  )
 }
 
-const HotspotDetailsInfoBox = ({ address, isLoading }) => {
-  const {
-    selectedHotspot: hotspot,
-    clearSelectedHotspot,
-  } = useSelectedHotspot()
+const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
+  const { clearSelectedHotspot } = useSelectedHotspot()
+
+  // TODO: remove once helium-js hotspot object includes .mode
+  if (hotspot !== null) hotspot.mode = 'dataonly'
+
+  const IS_DATA_ONLY = useMemo(() => isDataOnly(hotspot), [hotspot])
 
   const title = useMemo(
     () => (
@@ -108,7 +117,11 @@ const HotspotDetailsInfoBox = ({ address, isLoading }) => {
     >
       <TabNavbar>
         <TabPane title="Statistics" key="statistics">
-          {isLoading ? <SkeletonList /> : <StatisticsPane hotspot={hotspot} />}
+          {isLoading ? (
+            <SkeletonList />
+          ) : (
+            <StatisticsPane hotspot={hotspot} isDataOnly={IS_DATA_ONLY} />
+          )}
         </TabPane>
         <TabPane title="Activity" path="activity" key="activity">
           {isLoading ? (
@@ -117,15 +130,21 @@ const HotspotDetailsInfoBox = ({ address, isLoading }) => {
             <ActivityPane context="hotspot" address={hotspot?.address} />
           )}
         </TabPane>
-        <TabPane title="Witnesses" path="witnesses" key="witnesses">
-          {isLoading ? <SkeletonList /> : <WitnessesPane hotspot={hotspot} />}
+        <TabPane
+          title="Witnesses"
+          path="witnesses"
+          key="witnesses"
+          hidden={IS_DATA_ONLY}
+        >
+          <WitnessesPane hotspot={hotspot} />
         </TabPane>
-        <TabPane title="Nearby" path="nearby" key="nearby">
-          {isLoading ? (
-            <SkeletonList />
-          ) : (
-            <NearbyHotspotsPane hotspot={hotspot} />
-          )}
+        <TabPane
+          title="Nearby"
+          path="nearby"
+          key="nearby"
+          hidden={IS_DATA_ONLY}
+        >
+          <NearbyHotspotsPane hotspot={hotspot} />
         </TabPane>
       </TabNavbar>
     </InfoBox>

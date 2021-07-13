@@ -56,8 +56,26 @@ export const getChecklistItems = (
   activity,
   height,
   loading,
+  isDataOnly,
 ) => {
   if (loading) return [{ sortOrder: 0 }]
+
+  if (isDataOnly)
+    return [
+      {
+        sortOrder: 0,
+        title: 'Transferred Data',
+        detailText:
+          activity.dataTransferTxn !== null
+            ? // TODO: make this message more specific (e.g. add "x blocks ago") once the API has been updated to make that number easier to get
+              `Hotspot has transferred data packets recently.`
+            : `Hotspot hasn’t transfered data packets recently.`,
+        infoTooltipText:
+          'Hotspots transfer encrypted data on behalf of devices using the network. Device usage is expanding, and it is normal to have a Hotspot that does not transfer data. This likely means there are no devices using the network in the area.',
+        completed: activity.dataTransferTxn !== null,
+      },
+    ]
+
   return [
     {
       sortOrder: 0,

@@ -144,3 +144,7 @@ export const formatGain = (gain) => {
 export const formatElevation = (elevation) => {
   return `${elevation} m`
 }
+
+export const isDataOnly = (hotspot) => {
+  return hotspot?.mode === 'dataonly'
+}

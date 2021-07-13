@@ -12,8 +12,10 @@ import { isRelay } from '../../Hotspots/utils'
 import Widget from '../../Widgets/Widget'
 import { fetchWitnesses } from '../../../data/hotspots'
 import { useAsync } from 'react-async-hook'
+import InfoBoxPaneTitleSection from '../Common/InfoBoxPaneTitleSection'
+import ExternalLinkIcon from '../../Icons/ExternalLink'
 
-const StatisticsPane = ({ hotspot }) => {
+const StatisticsPane = ({ hotspot, isDataOnly }) => {
   const { rewards } = useHotspotRewards(hotspot.address, 60, 'day')
   const { witnesses, isLoading: isWitnessesLoading } = useHotspotWitnessSums(
     hotspot.address,
@@ -29,42 +31,81 @@ const StatisticsPane = ({ hotspot }) => {
   const { result: witnessesData } = useAsync(fetchWitnesses, [hotspot.address])
 
   return (
-    <InfoBoxPaneContainer>
-      <RelayedWarningWidget
-        isVisible={isRelay(hotspot.status.listenAddrs)}
-        warningText={'Hotspot is being Relayed.'}
-        link={'https://docs.helium.com/troubleshooting/network-troubleshooting'}
-        linkText={'Get help'}
-      />
-      <ChecklistWidget hotspot={hotspot} witnesses={witnessesData} />
-      <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
-      <RewardScaleWidget hotspot={hotspot} />
-      <StatusWidget hotspot={hotspot} />
-      <StatWidget
-        title="7D Avg Beacons"
-        series={beaconSums}
-        isLoading={isBeaconSumsLoading}
-        dataKey="sum"
-        changeType="percent"
-      />
-      <StatWidget
-        title="7D Avg Witnesses"
-        series={witnesses}
-        isLoading={isWitnessesLoading}
-        dataKey="avg"
-        changeType="percent"
-      />
-      <Widget
-        title="Gain"
-        value={hotspot?.gain / 10}
-        valueSuffix={<span className="text-xl ml-1">dBi</span>}
-      />
-      <Widget
-        title="Elevation"
-        value={hotspot?.elevation}
-        valueSuffix={<span className="text-xl ml-1">m</span>}
-      />
-    </InfoBoxPaneContainer>
+    <>
+      {isDataOnly && (
+        <InfoBoxPaneTitleSection
+          title="Data-Only Hotspot"
+          description={
+            <div className="space-y-2.5">
+              <div>
+                This Hotspot transfers data packets only and does not
+                participate in Beacons, Witnessing, and Proof-of-Coverage.
+              </div>
+              <div>It does not contribute to transmit scaling.</div>
+              <div>
+                <a
+                  className="text-gray-800 hover:text-darkgray-800 font-medium flex items-center"
+                  href="https://docs.helium.com/mine-hnt/data-only-hotspots"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Learn more
+                  <ExternalLinkIcon className="h-3.5 ml-1" />
+                </a>
+              </div>
+            </div>
+          }
+        />
+      )}
+      <InfoBoxPaneContainer>
+        {!isDataOnly && (
+          <RelayedWarningWidget
+            isVisible={isRelay(hotspot.status.listenAddrs)}
+            warningText={'Hotspot is being Relayed.'}
+            link={
+              'https://docs.helium.com/troubleshooting/network-troubleshooting'
+            }
+            linkText={'Get help'}
+          />
+        )}
+        <ChecklistWidget
+          hotspot={hotspot}
+          isDataOnly={isDataOnly}
+          witnesses={witnessesData}
+        />
+        {!isDataOnly && (
+          <>
+            <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
+            <RewardScaleWidget hotspot={hotspot} />
+            <StatusWidget hotspot={hotspot} />
+            <StatWidget
+              title="7D Avg Beacons"
+              series={beaconSums}
+              isLoading={isBeaconSumsLoading}
+              dataKey="sum"
+              changeType="percent"
+            />
+            <StatWidget
+              title="7D Avg Witnesses"
+              series={witnesses}
+              isLoading={isWitnessesLoading}
+              dataKey="avg"
+              changeType="percent"
+            />
+          </>
+        )}
+        <Widget
+          title="Gain"
+          value={hotspot?.gain / 10}
+          valueSuffix={<span className="text-xl ml-1">dBi</span>}
+        />
+        <Widget
+          title="Elevation"
+          value={hotspot?.elevation}
+          valueSuffix={<span className="text-xl ml-1">m</span>}
+        />
+      </InfoBoxPaneContainer>
+    </>
   )
 }
 

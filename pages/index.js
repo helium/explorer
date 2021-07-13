@@ -11,6 +11,7 @@ import InfoBoxSwitch from '../components/InfoBox/InfoBoxSwitch'
 import { latestCoverageUrl } from '../commonjs/coverage'
 import useKeydown from '../hooks/useKeydown'
 import useGA from '../hooks/useGA'
+import Head from 'next/head'
 
 const Map = dynamic(() => import('../components/Map/Map'), {
   ssr: false,
@@ -30,6 +31,12 @@ const Index = ({ coverageUrl }) => {
 
   return (
     <Page className="overflow-hidden">
+      <Head>
+        <link
+          href="https://api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css"
+          rel="stylesheet"
+        />
+      </Head>
       <MetaTags
         // title={'Coverage Map'}
         description={`View an interactive map of the Helium network and all the hotspots currently active around the world`}
@@ -42,6 +49,7 @@ const Index = ({ coverageUrl }) => {
         <title>Helium Explorer</title>
       </Helmet>
       <Header activeNav="coverage" />
+      {/* </span> */}
       <Map coverageUrl={coverageUrl} />
       <InfoBoxSwitch />
       <MapLayersBox />

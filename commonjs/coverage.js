@@ -1,10 +1,9 @@
 const { Client } = require('@helium/http')
 const geoJSON = require('geojson')
-const ColorHash = require('color-hash')
+const ColorHash = require('color-hash').default
 const maxBy = require('lodash/maxBy')
 const { s3 } = require('./aws')
 
-// const colorHash = new ColorHash()
 const colorHash = new ColorHash({ saturation: 0.5 })
 
 const MAX_HOTSPOTS_TO_FETCH = 200000

@@ -9,7 +9,7 @@ const MetaTags = ({
 }) => {
   const metaTitle = title ? `${title} — Helium Explorer` : 'Helium Explorer'
   // allow the option to set the <title> tag of a page separately from the one that shows up for its meta tags
-  const titleTag = pageTitle ? pageTitle : metaTitle
+  // const titleTag = pageTitle ? pageTitle : metaTitle
   const metaDescription = description
     ? description
     : 'Helium Explorer is an open source block explorer providing detailed blockchain data from the Helium network'

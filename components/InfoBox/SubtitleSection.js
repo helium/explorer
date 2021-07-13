@@ -32,6 +32,7 @@ const SubtitleSection = ({ subtitles }) => {
               >
                 {s.iconPath && (
                   <img
+                    alt=""
                     src={s.iconPath}
                     className="h-3.5 w-auto mr-0.5 md:mr-1"
                   />

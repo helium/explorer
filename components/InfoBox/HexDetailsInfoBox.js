@@ -52,6 +52,7 @@ const HexDetailsInfoBox = () => {
       title={
         <div className="flex items-center justify-center">
           <img
+            alt=""
             src="/images/location-hex.svg"
             className="h-7 w-auto mr-0.5 md:mr-2"
           />

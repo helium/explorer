@@ -5,10 +5,7 @@ import InternalLinkIcon from '../components/Icons/InternalLink'
 
 export const HelpLinkList = ({ children }) => (
   <div className="max-w-sm mx-auto">
-    <ul
-      role="list"
-      className="list-none m-0 p-0 flex flex-col items-center justify-center"
-    >
+    <ul className="list-none m-0 p-0 flex flex-col items-center justify-center">
       {children}
     </ul>
   </div>
@@ -18,8 +15,7 @@ export const HelpLink = ({ children, href, external }) => {
     return (
       <a
         target="_blank"
-        rel="noopener"
-        rel="noreferrer"
+        rel="noopener noreferrer"
         href={href}
         className="w-full py-4 px-5  mb-4 bg-white shadow-md transition-all hover:shadow-xl rounded-md"
       >

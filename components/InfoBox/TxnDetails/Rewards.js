@@ -47,7 +47,7 @@ const Rewards = ({ txn }) => {
       a.amount > b.amount ? 1 : b.amount > a.amount ? -1 : 0,
     )
     setGroupedRewards(groupedRewardsArray)
-  }, [])
+  }, [txn.rewards])
 
   const RewardsRecipientsWidget = ({ rewardsRecipients }) => {
     if (!rewardsRecipients.length) return <Skeleton className="w-full" />

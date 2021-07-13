@@ -49,10 +49,10 @@ const US_EU_BOUNDS = [
   [-125, 33],
 ]
 
-const EU_CN_BOUNDS = [
-  [143.61, 62.2],
-  [-14.10009, 23.898041],
-]
+// const EU_CN_BOUNDS = [
+//   [143.61, 62.2],
+//   [-14.10009, 23.898041],
+// ]
 
 const MOBILE_PADDING = { top: 80, left: 10, right: 10, bottom: 400 }
 const MOBILE_PADDING_FULL = { top: 80, left: 10, right: 10, bottom: 80 }
@@ -226,6 +226,9 @@ const CoverageMap = () => {
     [measuring],
   )
 
+  const handleMouseMoveRef = useRef(handleMouseMove)
+  handleMouseMoveRef.current = handleMouseMove
+
   const handleClick = useCallback(
     (_, e) => {
       if (!measuring) return
@@ -253,8 +256,12 @@ const CoverageMap = () => {
     ],
   )
 
+  const handleClickRef = useRef(handleClick)
+  handleClickRef.current = handleClick
+
   return (
     <Mapbox
+      // eslint-disable-next-line react/style-prop-object
       style="mapbox://styles/petermain/cko1ewc0p0st918lecxa5c8go"
       className="h-full w-screen overflow-hidden"
       fitBounds={bounds}
@@ -263,8 +270,11 @@ const CoverageMap = () => {
         map.current = mapInstance
         setStyledLoaded(true)
       }}
-      onMouseMove={handleMouseMove}
-      onClick={handleClick}
+      // temp fix, there's a bug with react-mapbox-gl where onClick doesn't update the function on state changes:
+      // https://github.com/alex3165/react-mapbox-gl/issues/963
+      // TODO: once the above issue is fixed, replace the below 2 lines with direct functions instead of refs
+      onMouseMove={(map, event) => handleMouseMoveRef.current(map, event)}
+      onClick={(map, event) => handleClickRef.current(map, event)}
     >
       <MapControls />
       <ZoomControls />

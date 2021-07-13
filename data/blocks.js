@@ -85,3 +85,13 @@ export const useFetchBlocks = (pageSize = 20) => {
 
   return { results, fetchMore, isLoadingInitial, isLoadingMore, hasMore }
 }
+
+export const fetchHeightByTimestamp = async (timestamp) => {
+  const response = await fetch(
+    `https://api.helium.io/v1/blocks/height?max_time=${timestamp}`,
+  )
+  const {
+    data: { height },
+  } = await response.json()
+  return height
+}

@@ -15,6 +15,7 @@ import { differenceInDays } from 'date-fns'
 import { useValidatorStats } from '../../data/validators'
 import Currency from '../Common/Currency'
 import { useMarket } from '../../data/market'
+import ElectionsPane from './Common/ElectionsPane'
 
 const TICKER = 'HNT'
 
@@ -92,6 +93,9 @@ const ValidatorsInfoBox = () => {
             />
             <VersionsWidget validators={validators} isLoading={isLoading} />
           </InfoBoxPaneContainer>
+        </TabPane>
+        <TabPane title="Elections" key="elections" path="elections">
+          <ElectionsPane />
         </TabPane>
         <TabPane title="Consensus Group" key="consensus" path="consensus">
           <InfoBoxPaneContainer span={1} padding={false}>

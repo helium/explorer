@@ -2,6 +2,15 @@ import useSWR from 'swr'
 
 export const API_BASE = 'https://explorer-api.helium.com/api'
 
+const fetcher = async (url) => {
+  const response = await fetch(url, {
+    headers: {
+      'cache-control': 'max-age=60',
+    },
+  })
+  return response.json()
+}
+
 const useApi = (route, options = {}) => {
   const url = [API_BASE, route].join('')
 
@@ -14,7 +23,7 @@ const useApi = (route, options = {}) => {
     }
   }
 
-  return useSWR(url, undefined, {
+  return useSWR(url, fetcher, {
     initialData,
     revalidateOnMount: true,
     onFailure: () => {

@@ -1,4 +1,5 @@
 import ReactCountryFlag from 'react-country-flag'
+import { Tooltip } from 'antd'
 
 const ValidatorFlagLocation = ({ geo }) => {
   if (!geo?.country_code) {
@@ -12,14 +13,18 @@ const ValidatorFlagLocation = ({ geo }) => {
     )
   }
   return (
-    <span className="flex flex-row items-center justify-start">
-      <span className="mr-2 flex flex-row items-center justify-start text-gray-800">
-        <ReactCountryFlag countryCode={geo.country_code} svg />
-      </span>
-      {[geo.city, geo.region_code, geo.country_code]
+    <Tooltip
+      title={[geo.city, geo.region_code, geo.country_code]
         .filter((g) => !!g)
         .join(', ')}
-    </span>
+    >
+      <span className="flex flex-row items-center justify-start">
+        <span className="mr-2 flex flex-row items-center justify-start text-gray-800">
+          <ReactCountryFlag countryCode={geo.country_code} svg />
+        </span>
+        {[geo.region_code, geo.country_code].filter((g) => !!g).join(', ')}
+      </span>
+    </Tooltip>
   )
 }
 

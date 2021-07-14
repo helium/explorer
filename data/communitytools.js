@@ -1,6 +1,11 @@
 // Hi there! You're probably here to add a Helium community tool to the list below.
 // At the bottom of the list is a template for how a new list item should be added.
 
+// When you're ready to submit, if you're using the GitHub editing interface,
+// select the second option at the bottom ("Create a new branch for this commit and
+// start a pull request") and then click "Propose changes" and one of the core
+// contributors will review it as soon as possible.
+
 export const communityToolsList = [
   {
     name: 'MinerTax',

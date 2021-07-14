@@ -72,34 +72,4 @@ const ElectionsPane = () => {
   )
 }
 
-{
-  /* <Col xs={24} md={12} lg={8}>
-<Widget
-  title="Time since last election"
-  value={formatDistanceToNow(
-    new Date(consensusGroups.recentElections[0].time * 1000),
-  )}
-  subtitle={`Last election: ${format(
-    new Date(consensusGroups.recentElections[0].time * 1000),
-    'h:mm aaaa, MMM d',
-  )}`}
-  tooltip="Time elapsed since the most recent consensus election transaction"
-/>
-</Col>
-<Col xs={24} md={12} lg={8}>
-<Widget
-  title="Blocks since last election"
-  value={
-    !heightLoading
-      ? `${height - consensusGroups.recentElections[0].height}`
-      : 'Loading...'
-  }
-  subtitle={`Current height: ${
-    !heightLoading ? `${height.toLocaleString()}` : `Loading...`
-  }`}
-  tooltip="The current block height minus the block height of the most recent consensus election transaction"
-/>
-</Col> */
-}
-
 export default ElectionsPane

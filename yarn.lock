@@ -1906,10 +1906,10 @@
   dependencies:
     bignumber.js "^9.0.0"
 
-"@helium/http@^3.36.0":
-  version "3.36.0"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.36.0.tgz#be6c735ff8dc501022a9bf691f4a00cc048746bd"
-  integrity sha512-oAGC5BzPUmktimV/rx17gwDvXm7DsjZWePTKuAXRru6SEMtyFiBg14P1Obw36fgTomtHVy+Er4ZEtXS1VkO88w==
+"@helium/http@^3.36.7":
+  version "3.36.7"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.36.7.tgz#76d901e5991ab9747a93dbdf77cce3d2077ec75a"
+  integrity sha512-szwK4/xyYgFkHQX2odEGbIJn6nrsrNWkGQ1O8LJREqbuuQOv6wLYf8xu2TJpxyE2ggx2cyt16ffuRJU+Ym1X8Q==
   dependencies:
     "@helium/currency" "^3.25.1"
     axios "^0.21.1"
@@ -12951,6 +12951,11 @@ react-app-polyfill@^1.0.6:
     raf "^3.4.1"
     regenerator-runtime "^0.13.3"
     whatwg-fetch "^3.0.0"
+
+react-async-hook@^3.6.2:
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/react-async-hook/-/react-async-hook-3.6.2.tgz#360018e5cd6ecc8841152a79875841b9e49dbdba"
+  integrity sha512-RkwHCJ8V7I6umKZLHneapuTRWf+eO4LOj0qUwUDsSn27jrAOcW6ClbV3x22Z4hVxH9bA0zb7y+ozDJDJ8PnZoA==
 
 react-countdown@^2.3.1:
   version "2.3.1"

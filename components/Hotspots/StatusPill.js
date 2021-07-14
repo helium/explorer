@@ -1,25 +1,46 @@
+import { memo } from 'react'
 import { Tooltip } from 'antd'
 import classNames from 'classnames'
+import { useAsync } from 'react-async-hook'
+import { fetchHeightByTimestamp } from '../../data/blocks'
+import { SYNC_BUFFER_BLOCKS } from './utils'
 
 const StatusPill = ({ hotspot }) => {
-  const status = hotspot.status.online
+  const status = hotspot?.status?.online
+
+  const {
+    result: syncHeight,
+    loading: syncHeightLoading,
+  } = useAsync(async () => {
+    const timestamp = hotspot?.status?.timestamp
+
+    if (!timestamp) {
+      return 1
+    }
+
+    const height = await fetchHeightByTimestamp(timestamp)
+    return height
+  }, [hotspot.status.timestamp])
+
+  if (syncHeightLoading) return null
+
   return (
     <Tooltip
       placement="top"
       title={`Hotspot is ${status}. ${
         status === 'online' &&
-        hotspot.status.height !== null &&
-        hotspot.block - hotspot.status?.height <= 1500
+        syncHeight !== null &&
+        hotspot.block - syncHeight <= SYNC_BUFFER_BLOCKS
           ? 'Synced.'
-          : status === 'online' && hotspot.status.height !== null
-          ? `Syncing block ${hotspot.status?.height.toLocaleString()}. `
+          : status === 'online' && syncHeight !== null
+          ? `Syncing block ${syncHeight.toLocaleString()}. `
           : 'Hotspot is not syncing. '
       }${
         status === 'online' &&
-        hotspot.status.height !== null &&
-        hotspot.block - hotspot.status?.height >= 1500
+        syncHeight !== null &&
+        hotspot.block - syncHeight >= SYNC_BUFFER_BLOCKS
           ? `Blocks remaining: ${(
-              hotspot.block - hotspot.status?.height
+              hotspot.block - syncHeight
             ).toLocaleString()}.`
           : ``
       }`}
@@ -34,8 +55,8 @@ const StatusPill = ({ hotspot }) => {
         <p className="text-gray-600 ml-2 mb-0">
           {status === 'offline'
             ? `Offline`
-            : hotspot.block - hotspot.status?.height >= 1500 ||
-              hotspot.status.height === null
+            : hotspot.block - syncHeight >= SYNC_BUFFER_BLOCKS ||
+              syncHeight === null
             ? `Syncing`
             : `Synced`}
         </p>
@@ -44,4 +65,4 @@ const StatusPill = ({ hotspot }) => {
   )
 }
 
-export default StatusPill
+export default memo(StatusPill)

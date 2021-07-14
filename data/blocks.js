@@ -20,3 +20,13 @@ export const useLatestBlocks = (initialData, count = 100) => {
     isError: error,
   }
 }
+
+export const fetchHeightByTimestamp = async (timestamp) => {
+  const response = await fetch(
+    `https://api.helium.io/v1/blocks/height?max_time=${timestamp}`,
+  )
+  const {
+    data: { height },
+  } = await response.json()
+  return height
+}

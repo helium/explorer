@@ -1,6 +1,8 @@
 import capitalize from 'lodash/capitalize'
 import camelcaseKeys from 'camelcase-keys'
 
+export const SYNC_BUFFER_BLOCKS = 1500
+
 export const formatHotspotName = (dashedName) =>
   dashedName.split('-').map(capitalize).join(' ')
 

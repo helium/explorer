@@ -25,7 +25,7 @@ const NavItem = ({
       className={classNames(
         classes,
         active ? activeClasses : '',
-        'mx-2 py-3 inline-block font-medium text-sm md:text-base cursor-pointer whitespace-nowrap',
+        'mx-2 py-2 lg:py-3 inline-block font-medium text-sm md:text-base cursor-pointer whitespace-nowrap',
         {
           'text-gray-600 hover:text-navy-400': !active && !customStyles,
           'text-navy-400 border-navy-400 border-b-3 border-solid':
@@ -74,10 +74,10 @@ const TabNavbar = ({ centered = false, classes, children }) => {
 
   return (
     <>
-      <div className="w-full bg-white z-10 rounded-t-xl">
+      <div className="w-full bg-white z-10">
         <div
           className={classNames(classes, {
-            'w-full border-b border-gray-400 border-solid mt-2 px-2 md:px-3 flex overflow-x-scroll no-scrollbar': !classes,
+            'w-full border-b border-gray-400 border-solid mt-1 lg:mt-2 px-2 md:px-3 flex overflow-x-scroll no-scrollbar': !classes,
             'justify-center': centered,
             'justify-start': !centered,
           })}

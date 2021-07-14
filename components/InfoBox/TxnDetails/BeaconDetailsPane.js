@@ -75,8 +75,8 @@ const WitnessesWidget = ({
                 </Link>
                 <div className="flex items-center text-sm leading-tight tracking-tighter text-gray-600 space-x-1.5">
                   <div className="grid grid-cols-2 gap-0.5">
-                    <div className="">Distance</div>
-                    <div className="text-gray-800 font-medium">
+                    <span>Distance</span>
+                    <span className="text-gray-800 font-medium">
                       {challengeeLon &&
                         formatDistance(
                           calculateDistance(
@@ -84,25 +84,25 @@ const WitnessesWidget = ({
                             [witnessLng, witnessLat],
                           ),
                         )}
-                    </div>
-                    <div className="">Datarate</div>
-                    <div className="text-gray-800 font-medium">
+                    </span>
+                    <span>Datarate</span>
+                    <span className="text-gray-800 font-medium">
                       {w.datarate}
-                    </div>
-                    <div className="">RSSI</div>
-                    <div className="text-gray-800 font-medium">
+                    </span>
+                    <span>RSSI</span>
+                    <span className="text-gray-800 font-medium">
                       {w.signal?.toLocaleString(undefined, {
                         maximumFractionDigits: 2,
                       })}
                       dBm
-                    </div>
-                    <div className="">SNR</div>
-                    <div className="text-gray-800 font-medium">
+                    </span>
+                    <span>SNR</span>
+                    <span className="text-gray-800 font-medium">
                       {w.snr?.toLocaleString(undefined, {
                         maximumFractionDigits: 2,
                       })}
                       dB
-                    </div>
+                    </span>
                   </div>
                 </div>
               </div>

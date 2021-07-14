@@ -46,9 +46,9 @@ const WitnessesWidget = ({
 }) => {
   const { selectHotspot } = useSelectedHotspot()
   return (
-    <div className={classNames(`bg-gray-200 p-3 rounded-lg col-span-2`)}>
+    <div className={classNames('bg-gray-200 p-3 rounded-lg col-span-2')}>
       <div className="text-gray-600 text-sm leading-loose">
-        <span className="flex items-center justify-start">
+        <span className="flex items-center justify-start mb-3">
           <img
             alt=""
             src="/images/witness-yellow-mini.svg"
@@ -61,23 +61,49 @@ const WitnessesWidget = ({
         {witnesses.map((w) => {
           const [witnessLat, witnessLng] = h3ToGeo(w.location)
           return (
-            <div key={w.gateway} className="flex justify-between items-center">
+            <div
+              key={w.gateway}
+              className="flex justify-between items-start pb-4"
+            >
               <div>
                 <Link
                   to={`/hotspots/${w.gateway}`}
                   onClick={() => selectHotspot(w.gateway)}
-                  className="text-base leading-tight tracking-tight text-navy-1000 hover:text-navy-400 transition-all duration-150"
+                  className="text-base leading-tight tracking-tight text-navy-1000 hover:text-navy-400 transition-all duration-150 flex items-center pb-2"
                 >
                   {animalHash(w.gateway)}
                 </Link>
-                <div className="text-sm leading-tight tracking-tighter text-gray-600">
-                  {challengeeLon &&
-                    formatDistance(
-                      calculateDistance(
-                        [challengeeLon, challengeeLat],
-                        [witnessLng, witnessLat],
-                      ),
-                    )}
+                <div className="flex items-center text-sm leading-tight tracking-tighter text-gray-600 space-x-1.5">
+                  <div className="grid grid-cols-2 gap-0.5">
+                    <div className="">Distance</div>
+                    <div className="text-gray-800 font-medium">
+                      {challengeeLon &&
+                        formatDistance(
+                          calculateDistance(
+                            [challengeeLon, challengeeLat],
+                            [witnessLng, witnessLat],
+                          ),
+                        )}
+                    </div>
+                    <div className="">Datarate</div>
+                    <div className="text-gray-800 font-medium">
+                      {w.datarate}
+                    </div>
+                    <div className="">RSSI</div>
+                    <div className="text-gray-800 font-medium">
+                      {w.signal?.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
+                      dBm
+                    </div>
+                    <div className="">SNR</div>
+                    <div className="text-gray-800 font-medium">
+                      {w.snr?.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
+                      dB
+                    </div>
+                  </div>
                 </div>
               </div>
               <Pill

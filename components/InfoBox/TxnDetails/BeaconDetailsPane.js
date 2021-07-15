@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import { useState } from 'react'
 import { useAsync } from 'react-async-hook'
 import animalHash from 'angry-purple-tiger'
@@ -46,7 +45,7 @@ const WitnessesWidget = ({
 }) => {
   const { selectHotspot } = useSelectedHotspot()
   return (
-    <div className={classNames('bg-gray-200 p-3 rounded-lg col-span-2')}>
+    <div className="bg-gray-200 p-3 rounded-lg col-span-2">
       <div className="text-gray-600 text-sm leading-loose">
         <span className="flex items-center justify-start mb-3">
           <img

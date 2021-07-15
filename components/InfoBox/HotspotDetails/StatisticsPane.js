@@ -15,6 +15,7 @@ import { useAsync } from 'react-async-hook'
 
 const StatisticsPane = ({ hotspot }) => {
   const { rewards } = useHotspotRewards(hotspot.address, 60, 'day')
+  const { rewards: rewardsDay } = useHotspotRewards(hotspot.address, 24, 'hour')
   const { witnesses, isLoading: isWitnessesLoading } = useHotspotWitnessSums(
     hotspot.address,
     2,
@@ -36,7 +37,11 @@ const StatisticsPane = ({ hotspot }) => {
         link={'https://docs.helium.com/troubleshooting/network-troubleshooting'}
         linkText={'Get help'}
       />
-      <ChecklistWidget hotspot={hotspot} witnesses={witnessesData} />
+      <RewardsTrendWidget
+        title="24 Hour Earnings"
+        series={rewardsDay}
+        dataPointTimePeriod="hour"
+      />
       <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
       <RewardScaleWidget hotspot={hotspot} />
       <StatusWidget hotspot={hotspot} />
@@ -64,6 +69,7 @@ const StatisticsPane = ({ hotspot }) => {
         value={hotspot?.elevation}
         valueSuffix={<span className="text-xl ml-1">m</span>}
       />
+      <ChecklistWidget hotspot={hotspot} witnesses={witnessesData} />
     </InfoBoxPaneContainer>
   )
 }

@@ -69,6 +69,7 @@ const MarketInfoBox = () => {
               title="Network Rewards"
               series={networkRewards}
               showTarget
+              periodLabel="30 Day Trend"
             />
             <Widget
               title="Circulating Supply"

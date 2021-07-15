@@ -4,8 +4,14 @@ import { chunk, maxBy, minBy, sumBy, takeRight } from 'lodash'
 import classNames from 'classnames'
 import { Balance, CurrencyType } from '@helium/currency'
 import LargeBalance from '../Common/LargeBalance'
+import { formatHoursRange, formatDaysRange } from '../Hotspots/utils'
 
-const RewardTooltip = ({ active, payload, showTarget = false }) => {
+const RewardTooltip = ({
+  active,
+  payload,
+  showTarget = false,
+  dataPointTimePeriod,
+}) => {
   if (active && payload && payload.length) {
     let amount
     let target
@@ -18,9 +24,17 @@ const RewardTooltip = ({ active, payload, showTarget = false }) => {
     }
 
     return (
-      <div className="bg-white bg-opacity-95 backdrop-filter blur-md px-2 py-1 rounded-md shadow-md">
-        <div className="text-sm font-sans font-medium text-darkgray-800">
-          Amount: {amount.toString(2)}
+      <div className="bg-white bg-opacity-95 px-2 py-1 rounded-md shadow-md z-50">
+        {payload[0] && (
+          <div className="text-xs font-sans font-light text-gray-800">
+            {dataPointTimePeriod === 'hour'
+              ? formatHoursRange(payload[0].payload.timestamp)
+              : formatDaysRange(payload[0].payload.timestamp)}
+          </div>
+        )}
+        <div className="text-md font-sans font-semibold text-navy-400">
+          {showTarget ? 'Amount: ' : ''}
+          {amount.toString(2)}
         </div>
         {showTarget && (
           <div className="text-sm font-sans font-medium text-darkgray-800">
@@ -34,7 +48,13 @@ const RewardTooltip = ({ active, payload, showTarget = false }) => {
   return null
 }
 
-const RewardsTrendWidget = ({ title, series = [], showTarget = false }) => {
+const RewardsTrendWidget = ({
+  title,
+  series = [],
+  showTarget = false,
+  dataPointTimePeriod = 'day',
+  periodLabel,
+}) => {
   const [firstValue, lastValue] = useMemo(() => {
     if (series.length <= 30) {
       return [0, sumBy(series, 'total')]
@@ -99,12 +119,21 @@ const RewardsTrendWidget = ({ title, series = [], showTarget = false }) => {
               strokeWidth={3}
               dot={false}
             />
-            <Tooltip content={<RewardTooltip showTarget={showTarget} />} />
+            <Tooltip
+              content={
+                <RewardTooltip
+                  showTarget={showTarget}
+                  dataPointTimePeriod={dataPointTimePeriod}
+                />
+              }
+            />
           </LineChart>
         </ResponsiveContainer>
-        <div className="absolute right-4 bottom-0 text-gray-550 text-xs">
-          30 Day Trend
-        </div>
+        {periodLabel && (
+          <div className="absolute right-4 bottom-0 text-gray-550 text-xs z-10">
+            {periodLabel}
+          </div>
+        )}
       </div>
     </div>
   )

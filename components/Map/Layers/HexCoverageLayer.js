@@ -71,6 +71,12 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
         onClick={onHexClick}
       />
       <Layer
+        sourceId="hexes"
+        id="hexes_line"
+        type="line"
+        paint={hexOutlineStyle()}
+      />
+      <Layer
         sourceId="points"
         id="labels"
         type="symbol"
@@ -149,8 +155,22 @@ const rewardScaleStyle = (minZoom, maxZoom) => ({
 
 const hexDefaultStyle = () => ({
   'fill-color': '#29d391',
-  'fill-outline-color': '#1C1E3B',
   'fill-opacity': 0.5,
+})
+
+const hexOutlineStyle = () => ({
+  'line-color': '#2a3654',
+  'line-width': 4,
+  'line-blur': 4,
+  'line-opacity': [
+    'interpolate',
+    ['exponential', 1],
+    ['zoom'],
+    6.5,
+    0,
+    12,
+    0.75,
+  ],
 })
 
 const hexRewardScaleStyle = () => ({

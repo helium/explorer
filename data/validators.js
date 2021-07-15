@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import Balance, { CurrencyType } from '@helium/currency'
 import { API_BASE } from '../hooks/useApi'
-import client, { TAKE_MAX } from './client'
+import client from './client'
 import camelcaseKeys from 'camelcase-keys'
 
 export const fetchValidator = async (address) => {
@@ -67,4 +67,13 @@ export const useValidatorStats = () => {
     isLoading: !error && !data,
     isError: error,
   }
+}
+
+export const searchValidator = async (term) => {
+  const response = await fetch(`${API_BASE}/search/validators?term=${term}`)
+  const validators = await response.json()
+  return validators.map((v) => ({
+    ...camelcaseKeys(v),
+    stake: new Balance(v.stake, CurrencyType.networkToken),
+  }))
 }

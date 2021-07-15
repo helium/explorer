@@ -3,6 +3,8 @@ import { debounce } from 'lodash'
 import Fuse from 'fuse.js'
 import client from '../../data/client'
 import { Address } from '@helium/crypto'
+import { API_BASE } from '../../hooks/useApi'
+import camelcaseKeys from 'camelcase-keys'
 
 const useSearchResults = () => {
   const [term, setTerm] = useState('')
@@ -20,11 +22,11 @@ const useSearchResults = () => {
 
   const searchValidator = useCallback(async (term) => {
     try {
-      const list = await client.validators.search(term)
-      const validators = (await list.take(20)).map((v) =>
-        toSearchResult(v, 'validator'),
+      const response = await fetch(`${API_BASE}/validators/search?term=${term}`)
+      const validators = await response.json()
+      return validators.map((v) =>
+        toSearchResult(camelcaseKeys(v), 'validator'),
       )
-      return validators
     } catch {}
   }, [])
 

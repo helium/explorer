@@ -4,12 +4,12 @@ import useApi from '../../../hooks/useApi'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import { round } from 'lodash'
 import { useState, useEffect } from 'react'
+import ElectionTimeWidget from '../../Widgets/ElectionTimeWidget'
 
 const BlockStatisticsPane = () => {
   let { data: blocks } = useApi('/metrics/blocks')
 
   const [processingData, setProcessingData] = useState(true)
-  const [electionTimes, setElectionTimes] = useState()
   const [blockTimeDay, setBlockTimeDay] = useState()
   // const [blockTimeWeek, setBlockTimeWeek] = useState()
   // const [blockTimeMonth, setBlockTimeMonth] = useState()
@@ -17,14 +17,6 @@ const BlockStatisticsPane = () => {
   useEffect(() => {
     if (!!blocks) {
       setProcessingData(true)
-      const electionTimesArray = blocks?.electionTimeDay
-      setElectionTimes(
-        electionTimesArray.map((et) => ({
-          ...et,
-          value: round(et.value / 60, 1),
-        })),
-      )
-
       const blockTimeDayArray = blocks?.blockTimeDay.map((bt) => {
         bt.value = round(bt.value, 2)
         return bt
@@ -67,15 +59,7 @@ const BlockStatisticsPane = () => {
         changeSuffix={' sec'}
         isLoading={processingData}
       />
-      <TrendWidget
-        title="Election Time (24hr)"
-        series={electionTimes}
-        valueSuffix=" min"
-        changeInitial="second_last"
-        changeSuffix=" min"
-        isLoading={processingData}
-        periodLabel={`${blocks?.electionTimeDay.length} days`}
-      />
+      <ElectionTimeWidget />
       {/* <StatWidget
         title="Block Time (7D)"
         series={blockTimeWeek}

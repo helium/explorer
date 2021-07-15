@@ -1,6 +1,12 @@
 import { getPocReceiptRole } from '../../../utils/txns'
 import animalHash from 'angry-purple-tiger'
 import classNames from 'classnames'
+import { h3ToGeo } from 'h3-js'
+import {
+  formatDistance,
+  formatWitnessInvalidReason,
+} from '../../Hotspots/utils'
+import { calculateDistance } from '../../../utils/distance'
 
 const RoleParticipant = ({
   className,
@@ -10,6 +16,7 @@ const RoleParticipant = ({
   participantDetails,
   inactiveParticipantClasses,
   activeParticipantClasses,
+  activeParticipantDetails,
   iconPath,
 }) => (
   <div className={classNames('flex-col items-center justify-start', className)}>
@@ -29,29 +36,78 @@ const RoleParticipant = ({
       >
         {participantText}
       </span>
+      {activeParticipantDetails && activeParticipantDetails}
     </span>
     {participantDetails && participantDetails}
   </div>
 )
 
-const WitnessesDetails = ({ txn, role, address, isWitness }) => (
-  <div className="flex flex-col">
-    {/* if this hotspot is a witness and is invalid, display the reason why */}
-    {role === 'poc_witnesses_invalid' && (
-      <span className="text-xs font-sans font-semibold text-red-500 my-0.5 ml-6">
-        {txn.path[0].witnesses.find((w) => w.gateway === address).invalidReason}
+const ActiveWitnessInfo = ({
+  activeWitness,
+  path: { challengeeLon, challengeeLat },
+}) => {
+  const [witnessLat, witnessLng] = h3ToGeo(activeWitness.location)
+
+  return (
+    <div className="grid grid-cols-5 text-xs font-sans font-thin text-gray-800 ml-7 mb-2 mt-1.5 whitespace-nowrap">
+      <span className="col-span-1">Distance</span>
+      <span className="col-span-4 text-gray-800 font-medium ml-0.5">
+        {challengeeLon &&
+          formatDistance(
+            calculateDistance(
+              [challengeeLon, challengeeLat],
+              [witnessLng, witnessLat],
+            ),
+          )}
       </span>
-    )}
-    {/* if this hotspot is in the witnesses list for this PoC Receipt */}
-    {isWitness &&
-      // and there are other witnesses in the list with it
-      txn.path[0].witnesses.length > 1 && (
-        <span className="whitespace-nowrap text-xs font-sans font-thin text-gray-800 mt-0.5">
-          {`and ${txn.path[0].witnesses.length - 1} other hotspots`}
+      <span className="col-span-1">RSSI</span>
+      <span className="col-span-4 text-gray-800 font-medium ml-0.5">
+        {activeWitness.signal &&
+          `${activeWitness.signal?.toLocaleString(undefined, {
+            maximumFractionDigits: 2,
+          })}
+            dBm`}
+      </span>
+      <span className="col-span-1">SNR</span>
+      <span className="col-span-4 text-gray-800 font-medium ml-0.5">
+        {activeWitness.snr &&
+          `${activeWitness.snr?.toLocaleString(undefined, {
+            maximumFractionDigits: 2,
+          })}
+            dB`}
+      </span>
+    </div>
+  )
+}
+
+const WitnessesDetails = ({ txn, role, address, isWitness }) => {
+  const activeWitness = txn.path[0].witnesses.find((w) => w.gateway === address)
+  return (
+    <div className="flex flex-col">
+      {/* if this hotspot is a witness and is invalid, display the reason why */}
+      {role === 'poc_witnesses_invalid' && (
+        <span className="text-xs font-sans font-semibold text-red-500 mt-1 ml-6">
+          {activeWitness?.invalidReason}
         </span>
       )}
-  </div>
-)
+      {/* if this hotspot is in the witnesses list for this PoC Receipt... */}
+      {isWitness && (
+        <>
+          {/* show the distance, RSSI, and SNR */}
+          <ActiveWitnessInfo activeWitness={activeWitness} path={txn.path[0]} />
+          {/* as well as the number of other witnesses there were */}
+          {txn.path[0].witnesses.length > 1 && (
+            <span className="whitespace-nowrap text-xs font-sans font-thin text-gray-800 mt-0.5">
+              {`and ${txn.path[0].witnesses.length - 1} other hotspot${
+                txn.path[0].witnesses.length - 1 === 1 ? '' : 's'
+              }`}
+            </span>
+          )}
+        </>
+      )}
+    </div>
+  )
+}
 
 const ExpandedPoCReceiptContent = ({ txn, address }) => {
   const role = getPocReceiptRole(txn, address)

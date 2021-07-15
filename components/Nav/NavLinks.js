@@ -8,7 +8,7 @@ const NavLink = ({ href, title, className, onClick }) => (
     to={href}
     onClick={onClick}
     className={classNames(className, {
-      'text-white font-medium text-base hover:text-gray-500 focus:text-gray-600': !className,
+      'text-white font-sans text-base hover:text-gray-500 focus:text-gray-600': !className,
     })}
   >
     {title}
@@ -48,11 +48,16 @@ const NavLinks = ({ className, onNavLinkClick, navLinkClasses }) => {
         className={navLinkClasses}
         onClick={onNavLinkClick}
       />
-      <FeedbackBubble className="hidden md:flex -mr-3">
+      <NavLink
+        href="/tools"
+        title="Tools"
+        className={navLinkClasses}
+        onClick={onNavLinkClick}
+      />
+      <FeedbackBubble className="hidden md:flex -mr-4">
         <div className="bg-navy-400 hover:bg-navy-300 px-3 py-1 cursor-pointer rounded-lg">
           <span className="text-sm text-white flex items-center">
-            Feedback
-            <FeedbackIcon className="ml-1 h-4 w-4 text-white" />
+            <FeedbackIcon className="h-4 w-4 text-white" />
           </span>
         </div>
       </FeedbackBubble>

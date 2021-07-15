@@ -2,7 +2,10 @@ import { getPocReceiptRole } from '../../../utils/txns'
 import animalHash from 'angry-purple-tiger'
 import classNames from 'classnames'
 import { h3ToGeo } from 'h3-js'
-import { formatDistance } from '../../Hotspots/utils'
+import {
+  formatDistance,
+  formatWitnessInvalidReason,
+} from '../../Hotspots/utils'
 import { calculateDistance } from '../../../utils/distance'
 
 const RoleParticipant = ({
@@ -83,8 +86,8 @@ const WitnessesDetails = ({ txn, role, address, isWitness }) => {
     <div className="flex flex-col">
       {/* if this hotspot is a witness and is invalid, display the reason why */}
       {role === 'poc_witnesses_invalid' && (
-        <span className="text-xs font-sans font-semibold text-red-500 my-0.5 ml-6">
-          {activeWitness.invalidReason}
+        <span className="text-xs font-sans font-semibold text-red-500 mt-1 ml-6">
+          {activeWitness?.invalidReason}
         </span>
       )}
       {/* if this hotspot is in the witnesses list for this PoC Receipt... */}

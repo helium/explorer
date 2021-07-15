@@ -68,12 +68,3 @@ export const useValidatorStats = () => {
     isError: error,
   }
 }
-
-export const searchValidator = async (term) => {
-  const response = await fetch(`${API_BASE}/search/validators?term=${term}`)
-  const validators = await response.json()
-  return validators.map((v) => ({
-    ...camelcaseKeys(v),
-    stake: new Balance(v.stake, CurrencyType.networkToken),
-  }))
-}

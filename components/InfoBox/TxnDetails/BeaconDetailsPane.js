@@ -9,6 +9,7 @@ import { formatDistance, calculateDistance } from '../../../utils/distance'
 import { Link } from 'react-router-i18n'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
+import { Tooltip } from 'antd'
 
 const BeaconDetailsPane = ({ txn }) => {
   const [challenger, setChallenger] = useState()
@@ -73,35 +74,64 @@ const WitnessesWidget = ({
                   {animalHash(w.gateway)}
                 </Link>
                 <div className="flex items-center text-sm leading-tight tracking-tighter text-gray-600 space-x-1.5">
-                  <div className="grid grid-cols-2 gap-0.5">
+                  <div className="grid grid-cols-2 gap-y-1 gap-x-2">
                     <span>Distance</span>
-                    <span className="text-gray-800 font-medium">
-                      {challengeeLon &&
-                        formatDistance(
-                          calculateDistance(
-                            [challengeeLon, challengeeLat],
-                            [witnessLng, witnessLat],
-                          ),
-                        )}
-                    </span>
+                    <Tooltip
+                      title={
+                        "This value is an approximation of the distance between the hotspot that witnessed the challenge and the one that participated in it. Helium uses hexagons from the H3 library, so this distance is a rough approximation based on how many resolution 12 H3 cells the two hotspots are apart. E.g. if it says the distance is 0, it's because they are in the same cell."
+                      }
+                      placement={'right'}
+                    >
+                      <span className="text-gray-800 font-medium">
+                        {challengeeLon &&
+                          formatDistance(
+                            calculateDistance(
+                              [challengeeLon, challengeeLat],
+                              [witnessLng, witnessLat],
+                            ),
+                          )}
+                      </span>
+                    </Tooltip>
+
                     <span>Datarate</span>
-                    <span className="text-gray-800 font-medium">
-                      {w.datarate}
-                    </span>
+                    <Tooltip
+                      title={'The data rate at which the signal was received.'}
+                      placement={'right'}
+                    >
+                      <span className="text-gray-800 font-medium">
+                        {w.datarate}
+                      </span>
+                    </Tooltip>
+
                     <span>RSSI</span>
-                    <span className="text-gray-800 font-medium">
-                      {w.signal?.toLocaleString(undefined, {
-                        maximumFractionDigits: 2,
-                      })}
-                      dBm
-                    </span>
+                    <Tooltip
+                      title={
+                        'RSSI stands for Received Signal Strength Indicator, and it represents the strength of the signal.'
+                      }
+                      placement={'right'}
+                    >
+                      <span className="text-gray-800 font-medium">
+                        {w.signal?.toLocaleString(undefined, {
+                          maximumFractionDigits: 2,
+                        })}
+                        dBm
+                      </span>
+                    </Tooltip>
+
                     <span>SNR</span>
-                    <span className="text-gray-800 font-medium">
-                      {w.snr?.toLocaleString(undefined, {
-                        maximumFractionDigits: 2,
-                      })}
-                      dB
-                    </span>
+                    <Tooltip
+                      title={
+                        'SNR stands for Signal-to-Noise Ratio, and it represents the quality of the signal.'
+                      }
+                      placement={'right'}
+                    >
+                      <span className="text-gray-800 font-medium">
+                        {w.snr?.toLocaleString(undefined, {
+                          maximumFractionDigits: 2,
+                        })}
+                        dB
+                      </span>
+                    </Tooltip>
                   </div>
                 </div>
               </div>

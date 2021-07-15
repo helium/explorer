@@ -1,14 +1,14 @@
 import useSWR from 'swr'
 import Balance, { CurrencyType } from '@helium/currency'
 import { API_BASE } from '../hooks/useApi'
-import { fetchAll } from '../utils/pagination'
+import client, { TAKE_MAX } from './client'
 import camelcaseKeys from 'camelcase-keys'
 
 export const fetchValidator = async (address) => {
   const response = await fetch(`${API_BASE}/validators/${address}`)
   const validator = await response.json()
   const stake = new Balance(validator.stake, CurrencyType.networkToken)
-  return { ...validator, stake }
+  return { ...camelcaseKeys(validator), stake }
 }
 
 export const useValidator = (address) => {
@@ -27,7 +27,8 @@ export const useValidator = (address) => {
 }
 
 export const fetchAccountValidators = async (address) => {
-  const validators = await fetchAll(`/accounts/${address}/validators`)
+  const response = await fetch(`${API_BASE}/accounts/${address}/validators`)
+  const validators = await response.json()
   return validators.map((v) => ({
     ...camelcaseKeys(v),
     stake: new Balance(v.stake, CurrencyType.networkToken),
@@ -50,9 +51,7 @@ export const useAccountValidators = (address) => {
 }
 
 export const fetchValidatorStats = async () => {
-  const response = await fetch('https://api.helium.io/v1/validators/stats')
-  const { data } = await response.json()
-  return data
+  return client.validators.stats.get()
 }
 
 export const useValidatorStats = () => {

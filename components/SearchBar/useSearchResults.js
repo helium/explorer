@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { debounce } from 'lodash'
 import Fuse from 'fuse.js'
-import qs from 'qs'
 import client from '../../data/client'
 import { Address } from '@helium/crypto'
-import camelcaseKeys from 'camelcase-keys'
 
 const useSearchResults = () => {
   const [term, setTerm] = useState('')
@@ -22,13 +20,8 @@ const useSearchResults = () => {
 
   const searchValidator = useCallback(async (term) => {
     try {
-      const fetchResult = await fetch(
-        `https://api.helium.io/v1/validators/name?${qs.stringify({
-          search: term,
-        })}`,
-      )
-      const { data } = await fetchResult.json()
-      const validators = camelcaseKeys(data).map((v) =>
+      const list = await client.validators.search(term)
+      const validators = (await list.take(20)).map((v) =>
         toSearchResult(v, 'validator'),
       )
       return validators
@@ -59,6 +52,7 @@ const useSearchResults = () => {
     async (term) => {
       let hotspot
       let account
+      let validator
 
       try {
         hotspot = await client.hotspots.get(term)
@@ -68,8 +62,14 @@ const useSearchResults = () => {
         account = await client.accounts.get(term)
       } catch {}
 
+      try {
+        validator = await client.validators.get(term)
+      } catch {}
+
       if (hotspot) {
         setResults([toSearchResult(hotspot, 'hotspot'), ...results])
+      } else if (validator) {
+        setResults([toSearchResult(validator, 'validator'), ...results])
       } else if (account) {
         setResults([toSearchResult(account, 'account'), ...results])
       }

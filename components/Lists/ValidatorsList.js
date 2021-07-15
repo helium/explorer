@@ -42,6 +42,12 @@ const ValidatorsList = ({ validators, recentGroups, title, description }) => {
             <span>{round(v.rewards.month.total, 2)} HNT</span>
           </div>
         </Tooltip>
+        <Tooltip title="Penalty Score">
+          <div className="flex items-center space-x-1">
+            <img src="/images/penalty.svg" className="w-3" />{' '}
+            <span>{round(v.penalty, 2)}</span>
+          </div>
+        </Tooltip>
       </>
     )
   }, [])

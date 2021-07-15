@@ -23,6 +23,8 @@ const isExpandable = (txn) => {
 }
 
 const ActivityList = ({
+  title,
+  description,
   address,
   context,
   transactions,
@@ -254,6 +256,8 @@ const ActivityList = ({
 
   return (
     <BaseList
+      listHeaderTitle={title}
+      listHeaderDescription={description}
       items={transactions}
       keyExtractor={keyExtractor}
       linkExtractor={linkExtractor}

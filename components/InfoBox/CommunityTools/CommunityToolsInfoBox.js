@@ -21,16 +21,16 @@ const CommunityToolsInfoBox = () => {
         description={
           <div className="flex flex-col space-y-2">
             <div>
-              A set of tools that have been built by the Helium community to
-              help you optimize your hotspot setup and do things like export
-              earnings reports for your taxes.
+              A set of tools that have been built by the Helium community. The
+              tools listed are not endorsed be Helium Inc. or its core
+              developers. Please use community tools at your own discretion.
             </div>
             <div>
               If there's a tool that isn't listed here that you think should be,
               you can{' '}
               <a
                 className="text-gray-800 font-bold hover:text-darkgray-800"
-                href="https://github.com/helium/explorer/edit/beta/data/communitytools.js"
+                href="https://github.com/helium/explorer/edit/v2/data/communitytools.js"
                 rel="noopener noreferrer"
                 target="_blank"
               >

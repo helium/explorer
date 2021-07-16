@@ -74,7 +74,7 @@ const Widget = ({
               {changeSuffix}
             </div>
           ))}
-        {subtitle}
+        {subtitle && isLoading ? <Skeleton className="w-full" /> : subtitle}
       </div>
 
       {(onClick || linkTo) && (

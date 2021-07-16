@@ -6,6 +6,7 @@ import ElectionTimeWidget from '../../Widgets/ElectionTimeWidget'
 import { useElections } from '../../../data/consensus'
 import { format, formatDistanceToNow } from 'date-fns'
 import { useBlockHeight } from '../../../data/blocks'
+import Skeleton from '../../Common/Skeleton'
 
 const ElectionsPane = () => {
   const { stats } = useStats()
@@ -16,14 +17,26 @@ const ElectionsPane = () => {
     <InfoBoxPaneContainer>
       <Widget
         title="Time since last election"
-        value={formatDistanceToNow(
-          new Date(consensusGroups?.recentElections?.[0]?.time * 1000),
-        )}
-        subtitle={`${format(
-          new Date(consensusGroups?.recentElections?.[0]?.time * 1000),
-          'h:mm aaaa MMM d',
-        )}`}
-        isLoading={!consensusGroups}
+        value={
+          consensusGroups?.recentElections?.[0]?.time ? (
+            formatDistanceToNow(
+              new Date(consensusGroups.recentElections[0].time * 1000),
+            )
+          ) : (
+            <Skeleton />
+          )
+        }
+        subtitle={`${
+          consensusGroups?.recentElections?.[0]?.time ? (
+            format(
+              new Date(consensusGroups.recentElections[0].time * 1000),
+              'h:mm aaaa MMM d',
+            )
+          ) : (
+            <Skeleton />
+          )
+        }`}
+        isLoading={!consensusGroups?.recentElections?.[0]?.time}
       />
       <Widget
         title="Blocks since last election"

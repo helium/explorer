@@ -29,7 +29,7 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
     return (
       <BaseSearchResult
         title={formatHotspotName(result.item.name)}
-        subtitle={<ValidatorFlagLocation geocode={result.item.geo} />}
+        subtitle={<ValidatorFlagLocation geo={result.item.geo} />}
         type={result.type}
         selected={selected}
         onSelect={handleSelect}

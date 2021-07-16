@@ -1,10 +1,8 @@
 import RewardScaleWidget from '../../Widgets/RewardScaleWidget'
-import RewardsTrendWidget from '../../Widgets/RewardsTrendWidget'
 import RelayedWarningWidget from '../../Widgets/WarningWidget'
 import StatusWidget from '../../Widgets/StatusWidget'
 import StatWidget from '../../Widgets/StatWidget'
 import { useHotspotBeaconSums } from '../../../data/beacons'
-import { useHotspotRewards } from '../../../data/rewards'
 import { useHotspotWitnessSums } from '../../../data/witnesses'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import ChecklistWidget from '../../Widgets/ChecklistWidget'
@@ -12,10 +10,9 @@ import { isRelay } from '../../Hotspots/utils'
 import Widget from '../../Widgets/Widget'
 import { fetchWitnesses } from '../../../data/hotspots'
 import { useAsync } from 'react-async-hook'
+import RewardsWidgetCustomPeriods from '../../Widgets/RewardsWidgetCustomPeriods'
 
 const StatisticsPane = ({ hotspot }) => {
-  const { rewards } = useHotspotRewards(hotspot.address, 60, 'day')
-  const { rewards: rewardsDay } = useHotspotRewards(hotspot.address, 24, 'hour')
   const { witnesses, isLoading: isWitnessesLoading } = useHotspotWitnessSums(
     hotspot.address,
     2,
@@ -37,12 +34,16 @@ const StatisticsPane = ({ hotspot }) => {
         link={'https://docs.helium.com/troubleshooting/network-troubleshooting'}
         linkText={'Get help'}
       />
-      <RewardsTrendWidget
-        title="24 Hour Earnings"
-        series={rewardsDay}
-        dataPointTimePeriod="hour"
+      <RewardsWidgetCustomPeriods
+        address={hotspot.address}
+        title="Earnings"
+        type={'hotspot'}
+        periods={[
+          { number: 24, type: 'hour' },
+          { number: 7, type: 'day' },
+          { number: 30, type: 'day' },
+        ]}
       />
-      <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
       <RewardScaleWidget hotspot={hotspot} />
       <StatusWidget hotspot={hotspot} />
       <StatWidget

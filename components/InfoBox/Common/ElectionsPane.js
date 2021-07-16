@@ -13,8 +13,6 @@ const ElectionsPane = () => {
   const { consensusGroups } = useElections()
   const { height } = useBlockHeight()
 
-  console.log(consensusGroups)
-
   return (
     <InfoBoxPaneContainer>
       <Widget

@@ -112,7 +112,7 @@ const RewardsTrendWidget = ({
           )}
         </div>
         <div className="w-full p-4 pr-0 relative">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="99%" aspect={4} height="100%">
             <LineChart width={300} height={100} data={chartSeries}>
               <YAxis hide domain={[yMin, yMax]} />
               {showTarget && (

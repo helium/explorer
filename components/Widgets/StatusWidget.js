@@ -28,7 +28,7 @@ const StatusWidget = ({ hotspot }) => {
     }
 
     if (
-      hotspot.block - syncHeight >= SYNC_BUFFER_BLOCKS ||
+      hotspot.status.height - syncHeight >= SYNC_BUFFER_BLOCKS ||
       hotspot.status.height === null
     ) {
       return 'Syncing'

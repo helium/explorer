@@ -17,7 +17,7 @@ import classNames from 'classnames'
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white opacity-90 backdrop-filter blur-md px-2 py-1">
+      <div className="bg-white opacity-95 backdrop-filter blur-md px-2 py-1">
         <p className="text-sm font-sans font-medium text-darkgray-800">
           {payload[0].value.toLocaleString()}
         </p>

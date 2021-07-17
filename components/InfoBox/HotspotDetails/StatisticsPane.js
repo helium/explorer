@@ -1,10 +1,8 @@
 import RewardScaleWidget from '../../Widgets/RewardScaleWidget'
-import RewardsTrendWidget from '../../Widgets/RewardsTrendWidget'
 import RelayedWarningWidget from '../../Widgets/WarningWidget'
 import StatusWidget from '../../Widgets/StatusWidget'
 import StatWidget from '../../Widgets/StatWidget'
 import { useHotspotBeaconSums } from '../../../data/beacons'
-import { useHotspotRewards } from '../../../data/rewards'
 import { useHotspotWitnessSums } from '../../../data/witnesses'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import ChecklistWidget from '../../Widgets/ChecklistWidget'
@@ -12,9 +10,9 @@ import { isRelay } from '../../Hotspots/utils'
 import Widget from '../../Widgets/Widget'
 import { fetchWitnesses } from '../../../data/hotspots'
 import { useAsync } from 'react-async-hook'
+import RewardsWidgetCustomPeriods from '../../Widgets/RewardsWidgetCustomPeriods'
 
 const StatisticsPane = ({ hotspot }) => {
-  const { rewards } = useHotspotRewards(hotspot.address, 60, 'day')
   const { witnesses, isLoading: isWitnessesLoading } = useHotspotWitnessSums(
     hotspot.address,
     2,
@@ -36,8 +34,16 @@ const StatisticsPane = ({ hotspot }) => {
         link={'https://docs.helium.com/troubleshooting/network-troubleshooting'}
         linkText={'Get help'}
       />
-      <ChecklistWidget hotspot={hotspot} witnesses={witnessesData} />
-      <RewardsTrendWidget title="30 Day Earnings" series={rewards} />
+      <RewardsWidgetCustomPeriods
+        address={hotspot.address}
+        title="Earnings"
+        type={'hotspot'}
+        periods={[
+          { number: 24, type: 'hour' },
+          { number: 7, type: 'day' },
+          { number: 30, type: 'day' },
+        ]}
+      />
       <RewardScaleWidget hotspot={hotspot} />
       <StatusWidget hotspot={hotspot} />
       <StatWidget
@@ -64,6 +70,7 @@ const StatisticsPane = ({ hotspot }) => {
         value={hotspot?.elevation}
         valueSuffix={<span className="text-xl ml-1">m</span>}
       />
+      <ChecklistWidget hotspot={hotspot} witnesses={witnessesData} />
     </InfoBoxPaneContainer>
   )
 }

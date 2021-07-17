@@ -1,6 +1,7 @@
 import capitalize from 'lodash/capitalize'
 import camelcaseKeys from 'camelcase-keys'
 import { h3ToGeo, h3ToParent } from 'h3-js'
+import { addDays, addHours, format, parseISO } from 'date-fns'
 
 export const SYNC_BUFFER_BLOCKS = 1500
 
@@ -145,4 +146,20 @@ export const formatGain = (gain) => {
 
 export const formatElevation = (elevation) => {
   return `${elevation} m`
+}
+
+export const formatHoursRange = (timestamp) => {
+  // API returns previous hour as the timestamp, so add 1 hour to show "[1 hour ago] – [now]" and make the range clear
+  return `${format(parseISO(timestamp), 'h:mm a')} – ${format(
+    addHours(parseISO(timestamp), 1),
+    'h:mm a',
+  )}`
+}
+
+export const formatDaysRange = (timestamp) => {
+  // API returns previous day as the timestamp for previous 24 hours, so add 1 day to show "[yesterday] – [today]" and make the range clear
+  return `${format(parseISO(timestamp), 'MMM d')} – ${format(
+    addDays(parseISO(timestamp), 1),
+    'MMM do, y',
+  )}`
 }

@@ -37,6 +37,12 @@ export const communityToolsList = [
     description: 'Hotspot monitoring and event tracking via Telegram',
     tags: ['Monitoring'],
   },
+  {
+    name: 'Kudzu',
+    url: 'https://analytics.kudzu.gr/',
+    description: 'Advanced placement and monitoring tool',
+    tags: ['Monitoring'],
+  },
   // The lines below are a template that you can copy and paste and then populate
   // to add a new tool to the list.All the possible tags are included in the
   // template, so just remove the ones that don't apply, and please don't make up

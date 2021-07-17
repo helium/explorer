@@ -148,7 +148,7 @@ const RewardsTrendWidget = ({
           )}
         </div>
       </div>
-      {periodSelector && periodSelector}
+      {periodSelector}
     </div>
   )
 }

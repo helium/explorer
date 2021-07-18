@@ -28,14 +28,15 @@ const StatusWidget = ({ hotspot }) => {
     }
 
     if (
-      hotspot.status.height - syncHeight >= SYNC_BUFFER_BLOCKS ||
-      hotspot.status.height === null
+      !hotspot?.status?.height ||
+      !syncHeight ||
+      hotspot.status.height - syncHeight >= SYNC_BUFFER_BLOCKS
     ) {
       return 'Syncing'
     }
 
     return 'Synced'
-  }, [hotspot.block, hotspot.status.height, status, syncHeight])
+  }, [hotspot.status.height, status, syncHeight])
 
   return (
     <Widget
@@ -49,13 +50,6 @@ const StatusWidget = ({ hotspot }) => {
             'bg-red-400': status === 'offline',
           })}
         />
-      }
-      subtitle={
-        value === 'Syncing' && (
-          <span className="text-gray-550">
-            At block {syncHeight?.toLocaleString()}
-          </span>
-        )
       }
     />
   )

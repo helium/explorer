@@ -93,6 +93,7 @@ const ChecklistItems = ({
         {possibleChecklistItems.map((checklistItem, index, { length }) => {
           return (
             <ChecklistItem
+              key={checklistItem.title}
               item={checklistItem}
               index={index}
               currentIndex={currentIndex}

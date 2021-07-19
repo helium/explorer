@@ -34,7 +34,7 @@ const OverviewPane = () => {
       />
       <Widget
         title="DC"
-        titleIcon={<img src="/images/dc.svg" />}
+        titleIcon={<img alt="" src="/images/dc.svg" />}
         isLoading={isLoading}
         value={maybeShowNone(
           account?.dcBalance?.toString(0, { showTicker: false }),
@@ -42,7 +42,7 @@ const OverviewPane = () => {
       />
       <Widget
         title="HST"
-        titleIcon={<img src="/images/hst.svg" />}
+        titleIcon={<img alt="" src="/images/hst.svg" />}
         isLoading={isLoading}
         value={maybeShowNone(
           account?.secBalance?.toString(2, { showTicker: false }),
@@ -50,7 +50,7 @@ const OverviewPane = () => {
       />
       <Widget
         title="Staked HNT"
-        titleIcon={<img src="/images/validator.svg" />}
+        titleIcon={<img alt="" src="/images/validator.svg" />}
         isLoading={isLoading}
         value={maybeShowNone(
           account?.stakedBalance?.toString(2, { showTicker: false }),

@@ -1,5 +1,4 @@
 import { useCallback } from 'react'
-import animalHash from 'angry-purple-tiger'
 import TimeAgo from 'react-time-ago'
 import FlagLocation from '../Common/FlagLocation'
 import BaseList from './BaseList'

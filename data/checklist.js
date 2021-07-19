@@ -28,22 +28,22 @@ export const getActivityForChecklist = async (address) => {
 
   let witnessTxn = null
   // most recent witness transaction
-  rewardTxns.some(function (txn) {
-    return txn.rewards.some(function (txnReward) {
+  rewardTxns.some((txn) => {
+    return txn.rewards.some((txnReward) => {
       if (txnReward.type === 'poc_witnesses') {
         witnessTxn = txn
-        return
       }
+      return null
     })
   })
   let dataTransferTxn = null
   // most recent data credit transaction
   rewardTxns.some(function (txn) {
-    return txn.rewards.some(function (txnReward) {
+    return txn.rewards.some((txnReward) => {
       if (txnReward.type === 'data_credits') {
         dataTransferTxn = txn
-        return
       }
+      return null
     })
   })
   return {
@@ -69,18 +69,11 @@ export const getChecklistItems = (
       title: 'Blockchain Sync',
       infoTooltipText: `Hotspots must be fully synced before they can mine. New Hotspots can take up to 96 hours to sync.`,
       detailText:
-        isNaN(syncHeight) || isNaN(height)
-          ? `Hotspot is not yet synced.`
-          : height - syncHeight < SYNC_BUFFER_BLOCKS
-          ? `Hotspot is fully synced.`
-          : `Hotspot is ${(height - syncHeight).toLocaleString()} block${
-              height - syncHeight === 1 ? '' : 's'
-            } behind the Helium blockchain and is roughly ${(
-              (syncHeight / height) *
-              100
-            )
-              .toFixed(2)
-              .toLocaleString()}% synced.`,
+        !hotspot?.status?.height ||
+        !syncHeight ||
+        hotspot.status.height - syncHeight >= SYNC_BUFFER_BLOCKS
+          ? 'Hotspot is syncing.'
+          : 'Hotspot is fully synced.',
       completed: height - syncHeight < SYNC_BUFFER_BLOCKS,
     },
     {
@@ -96,8 +89,7 @@ export const getChecklistItems = (
             <a
               href="https://intercom.help/heliumnetwork/en/articles/3207912-troubleshooting-network-connection-issues"
               target="_blank"
-              rel="noopener"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               Read our troubleshooting guide.
             </a>

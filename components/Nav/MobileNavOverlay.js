@@ -11,7 +11,7 @@ const CloseButton = ({ className, onClick }) => (
     )}
     onClick={onClick}
   >
-    <img src="/images/close-menu.svg" />
+    <img alt="Close menu icon" src="/images/close-menu.svg" />
   </button>
 )
 
@@ -31,6 +31,7 @@ const MobileNavOverlay = ({ menuOpen, toggleMenu }) => {
           />
           <Link to="/" onClick={toggleMenu}>
             <img
+              alt="Helium Logo"
               src="/images/logo-sm.svg"
               className="border-solid border border-transparent focus:border-navy-400"
             />

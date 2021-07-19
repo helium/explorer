@@ -74,7 +74,7 @@ const Widget = ({
               {changeSuffix}
             </div>
           ))}
-        {subtitle}
+        {subtitle && isLoading ? <Skeleton className="w-full" /> : subtitle}
       </div>
 
       {(onClick || linkTo) && (
@@ -124,7 +124,7 @@ const Widget = ({
 
   return (
     <div
-      className={classNames('bg-gray-200 p-3 rounded-lg flex transition-all', {
+      className={classNames('bg-gray-200 p-3 rounded-lg flex  transition-all', {
         'col-span-1': span === 1,
         'col-span-2': span === 2,
         'cursor-pointer hover:bg-gray-300': !!onClick,

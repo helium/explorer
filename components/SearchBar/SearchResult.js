@@ -107,7 +107,7 @@ const BaseSearchResult = ({ title, subtitle, type, onSelect, selected }) => (
       <Pill title={capitalize(type)} color={pillColors[type] || 'gray'} />
     </div>
     <div className="flex">
-      <img src="/images/details-arrow.svg" />
+      <img alt="" src="/images/details-arrow.svg" />
     </div>
   </div>
 )

@@ -66,7 +66,7 @@ const MapLayersBox = () => {
               : 'translateY(0)',
           }}
         >
-          <img src="/images/close.svg" />
+          <img alt="" src="/images/close.svg" />
         </div>
         {layers.map(({ title, id, iconPath }, i) => (
           <Layer
@@ -107,7 +107,7 @@ const Layer = ({ title, onClick, iconPath, active = false, style }) => (
         { 'bg-gray-700': !active, 'bg-gray-200': active },
       )}
     >
-      <img className="w-5 h-5" src={iconPath} />
+      <img alt="" className="w-5 h-5" src={iconPath} />
     </div>
   </div>
 )

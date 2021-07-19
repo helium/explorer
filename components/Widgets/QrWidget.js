@@ -11,7 +11,7 @@ const QrWidget = ({ address }) => {
       </div>
       <Widget
         title="QR Code"
-        titleIcon={<img src="/images/qr.svg" />}
+        titleIcon={<img alt="QR Code icon" src="/images/qr.svg" />}
         subtitle="HNT can be sent to this account using the QR feature in the Helium App."
       />
     </div>

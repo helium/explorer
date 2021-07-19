@@ -28,22 +28,22 @@ export const getActivityForChecklist = async (address) => {
 
   let witnessTxn = null
   // most recent witness transaction
-  rewardTxns.some(function (txn) {
-    return txn.rewards.some(function (txnReward) {
+  rewardTxns.some((txn) => {
+    return txn.rewards.some((txnReward) => {
       if (txnReward.type === 'poc_witnesses') {
         witnessTxn = txn
-        return
       }
+      return null
     })
   })
   let dataTransferTxn = null
   // most recent data credit transaction
   rewardTxns.some(function (txn) {
-    return txn.rewards.some(function (txnReward) {
+    return txn.rewards.some((txnReward) => {
       if (txnReward.type === 'data_credits') {
         dataTransferTxn = txn
-        return
       }
+      return null
     })
   })
   return {
@@ -89,8 +89,7 @@ export const getChecklistItems = (
             <a
               href="https://intercom.help/heliumnetwork/en/articles/3207912-troubleshooting-network-connection-issues"
               target="_blank"
-              rel="noopener"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               Read our troubleshooting guide.
             </a>

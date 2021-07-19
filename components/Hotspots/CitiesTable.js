@@ -48,7 +48,7 @@ const CitiesTable = ({ topCities, topCitiesTotal }) => {
     } else {
       setCitiesToDisplayArray(top100Total)
     }
-  }, [excludeOfflineHotspots])
+  }, [excludeOfflineHotspots, top100Online, top100Total])
 
   const currentPageOfCities = citiesToDisplayArray.slice(
     indexOfFirst,

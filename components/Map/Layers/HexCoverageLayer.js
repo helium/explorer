@@ -160,17 +160,9 @@ const hexDefaultStyle = () => ({
 
 const hexOutlineStyle = () => ({
   'line-color': '#2a3654',
-  'line-width': 4,
+  'line-width': ['interpolate', ['exponential', 1], ['zoom'], 6.5, 0.1, 12, 4],
   'line-blur': 4,
-  'line-opacity': [
-    'interpolate',
-    ['exponential', 1],
-    ['zoom'],
-    6.5,
-    0,
-    12,
-    0.75,
-  ],
+  'line-opacity': 0.75,
 })
 
 const hexRewardScaleStyle = () => ({

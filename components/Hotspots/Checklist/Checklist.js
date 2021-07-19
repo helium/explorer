@@ -98,19 +98,12 @@ const HotspotChecklist = ({ hotspot, witnesses, height, heightLoading }) => {
             title: 'Blockchain Sync',
             infoTooltipText: `Hotspots must be fully synced before they can mine. New Hotspots can take up to 96 hours to sync.`,
             detailText:
-              isNaN(syncHeight) || isNaN(height)
-                ? `Hotspot is not yet synced.`
-                : height - syncHeight < SYNC_BUFFER_BLOCKS
-                ? `Hotspot is fully synced.`
-                : `Hotspot is ${(height - syncHeight).toLocaleString()} block${
-                    height - syncHeight === 1 ? '' : 's'
-                  } behind the Helium blockchain and is roughly ${(
-                    (syncHeight / height) *
-                    100
-                  )
-                    .toFixed(2)
-                    .toLocaleString()}% synced.`,
-            condition: height - syncHeight < SYNC_BUFFER_BLOCKS,
+              !hotspot?.status?.height ||
+              !syncHeight ||
+              hotspot.status.height - syncHeight >= SYNC_BUFFER_BLOCKS
+                ? 'Hotspot is syncing.'
+                : 'Hotspot is fully synced.',
+            completed: height - syncHeight < SYNC_BUFFER_BLOCKS,
           },
           {
             sortOrder: 1,

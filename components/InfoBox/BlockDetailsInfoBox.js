@@ -87,7 +87,15 @@ const BlockDetailsInfoBox = () => {
     return [
       {
         iconPath: '/images/clock.svg',
-        title: <Timestamp date={block.time} />,
+        title: (
+          <Timestamp
+            date={
+              block.hash === 'La6PuV80Ps9qTP0339Pwm64q3_deMTkv6JOo1251EJI'
+                ? 1564436673
+                : block.time
+            }
+          />
+        ),
       },
       {
         iconPath: '/images/txn.svg',

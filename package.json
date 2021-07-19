@@ -79,7 +79,8 @@
     "lint": "next lint",
     "start": "NODE_ENV=production node server.js",
     "pretty": "prettier --write \"./**/*.{js,jsx,json,css}\"",
-    "job": "eval $(cat .env) node"
+    "job": "eval $(cat .env) node",
+    "prepare": "npx husky install"
   },
   "husky": {
     "hooks": {

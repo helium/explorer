@@ -13,6 +13,8 @@ import CopyableText from '../Common/CopyableText'
 import AccountAddress from '../AccountAddress'
 import SkeletonList from '../Lists/SkeletonList'
 import FlagLocation from '../Common/FlagLocation'
+import Gain from '../Hotspots/Gain'
+import Elevation from '../Hotspots/Elevation'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -60,6 +62,14 @@ const HotspotDetailsInfoBox = ({ address, isLoading }) => {
           iconPath: '/images/account-green.svg',
           loading: true,
         },
+        {
+          iconPath: '/images/gain.svg',
+          loading: true,
+        },
+        {
+          iconPath: '/images/elevation.svg',
+          loading: true,
+        },
       ]
     return [
       {
@@ -71,6 +81,14 @@ const HotspotDetailsInfoBox = ({ address, isLoading }) => {
         iconPath: '/images/account-green.svg',
         title: <AccountAddress address={hotspot.owner} truncate={5} />,
         path: `/accounts/${hotspot.owner}`,
+      },
+      {
+        iconPath: '/images/gain.svg',
+        title: <Gain hotspot={hotspot} icon={false} />,
+      },
+      {
+        iconPath: '/images/elevation.svg',
+        title: <Elevation hotspot={hotspot} icon={false} />,
       },
     ]
   }

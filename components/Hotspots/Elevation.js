@@ -8,7 +8,8 @@ const Elevation = ({ hotspot }) => {
   return (
     <Tooltip title="Elevation above ground level">
       <div className="flex items-center space-x-1">
-        <span className="ml-1">{formatElevation(hotspot.elevation)}</span>
+        <img src="/images/elevation.svg" className="h-4" />{' '}
+        <span>{formatElevation(hotspot.elevation)}</span>
       </div>
     </Tooltip>
   )

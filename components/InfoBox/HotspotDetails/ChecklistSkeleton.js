@@ -12,6 +12,7 @@ const ChecklistSkeleton = () => {
       <div className="flex items-center justify-center h-10 md:h-5 mt-2">
         {Array.from({ length: SKELETON_SLICES }, (_, i) => (
           <div
+            key={i}
             className={classNames(
               'h-8 md:h-4 p-2 border-solid border-l border-gray-200 animate-pulse opacity-25 bg-gray-350',
               {

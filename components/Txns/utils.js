@@ -19,6 +19,7 @@ export const findBounds = (arrayOfLatsAndLons) => {
       if (m.lng > maxLon) maxLon = m.lng
       if (m.lat < minLat) minLat = m.lat
       if (m.lat > maxLat) maxLat = m.lat
+      return null
     })
 
     const mapBounds = [

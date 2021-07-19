@@ -1,19 +1,15 @@
-import { useState, useEffect, useMemo } from 'react'
-import classNames from 'classnames'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useAsync } from 'react-async-hook'
-import ChevronIcon from '../Icons/Chevron'
 import ChecklistCheck from '../Icons/ChecklistCheck'
 import { getActivityForChecklist } from '../../data/checklist'
 import { getChecklistItems } from '../../data/checklist'
 import { fetchHeightByTimestamp, useBlockHeight } from '../../data/blocks'
-import useToggle from '../../utils/useToggle'
 import ChecklistSkeleton from '../InfoBox/HotspotDetails/ChecklistSkeleton'
 import ChecklistItems from '../InfoBox/HotspotDetails/ChecklistItems'
 
 const ChecklistWidget = ({ hotspot, witnesses }) => {
   const [activity, setActivity] = useState({})
   const [loading, setActivityLoading] = useState(true)
-  const [showChecklist, toggleShowChecklist] = useToggle()
   const [checklistFetched, setChecklistFetched] = useState(false)
 
   const { height } = useBlockHeight()
@@ -21,14 +17,14 @@ const ChecklistWidget = ({ hotspot, witnesses }) => {
   useAsync(async () => {
     const hotspotid = hotspot.address
 
-    if (showChecklist && !checklistFetched) {
+    if (!checklistFetched) {
       setActivityLoading(true)
       const hotspotActivity = await getActivityForChecklist(hotspotid)
       setActivity(hotspotActivity)
       setChecklistFetched(true)
       setActivityLoading(false)
     }
-  }, [showChecklist, hotspot.address])
+  }, [hotspot.address])
 
   const {
     result: syncHeight,
@@ -84,41 +80,7 @@ const ChecklistWidget = ({ hotspot, witnesses }) => {
 
   const [processingChecklistItems, setProcessingChecklistItems] = useState(true)
 
-  useEffect(() => {
-    if (showChecklist && !loading) {
-      setProcessingChecklistItems(true)
-      // get the furthest milestone that isn't completed yet
-      let targetIndex = possibleChecklistItems.length - 1
-      sortChecklistItems(possibleChecklistItems).find(
-        (checklistItem, index) => {
-          if (!checklistItem.completed) {
-            targetIndex = index
-            return checklistItem
-          }
-        },
-      )
-      setCurrentIndex(targetIndex)
-      if (
-        targetIndex === possibleChecklistItems.length - 1 &&
-        possibleChecklistItems[targetIndex].completed
-      ) {
-        // all milestones are completed
-        setNextMilestoneIndex(-1)
-      } else {
-        setNextMilestoneIndex(targetIndex)
-      }
-      setCurrentIndex(targetIndex)
-      setProcessingChecklistItems(false)
-    }
-  }, [showChecklist, loading])
-
-  const [selectedChecklistItemInfo, setSelectedChecklistItemInfo] = useState({})
-
-  useEffect(() => {
-    setSelectedChecklistItemInfo(possibleChecklistItems[currentIndex])
-  }, [currentIndex])
-
-  const sortChecklistItems = (checklistItems) => {
+  const sortChecklistItems = useCallback((checklistItems) => {
     const unsortedChecklistItems = checklistItems
     const sortedChecklistItems = unsortedChecklistItems.sort((a, b) => {
       if (b.completed || a.completed) {
@@ -135,33 +97,42 @@ const ChecklistWidget = ({ hotspot, witnesses }) => {
     })
 
     return sortedChecklistItems
-  }
+  }, [])
 
-  if (!showChecklist) {
-    return (
-      <div
-        className="bg-gray-200 p-3 rounded-lg col-span-2 cursor-pointer hover:bg-gray-300"
-        onClick={toggleShowChecklist}
-      >
-        <div
-          className={classNames(
-            'flex items-center justify-between',
-            'text-gray-600 mx-auto text-md px-4 py-3',
-          )}
-        >
-          Load checklist
-          <ChevronIcon
-            className={classNames(
-              'h-4 w-4',
-              'ml-1',
-              'transform duration-500 transition-all',
-              { 'rotate-180': !showChecklist },
-            )}
-          />
-        </div>
-      </div>
-    )
-  }
+  useEffect(() => {
+    if (!loading) {
+      setProcessingChecklistItems(true)
+      // get the furthest milestone that isn't completed yet
+      let targetIndex = possibleChecklistItems.length - 1
+      sortChecklistItems(possibleChecklistItems).find(
+        (checklistItem, index) => {
+          if (!checklistItem.completed) {
+            targetIndex = index
+            return checklistItem
+          }
+          return null
+        },
+      )
+      setCurrentIndex(targetIndex)
+      if (
+        targetIndex === possibleChecklistItems.length - 1 &&
+        possibleChecklistItems[targetIndex].completed
+      ) {
+        // all milestones are completed
+        setNextMilestoneIndex(-1)
+      } else {
+        setNextMilestoneIndex(targetIndex)
+      }
+      setCurrentIndex(targetIndex)
+      setProcessingChecklistItems(false)
+    }
+  }, [possibleChecklistItems, loading, sortChecklistItems])
+
+  const [selectedChecklistItemInfo, setSelectedChecklistItemInfo] = useState({})
+
+  useEffect(() => {
+    setSelectedChecklistItemInfo(possibleChecklistItems[currentIndex])
+  }, [currentIndex, possibleChecklistItems])
 
   if (processingChecklistItems) {
     return <ChecklistSkeleton />
@@ -179,7 +150,7 @@ const ChecklistWidget = ({ hotspot, witnesses }) => {
         )}
       </div>
       <ChecklistItems
-        possibleChecklistItems={sortChecklistItems(possibleChecklistItems)}
+        possibleChecklistItems={possibleChecklistItems}
         selectedChecklistItemInfo={selectedChecklistItemInfo}
         nextMilestoneIndex={nextMilestoneIndex}
         currentIndex={currentIndex}

@@ -38,7 +38,7 @@ const ValidatorsList = ({ validators, recentGroups, title, description }) => {
         <ValidatorFlagLocation geo={v.geo} />
         <Tooltip title="HNT earned (30 days)">
           <div className="flex items-center space-x-1">
-            <img src="/images/hnt.svg" className="w-3" />{' '}
+            <img alt="" src="/images/hnt.svg" className="w-3" />{' '}
             <span>{round(v.rewards.month.total, 2)} HNT</span>
           </div>
         </Tooltip>

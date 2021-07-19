@@ -138,6 +138,7 @@ const MakersDashboard = ({ makers }) => {
               </div>
             </div>
           )
+        return null
       })}
     </div>
   )

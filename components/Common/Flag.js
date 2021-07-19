@@ -6,7 +6,7 @@ const Flag = ({ className, countryCode }) => {
   return (
     <span
       className={classNames(
-        'flex flex-row items-center justify-start',
+        'w-4 flex flex-row items-center justify-start',
         className,
       )}
     >

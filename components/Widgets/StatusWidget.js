@@ -1,5 +1,6 @@
 import { memo, useMemo } from 'react'
 import classNames from 'classnames'
+import TimeAgo from 'react-time-ago'
 import Widget from './Widget'
 import { useAsync } from 'react-async-hook'
 import { fetchHeightByTimestamp } from '../../data/blocks'
@@ -28,19 +29,28 @@ const StatusWidget = ({ hotspot }) => {
     }
 
     if (
-      hotspot.block - syncHeight >= SYNC_BUFFER_BLOCKS ||
-      hotspot.status.height === null
+      !hotspot?.status?.height ||
+      !syncHeight ||
+      hotspot.status.height - syncHeight >= SYNC_BUFFER_BLOCKS
     ) {
       return 'Syncing'
     }
 
     return 'Synced'
-  }, [hotspot.block, hotspot.status.height, status, syncHeight])
+  }, [hotspot.status.height, status, syncHeight])
 
   return (
     <Widget
       title="Sync Status"
       value={value}
+      subtitle={
+        hotspot?.status?.timestamp && (
+          <span>
+            As of <TimeAgo date={hotspot?.status?.timestamp} />
+          </span>
+        )
+      }
+      tooltip="Hotspots gossip their sync status over the p2p network. Pair with a hotspot over Bluetooth to get the most up-to-date sync status."
       isLoading={syncHeightLoading}
       icon={
         <div
@@ -49,13 +59,6 @@ const StatusWidget = ({ hotspot }) => {
             'bg-red-400': status === 'offline',
           })}
         />
-      }
-      subtitle={
-        value === 'Syncing' && (
-          <span className="text-gray-550">
-            At block {syncHeight?.toLocaleString()}
-          </span>
-        )
       }
     />
   )

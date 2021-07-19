@@ -25,7 +25,7 @@ const MenuButton = () => {
         )}
         onClick={toggleMenu}
       >
-        <img src="/images/menu.svg" />
+        <img alt="Menu icon" src="/images/menu.svg" />
       </div>
       <MobileNavOverlay menuOpen={menuOpen} toggleMenu={toggleMenu} />
     </>

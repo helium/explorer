@@ -3,11 +3,7 @@ import animalHash from 'angry-purple-tiger'
 import StatusCircle from '../Hotspots/StatusCircle'
 import FlagLocation from '../Common/FlagLocation'
 import Hex from '../Hex'
-import {
-  formatDistance,
-  formatLocation,
-  generateRewardScaleColor,
-} from '../Hotspots/utils'
+import { formatDistance, generateRewardScaleColor } from '../Hotspots/utils'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
 
@@ -20,9 +16,12 @@ const NearbyHotspotsList = ({
 }) => {
   const { selectHotspot } = useSelectedHotspot()
 
-  const handleSelectHotspot = useCallback((hotspot) => {
-    selectHotspot(hotspot.address)
-  }, [])
+  const handleSelectHotspot = useCallback(
+    (hotspot) => {
+      selectHotspot(hotspot.address)
+    },
+    [selectHotspot],
+  )
 
   const keyExtractor = useCallback((h) => h.address, [])
 

@@ -29,7 +29,7 @@ const CommunityToolsInfoBox = () => {
               If there's a tool that isn't listed here that you think should be,
               you can{' '}
               <a
-                className="text-gray-800 font-bold hover:text-darkgray-800"
+                className="text-navy-400 hover:text-navy-300"
                 href="https://github.com/helium/explorer/edit/v2/data/communitytools.js"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -38,12 +38,12 @@ const CommunityToolsInfoBox = () => {
               </a>
               , then create a new branch and start a pull request against{' '}
               <a
-                className="text-gray-800 font-bold hover:text-darkgray-800"
+                className="text-navy-400 hover:text-navy-300"
                 href="https://github.com/helium/explorer"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                the Helium Explorer GitHub repository
+                the v2 branch of the Helium Explorer GitHub repository
               </a>{' '}
               to add it.
             </div>

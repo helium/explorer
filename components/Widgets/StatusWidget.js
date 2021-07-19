@@ -1,5 +1,6 @@
 import { memo, useMemo } from 'react'
 import classNames from 'classnames'
+import TimeAgo from 'react-time-ago'
 import Widget from './Widget'
 import { useAsync } from 'react-async-hook'
 import { fetchHeightByTimestamp } from '../../data/blocks'
@@ -42,6 +43,14 @@ const StatusWidget = ({ hotspot }) => {
     <Widget
       title="Sync Status"
       value={value}
+      subtitle={
+        hotspot?.status?.timestamp && (
+          <span>
+            As of <TimeAgo date={hotspot?.status?.timestamp} />
+          </span>
+        )
+      }
+      tooltip="Hotspots gossip their sync status over the p2p network. Pair with a hotspot over Bluetooth to get the most up-to-date sync status."
       isLoading={syncHeightLoading}
       icon={
         <div

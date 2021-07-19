@@ -2,13 +2,12 @@ import { useCallback } from 'react'
 import animalHash from 'angry-purple-tiger'
 import StatusCircle from '../Hotspots/StatusCircle'
 import FlagLocation from '../Common/FlagLocation'
-import Hex from '../Hex'
-import { generateRewardScaleColor } from '../Hotspots/utils'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
 import Gain from '../Hotspots/Gain'
 import Elevation from '../Hotspots/Elevation'
 import Rewards from '../Hotspots/Rewards'
+import TransmitScale from '../Hotspots/TransmitScale'
 
 const HotspotsList = ({
   hotspots,
@@ -43,16 +42,7 @@ const HotspotsList = ({
     return (
       <>
         <FlagLocation geocode={h.geocode} shortenedLocationName />
-        {h.rewardScale && (
-          <span className="flex items-center">
-            <Hex
-              width={10}
-              height={12}
-              fillColor={generateRewardScaleColor(h?.rewardScale)}
-            />
-            <span className="ml-1">{h?.rewardScale?.toFixed(2)}</span>
-          </span>
-        )}
+        <TransmitScale hotspot={h} />
         <Gain hotspot={h} />
         <Elevation hotspot={h} />
         <Rewards hotspot={h} />

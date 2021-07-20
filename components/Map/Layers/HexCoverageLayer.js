@@ -74,7 +74,7 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
         sourceId="hexes"
         id="hexes_line"
         type="line"
-        paint={hexOutlineStyle()}
+        paint={hexOutlineStyle}
       />
       <Layer
         sourceId="points"
@@ -158,12 +158,12 @@ const hexDefaultStyle = () => ({
   'fill-opacity': 0.5,
 })
 
-const hexOutlineStyle = () => ({
+const hexOutlineStyle = {
   'line-color': '#2a3654',
   'line-width': ['interpolate', ['exponential', 1], ['zoom'], 6.5, 0.1, 12, 4],
   'line-blur': 4,
   'line-opacity': 0.75,
-})
+}
 
 const hexRewardScaleStyle = () => ({
   ...hexDefaultStyle(),

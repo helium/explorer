@@ -7,10 +7,11 @@ import QrWidget from '../../Widgets/QrWidget'
 import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
 import Widget from '../../Widgets/Widget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
+import AccountBalanceWidget from '../../Widgets/AccountBalanceWidget'
 
 const OverviewPane = () => {
   const { address } = useParams()
-  const { account, isLoading } = useAccount(address)
+  const { account } = useAccount(address)
   const { hotspots, isLoadingInitial: loadingHotspots } = useHotspots(
     'account',
     address,
@@ -22,45 +23,12 @@ const OverviewPane = () => {
 
   return (
     <InfoBoxPaneContainer>
+      <AccountBalanceWidget account={account} />
       <QrWidget address={address} />
-      <Widget
-        title="Total HNT Balance"
-        isLoading={isLoading}
-        span={2}
-        value={maybeShowNone(
-          account?.balance
-            ?.plus(account?.stakedBalance)
-            ?.toString(2, { showTicker: false }),
-        )}
-      />
       <PeriodizedRewardsWidget
         address={account?.address}
         type="account"
         title="Earnings"
-      />
-      <Widget
-        title="DC"
-        titleIcon={<img alt="" src="/images/dc.svg" />}
-        isLoading={isLoading}
-        value={maybeShowNone(
-          account?.dcBalance?.toString(0, { showTicker: false }),
-        )}
-      />
-      <Widget
-        title="HST"
-        titleIcon={<img alt="" src="/images/hst.svg" />}
-        isLoading={isLoading}
-        value={maybeShowNone(
-          account?.secBalance?.toString(2, { showTicker: false }),
-        )}
-      />
-      <Widget
-        title="Staked HNT"
-        titleIcon={<img alt="" src="/images/validator.svg" />}
-        isLoading={isLoading}
-        value={maybeShowNone(
-          account?.stakedBalance?.toString(2, { showTicker: false }),
-        )}
       />
       <Widget
         title="Hotspots"

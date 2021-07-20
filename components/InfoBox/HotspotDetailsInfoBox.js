@@ -38,9 +38,6 @@ const HotspotDetailsRoute = () => {
 const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
   const { clearSelectedHotspot } = useSelectedHotspot()
 
-  // TODO: remove once helium-js hotspot object includes .mode
-  if (hotspot !== null) hotspot.mode = 'dataonly'
-
   const IS_DATA_ONLY = useMemo(() => isDataOnly(hotspot), [hotspot])
 
   const title = useMemo(
@@ -95,6 +92,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
               title: (
                 <div className="flex items-center justify-center">
                   <img
+                    alt=""
                     src="/images/location-hex.svg"
                     className="h-3.5 w-auto mr-0.5 md:mr-1"
                   />

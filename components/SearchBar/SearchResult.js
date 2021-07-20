@@ -29,7 +29,7 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
     return (
       <BaseSearchResult
         title={formatHotspotName(result.item.name)}
-        subtitle={<ValidatorFlagLocation geocode={result.item.geo} />}
+        subtitle={<ValidatorFlagLocation geo={result.item.geo} />}
         type={result.type}
         selected={selected}
         onSelect={handleSelect}
@@ -107,7 +107,7 @@ const BaseSearchResult = ({ title, subtitle, type, onSelect, selected }) => (
       <Pill title={capitalize(type)} color={pillColors[type] || 'gray'} />
     </div>
     <div className="flex">
-      <img src="/images/details-arrow.svg" />
+      <img alt="" src="/images/details-arrow.svg" />
     </div>
   </div>
 )

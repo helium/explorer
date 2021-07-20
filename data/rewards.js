@@ -56,6 +56,38 @@ export const useHotspotRewards = (
   }
 }
 
+export const fetchHotspotRewardsSum = async (address, numBack, bucketType) => {
+  // const value = await client.hotspot(address).rewards.sum.get('-1 day')
+  // TODO need to fix helium-js to take min time in this format
+  const response = await fetch(
+    `https://api.helium.io/v1/hotspots/${address}/rewards/sum/?min_time=-${numBack}%20${bucketType}`,
+  )
+  const {
+    data: { total },
+  } = await response.json()
+  return total
+}
+
+export const useHotspotRewardsSum = (
+  address,
+  numBack = 1,
+  bucketType = 'day',
+) => {
+  const key = `rewards/hotspots/${address}/sum/${numBack}/${bucketType}`
+  const fetcher = (address, numBack, bucketType) => () =>
+    fetchHotspotRewardsSum(address, numBack, bucketType)
+
+  const { data, error } = useSWR(key, fetcher(address, numBack, bucketType), {
+    refreshInterval: 0,
+  })
+
+  return {
+    rewardsSum: data,
+    isLoading: !error && data === undefined,
+    isError: error,
+  }
+}
+
 export const getNetworkRewardsBuckets = async (numBack, bucketType) => {
   const rewards = await fetchAll('/rewards/sum', {
     min_time: `-${numBack} ${bucketType}`,

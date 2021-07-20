@@ -3,15 +3,14 @@ import animalHash from 'angry-purple-tiger'
 import StatusCircle from '../Hotspots/StatusCircle'
 import FlagLocation from '../Common/FlagLocation'
 import Hex from '../Hex'
-import {
-  formatLocation,
-  generateRewardScaleColor,
-  witnessRssi,
-} from '../Hotspots/utils'
+import { generateRewardScaleColor } from '../Hotspots/utils'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
+import { formatDistance } from '../../utils/distance'
+import { haversineDistance } from '../../utils/location'
 
 const WitnessesList = ({
+  hotspot,
   witnesses,
   isLoading = true,
   title,
@@ -20,9 +19,12 @@ const WitnessesList = ({
 }) => {
   const { selectHotspot } = useSelectedHotspot()
 
-  const handleSelectHotspot = useCallback((hotspot) => {
-    selectHotspot(hotspot.address)
-  }, [])
+  const handleSelectHotspot = useCallback(
+    (hotspot) => {
+      selectHotspot(hotspot.address)
+    },
+    [selectHotspot],
+  )
 
   const keyExtractor = useCallback((w) => w.address, [])
 
@@ -53,13 +55,18 @@ const WitnessesList = ({
     )
   }, [])
 
-  const renderDetails = useCallback((w) => {
-    return (
-      <span className="whitespace-nowrap">
-        {witnessRssi(w?.witnessInfo?.histogram)} dBm
-      </span>
-    )
-  }, [])
+  const renderDetails = useCallback(
+    (w) => {
+      return (
+        <span className="whitespace-nowrap">
+          {formatDistance(
+            haversineDistance(w.lng, w.lat, hotspot.lng, hotspot.lat) * 1000,
+          )}
+        </span>
+      )
+    },
+    [hotspot.lat, hotspot.lng],
+  )
 
   return (
     <BaseList

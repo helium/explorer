@@ -1,6 +1,6 @@
 module.exports = {
   mode: 'jit',
-  // purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
     screens: {
@@ -39,6 +39,7 @@ module.exports = {
         1: '#29D344',
       },
       navy: {
+        50: '#d4d4ff',
         300: '#0008FF',
         400: '#474DFF',
         500: '#222E46',
@@ -49,6 +50,7 @@ module.exports = {
         1000: '#1c1d3f',
       },
       purple: {
+        50: '#e4d5fd',
         500: '#A667F6',
         700: '#5850EB',
       },
@@ -67,9 +69,12 @@ module.exports = {
         600: '#b97d1d',
       },
       yellow: {
+        50: '#f7ebc6',
         400: '#f4cb5e',
         500: '#FCC945',
+        600: '#F0BB32',
         700: '#F9BD25',
+        800: '#b58714',
       },
       pink: {
         500: '#A667F6',

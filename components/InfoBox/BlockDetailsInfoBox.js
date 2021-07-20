@@ -17,7 +17,6 @@ import SkeletonList from '../Lists/SkeletonList'
 import { useHistory } from 'react-router-dom'
 import Timestamp from 'react-timestamp'
 import { useBlockHeight } from '../../data/blocks'
-import Skeleton from '../Common/Skeleton'
 import PreviousIcon from '../Icons/Previous'
 import NextIcon from '../Icons/Next'
 import InfoBoxTitleButton from './Common/InfoBoxTitleButton'
@@ -67,7 +66,7 @@ const BlockDetailsInfoBox = () => {
         </span>
       </span>
     )
-  }, [block])
+  }, [height, currentHeight])
 
   const generateSubtitles = (block) => {
     if (blockLoading)
@@ -88,7 +87,15 @@ const BlockDetailsInfoBox = () => {
     return [
       {
         iconPath: '/images/clock.svg',
-        title: <Timestamp date={block.time} />,
+        title: (
+          <Timestamp
+            date={
+              block.hash === 'La6PuV80Ps9qTP0339Pwm64q3_deMTkv6JOo1251EJI'
+                ? 1564436673
+                : block.time
+            }
+          />
+        ),
       },
       {
         iconPath: '/images/txn.svg',

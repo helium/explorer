@@ -17,7 +17,7 @@ const MapLocationButton = () => {
       {isLoading ? (
         <Spinner />
       ) : (
-        <img src="/images/location.svg" className="w-5 h-5" />
+        <img alt="" src="/images/location.svg" className="w-5 h-5" />
       )}
     </div>
   )

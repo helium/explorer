@@ -13,8 +13,9 @@ import useToggle from '../../../utils/useToggle'
 import classNames from 'classnames'
 import ChevronIcon from '../../Icons/Chevron'
 import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
+import DataOnlyStatisticsPane from './DataOnlyStatisticsPane'
 
-const StatisticsPane = ({ hotspot }) => {
+const StatisticsPane = ({ hotspot, isDataOnly }) => {
   const { beaconSums, isLoading: isBeaconSumsLoading } = useHotspotBeaconSums(
     hotspot.address,
     2,
@@ -23,6 +24,18 @@ const StatisticsPane = ({ hotspot }) => {
 
   const { result: witnessesData } = useAsync(fetchWitnesses, [hotspot.address])
   const [showChecklist, toggleShowChecklist] = useToggle()
+
+  if (isDataOnly) {
+    return (
+      <DataOnlyStatisticsPane
+        hotspot={hotspot}
+        witnessesData={witnessesData}
+        showChecklist={showChecklist}
+        toggleShowChecklist={toggleShowChecklist}
+      />
+    )
+  }
+
   return (
     <InfoBoxPaneContainer>
       <RelayedWarningWidget

@@ -4,6 +4,7 @@ import { TAKE_MAX } from '../../../data/client'
 import { useHotspots } from '../../../data/hotspots'
 import { useAccountValidators } from '../../../data/validators'
 import QrWidget from '../../Widgets/QrWidget'
+import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
 import Widget from '../../Widgets/Widget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
@@ -31,6 +32,11 @@ const OverviewPane = () => {
             ?.plus(account?.stakedBalance)
             ?.toString(2, { showTicker: false }),
         )}
+      />
+      <PeriodizedRewardsWidget
+        address={account?.address}
+        type="account"
+        title="Earnings"
       />
       <Widget
         title="DC"

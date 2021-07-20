@@ -53,6 +53,7 @@ const TabNavbar = ({ centered = false, classes, children }) => {
           classes: c.props.classes,
           activeClasses: c.props.activeClasses,
           activeStyles: c.props.activeStyles,
+          hidden: c.props.hidden,
         }
       return null
     })
@@ -84,6 +85,7 @@ const TabNavbar = ({ centered = false, classes, children }) => {
           })}
         >
           {navItems.map((item, i, { length }) => {
+            if (item.hidden) return null
             return (
               <>
                 <NavItem

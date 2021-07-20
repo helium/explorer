@@ -148,6 +148,10 @@ export const formatElevation = (elevation) => {
   return `${elevation} m`
 }
 
+export const isDataOnly = (hotspot) => {
+  return hotspot?.mode === 'dataonly'
+}
+
 export const formatHoursRange = (timestamp) => {
   // API returns previous hour as the timestamp, so add 1 hour to show "[1 hour ago] – [now]" and make the range clear
   return `${format(parseISO(timestamp), 'h:mm a')} – ${format(

@@ -7,7 +7,7 @@ import { fetchHeightByTimestamp, useBlockHeight } from '../../data/blocks'
 import ChecklistSkeleton from '../InfoBox/HotspotDetails/ChecklistSkeleton'
 import ChecklistItems from '../InfoBox/HotspotDetails/ChecklistItems'
 
-const ChecklistWidget = ({ hotspot, witnesses }) => {
+const ChecklistWidget = ({ hotspot, witnesses, isDataOnly }) => {
   const [activity, setActivity] = useState({})
   const [loading, setActivityLoading] = useState(true)
   const [checklistFetched, setChecklistFetched] = useState(false)
@@ -48,6 +48,7 @@ const ChecklistWidget = ({ hotspot, witnesses }) => {
       height,
       syncHeight,
       loading || syncHeightLoading,
+      isDataOnly,
     )
   }, [
     activity,
@@ -57,16 +58,15 @@ const ChecklistWidget = ({ hotspot, witnesses }) => {
     syncHeight,
     syncHeightLoading,
     witnesses,
+    isDataOnly,
   ])
 
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [nextMilestoneIndex, setNextMilestoneIndex] = useState()
+  const [nextMilestoneIndex, setNextMilestoneIndex] = useState(0)
 
   const [title, setTitle] = useState('')
 
   useEffect(() => {
-    if (!nextMilestoneIndex) return
-
     if (nextMilestoneIndex === -1) {
       setTitle('Completed Milestone')
     } else if (currentIndex === nextMilestoneIndex) {

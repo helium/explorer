@@ -53,7 +53,7 @@ const OverviewInfoBox = () => {
             ' bn'
           }
           change={<Currency value={dataCredits?.totalMonth * 0.00001} />}
-          isLoading={!stats}
+          isLoading={!dataCredits}
           linkTo="/market"
         />
         <Widget

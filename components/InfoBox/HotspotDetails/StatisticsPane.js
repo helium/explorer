@@ -3,7 +3,6 @@ import RelayedWarningWidget from '../../Widgets/WarningWidget'
 import StatusWidget from '../../Widgets/StatusWidget'
 import StatWidget from '../../Widgets/StatWidget'
 import { useHotspotBeaconSums } from '../../../data/beacons'
-import { useHotspotWitnessSums } from '../../../data/witnesses'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import ChecklistWidget from '../../Widgets/ChecklistWidget'
 import { isRelay } from '../../Hotspots/utils'
@@ -16,11 +15,6 @@ import ChevronIcon from '../../Icons/Chevron'
 import RewardsWidgetCustomPeriods from '../../Widgets/RewardsWidgetCustomPeriods'
 
 const StatisticsPane = ({ hotspot }) => {
-  const { witnesses, isLoading: isWitnessesLoading } = useHotspotWitnessSums(
-    hotspot.address,
-    2,
-    'week',
-  )
   const { beaconSums, isLoading: isBeaconSumsLoading } = useHotspotBeaconSums(
     hotspot.address,
     2,
@@ -37,6 +31,8 @@ const StatisticsPane = ({ hotspot }) => {
         link={'https://docs.helium.com/troubleshooting/network-troubleshooting'}
         linkText={'Get help'}
       />
+      <RewardScaleWidget hotspot={hotspot} />
+      <StatusWidget hotspot={hotspot} />
       <RewardsWidgetCustomPeriods
         address={hotspot.address}
         title="Earnings"
@@ -47,21 +43,23 @@ const StatisticsPane = ({ hotspot }) => {
           { number: 30, type: 'day' },
         ]}
       />
-      <RewardScaleWidget hotspot={hotspot} />
-      <StatusWidget hotspot={hotspot} />
       <StatWidget
         title="7D Avg Beacons"
+        linkTo={`/hotspots/${hotspot?.address}/activity`}
         series={beaconSums}
         isLoading={isBeaconSumsLoading}
         dataKey="sum"
         changeType="percent"
       />
-      <StatWidget
-        title="7D Avg Witnesses"
-        series={witnesses}
-        isLoading={isWitnessesLoading}
-        dataKey="avg"
-        changeType="percent"
+      <Widget
+        title="Total Witnesses"
+        linkTo={`/hotspots/${hotspot?.address}/witnesses`}
+        value={hotspot?.witnesses?.length}
+        subtitle={
+          <span className="text-gray-550 text-sm font-sans">
+            Within past 5 days
+          </span>
+        }
       />
       <Widget
         title="Gain"

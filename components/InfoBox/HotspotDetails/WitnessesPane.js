@@ -17,6 +17,7 @@ const WitnessesPane = ({ hotspot }) => {
       })}
     >
       <WitnessesList
+        hotspot={hotspot}
         witnesses={witnesses || []}
         isLoading={loading}
         title="Witnesses"

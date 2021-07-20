@@ -31,6 +31,8 @@ const StatisticsPane = ({ hotspot }) => {
         link={'https://docs.helium.com/troubleshooting/network-troubleshooting'}
         linkText={'Get help'}
       />
+      <RewardScaleWidget hotspot={hotspot} />
+      <StatusWidget hotspot={hotspot} />
       <RewardsWidgetCustomPeriods
         address={hotspot.address}
         title="Earnings"
@@ -41,10 +43,9 @@ const StatisticsPane = ({ hotspot }) => {
           { number: 30, type: 'day' },
         ]}
       />
-      <RewardScaleWidget hotspot={hotspot} />
-      <StatusWidget hotspot={hotspot} />
       <StatWidget
         title="7D Avg Beacons"
+        linkTo={`/hotspots/${hotspot?.address}/activity`}
         series={beaconSums}
         isLoading={isBeaconSumsLoading}
         dataKey="sum"
@@ -52,8 +53,13 @@ const StatisticsPane = ({ hotspot }) => {
       />
       <Widget
         title="Total Witnesses"
+        linkTo={`/hotspots/${hotspot?.address}/witnesses`}
         value={hotspot?.witnesses?.length}
-        subtitle="Within past 5 days"
+        subtitle={
+          <span className="text-gray-550 text-sm font-sans">
+            Within past 5 days
+          </span>
+        }
       />
       <Widget
         title="Gain"

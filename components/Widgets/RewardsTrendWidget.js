@@ -4,8 +4,10 @@ import { chunk, maxBy, minBy, sumBy, takeRight } from 'lodash'
 import classNames from 'classnames'
 import { Balance, CurrencyType } from '@helium/currency'
 import LargeBalance from '../Common/LargeBalance'
+import Currency from '../Common/Currency'
 import { formatHoursRange, formatDaysRange } from '../Hotspots/utils'
 import Skeleton from '../Common/Skeleton'
+import { useMarket } from '../../data/market'
 
 const RewardTooltip = ({
   active,
@@ -59,6 +61,8 @@ const RewardsTrendWidget = ({
   periodLabel,
   periodLength,
 }) => {
+  const { market } = useMarket()
+
   const DATA_POINTS_TO_SHOW = periodLength ? periodLength : 30
 
   const [firstValue, lastValue] = useMemo(() => {
@@ -93,8 +97,16 @@ const RewardsTrendWidget = ({
       >
         <div className="w-1/3">
           <div className="text-gray-600 text-sm whitespace-nowrap">{title}</div>
-          <div className="text-3xl font-medium my-1.5 tracking-tight">
+          <div className="text-3xl font-medium mt-1.5 tracking-tight">
             {isLoading ? <Skeleton /> : <LargeBalance value={lastValue} />}
+          </div>
+
+          <div className="text-base text-gray-600 mb-1 tracking-tight w-full break-all">
+            {isLoading || !market ? (
+              <Skeleton className="w-1/3 my-2" />
+            ) : (
+              <Currency value={lastValue * market?.price} isLarge />
+            )}
           </div>
           {firstValue > 0 && (
             <div

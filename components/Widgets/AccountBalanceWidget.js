@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { useMemo } from 'react'
 import { useMarket } from '../../data/market'
 import Currency from '../Common/Currency'
@@ -10,6 +11,8 @@ const AccountBalanceWidget = ({ account }) => {
     return account?.balance?.plus(account?.stakedBalance)
   }, [account])
 
+  console.log(account?.secBalance?.integerBalance)
+
   return (
     <div className="bg-gray-200 p-3 rounded-lg col-span-2">
       <div className="text-gray-600 text-sm whitespace-nowrap">
@@ -17,7 +20,7 @@ const AccountBalanceWidget = ({ account }) => {
       </div>
 
       <div className="my-1.5">
-        <div className="text-2xl font-medium text-black tracking-tight w-full break-all">
+        <div className="text-3xl font-medium text-black tracking-tight w-full break-all">
           {!account ? (
             <Skeleton className="w-1/2 my-2.5" />
           ) : (
@@ -42,7 +45,11 @@ const AccountBalanceWidget = ({ account }) => {
           {!account ? (
             <Skeleton className="w-10 my-1" />
           ) : (
-            <span className="text-sm whitespace-nowrap">
+            <span
+              className={classNames('text-sm whitespace-nowrap', {
+                'text-gray-600': account?.dcBalance?.integerBalance === 0,
+              })}
+            >
               {account?.dcBalance?.toString(0, { showTicker: true })}
             </span>
           )}
@@ -52,7 +59,11 @@ const AccountBalanceWidget = ({ account }) => {
           {!account ? (
             <Skeleton className="w-10 my-1" />
           ) : (
-            <span className="text-sm whitespace-nowrap">
+            <span
+              className={classNames('text-sm whitespace-nowrap', {
+                'text-gray-600': account?.secBalance?.integerBalance === 0,
+              })}
+            >
               {account?.secBalance?.toString(2, { showTicker: true })}
             </span>
           )}
@@ -62,7 +73,11 @@ const AccountBalanceWidget = ({ account }) => {
           {!account ? (
             <Skeleton className="w-16 my-1" />
           ) : (
-            <span className="text-sm whitespace-nowrap">
+            <span
+              className={classNames('text-sm whitespace-nowrap', {
+                'text-gray-600': account?.stakedBalance?.integerBalance === 0,
+              })}
+            >
               {account?.stakedBalance?.toString(2, { showTicker: true })} staked
             </span>
           )}

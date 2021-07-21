@@ -11,8 +11,6 @@ const AccountBalanceWidget = ({ account }) => {
     return account?.balance?.plus(account?.stakedBalance)
   }, [account])
 
-  console.log(account?.secBalance?.integerBalance)
-
   return (
     <div className="bg-gray-200 p-3 rounded-lg col-span-2">
       <div className="text-gray-600 text-sm whitespace-nowrap">

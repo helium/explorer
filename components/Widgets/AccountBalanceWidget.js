@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 import { useMarket } from '../../data/market'
+import Currency from '../Common/Currency'
+import Skeleton from '../Common/Skeleton'
 
 const AccountBalanceWidget = ({ account }) => {
   const { market } = useMarket()
@@ -16,35 +18,54 @@ const AccountBalanceWidget = ({ account }) => {
 
       <div className="my-1.5">
         <div className="text-2xl font-medium text-black tracking-tight w-full break-all">
-          {maybeShowNone(totalBalance?.toString(2, { showTicker: false }))}
+          {!account ? (
+            <Skeleton className="w-1/2 my-2.5" />
+          ) : (
+            maybeShowNone(totalBalance?.toString(2, { showTicker: false }))
+          )}
         </div>
 
         <div className="text-base text-gray-600 tracking-tight w-full break-all">
-          $
-          {totalBalance
-            ?.times(market?.price)
-            .toString(2, { showTicker: false })}
+          {!account || !market ? (
+            <Skeleton className="w-1/3 my-2" />
+          ) : (
+            <Currency
+              value={totalBalance?.times(market?.price)?.floatBalance}
+            />
+          )}
         </div>
       </div>
 
       <div className="flex space-x-4">
         <div className="flex space-x-1 align-middle">
           <img alt="" src="/images/dc.svg" />
-          <span className="text-sm whitespace-nowrap">
-            {account?.dcBalance?.toString(0, { showTicker: true })}
-          </span>
+          {!account ? (
+            <Skeleton className="w-10 my-1" />
+          ) : (
+            <span className="text-sm whitespace-nowrap">
+              {account?.dcBalance?.toString(0, { showTicker: true })}
+            </span>
+          )}
         </div>
         <div className="flex space-x-1 align-middle">
           <img alt="" src="/images/hst.svg" />
-          <span className="text-sm whitespace-nowrap">
-            {account?.secBalance?.toString(2, { showTicker: true })}
-          </span>
+          {!account ? (
+            <Skeleton className="w-10 my-1" />
+          ) : (
+            <span className="text-sm whitespace-nowrap">
+              {account?.secBalance?.toString(2, { showTicker: true })}
+            </span>
+          )}
         </div>
         <div className="flex space-x-1 align-middle">
           <img alt="" src="/images/validator.svg" />
-          <span className="text-sm whitespace-nowrap">
-            {account?.stakedBalance?.toString(2, { showTicker: true })} staked
-          </span>
+          {!account ? (
+            <Skeleton className="w-16 my-1" />
+          ) : (
+            <span className="text-sm whitespace-nowrap">
+              {account?.stakedBalance?.toString(2, { showTicker: true })} staked
+            </span>
+          )}
         </div>
       </div>
     </div>

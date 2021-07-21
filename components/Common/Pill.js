@@ -5,7 +5,7 @@ const Pill = ({ title, color = 'gray', tooltip }) => (
   <Tooltip title={tooltip}>
     <span
       className={classNames(
-        'px-2 py-1 text-white text-xs font-medium rounded-full',
+        'px-2 py-1 text-white text-xs font-medium whitespace-nowrap rounded-full',
         {
           // generic colors based on status
           'bg-green-500': color === 'green',

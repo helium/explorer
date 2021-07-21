@@ -8,14 +8,12 @@ import PenaltyWidget from '../../Widgets/PenaltyWidget'
 import Widget from '../../Widgets/Widget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import { formatVersion, getStatus } from '../../Validators/utils'
-import RewardsTrendWidget from '../../Widgets/RewardsTrendWidget'
-import { useValidatorRewards } from '../../../data/rewards'
+import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
 
 const OverviewPane = () => {
   const { address } = useParams()
   const { validator, isLoading } = useValidator(address)
   const { height, isLoading: blockHeightLoading } = useBlockHeight()
-  const { rewards } = useValidatorRewards(address, 60, 'day')
 
   return (
     <InfoBoxPaneContainer>
@@ -54,7 +52,11 @@ const OverviewPane = () => {
         isLoading={isLoading}
         value={formatVersion(validator?.versionHeartbeat)}
       />
-      <RewardsTrendWidget title="30D Earnings" series={rewards} />
+      <PeriodizedRewardsWidget
+        address={validator?.address}
+        type="validator"
+        title="Earnings"
+      />
       <PenaltyWidget validator={validator} />
       <Widget
         title="ISP"

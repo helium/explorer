@@ -3,8 +3,7 @@ import classNames from 'classnames'
 import {
   useAccountRewards,
   useHotspotRewards,
-  // useValidatorRewards,
-  // useNetworkRewards,
+  useValidatorRewards,
 } from '../../data/rewards'
 import RewardsTrendWidget from './RewardsTrendWidget'
 
@@ -53,18 +52,22 @@ const PeriodizedRewardsWidget = ({
         />
       )
     }
-    // TODO in future PR: add validator and network options (or any other types where we want selectable time ranges)
-    // case 'validator': {
-    //   return <ValidatorRewardsChart address={address} periods={periods} />
-    // }
-    // case 'network': {
-    //   return <NetworkRewardsChart address={address} periods={periods} />
-    // }
+    case 'validator': {
+      return (
+        <ValidatorRewardsChart
+          title={title}
+          address={address}
+          periods={periods}
+          periodLength={periodLength}
+          periodType={periodType}
+          handlePeriodChange={handlePeriodChange}
+        />
+      )
+    }
     default:
       return <RewardsTrendWidget title={title} series={[]} />
   }
 }
-
 
 const HotspotRewardsChart = ({
   title,
@@ -108,6 +111,39 @@ const AccountRewardsChart = ({
   handlePeriodChange,
 }) => {
   const { rewards, isLoading } = useAccountRewards(
+    address,
+    // * 2 so we get a period of equal length to compare against and give a delta %
+    periodLength * 2,
+    periodType,
+  )
+
+  return (
+    <RewardsTrendWidget
+      title={title}
+      isLoading={isLoading}
+      periodLength={periodLength}
+      periodSelector={
+        <RewardPeriodSelector
+          periods={periods}
+          handlePeriodChange={handlePeriodChange}
+        />
+      }
+      series={rewards}
+      dataPointTimePeriod={periodType}
+      periodLabel
+    />
+  )
+}
+
+const ValidatorRewardsChart = ({
+  title,
+  address,
+  periods,
+  periodLength,
+  periodType,
+  handlePeriodChange,
+}) => {
+  const { rewards, isLoading } = useValidatorRewards(
     address,
     // * 2 so we get a period of equal length to compare against and give a delta %
     periodLength * 2,

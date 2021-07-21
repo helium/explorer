@@ -27,6 +27,7 @@ export const getHotspotRewardsBuckets = async (
   numBack,
   bucketType,
 ) => {
+  if (!address) return
   const list = await client.hotspot(address).rewards.sum.list({
     minTime: `-${numBack} ${bucketType}`,
     maxTime: new Date(),
@@ -101,6 +102,8 @@ export const getValidatorRewardsBuckets = async (
   numBack,
   bucketType,
 ) => {
+  if (!address) return
+
   // TODO add to helium-js
   const rewards = await fetchAll(`/validators/${address}/rewards/sum`, {
     min_time: `-${numBack} ${bucketType}`,
@@ -114,6 +117,8 @@ export const getAccountRewardsBuckets = async (
   numBack,
   bucketType,
 ) => {
+  if (!address) return
+
   const list = await client.account(address).rewards.sum.list({
     minTime: `-${numBack} ${bucketType}`,
     maxTime: new Date(),

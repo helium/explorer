@@ -27,8 +27,6 @@ const PeriodizedRewardsWidget = ({
     setPeriodType(type)
   }, [])
 
-  if (!address) return <RewardsTrendWidget title={title} series={[]} />
-
   return (
     <RewardsTrendWidget
       title={title}

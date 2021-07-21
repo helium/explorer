@@ -2,7 +2,7 @@ import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import ChecklistWidget from '../../Widgets/ChecklistWidget'
 import classNames from 'classnames'
 import ChevronIcon from '../../Icons/Chevron'
-import RewardsWidgetCustomPeriods from '../../Widgets/RewardsWidgetCustomPeriods'
+import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
 import ExternalLinkIcon from '../../Icons/ExternalLink'
 import InfoBoxPaneTitleSection from '../Common/InfoBoxPaneTitleSection'
 
@@ -38,15 +38,10 @@ const DataOnlyStatisticsPane = ({
         }
       />
       <InfoBoxPaneContainer>
-        <RewardsWidgetCustomPeriods
+        <PeriodizedRewardsWidget
           address={hotspot.address}
           title="Earnings"
-          type={'hotspot'}
-          periods={[
-            { number: 24, type: 'hour' },
-            { number: 7, type: 'day' },
-            { number: 30, type: 'day' },
-          ]}
+          type="hotspot"
         />
         {!showChecklist ? (
           <div

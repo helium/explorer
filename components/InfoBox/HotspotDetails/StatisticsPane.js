@@ -12,7 +12,7 @@ import { useAsync } from 'react-async-hook'
 import useToggle from '../../../utils/useToggle'
 import classNames from 'classnames'
 import ChevronIcon from '../../Icons/Chevron'
-import RewardsWidgetCustomPeriods from '../../Widgets/RewardsWidgetCustomPeriods'
+import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
 import DataOnlyStatisticsPane from './DataOnlyStatisticsPane'
 
 const StatisticsPane = ({ hotspot, isDataOnly }) => {
@@ -46,15 +46,10 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
       />
       <RewardScaleWidget hotspot={hotspot} />
       <StatusWidget hotspot={hotspot} />
-      <RewardsWidgetCustomPeriods
-        address={hotspot.address}
+      <PeriodizedRewardsWidget
+        address={hotspot?.address}
         title="Earnings"
-        type={'hotspot'}
-        periods={[
-          { number: 24, type: 'hour' },
-          { number: 7, type: 'day' },
-          { number: 30, type: 'day' },
-        ]}
+        type="hotspot"
       />
       <StatWidget
         title="7D Avg Beacons"

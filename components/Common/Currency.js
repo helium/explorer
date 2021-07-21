@@ -11,7 +11,9 @@ const Currency = ({ value, isLarge = false }) => {
       return ['$', round(value / BILLION, 3), 'B'].join('')
     }
 
-    return ['$', round(value / MILLION, 3), 'M'].join('')
+    if (value >= MILLION) {
+      return ['$', round(value / MILLION, 3), 'M'].join('')
+    }
   }
 
   return value.toLocaleString('en-US', {

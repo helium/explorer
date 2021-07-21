@@ -1,11 +1,6 @@
 import { useCallback, useState } from 'react'
 import classNames from 'classnames'
-import {
-  useAccountRewards,
-  useHotspotRewards,
-  // useValidatorRewards,
-  // useNetworkRewards,
-} from '../../data/rewards'
+import { useRewardBuckets } from '../../data/rewards'
 import RewardsTrendWidget from './RewardsTrendWidget'
 
 const PeriodizedRewardsWidget = ({
@@ -20,67 +15,18 @@ const PeriodizedRewardsWidget = ({
 }) => {
   const [periodLength, setPeriodLength] = useState(periods[0].number)
   const [periodType, setPeriodType] = useState(periods[0].type)
+  const { rewards, isLoading } = useRewardBuckets(
+    address,
+    type,
+    periodLength * 2,
+    periodType,
+  )
 
   const handlePeriodChange = useCallback((number, type) => {
     setPeriodLength(number)
     setPeriodType(type)
   }, [])
 
-  if (!address) return <RewardsTrendWidget title={title} series={[]} />
-
-  switch (type) {
-    case 'hotspot': {
-      return (
-        <HotspotRewardsChart
-          title={title}
-          address={address}
-          periods={periods}
-          periodLength={periodLength}
-          periodType={periodType}
-          handlePeriodChange={handlePeriodChange}
-        />
-      )
-    }
-    case 'account': {
-      return (
-        <AccountRewardsChart
-          title={title}
-          address={address}
-          periods={periods}
-          periodLength={periodLength}
-          periodType={periodType}
-          handlePeriodChange={handlePeriodChange}
-        />
-      )
-    }
-    // TODO in future PR: add validator and network options (or any other types where we want selectable time ranges)
-    // case 'validator': {
-    //   return <ValidatorRewardsChart address={address} periods={periods} />
-    // }
-    // case 'network': {
-    //   return <NetworkRewardsChart address={address} periods={periods} />
-    // }
-    default:
-      return <RewardsTrendWidget title={title} series={[]} />
-  }
-}
-
-
-const HotspotRewardsChart = ({
-  title,
-  address,
-  periods,
-  periodLength,
-  periodType,
-  handlePeriodChange,
-}) => {
-  const { rewards, isLoading } = useHotspotRewards(
-    address,
-    // * 2 so we get a period of equal length to compare against and give a delta %
-    periodLength * 2,
-    periodType,
-  )
-
   return (
     <RewardsTrendWidget
       title={title}
@@ -98,41 +44,6 @@ const HotspotRewardsChart = ({
     />
   )
 }
-
-const AccountRewardsChart = ({
-  title,
-  address,
-  periods,
-  periodLength,
-  periodType,
-  handlePeriodChange,
-}) => {
-  const { rewards, isLoading } = useAccountRewards(
-    address,
-    // * 2 so we get a period of equal length to compare against and give a delta %
-    periodLength * 2,
-    periodType,
-  )
-
-  return (
-    <RewardsTrendWidget
-      title={title}
-      isLoading={isLoading}
-      periodLength={periodLength}
-      periodSelector={
-        <RewardPeriodSelector
-          periods={periods}
-          handlePeriodChange={handlePeriodChange}
-        />
-      }
-      series={rewards}
-      dataPointTimePeriod={periodType}
-      periodLabel
-    />
-  )
-}
-
-// TODO in future PR: create <ValidatorRewardsChart /> and <NetworkRewardsChart /> (or any other types where we want selectable time ranges)
 
 const RewardPeriodSelector = ({ periods, handlePeriodChange }) => {
   const [selectedIndex, setSelectedIndex] = useState(0)

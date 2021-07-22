@@ -81,13 +81,4 @@ const MakerAccountBalanceWidget = ({ account }) => {
   )
 }
 
-const maybeShowNone = (value) => {
-  if (value === '0') return <NoneValue />
-  return value
-}
-
-const NoneValue = () => {
-  return <span className="text-3xl text-gray-500">none</span>
-}
-
 export default MakerAccountBalanceWidget

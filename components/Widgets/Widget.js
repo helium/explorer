@@ -28,7 +28,8 @@ const Widget = ({
       <div className="w-full text-gray-800">
         <div className="flex items-center space-x-1">
           {titleIcon}
-          <div className="text-gray-600 text-sm">{title}</div>
+          {isLoading && !title && <Skeleton className="w-1/5" />}
+          {title && <div className="text-gray-600 text-sm">{title}</div>}
           {tooltip && (
             <div className="text-gray-600 text-sm cursor-pointer flex">
               <Tooltip title={tooltip}>

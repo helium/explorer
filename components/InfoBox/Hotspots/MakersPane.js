@@ -1,32 +1,14 @@
-import Balance, { CurrencyType } from '@helium/currency'
 import classNames from 'classnames'
-import { useCallback, useMemo } from 'react'
-import useApi from '../../../hooks/useApi'
+import { useCallback } from 'react'
 import BaseList from '../../Lists/BaseList'
 import HotspotSimpleIcon from '../../Icons/HotspotSimple'
 import BurnIcon from '../../Icons/BurnIcon'
 import LocationIcon from '../../Icons/Location'
 import { Tooltip } from 'antd'
+import { useMakers } from '../../../data/makers'
 
 const MakersPane = () => {
-  const { data: makersData } = useApi('/makers')
-
-  const makers = useMemo(() => {
-    return makersData.map((m) => ({
-      ...m,
-      dcBalance: new Balance(
-        m.balanceInfo.dcBalance.integerBalance,
-        CurrencyType.dataCredit,
-      ),
-      burnedHNT: new Balance(
-        m.txns.tokenBurnAmountInBones,
-        CurrencyType.networkToken,
-      ),
-      assertsRemaining: Math.floor(
-        m.balanceInfo.dcBalance.integerBalance / 5000000,
-      ),
-    }))
-  }, [makersData])
+  const { makers } = useMakers()
 
   const keyExtractor = useCallback((maker) => maker.address, [])
 
@@ -48,11 +30,11 @@ const MakersPane = () => {
                 <span className="">{maker.dcBalance.toString(0)}</span>
               </span>
               <span className="text-xs">
-                ({maker.assertsRemaining.toLocaleString()} asserts remaining)
+                ({maker.assertsRemaining.toLocaleString()} onboards remaining)
               </span>
             </div>
             <div className="flex space-x-3 text-sm text-gray-600">
-              <Tooltip title="Hotspots onboarded">
+              <Tooltip title="Hotspots added">
                 <div className="flex space-x-1">
                   <HotspotSimpleIcon className="text-green-500 w-3 h-auto" />
                   <span>{maker.txns.addGatewayTxns.toLocaleString()}</span>

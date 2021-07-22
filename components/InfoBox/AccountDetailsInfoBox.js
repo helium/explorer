@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useParams } from 'react-router'
 import InfoBox from './InfoBox'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
@@ -8,24 +8,21 @@ import ActivityPane from './Common/ActivityPane'
 import HotspotsPane from './AccountDetails/HotspotsPane'
 import ValidatorsPane from './AccountDetails/ValidatorsPane'
 import AccountIcon from '../AccountIcon'
-import { getMakerName } from '../Makers/utils'
 import MakerIcon from '../Icons/Maker'
-import { useAsync } from 'react-async-hook'
 import CopyableText from '../Common/CopyableText'
+import MakerOverviewPane from './AccountDetails/MakerOverviewPane'
+import { useMaker } from '../../data/makers'
+import SkeletonWidgets from './Common/SkeletonWidgets'
 
 const AccountDetailsInfoBox = () => {
   const { address } = useParams()
-  const [makerName, setMakerName] = useState('Unknown Maker')
-
-  useAsync(async () => {
-    setMakerName(await getMakerName(address))
-  }, [address])
+  const { maker, isLoading } = useMaker(address)
 
   const subtitles = useMemo(() => {
-    if (makerName !== 'Unknown Maker')
+    if (maker)
       return [
         {
-          title: makerName,
+          title: maker?.name,
           tooltip: 'This is a Maker Account',
           icon: (
             <MakerIcon classes="h-4 w-auto mr-0.5 md:mr-1 text-purple-500" />
@@ -33,7 +30,17 @@ const AccountDetailsInfoBox = () => {
         },
       ]
     return []
-  }, [makerName])
+  }, [maker])
+
+  const renderOverviewPane = useCallback(() => {
+    if (isLoading) {
+      return <SkeletonWidgets />
+    }
+    if (maker) {
+      return <MakerOverviewPane />
+    }
+    return <OverviewPane />
+  }, [isLoading, maker])
 
   return (
     <InfoBox
@@ -47,11 +54,15 @@ const AccountDetailsInfoBox = () => {
       }
       metaTitle={`Account ${address}`}
       subtitles={subtitles}
-      breadcrumbs={[{ title: 'Overview', path: '/' }]}
+      breadcrumbs={
+        maker
+          ? [{ title: 'Makers', path: '/hotspots/makers' }]
+          : [{ title: 'Overview', path: '/' }]
+      }
     >
       <TabNavbar>
         <TabPane title="Overview" key="overview">
-          <OverviewPane />
+          {renderOverviewPane()}
         </TabPane>
 
         <TabPane title="Activity" key="activity" path="activity">

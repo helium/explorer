@@ -6,6 +6,8 @@ export const useMakers = () => {
   const { data: makersData } = useApi('/makers')
 
   const makers = useMemo(() => {
+    if (!makersData) return []
+
     return makersData.map((m) => ({
       ...m,
       dcBalance: new Balance(
@@ -28,13 +30,15 @@ export const useMakers = () => {
 export const useMaker = (address) => {
   const { makers } = useMakers()
   const [maker, setMaker] = useState()
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     if (!makers) return
+    setIsLoading(false)
     const maker = makers.find((m) => m.address === address)
     if (!maker) return
     setMaker(maker)
   }, [address, makers])
 
-  return { maker }
+  return { maker, isLoading }
 }

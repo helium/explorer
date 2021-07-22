@@ -12,10 +12,11 @@ import MakerIcon from '../Icons/Maker'
 import CopyableText from '../Common/CopyableText'
 import MakerOverviewPane from './AccountDetails/MakerOverviewPane'
 import { useMaker } from '../../data/makers'
+import SkeletonWidgets from './Common/SkeletonWidgets'
 
 const AccountDetailsInfoBox = () => {
   const { address } = useParams()
-  const { maker } = useMaker(address)
+  const { maker, isLoading } = useMaker(address)
 
   const subtitles = useMemo(() => {
     if (maker)
@@ -32,13 +33,14 @@ const AccountDetailsInfoBox = () => {
   }, [maker])
 
   const renderOverviewPane = useCallback(() => {
-    // TODO skeleton widgets for unknown widget pane loading
-    // can use for hotspot details too
+    if (isLoading) {
+      return <SkeletonWidgets />
+    }
     if (maker) {
       return <MakerOverviewPane />
     }
     return <OverviewPane />
-  }, [maker])
+  }, [isLoading, maker])
 
   return (
     <InfoBox
@@ -52,7 +54,11 @@ const AccountDetailsInfoBox = () => {
       }
       metaTitle={`Account ${address}`}
       subtitles={subtitles}
-      breadcrumbs={maker ? [{ title: 'Makers', path: '/hotspots/makers' }] : [{ title: 'Overview', path: '/' }]}
+      breadcrumbs={
+        maker
+          ? [{ title: 'Makers', path: '/hotspots/makers' }]
+          : [{ title: 'Overview', path: '/' }]
+      }
     >
       <TabNavbar>
         <TabPane title="Overview" key="overview">

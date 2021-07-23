@@ -16,7 +16,6 @@ import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
 import InfoBoxPaneTitleSection from '../Common/InfoBoxPaneTitleSection'
 import ExternalLinkIcon from '../../Icons/ExternalLink'
 import RecentActivityWidget from '../../Widgets/RecentActivityWidget'
-import { useMemo } from 'react'
 
 const StatisticsPane = ({ hotspot, isDataOnly }) => {
   const { beaconSums, isLoading: isBeaconSumsLoading } = useHotspotBeaconSums(
@@ -27,8 +26,6 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
 
   const { result: witnessesData } = useAsync(fetchWitnesses, [hotspot.address])
   const [showChecklist, toggleShowChecklist] = useToggle()
-
-  const address = useMemo(() => hotspot.address, [hotspot])
 
   return (
     <>
@@ -109,7 +106,7 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
             />
           </>
         )}
-        <RecentActivityWidget context="hotspot" address={address} />
+        <RecentActivityWidget context="hotspot" address={hotspot.address} />
         {!showChecklist ? (
           <div
             className="bg-gray-200 p-3 rounded-lg col-span-2 cursor-pointer hover:bg-gray-300"

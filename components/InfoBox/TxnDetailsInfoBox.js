@@ -2,7 +2,11 @@ import InfoBox from './InfoBox'
 import { useParams } from 'react-router'
 import useSelectedTxn from '../../hooks/useSelectedTxn'
 import { useEffect } from 'react'
-import { formattedTxnHash, getTxnTypeName } from '../../utils/txns'
+import {
+  formattedTxnHash,
+  getTxnTypeColor,
+  getTxnTypeName,
+} from '../../utils/txns'
 import classNames from 'classnames'
 import Timestamp from 'react-timestamp'
 import TxnDetailsSwitch from './TxnDetails/TxnDetailsSwitch'
@@ -25,7 +29,17 @@ const TxnDetailsInfoBox = () => {
 
   const generateTitle = (txn) => {
     if (!txn) return 'Loading transaction...'
-    return `${getTxnTypeName(selectedTxn.type)} transaction`
+    return (
+      <span className="flex items-start justify-start">
+        <span
+          className="h-5 md:h-7 w-1 -ml-4 mt-1.5 opacity-75"
+          style={{ backgroundColor: getTxnTypeColor(selectedTxn.type) }}
+        />
+        <span className="ml-3">
+          {getTxnTypeName(selectedTxn.type)} transaction
+        </span>
+      </span>
+    )
   }
 
   const generateBreadcrumbs = (txn) => {

@@ -20,6 +20,7 @@ import { useBlockHeight } from '../../data/blocks'
 import PreviousIcon from '../Icons/Previous'
 import NextIcon from '../Icons/Next'
 import InfoBoxTitleButton from './Common/InfoBoxTitleButton'
+import Skeleton from '../Common/Skeleton'
 
 const BlockDetailsInfoBox = () => {
   const { height: currentHeight } = useBlockHeight()
@@ -112,7 +113,18 @@ const BlockDetailsInfoBox = () => {
   if (blockLoading) {
     return (
       <InfoBox title={title} subtitles={generateSubtitles(block)}>
-        <div style={{ width: '100%', minHeight: 60 + 76 }} />
+        <div
+          className="bg-white px-5 pt-3 rounded-lg col-span-2"
+          style={{ width: '100%', minHeight: 60 + 76 }}
+        >
+          <Skeleton className="h-6 w-full my-3 rounded-lg flex overflow-hidden" />
+          <div className="flex items-center justify-start pt-5 space-x-4">
+            <Skeleton className="w-1/4 h-10" />
+            <Skeleton className="w-1/4 h-10" />
+            <Skeleton className="w-1/4 h-10" />
+            <Skeleton className="w-1/4 h-10" />
+          </div>
+        </div>
         <SkeletonList />
       </InfoBox>
     )

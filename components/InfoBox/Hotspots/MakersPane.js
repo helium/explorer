@@ -26,7 +26,7 @@ const MakersPane = () => {
           <div>
             <div className="my-1 flex items-center space-x-2 font-normal text-gray-600 text-sm">
               <span className="flex items-center space-x-1">
-                <img src="/images/dc.svg" className="w-3 h-3" />
+                <img alt="" src="/images/dc.svg" className="w-3 h-3" />
                 <span className="">{maker.dcBalance.toString(0)}</span>
               </span>
               <span className="text-xs">
@@ -35,19 +35,19 @@ const MakersPane = () => {
             </div>
             <div className="flex space-x-3 text-sm text-gray-600">
               <Tooltip title="Hotspots added">
-                <div className="flex space-x-1">
+                <div className="flex items-center space-x-1">
                   <HotspotSimpleIcon className="text-green-500 w-3 h-auto" />
                   <span>{maker.txns.addGatewayTxns.toLocaleString()}</span>
                 </div>
               </Tooltip>
               <Tooltip title="Locations asserted">
-                <div className="flex space-x-1">
+                <div className="flex items-center space-x-1">
                   <LocationIcon className="text-pink-500 w-3 h-auto" />
                   <span>{maker.txns.assertLocationTxns.toLocaleString()}</span>
                 </div>
               </Tooltip>
               <Tooltip title="HNT burned">
-                <div className="flex space-x-1">
+                <div className="flex items-center space-x-1">
                   <BurnIcon className="text-orange-300 w-3 h-auto" />
                   <span>{maker.burnedHNT.toString(2)}</span>
                 </div>

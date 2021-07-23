@@ -32,13 +32,8 @@ const ActivityPane = ({ context, address }) => {
 
   const filters = filtersByContext[context]
 
-  const {
-    transactions,
-    fetchMore,
-    isLoadingInitial,
-    isLoadingMore,
-    hasMore,
-  } = useActivity(context, address, filters[filter])
+  const { transactions, fetchMore, isLoadingInitial, isLoadingMore, hasMore } =
+    useActivity(context, address, filters[filter])
 
   const setVisibility = useCallback(
     () =>
@@ -83,7 +78,7 @@ const ActivityPane = ({ context, address }) => {
     >
       <div
         className={classNames(
-          'sticky top-0 transform-gpu transition-transform duration-300 ease-in-out',
+          'sticky top-0 transform-gpu transition-transform duration-300 ease-in-out z-20',
           { '-translate-y-16': !isVisible },
         )}
       >

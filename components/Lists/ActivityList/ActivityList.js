@@ -13,6 +13,7 @@ import ExpandedPoCReceiptContent from './ExpandedPoCReceiptContent'
 import ExpandedRewardContent from './ExpandedRewardContent'
 import PaymentSubtitle from './PaymentSubtitle'
 import animalHash from 'angry-purple-tiger'
+import Timestamp from 'react-timestamp'
 
 const isExpandable = (txn) => {
   return (
@@ -49,8 +50,13 @@ const ActivityList = ({
       switch (txn.type) {
         case 'poc_receipts_v1':
           return (
-            <span>
-              {getTxnTypeName(getPocReceiptRole(txn, address), 'hotspot')}
+            <span className="flex items-end justify-start">
+              <span>
+                {getTxnTypeName(getPocReceiptRole(txn, address), 'hotspot')}
+              </span>
+              <span className="hidden md:block text-xs text-gray-600 font-sans font-extralight ml-1 mb-0.5">
+                <TimeAgo date={txn.time * 1000} timeStyle="mini" /> ago
+              </span>
             </span>
           )
         case 'payment_v1':
@@ -60,7 +66,14 @@ const ActivityList = ({
           )
 
         default:
-          return <span>{getTxnTypeName(txn.type, context)}</span>
+          return (
+            <span className="flex items-end justify-start">
+              <span>{getTxnTypeName(txn.type, context)}</span>
+              <span className="hidden md:block text-xs text-gray-600 font-sans font-extralight ml-1 mb-0.5">
+                <TimeAgo date={txn.time * 1000} timeStyle="mini" /> ago
+              </span>
+            </span>
+          )
       }
     },
     [address, context],
@@ -69,12 +82,22 @@ const ActivityList = ({
   const generateSubtitle = useCallback(
     (txn) => {
       const timestamp = (
-        <span className="flex items-center space-x-1">
-          <img alt="" src="/images/clock.svg" className="w-3.5 h-3.5" />
-          <span>
-            <TimeAgo date={txn.time * 1000} timeStyle="mini" />
+        <>
+          <span className="flex items-center">
+            <span className="hidden md:flex items-center space-x-1">
+              <img alt="" src="/images/clock.svg" className="w-3.5 h-3.5" />
+              <span className="tracking-tighter">
+                <Timestamp date={txn.time} />
+              </span>
+            </span>
+            <span className="flex md:hidden items-center space-x-1">
+              <img alt="" src="/images/clock.svg" className="w-3.5 h-3.5" />
+              <span>
+                <TimeAgo date={txn.time * 1000} timeStyle="mini" />
+              </span>
+            </span>
           </span>
-        </span>
+        </>
       )
       switch (txn.type) {
         case 'rewards_v1':
@@ -199,16 +222,6 @@ const ActivityList = ({
     [address],
   )
 
-  const generateDetails = useCallback((txn) => {
-    switch (txn.type) {
-      case 'poc_receipts_v1':
-        return getTxnTypeName(txn.type)
-
-      default:
-        return getTxnTypeName(txn.type)
-    }
-  }, [])
-
   const renderItem = useCallback(
     (txn) => {
       if (isExpandable(txn)) {
@@ -219,11 +232,12 @@ const ActivityList = ({
             context={context}
             title={generateTitle(txn)}
             subtitle={generateSubtitle(txn)}
-            details={generateDetails(txn)}
             linkTo={`/txns/${txn.hash}`}
-            pillColor={getTxnTypeColor(txn.type)}
-            pillClasses={'text-white text-xs md:text-sm'}
-            pillSymbolClasses={'text-white text-xs md:text-sm'}
+            highlightColor={
+              txn.type === 'poc_receipts_v1'
+                ? getTxnTypeColor(getPocReceiptRole(txn, address))
+                : getTxnTypeColor(txn.type)
+            }
             expandedContent={
               txn.type === 'rewards_v1' || txn.type === 'rewards_v2' ? (
                 <ExpandedRewardContent txn={txn} address={address} />
@@ -239,15 +253,12 @@ const ActivityList = ({
         <ActivityListItem
           title={generateTitle(txn)}
           subtitle={generateSubtitle(txn)}
-          details={getTxnTypeName(txn.type, 'block')}
           linkTo={`/txns/${txn.hash}`}
-          pillColor={getTxnTypeColor(txn.type)}
-          pillClasses={'text-white text-xs md:text-sm'}
-          pillSymbolClasses={'text-white text-xs md:text-sm'}
+          highlightColor={getTxnTypeColor(txn.type)}
         />
       )
     },
-    [address, context, generateDetails, generateSubtitle, generateTitle],
+    [address, context, generateSubtitle, generateTitle],
   )
 
   const expandableItem = useCallback((txn) => {

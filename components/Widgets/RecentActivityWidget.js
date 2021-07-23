@@ -12,6 +12,7 @@ const RecentActivityWidget = ({ context, address }) => {
   const [transactionsLoading, setTransactionsLoading] = useState(true)
 
   useAsync(async () => {
+    setTransactionsLoading(true)
     setTransactions(
       await (await client.hotspot(address).activity.list()).take(5),
     )

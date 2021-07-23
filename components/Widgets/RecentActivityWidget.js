@@ -1,16 +1,22 @@
-import { useActivity } from '../../data/activity'
 import Image from 'next/image'
 import { Link } from 'react-router-i18n'
-import { memo } from 'react'
+import { memo, useState } from 'react'
+import { useAsync } from 'react-async-hook'
+import client from '../../data/client'
+import Skeleton from '../Common/Skeleton'
+import { getPocReceiptRole, getTxnTypeName } from '../../utils/txns'
+import TimeAgo from '../Common/TimeAgo'
 
 const RecentActivityWidget = ({ context, address }) => {
-  const { transactions, hasMore, isLoadingInitial, isLoadingMore } =
-    useActivity(context, address, [], 5)
+  const [transactions, setTransactions] = useState([])
+  const [transactionsLoading, setTransactionsLoading] = useState(true)
 
-  console.log(transactions)
-  console.log('isLoadingInitial', isLoadingInitial)
-  console.log('isLoadingMore', isLoadingMore)
-  console.log('hasMore', hasMore)
+  useAsync(async () => {
+    setTransactions(
+      await (await client.hotspot(address).activity.list()).take(5),
+    )
+    setTransactionsLoading(false)
+  }, [address])
 
   return (
     <Link
@@ -23,19 +29,29 @@ const RecentActivityWidget = ({ context, address }) => {
         </div>
 
         <div className="my-1.5 flex items-center justify-start flex-col w-full">
-          {transactions.map((t, i) => {
-            return (
+          {transactionsLoading ? (
+            <div className="space-y-2 flex flex-col items-center justify-start w-full">
+              <Skeleton className="w-full h-3.5" defaultSize={false} />
+              <Skeleton className="w-full h-3.5" defaultSize={false} />
+              <Skeleton className="w-full h-3.5" defaultSize={false} />
+              <Skeleton className="w-full h-3.5" defaultSize={false} />
+              <Skeleton className="w-full h-3.5" defaultSize={false} />
+            </div>
+          ) : (
+            transactions.map((t) => (
               <div className="flex items-center justify-between w-full">
-                <div className="text-base font-medium text-black tracking-tight w-full break-all">
-                  {t.type}
+                <div className="text-xs md:text-sm text-black tracking-tight w-full break-all">
+                  {t.type === 'poc_receipts_v1'
+                    ? getTxnTypeName(getPocReceiptRole(t, address), 'hotspot')
+                    : getTxnTypeName(t.type, 'hotspot')}
                 </div>
 
-                <div className="text-base text-gray-600 tracking-tight w-full break-all">
-                  {t.height}
+                <div className="text-xs md:text-sm text-gray-600 tracking-tight w-full break-all text-right pr-5">
+                  <TimeAgo time={t.time} />
                 </div>
               </div>
-            )
-          })}
+            ))
+          )}
         </div>
       </div>
       <div className="flex">

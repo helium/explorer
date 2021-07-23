@@ -5,9 +5,12 @@ import { useLatestHotspots } from '../../../data/hotspots'
 import HotspotWidget from '../../Widgets/HotspotWidget'
 import useApi from '../../../hooks/useApi'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
+import Widget from '../../Widgets/Widget'
+import { maxBy } from 'lodash'
 
 const StatisticsPane = () => {
   const { data: stats } = useApi('/metrics/hotspots')
+  const { data: makers } = useApi('/makers')
   const { latestHotspots } = useLatestHotspots()
 
   const latestHotspot = useMemo(() => {
@@ -25,10 +28,12 @@ const StatisticsPane = () => {
         valueType="percent"
         changeType="percent"
       />
-      <StatWidget
-        title="Hotspot Owners"
-        series={stats?.ownersCount}
-        isLoading={!stats}
+      <Widget
+        title="Makers"
+        value={makers?.length}
+        subtitle={`Latest: ${maxBy(makers, 'id')?.name}`}
+        isLoading={!makers}
+        linkTo="/hotspots/makers"
       />
       <StatWidget
         title="Cities"
@@ -41,6 +46,11 @@ const StatisticsPane = () => {
         isLoading={!stats}
       />
       <HotspotWidget title="Latest Hotspot" hotspot={latestHotspot} />
+      <StatWidget
+        title="Hotspot Owners"
+        series={stats?.ownersCount}
+        isLoading={!stats}
+      />
     </InfoBoxPaneContainer>
   )
 }

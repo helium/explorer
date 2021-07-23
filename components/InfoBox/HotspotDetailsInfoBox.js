@@ -14,6 +14,7 @@ import AccountAddress from '../AccountAddress'
 import SkeletonList from '../Lists/SkeletonList'
 import FlagLocation from '../Common/FlagLocation'
 import { isDataOnly } from '../Hotspots/utils'
+import SkeletonWidgets from './Common/SkeletonWidgets'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -116,7 +117,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
       <TabNavbar>
         <TabPane title="Statistics" key="statistics">
           {isLoading ? (
-            <SkeletonList />
+            <SkeletonWidgets />
           ) : (
             <StatisticsPane hotspot={hotspot} isDataOnly={IS_DATA_ONLY} />
           )}

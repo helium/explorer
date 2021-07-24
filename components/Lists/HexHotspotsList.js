@@ -4,7 +4,7 @@ import { round, sumBy } from 'lodash'
 import StatusCircle from '../Hotspots/StatusCircle'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
-import { useHotspotRewards } from '../../data/rewards'
+import { useRewardBuckets } from '../../data/rewards'
 import RewardScaleHex from '../Common/RewardScaleHex'
 import Skeleton from '../Common/Skeleton'
 import HotspotTimeAgo from '../Common/HotspotTimeAgo'
@@ -54,7 +54,7 @@ const HexHotspotsList = ({
 }
 
 const HotspotRewards = ({ address }) => {
-  const { rewards } = useHotspotRewards(address, 30, 'day')
+  const { rewards } = useRewardBuckets(address, 'hotspot', 30, 'day')
 
   if (!rewards) {
     return <Skeleton className="w-32" />

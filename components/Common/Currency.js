@@ -1,7 +1,7 @@
 import { round } from 'lodash'
 
 const Currency = ({ value, isLarge = false }) => {
-  if (!value) return 0
+  if (!value) return '$0.00'
 
   if (isLarge) {
     const BILLION = 1_000_000_000
@@ -11,7 +11,9 @@ const Currency = ({ value, isLarge = false }) => {
       return ['$', round(value / BILLION, 3), 'B'].join('')
     }
 
-    return ['$', round(value / MILLION, 3), 'M'].join('')
+    if (value >= MILLION) {
+      return ['$', round(value / MILLION, 3), 'M'].join('')
+    }
   }
 
   return value.toLocaleString('en-US', {

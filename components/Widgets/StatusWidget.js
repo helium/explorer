@@ -45,7 +45,7 @@ const StatusWidget = ({ hotspot }) => {
       value={value}
       subtitle={
         hotspot?.status?.timestamp && (
-          <span>
+          <span className="text-gray-550 text-sm font-sans">
             As of <TimeAgo date={hotspot?.status?.timestamp} />
           </span>
         )

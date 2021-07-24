@@ -30,7 +30,7 @@ const ExpandedRewardContent = ({ txn }) => {
               {`+${r.amount.toString(3)}`}
             </span>
             <span className="text-black font-sans text-sm font-thin">
-              {animalHash(r.gateway)}
+              {r?.gateway && animalHash(r.gateway)}
             </span>
           </div>
           <Pill

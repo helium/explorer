@@ -10,8 +10,8 @@ const CategoryPillSection = ({ tags }) => {
             className={classNames('px-2 py-0.5 rounded-full text-xs', {
               'bg-navy-50 text-navy-400': tag === 'Monitoring',
               'bg-purple-50 text-purple-500': tag === 'Data Export',
+              'bg-yellow-50 text-yellow-800': tag === 'Planning',
               // TODO: add more tag options
-              // 'bg-yellow-50 text-yellow-600': tag === '',
             })}
           >
             {tag}

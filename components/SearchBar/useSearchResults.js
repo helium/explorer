@@ -14,7 +14,9 @@ const useSearchResults = () => {
     try {
       const list = await client.hotspots.search(term)
       const hotspots = (await list.take(20)).map((h) =>
-        toSearchResult(h, 'hotspot'),
+        h.mode === 'dataonly'
+          ? toSearchResult(h, 'dataonly')
+          : toSearchResult(h, 'hotspot'),
       )
       return hotspots
     } catch {}
@@ -148,6 +150,7 @@ const toSearchResult = (item, type) => {
 const makeSearchResultKey = (item, type) => {
   switch (type) {
     case 'hotspot':
+    case 'dataonly':
     case 'account':
     case 'validator':
       return item.address

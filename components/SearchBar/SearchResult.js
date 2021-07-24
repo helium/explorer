@@ -13,7 +13,7 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
     onSelect(result)
   }, [onSelect, result])
 
-  if (result.type === 'hotspot') {
+  if (result.type === 'hotspot' || result.type === 'dataonly') {
     return (
       <BaseSearchResult
         title={formatHotspotName(result.item.name)}
@@ -89,6 +89,10 @@ const pillColors = {
   hotspot: 'green',
 }
 
+const pillTitles = {
+  dataonly: 'Data Only',
+}
+
 const BaseSearchResult = ({ title, subtitle, type, onSelect, selected }) => (
   <div
     className={classNames(
@@ -104,7 +108,10 @@ const BaseSearchResult = ({ title, subtitle, type, onSelect, selected }) => (
       <div className="text-gray-700 text-sm">{subtitle}</div>
     </div>
     <div className="flex items-center px-2">
-      <Pill title={capitalize(type)} color={pillColors[type] || 'gray'} />
+      <Pill
+        title={pillTitles[type] ? pillTitles[type] : capitalize(type)}
+        color={pillColors[type] || 'gray'}
+      />
     </div>
     <div className="flex">
       <img alt="" src="/images/details-arrow.svg" />

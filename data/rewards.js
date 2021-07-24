@@ -27,6 +27,7 @@ export const getHotspotRewardsBuckets = async (
   numBack,
   bucketType,
 ) => {
+  if (!address) return
   const list = await client.hotspot(address).rewards.sum.list({
     minTime: `-${numBack} ${bucketType}`,
     maxTime: new Date(),
@@ -34,26 +35,6 @@ export const getHotspotRewardsBuckets = async (
   })
   const rewards = await list.take(TAKE_MAX)
   return rewards.reverse()
-}
-
-export const useHotspotRewards = (
-  address,
-  numBack = 30,
-  bucketType = 'day',
-) => {
-  const key = `rewards/hotspots/${address}/${numBack}/${bucketType}`
-  const fetcher = (address, numBack, bucketType) => () =>
-    getHotspotRewardsBuckets(address, numBack, bucketType)
-
-  const { data, error } = useSWR(key, fetcher(address, numBack, bucketType), {
-    refreshInterval: 1000 * 60 * 10,
-  })
-
-  return {
-    rewards: data,
-    isLoading: !error && !data,
-    isError: error,
-  }
 }
 
 export const fetchHotspotRewardsSum = async (address, numBack, bucketType) => {
@@ -121,6 +102,8 @@ export const getValidatorRewardsBuckets = async (
   numBack,
   bucketType,
 ) => {
+  if (!address) return
+
   // TODO add to helium-js
   const rewards = await fetchAll(`/validators/${address}/rewards/sum`, {
     min_time: `-${numBack} ${bucketType}`,
@@ -129,14 +112,40 @@ export const getValidatorRewardsBuckets = async (
   return rewards.reverse()
 }
 
-export const useValidatorRewards = (
+export const getAccountRewardsBuckets = async (
   address,
-  numBack = 30,
-  bucketType = 'day',
+  numBack,
+  bucketType,
 ) => {
-  const key = `rewards/validators/${address}/${numBack}/${bucketType}`
-  const fetcher = (address, numBack, bucketType) => () =>
-    getValidatorRewardsBuckets(address, numBack, bucketType)
+  if (!address) return
+
+  const list = await client.account(address).rewards.sum.list({
+    minTime: `-${numBack} ${bucketType}`,
+    maxTime: new Date(),
+    bucket: bucketType,
+  })
+  const rewards = await list.take(TAKE_MAX)
+  return rewards.reverse()
+}
+
+export const useRewardBuckets = (address, type, numBack = 30, bucketType = 'day') => {
+  const key = `rewards/${type}s/${address}/${numBack}/${bucketType}`
+
+  const fetcher = (address, numBack, bucketType) => () => {
+    switch (type) {
+      case 'account':
+        return getAccountRewardsBuckets(address, numBack, bucketType)
+
+      case 'hotspot':
+        return getHotspotRewardsBuckets(address, numBack, bucketType)
+
+      case 'validator':
+        return getValidatorRewardsBuckets(address, numBack, bucketType)
+    
+      default:
+        throw new Error('Invalid reward type')
+    }
+  }
 
   const { data, error } = useSWR(key, fetcher(address, numBack, bucketType), {
     refreshInterval: 1000 * 60 * 10,

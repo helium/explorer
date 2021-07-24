@@ -180,6 +180,22 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
         url = `${urlBase}/txns/${txn.hash}`
         break
       }
+      case 'rewards_v3': {
+        const totalAmountObject = new Balance(
+          txn.totalAmount.integerBalance,
+          CurrencyType.networkToken,
+        )
+
+        type = `Rewards`
+        description = `A rewards transaction with ${totalAmountObject.toString(
+          2,
+        )} in total rewarded to ${
+          txn.rewards.length
+        } accounts ${dateString} ${blockString}`
+        ogImageUrl = `${ogImageUrlBase}/txn_rewards.png`
+        url = `${urlBase}/txns/${txn.hash}`
+        break
+      }
       case 'state_channel_close_v1': {
         type = `State Channel Close`
         description = `A state channel closed transaction ${dateString} ${blockString}`

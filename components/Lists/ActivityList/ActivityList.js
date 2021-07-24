@@ -18,6 +18,7 @@ const isExpandable = (txn) => {
   return (
     txn.type === 'rewards_v1' ||
     txn.type === 'rewards_v2' ||
+    txn.type === 'rewards_v3' ||
     txn.type === 'poc_receipts_v1'
   )
 }

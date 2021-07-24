@@ -64,18 +64,22 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
         {
           iconPath: '/images/location-blue.svg',
           loading: true,
+          skeletonClasses: 'w-10',
         },
         {
           iconPath: '/images/account-green.svg',
           loading: true,
+          skeletonClasses: 'w-10',
         },
         {
           iconPath: '/images/gain.svg',
           loading: true,
+          skeletonClasses: 'w-10',
         },
         {
           iconPath: '/images/elevation.svg',
           loading: true,
+          skeletonClasses: 'w-10',
         },
       ]
     return [

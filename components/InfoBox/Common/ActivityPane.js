@@ -10,7 +10,7 @@ import { Link } from 'react-router-i18n'
 const filtersByContext = {
   hotspot: {
     'All Activity': [],
-    Rewards: ['rewards_v1', 'rewards_v2'],
+    Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
     Beacons: ['poc_receipts_v1'],
     Data: ['state_channel_close_v1'],
     Consensus: ['consensus_group_v1'],
@@ -32,13 +32,8 @@ const ActivityPane = ({ context, address }) => {
 
   const filters = filtersByContext[context]
 
-  const {
-    transactions,
-    fetchMore,
-    isLoadingInitial,
-    isLoadingMore,
-    hasMore,
-  } = useActivity(context, address, filters[filter])
+  const { transactions, fetchMore, isLoadingInitial, isLoadingMore, hasMore } =
+    useActivity(context, address, filters[filter])
 
   const setVisibility = useCallback(
     () =>

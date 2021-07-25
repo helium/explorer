@@ -44,18 +44,19 @@ const RoleParticipant = ({
 
 const ActiveWitnessInfo = ({
   activeWitness,
-  path: { challengeeLon, challengeeLat },
+  path: { challengeeLocationHex },
 }) => {
-  const [witnessLat, witnessLng] = h3ToGeo(activeWitness.location)
+  const [challengeeLat, challengeeLng] = h3ToGeo(challengeeLocationHex);
+  const [witnessLat, witnessLng] = h3ToGeo(activeWitness.locationHex);
 
   return (
     <div className="grid grid-cols-5 text-xs font-sans font-thin text-gray-800 ml-7 mb-2 mt-1.5 whitespace-nowrap">
       <span className="col-span-1">Distance</span>
       <span className="col-span-4 text-gray-800 font-medium ml-0.5">
-        {challengeeLon &&
+        {challengeeLng &&
           formatDistance(
             calculateDistance(
-              [challengeeLon, challengeeLat],
+              [challengeeLng, challengeeLat],
               [witnessLng, witnessLat],
             ),
           )}

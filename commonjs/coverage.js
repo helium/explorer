@@ -15,6 +15,7 @@ const toGeoJSON = (hotspots) =>
       'address',
       'owner',
       'location',
+      'location_hex',
       'status',
       'blockAdded',
       'ownerColor',

@@ -1,14 +1,15 @@
 import classNames from 'classnames'
 import { useMemo } from 'react'
 import { useAsync } from 'react-async-hook'
+import { h3ToGeo } from 'h3-js'
 import { fetchNearbyHotspots } from '../../../data/hotspots'
 import NearbyHotspotsList from '../../Lists/NearbyHotspotsList'
 import animalHash from 'angry-purple-tiger'
 
 const NearbyHotspotsPane = ({ hotspot }) => {
   const { result: nearbyHotspots, loading } = useAsync(fetchNearbyHotspots, [
-    hotspot?.lat,
-    hotspot?.lng,
+    h3ToGeo(hotspot?.locationHex)[0],
+    h3ToGeo(hotspot?.locationHex)[1],
     5000,
   ])
 

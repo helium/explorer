@@ -1883,6 +1883,15 @@
     qs "^6.9.3"
     retry-axios "^2.1.2"
 
+"@helium/http@file:../helium-js/packages/http/":
+  version "3.38.1"
+  dependencies:
+    "@helium/currency" "^3.25.1"
+    axios "^0.21.1"
+    camelcase-keys "^6.2.2"
+    qs "^6.9.3"
+    retry-axios "^2.1.2"
+
 "@humanwhocodes/config-array@^0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.5.0.tgz#1407967d4c6eecd7388f83acf1eaf4d0c6e58ef9"

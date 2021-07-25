@@ -42,7 +42,7 @@ const BeaconDetailsPane = ({ txn }) => {
 }
 
 const WitnessesWidget = ({
-  path: { witnesses = [], challengeeLon, challengeeLat },
+  path: { witnesses = [], challengeeLocationHex },
 }) => {
   const { selectHotspot } = useSelectedHotspot()
   return (
@@ -59,7 +59,8 @@ const WitnessesWidget = ({
       </div>
       <div className="space-y-2">
         {witnesses.map((w) => {
-          const [witnessLat, witnessLng] = h3ToGeo(w.location)
+          const [witnessLat, witnessLng] = h3ToGeo(w.locationHex)
+          const [challengeeLat, challengeeLng] = h3ToGeo(challengeeLocationHex)
           return (
             <div
               key={w.gateway}
@@ -83,10 +84,11 @@ const WitnessesWidget = ({
                       placement={'right'}
                     >
                       <span className="text-gray-800 font-medium">
-                        {challengeeLon &&
+                        {challengeeLocationHex &&
                           formatDistance(
                             calculateDistance(
-                              [challengeeLon, challengeeLat],
+                              //[challengeeLon, challengeeLat],
+                              [challengeeLng, challengeeLat],
                               [witnessLng, witnessLat],
                             ),
                           )}

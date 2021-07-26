@@ -158,7 +158,7 @@ const Rewards = ({ txn }) => {
       <div className="px-4 md:px-8 md:pt-4">
         <TransactionTypesWidget padding={false} txns={txn.rewards} />
       </div>
-      <InfoBoxPaneContainer className="">
+      <InfoBoxPaneContainer>
         <Widget
           title={'Total Amount'}
           value={txn.totalAmount.toString(2)}

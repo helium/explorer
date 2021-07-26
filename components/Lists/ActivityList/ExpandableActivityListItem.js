@@ -7,6 +7,8 @@ import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
 import { useCallback } from 'react'
 import Image from 'next/image'
 import ActivityColorSlice from './ActivityColorSlice'
+import { getTxnTypeColor } from '../../../utils/txns'
+import ExpandIcon from '../../Icons/ExpandIcon'
 
 const ExpandableListItem = ({
   address,
@@ -59,13 +61,14 @@ const ExpandableListItem = ({
                 {subtitle}
               </div>
             </div>
-            <div
-              className={classNames(
-                'flex transform transition-all duration-200',
-                { 'rotate-90': !expanded, '-rotate-90': expanded },
-              )}
-            >
-              <Image src="/images/details-arrow.svg" width={14} height={14} />
+            <div className={'flex items-center justify-center'}>
+              <ExpandIcon
+                expanded={expanded}
+                className={
+                  'transition-all duration-200 w-6 h-auto transform opacity-75'
+                }
+                style={{ color: getTxnTypeColor(txn.type) }}
+              />
             </div>
           </div>
           {expanded && (
@@ -83,9 +86,9 @@ const ExpandableListItem = ({
                   View transaction details
                 </p>
                 <ChevronIcon
-                  className={classNames(
-                    'h-auto  text-gray-600 transition-all duration-200 w-4 transform rotate-90',
-                  )}
+                  className={
+                    'h-auto text-gray-600 transition-all duration-200 w-4 transform rotate-90'
+                  }
                 />
               </Link>
             </div>

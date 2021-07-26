@@ -259,52 +259,57 @@ const CoverageMap = () => {
   const handleClickRef = useRef(handleClick)
   handleClickRef.current = handleClick
 
-  return (
-    <Mapbox
-      // eslint-disable-next-line react/style-prop-object
-      style="mapbox://styles/petermain/cko1ewc0p0st918lecxa5c8go"
-      className="h-full w-screen overflow-hidden"
-      fitBounds={bounds}
-      fitBoundsOptions={fitBoundsOptions}
-      onStyleLoad={(mapInstance) => {
-        map.current = mapInstance
-        setStyledLoaded(true)
-      }}
-      // temp fix, there's a bug with react-mapbox-gl where onClick doesn't update the function on state changes:
-      // https://github.com/alex3165/react-mapbox-gl/issues/963
-      // TODO: once the above issue is fixed, replace the below 2 lines with direct functions instead of refs
-      onMouseMove={(map, event) => handleMouseMoveRef.current(map, event)}
-      onClick={(map, event) => handleClickRef.current(map, event)}
-    >
-      <MapControls />
-      <ZoomControls />
-      <ScaleLegend />
-      {!HIDE_TILES && (
-        <HexCoverageLayer
-          minZoom={minZoom}
-          maxZoom={maxZoom}
-          onHexClick={handleHexClick}
-          layer={mapLayer}
+  try {
+    return (
+      <Mapbox
+        // eslint-disable-next-line react/style-prop-object
+        style="mapbox://styles/petermain/cko1ewc0p0st918lecxa5c8go"
+        className="h-full w-screen overflow-hidden"
+        fitBounds={bounds}
+        fitBoundsOptions={fitBoundsOptions}
+        onStyleLoad={(mapInstance) => {
+          map.current = mapInstance
+          setStyledLoaded(true)
+        }}
+        // temp fix, there's a bug with react-mapbox-gl where onClick doesn't update the function on state changes:
+        // https://github.com/alex3165/react-mapbox-gl/issues/963
+        // TODO: once the above issue is fixed, replace the below 2 lines with direct functions instead of refs
+        onMouseMove={(map, event) => handleMouseMoveRef.current(map, event)}
+        onClick={(map, event) => handleClickRef.current(map, event)}
+      >
+        <MapControls />
+        <ZoomControls />
+        <ScaleLegend />
+        {!HIDE_TILES && (
+          <HexCoverageLayer
+            minZoom={minZoom}
+            maxZoom={maxZoom}
+            onHexClick={handleHexClick}
+            layer={mapLayer}
+          />
+        )}
+        <HotspotDetailLayer
+          hotspot={selectedTxnHotspot || selectedHotspot}
+          witnesses={
+            selectedHotspot && selectedTxn
+              ? selectedTxnParticipants
+              : selectedHotspot?.witnesses || selectedTxnParticipants || []
+          }
         />
-      )}
-      <HotspotDetailLayer
-        hotspot={selectedTxnHotspot || selectedHotspot}
-        witnesses={
-          selectedHotspot && selectedTxn
-            ? selectedTxnParticipants
-            : selectedHotspot?.witnesses || selectedTxnParticipants || []
-        }
-      />
-      {validatorsMatch && (
-        <ValidatorsLayer minZoom={minZoom} maxZoom={maxZoom} />
-      )}
-      <MeasuringPointsLayer
-        active={measuring}
-        from={measurementStart}
-        to={measurementEnd}
-      />
-    </Mapbox>
-  )
+        {validatorsMatch && (
+          <ValidatorsLayer minZoom={minZoom} maxZoom={maxZoom} />
+        )}
+        <MeasuringPointsLayer
+          active={measuring}
+          from={measurementStart}
+          to={measurementEnd}
+        />
+      </Mapbox>
+    )
+  } catch (e) {
+    console.error(e)
+    return <div className="bg-navy-400" />
+  }
 }
 
 export default memo(CoverageMap)

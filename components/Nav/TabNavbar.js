@@ -39,7 +39,7 @@ const NavItem = ({
   )
 }
 
-const TabNavbar = ({ centered = false, classes, children }) => {
+const TabNavbar = ({ centered = false, className, children, id }) => {
   const { path, url } = useRouteMatch()
   const location = useLocation()
 
@@ -76,10 +76,11 @@ const TabNavbar = ({ centered = false, classes, children }) => {
 
   return (
     <>
-      <div className="w-full bg-white z-10">
+      <div className="w-full bg-white z-10" id={id}>
         <div
-          className={classNames(classes, {
-            'w-full border-b border-gray-400 border-solid mt-1 lg:mt-2 px-2 md:px-3 flex overflow-x-scroll no-scrollbar': !classes,
+          className={classNames(className, {
+            'w-full border-b border-gray-400 border-solid mt-1 lg:mt-2 px-2 md:px-3 flex overflow-x-scroll no-scrollbar':
+              !className,
             'justify-center': centered,
             'justify-start': !centered,
           })}

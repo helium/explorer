@@ -9,6 +9,8 @@ import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
 import { formatDistance } from '../../utils/distance'
 import { haversineDistance } from '../../utils/location'
+import I18n from '../../copy/I18n'
+import { Tooltip } from 'antd'
 
 const WitnessesList = ({
   hotspot,
@@ -60,9 +62,16 @@ const WitnessesList = ({
     (w) => {
       return (
         <span className="whitespace-nowrap">
-          {formatDistance(
-            haversineDistance(h3ToGeo(w.locationHex)[1],h3ToGeo(w.locationHex)[0], h3ToGeo(hotspot.locationHex)[1],h3ToGeo(hotspot.locationHex)[0]) * 1000,
-          )}
+          <Tooltip title={<I18n t="tooltips.distance" />} placement="left">
+            {formatDistance(
+              haversineDistance(
+                h3ToGeo(w.locationHex)[1],
+                h3ToGeo(w.locationHex)[0],
+                h3ToGeo(hotspot.locationHex)[1],
+                h3ToGeo(hotspot.locationHex)[0],
+              ) * 1000,
+            )}
+          </Tooltip>
         </span>
       )
     },

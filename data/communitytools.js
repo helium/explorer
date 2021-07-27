@@ -47,7 +47,7 @@ export const communityToolsList = [
     name: 'HeliumVision',
     url: 'https://helium.vision',
     description: 'Helium Network Planning, Optimization and Simulations',
-    tags: ['Planning', 'Optimization', 'Monitoring'],
+    tags: ['Monitoring', 'Planning'],
   },
   // The lines below are a template that you can copy and paste and then populate
   // to add a new tool to the list.All the possible tags are included in the

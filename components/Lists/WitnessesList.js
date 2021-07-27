@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { h3ToGeo } from 'h3-js'
 import animalHash from 'angry-purple-tiger'
 import StatusCircle from '../Hotspots/StatusCircle'
 import FlagLocation from '../Common/FlagLocation'
@@ -8,6 +9,8 @@ import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
 import { formatDistance } from '../../utils/distance'
 import { haversineDistance } from '../../utils/location'
+import I18n from '../../copy/I18n'
+import { Tooltip } from 'antd'
 
 const WitnessesList = ({
   hotspot,
@@ -59,13 +62,20 @@ const WitnessesList = ({
     (w) => {
       return (
         <span className="whitespace-nowrap">
-          {formatDistance(
-            haversineDistance(w.lng, w.lat, hotspot.lng, hotspot.lat) * 1000,
-          )}
+          <Tooltip title={<I18n t="tooltips.distance" />} placement="left">
+            {formatDistance(
+              haversineDistance(
+                h3ToGeo(w.locationHex)[1],
+                h3ToGeo(w.locationHex)[0],
+                h3ToGeo(hotspot.locationHex)[1],
+                h3ToGeo(hotspot.locationHex)[0],
+              ) * 1000,
+            )}
+          </Tooltip>
         </span>
       )
     },
-    [hotspot.lat, hotspot.lng],
+    [hotspot.locationHex],
   )
 
   return (

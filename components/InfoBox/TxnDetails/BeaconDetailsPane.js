@@ -10,6 +10,7 @@ import { Link } from 'react-router-i18n'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
 import { Tooltip } from 'antd'
+import I18n from '../../../copy/I18n'
 
 const BeaconDetailsPane = ({ txn }) => {
   const [challenger, setChallenger] = useState()
@@ -42,7 +43,7 @@ const BeaconDetailsPane = ({ txn }) => {
 }
 
 const WitnessesWidget = ({
-  path: { witnesses = [], challengeeLon, challengeeLat },
+  path: { witnesses = [], challengeeLocationHex },
 }) => {
   const { selectHotspot } = useSelectedHotspot()
   return (
@@ -59,7 +60,8 @@ const WitnessesWidget = ({
       </div>
       <div className="space-y-2">
         {witnesses.map((w) => {
-          const [witnessLat, witnessLng] = h3ToGeo(w.location)
+          const [witnessLat, witnessLng] = h3ToGeo(w.locationHex)
+          const [challengeeLat, challengeeLng] = h3ToGeo(challengeeLocationHex)
           return (
             <div
               key={w.gateway}
@@ -77,16 +79,14 @@ const WitnessesWidget = ({
                   <div className="grid grid-cols-2 gap-y-1 gap-x-2">
                     <span>Distance</span>
                     <Tooltip
-                      title={
-                        "This value is an approximation of the distance between the hotspot that witnessed the challenge and the one that participated in it. Helium uses hexagons from the H3 library, so this distance is a rough approximation based on how many resolution 12 H3 cells the two hotspots are apart. E.g. if it says the distance is 0, it's because they are in the same cell."
-                      }
+                      title={<I18n t="tooltips.distance" />}
                       placement={'right'}
                     >
                       <span className="text-gray-800 font-medium">
-                        {challengeeLon &&
+                        {challengeeLocationHex &&
                           formatDistance(
                             calculateDistance(
-                              [challengeeLon, challengeeLat],
+                              [challengeeLng, challengeeLat],
                               [witnessLng, witnessLat],
                             ),
                           )}

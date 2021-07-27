@@ -75,14 +75,18 @@ const BlockDetailsInfoBox = () => {
         {
           iconPath: '/images/clock.svg',
           loading: true,
+          skeletonClasses: 'w-32',
         },
         {
           iconPath: '/images/txn.svg',
           loading: true,
+          skeletonClasses: 'w-32',
         },
         {
           iconPath: '/images/block-purple.svg',
           loading: true,
+          newRow: true,
+          skeletonClasses: 'w-32',
         },
       ]
     return [
@@ -106,6 +110,7 @@ const BlockDetailsInfoBox = () => {
         iconPath: '/images/block-purple.svg',
         title: `${formattedTxnHash(block.hash)}`,
         textToCopy: block.hash,
+        newRow: true,
       },
     ]
   }

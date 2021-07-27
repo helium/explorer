@@ -95,16 +95,6 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
                 </span>
               }
             />
-            <Widget
-              title="Gain"
-              value={hotspot?.gain / 10}
-              valueSuffix={<span className="text-xl ml-1">dBi</span>}
-            />
-            <Widget
-              title="Elevation"
-              value={hotspot?.elevation}
-              valueSuffix={<span className="text-xl ml-1">m</span>}
-            />
           </>
         )}
         {!showChecklist ? (

@@ -10,6 +10,7 @@ import { clamp, keyBy } from 'lodash'
 
 const HOTSPOT_COLOR = '#29d391'
 const DATA_COLOR = '#58a7f9'
+const DC_THRESHOLD = 100
 
 const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
   const { selectedHex } = useSelectedHex()
@@ -32,8 +33,10 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
 
   const hexesSource = useMemo(() => {
     if (!hexes) return emptyGeoJSON
-    const shapes = hexes.map((h) => ({ ...h, dc: clamp(h?.dc || 0, 100) }))
-    const hexLookup = keyBy(shapes, 'hex')
+    const hexLookup = keyBy(
+      hexes.map((h) => ({ ...h, dc: clamp(h?.dc || 0, 100) })),
+      'hex',
+    )
     return h3SetToFeatureCollection(
       Object.keys(hexLookup),
       (h3Index) => hexLookup[h3Index],
@@ -175,7 +178,7 @@ const dcStyle = (minZoom, maxZoom) => ({
     ['exponential', 1],
     ['zoom'],
     minZoom,
-    ['*', 0.2, ['/', ['get', 'dc'], 100]],
+    ['*', 0.2, ['/', ['get', 'dc'], DC_THRESHOLD]],
     maxZoom,
     0,
   ],
@@ -222,7 +225,17 @@ const hexRewardScaleStyle = () => ({
 const hexDcStyle = () => ({
   ...hexDefaultStyle(),
   'fill-color': DATA_COLOR,
-  'fill-opacity': ['interpolate', ['linear'], ['get', 'dc'], 0, 0, 1, 0.5, 100, 0.8],
+  'fill-opacity': [
+    'interpolate',
+    ['linear'],
+    ['get', 'dc'],
+    0,
+    0,
+    1,
+    0.5,
+    DC_THRESHOLD,
+    0.8,
+  ],
 })
 
 export default memo(HexCoverageLayer)

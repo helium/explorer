@@ -29,7 +29,7 @@ const SearchBar = () => {
   const handleSelectResult = useCallback(
     (result) => {
       setTerm('')
-      if (result.type === 'hotspot') {
+      if (result.type === 'hotspot' || result.type === 'dataonly') {
         selectHotspot(result.item.address)
         history.push(`/hotspots/${result.item.address}`)
       }

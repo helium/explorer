@@ -14,7 +14,7 @@ export const useActivity = (context, address, filters = [], pageSize = 20) => {
       context === 'hotspot' ? client.hotspot(address) : client.account(address)
     const newList = await clientContext.activity.list({ filterTypes: filters })
     setList(newList)
-  }, [address, filters])
+  }, [address, filters, context])
 
   useAsync(async () => {
     if (!list) return
@@ -26,7 +26,7 @@ export const useActivity = (context, address, filters = [], pageSize = 20) => {
     if (newTransactions.length < pageSize) {
       setHasMore(false)
     }
-  }, [list])
+  }, [list, pageSize])
 
   useEffect(() => {
     setIsLoadingInitial(true)

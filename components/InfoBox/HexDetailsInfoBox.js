@@ -14,7 +14,11 @@ import useApi from '../../hooks/useApi'
 const HexDetailsInfoBox = () => {
   const { index } = useParams()
   const { clearSelectedHex, selectHex, selectedHex } = useSelectedHex()
-  const { data: hexes } = useApi('/hexes')
+  const { data: hexes } = useApi(
+    '/hexes',
+    { dedupingInterval: 1000 * 60 },
+    { localCache: false },
+  )
 
   const { result: hotspots, loading } = useAsync(fetchHexHotspots, [index])
 

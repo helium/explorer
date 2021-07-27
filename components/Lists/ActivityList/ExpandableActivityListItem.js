@@ -5,9 +5,7 @@ import { Link } from 'react-router-i18n'
 import useSelectedTxn from '../../../hooks/useSelectedTxn'
 import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
 import { useCallback } from 'react'
-import Image from 'next/image'
 import ActivityColorSlice from './ActivityColorSlice'
-import { getTxnTypeColor } from '../../../utils/txns'
 import ExpandIcon from '../../Icons/ExpandIcon'
 
 const ExpandableListItem = ({
@@ -65,9 +63,8 @@ const ExpandableListItem = ({
               <ExpandIcon
                 expanded={expanded}
                 className={
-                  'transition-all duration-200 w-6 h-auto transform opacity-75'
+                  'transition-all duration-200 w-6 h-auto transform opacity-75 text-gray-525'
                 }
-                style={{ color: getTxnTypeColor(txn.type) }}
               />
             </div>
           </div>

@@ -1,8 +1,12 @@
+import classNames from 'classnames'
+
 const ExpandIcon = ({ className, expanded = false, style }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
+      className={classNames(className, {
+        'w-6 h-auto text-gray-525': !className,
+      })}
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"

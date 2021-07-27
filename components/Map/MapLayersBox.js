@@ -37,6 +37,11 @@ const MapLayersBox = () => {
       id: 'rewardScale',
       iconPath: '/images/reward-scale.svg',
     },
+    {
+      title: 'Device Usage',
+      id: 'dc',
+      iconPath: '/images/reward-scale.svg',
+    },
     // {
     //   title: 'Owner',
     //   id: 'owner',

@@ -5,16 +5,25 @@ import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import { useAsync } from 'react-async-hook'
 import { fetchHexHotspots } from '../../data/hotspots'
 import HexHotspotsList from '../Lists/HexHotspotsList'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import useSelectedHex from '../../hooks/useSelectedHex'
 import { formatLocation } from '../Hotspots/utils'
 import FlagLocation from '../Common/FlagLocation'
+import useApi from '../../hooks/useApi'
 
 const HexDetailsInfoBox = () => {
   const { index } = useParams()
   const { clearSelectedHex, selectHex, selectedHex } = useSelectedHex()
+  const { data: hexes } = useApi('/hexes')
 
   const { result: hotspots, loading } = useAsync(fetchHexHotspots, [index])
+
+  const mapHex = useMemo(() => {
+    if (!hexes) return
+
+    return hexes.find(({ hex }) => hex === index)
+  }, [hexes, index])
+
 
   useEffect(() => {
     if (!selectedHex) {
@@ -35,6 +44,10 @@ const HexDetailsInfoBox = () => {
           iconPath: '/images/location-blue.svg',
           loading: true,
         },
+      {
+        icon: <img src="/images/dc.svg" />,
+        loading: true,
+      },
       ]
     return [
       {
@@ -44,8 +57,12 @@ const HexDetailsInfoBox = () => {
         path: `/cities/${hotspot.geocode.cityId}`,
         title: formatLocation(hotspot.geocode),
       },
+      {
+        icon: <img src="/images/dc.svg" />,
+        title: `${mapHex?.dc?.toLocaleString() || 0} DC (30d)`,
+      },
     ]
-  }, [])
+  }, [mapHex?.dc])
 
   return (
     <InfoBox

@@ -25,6 +25,11 @@ const CONFIG = {
     name: 'Mining Reward',
     tooltip: 'Mining Reward (v2)',
   },
+  rewards_v3: {
+    color: '#E68B00',
+    name: 'Mining Reward',
+    tooltip: 'Mining Reward (v3)',
+  },
   consensus_group_v1: {
     color: '#FF6666',
     name: 'Consensus Election',

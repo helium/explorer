@@ -21,6 +21,7 @@ const Widget = ({
   span = 1,
   isLoading = false,
   linkTo,
+  className,
   titleIcon,
 }) => {
   const inner = (
@@ -47,7 +48,8 @@ const Widget = ({
               <CopyableText textToCopy={copyableValue}>
                 <p
                   className={classNames('flex items-center m-0 p-0', {
-                    'cursor-pointer hover:text-gray-800 transition-all duration-150': copyableValue,
+                    'cursor-pointer hover:text-gray-800 transition-all duration-150':
+                      copyableValue,
                     'text-gray-400 text-md font-light': emptyValue,
                   })}
                 >
@@ -98,6 +100,7 @@ const Widget = ({
             'col-span-1': span === 1,
             'col-span-2': span === 2,
           },
+          className,
         )}
       >
         {inner}
@@ -114,6 +117,7 @@ const Widget = ({
             'col-span-1': span === 1,
             'col-span-2': span === 2,
           },
+          className,
         )}
         to={linkTo}
         onClick={onClick}
@@ -125,11 +129,15 @@ const Widget = ({
 
   return (
     <div
-      className={classNames('bg-gray-200 p-3 rounded-lg flex  transition-all', {
-        'col-span-1': span === 1,
-        'col-span-2': span === 2,
-        'cursor-pointer hover:bg-gray-300': !!onClick,
-      })}
+      className={classNames(
+        'bg-gray-200 p-3 rounded-lg flex transition-all',
+        {
+          'col-span-1': span === 1,
+          'col-span-2': span === 2,
+          'cursor-pointer hover:bg-gray-300': !!onClick,
+        },
+        className,
+      )}
       onClick={onClick}
     >
       {inner}

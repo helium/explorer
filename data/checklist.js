@@ -14,7 +14,7 @@ export const getActivityForChecklist = async (address) => {
       }),
       // Get most recent rewards transactions to search for witness / data activity
       client.hotspot(address).activity.list({
-        filterTypes: ['rewards_v1', 'rewards_v2'],
+        filterTypes: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
       }),
     ])
   const [challengerTxn, challengeeTxn, rewardTxns] = await Promise.all([

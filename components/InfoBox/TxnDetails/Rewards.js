@@ -155,14 +155,15 @@ const Rewards = ({ txn }) => {
 
   return (
     <>
-      <div className="px-1 md:px-3 pt-1 -mb-6 md:pt-3">
-        <TransactionTypesWidget txns={txn.rewards} />
+      <div className="px-4 md:px-8 md:pt-4">
+        <TransactionTypesWidget padding={false} txns={txn.rewards} />
       </div>
       <InfoBoxPaneContainer>
         <Widget
           title={'Total Amount'}
           value={txn.totalAmount.toString(2)}
           span={2}
+          className="-mt-4 md:-mt-6"
         />
         <RewardsRecipientsWidget rewardsRecipients={currentPageOfRewards} />
       </InfoBoxPaneContainer>

@@ -89,7 +89,7 @@ export const getChecklistItems = (
         hotspot.status.height - syncHeight >= SYNC_BUFFER_BLOCKS
           ? 'Hotspot is syncing.'
           : 'Hotspot is fully synced.',
-      completed: height - syncHeight < SYNC_BUFFER_BLOCKS,
+      completed: hotspot.status.height - syncHeight < SYNC_BUFFER_BLOCKS,
     },
     {
       sortOrder: 1,

@@ -17,7 +17,7 @@ const translations = {
     },
     tooltips: {
       distance:
-        "Helium uses hexagons from the H3 library to store Hotspot locations. This distance is a rough approximation of how far apart two Hotspots are based on the distance between the H3 cells (hexagons) they are located in. E.g. If the distance is 0 m, it's because they are in the same cell.",
+        "Hotspot locations are scaled up to the nearest resolution 8 hexagon and anonymized to the center of that hexagon. Distances between Hotspots are then calculated from the center of a resolution 8 hexagon that the Hotspot occupies to the other. e.g. If the distance is 0 m, it's because they are in the same hexagon.",
     },
   },
   fr: {

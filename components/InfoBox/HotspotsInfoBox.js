@@ -4,6 +4,7 @@ import I18n from '../../copy/I18n'
 import StatisticsPane from './Hotspots/StatisticsPane'
 import LatestHotspotsPane from './Hotspots/LatestHotspotsPane'
 import MakersPane from './Hotspots/MakersPane'
+import ErrorPane from './Common/ErrorPane'
 
 const HotspotsInfoBox = () => {
   return (
@@ -17,6 +18,9 @@ const HotspotsInfoBox = () => {
         </TabPane>
         <TabPane title="Latest Hotspots" key="latest" path="latest">
           <LatestHotspotsPane />
+        </TabPane>
+        <TabPane fallback>
+          <ErrorPane />
         </TabPane>
       </TabNavbar>
     </InfoBox>

@@ -16,6 +16,7 @@ import { useValidatorStats } from '../../data/validators'
 import Currency from '../Common/Currency'
 import { useMarket } from '../../data/market'
 import ElectionsPane from './Common/ElectionsPane'
+import ErrorPane from './Common/ErrorPane'
 
 const TICKER = 'HNT'
 
@@ -28,13 +29,15 @@ const ValidatorsInfoBox = () => {
 
   const isLoading = useMemo(() => validators === undefined, [validators])
 
-  const recentGroups = useMemo(() => consensusGroups?.recentElections || [], [
-    consensusGroups,
-  ])
+  const recentGroups = useMemo(
+    () => consensusGroups?.recentElections || [],
+    [consensusGroups],
+  )
 
-  const consensusGroup = useMemo(() => validators?.filter((v) => v.elected), [
-    validators,
-  ])
+  const consensusGroup = useMemo(
+    () => validators?.filter((v) => v.elected),
+    [validators],
+  )
 
   return (
     <InfoBox title="Validators" metaTitle="Validators">
@@ -122,6 +125,9 @@ const ValidatorsInfoBox = () => {
               />
             )}
           </InfoBoxPaneContainer>
+        </TabPane>
+        <TabPane fallback>
+          <ErrorPane />
         </TabPane>
       </TabNavbar>
     </InfoBox>

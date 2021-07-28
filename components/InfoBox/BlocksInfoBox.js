@@ -4,6 +4,7 @@ import I18n from '../../copy/I18n'
 import LatestBlocksPane from './BlocksInfoPanes/LatestBlocks'
 import BlockStatisticsPane from './BlocksInfoPanes/BlockStatisticsPane'
 import ElectionsPane from './Common/ElectionsPane'
+import ErrorPane from './Common/ErrorPane'
 
 const BlocksInfoBox = () => {
   return (
@@ -17,6 +18,9 @@ const BlocksInfoBox = () => {
         </TabPane>
         <TabPane title="Latest Blocks" key="latest" path="latest">
           <LatestBlocksPane />
+        </TabPane>
+        <TabPane fallback>
+          <ErrorPane />
         </TabPane>
       </TabNavbar>
     </InfoBox>

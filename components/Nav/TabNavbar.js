@@ -79,7 +79,8 @@ const TabNavbar = ({ centered = false, classes, children }) => {
       <div className="w-full bg-white z-10">
         <div
           className={classNames(classes, {
-            'w-full border-b border-gray-400 border-solid mt-1 lg:mt-2 px-2 md:px-3 flex overflow-x-scroll no-scrollbar': !classes,
+            'w-full border-b border-gray-400 border-solid mt-1 lg:mt-2 px-2 md:px-3 flex overflow-x-scroll no-scrollbar':
+              !classes,
             'justify-center': centered,
             'justify-start': !centered,
           })}
@@ -108,15 +109,19 @@ const TabNavbar = ({ centered = false, classes, children }) => {
       </div>
 
       <Switch>
-        {navPanes.map((pane) => (
-          <Route
-            key={pane.key}
-            exact
-            path={pane.props.path ? `${path}/${pane.props.path}` : path}
-          >
-            {pane}
-          </Route>
-        ))}
+        {navPanes.map((pane) => {
+          return !pane.props.fallback ? (
+            <Route
+              key={pane.key}
+              exact
+              path={pane.props.path ? `${path}/${pane.props.path}` : path}
+            >
+              {pane}
+            </Route>
+          ) : (
+            <Route>{pane}</Route>
+          )
+        })}
       </Switch>
     </>
   )

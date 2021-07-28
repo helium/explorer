@@ -13,6 +13,7 @@ import ValidatorDetailsInfoBox from './ValidatorDetailsInfoBox'
 import HexDetailsInfoBox from './HexDetailsInfoBox'
 import MarketInfoBox from './MarketInfoBox'
 import CommunityToolsInfoBox from './CommunityTools/CommunityToolsInfoBox'
+import ErrorPane from './Common/ErrorPane'
 
 const InfoBoxSwitch = () => {
   // Match locales with regular expression containing each locale separated by `|`
@@ -61,6 +62,9 @@ const InfoBoxSwitch = () => {
       </Route>
       <Route path={base}>
         <OverviewInfoBox />
+      </Route>
+      <Route>
+        <ErrorPane />
       </Route>
     </Switch>
   )

@@ -4,6 +4,7 @@ import { useRichestAccounts } from '../../data/accounts'
 import AccountsList from '../Lists/AccountsList'
 import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 import SkeletonList from '../Lists/SkeletonList'
+import ErrorPane from './Common/ErrorPane'
 
 const AccountsInfoBox = () => {
   const { accounts, isLoading } = useRichestAccounts()
@@ -22,6 +23,9 @@ const AccountsInfoBox = () => {
               <AccountsList accounts={accounts} />
             )}
           </InfoBoxPaneContainer>
+        </TabPane>
+        <TabPane fallback>
+          <ErrorPane />
         </TabPane>
       </TabNavbar>
     </InfoBox>

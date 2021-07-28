@@ -27,7 +27,7 @@ const Error = ({ statusCode, statusMessage }) => {
       </div>
       <div className="bg-bluegray-100 w-full">
         <div className="py-10 md:pt-20 w-full mx-auto max-w-3xl px-2.5 sm:px-20">
-          <h3 className="text-gray-300 font-sans font-normal text-lg text-center normal-case tracking-normal pb-2">
+          <h3 className="text-gray-700 font-sans font-normal text-lg text-center normal-case tracking-normal pb-2">
             Let us know how you got here so we can fix it
           </h3>
           <HelpLinkList>
@@ -43,7 +43,7 @@ const Error = ({ statusCode, statusMessage }) => {
               Report the issue on Discord
             </HelpLink>
           </HelpLinkList>
-          <h3 className="text-gray-300 font-sans font-normal text-lg text-center normal-case tracking-normal pt-5 pb-2">
+          <h3 className="text-gray-700 font-sans font-normal text-lg text-center normal-case tracking-normal pt-5 pb-2">
             Or try one of these links
           </h3>
           <HelpLinkList>

@@ -6,19 +6,27 @@ import Header from '../components/Nav/Header'
 import Page from '../components/CoverageMap/Page'
 import MetaTags from '../components/AppLayout/MetaTags'
 import MapLayersBox from '../components/Map/MapLayersBox'
-import MapControls from '../components/Map/MapControls'
 import InfoBoxSwitch from '../components/InfoBox/InfoBoxSwitch'
 import { latestCoverageUrl } from '../commonjs/coverage'
 import useKeydown from '../hooks/useKeydown'
 import useGA from '../hooks/useGA'
 import Head from 'next/head'
+import mapboxglSupported from '@mapbox/mapbox-gl-supported'
+
+const mapSupported = mapboxglSupported.supported()
+
+if (!mapSupported) {
+  console.error(
+    'WebGL was not able to initialize in your browser. Please try on another device or browser to enable the full functionality of the Helium Explorer.',
+  )
+}
 
 const Map = dynamic(() => import('../components/Map/Map'), {
   ssr: false,
   loading: () => <div />,
 })
 
-const Index = ({ coverageUrl }) => {
+export const Index = ({ coverageUrl }) => {
   useGA()
   const history = useHistory()
   const location = useLocation()
@@ -38,7 +46,6 @@ const Index = ({ coverageUrl }) => {
         />
       </Head>
       <MetaTags
-        // title={'Coverage Map'}
         description={`View an interactive map of the Helium network and all the hotspots currently active around the world`}
         openGraphImageAbsoluteUrl={
           'https://explorer.helium.com/images/og/coverage.png'
@@ -49,8 +56,7 @@ const Index = ({ coverageUrl }) => {
         <title>Helium Explorer</title>
       </Helmet>
       <Header activeNav="coverage" />
-      {/* </span> */}
-      <Map coverageUrl={coverageUrl} />
+      {mapSupported && <Map coverageUrl={coverageUrl} />}
       <InfoBoxSwitch />
       <MapLayersBox />
 

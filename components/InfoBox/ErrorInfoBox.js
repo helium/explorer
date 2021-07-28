@@ -17,7 +17,7 @@ const ErrorInfoBox = ({ errorType = 404, errorTitle = '404 — Not Found' }) => 
             span={2}
             title="Create an issue on GitHub"
             value="Report a bug"
-            linkTo="https://github.com/helium/explorer/issues/new"
+            linkTo="https://github.com/helium/explorer/issues/new?labels=bug&template=bug_report.md&title=Unexpected%20404%20error"
           />
           <Widget
             span={2}

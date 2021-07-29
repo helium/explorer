@@ -12,7 +12,16 @@ const ErrorInfoBox = ({ errorType = 404, errorTitle = '404 — Not Found' }) => 
       </Helmet>
       <InfoBox title={errorTitle}>
         <InfoBoxPaneContainer>
-          <WarningWidget warningText="This page doesn't exist" isVisible />
+          {
+            <WarningWidget
+              warningText={
+                errorType === 404
+                  ? "This page doesn't exist"
+                  : 'Something went wrong'
+              }
+              isVisible
+            />
+          }
           <Widget
             span={2}
             title="Create an issue on GitHub"

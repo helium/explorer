@@ -52,7 +52,7 @@ export const communityToolsList = [
   {
     name: 'Helium Hosts',
     url: 'https://heliumhosts.com/',
-    description: 'Network with other hotspot owners in your area',
+    description: 'Network with other Hotspot owners in your area',
     tags: ['Planning'],
   },
   // The lines below are a template that you can copy and paste and then populate

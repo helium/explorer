@@ -5,6 +5,7 @@ import { InfoCircleOutlined } from '@ant-design/icons'
 import Skeleton from '../Common/Skeleton'
 import CopyableText from '../Common/CopyableText'
 import { Tooltip } from 'antd'
+import ExternalLinkIcon from '../Icons/ExternalLink'
 
 const Widget = ({
   title,
@@ -24,6 +25,8 @@ const Widget = ({
   className,
   titleIcon,
 }) => {
+  const externalLink = linkTo && /^https?:\/\//.test(linkTo)
+
   const inner = (
     <>
       <div className="w-full text-gray-800">
@@ -81,14 +84,18 @@ const Widget = ({
       </div>
 
       {(onClick || linkTo) && (
-        <div className="flex">
-          <Image src="/images/details-arrow.svg" width={14} height={14} />
+        <div className="flex items-center justify-center">
+          {externalLink ? (
+            <ExternalLinkIcon className="w-4 h-4 text-gray-525" />
+          ) : (
+            <Image src="/images/details-arrow.svg" width={14} height={14} />
+          )}
         </div>
       )}
     </>
   )
 
-  if (linkTo && /^https?:\/\//.test(linkTo)) {
+  if (externalLink) {
     return (
       <a
         href={linkTo}

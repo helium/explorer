@@ -32,7 +32,7 @@ const MenuButton = () => {
   )
 }
 
-const Header = ({ fallbackLinks }) => {
+const Header = ({ fallbackLinks = false }) => {
   const { showBanner } = useContext(BannerContext)
   return (
     <>
@@ -55,7 +55,7 @@ const Header = ({ fallbackLinks }) => {
         <div className="grid grid-flow-col gap-8 items-center">
           <NavLinks
             className="hidden md:grid grid-flow-col gap-4"
-            fallbackLinks
+            fallbackLinks={fallbackLinks}
           />
           <FeedbackBubble className="fixed md:hidden z-30 top-20 left-0">
             <div className="bg-navy-400 hover:bg-navy-300 p-3 cursor-pointer rounded-r-lg">

@@ -120,7 +120,11 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
             </div>
           </div>
         ) : (
-          <ChecklistWidget hotspot={hotspot} witnesses={witnessesData} />
+          <ChecklistWidget
+            hotspot={hotspot}
+            witnesses={witnessesData}
+            isDataOnly={isDataOnly}
+          />
         )}
       </InfoBoxPaneContainer>
     </>

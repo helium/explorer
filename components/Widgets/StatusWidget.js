@@ -9,19 +9,17 @@ import { SYNC_BUFFER_BLOCKS } from '../Hotspots/utils'
 const StatusWidget = ({ hotspot }) => {
   const status = hotspot?.status?.online
 
-  const {
-    result: syncHeight,
-    loading: syncHeightLoading,
-  } = useAsync(async () => {
-    const timestamp = hotspot?.status?.timestamp
+  const { result: syncHeight, loading: syncHeightLoading } =
+    useAsync(async () => {
+      const timestamp = hotspot?.status?.timestamp
 
-    if (!timestamp) {
-      return 1
-    }
+      if (!timestamp) {
+        return 1
+      }
 
-    const height = await fetchHeightByTimestamp(timestamp)
-    return height
-  }, [hotspot.status.timestamp])
+      const height = await fetchHeightByTimestamp(timestamp)
+      return height
+    }, [hotspot.status.timestamp])
 
   const value = useMemo(() => {
     if (status === 'offline') {
@@ -31,7 +29,7 @@ const StatusWidget = ({ hotspot }) => {
     if (
       !hotspot?.status?.height ||
       !syncHeight ||
-      hotspot.status.height - syncHeight >= SYNC_BUFFER_BLOCKS
+      syncHeight - hotspot.status.height >= SYNC_BUFFER_BLOCKS
     ) {
       return 'Syncing'
     }

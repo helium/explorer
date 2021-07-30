@@ -15,6 +15,10 @@ const translations = {
       title: 'Blocks',
       block: 'Block',
     },
+    tooltips: {
+      distance:
+        "Hotspot locations are scaled up to the nearest resolution 8 hexagon and anonymized to the center of that hexagon. Distances between Hotspots are then calculated from the center of a resolution 8 hexagon that the Hotspot occupies to the other. e.g. If the distance is 0 m, it's because they are in the same hexagon.",
+    },
   },
   fr: {
     hello: 'Bonjour',

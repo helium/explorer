@@ -6,6 +6,8 @@ import Hex from '../Hex'
 import { formatDistance, generateRewardScaleColor } from '../Hotspots/utils'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
+import { Tooltip } from 'antd'
+import I18n from '../../copy/I18n'
 
 const NearbyHotspotsList = ({
   hotspots,
@@ -54,7 +56,9 @@ const NearbyHotspotsList = ({
 
   const renderDetails = useCallback((h) => {
     return (
-      <span className="whitespace-nowrap">{formatDistance(h.distance)}</span>
+      <Tooltip title={<I18n t="tooltips.distance" />} placement="left">
+        <span className="whitespace-nowrap">{formatDistance(h.distance)}</span>
+      </Tooltip>
     )
   }, [])
 

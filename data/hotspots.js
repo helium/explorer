@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useAsync } from 'react-async-hook'
+import { h3ToGeo } from 'h3-js'
 import useSWR from 'swr'
 import client, { TAKE_MAX } from './client'
 import { fetchAll } from '../utils/pagination'
@@ -56,7 +57,7 @@ export const fetchNearbyHotspots = async (lat, lon, distance = 1000) => {
   })
   const hotspotsWithDistance = hotspots.map((h) => ({
     ...h,
-    distance: haversineDistance(lon, lat, h.lng, h.lat) * 1000,
+    distance: haversineDistance(lon, lat, h3ToGeo(h.location_hex)[1], h3ToGeo(h.location_hex)[0]) * 1000,
   }))
   return camelcaseKeys(hotspotsWithDistance)
 }

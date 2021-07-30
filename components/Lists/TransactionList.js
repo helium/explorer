@@ -58,7 +58,7 @@ const TransactionList = ({
         )
       case 'payment_v1':
         return (
-          <span className="flex items-center">
+          <span className="flex items-center whitespace-nowrap">
             <span className="flex items-center text-black font-sans font-medium">
               {txn.amount.toString(2)}
             </span>
@@ -66,7 +66,7 @@ const TransactionList = ({
         )
       case 'payment_v2':
         return (
-          <span className="flex items-center">
+          <span className="flex items-center whitespace-nowrap">
             <span className="flex items-center text-black font-sans font-medium">
               {txn.totalAmount.toString(2)}
             </span>

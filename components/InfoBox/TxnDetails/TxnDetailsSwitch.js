@@ -30,8 +30,8 @@ const TxnDetailsSwitch = ({ txn, isLoading }) => {
     case 'poc_request_v1':
       return <PocRequestV1 txn={txn} />
     case 'rewards_v1':
-      return <Rewards txn={txn} />
     case 'rewards_v2':
+    case 'rewards_v3':
       return <Rewards txn={txn} />
     case 'consensus_group_v1':
       return <ConsensusGroupV1 txn={txn} />

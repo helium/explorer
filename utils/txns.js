@@ -33,6 +33,12 @@ const CONFIG = {
     hotspotContextName: 'Received Mining Rewards',
     tooltip: 'Mining Reward (v2)',
   },
+  rewards_v3: {
+    color: '#E68B00',
+    name: 'Mining Reward',
+    hotspotContextName: 'Received Mining Rewards',
+    tooltip: 'Mining Reward (v3)',
+  },
   consensus_group_v1: {
     color: '#FF6666',
     name: 'Consensus Election',
@@ -45,13 +51,13 @@ const CONFIG = {
     tooltip: 'Hotspot Transfer Confirmation Transaction',
   },
   poc_challengers: {
-    color: '#BE73FF',
+    color: '#A667F6',
     name: 'Challenger',
-    hotspotContextName: 'Created Challenge',
+    hotspotContextName: 'Challenged Beaconer',
     tooltip: 'PoC challenger',
   },
   poc_challengees: {
-    color: '#595A9A',
+    color: '#1D91F8',
     name: 'Beacon',
     hotspotContextName: 'Sent Beacon',
     tooltip: 'PoC challengee',
@@ -81,13 +87,13 @@ const CONFIG = {
     tooltip: 'PoC witness',
   },
   poc_witnesses_valid: {
-    color: '#FFC769',
+    color: '#FCC945',
     name: 'Witness',
     hotspotContextName: 'Witnessed Beacon',
     tooltip: 'PoC witness (Valid)',
   },
   poc_witnesses_invalid: {
-    color: '#717E98',
+    color: '#617095',
     name: 'Witness',
     hotspotContextName: 'Witnessed Beacon (Invalid)',
     tooltip: 'PoC witness (Invalid)',

@@ -13,6 +13,8 @@ import CopyableText from '../Common/CopyableText'
 import AccountAddress from '../AccountAddress'
 import SkeletonList from '../Lists/SkeletonList'
 import FlagLocation from '../Common/FlagLocation'
+import Gain from '../Hotspots/Gain'
+import Elevation from '../Hotspots/Elevation'
 import { isDataOnly } from '../Hotspots/utils'
 import SkeletonWidgets from './Common/SkeletonWidgets'
 
@@ -62,10 +64,22 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
         {
           iconPath: '/images/location-blue.svg',
           loading: true,
+          skeletonClasses: 'w-10',
         },
         {
           iconPath: '/images/account-green.svg',
           loading: true,
+          skeletonClasses: 'w-10',
+        },
+        {
+          iconPath: '/images/gain.svg',
+          loading: true,
+          skeletonClasses: 'w-10',
+        },
+        {
+          iconPath: '/images/elevation.svg',
+          loading: true,
+          skeletonClasses: 'w-10',
         },
       ]
     return [
@@ -78,6 +92,14 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
         iconPath: '/images/account-green.svg',
         title: <AccountAddress address={hotspot.owner} truncate={5} />,
         path: `/accounts/${hotspot.owner}`,
+      },
+      {
+        iconPath: '/images/gain.svg',
+        title: <Gain hotspot={hotspot} icon={false} />,
+      },
+      {
+        iconPath: '/images/elevation.svg',
+        title: <Elevation hotspot={hotspot} icon={false} />,
       },
     ]
   }

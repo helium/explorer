@@ -32,7 +32,7 @@ const MenuButton = () => {
   )
 }
 
-const Header = () => {
+const Header = ({ fallbackLinks }) => {
   const { showBanner } = useContext(BannerContext)
   return (
     <>
@@ -43,11 +43,20 @@ const Header = () => {
           { 'pt-14 md:pt-10': showBanner },
         )}
       >
-        <Link to="/">
-          <img alt="Helium Logo" src="/images/logo-sm.svg" />
-        </Link>
+        {fallbackLinks ? (
+          <a href="/">
+            <img alt="Helium Logo" src="/images/logo-sm.svg" />
+          </a>
+        ) : (
+          <Link to="/">
+            <img alt="Helium Logo" src="/images/logo-sm.svg" />
+          </Link>
+        )}
         <div className="grid grid-flow-col gap-8 items-center">
-          <NavLinks className="hidden md:grid grid-flow-col gap-4" />
+          <NavLinks
+            className="hidden md:grid grid-flow-col gap-4"
+            fallbackLinks
+          />
           <FeedbackBubble className="fixed md:hidden z-30 top-20 left-0">
             <div className="bg-navy-400 hover:bg-navy-300 p-3 cursor-pointer rounded-r-lg">
               <FeedbackIcon className="h-5 w-5 text-white" />

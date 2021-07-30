@@ -1,76 +1,86 @@
-import { HelpLinkList, HelpLink } from './404'
-import AppLayout from '../components/AppLayout/AppLayout'
+import dynamic from 'next/dynamic'
+import { useHistory, useLocation } from 'react-router'
+import { Helmet } from 'react-helmet'
+import Header from '../components/Nav/Header'
+import Page from '../components/CoverageMap/Page'
+import MetaTags from '../components/AppLayout/MetaTags'
+import MapLayersBox from '../components/Map/MapLayersBox'
+import { latestCoverageUrl } from '../commonjs/coverage'
+import useKeydown from '../hooks/useKeydown'
+import useGA from '../hooks/useGA'
+import Head from 'next/head'
+import mapboxglSupported from '@mapbox/mapbox-gl-supported'
+import ErrorInfoBox from '../components/InfoBox/ErrorInfoBox'
 
-const Error = ({ statusCode, statusMessage }) => {
-  return (
-    <AppLayout
-      title={`${statusCode ? `${statusCode}` : 'Error'}${
-        statusMessage ? `: ${statusMessage}` : ''
-      }`}
-      description={`${statusCode ? `Error ${statusCode}` : 'Error'}${
-        statusMessage ? `: ${statusMessage}` : ''
-      }`}
-    >
-      <div className="bg-navy-500 w-full">
-        <div className="py-10 md:py-20 w-full mx-auto max-w-3xl px-10 md:px-20">
-          <div className="flex flex-col items-center justify-start text-center">
-            <h1 className="m-0 p-0 font-sans font-semibold text-white text-4xl md:text-6xl">
-              {statusCode ? `Error ${statusCode}` : 'Unknown Error'}
-            </h1>
-            <h2 className="m-0 p-0 pt-5 font-sans text-white text-lg md:text-2xl">
-              {statusCode
-                ? `Sorry about that. An unexpected error ${statusCode} occurred on our server.`
-                : 'Sorry about that. An unexpected error occurred in your browser.'}
-            </h2>
-          </div>
-        </div>
-      </div>
-      <div className="bg-bluegray-100 w-full">
-        <div className="py-10 md:pt-20 w-full mx-auto max-w-3xl px-2.5 sm:px-20">
-          <h3 className="text-gray-300 font-sans font-normal text-lg text-center normal-case tracking-normal pb-2">
-            Let us know how you got here so we can fix it
-          </h3>
-          <HelpLinkList>
-            <HelpLink
-              href={`https://github.com/helium/explorer/issues/new?labels=bug&title=Unexpected+${
-                statusCode ? statusCode : ''
-              }+error`}
-              external
-            >
-              Create an issue on GitHub
-            </HelpLink>
-            <HelpLink href="https://discord.com/invite/helium" external>
-              Report the issue on Discord
-            </HelpLink>
-          </HelpLinkList>
-          <h3 className="text-gray-300 font-sans font-normal text-lg text-center normal-case tracking-normal pt-5 pb-2">
-            Or try one of these links
-          </h3>
-          <HelpLinkList>
-            <HelpLink href="/hotspots">Hotspots</HelpLink>
-            <HelpLink href="/blocks">Blocks</HelpLink>
-            <HelpLink href="/market">Market Data</HelpLink>
-            <HelpLink href="/consensus">Consensus</HelpLink>
-            <HelpLink href="/coverage">Coverage Map</HelpLink>
-            <HelpLink href="https://www.helium.com/" external>
-              helium.com
-            </HelpLink>
-          </HelpLinkList>
-        </div>
-      </div>
-    </AppLayout>
+const mapSupported = mapboxglSupported.supported()
+
+if (!mapSupported) {
+  console.error(
+    'WebGL was not able to initialize in your browser. Please try on another device or browser to enable the full functionality of the Helium Explorer.',
   )
 }
 
-Error.getInitialProps = ({ res, err }) => {
-  const statusCode = res ? res.statusCode : err ? err.statusCode : 404
-  const statusMessage = res
-    ? res.statusMessage
-    : err
-    ? err.statusMessage
-    : 'Not Found'
+const Map = dynamic(() => import('../components/Map/Map'), {
+  ssr: false,
+  loading: () => <div />,
+})
 
-  return { statusCode, statusMessage }
+export const Index = ({ coverageUrl }) => {
+  useGA()
+  const history = useHistory()
+  const location = useLocation()
+
+  useKeydown({
+    Escape: () => {
+      history.push(location.pathname.split('/').slice(0, -1).join('/') || '/')
+    },
+  })
+
+  return (
+    <Page className="overflow-hidden">
+      <Head>
+        <link
+          href="https://api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css"
+          rel="stylesheet"
+        />
+      </Head>
+      <MetaTags
+        description={`View an interactive map of the Helium network and all the hotspots currently active around the world`}
+        openGraphImageAbsoluteUrl={
+          'https://explorer.helium.com/images/og/coverage.png'
+        }
+        url={'https://explorer.helium.com/coverage'}
+      />
+      <Helmet>
+        <title>Helium Explorer</title>
+      </Helmet>
+      <Header fallbackLinks />
+      {mapSupported && <Map coverageUrl={coverageUrl} />}
+      <ErrorInfoBox errorType={500} errorTitle={'500 — Unexpected Error'} />
+      <MapLayersBox />
+
+      <style jsx global>{`
+        #__next,
+        #app,
+        #app article {
+          height: 100%;
+        }
+
+        html,
+        body {
+          overscroll-behavior: none;
+        }
+      `}</style>
+    </Page>
+  )
 }
 
-export default Error
+export async function getStaticProps() {
+  const coverageUrl = await latestCoverageUrl()
+  return {
+    props: { coverageUrl },
+    revalidate: 60,
+  }
+}
+
+export default Index

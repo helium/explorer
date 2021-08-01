@@ -10,7 +10,7 @@ const NETWORK_DATES = [
 
 const TARGET_PRODUCTION = {
   [NETWORK_DATES[0]]: 5000000,
-  [NETWORK_DATES[1]]: 5000000 / 2,
+  [NETWORK_DATES[1]]: 2500000 / 2,
 }
 
 const getTargetProduction = (timestamp) => {

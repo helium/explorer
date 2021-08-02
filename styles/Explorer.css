@@ -727,6 +727,10 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   }
 }
 
+.padding-for-mapbox-attribution .mapboxgl-ctrl-bottom-left {
+  padding-left: 30rem !important;
+}
+
 @media screen and (max-width: 576px) {
   .logo-container {
     margin-right: 12px;

@@ -113,17 +113,19 @@ module.exports = {
     },
     borderWidth: {
       DEFAULT: '1px',
-      '0': '0',
-      '2': '2px',
-      '3': '3px',
-      '4': '4px',
-      '6': '6px',
-      '8': '8px',
+      0: '0',
+      2: '2px',
+      3: '3px',
+      4: '4px',
+      6: '6px',
+      8: '8px',
     },
     extend: {
       spacing: {
-        '108': '27rem',
-        '120': '30rem',
+        108: '27rem',
+        120: '30rem',
+        144: '36rem',
+        160: '40rem',
       },
       translate: {
         '120p': '120%',

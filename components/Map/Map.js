@@ -22,6 +22,7 @@ import MapControls from './MapControls'
 import useMeasuringTool from '../../hooks/useMeasuringTool'
 import MeasuringPointsLayer from './Layers/MeasuringPointsLayer'
 import { useRouteMatch } from 'react-router-dom'
+import classNames from 'classnames'
 
 const maxZoom = 14
 const minZoom = 2
@@ -56,8 +57,18 @@ const US_EU_BOUNDS = [
 
 const MOBILE_PADDING = { top: 80, left: 10, right: 10, bottom: 400 }
 const MOBILE_PADDING_FULL = { top: 80, left: 10, right: 10, bottom: 80 }
-const DESKTOP_PADDING = { top: 200, left: 600, right: 200, bottom: 200 }
-
+const DESKTOP_PADDING = {
+  top: 200,
+  left: 600,
+  right: 200,
+  bottom: 200,
+}
+const DESKTOP_PADDING_FULL = {
+  top: 200,
+  left: 200,
+  right: 200,
+  bottom: 200,
+}
 const HIDE_TILES = process.env.NEXT_PUBLIC_HIDE_TILES === 'true'
 
 const CoverageMap = () => {
@@ -186,7 +197,10 @@ const CoverageMap = () => {
 
   const fitBoundsOptions = useMemo(() => {
     const animate = styleLoaded
-    if (isDesktopOrLaptop) return { padding: DESKTOP_PADDING, animate }
+    if (isDesktopOrLaptop) {
+      if (showInfoBox) return { padding: DESKTOP_PADDING }
+      return { padding: DESKTOP_PADDING_FULL }
+    }
     if (showInfoBox) return { padding: MOBILE_PADDING, animate }
     return { padding: MOBILE_PADDING_FULL, animate }
   }, [isDesktopOrLaptop, showInfoBox, styleLoaded])
@@ -260,10 +274,20 @@ const CoverageMap = () => {
   handleClickRef.current = handleClick
 
   return (
+    // <div
+    //   className={classNames('h-full w-screen overflow-hidden', {
+    //     'md:pl-120': showInfoBox,
+    //   })}
+    // >
     <Mapbox
       // eslint-disable-next-line react/style-prop-object
       style="mapbox://styles/petermain/cko1ewc0p0st918lecxa5c8go"
-      className="h-full w-screen overflow-hidden"
+      className={classNames(
+        'h-full w-full overflow-hidden absolute top-0 bottom-0',
+        {
+          'padding-for-mapbox-attribution': showInfoBox,
+        },
+      )}
       fitBounds={bounds}
       fitBoundsOptions={fitBoundsOptions}
       onStyleLoad={(mapInstance) => {
@@ -304,6 +328,7 @@ const CoverageMap = () => {
         to={measurementEnd}
       />
     </Mapbox>
+    // </div>
   )
 }
 

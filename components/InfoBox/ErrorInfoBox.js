@@ -3,8 +3,11 @@ import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 import Widget from '../Widgets/Widget'
 import WarningWidget from '../Widgets/WarningWidget'
 import { Helmet } from 'react-helmet'
+import { useLocation } from 'react-router-dom'
 
 const ErrorInfoBox = ({ errorType = 404, errorTitle = '404 — Not Found' }) => {
+  const { pathname: path } = useLocation()
+
   return (
     <>
       <Helmet>
@@ -26,7 +29,7 @@ const ErrorInfoBox = ({ errorType = 404, errorTitle = '404 — Not Found' }) => 
             span={2}
             title="Create an issue on GitHub"
             value="Report a bug"
-            linkTo="https://github.com/helium/explorer/issues/new?labels=bug&template=bug_report.md&title=Unexpected%20404%20error"
+            linkTo={`https://github.com/helium/explorer/issues/new?labels=bug&template=bug_report.md&title=Unexpected%20404%20error%20at%20URL:%20${path}`}
           />
           <Widget
             span={2}

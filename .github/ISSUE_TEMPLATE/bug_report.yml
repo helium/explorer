@@ -22,7 +22,6 @@ body:
       label: URL
       description: Where did you encounter this error?
       placeholder: Paste the explorer URL
-      value: ""
     validations:
       required: true     
   - type: dropdown

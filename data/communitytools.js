@@ -10,8 +10,9 @@ export const communityToolsList = [
   {
     name: 'Helistats',
     url: 'https://apps.apple.com/us/app/helistats/id1573119107',
-    description: 'Monitor your account and devices on your iOS devices, incl. widgets.',
-    tags: ['Monitoring'],
+    description:
+      'Monitor your account and devices on your iOS devices, incl. widgets.',
+    tags: ['Monitoring', 'iOS'],
   },
   {
     name: 'MinerTax',
@@ -71,6 +72,6 @@ export const communityToolsList = [
   //   name: 'Example Tool Name',
   //   url: 'https://www.example.com',
   //   description: 'Easily get the animal name of a given hotspot address',
-  //   tags: ['Data Export', 'Monitoring'],
+  //   tags: ['Data Export', 'Monitoring', 'Planning', 'iOS'],
   // },
 ]

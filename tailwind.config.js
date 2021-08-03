@@ -56,6 +56,7 @@ module.exports = {
         700: '#5850EB',
       },
       green: {
+        50: '#ccf1e8',
         100: '#474DFF',
         400: '#29D344',
         500: '#32C48D',
@@ -78,6 +79,7 @@ module.exports = {
         800: '#b58714',
       },
       pink: {
+        50: '#e3d6fb',
         500: '#A667F6',
       },
       gray: {
@@ -114,17 +116,17 @@ module.exports = {
     },
     borderWidth: {
       DEFAULT: '1px',
-      '0': '0',
-      '2': '2px',
-      '3': '3px',
-      '4': '4px',
-      '6': '6px',
-      '8': '8px',
+      0: '0',
+      2: '2px',
+      3: '3px',
+      4: '4px',
+      6: '6px',
+      8: '8px',
     },
     extend: {
       spacing: {
-        '108': '27rem',
-        '120': '30rem',
+        108: '27rem',
+        120: '30rem',
       },
       translate: {
         '120p': '120%',

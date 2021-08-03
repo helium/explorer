@@ -8,6 +8,12 @@
 
 export const communityToolsList = [
   {
+    name: 'Helistats',
+    url: 'https://apps.apple.com/us/app/helistats/id1573119107',
+    description: 'Monitor your account and devices on your iOS devices, incl. widgets.',
+    tags: ['Monitoring'],
+  },
+  {
     name: 'MinerTax',
     url: 'https://www.minertax.com/home?symbol=HNT',
     description: 'Export CSV for mining and staking rewards',

@@ -11,12 +11,12 @@ const fetcher = async (url) => {
   return response.json()
 }
 
-const useApi = (route, options = {}) => {
+const useApi = (route, options = {}, config = { localCache: true }) => {
   const url = [API_BASE, route].join('')
 
   let initialData
 
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && config.localCache) {
     const data = localStorage.getItem(route)
     if (data) {
       initialData = JSON.parse(data)
@@ -27,10 +27,14 @@ const useApi = (route, options = {}) => {
     initialData,
     revalidateOnMount: true,
     onFailure: () => {
-      localStorage.removeItem(route)
+      if (config.localCache) {
+        localStorage.removeItem(route)
+      }
     },
     onSuccess: (data) => {
-      localStorage.setItem(route, JSON.stringify(data))
+      if (config.localCache) {
+        localStorage.setItem(route, JSON.stringify(data))
+      }
     },
     ...options,
   })

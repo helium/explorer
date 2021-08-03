@@ -63,7 +63,7 @@ const HexDetailsInfoBox = () => {
       },
       {
         icon: <img src="/images/dc.svg" />,
-        title: `${mapHex?.dc?.toLocaleString() || 0} DC (30d)`,
+        title: `${mapHex?.dc?.toLocaleString() || 0} DC (7d)`,
       },
     ]
   }, [mapHex?.dc])

@@ -30,7 +30,7 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
         </title>
       </Helmet>
       <div className="w-full md:h-screen h-full flex flex-col items-end justify-end md:justify-start max-h-90p md:max-h-screen">
-        <div className="flex justify-between w-full p-4 rounded-t-2xl md:rounded-none titlebox-blur md:pt-20">
+        <div className="flex justify-between w-full p-4 rounded-t-2xl md:rounded-none titlebox-blur md:pt-40">
           <div className="flex flex-col items-start justify-start">
             <Breadcrumbs breadcrumbs={breadcrumbs} />
             <span className="pointer-events-auto text-white text-2xl md:text-3xl font-semibold font-sans tracking-tight">
@@ -77,16 +77,12 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
         </div>
         <div
           className={classNames(
-            'pointer-events-auto flex w-full md:h-auto max-h-650px md:max-h-screen',
-            {
-              'md:max-h-5/10 h-5/10': subtitles,
-              'md:max-h-8/10 h-6/10': !subtitles,
-            },
+            'pointer-events-auto flex w-full md:h-full max-h-650px md:max-h-full overflow-hidden',
           )}
         >
           <div
             className={classNames(
-              'bg-white w-full flex flex-col overflow-mask-fix md:h-screen infoboxshadow',
+              'bg-white w-full flex flex-col overflow-mask-fix md:h-full infoboxshadow',
             )}
           >
             {children}

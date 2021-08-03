@@ -28,6 +28,7 @@ module.exports = {
       white: '#FFFFFF',
       black: '#000000',
       blue: {
+        400: '#58a7f9',
         500: '#1D91F8',
       },
       'reward-scale': {

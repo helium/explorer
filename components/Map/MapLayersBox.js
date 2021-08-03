@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import { useCallback } from 'react'
 import useMapLayer from '../../hooks/useMapLayer'
+import Hex from '../Icons/Hex'
 
 const MapLayersBox = () => {
   const {
@@ -30,17 +31,17 @@ const MapLayersBox = () => {
     {
       title: 'Default',
       id: 'default',
-      iconPath: '/images/hex-green.png',
+      icon: <Hex className="text-green-500 w-5 h-5" />,
     },
     {
       title: 'Transmit Scales',
       id: 'rewardScale',
-      iconPath: '/images/reward-scale.svg',
+      icon: <Hex className="text-reward-scale-0.6 w-5 h-5" />,
     },
     {
       title: 'Device Usage',
       id: 'dc',
-      iconPath: '/images/reward-scale.svg',
+      icon: <Hex className="text-blue-400 w-5 h-5" />,
     },
     // {
     //   title: 'Owner',
@@ -73,11 +74,11 @@ const MapLayersBox = () => {
         >
           <img alt="" src="/images/close.svg" />
         </div>
-        {layers.map(({ title, id, iconPath }, i) => (
+        {layers.map(({ title, id, icon }, i) => (
           <Layer
             key={id}
             title={title}
-            iconPath={iconPath}
+            icon={icon}
             onClick={handleClick(id)}
             active={mapLayer === id}
             style={{
@@ -92,7 +93,7 @@ const MapLayersBox = () => {
   )
 }
 
-const Layer = ({ title, onClick, iconPath, active = false, style }) => (
+const Layer = ({ title, onClick, icon, active = false, style }) => (
   <div
     className="flex items-center justify-end space-x-2 cursor-pointer absolute bottom-0 right-0 w-96 transform-gpu transition-transform duration-300 ease-in-out"
     onClick={onClick}
@@ -112,7 +113,7 @@ const Layer = ({ title, onClick, iconPath, active = false, style }) => (
         { 'bg-gray-700': !active, 'bg-gray-200': active },
       )}
     >
-      <img alt="" className="w-5 h-5" src={iconPath} />
+      {icon}
     </div>
   </div>
 )

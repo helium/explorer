@@ -116,7 +116,7 @@ export const getChecklistItems = (
       sortOrder: 2,
       title: 'Create a Challenge',
       infoTooltipText:
-        'Hotspots that are synced and online create a challenge automatically, every 360 blocks (~6 hours).',
+        'Hotspots that are synced and online create a challenge automatically, every 300 blocks (~5 hours).',
       detailText:
         activity.challengerTxn !== null
           ? `Hotspot issued a challenge ${(
@@ -124,7 +124,7 @@ export const getChecklistItems = (
             ).toLocaleString()} block${
               height - activity.challengerTxn.height === 1 ? '' : 's'
             } ago.`
-          : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically every 360 blocks (~6 hours).`,
+          : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically every 300 blocks (~5 hours).`,
       completed: activity.challengerTxn !== null,
     },
     {
@@ -162,9 +162,9 @@ export const getChecklistItems = (
             ).toLocaleString()} block${
               height - activity.challengeeTxn.height === 1 ? '' : 's'
             } ago.`
-          : `Hotspot hasn’t participated in a challenge yet. Hotspots are challenged every 360 blocks.`,
+          : `Hotspot hasn’t participated in a challenge yet. Hotspots are challenged every 300 blocks.`,
       infoTooltipText:
-        'Participation in a challenge depends on having witnesses. Use the checkbox to see Hotspots in your list. It can take a few days for challenges to include this Hotspot once a witness list is built.',
+        'Hotspots are randomly challenged to send a Beacon and occurs automatically once a Hotspot is fully synced and online, every 300 blocks.',
       completed: activity.challengeeTxn !== null,
     },
     {

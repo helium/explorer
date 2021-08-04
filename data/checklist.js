@@ -59,6 +59,7 @@ export const getChecklistItems = (
   syncHeight,
   loading,
   isDataOnly,
+  pocChallengeInterval,
 ) => {
   if (loading) return [{ sortOrder: 0 }]
 
@@ -115,8 +116,9 @@ export const getChecklistItems = (
     {
       sortOrder: 2,
       title: 'Create a Challenge',
-      infoTooltipText:
-        'Hotspots that are synced and online create a challenge automatically, every 300 blocks (~5 hours).',
+      infoTooltipText: `Hotspots that are synced and online create a challenge automatically, every ${pocChallengeInterval} blocks (~${Math.floor(
+        pocChallengeInterval / 60,
+      )} hours).`,
       detailText:
         activity.challengerTxn !== null
           ? `Hotspot issued a challenge ${(
@@ -124,7 +126,9 @@ export const getChecklistItems = (
             ).toLocaleString()} block${
               height - activity.challengerTxn.height === 1 ? '' : 's'
             } ago.`
-          : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically every 300 blocks (~5 hours).`,
+          : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically every ${pocChallengeInterval} blocks (~${Math.floor(
+              pocChallengeInterval / 60,
+            )} hours).`,
       completed: activity.challengerTxn !== null,
     },
     {
@@ -162,9 +166,8 @@ export const getChecklistItems = (
             ).toLocaleString()} block${
               height - activity.challengeeTxn.height === 1 ? '' : 's'
             } ago.`
-          : `Hotspot hasn’t participated in a challenge yet. Hotspots are challenged every 300 blocks.`,
-      infoTooltipText:
-        'Hotspots are randomly challenged to send a Beacon and occurs automatically once a Hotspot is fully synced and online, every 300 blocks.',
+          : `Hotspot hasn’t participated in a challenge yet. Hotspots are challenged every ${pocChallengeInterval} blocks.`,
+      infoTooltipText: `Hotspots are randomly challenged to send a Beacon and occurs automatically once a Hotspot is fully synced and online, every ${pocChallengeInterval} blocks.`,
       completed: activity.challengeeTxn !== null,
     },
     {

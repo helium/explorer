@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useEffect } from 'react'
 import { matchPath } from 'react-router'
 import {
   Switch,
@@ -9,6 +9,8 @@ import {
 } from 'react-router-dom'
 import classNames from 'classnames'
 import { castArray } from 'lodash'
+import { useState } from 'react'
+import ChevronIcon from '../Icons/Chevron'
 
 const NavItem = ({
   title,
@@ -39,7 +41,23 @@ const NavItem = ({
   )
 }
 
-const TabNavbar = ({ centered = false, className, children, id }) => {
+const TabNavbar = ({ centered = false, className, children }) => {
+  const [isScrollable, setIsScrollable] = useState(false)
+  const [isScrolledToEnd, setIsScrolledToEnd] = useState(true)
+
+  const element = document.getElementById('tab-nav-section')
+  const scrollWidth = element?.scrollWidth
+  const viewWidth = element?.clientWidth
+  const scrollPositionX = element?.scrollLeft
+
+  useEffect(() => {
+    const BUFFER_PIXELS = 20
+    setIsScrollable(scrollWidth > viewWidth)
+    setIsScrolledToEnd(
+      scrollPositionX + BUFFER_PIXELS >= scrollWidth - viewWidth,
+    )
+  }, [scrollPositionX, scrollWidth, viewWidth])
+
   const { path, url } = useRouteMatch()
   const location = useLocation()
 
@@ -76,8 +94,9 @@ const TabNavbar = ({ centered = false, className, children, id }) => {
 
   return (
     <>
-      <div className="w-full bg-white z-10" id={id}>
+      <div className="w-full relative bg-white z-10">
         <div
+          id="tab-nav-section"
           className={classNames(className, {
             'w-full border-b border-gray-400 border-solid mt-1 lg:mt-2 px-2 md:px-3 flex overflow-x-scroll no-scrollbar':
               !className,
@@ -106,6 +125,11 @@ const TabNavbar = ({ centered = false, className, children, id }) => {
             )
           })}
         </div>
+        {isScrollable && !isScrolledToEnd && (
+          <div className="absolute right-0 top-0 h-full bg-white opacity-50 w-10 flex items-center justify-center">
+            <ChevronIcon className="rotate-90 w-5 h-5 text-navy-400" />
+          </div>
+        )}
       </div>
 
       <Switch>

@@ -1,6 +1,6 @@
 import InfoBox from './InfoBox'
 import { useAsync } from 'react-async-hooks'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { useParams } from 'react-router'
 import { fetchBlock, fetchBlockTxns } from '../../data/blocks'
 import {
@@ -45,13 +45,6 @@ const BlockDetailsInfoBox = () => {
     }
     getBlockDetails(height)
   }, [height])
-
-  useEffect(() => {
-    // console.log(el?.scrollLeft)
-    const element = document.getElementById('test')
-
-    console.log(element)
-  }, [])
 
   const title = useMemo(() => {
     const blockHeight = parseInt(height)
@@ -142,20 +135,6 @@ const BlockDetailsInfoBox = () => {
     )
   }
 
-  function hasScroll() {
-    // direction = direction === 'vertical' ? 'scrollTop' : 'scrollLeft'
-    // var result = !!el[direction]
-
-    // console.log(el?.scrollLeft)
-    const element = document.getElementById('test')
-
-    console.log(element)
-
-    return element?.scrollLeft
-  }
-
-  // console.log(hasScroll(document.getElementById('test')))
-
   return (
     <InfoBox
       title={title}
@@ -163,13 +142,11 @@ const BlockDetailsInfoBox = () => {
       subtitles={generateSubtitles(block)}
       breadcrumbs={[{ title: 'Blocks', path: '/blocks/latest' }]}
     >
-      {console.log(hasScroll())}
       {block.txns?.length > 0 ? (
         <>
           <TransactionTypesWidget txns={block.txns} />
           <TabNavbar
             centered={false}
-            id={'test'}
             className="w-full border-b border-gray-400 border-solid mt-0 px-2 md:px-4 flex overflow-x-scroll no-scrollbar"
           >
             {block.splitTxns.map((type) => {

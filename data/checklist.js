@@ -116,7 +116,7 @@ export const getChecklistItems = (
     {
       sortOrder: 2,
       title: 'Create a Challenge',
-      infoTooltipText: `Hotspots that are synced and online create a challenge automatically, every ${pocChallengeInterval} blocks (~${Math.floor(
+      infoTooltipText: `Hotspots that are synced and online create a challenge automatically, every ${pocChallengeInterval} blocks (~${Math.ceil(
         pocChallengeInterval / 60,
       )} hours).`,
       detailText:
@@ -126,7 +126,7 @@ export const getChecklistItems = (
             ).toLocaleString()} block${
               height - activity.challengerTxn.height === 1 ? '' : 's'
             } ago.`
-          : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically every ${pocChallengeInterval} blocks (~${Math.floor(
+          : `Hotspot hasn’t issued a challenge yet. Hotspots create challenges automatically every ${pocChallengeInterval} blocks (~${Math.ceil(
               pocChallengeInterval / 60,
             )} hours).`,
       completed: activity.challengerTxn !== null,

@@ -6,12 +6,13 @@ import { getChecklistItems } from '../../data/checklist'
 import { fetchHeightByTimestamp, useBlockHeight } from '../../data/blocks'
 import ChecklistSkeleton from '../InfoBox/HotspotDetails/ChecklistSkeleton'
 import ChecklistItems from '../InfoBox/HotspotDetails/ChecklistItems'
+import client from '../../data/client'
 
 const ChecklistWidget = ({ hotspot, witnesses, isDataOnly }) => {
   const [activity, setActivity] = useState({})
   const [loading, setActivityLoading] = useState(true)
   const [checklistFetched, setChecklistFetched] = useState(false)
-  const [pocChallengeInterval, setPocChallengeInterval] = useState(300)
+  const [challengeInterval, setChallengeInterval] = useState(300)
 
   const { height } = useBlockHeight()
 
@@ -22,10 +23,8 @@ const ChecklistWidget = ({ hotspot, witnesses, isDataOnly }) => {
       setActivityLoading(true)
       const hotspotActivity = await getActivityForChecklist(hotspotid)
       setActivity(hotspotActivity)
-      const {
-        data: { poc_challenge_interval },
-      } = await fetch('https://api.helium.io/v1/vars').then((res) => res.json())
-      setPocChallengeInterval(poc_challenge_interval)
+      const { pocChallengeInterval } = await client.vars.get()
+      setChallengeInterval(pocChallengeInterval)
       setChecklistFetched(true)
       setActivityLoading(false)
     }
@@ -52,7 +51,7 @@ const ChecklistWidget = ({ hotspot, witnesses, isDataOnly }) => {
       syncHeight,
       loading || syncHeightLoading,
       isDataOnly,
-      pocChallengeInterval,
+      challengeInterval,
     )
   }, [
     activity,
@@ -63,7 +62,7 @@ const ChecklistWidget = ({ hotspot, witnesses, isDataOnly }) => {
     syncHeightLoading,
     witnesses,
     isDataOnly,
-    pocChallengeInterval,
+    challengeInterval,
   ])
 
   const [currentIndex, setCurrentIndex] = useState(0)

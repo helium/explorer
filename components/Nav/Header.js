@@ -17,7 +17,7 @@ const MenuButton = () => {
     <>
       <div
         className={classNames(
-          'cursor-pointer md:hidden block transition-all duration-200',
+          'cursor-pointer xl:hidden block transition-all duration-200',
           {
             'opacity-100': !menuOpen,
             'opacity-0': menuOpen,
@@ -54,7 +54,7 @@ const Header = ({ fallbackLinks = false }) => {
         )}
         <div className="grid grid-flow-col gap-8 items-center">
           <NavLinks
-            className="hidden md:grid grid-flow-col gap-4"
+            className="hidden xl:grid grid-flow-col gap-4"
             fallbackLinks={fallbackLinks}
           />
           <FeedbackBubble className="fixed md:hidden z-30 top-20 left-0">

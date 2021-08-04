@@ -9,7 +9,7 @@ const NavLink = ({ href, title, className, onClick, fallback }) =>
       href={href}
       onClick={onClick}
       className={classNames(className, {
-        'text-white font-sans text-base hover:text-gray-500 focus:text-gray-600':
+        'text-white font-sans flex items-center justify-center text-sm hover:text-gray-500 focus:text-gray-600':
           !className,
       })}
     >
@@ -20,7 +20,7 @@ const NavLink = ({ href, title, className, onClick, fallback }) =>
       to={href}
       onClick={onClick}
       className={classNames(className, {
-        'text-white font-sans text-base hover:text-gray-500 focus:text-gray-600':
+        'text-white font-sans flex items-center justify-center text-sm hover:text-gray-500 focus:text-gray-600':
           !className,
       })}
     >
@@ -78,7 +78,7 @@ const NavLinks = ({
         onClick={onNavLinkClick}
         fallback={fallbackLinks}
       />
-      <FeedbackBubble className="hidden md:flex -mr-4">
+      <FeedbackBubble className="flex xl:-mr-4">
         <div className="bg-navy-400 hover:bg-navy-300 px-3 py-1 cursor-pointer rounded-lg">
           <span className="text-sm text-white flex items-center">
             <FeedbackIcon className="h-4 w-4 text-white" />

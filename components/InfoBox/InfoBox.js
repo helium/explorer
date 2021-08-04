@@ -30,7 +30,7 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
         </title>
       </Helmet>
       <div className="w-full md:h-screen h-full flex flex-col items-end justify-end md:justify-start max-h-90p md:max-h-screen">
-        <div className="flex justify-between w-full p-4 rounded-t-2xl md:rounded-none titlebox-blur md:pt-40">
+        <div className="flex justify-between w-full p-4 rounded-t-2xl md:rounded-none titlebox-blur md:pt-28">
           <div className="flex flex-col items-start justify-start">
             <Breadcrumbs breadcrumbs={breadcrumbs} />
             <span className="pointer-events-auto text-white text-2xl md:text-3xl font-semibold font-sans tracking-tight">
@@ -53,27 +53,6 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
               height={BUTTON_SIZE}
             />
           </div>
-          <div
-            className="hidden md:flex h-16 bg-gray-800 w-5 opacity-75 pointer-events-auto backdrop-blur-2xl rounded-r-md absolute right-0 -mr-5 items-center justify-center cursor-pointer"
-            onClick={toggleInfoBox}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className={classNames('h-3 w-3 text-white', {
-                'rotate-180': !showInfoBox,
-              })}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </div>
         </div>
         <div
           className={classNames(
@@ -87,6 +66,27 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
           >
             {children}
           </div>
+        </div>
+        <div
+          className="fixed hidden md:flex pointer-events-auto cursor-pointer right-0 top-28 button-blur items-center justify-center h-14 w-5 rounded-r-md -mr-5"
+          onClick={toggleInfoBox}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={classNames('h-2.5 w-2.5 text-gray-525', {
+              'rotate-180': !showInfoBox,
+            })}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
         </div>
       </div>
     </div>

@@ -33,7 +33,6 @@ const useResultsReducer = () => {
 
 const sortResults = (results, term) => {
   const uniqResults = uniqBy(results, 'key')
-  console.log('uniqResults', uniqResults)
   if (uniqResults.length <= 1) return uniqResults
 
   const fuse = new Fuse(uniqResults, {
@@ -50,7 +49,6 @@ const sortResults = (results, term) => {
     ['score', 'item.item.hotspotCount'],
     ['asc', 'desc'],
   )
-  console.log('fuse results', sortedResults)
   const sortedItems = sortedResults.map((r) => r.item)
   return sortedItems
 }

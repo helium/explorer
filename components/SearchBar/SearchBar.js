@@ -38,7 +38,7 @@ const SearchBar = () => {
       if (result.type === 'validator') {
         history.push(`/validators/${result.item.address}`)
       }
-      if (result.type === 'account') {
+      if (result.type === 'account' || result.type === 'maker') {
         history.push(`/accounts/${result.item.address}`)
       }
       if (result.type === 'block') {

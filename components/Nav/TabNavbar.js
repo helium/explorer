@@ -174,7 +174,8 @@ const TabNavbar = ({ centered = false, className, children }) => {
               'bg-gradient-to-r from-white via-white w-10 h-full flex items-center justify-center transition-all duration-500',
               {
                 'opacity-100': isScrollable && !isScrolledToStart,
-                'opacity-0': isScrollable && isScrolledToStart,
+                'opacity-0':
+                  !isScrollable || (isScrollable && isScrolledToStart),
               },
             )}
           >

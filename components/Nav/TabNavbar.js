@@ -11,6 +11,7 @@ import classNames from 'classnames'
 import { castArray } from 'lodash'
 import { useState } from 'react'
 import ChevronIcon from '../Icons/Chevron'
+import { useRef } from 'react'
 
 const NavItem = ({
   title,
@@ -43,20 +44,39 @@ const NavItem = ({
 
 const TabNavbar = ({ centered = false, className, children }) => {
   const [isScrollable, setIsScrollable] = useState(false)
+  const [isScrolledToStart, setIsScrolledToStart] = useState(true)
   const [isScrolledToEnd, setIsScrolledToEnd] = useState(true)
 
-  const element = document.getElementById('tab-nav-section')
-  const scrollWidth = element?.scrollWidth
-  const viewWidth = element?.clientWidth
-  const scrollPositionX = element?.scrollLeft
+  const [scrollWidth, setScrollWidth] = useState()
+  const [viewWidth, setViewWidth] = useState()
+  const [scrollPositionX, setScrollPositionX] = useState()
 
-  useEffect(() => {
+  const targetElement = useRef(null)
+
+  const updateScrollIndicator = useCallback(() => {
     const BUFFER_PIXELS = 20
+
+    setScrollWidth(targetElement?.current?.scrollWidth)
+    setViewWidth(targetElement?.current?.clientWidth)
+    setScrollPositionX(targetElement?.current?.scrollLeft)
+
     setIsScrollable(scrollWidth > viewWidth)
     setIsScrolledToEnd(
       scrollPositionX + BUFFER_PIXELS >= scrollWidth - viewWidth,
     )
+    setIsScrolledToStart(scrollPositionX < BUFFER_PIXELS)
   }, [scrollPositionX, scrollWidth, viewWidth])
+
+  const autoScroll = (direction = 'right') => {
+    targetElement.current.scrollBy({
+      left: direction === 'left' ? -(scrollWidth / 4) : scrollWidth / 4,
+      behavior: 'smooth',
+    })
+  }
+
+  useEffect(() => {
+    updateScrollIndicator()
+  }, [updateScrollIndicator])
 
   const { path, url } = useRouteMatch()
   const location = useLocation()
@@ -96,7 +116,9 @@ const TabNavbar = ({ centered = false, className, children }) => {
     <>
       <div className="w-full relative bg-white z-10">
         <div
+          ref={targetElement}
           id="tab-nav-section"
+          onScroll={updateScrollIndicator}
           className={classNames(className, {
             'w-full border-b border-gray-400 border-solid mt-1 lg:mt-2 px-2 md:px-3 flex overflow-x-scroll no-scrollbar':
               !className,
@@ -125,11 +147,42 @@ const TabNavbar = ({ centered = false, className, children }) => {
             )
           })}
         </div>
-        {isScrollable && !isScrolledToEnd && (
-          <div className="absolute right-0 top-0 h-full bg-white opacity-50 w-10 flex items-center justify-center">
-            <ChevronIcon className="rotate-90 w-5 h-5 text-navy-400" />
+        <div
+          className="absolute right-0 top-0 pb-1 h-full cursor-pointer"
+          onClick={autoScroll}
+        >
+          <div
+            className={classNames(
+              'bg-gradient-to-l from-white via-white w-10 h-full flex items-center justify-center transition-all duration-500',
+              {
+                'opacity-100': isScrollable && !isScrolledToEnd,
+                'opacity-0': !isScrollable || isScrolledToEnd,
+              },
+            )}
+          >
+            <span className="animate-bounce-right">
+              <ChevronIcon className="rotate-90 w-4 h-4 text-navy-400" />
+            </span>
           </div>
-        )}
+        </div>
+        <div
+          className="absolute left-0 top-0 pb-1 h-full cursor-pointer"
+          onClick={() => autoScroll('left')}
+        >
+          <div
+            className={classNames(
+              'bg-gradient-to-r from-white via-white w-10 h-full flex items-center justify-center transition-all duration-500',
+              {
+                'opacity-100': isScrollable && !isScrolledToStart,
+                'opacity-0': isScrollable && isScrolledToStart,
+              },
+            )}
+          >
+            <span className="animate-bounce-left">
+              <ChevronIcon className="-rotate-90 w-4 h-4 text-navy-400" />
+            </span>
+          </div>
+        </div>
       </div>
 
       <Switch>

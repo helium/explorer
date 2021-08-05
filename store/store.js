@@ -7,6 +7,7 @@ const initialState = {
   selectedHotspot: null,
   selectedTxn: null,
   selectedHex: null,
+  selectedCity: null,
   geolocation: {
     currentPosition: { timestamp: 0 },
     isLoading: false,
@@ -27,6 +28,7 @@ export const SET_MAP_LAYER = 'SET_MAP_LAYER'
 export const SET_SELECTED_HOTSPOT = 'SET_SELECTED_HOTSPOT'
 export const SET_SELECTED_TXN = 'SET_SELECTED_TXN'
 export const SET_SELECTED_HEX = 'SET_SELECTED_HEX'
+export const SET_SELECTED_CITY = 'SET_SELECTED_CITY'
 export const SET_CURRENT_POSITION_LOADING = 'SET_CURRENT_POSITION_LOADING'
 export const SET_CURRENT_POSITION = 'SET_CURRENT_POSITION'
 export const SET_MEASUREMENT_START = 'SET_MEASUREMENT_START'
@@ -48,6 +50,8 @@ const StateProvider = ({ children }) => {
         return { ...state, selectedTxn: action.payload }
       case SET_SELECTED_HEX:
         return { ...state, selectedHex: action.payload }
+      case SET_SELECTED_CITY:
+        return { ...state, selectedCity: action.payload }
       case SET_CURRENT_POSITION_LOADING:
         return {
           ...state,

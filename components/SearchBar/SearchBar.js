@@ -8,6 +8,7 @@ import useKeydown from '../../hooks/useKeydown'
 import SearchResult from './SearchResult'
 import { useHistory } from 'react-router'
 import useSelectedTxn from '../../hooks/useSelectedTxn'
+import useSelectedCity from '../../hooks/useSelectedCity'
 
 const SearchBar = () => {
   const input = useRef()
@@ -16,6 +17,7 @@ const SearchBar = () => {
   const [selectedResultIndex, setSelectedResultIndex] = useState(0)
   const { selectHotspot } = useSelectedHotspot()
   const { selectTxn } = useSelectedTxn()
+  const { selectCity } = useSelectedCity()
   const history = useHistory()
 
   const handleChange = useCallback(
@@ -46,8 +48,11 @@ const SearchBar = () => {
         selectTxn(result.item.hash)
         history.push(`/txns/${result.item.hash}`)
       }
+      if (result.type === 'city') {
+        selectCity(result.item)
+      }
     },
-    [history, selectHotspot, selectTxn, setTerm],
+    [history, selectCity, selectHotspot, selectTxn, setTerm],
   )
 
   const clearSearch = useCallback(() => {

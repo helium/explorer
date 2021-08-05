@@ -71,6 +71,7 @@
     "react-typekit": "^1.1.4",
     "recharts": "^2.0.10",
     "swr": "^0.5.6",
+    "use-debounce": "^7.0.0",
     "use-deep-compare-effect": "^1.6.1",
     "use-persisted-state": "^0.3.3"
   },

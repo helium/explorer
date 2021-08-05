@@ -22,6 +22,7 @@ import MapControls from './MapControls'
 import useMeasuringTool from '../../hooks/useMeasuringTool'
 import MeasuringPointsLayer from './Layers/MeasuringPointsLayer'
 import { useRouteMatch } from 'react-router-dom'
+import useSelectedCity from '../../hooks/useSelectedCity'
 
 const maxZoom = 14
 const minZoom = 2
@@ -71,6 +72,7 @@ const CoverageMap = () => {
   const { mapLayer } = useMapLayer()
   const { selectedHotspot } = useSelectedHotspot()
   const { selectHex, selectedHex } = useSelectedHex()
+  const { selectedCity } = useSelectedCity()
   const { selectedTxn } = useSelectedTxn()
   const { currentPosition } = useGeolocation()
   const {
@@ -139,6 +141,16 @@ const CoverageMap = () => {
     ])
     setBounds(selectionBounds)
   }, [selectedHex])
+
+  useEffect(() => {
+    if (!selectedCity) return
+
+    const { northeast, southwest } = selectedCity.geometry.viewport
+
+    const selectionBounds = findBounds([northeast, southwest])
+
+    setBounds(selectionBounds)
+  }, [selectedCity])
 
   useEffect(() => {
     if (!selectedTxnHotspot || !selectedTxnParticipants) return

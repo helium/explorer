@@ -30,13 +30,6 @@ const resultsReducer = (results, action) => {
 const useResultsReducer = () => {
   return useReducer(resultsReducer, {})
 }
-// console.log('cities', cities)
-// const orderedCities = orderBy(
-//   cities.map((c) => ({ ...c, hotspotCount: parseInt(c.hotspotCount) })),
-//   ['hotspotCount'],
-//   ['desc'],
-// )
-// console.log('ordered cities', orderedCities)
 
 const sortResults = (results, term) => {
   const uniqResults = uniqBy(results, 'key')

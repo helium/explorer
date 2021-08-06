@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useEffect } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { matchPath } from 'react-router'
 import {
   Switch,
@@ -9,9 +9,10 @@ import {
 } from 'react-router-dom'
 import classNames from 'classnames'
 import { castArray } from 'lodash'
-import { useState } from 'react'
-import ChevronIcon from '../Icons/Chevron'
-import { useRef } from 'react'
+import {
+  useScrollIndicators,
+  ScrollIndicator,
+} from '../../hooks/useScrollIndicators'
 
 const NavItem = ({
   title,
@@ -43,40 +44,15 @@ const NavItem = ({
 }
 
 const TabNavbar = ({ centered = false, className, children }) => {
-  const [isScrollable, setIsScrollable] = useState(false)
-  const [isScrolledToStart, setIsScrolledToStart] = useState(true)
-  const [isScrolledToEnd, setIsScrolledToEnd] = useState(true)
+  const scrollContainer = useRef(null)
 
-  const [scrollWidth, setScrollWidth] = useState()
-  const [viewWidth, setViewWidth] = useState()
-  const [scrollPositionX, setScrollPositionX] = useState()
-
-  const targetElement = useRef(null)
-
-  const updateScrollIndicator = useCallback(() => {
-    const BUFFER_PIXELS = 20
-
-    setScrollWidth(targetElement?.current?.scrollWidth)
-    setViewWidth(targetElement?.current?.clientWidth)
-    setScrollPositionX(targetElement?.current?.scrollLeft)
-
-    setIsScrollable(scrollWidth > viewWidth)
-    setIsScrolledToEnd(
-      scrollPositionX + BUFFER_PIXELS >= scrollWidth - viewWidth,
-    )
-    setIsScrolledToStart(scrollPositionX < BUFFER_PIXELS)
-  }, [scrollPositionX, scrollWidth, viewWidth])
-
-  const autoScroll = (direction = 'right') => {
-    targetElement.current.scrollBy({
-      left: direction === 'left' ? -(scrollWidth / 4) : scrollWidth / 4,
-      behavior: 'smooth',
-    })
-  }
-
-  useEffect(() => {
-    updateScrollIndicator()
-  }, [updateScrollIndicator])
+  const {
+    autoScroll,
+    isScrollable,
+    isScrolledToStart,
+    isScrolledToEnd,
+    updateScrollIndicators,
+  } = useScrollIndicators(scrollContainer)
 
   const { path, url } = useRouteMatch()
   const location = useLocation()
@@ -116,9 +92,8 @@ const TabNavbar = ({ centered = false, className, children }) => {
     <>
       <div className="w-full relative bg-white z-10">
         <div
-          ref={targetElement}
-          id="tab-nav-section"
-          onScroll={updateScrollIndicator}
+          ref={scrollContainer}
+          onScroll={updateScrollIndicators}
           className={classNames(className, {
             'w-full border-b border-gray-400 border-solid mt-1 lg:mt-2 px-2 md:px-3 flex overflow-x-scroll no-scrollbar':
               !className,
@@ -147,43 +122,18 @@ const TabNavbar = ({ centered = false, className, children }) => {
             )
           })}
         </div>
-        <div
-          className="absolute right-0 top-0 pb-1 h-full cursor-pointer"
+        <ScrollIndicator
+          direction="right"
+          wrapperClasses="pb-1"
           onClick={autoScroll}
-        >
-          <div
-            className={classNames(
-              'bg-gradient-to-l from-white via-white w-10 h-full flex items-center justify-center transition-all duration-500',
-              {
-                'opacity-100': isScrollable && !isScrolledToEnd,
-                'opacity-0': !isScrollable || isScrolledToEnd,
-              },
-            )}
-          >
-            <span className="animate-bounce-right">
-              <ChevronIcon className="rotate-90 w-4 h-4 text-navy-400" />
-            </span>
-          </div>
-        </div>
-        <div
-          className="absolute left-0 top-0 pb-1 h-full cursor-pointer"
-          onClick={() => autoScroll('left')}
-        >
-          <div
-            className={classNames(
-              'bg-gradient-to-r from-white via-white w-10 h-full flex items-center justify-center transition-all duration-500',
-              {
-                'opacity-100': isScrollable && !isScrolledToStart,
-                'opacity-0':
-                  !isScrollable || (isScrollable && isScrolledToStart),
-              },
-            )}
-          >
-            <span className="animate-bounce-left">
-              <ChevronIcon className="-rotate-90 w-4 h-4 text-navy-400" />
-            </span>
-          </div>
-        </div>
+          shown={isScrollable && !isScrolledToEnd}
+        />
+        <ScrollIndicator
+          direction="left"
+          wrapperClasses="pb-1"
+          onClick={() => autoScroll({ direction: 'left' })}
+          shown={isScrollable && !isScrolledToStart}
+        />
       </div>
 
       <Switch>

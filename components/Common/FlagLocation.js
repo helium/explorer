@@ -3,6 +3,7 @@ import camelcaseKeys from 'camelcase-keys'
 import Flag from './Flag'
 
 const FlagLocation = ({
+  location,
   geocode,
   showLocationName = true,
   shortenedLocationName,
@@ -10,7 +11,11 @@ const FlagLocation = ({
 }) => {
   const geocodeInfo = camelcaseKeys(geocode)
   const shortCountry = geocodeInfo?.shortCountry
-  const locationName = formatLocation(geocodeInfo, shortenedLocationName)
+  const locationName = formatLocation(
+    location,
+    geocodeInfo,
+    shortenedLocationName,
+  )
 
   if (condensedView)
     return (

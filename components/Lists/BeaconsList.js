@@ -19,7 +19,13 @@ const BeaconsList = ({
   const linkExtractor = useCallback((b) => `/txns/${b.hash}`, [])
 
   const renderTitle = useCallback((b) => {
-    return <FlagLocation geocode={b.path[0].geocode} shortenedLocationName />
+    return (
+      <FlagLocation
+        location={b.path[0].location}
+        geocode={b.path[0].geocode}
+        shortenedLocationName
+      />
+    )
   }, [])
 
   const renderSubtitle = useCallback((b) => {

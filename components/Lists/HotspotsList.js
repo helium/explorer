@@ -41,7 +41,11 @@ const HotspotsList = ({
   const renderSubtitle = useCallback((h) => {
     return (
       <>
-        <FlagLocation geocode={h.geocode} shortenedLocationName />
+        <FlagLocation
+          location={h.location}
+          geocode={h.geocode}
+          shortenedLocationName
+        />
         <TransmitScale hotspot={h} />
         <Gain hotspot={h} />
         <Elevation hotspot={h} />

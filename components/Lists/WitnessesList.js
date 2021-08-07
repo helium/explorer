@@ -45,7 +45,11 @@ const WitnessesList = ({
   const renderSubtitle = useCallback((w) => {
     return (
       <>
-        <FlagLocation geocode={w.geocode} shortenedLocationName />
+        <FlagLocation
+          location={w.location}
+          geocode={w.geocode}
+          shortenedLocationName
+        />
         <span className="flex items-center">
           <Hex
             width={10}

@@ -61,7 +61,9 @@ const MembersWidget = ({ members }) => {
                 </Link>
                 <div className="flex items-center w-full justify-between text-sm leading-tight tracking-tighter text-gray-600">
                   <div className="">
-                    {m.geocode && <FlagLocation geocode={m.geocode} />}
+                    {m.geocode && (
+                      <FlagLocation location={m.location} geocode={m.geocode} />
+                    )}
                   </div>
                   <Link
                     to={`/accounts/${m.owner}`}

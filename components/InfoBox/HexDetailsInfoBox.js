@@ -28,7 +28,6 @@ const HexDetailsInfoBox = () => {
     return hexes.find(({ hex }) => hex === index)
   }, [hexes, index])
 
-
   useEffect(() => {
     if (!selectedHex) {
       selectHex(index)
@@ -41,32 +40,39 @@ const HexDetailsInfoBox = () => {
     }
   }, [clearSelectedHex])
 
-  const generateSubtitles = useCallback((hotspot) => {
-    if (!hotspot)
+  const generateSubtitles = useCallback(
+    (hotspot) => {
+      if (!hotspot)
+        return [
+          {
+            iconPath: '/images/location-blue.svg',
+            loading: true,
+          },
+          {
+            icon: <img src="/images/dc.svg" />,
+            loading: true,
+          },
+        ]
       return [
         {
-          iconPath: '/images/location-blue.svg',
-          loading: true,
+          icon: (
+            <FlagLocation
+              location={hotspot.location}
+              geocode={hotspot.geocode}
+              showLocationName={false}
+            />
+          ),
+          path: `/cities/${hotspot.geocode.cityId}`,
+          title: formatLocation(hotspot.location, hotspot.geocode),
         },
-      {
-        icon: <img src="/images/dc.svg" />,
-        loading: true,
-      },
+        {
+          icon: <img src="/images/dc.svg" />,
+          title: `${mapHex?.dc?.toLocaleString() || 0} DC (7d)`,
+        },
       ]
-    return [
-      {
-        icon: (
-          <FlagLocation geocode={hotspot.geocode} showLocationName={false} />
-        ),
-        path: `/cities/${hotspot.geocode.cityId}`,
-        title: formatLocation(hotspot.geocode),
-      },
-      {
-        icon: <img src="/images/dc.svg" />,
-        title: `${mapHex?.dc?.toLocaleString() || 0} DC (7d)`,
-      },
-    ]
-  }, [mapHex?.dc])
+    },
+    [mapHex?.dc],
+  )
 
   return (
     <InfoBox

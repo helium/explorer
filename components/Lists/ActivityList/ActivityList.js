@@ -123,7 +123,11 @@ const ActivityList = ({
                   src="/images/poc_receipt_icon.svg"
                   className="h-3 w-auto mr-1"
                 />
-                <FlagLocation geocode={txn.path[0].geocode} condensedView />
+                <FlagLocation
+                  location={txn.path[0].location}
+                  geocode={txn.path[0].geocode}
+                  condensedView
+                />
               </div>
               <div className="flex items-center justify-start">
                 <img

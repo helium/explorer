@@ -41,7 +41,11 @@ const NearbyHotspotsList = ({
   const renderSubtitle = useCallback((h) => {
     return (
       <>
-        <FlagLocation geocode={h.geocode} shortenedLocationName />
+        <FlagLocation
+          location={h.location}
+          geocode={h.geocode}
+          shortenedLocationName
+        />
         <span className="flex items-center">
           <Hex
             width={10}

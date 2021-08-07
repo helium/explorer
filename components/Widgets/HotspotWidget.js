@@ -24,7 +24,9 @@ const HotspotWidget = ({ title, titleIconPath, hotspot }) => {
         )
       }
       value={formatHotspotName(hotspot.name)}
-      subtitle={<FlagLocation geocode={hotspot.geocode} />}
+      subtitle={
+        <FlagLocation location={hotspot.location} geocode={hotspot.geocode} />
+      }
       span={2}
       linkTo={`/hotspots/${hotspot.address}`}
       onClick={() => selectHotspot(hotspot.address)}

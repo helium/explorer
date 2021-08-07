@@ -22,9 +22,11 @@ const columns = [
   },
   {
     title: 'Location',
-    dataIndex: 'geocode',
+    dataIndex: ['location', 'geocode'],
     key: 'location',
-    render: (data) => <span>{formatLocation(data)}</span>,
+    render: (data) => (
+      <span>{formatLocation(data.location, data.geocode)}</span>
+    ),
   },
   {
     title: 'Transmit Scale',

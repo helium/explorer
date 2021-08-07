@@ -26,11 +26,15 @@ export const formatDistance = (meters) => {
   )
 }
 
-export const formatLocation = (geocode0, shortened = false) => {
+export const formatLocation = (h3Hex, geocode0, shortened = false) => {
+  if (h3Hex == null) {
+    return 'No location set'
+  }
+
   const geocode = camelcaseKeys(geocode0)
 
   if (!geocode?.longCity && !geocode?.shortState && !geocode?.longCountry) {
-    return 'No location set'
+    return 'Location not geocoded'
   }
 
   const locationTerms = []

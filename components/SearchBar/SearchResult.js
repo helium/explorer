@@ -17,7 +17,12 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
     return (
       <BaseSearchResult
         title={formatHotspotName(result.item.name)}
-        subtitle={<FlagLocation geocode={result.item.geocode} />}
+        subtitle={
+          <FlagLocation
+            location={result.item.location}
+            geocode={result.item.geocode}
+          />
+        }
         type={result.type}
         selected={selected}
         onSelect={handleSelect}

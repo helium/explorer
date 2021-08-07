@@ -49,7 +49,7 @@ export const formatLocation = (h3Hex, geocode0, shortened = false) => {
 
   locationTerms.push(shortened ? geocode?.shortCountry : geocode?.longCountry)
 
-  return locationTerms.join(', ')
+  return locationTerms.filter((e) => e != null).join(', ')
 }
 
 export const formatWitnessInvalidReason = (rawInvalidReason) => {

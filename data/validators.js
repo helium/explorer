@@ -26,7 +26,7 @@ export const useValidator = (address) => {
 }
 
 export const fetchAccountValidators = async (address) => {
-  const validators = await fetchApi(`/validators/${address}/validators`)
+  const validators = await fetchApi(`/accounts/${address}/validators`)
   return validators.map((v) => ({
     ...camelcaseKeys(v),
     stake: new Balance(v.stake, CurrencyType.networkToken),

@@ -8,6 +8,13 @@
 
 export const communityToolsList = [
   {
+    name: 'Hotspot Utility',
+    url: 'https://apps.apple.com/us/app/helium-hotspot-utility/id1527367455',
+    description:
+      'This App allows you to easily configure your Hotspot WiFi and view Ethernet status.',
+    tags: ['iOS'],
+  },
+  {
     name: 'Helistats',
     url: 'https://apps.apple.com/us/app/helistats/id1573119107',
     description:

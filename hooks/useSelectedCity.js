@@ -3,9 +3,11 @@ import { store, SET_SELECTED_CITY } from '../store/store'
 import useDispatch from '../store/useDispatch'
 import { fetchApi } from './useApi'
 import qs from 'qs'
+import { useHistory } from 'react-router'
 
 const useSelectedCity = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const {
     state: { selectedCity },
@@ -24,8 +26,9 @@ const useSelectedCity = () => {
         type: SET_SELECTED_CITY,
         payload: { ...city, geometry },
       })
+      history.push(`/hotspots/cities/${city.cityId}`)
     },
-    [dispatch],
+    [dispatch, history],
   )
 
   const clearSelectedCity = useCallback(() => {

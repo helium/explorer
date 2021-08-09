@@ -14,6 +14,7 @@ import HexDetailsInfoBox from './HexDetailsInfoBox'
 import MarketInfoBox from './MarketInfoBox'
 import CommunityToolsInfoBox from './CommunityTools/CommunityToolsInfoBox'
 import ErrorInfoBox from './ErrorInfoBox'
+import CityDetailsInfoBox from './CityDetailsInfoBox'
 
 const InfoBoxSwitch = () => {
   // Match locales with regular expression containing each locale separated by `|`
@@ -26,6 +27,9 @@ const InfoBoxSwitch = () => {
       </Route>
       <Route path={`${base}/hotspots/:address([a-zA-Z0-9]{40,})`}>
         <HotspotDetailsInfoBox />
+      </Route>
+      <Route path={`${base}/hotspots/cities/:cityid`}>
+        <CityDetailsInfoBox />
       </Route>
       <Route path={`${base}/hotspots`}>
         <HotspotsInfoBox />

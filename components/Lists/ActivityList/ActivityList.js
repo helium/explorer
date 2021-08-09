@@ -189,23 +189,8 @@ const ActivityList = ({
           )
 
         case 'state_channel_close_v1':
-          const summary = txn?.stateChannel?.summaries
-          return (
-            <>
-              {timestamp}
-              <span className="flex items-center justify-start">
-                <img alt="" src="/images/dc.svg" className="h-3 w-auto mr-1" />
-                <span className="mr-1">
-                  {txn.stateChannel.summaries[0].num_dcs} DC
-                </span>
-                <span>
-                  {`(${summary[0]?.num_packets} packet${
-                    summary[0]?.num_packets === 1 ? '' : 's'
-                  })`}
-                </span>
-              </span>
-            </>
-          )
+          return timestamp
+
         case 'stake_validator_v1':
           return (
             <>

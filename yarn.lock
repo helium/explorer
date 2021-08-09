@@ -1872,10 +1872,10 @@
   dependencies:
     bignumber.js "^9.0.0"
 
-"@helium/http@^3.38.3":
-  version "3.38.3"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.38.3.tgz#eb63cbb2c264a0e2381496c69e588171a921326f"
-  integrity sha512-6lot2oM/H7RpW+L+SBWj9nT1saIJU45TxLVonqprtsjAB453fPW0Bn+puZGrEBa/+qCiosdeebewUG+C014HcA==
+"@helium/http@^3.38.5":
+  version "3.38.5"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.38.5.tgz#7b8e07802083987807e51d6f885adf3c0a498891"
+  integrity sha512-S9mCeCcVJ0YQi9LliD8D19LKCoCTJJUqQlAEf4AxF7ETS+KqcPngwnBdxoHII/d7qL/MonroqZU2Y0CY6q8B0g==
   dependencies:
     "@helium/currency" "^3.25.1"
     axios "^0.21.1"
@@ -14922,6 +14922,11 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
+
+use-debounce@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/use-debounce/-/use-debounce-7.0.0.tgz#00a67d23d4fe09905e11145a99278da06c01c880"
+  integrity sha512-4fvxEEs7ztdNMh+c497HAgysdq2+Ascem6EaDANGlCIap1JzqfL03Xw8xkYc2lShfXm4uO6PA6V5zcXN7gJdFA==
 
 use-deep-compare-effect@^1.6.1:
   version "1.6.1"

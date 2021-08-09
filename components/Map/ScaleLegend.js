@@ -9,8 +9,8 @@ const ScaleLegend = ({ className }) => {
       <div
         className={classNames('w-full absolute right-0 bottom-0', className, {
           'hidden pointer-events-none': showMapLayers,
-          'mb-20 mr-14 md:mb-16 md:mr-20': mapLayer === 'rewardScale',
-          'mb-8 mr-12 md:mb-5': mapLayer !== 'rewardScale',
+          'mb-20 mr-14 md:mb-16 md:mr-20': mapLayer === 'rewardScale' || mapLayer === 'dc',
+          'mb-8 mr-12 md:mb-5': mapLayer !== 'rewardScale' && mapLayer !== 'dc',
         })}
       >
         <ScaleControl

@@ -23,19 +23,19 @@ const StateChannelCloseV1 = ({ txn }) => {
     let dcTally = 0
     let byteTally = 0
     txn.stateChannel.summaries.forEach((s) => {
-      packetTally += s.num_packets
-      dcTally += s.num_dcs
-      byteTally += s.num_dcs * 24
+      packetTally += s.numPackets
+      dcTally += s.numDcs
+      byteTally += s.numDcs * 24
       parsedData.push({
         client: s.client,
         owner: s.owner,
-        num_packets: s.num_packets,
-        num_dcs: s.num_dcs,
-        num_bytes: s.num_dcs * 24,
+        numPackets: s.numPackets,
+        numDcs: s.numDcs,
+        num_bytes: s.numDcs * 24,
       })
     })
     parsedData.sort((b, a) =>
-      a.num_dcs > b.num_dcs ? 1 : b.num_dcs > a.num_dcs ? -1 : 0,
+      a.numDcs > b.numDcs ? 1 : b.numDcs > a.numDcs ? -1 : 0,
     )
     const hotspotTally = txn.stateChannel.summaries.length
     setTotalPackets(packetTally)
@@ -105,12 +105,12 @@ const StateChannelCloseV1 = ({ txn }) => {
                   <div className="flex flex-col items-end justify-center">
                     <div className="text-sm leading-tight tracking-tighter text-navy-400 font-medium">
                       <span className="pl-1.5">
-                        {p.num_dcs.toLocaleString()} DC
+                        {p.numDcs.toLocaleString()} DC
                       </span>
                     </div>
                     <div className="text-sm leading-tight tracking-tighter text-gray-600 pt-1">
-                      {p.num_packets.toLocaleString()}{' '}
-                      {p.num_packets === 1 ? 'packet ' : 'packets '}
+                      {p.numPackets.toLocaleString()}{' '}
+                      {p.numPackets === 1 ? 'packet ' : 'packets '}
                       <span className="text-navy-600 pl-1.5">
                         {formatBytes(p.num_bytes)}
                       </span>

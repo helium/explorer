@@ -81,6 +81,22 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
       />
     )
   }
+
+  if (result.type === 'city') {
+    return (
+      <BaseSearchResult
+        title={[
+          result.item.longCity,
+          result.item.shortState,
+          result.item.shortCountry,
+        ].join(', ')}
+        subtitle={`${result.item.hotspotCount.toLocaleString()} Hotspots`}
+        type={result.type}
+        selected={selected}
+        onSelect={handleSelect}
+      />
+    )
+  }
   return null
 }
 

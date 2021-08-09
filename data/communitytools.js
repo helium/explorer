@@ -8,6 +8,20 @@
 
 export const communityToolsList = [
   {
+    name: 'Hotspot Utility',
+    url: 'https://apps.apple.com/us/app/helium-hotspot-utility/id1527367455',
+    description:
+      'This App allows you to easily configure your Hotspot WiFi and view Ethernet status.',
+    tags: ['iOS'],
+  },
+  {
+    name: 'Helistats',
+    url: 'https://apps.apple.com/us/app/helistats/id1573119107',
+    description:
+      'Monitor your account and devices on your iOS devices, incl. widgets.',
+    tags: ['Monitoring', 'iOS'],
+  },
+  {
     name: 'MinerTax',
     url: 'https://www.minertax.com/home?symbol=HNT',
     description: 'Export CSV for mining and staking rewards',
@@ -65,6 +79,6 @@ export const communityToolsList = [
   //   name: 'Example Tool Name',
   //   url: 'https://www.example.com',
   //   description: 'Easily get the animal name of a given hotspot address',
-  //   tags: ['Data Export', 'Monitoring'],
+  //   tags: ['Data Export', 'Monitoring', 'Planning', 'iOS'],
   // },
 ]

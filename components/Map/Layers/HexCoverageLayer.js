@@ -6,18 +6,26 @@ import { h3SetToFeatureCollection } from 'geojson2h3'
 import useApi from '../../../hooks/useApi'
 import useSelectedHex from '../../../hooks/useSelectedHex'
 import { emptyGeoJSON } from '../../../utils/location'
-import { keyBy } from 'lodash'
+import { clamp, keyBy } from 'lodash'
+
+const HOTSPOT_COLOR = '#29d391'
+const DATA_COLOR = '#58a7f9'
+const DC_THRESHOLD = 100
 
 const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
   const { selectedHex } = useSelectedHex()
-  const { data: hexes } = useApi('/hexes', { dedupingInterval: 1000 * 60 })
+  const { data: hexes } = useApi(
+    '/hexes',
+    { dedupingInterval: 1000 * 60 },
+    { localCache: false },
+  )
 
   const pointsSource = useMemo(() => {
     if (!hexes) return emptyGeoJSON
 
     const points = hexes.map((h) => {
       const [lat, lng] = h3ToGeo(h.hex)
-      return { ...h, lat, lng }
+      return { ...h, lat, lng, dc: clamp(h?.dc || 0, 100) }
     })
 
     return GeoJSON.parse(points, { Point: ['lat', 'lng'] })
@@ -25,7 +33,10 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
 
   const hexesSource = useMemo(() => {
     if (!hexes) return emptyGeoJSON
-    const hexLookup = keyBy(hexes, 'hex')
+    const hexLookup = keyBy(
+      hexes.map((h) => ({ ...h, dc: clamp(h?.dc || 0, 100) })),
+      'hex',
+    )
     return h3SetToFeatureCollection(
       Object.keys(hexLookup),
       (h3Index) => hexLookup[h3Index],
@@ -37,15 +48,21 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
       case 'rewardScale':
         return rewardScaleStyle(minZoom, maxZoom)
 
+      case 'dc':
+        return dcStyle(minZoom, maxZoom)
+
       default:
         return defaultStyle(minZoom, maxZoom)
     }
-  }, [minZoom, maxZoom, layer])
+  }, [layer, minZoom, maxZoom])
 
   const hexLayout = useMemo(() => {
     switch (layer) {
       case 'rewardScale':
         return hexRewardScaleStyle()
+
+      case 'dc':
+        return hexDcStyle()
 
       default:
         return hexDefaultStyle()
@@ -109,7 +126,7 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
 }
 
 const defaultStyle = (minZoom, maxZoom) => ({
-  'circle-color': '#29d391',
+  'circle-color': HOTSPOT_COLOR,
   'circle-radius': {
     stops: [
       [minZoom, 2],
@@ -153,8 +170,22 @@ const rewardScaleStyle = (minZoom, maxZoom) => ({
   ],
 })
 
+const dcStyle = (minZoom, maxZoom) => ({
+  ...defaultStyle(minZoom, maxZoom),
+  'circle-color': DATA_COLOR,
+  'circle-opacity': [
+    'interpolate',
+    ['exponential', 1],
+    ['zoom'],
+    minZoom,
+    ['*', 0.2, ['/', ['get', 'dc'], DC_THRESHOLD]],
+    maxZoom,
+    0,
+  ],
+})
+
 const hexDefaultStyle = () => ({
-  'fill-color': '#29d391',
+  'fill-color': HOTSPOT_COLOR,
   'fill-opacity': 0.5,
 })
 
@@ -188,6 +219,22 @@ const hexRewardScaleStyle = () => ({
       1,
       '#29D344',
     ],
+  ],
+})
+
+const hexDcStyle = () => ({
+  ...hexDefaultStyle(),
+  'fill-color': DATA_COLOR,
+  'fill-opacity': [
+    'interpolate',
+    ['linear'],
+    ['get', 'dc'],
+    0,
+    0,
+    1,
+    0.5,
+    DC_THRESHOLD,
+    0.8,
   ],
 })
 

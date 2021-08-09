@@ -50,10 +50,10 @@ const ChecklistItemDetails = ({ selectedChecklistItemInfo }) => {
       {showDetails && (
         <>
           <p className="text-md font-sans text-black pt-2 m-0">
-            {selectedChecklistItemInfo.detailText}
+            {selectedChecklistItemInfo?.detailText}
           </p>
           <p className="text-xs font-sans text-gray-600 pt-2 m-0">
-            {selectedChecklistItemInfo.infoTooltipText}
+            {selectedChecklistItemInfo?.infoTooltipText}
           </p>
         </>
       )}

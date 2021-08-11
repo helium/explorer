@@ -56,7 +56,7 @@ const US_EU_BOUNDS = [
 //   [-14.10009, 23.898041],
 // ]
 
-const MOBILE_PADDING = { top: 80, left: 10, right: 10, bottom: 400 }
+const MOBILE_PADDING = { top: 80, left: 10, right: 10, bottom: 500 }
 const MOBILE_PADDING_FULL = { top: 80, left: 10, right: 10, bottom: 80 }
 const DESKTOP_PADDING = {
   top: 200,

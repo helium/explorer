@@ -55,7 +55,8 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
         </div>
         <div
           className={classNames(
-            'pointer-events-auto flex w-full md:h-full max-h-650px md:max-h-full overflow-hidden',
+            'pointer-events-auto flex w-full md:h-full md:max-h-full overflow-hidden',
+            { 'h-[70%]': subtitles, 'h-[78%]': !subtitles },
           )}
         >
           <div

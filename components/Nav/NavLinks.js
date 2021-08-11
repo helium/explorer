@@ -79,9 +79,9 @@ const NavLinks = ({
         fallback={fallbackLinks}
       />
       <FeedbackBubble className="flex xl:-mr-4">
-        <div className="bg-navy-400 hover:bg-navy-300 px-3 py-1 cursor-pointer rounded-lg">
+        <div className="bg-navy-400 hover:bg-navy-300 px-4 md:px-3 py-1.5 md:py-1 cursor-pointer rounded-lg mt-5 md:mt-0">
           <span className="text-sm text-white flex items-center">
-            <FeedbackIcon className="h-4 w-4 text-white" />
+            <FeedbackIcon className="w-5 h-5 md:h-4 md:w-4 text-white" />
           </span>
         </div>
       </FeedbackBubble>

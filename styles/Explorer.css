@@ -25,8 +25,8 @@ body {
   backdrop-filter: saturate(180%) blur(10px);
 }
 .mobilenav-blur {
-  background-color: rgb(0, 0, 0, 0.85);
-  backdrop-filter: saturate(180%) blur(20px);
+  background-color: rgba(19, 20, 47, 0.9);
+  backdrop-filter: blur(8px);
 }
 .measuring-helptext-blur {
   background-color: rgba(71, 77, 255, 0.75);

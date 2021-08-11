@@ -286,11 +286,6 @@ const CoverageMap = () => {
   handleClickRef.current = handleClick
 
   return (
-    // <div
-    //   className={classNames('h-full w-screen overflow-hidden', {
-    //     'md:pl-120': showInfoBox,
-    //   })}
-    // >
     <Mapbox
       // eslint-disable-next-line react/style-prop-object
       style="mapbox://styles/petermain/cko1ewc0p0st918lecxa5c8go"
@@ -340,7 +335,6 @@ const CoverageMap = () => {
         to={measurementEnd}
       />
     </Mapbox>
-    // </div>
   )
 }
 

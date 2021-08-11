@@ -14,8 +14,6 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
     <div
       className={classNames(
         'pointer-events-none fixed left-0 z-20 bottom-0 md:top-0 md:m-auto w-full md:w-120 flex flex-col items-center justify-end transform-gpu transition-all duration-200 ease-in-out h-screen',
-        // so that on a shorter browser window, the infobox won't go above the navbar
-        // 'max-h-vh-minus-nav',
         // TODO: revisit Tailwind JIT mode. this is doable and much more flexible with Tailwind JIT and the [] syntax for arbitrary values, but for some reason it was breaking all Tailwind styles with Hot Module Reloading. for now we can extend the themes to use more manual values:
         {
           'translate-y-120p md:-translate-x-full md:translate-y-0':

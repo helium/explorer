@@ -4,6 +4,7 @@ import useInfoBox from '../../hooks/useInfoBox'
 import classNames from 'classnames'
 import Breadcrumbs from './Breadcrumbs'
 import SubtitleSection from './SubtitleSection'
+import ChevronIcon from '../Icons/Chevron'
 
 const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
   const { showInfoBox, toggleInfoBox } = useInfoBox()
@@ -69,22 +70,12 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
           className="fixed hidden md:flex pointer-events-auto cursor-pointer right-0 top-28 button-blur items-center justify-center h-14 w-5 rounded-r-md -mr-5"
           onClick={toggleInfoBox}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
+          <ChevronIcon
             className={classNames('h-2.5 w-2.5 text-gray-525', {
-              'rotate-180': !showInfoBox,
+              'rotate-90': !showInfoBox,
+              '-rotate-90': showInfoBox,
             })}
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
+          />
         </div>
       </div>
     </div>

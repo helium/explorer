@@ -5,9 +5,12 @@ import classNames from 'classnames'
 import Breadcrumbs from './Breadcrumbs'
 import SubtitleSection from './SubtitleSection'
 import ChevronIcon from '../Icons/Chevron'
+import { useContext } from 'react'
+import BannerContext from '../Common/Banner/BannerContext'
 
 const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
   const { showInfoBox, toggleInfoBox } = useInfoBox()
+  const { showBanner } = useContext(BannerContext)
 
   const BUTTON_SIZE = 30
 
@@ -20,6 +23,7 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
           'translate-y-120p md:-translate-x-full md:translate-y-0':
             !showInfoBox,
           'translate-y-0': showInfoBox,
+          'pt-14': showBanner,
         },
       )}
     >
@@ -55,7 +59,7 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
         </div>
         <div
           className={classNames(
-            'pointer-events-auto flex w-full md:h-full md:max-h-full overflow-hidden',
+            'pointer-events-auto flex w-full md:h-full md:max-h-full overflow-hidden max-h-[650px]',
             { 'h-[70%]': subtitles, 'h-[78%]': !subtitles },
           )}
         >

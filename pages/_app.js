@@ -11,13 +11,12 @@ import createPersistedState from 'use-persisted-state'
 import en from 'javascript-time-ago/locale/en'
 import { GAScript } from '../hooks/useGA'
 import BannerContext from '../components/Common/Banner/BannerContext'
-import { useEffect } from 'react'
 
 JavascriptTimeAgo.addLocale(en)
 const useShowBannerState = createPersistedState('old-explorer-banner')
 
 function MyApp({ Component, pageProps }) {
-  const [showBanner, setShowBanner] = useShowBannerState(true)
+  const [showBanner, setShowBanner] = useShowBannerState(false)
   const hideBanner = () => setShowBanner(false)
 
   return (

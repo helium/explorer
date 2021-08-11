@@ -41,6 +41,7 @@ const sortResults = (results, term) => {
     shouldSort: false,
     includeMatches: true,
     minMatchCharLength: 2,
+    threshold: 0.5,
   })
 
   const fuseResults = fuse.search(term)

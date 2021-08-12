@@ -28,9 +28,7 @@ export const formatHexDistance = (meters) => {
   }
 
   if (meters < 1000) {
-    return `~${meters.toLocaleString(undefined, {
-      maximumFractionDigits: 2,
-    })} m`
+    return `~${Math.round(meters / 10) * 10} m`
   }
 
   if (meters < 10000) {

@@ -87,7 +87,7 @@ export const useNetworkRewards = (numBack = 30, bucketType = 'day') => {
     getNetworkRewardsBuckets(numBack, bucketType)
 
   const { data, error } = useSWR(key, fetcher(numBack, bucketType), {
-    refreshInterval: 1000 * 60 * 10,
+    refreshInterval: 1000 * 60 * 60,
   })
 
   return {

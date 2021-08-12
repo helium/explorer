@@ -38,14 +38,9 @@ export const getHotspotRewardsBuckets = async (
 }
 
 export const fetchHotspotRewardsSum = async (address, numBack, bucketType) => {
-  // const value = await client.hotspot(address).rewards.sum.get('-1 day')
-  // TODO need to fix helium-js to take min time in this format
-  const response = await fetch(
-    `https://api.helium.io/v1/hotspots/${address}/rewards/sum/?min_time=-${numBack}%20${bucketType}`,
-  )
-  const {
-    data: { total },
-  } = await response.json()
+  const { total } = await client
+    .hotspot(address)
+    .rewards.sum.get({ minTime: `-${numBack} ${bucketType}` })
   return total
 }
 
@@ -70,6 +65,7 @@ export const useHotspotRewardsSum = (
 }
 
 export const getNetworkRewardsBuckets = async (numBack, bucketType) => {
+  // TODO add to helium-js
   const rewards = await fetchAll('/rewards/sum', {
     min_time: `-${numBack} ${bucketType}`,
     bucket: bucketType,
@@ -104,11 +100,11 @@ export const getValidatorRewardsBuckets = async (
 ) => {
   if (!address) return
 
-  // TODO add to helium-js
-  const rewards = await fetchAll(`/validators/${address}/rewards/sum`, {
-    min_time: `-${numBack} ${bucketType}`,
+  const list = await client.validator(address).rewards.sum.list({
+    minTime: `-${numBack} ${bucketType}`,
     bucket: bucketType,
   })
+  const rewards = await list.take(TAKE_MAX)
   return rewards.reverse()
 }
 
@@ -128,7 +124,12 @@ export const getAccountRewardsBuckets = async (
   return rewards.reverse()
 }
 
-export const useRewardBuckets = (address, type, numBack = 30, bucketType = 'day') => {
+export const useRewardBuckets = (
+  address,
+  type,
+  numBack = 30,
+  bucketType = 'day',
+) => {
   const key = `rewards/${type}s/${address}/${numBack}/${bucketType}`
 
   const fetcher = (address, numBack, bucketType) => () => {
@@ -141,7 +142,7 @@ export const useRewardBuckets = (address, type, numBack = 30, bucketType = 'day'
 
       case 'validator':
         return getValidatorRewardsBuckets(address, numBack, bucketType)
-    
+
       default:
         throw new Error('Invalid reward type')
     }

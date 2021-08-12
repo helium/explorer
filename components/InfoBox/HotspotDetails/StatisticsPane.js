@@ -74,7 +74,7 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
           title="Earnings"
           type="hotspot"
         />
-        <RecentActivityWidget context="hotspot" address={hotspot.address} />
+        {/* <RecentActivityWidget context="hotspot" address={hotspot.address} /> */}
         {!isDataOnly && (
           <>
             <StatWidget

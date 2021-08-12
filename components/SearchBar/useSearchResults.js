@@ -1,55 +1,50 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { debounce } from 'lodash'
-import Fuse from 'fuse.js'
+import { useCallback, useEffect, useState } from 'react'
 import client from '../../data/client'
 import { Address } from '@helium/crypto'
-import { API_BASE } from '../../hooks/useApi'
+import { fetchApi } from '../../hooks/useApi'
 import camelcaseKeys from 'camelcase-keys'
+import { useDebouncedCallback } from 'use-debounce'
+import useResultsReducer, { CLEAR_RESULTS, PUSH_RESULTS } from './resultsStore'
+import { useMakers } from '../../data/makers'
+import Fuse from 'fuse.js'
 
 const useSearchResults = () => {
   const [term, setTerm] = useState('')
-  const [results, setResults] = useState([])
+  const [results, dispatch] = useResultsReducer()
+  const { makers } = useMakers()
 
-  const searchHotspot = useCallback(async (term) => {
-    try {
-      const list = await client.hotspots.search(term)
-      const hotspots = (await list.take(20)).map((h) =>
-        h.mode === 'dataonly'
-          ? toSearchResult(h, 'dataonly')
-          : toSearchResult(h, 'hotspot'),
-      )
-      return hotspots
-    } catch {}
-  }, [])
-
-  const searchValidator = useCallback(async (term) => {
-    try {
-      const response = await fetch(`${API_BASE}/validators/search?term=${term}`)
-      const validators = await response.json()
-      return validators.map((v) =>
-        toSearchResult(camelcaseKeys(v), 'validator'),
-      )
-    } catch {}
-  }, [])
-
-  const searchName = useCallback(
+  const searchHotspot = useCallback(
     async (term) => {
       try {
-        const [hotspots, validators] = await Promise.all([
-          searchHotspot(term),
-          searchValidator(term),
-        ])
-        const items = [...hotspots, ...validators]
-        const fuse = new Fuse(items, {
-          includeScore: true,
-          keys: ['item.name'],
+        const list = await client.hotspots.search(term)
+        const results = (await list.take(20)).map((h) =>
+          h.mode === 'dataonly'
+            ? toSearchResult(h, 'dataonly')
+            : toSearchResult(h, 'hotspot'),
+        )
+        dispatch({
+          type: PUSH_RESULTS,
+          payload: { results, term },
         })
-        const fuseResults = fuse.search(term)
-        const sortedItems = fuseResults.map((r) => r.item)
-        setResults([...results, ...sortedItems])
       } catch {}
     },
-    [results, searchHotspot, searchValidator],
+    [dispatch],
+  )
+
+  const searchValidator = useCallback(
+    async (term) => {
+      try {
+        const validators = await fetchApi(`/validators/search?term=${term}`)
+        const results = validators.map((v) =>
+          toSearchResult(camelcaseKeys(v), 'validator'),
+        )
+        dispatch({
+          type: PUSH_RESULTS,
+          payload: { results, term },
+        })
+      } catch {}
+    },
+    [dispatch],
   )
 
   const searchAddress = useCallback(
@@ -71,14 +66,23 @@ const useSearchResults = () => {
       } catch {}
 
       if (hotspot) {
-        setResults([toSearchResult(hotspot, 'hotspot'), ...results])
+        dispatch({
+          type: PUSH_RESULTS,
+          payload: { results: toSearchResult(hotspot, 'hotspot'), term },
+        })
       } else if (validator) {
-        setResults([toSearchResult(validator, 'validator'), ...results])
+        dispatch({
+          type: PUSH_RESULTS,
+          payload: { results: toSearchResult(validator, 'validator'), term },
+        })
       } else if (account) {
-        setResults([toSearchResult(account, 'account'), ...results])
+        dispatch({
+          type: PUSH_RESULTS,
+          payload: { results: toSearchResult(account, 'account'), term },
+        })
       }
     },
-    [results],
+    [dispatch],
   )
 
   const searchBlock = useCallback(
@@ -86,11 +90,14 @@ const useSearchResults = () => {
       try {
         const block = await client.blocks.get(term)
         if (block) {
-          setResults([toSearchResult(block, 'block'), ...results])
+          dispatch({
+            type: PUSH_RESULTS,
+            payload: { results: toSearchResult(block, 'block'), term },
+          })
         }
       } catch {}
     },
-    [results],
+    [dispatch],
   )
 
   const searchTransaction = useCallback(
@@ -98,66 +105,114 @@ const useSearchResults = () => {
       try {
         const txn = await client.transactions.get(term)
         if (txn) {
-          setResults([toSearchResult(txn, 'transaction'), ...results])
+          dispatch({
+            type: PUSH_RESULTS,
+            payload: { results: toSearchResult(txn, 'transaction'), term },
+          })
         }
       } catch {}
     },
-    [results],
+    [dispatch],
   )
 
-  const doSearch = useRef(
-    debounce(
-      (term) => {
-        if (isPositiveInt(term)) {
-          // if term is an integer, assume it's a block height
-          searchBlock(parseInt(term))
-        } else if (Address.isValid(term)) {
-          // if it's a valid address, it could be a hotspot or an account
-          searchAddress(term)
-        } else if (term.length > 20 && isBase64Url(term)) {
-          // if term is a base64 string, it could be a:
-          // block hash
-          searchBlock(term)
-          // transaction hash
-          searchTransaction(term)
-        } else {
-          searchName(term.replace(/-/g, ' '))
-        }
-      },
-      500,
-      { trailing: true },
-    ),
+  const searchCities = useCallback(
+    async (term) => {
+      const cities = await (await client.cities.list({ query: term })).take(20)
+      const cityResults = cities.map((city) =>
+        toSearchResult(
+          { ...city, hotspotCount: parseInt(city.hotspotCount) },
+          'city',
+        ),
+      )
+      dispatch({ type: PUSH_RESULTS, payload: { results: cityResults, term } })
+    },
+    [dispatch],
+  )
+
+  const searchMaker = useCallback(
+    async (term) => {
+      const fuse = new Fuse(makers, {
+        includeScore: true,
+        keys: ['name'],
+        minMatchCharLength: 3,
+        threshold: 0.3,
+      })
+
+      const fuseResults = fuse.search(term)
+      const results = fuseResults.map((result) =>
+        toSearchResult(result.item, 'maker'),
+      )
+      dispatch({ type: PUSH_RESULTS, payload: { results, term } })
+    },
+    [dispatch, makers],
+  )
+
+  const doSearch = useDebouncedCallback(
+    (term) => {
+      // dispatch({ type: CLEAR_RESULTS })
+      if (isPositiveInt(term)) {
+        // if term is an integer, assume it's a block height
+        searchBlock(parseInt(term))
+      } else if (Address.isValid(term)) {
+        // if it's a valid address, it could be a hotspot or an account
+        searchAddress(term)
+      } else if (term.length > 20 && isBase64Url(term)) {
+        // if term is a base64 string, it could be a:
+        // block hash
+        searchBlock(term)
+        // transaction hash
+        searchTransaction(term)
+      } else {
+        searchHotspot(term.replace(/-/g, ' '))
+        searchValidator(term.replace(/-/g, ' '))
+        searchCities(term)
+        searchMaker(term)
+      }
+    },
+    500,
+    { trailing: true },
   )
 
   useEffect(() => {
     if (term === '') {
-      setResults([])
+      dispatch({ type: CLEAR_RESULTS })
       return
     }
 
     const trimmedTerm = term.trim()
-    doSearch.current(trimmedTerm)
-  }, [term])
+    doSearch(trimmedTerm)
+  }, [dispatch, doSearch, term])
 
-  return { term, setTerm, results }
+  return { term, setTerm, results: results[term] || [] }
 }
 
 const toSearchResult = (item, type) => {
-  const key = makeSearchResultKey(item, type)
-  return { type, item, key }
-}
-
-const makeSearchResultKey = (item, type) => {
   switch (type) {
     case 'hotspot':
     case 'dataonly':
     case 'account':
     case 'validator':
-      return item.address
+      return {
+        type,
+        item,
+        key: item.address,
+        indexed: item.name.replaceAll('-', ' '),
+      }
 
     case 'block':
     case 'transaction':
-      return item.hash
+      return { type, item, key: item.hash, indexed: item.hash }
+
+    case 'city':
+      return {
+        type,
+        item,
+        key: item.cityId,
+        indexed: [item.longCity],
+      }
+
+    case 'maker':
+      return { type, item, key: item.address, indexed: item.name }
 
     default:
       return 'unknown'

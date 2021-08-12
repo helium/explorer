@@ -7,6 +7,8 @@ import { capitalize } from 'lodash'
 import { useCallback } from 'react'
 import AccountAddress from '../AccountAddress'
 import ValidatorFlagLocation from '../Validators/ValidatorFlagLocation'
+import HotspotSimpleIcon from '../Icons/HotspotSimple'
+import LocationIcon from '../Icons/Location'
 
 const SearchResult = ({ result, onSelect, selected = false }) => {
   const handleSelect = useCallback(() => {
@@ -75,6 +77,47 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
       <BaseSearchResult
         title={truncateHash(result.item.hash)}
         subtitle={<Timestamp date={result.item.time} />}
+        type={result.type}
+        selected={selected}
+        onSelect={handleSelect}
+      />
+    )
+  }
+
+  if (result.type === 'city') {
+    return (
+      <BaseSearchResult
+        title={[
+          result.item.longCity,
+          result.item.shortState,
+          result.item.shortCountry,
+        ].join(', ')}
+        subtitle={`${result.item.hotspotCount.toLocaleString()} Hotspots`}
+        type={result.type}
+        selected={selected}
+        onSelect={handleSelect}
+      />
+    )
+  }
+
+  if (result.type === 'maker') {
+    return (
+      <BaseSearchResult
+        title={result.item.name}
+        subtitle={
+          <div className="flex space-x-2">
+            <div className="flex items-center space-x-1">
+              <HotspotSimpleIcon className="text-green-500 w-3 h-auto" />
+              <span>{result.item.txns.addGatewayTxns.toLocaleString()}</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <LocationIcon className="text-pink-500 w-3 h-auto" />
+              <span>
+                {result.item.txns.assertLocationTxns.toLocaleString()}
+              </span>
+            </div>
+          </div>
+        }
         type={result.type}
         selected={selected}
         onSelect={handleSelect}

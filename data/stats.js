@@ -1,8 +1,7 @@
 import useSWR from 'swr'
-import Client from '@helium/http'
+import client from './client'
 
 export const fetchStats = async () => {
-  const client = new Client()
   const stats = await client.stats.get()
 
   return {

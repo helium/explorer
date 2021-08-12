@@ -78,6 +78,20 @@ export const communityToolsList = [
     description: 'Export CSV for mining and staking rewards',
     tags: ['Data Export'],
   },
+  {
+    name: 'Nebra Dashboard',
+    url: 'https://dashboard.nebra.com',
+    description:
+      'Control and monitor your Nebra (and in future other branded) Hotspots remotely including host tools.',
+    tags: ['Monitoring'],
+  },
+  {
+    name: 'Nebra Diagnostics',
+    url: 'https://helium.nebra.com/handy-guides/local-diagnostics',
+    description:
+      'Local diagnostics utility for Nebra Hotspots including syncing, firmware, and other useful info.',
+    tags: ['Monitoring'],
+  },
 
   // The lines below are a template that you can copy and paste and then populate
   // to add a new tool to the list.All the possible tags are included in the

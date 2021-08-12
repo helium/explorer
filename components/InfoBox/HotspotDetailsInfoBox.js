@@ -157,7 +157,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
           key="witnesses"
           hidden={IS_DATA_ONLY}
         >
-          <WitnessesPane hotspot={hotspot} />
+          {isLoading ? <SkeletonList /> : <WitnessesPane hotspot={hotspot} />}
         </TabPane>
         <TabPane
           title="Nearby"
@@ -165,7 +165,11 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
           key="nearby"
           hidden={IS_DATA_ONLY}
         >
-          <NearbyHotspotsPane hotspot={hotspot} />
+          {isLoading ? (
+            <SkeletonList />
+          ) : (
+            <NearbyHotspotsPane hotspot={hotspot} />
+          )}
         </TabPane>
       </TabNavbar>
     </InfoBox>

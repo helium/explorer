@@ -28,6 +28,7 @@ module.exports = {
       white: '#FFFFFF',
       black: '#000000',
       blue: {
+        400: '#58a7f9',
         500: '#1D91F8',
       },
       'reward-scale': {
@@ -55,6 +56,7 @@ module.exports = {
         700: '#5850EB',
       },
       green: {
+        50: '#ccf1e8',
         100: '#474DFF',
         400: '#29D344',
         500: '#32C48D',
@@ -77,6 +79,7 @@ module.exports = {
         800: '#b58714',
       },
       pink: {
+        50: '#e3d6fb',
         500: '#A667F6',
       },
       gray: {
@@ -150,6 +153,8 @@ module.exports = {
       spacing: {
         108: '27rem',
         120: '30rem',
+        144: '36rem',
+        160: '40rem',
       },
       translate: {
         '120p': '120%',

@@ -74,7 +74,7 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
           title="Earnings"
           type="hotspot"
         />
-        <RecentActivityWidget context="hotspot" address={hotspot.address} />
+        {/* <RecentActivityWidget context="hotspot" address={hotspot.address} /> */}
         {!isDataOnly && (
           <>
             <StatWidget
@@ -120,7 +120,11 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
             </div>
           </div>
         ) : (
-          <ChecklistWidget hotspot={hotspot} witnesses={witnessesData} />
+          <ChecklistWidget
+            hotspot={hotspot}
+            witnesses={witnessesData}
+            isDataOnly={isDataOnly}
+          />
         )}
       </InfoBoxPaneContainer>
     </>

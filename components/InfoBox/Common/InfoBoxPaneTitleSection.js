@@ -17,7 +17,7 @@ const InfoBoxPaneTitleSection = ({ title, description }) => {
           'pb-2': showDescription,
         })}
       >
-        <span className="font-sans text-800 font-medium text-sm md:text-base">
+        <span className="font-sans text-800 font-medium text-sm md:text-base whitespace-nowrap">
           {title}
         </span>
         {description && title && (

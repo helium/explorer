@@ -63,6 +63,9 @@ const InfoBoxSwitch = () => {
       <Route exact path={base}>
         <OverviewInfoBox />
       </Route>
+      <Route exact path={`${base}/coverage`}>
+        <OverviewInfoBox />
+      </Route>
       <Route>
         <ErrorInfoBox />
       </Route>

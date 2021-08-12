@@ -6,18 +6,22 @@
 // start a pull request") and then click "Propose changes" and one of the core
 // contributors will review it as soon as possible.
 
+// Please make sure your app is in ALPHABETICAL order
+
 export const communityToolsList = [
   {
-    name: 'MinerTax',
-    url: 'https://www.minertax.com/home?symbol=HNT',
-    description: 'Export CSV for mining and staking rewards',
-    tags: ['Data Export'],
+    name: 'Bobcat Diagnoser',
+    url: 'https://www.bobcatminer.com/post/bobcat-diagnoser-user-guide',
+    description:
+      'This utility reports miner temp, firmware updates, syncing blocks and more for Bobcat Hotspots.',
+    tags: ['Monitoring'],
   },
   {
-    name: 'Hotspotty',
-    url: 'https://hotspotty.net',
-    description: 'Hotspot Monitoring and Dashboard solution',
-    tags: ['Monitoring', 'Data Export'],
+    name: 'Helistats',
+    url: 'https://apps.apple.com/us/app/helistats/id1573119107',
+    description:
+      'Monitor your account and devices on your iOS devices, incl. widgets.',
+    tags: ['Monitoring', 'iOS'],
   },
   {
     name: 'Helisum',
@@ -26,22 +30,16 @@ export const communityToolsList = [
     tags: ['Monitoring', 'Data Export'],
   },
   {
+    name: 'Helium Hosts',
+    url: 'https://heliumhosts.com/',
+    description: 'Network with other Hotspot owners in your area',
+    tags: ['Planning'],
+  },
+  {
     name: 'helium-tax',
     url: 'https://davetapley.com/helium-tax/',
     description: 'Export CSV for mining and staking rewards',
     tags: ['Data Export'],
-  },
-  {
-    name: 'Hotsbot',
-    url: 'https://hotsbot.net/',
-    description: 'Hotspot monitoring and event tracking via Telegram',
-    tags: ['Monitoring'],
-  },
-  {
-    name: 'Kudzu',
-    url: 'https://analytics.kudzu.gr/',
-    description: 'Advanced placement and monitoring tool',
-    tags: ['Monitoring', 'Planning'],
   },
   {
     name: 'HeliumVision',
@@ -50,11 +48,37 @@ export const communityToolsList = [
     tags: ['Monitoring', 'Planning'],
   },
   {
-    name: 'Helium Hosts',
-    url: 'https://heliumhosts.com/',
-    description: 'Network with other Hotspot owners in your area',
-    tags: ['Planning'],
+    name: 'Hotsbot',
+    url: 'https://hotsbot.net/',
+    description: 'Hotspot monitoring and event tracking via Telegram',
+    tags: ['Monitoring'],
   },
+  {
+    name: 'Hotspot Utility',
+    url: 'https://apps.apple.com/us/app/helium-hotspot-utility/id1527367455',
+    description:
+      'This App allows you to easily configure your Hotspot WiFi and view Ethernet status.',
+    tags: ['iOS'],
+  },
+  {
+    name: 'Hotspotty',
+    url: 'https://hotspotty.net',
+    description: 'Hotspot Monitoring and Dashboard solution',
+    tags: ['Monitoring', 'Data Export'],
+  },
+  {
+    name: 'Kudzu',
+    url: 'https://analytics.kudzu.gr/',
+    description: 'Advanced placement and monitoring tool',
+    tags: ['Monitoring', 'Planning'],
+  },
+  {
+    name: 'MinerTax',
+    url: 'https://www.minertax.com/home?symbol=HNT',
+    description: 'Export CSV for mining and staking rewards',
+    tags: ['Data Export'],
+  },
+
   // The lines below are a template that you can copy and paste and then populate
   // to add a new tool to the list.All the possible tags are included in the
   // template, so just remove the ones that don't apply, and please don't make up
@@ -65,6 +89,6 @@ export const communityToolsList = [
   //   name: 'Example Tool Name',
   //   url: 'https://www.example.com',
   //   description: 'Easily get the animal name of a given hotspot address',
-  //   tags: ['Data Export', 'Monitoring'],
+  //   tags: ['Data Export', 'Monitoring', 'Planning', 'iOS'],
   // },
 ]

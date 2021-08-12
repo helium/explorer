@@ -22,7 +22,7 @@ const CommunityToolsInfoBox = () => {
           <div className="flex flex-col space-y-2">
             <div>
               A set of tools that have been built by the Helium community. The
-              tools listed are not endorsed be Helium Inc. or its core
+              tools listed are not endorsed by Helium Inc. or its core
               developers. Please use community tools at your own discretion.
             </div>
             <div>

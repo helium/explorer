@@ -32,6 +32,7 @@ export const useStats = (initialData) => {
 }
 
 export const fetchCitiesByOnline = async () => {
+  // TODO add to heilum-js
   const citiesResOnline = await fetch(
     'https://api.helium.io/v1/cities?order=online_count',
   )
@@ -40,6 +41,7 @@ export const fetchCitiesByOnline = async () => {
 }
 
 export const fetchCitiesByTotal = async () => {
+  // TODO add to heilum-js
   const citiesResTotal = await fetch(
     'https://api.helium.io/v1/cities?order=hotspot_count',
   )

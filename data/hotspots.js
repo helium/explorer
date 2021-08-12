@@ -50,6 +50,7 @@ export const getHotspotRewardsBuckets = async (
 
 export const fetchNearbyHotspots = async (lat, lon, distance = 1000) => {
   if (!lat || !lon) return []
+  // TODO add to helium-js
   const hotspots = await fetchAll('/hotspots/location/distance', {
     lat,
     lon,

@@ -1,6 +1,7 @@
 import useSWR from 'swr'
 
 export const fetchDataCredits = async () => {
+  // TODO add to helium-js
   const response = await fetch('https://api.helium.io/v1/dc_burns/stats')
   const dcStats = await response.json()
 

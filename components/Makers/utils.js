@@ -15,8 +15,7 @@ export const getMakerName = async (accountAddress) => {
   if (accountAddress === DEPRECATED_HELIUM_MAKER_ADDR)
     return deprecatedHeliumMaker.name
 
-  const url = `https://onboarding.dewi.org/api/v2/makers`
-  const response = await fetch(url)
+  const response = await fetch('https://onboarding.dewi.org/api/v2/makers')
   const { data: makers } = await response.json()
 
   const makerMatch = makers.find((m) => m.address === accountAddress)

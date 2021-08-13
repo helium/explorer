@@ -78,9 +78,6 @@ export const useScrollIndicators = (
       scrollInstructions.top = distanceToScroll
     }
 
-    console.log('scroll!!!')
-    console.log(scrollInstructions)
-
     scrollContainerRef.current.scrollBy({
       ...scrollInstructions,
       behavior: 'smooth',

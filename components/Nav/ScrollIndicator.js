@@ -41,7 +41,7 @@ const ScrollIndicator = ({
         <span
           className={classNames({
             'animate-bounce-right': direction === 'right',
-            'animate-bounce-right ': direction === 'left',
+            'animate-bounce-left ': direction === 'left',
             'animate-bounce': direction === 'down' || direction === 'up',
           })}
         >

@@ -5,10 +5,13 @@ import { fetchApi } from '../../hooks/useApi'
 import camelcaseKeys from 'camelcase-keys'
 import { useDebouncedCallback } from 'use-debounce'
 import useResultsReducer, { CLEAR_RESULTS, PUSH_RESULTS } from './resultsStore'
+import { useMakers } from '../../data/makers'
+import Fuse from 'fuse.js'
 
 const useSearchResults = () => {
   const [term, setTerm] = useState('')
   const [results, dispatch] = useResultsReducer()
+  const { makers } = useMakers()
 
   const searchHotspot = useCallback(
     async (term) => {
@@ -126,6 +129,24 @@ const useSearchResults = () => {
     [dispatch],
   )
 
+  const searchMaker = useCallback(
+    async (term) => {
+      const fuse = new Fuse(makers, {
+        includeScore: true,
+        keys: ['name'],
+        minMatchCharLength: 3,
+        threshold: 0.3,
+      })
+
+      const fuseResults = fuse.search(term)
+      const results = fuseResults.map((result) =>
+        toSearchResult(result.item, 'maker'),
+      )
+      dispatch({ type: PUSH_RESULTS, payload: { results, term } })
+    },
+    [dispatch, makers],
+  )
+
   const doSearch = useDebouncedCallback(
     (term) => {
       // dispatch({ type: CLEAR_RESULTS })
@@ -145,6 +166,7 @@ const useSearchResults = () => {
         searchHotspot(term.replace(/-/g, ' '))
         searchValidator(term.replace(/-/g, ' '))
         searchCities(term)
+        searchMaker(term)
       }
     },
     500,
@@ -170,7 +192,12 @@ const toSearchResult = (item, type) => {
     case 'dataonly':
     case 'account':
     case 'validator':
-      return { type, item, key: item.address, indexed: item.name.replaceAll('-', ' ') }
+      return {
+        type,
+        item,
+        key: item.address,
+        indexed: item.name.replaceAll('-', ' '),
+      }
 
     case 'block':
     case 'transaction':
@@ -183,6 +210,9 @@ const toSearchResult = (item, type) => {
         key: item.cityId,
         indexed: [item.longCity],
       }
+
+    case 'maker':
+      return { type, item, key: item.address, indexed: item.name }
 
     default:
       return 'unknown'

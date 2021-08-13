@@ -1,55 +1,4 @@
-import classNames from 'classnames'
 import { useState, useEffect, useCallback } from 'react'
-import ChevronIcon from '../components/Icons/Chevron'
-
-export const ScrollIndicator = ({
-  className,
-  wrapperClasses,
-  onClick,
-  shown,
-  direction = 'right',
-}) => {
-  return (
-    <div
-      className={classNames('absolute cursor-pointer', wrapperClasses, {
-        'right-0 top-0 h-full': direction === 'right',
-        'left-0 top-0 h-full': direction === 'left',
-        // TODO: direction === 'up', 'down'
-      })}
-      onClick={onClick}
-    >
-      <div
-        className={classNames(
-          'from-white via-white w-10 h-full flex items-center justify-center transition-all duration-500',
-          {
-            'opacity-100': shown,
-            'opacity-0': !shown,
-            'bg-gradient-to-l': direction === 'right',
-            'bg-gradient-to-r': direction === 'left',
-            // TODO: direction === 'up', 'down'
-          },
-          className,
-        )}
-      >
-        <span
-          className={classNames({
-            'animate-bounce-right': direction === 'right',
-            'animate-bounce-left': direction === 'left',
-            // TODO: direction === 'up', 'down'
-          })}
-        >
-          <ChevronIcon
-            className={classNames('w-4 h-4 text-navy-400', {
-              'rotate-90': direction === 'right',
-              '-rotate-90': direction === 'left',
-              // TODO: direction === 'up', 'down'
-            })}
-          />
-        </span>
-      </div>
-    </div>
-  )
-}
 
 export const useScrollIndicators = (
   scrollContainerRef,
@@ -63,30 +12,57 @@ export const useScrollIndicators = (
   const [viewWidth, setViewWidth] = useState()
   const [scrollPositionX, setScrollPositionX] = useState()
 
+  const [scrollHeight, setScrollHeight] = useState()
+  const [viewHeight, setViewHeight] = useState()
+  const [scrollPositionY, setScrollPositionY] = useState()
+
   const updateScrollIndicators = useCallback(() => {
     const BUFFER_PIXELS = 20
 
-    setScrollWidth(scrollContainerRef?.current?.scrollWidth)
-    setViewWidth(scrollContainerRef?.current?.clientWidth)
-    setScrollPositionX(scrollContainerRef?.current?.scrollLeft)
+    if (direction === 'horizontal') {
+      setScrollWidth(scrollContainerRef?.current?.scrollWidth)
+      setViewWidth(scrollContainerRef?.current?.clientWidth)
+      setScrollPositionX(scrollContainerRef?.current?.scrollLeft)
 
-    setIsScrollable(scrollWidth > viewWidth)
-    setIsScrolledToEnd(
-      scrollPositionX + BUFFER_PIXELS >= scrollWidth - viewWidth,
-    )
-    setIsScrolledToStart(scrollPositionX < BUFFER_PIXELS)
-  }, [scrollContainerRef, scrollPositionX, scrollWidth, viewWidth])
+      setIsScrollable(scrollWidth > viewWidth)
+      setIsScrolledToEnd(
+        scrollPositionX + BUFFER_PIXELS >= scrollWidth - viewWidth,
+      )
+      setIsScrolledToStart(scrollPositionX < BUFFER_PIXELS)
+    } else {
+      setScrollHeight(scrollContainerRef?.current?.scrollHeight)
+      setViewHeight(scrollContainerRef?.current?.clientHeight)
+      setScrollPositionY(scrollContainerRef?.current?.scrollTop)
 
-  const autoScroll = (options) => {
-    const {
-      direction = 'right',
-      distanceInPixels = null,
-      distanceInPercentOfContainer = 25,
-    } = options
+      setIsScrollable(scrollHeight > viewHeight)
+      setIsScrolledToEnd(
+        scrollPositionY + BUFFER_PIXELS >= scrollHeight - viewHeight,
+      )
+      setIsScrolledToStart(scrollPositionY < BUFFER_PIXELS)
+    }
+  }, [
+    direction,
+    scrollContainerRef,
+    scrollHeight,
+    scrollPositionX,
+    scrollPositionY,
+    scrollWidth,
+    viewHeight,
+    viewWidth,
+  ])
 
+  const autoScroll = ({
+    direction = 'right',
+    distanceInPixels = 100,
+    distanceInPercentOfContainer = 25,
+  }) => {
     let distanceToScroll
     if (distanceInPercentOfContainer) {
-      distanceToScroll = (scrollWidth * distanceInPercentOfContainer) / 100
+      const relativeAmount =
+        direction === 'left' || direction === 'right'
+          ? scrollWidth * distanceInPercentOfContainer
+          : scrollHeight * distanceInPercentOfContainer
+      distanceToScroll = relativeAmount / 100
     } else {
       distanceToScroll = distanceInPixels
     }
@@ -96,7 +72,14 @@ export const useScrollIndicators = (
       scrollInstructions.left = -distanceToScroll
     } else if (direction === 'right') {
       scrollInstructions.left = distanceToScroll
+    } else if (direction === 'up') {
+      scrollInstructions.top = -distanceToScroll
+    } else if (direction === 'down') {
+      scrollInstructions.top = distanceToScroll
     }
+
+    console.log('scroll!!!')
+    console.log(scrollInstructions)
 
     scrollContainerRef.current.scrollBy({
       ...scrollInstructions,
@@ -106,7 +89,8 @@ export const useScrollIndicators = (
 
   useEffect(() => {
     // make sure it's relatively positioned (because the indicators will be absolutely positioned relative to it)
-    scrollContainerRef.current.style.position = 'relative'
+    if (scrollContainerRef?.current)
+      scrollContainerRef.current.style.position = 'relative'
     updateScrollIndicators()
   }, [scrollContainerRef, updateScrollIndicators])
 

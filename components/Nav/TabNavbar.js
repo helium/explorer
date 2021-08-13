@@ -9,10 +9,8 @@ import {
 } from 'react-router-dom'
 import classNames from 'classnames'
 import { castArray } from 'lodash'
-import {
-  useScrollIndicators,
-  ScrollIndicator,
-} from '../../hooks/useScrollIndicators'
+import { useScrollIndicators } from '../../hooks/useScrollIndicators'
+import ScrollIndicator from '../Nav/ScrollIndicator'
 
 const NavItem = ({
   title,

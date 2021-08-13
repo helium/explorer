@@ -9,18 +9,19 @@ import { Link } from 'react-router-i18n'
 
 const filtersByContext = {
   hotspot: {
-    'All Activity': [],
     Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
     Beacons: ['poc_receipts_v1'],
     Data: ['state_channel_close_v1'],
     Consensus: ['consensus_group_v1'],
+    'All Activity': [],
   },
   account: {
-    'All Activity': [],
+    Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
     Payments: ['payment_v1', 'payment_v2'],
     Stakes: ['stake_validator_v1'],
     'Hotspot Transfers': ['transfer_hotspot_v1'],
     'Token Burns': ['token_burn_v1'],
+    'All Activity': [],
   },
 }
 

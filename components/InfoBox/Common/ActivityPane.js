@@ -29,7 +29,7 @@ const ActivityPane = ({ context, address }) => {
   const scrollView = useRef()
   const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
-  const [filter, setFilter] = useState('All Activity')
+  const [filter, setFilter] = useState('Rewards')
 
   const filters = filtersByContext[context]
 

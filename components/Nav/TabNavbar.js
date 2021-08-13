@@ -10,7 +10,7 @@ import {
 import classNames from 'classnames'
 import { castArray } from 'lodash'
 import { useScrollIndicators } from '../../hooks/useScrollIndicators'
-import ScrollIndicator from '../Nav/ScrollIndicator'
+import ScrollIndicator from '../../hooks/useScrollIndicators'
 
 const NavItem = ({
   title,

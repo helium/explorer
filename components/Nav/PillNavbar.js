@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { useCallback } from 'react'
 import { getTxnTypeColor } from '../../utils/txns'
 import { useScrollIndicators } from '../../hooks/useScrollIndicators'
-import ScrollIndicator from '../Nav/ScrollIndicator'
+import ScrollIndicator from '../../hooks/useScrollIndicators'
 import { useRef } from 'react'
 
 const NavItem = ({ title, active = false, onClick, type }) => {

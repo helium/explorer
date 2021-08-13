@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { useRef } from 'react'
 import { useScrollIndicators } from '../../../hooks/useScrollIndicators'
-import ScrollIndicator from '../../Nav/ScrollIndicator'
+import ScrollIndicator from '../../../hooks/useScrollIndicators'
 
 const InfoBoxPaneContainer = ({
   children,

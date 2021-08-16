@@ -17,6 +17,13 @@ export const communityToolsList = [
     tags: ['Monitoring'],
   },
   {
+    name: 'DeWi Rewards Report',
+    url: 'https://etl.dewi.org/dashboard/11-rewards-report-for-an-account',
+    description:
+      'A free rewards report for accounts to tabulate mining earnings. To login, username/pass=test@test.com/test123 ',
+    tags: ['Data Export'],
+  },
+  {
     name: 'Helistats',
     url: 'https://apps.apple.com/us/app/helistats/id1573119107',
     description:

@@ -20,10 +20,11 @@ const VersionsWidget = () => {
   const { data: versionCounts } = useApi('/validators/versions')
 
   const isLoading = useMemo(() => !versionCounts, [versionCounts])
-  const totalValidators = useMemo(
-    () => sum(Object.values(versionCounts)),
-    [versionCounts],
-  )
+  const totalValidators = useMemo(() => {
+    if (!versionCounts) return 0
+
+    return sum(Object.values(versionCounts))
+  }, [versionCounts])
 
   return (
     <div className="bg-gray-200 p-3 rounded-lg col-span-2">

@@ -20,7 +20,7 @@ export const communityToolsList = [
     name: 'DeWi Rewards Report',
     url: 'https://etl.dewi.org/dashboard/11-rewards-report-for-an-account',
     description:
-      'A free rewards report for accounts to tabulate mining earnings. To login, username/pass=test@test.com/test123 ',
+      'A free rewards report for accounts to tabulate mining earnings.',
     tags: ['Data Export'],
   },
   {

@@ -1,5 +1,6 @@
 import useSWR from 'swr'
 import Client, { Network } from '@helium/http'
+import client, { TAKE_MAX } from './client'
 
 export const fetchElections = (network = 'production') => async () => {
   const clientNetwork =
@@ -34,6 +35,28 @@ export const useElections = (initialData, network = 'production') => {
   )
   return {
     consensusGroups: data,
+    isLoading: !error && !data,
+    isError: error,
+  }
+}
+
+export const fetchElected = async () => {
+  const list = await client.validators.elected()
+  const validators = await list.take(TAKE_MAX)
+  return validators
+}
+
+export const useConsensusGroup = (initialData) => {
+  const { data, error } = useSWR(
+    'consensusGroup',
+    fetchElected,
+    {
+      initialData,
+      refreshInterval: 10000,
+    },
+  )
+  return {
+    consensusGroup: data,
     isLoading: !error && !data,
     isError: error,
   }

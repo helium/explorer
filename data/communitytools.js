@@ -17,6 +17,19 @@ export const communityToolsList = [
     tags: ['Monitoring'],
   },
   {
+    name: 'DeWi Rewards Report',
+    url: 'https://etl.dewi.org/dashboard/11-rewards-report-for-an-account',
+    description:
+      'A free rewards report for accounts to tabulate mining earnings.',
+    tags: ['Data Export'],
+  },
+  {
+    name: 'Fairspot CSV Export',
+    url: 'https://www.fairspot.host/hnt-export-mining-tax',
+    description: 'A tool to export transactions from your Helium wallet.',
+    tags: ['Data Export'],
+  },
+  {
     name: 'Helistats',
     url: 'https://apps.apple.com/us/app/helistats/id1573119107',
     description:

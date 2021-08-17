@@ -1,19 +1,46 @@
 import InfoBox from './InfoBox'
 import { useParams } from 'react-router'
 import { useEffect } from 'react'
-import classNames from 'classnames'
 import useSelectedCity from '../../hooks/useSelectedCity'
 import ReactCountryFlag from 'react-country-flag'
+import { useAsync } from 'react-async-hook'
+// import client from '../../data/client'
+import camelcaseKeys from 'camelcase-keys'
+import { fetchApi } from '../../hooks/useApi'
+import qs from 'qs'
+import SkeletonWidgets from './Common/SkeletonWidgets'
+import { useState } from 'react'
+import TabNavbar, { TabPane } from '../Nav/TabNavbar'
+import CityStatisticsPane from './CityDetails/CityStatisticsPane'
+import HotspotsList from '../Lists/HotspotsList'
+import SkeletonList from '../Lists/SkeletonList'
 
 const CityDetailsInfoBox = () => {
   const { cityid } = useParams()
   const { selectedCity, selectCity, clearSelectedCity } = useSelectedCity()
+  const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
+  useAsync(async () => {
     if (!selectedCity) {
-      // TODO: get city info from city ID. Associated API GH issue: https://github.com/helium/blockchain-http/issues/312
-      // selectCity needs the full city geocode object, which is not easily retrievable from the API right now
-      // selectCity(cityid)
+      setIsLoading(true)
+
+      const { data: cityFetched } = await fetch(
+        `https://api.helium.io/v1/cities/${cityid}`,
+      ).then((res) => res.json())
+      const city = camelcaseKeys(cityFetched)
+      // TODO: use new .cities.get('city-id') function in helium-js once published (https://github.com/helium/helium-js/pull/224)
+      // will replace above with:
+      // const city = await client.cities.get(cityid)
+
+      const geometry = await fetchApi(
+        '/cities/search?' +
+          qs.stringify({
+            term: [city.longCity, city.longState, city.longCountry].join(', '),
+          }),
+      )
+
+      selectCity({ ...city, geometry })
+      setIsLoading(false)
     }
   }, [cityid, clearSelectedCity, selectCity, selectedCity])
 
@@ -25,11 +52,7 @@ const CityDetailsInfoBox = () => {
 
   const generateTitle = (city) => {
     if (!city) return 'Loading city...'
-    return (
-      <span className="flex items-start justify-start">
-        <span className="ml-3">{city}</span>
-      </span>
-    )
+    return <span className="flex items-start justify-start">{city}</span>
   }
 
   const generateBreadcrumbs = () => {
@@ -68,14 +91,18 @@ const CityDetailsInfoBox = () => {
       breadcrumbs={generateBreadcrumbs(selectedCity)}
       subtitles={generateSubtitles(selectedCity)}
     >
-      <div
-        className={classNames('grid grid-flow-row grid-cols-1 no-scrollbar', {
-          'overflow-y-scroll': selectedCity,
-          'overflow-y-hidden': !selectedCity,
-        })}
-      >
-        {/* TODO: add city stat widgets here: hotspot count, etc. */}
-      </div>
+      <TabNavbar>
+        <TabPane title="Statistics" key="statistics">
+          {isLoading ? (
+            <SkeletonWidgets />
+          ) : (
+            <CityStatisticsPane city={selectedCity} />
+          )}
+        </TabPane>
+        <TabPane title="Hotspots" path="activity" key="hotspots">
+          {isLoading ? <SkeletonList /> : <HotspotsList hotspots={[]} />}
+        </TabPane>
+      </TabNavbar>
     </InfoBox>
   )
 }

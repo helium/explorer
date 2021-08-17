@@ -2,11 +2,7 @@ import { getPocReceiptRole } from '../../../utils/txns'
 import animalHash from 'angry-purple-tiger'
 import classNames from 'classnames'
 import { h3ToGeo } from 'h3-js'
-import {
-  formatDistance,
-  formatWitnessInvalidReason,
-} from '../../Hotspots/utils'
-import { calculateDistance } from '../../../utils/distance'
+import { calculateDistance, formatHexDistance } from '../../../utils/distance'
 
 const RoleParticipant = ({
   className,
@@ -46,15 +42,15 @@ const ActiveWitnessInfo = ({
   activeWitness,
   path: { challengeeLocationHex },
 }) => {
-  const [challengeeLat, challengeeLng] = h3ToGeo(challengeeLocationHex);
-  const [witnessLat, witnessLng] = h3ToGeo(activeWitness.locationHex);
+  const [challengeeLat, challengeeLng] = h3ToGeo(challengeeLocationHex)
+  const [witnessLat, witnessLng] = h3ToGeo(activeWitness.locationHex)
 
   return (
     <div className="grid grid-cols-5 text-xs font-sans font-thin text-gray-800 ml-7 mb-2 mt-1.5 whitespace-nowrap">
       <span className="col-span-1">Distance</span>
       <span className="col-span-4 text-gray-800 font-medium ml-0.5">
         {challengeeLng &&
-          formatDistance(
+          formatHexDistance(
             calculateDistance(
               [challengeeLng, challengeeLat],
               [witnessLng, witnessLat],

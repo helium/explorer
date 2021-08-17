@@ -5,7 +5,7 @@ import { fetchHotspot } from '../../../data/hotspots'
 import HotspotWidget from '../../Widgets/HotspotWidget'
 import Pill from '../../Common/Pill'
 import { h3ToGeo } from 'h3-js'
-import { formatDistance, calculateDistance } from '../../../utils/distance'
+import { formatHexDistance, calculateDistance } from '../../../utils/distance'
 import { Link } from 'react-router-i18n'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
@@ -84,7 +84,7 @@ const WitnessesWidget = ({
                     >
                       <span className="text-gray-800 font-medium">
                         {challengeeLocationHex &&
-                          formatDistance(
+                          formatHexDistance(
                             calculateDistance(
                               [challengeeLng, challengeeLat],
                               [witnessLng, witnessLat],

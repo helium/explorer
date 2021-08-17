@@ -17,21 +17,21 @@ const ValidatorDetailsInfoBox = () => {
   const generateSubtitles = useCallback(() => {
     if (isLoading)
       return [
-        {
-          iconPath: '/images/location-blue.svg',
-          loading: true,
-        },
+        // {
+        //   iconPath: '/images/location-blue.svg',
+        //   loading: true,
+        // },
         {
           iconPath: '/images/account-green.svg',
           loading: true,
         },
       ]
     return [
-      {
-        iconPath: '/images/location-blue.svg',
-        // path: `/cities/${hotspot.geocode.cityId}`,
-        title: <ValidatorFlagLocation geo={validator.geo} />,
-      },
+      // {
+      //   iconPath: '/images/location-blue.svg',
+      //   // path: `/cities/${hotspot.geocode.cityId}`,
+      //   title: <ValidatorFlagLocation geo={validator.geo} />,
+      // },
       {
         iconPath: '/images/account-green.svg',
         title: <AccountAddress address={validator.owner} truncate={5} />,

@@ -1,13 +1,10 @@
 import useSWR from 'swr'
-import Balance, { CurrencyType } from '@helium/currency'
-import { fetchApi } from '../hooks/useApi'
-import client from './client'
-import camelcaseKeys from 'camelcase-keys'
+import client, { TAKE_MAX } from './client'
+import { useCallback, useState } from 'react'
+import { useAsync } from 'react-async-hook'
 
 export const fetchValidator = async (address) => {
-  const validator = await fetchApi(`/validators/${address}`)
-  const stake = new Balance(validator.stake, CurrencyType.networkToken)
-  return { ...camelcaseKeys(validator), stake }
+  return client.validators.get(address)
 }
 
 export const useValidator = (address) => {
@@ -26,11 +23,7 @@ export const useValidator = (address) => {
 }
 
 export const fetchAccountValidators = async (address) => {
-  const validators = await fetchApi(`/accounts/${address}/validators`)
-  return validators.map((v) => ({
-    ...camelcaseKeys(v),
-    stake: new Balance(v.stake, CurrencyType.networkToken),
-  }))
+  return (await client.account(address).validators.list()).take(TAKE_MAX)
 }
 
 export const useAccountValidators = (address) => {
@@ -65,4 +58,46 @@ export const useValidatorStats = () => {
     isLoading: !error && !data,
     isError: error,
   }
+}
+
+export const useValidators = (context, address, pageSize = 20) => {
+  const [list, setList] = useState()
+  const [validators, setValidators] = useState([])
+  const [isLoadingInitial, setIsLoadingInitial] = useState(true)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
+
+  const makeList = () => {
+    if (!context || !address) {
+      return client.validators.list()
+    }
+
+    if (context === 'account') {
+      return client.account(address).validators.list()
+    }
+  }
+
+  useAsync(async () => {
+    const newList = await makeList()
+    setList(newList)
+  }, [])
+
+  useAsync(async () => {
+    if (!list) return
+    setIsLoadingMore(true)
+    const newValidators = await list.take(pageSize)
+    setValidators(newValidators)
+    setIsLoadingMore(false)
+    setIsLoadingInitial(false)
+    if (newValidators.length < pageSize) {
+      setHasMore(false)
+    }
+  }, [list])
+
+  const fetchMore = useCallback(async () => {
+    const newValidators = await list.take(pageSize)
+    setValidators([...validators, ...newValidators])
+  }, [list, pageSize, validators])
+
+  return { validators, fetchMore, isLoadingInitial, isLoadingMore, hasMore }
 }

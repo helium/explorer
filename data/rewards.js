@@ -1,6 +1,5 @@
 import { getUnixTime } from 'date-fns'
 import useSWR from 'swr'
-import { fetchAll } from '../utils/pagination'
 import client, { TAKE_MAX } from './client'
 
 const NETWORK_DATES = [
@@ -166,12 +165,9 @@ export const fetchValidatorRewardsSum = async (
   numBack,
   bucketType,
 ) => {
-  const response = await fetch(
-    `https://api.helium.io/v1/validators/${address}/rewards/sum/?min_time=-${numBack}%20${bucketType}`,
-  )
-  const {
-    data: { total },
-  } = await response.json()
+  const { total } = await client
+    .validator(address)
+    .rewards.sum.get({ minTime: `-${numBack} ${bucketType}` })
   return total
 }
 

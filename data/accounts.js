@@ -23,27 +23,21 @@ export const useAccount = (address) => {
 }
 
 export const fetchRichestAccounts = async () => {
-  const [accounts, stats] = await Promise.all([
-    fetch('https://api.helium.io/v1/accounts/rich')
-      .then((res) => res.json())
-      .then(($) => $.data),
-    fetch('https://api.helium.io/v1/stats')
-      .then((res) => res.json())
-      .then(($) => $.data),
-  ])
+  const accounts = await (await client.accounts.listRich()).take(100)
+  const stats = await client.stats.get()
 
-  return accounts.map((a, i) => {
+  const richAccounts = accounts.map((a, i) => {
     return {
-      ...camelcaseKeys(a),
+      ...a,
       rank: i + 1,
-      balance: new Balance(a.balance, CurrencyType.networkToken),
-      stakedBalance: new Balance(a.staked_balance, CurrencyType.networkToken),
-      secBalance: new Balance(a.sec_balance, CurrencyType.security),
       hntPercent:
-        ((a.balance + a.staked_balance) / 100000000 / stats.token_supply) * 100,
-      hstPercent: (a.sec_balance / 1000000000000) * 100,
+        (a.balance.plus(a.stakedBalance).floatBalance / stats.tokenSupply) *
+        100,
+      hstPercent: (a.secBalance.floatBalance / 10000) * 100,
     }
   })
+
+  return richAccounts
 }
 
 export const useRichestAccounts = () => {

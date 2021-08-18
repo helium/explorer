@@ -154,7 +154,7 @@ const BaseList = ({
           description={listHeaderDescription}
         />
       )}
-      {items.map((item, i, { length }) => baseRenderItem(item, i, length))}
+      {(items || []).map((item, i, { length }) => baseRenderItem(item, i, length))}
       {fetchMore && hasMore && (
         <div
           ref={sentryRef}

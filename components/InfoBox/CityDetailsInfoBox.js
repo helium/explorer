@@ -4,8 +4,7 @@ import { useEffect } from 'react'
 import useSelectedCity from '../../hooks/useSelectedCity'
 import ReactCountryFlag from 'react-country-flag'
 import { useAsync } from 'react-async-hook'
-// import client from '../../data/client'
-import camelcaseKeys from 'camelcase-keys'
+import client from '../../data/client'
 import { fetchApi } from '../../hooks/useApi'
 import qs from 'qs'
 import SkeletonWidgets from './Common/SkeletonWidgets'
@@ -24,13 +23,7 @@ const CityDetailsInfoBox = () => {
     if (!selectedCity) {
       setIsLoading(true)
 
-      const { data: cityFetched } = await fetch(
-        `https://api.helium.io/v1/cities/${cityid}`,
-      ).then((res) => res.json())
-      const city = camelcaseKeys(cityFetched)
-      // TODO: use new .cities.get('city-id') function in helium-js once published (https://github.com/helium/helium-js/pull/224)
-      // will replace above with:
-      // const city = await client.cities.get(cityid)
+      const city = await client.cities.get(cityid)
 
       const geometry = await fetchApi(
         '/cities/search?' +

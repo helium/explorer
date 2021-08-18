@@ -9,6 +9,13 @@
 // Please make sure your app is in ALPHABETICAL order
 
 export const communityToolsList = [
+   {
+    name: 'HotspotRF',
+    url: 'https://hotspotrf.com',
+    description:
+      'Improve and optimize Helium hotspot placement using Radio Frequency (RF) modeling.',
+    tags: ['Planning', 'Optimization'],
+  },
   {
     name: 'Bobcat Diagnoser',
     url: 'https://www.bobcatminer.com/post/bobcat-diagnoser-user-guide',

@@ -9,13 +9,6 @@
 // Please make sure your app is in ALPHABETICAL order
 
 export const communityToolsList = [
-   {
-    name: 'HotspotRF',
-    url: 'https://hotspotrf.com',
-    description:
-      'Improve and optimize Helium hotspot placement using Radio Frequency (RF) modeling.',
-    tags: ['Planning', 'Optimization'],
-  },
   {
     name: 'Bobcat Diagnoser',
     url: 'https://www.bobcatminer.com/post/bobcat-diagnoser-user-guide',
@@ -79,6 +72,13 @@ export const communityToolsList = [
     description:
       'This App allows you to easily configure your Hotspot WiFi and view Ethernet status.',
     tags: ['iOS'],
+  },
+  {
+    name: 'HotspotRF',
+    url: 'https://hotspotrf.com',
+    description:
+      'Improve and optimize Helium hotspot placement using Radio Frequency (RF) modeling.',
+    tags: ['Planning'],
   },
   {
     name: 'Hotspotty',

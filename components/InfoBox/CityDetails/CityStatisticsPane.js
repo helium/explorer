@@ -7,7 +7,7 @@ const CityStatisticsPane = ({ city }) => {
   return (
     <InfoBoxPaneContainer>
       <Widget
-        value={city.hotspotCount}
+        value={city.hotspotCount.toLocaleString()}
         title="Total Hotspots in City"
         subtitle={`${(
           (city.onlineCount / city.hotspotCount) *
@@ -15,8 +15,14 @@ const CityStatisticsPane = ({ city }) => {
         ).toLocaleString(undefined, { maximumFractionDigits: 2 })}% online`}
         span={2}
       />
-      <Widget value={city.onlineCount} title="Online Hotspots" />
-      <Widget value={city.offlineCount} title="Offline Hotspots" />
+      <Widget
+        value={city.onlineCount.toLocaleString()}
+        title="Online Hotspots"
+      />
+      <Widget
+        value={city.offlineCount.toLocaleString()}
+        title="Offline Hotspots"
+      />
     </InfoBoxPaneContainer>
   )
 }

@@ -13,6 +13,7 @@ import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import CityStatisticsPane from './CityDetails/CityStatisticsPane'
 import HotspotsList from '../Lists/HotspotsList'
 import SkeletonList from '../Lists/SkeletonList'
+import CityHotspotsPane from './CityDetails/CityHotspotsPane'
 
 const CityDetailsInfoBox = () => {
   const { cityid } = useParams()
@@ -45,7 +46,11 @@ const CityDetailsInfoBox = () => {
 
   const generateTitle = (city) => {
     if (!city) return 'Loading city...'
-    return <span className="flex items-start justify-start">{city}</span>
+    return (
+      <span className="flex items-start justify-start">{`${city?.longCity}${
+        city?.longState && city?.longCity ? ', ' : ''
+      }${city?.longState}`}</span>
+    )
   }
 
   const generateBreadcrumbs = () => {
@@ -79,7 +84,7 @@ const CityDetailsInfoBox = () => {
 
   return (
     <InfoBox
-      title={generateTitle(selectedCity?.longCity)}
+      title={generateTitle(selectedCity)}
       metaTitle={selectedCity?.longCity}
       breadcrumbs={generateBreadcrumbs(selectedCity)}
       subtitles={generateSubtitles(selectedCity)}
@@ -92,8 +97,12 @@ const CityDetailsInfoBox = () => {
             <CityStatisticsPane city={selectedCity} />
           )}
         </TabPane>
-        <TabPane title="Hotspots" path="activity" key="hotspots">
-          {isLoading ? <SkeletonList /> : <HotspotsList hotspots={[]} />}
+        <TabPane title="Hotspots" path="hotspots" key="hotspots">
+          {isLoading ? (
+            <SkeletonList />
+          ) : (
+            <CityHotspotsPane city={selectedCity} />
+          )}
         </TabPane>
       </TabNavbar>
     </InfoBox>

@@ -1872,10 +1872,10 @@
   dependencies:
     bignumber.js "^9.0.0"
 
-"@helium/http@^3.39.0":
-  version "3.39.0"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.39.0.tgz#c27a62f00ea9b11b0d57362bba983e24477ee188"
-  integrity sha512-iJtaRBn6goCOTYpouuFVZCppKGhOF0pRqIDv1zKgM4MKoKqpBsuxyv2peMDJpK05VOSFFsc1THmwG+x1DeLtNw==
+"@helium/http@^3.42.0":
+  version "3.42.0"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.42.0.tgz#6b69ce488b6f6c642b0a1a62c9996728fa5537a8"
+  integrity sha512-9KQpuhs57IS4kA43MvpyWEg5ZFrNY1iJIHKNFtc7Cl/V4VGMOTNyB9L+tfG5GqdPvUWhuoV0w2W1UdgmfuMBug==
   dependencies:
     "@helium/currency" "^3.25.1"
     axios "^0.21.1"

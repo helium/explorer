@@ -9,11 +9,7 @@ export const fetchTxnDetails = async (txnHash) => {
   txn.tooltip = getTooltip(txn.type)
 
   if (txn.location) {
-    // TODO add to helium-js
-    const geoRes = await fetch(
-      `https://api.helium.io/v1/locations/${txn.location}`,
-    )
-    const { data: geocode } = await geoRes.json()
+    const geocode = await client.locations.get(txn.location)
     txn.geocode = geocode
   }
   return txn

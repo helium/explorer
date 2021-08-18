@@ -66,11 +66,12 @@ export const useHotspotRewardsSum = (
 }
 
 export const getNetworkRewardsBuckets = async (numBack, bucketType) => {
-  // TODO add to helium-js
-  const rewards = await fetchAll('/rewards/sum', {
-    min_time: `-${numBack} ${bucketType}`,
-    bucket: bucketType,
-  })
+  const rewards = await (
+    await client.rewards.sum.list({
+      minTime: `-${numBack} ${bucketType}`,
+      bucket: bucketType,
+    })
+  ).take(TAKE_MAX)
   const rewardsWithTarget = rewards.map((r) => ({
     ...r,
     target: getTargetProduction(r.timestamp) / 30,
@@ -160,7 +161,11 @@ export const useRewardBuckets = (
   }
 }
 
-export const fetchValidatorRewardsSum = async (address, numBack, bucketType) => {
+export const fetchValidatorRewardsSum = async (
+  address,
+  numBack,
+  bucketType,
+) => {
   const response = await fetch(
     `https://api.helium.io/v1/validators/${address}/rewards/sum/?min_time=-${numBack}%20${bucketType}`,
   )

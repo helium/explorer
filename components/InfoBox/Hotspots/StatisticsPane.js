@@ -51,6 +51,13 @@ const StatisticsPane = () => {
         series={stats?.ownersCount}
         isLoading={!stats}
       />
+      <StatWidget
+        title="Data-Only Hotspots"
+        // series={stats?.dataOnlyCount}
+        // TODO: swap below line with above line
+        series={[{ value: 72 }]}
+        isLoading={!stats}
+      />
     </InfoBoxPaneContainer>
   )
 }

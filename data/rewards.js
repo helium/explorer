@@ -55,6 +55,7 @@ export const useHotspotRewardsSum = (
 
   const { data, error } = useSWR(key, fetcher(address, numBack, bucketType), {
     refreshInterval: 0,
+    dedupingInterval: 60 * 1000 * 10,
   })
 
   return {
@@ -155,6 +156,37 @@ export const useRewardBuckets = (
   return {
     rewards: data,
     isLoading: !error && !data,
+    isError: error,
+  }
+}
+
+export const fetchValidatorRewardsSum = async (address, numBack, bucketType) => {
+  const response = await fetch(
+    `https://api.helium.io/v1/validators/${address}/rewards/sum/?min_time=-${numBack}%20${bucketType}`,
+  )
+  const {
+    data: { total },
+  } = await response.json()
+  return total
+}
+
+export const useValidatorRewardsSum = (
+  address,
+  numBack = 1,
+  bucketType = 'day',
+) => {
+  const key = `rewards/validators/${address}/sum/${numBack}/${bucketType}`
+  const fetcher = (address, numBack, bucketType) => () =>
+    fetchValidatorRewardsSum(address, numBack, bucketType)
+
+  const { data, error } = useSWR(key, fetcher(address, numBack, bucketType), {
+    refreshInterval: 0,
+    dedupingInterval: 60 * 1000 * 10,
+  })
+
+  return {
+    rewardsSum: data,
+    isLoading: !error && data === undefined,
     isError: error,
   }
 }

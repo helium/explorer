@@ -3,7 +3,7 @@ import Timestamp from 'react-timestamp'
 import FlagLocation from '../Common/FlagLocation'
 import { formatHotspotName } from '../Hotspots/utils'
 import Pill from '../Common/Pill'
-import { capitalize } from 'lodash'
+import { capitalize, round } from 'lodash'
 import { useCallback } from 'react'
 import AccountAddress from '../AccountAddress'
 import ValidatorFlagLocation from '../Validators/ValidatorFlagLocation'
@@ -31,7 +31,13 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
     return (
       <BaseSearchResult
         title={formatHotspotName(result.item.name)}
-        subtitle={<ValidatorFlagLocation geo={result.item.geo} />}
+        // subtitle={<ValidatorFlagLocation geo={result.item.geo} />}
+        subtitle={
+          <div className="flex items-center space-x-1">
+            <img src="/images/penalty.svg" className="w-3" />{' '}
+            <span>{round(result.item.penalty, 2)}</span>
+          </div>
+        }
         type={result.type}
         selected={selected}
         onSelect={handleSelect}

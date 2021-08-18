@@ -58,12 +58,12 @@ const OverviewPane = () => {
         title="Earnings"
       />
       <PenaltyWidget validator={validator} />
-      <Widget
+      {/* <Widget
         title="ISP"
         isLoading={isLoading}
         span={2}
         value={<ISP validator={validator} />}
-      />
+      /> */}
     </InfoBoxPaneContainer>
   )
 }

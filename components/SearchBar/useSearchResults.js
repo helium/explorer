@@ -34,9 +34,9 @@ const useSearchResults = () => {
   const searchValidator = useCallback(
     async (term) => {
       try {
-        const validators = await fetchApi(`/validators/search?term=${term}`)
-        const results = validators.map((v) =>
-          toSearchResult(camelcaseKeys(v), 'validator'),
+        const list = await client.validators.search(term)
+        const results = (await list.take(20)).map((v) =>
+          toSearchResult(v, 'validator'),
         )
         dispatch({
           type: PUSH_RESULTS,

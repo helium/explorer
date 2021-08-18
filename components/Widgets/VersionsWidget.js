@@ -1,7 +1,8 @@
-import { countBy, maxBy } from 'lodash'
+import { max, sum } from 'lodash'
 import { Tooltip } from 'antd'
-import { filterEligibleValidators, formatVersion } from '../Validators/utils'
+import { formatVersion } from '../Validators/utils'
 import { useMemo } from 'react'
+import useApi from '../../hooks/useApi'
 
 const makePercent = (count, total) => (count / total) * 100 + '%'
 
@@ -15,18 +16,15 @@ const versionColor = (version, index) => {
   return green
 }
 
-const VersionsWidget = ({ validators = [], isLoading = false }) => {
-  const eligibleValidators = useMemo(
-    () => validators.filter(filterEligibleValidators),
-    [validators],
-  )
+const VersionsWidget = () => {
+  const { data: versionCounts } = useApi('/validators/versions')
 
-  const versionCounts = useMemo(
-    () => countBy(eligibleValidators, 'versionHeartbeat'),
-    [eligibleValidators],
-  )
+  const isLoading = useMemo(() => !versionCounts, [versionCounts])
+  const totalValidators = useMemo(() => {
+    if (!versionCounts) return 0
 
-  const totalValidators = eligibleValidators.length
+    return sum(Object.values(versionCounts))
+  }, [versionCounts])
 
   return (
     <div className="bg-gray-200 p-3 rounded-lg col-span-2">
@@ -62,9 +60,7 @@ const VersionsWidget = ({ validators = [], isLoading = false }) => {
         ) : (
           <span className="font-mono text-gray-800 text-sm">
             Latest Version:{' '}
-            {formatVersion(
-              maxBy(eligibleValidators, 'versionHeartbeat')?.versionHeartbeat,
-            ) || ' N/A'}
+            {formatVersion(max(Object.keys(versionCounts))) || ' N/A'}
           </span>
         )}
       </div>

@@ -26,3 +26,25 @@ export const useElections = (initialData) => {
     isError: error,
   }
 }
+
+export const fetchElected = async () => {
+  const list = await client.validators.elected()
+  const validators = await list.take(TAKE_MAX)
+  return validators
+}
+
+export const useConsensusGroup = (initialData) => {
+  const { data, error } = useSWR(
+    'consensusGroup',
+    fetchElected,
+    {
+      initialData,
+      refreshInterval: 10000,
+    },
+  )
+  return {
+    consensusGroup: data,
+    isLoading: !error && !data,
+    isError: error,
+  }
+}

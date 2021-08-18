@@ -21,3 +21,23 @@ export const formatDistance = (meters) => {
     ' km'
   )
 }
+
+export const formatHexDistance = (meters) => {
+  if (meters === 0) {
+    return 'Same hex'
+  }
+
+  if (meters < 1000) {
+    return `~${Math.round(meters / 10) * 10} m`
+  }
+
+  if (meters < 10000) {
+    return `~${(meters / 1000).toLocaleString(undefined, {
+      maximumFractionDigits: 1,
+    })} km`
+  }
+
+  return `~${(meters / 1000).toLocaleString(undefined, {
+    maximumFractionDigits: 0,
+  })} km`
+}

@@ -3,11 +3,12 @@ import animalHash from 'angry-purple-tiger'
 import StatusCircle from '../Hotspots/StatusCircle'
 import FlagLocation from '../Common/FlagLocation'
 import Hex from '../Hex'
-import { formatDistance, generateRewardScaleColor } from '../Hotspots/utils'
+import { generateRewardScaleColor } from '../Hotspots/utils'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
 import { Tooltip } from 'antd'
 import I18n from '../../copy/I18n'
+import { formatHexDistance } from '../../utils/distance'
 
 const NearbyHotspotsList = ({
   hotspots,
@@ -57,7 +58,9 @@ const NearbyHotspotsList = ({
   const renderDetails = useCallback((h) => {
     return (
       <Tooltip title={<I18n t="tooltips.distance" />} placement="left">
-        <span className="whitespace-nowrap">{formatDistance(h.distance)}</span>
+        <span className="whitespace-nowrap">
+          {formatHexDistance(h.distance)}
+        </span>
       </Tooltip>
     )
   }, [])

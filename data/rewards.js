@@ -39,7 +39,7 @@ export const getHotspotRewardsBuckets = async (
 export const fetchHotspotRewardsSum = async (address, numBack, bucketType) => {
   const { total } = await client
     .hotspot(address)
-    .rewards.sum.get({ minTime: `-${numBack} ${bucketType}` })
+    .rewards.sum.get(`-${numBack} ${bucketType}`)
   return total
 }
 
@@ -167,7 +167,7 @@ export const fetchValidatorRewardsSum = async (
 ) => {
   const { total } = await client
     .validator(address)
-    .rewards.sum.get({ minTime: `-${numBack} ${bucketType}` })
+    .rewards.sum.get(`-${numBack} ${bucketType}`)
   return total
 }
 

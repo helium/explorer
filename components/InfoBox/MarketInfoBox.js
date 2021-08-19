@@ -28,7 +28,7 @@ const MarketInfoBox = () => {
               tooltip="Oracle price is used to determine how many DC are produced when burning HNT"
               series={oraclePrices
                 ?.map((oraclePrice) => ({
-                  value: oraclePrice.price / 100000000,
+                  value: oraclePrice.price.floatBalance,
                 }))
                 ?.reverse()}
               locale="en-US"
@@ -71,6 +71,7 @@ const MarketInfoBox = () => {
               series={networkRewards}
               showTarget
               periodLabel="30 Day Trend"
+              isLoading={!networkRewards}
             />
             <Widget
               title="Circulating Supply"

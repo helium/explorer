@@ -9,12 +9,32 @@
 // Please make sure your app is in ALPHABETICAL order
 
 export const communityToolsList = [
+   {
+    name: 'HotspotRF',
+    url: 'https://hotspotrf.com',
+    description:
+      'Improve and optimize Helium hotspot placement using Radio Frequency (RF) modeling.',
+    tags: ['Planning', 'Optimization'],
+  },
   {
     name: 'Bobcat Diagnoser',
     url: 'https://www.bobcatminer.com/post/bobcat-diagnoser-user-guide',
     description:
       'This utility reports miner temp, firmware updates, syncing blocks and more for Bobcat Hotspots.',
     tags: ['Monitoring'],
+  },
+  {
+    name: 'DeWi Rewards Report',
+    url: 'https://etl.dewi.org/dashboard/11-rewards-report-for-an-account',
+    description:
+      'A free rewards report for accounts to tabulate mining earnings.',
+    tags: ['Data Export'],
+  },
+  {
+    name: 'Fairspot CSV Export',
+    url: 'https://www.fairspot.host/hnt-export-mining-tax',
+    description: 'A tool to export transactions from your Helium wallet.',
+    tags: ['Data Export'],
   },
   {
     name: 'Helistats',

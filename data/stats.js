@@ -1,8 +1,7 @@
 import useSWR from 'swr'
-import Client from '@helium/http'
+import client from './client'
 
 export const fetchStats = async () => {
-  const client = new Client()
   const stats = await client.stats.get()
 
   return {
@@ -32,18 +31,10 @@ export const useStats = (initialData) => {
   }
 }
 
-export const fetchCitiesByOnline = async () => {
-  const citiesResOnline = await fetch(
-    'https://api.helium.io/v1/cities?order=online_count',
-  )
-  const { data } = await citiesResOnline.json()
-  return JSON.parse(JSON.stringify(data))
+export const fetchCitiesByOnline = async (count = 20) => {
+  return (await client.cities.list({ order: 'onlineCount' })).take(count)
 }
 
-export const fetchCitiesByTotal = async () => {
-  const citiesResTotal = await fetch(
-    'https://api.helium.io/v1/cities?order=hotspot_count',
-  )
-  const { data } = await citiesResTotal.json()
-  return JSON.parse(JSON.stringify(data))
+export const fetchCitiesByTotal = async (count = 20) => {
+  return (await client.cities.list({ order: 'hotspotCount' })).take(count)
 }

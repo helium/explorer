@@ -13,7 +13,7 @@ const ScrollIndicator = ({
     <div
       className={classNames(
         wrapperClasses,
-        'absolute cursor-pointer transform-gpu transition-all duration-500',
+        'absolute cursor-pointer transform-gpu transition-all duration-200',
         {
           'opacity-100 pointer-events-auto': shown,
           'opacity-0 pointer-events-none': !shown,

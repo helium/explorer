@@ -57,8 +57,8 @@ export const fetchNearbyHotspots = async (lat, lon, distance = 1000) => {
       haversineDistance(
         lon,
         lat,
-        h3ToGeo(h.location_hex)[1],
-        h3ToGeo(h.location_hex)[0],
+        h3ToGeo(h.locationHex)[1],
+        h3ToGeo(h.locationHex)[0],
       ) * 1000,
   }))
   return hotspotsWithDistance

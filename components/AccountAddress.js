@@ -21,11 +21,15 @@ const AccountAddress = ({
           'font-mono': mono,
         })}
       >
-        {truncate
-          ? `${address.slice(0, truncateAmount)}...${
-              showSecondHalf ? address.slice(-truncateAmount) : ''
-            }`
-          : address}
+        {truncate ? (
+          <span>
+            {address.slice(0, truncateAmount)}
+            <span className="text-gray-525 px-0.5 tracking-wide">...</span>
+            {showSecondHalf && <span>{address.slice(-truncateAmount)}</span>}
+          </span>
+        ) : (
+          address
+        )}
       </span>
     </Tooltip>
   )

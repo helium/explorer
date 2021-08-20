@@ -124,6 +124,32 @@ module.exports = {
       8: '8px',
     },
     extend: {
+      animation: {
+        'bounce-left': 'bounce-left 2s infinite',
+        'bounce-right': 'bounce-right 2s infinite',
+      },
+      keyframes: {
+        'bounce-left': {
+          '0%, 100%': {
+            transform: 'translateX(-25%)',
+            'animation-timing-function': 'cubic-bezier(0.8, 0, 1, 1)',
+          },
+          '50%': {
+            transform: 'translateX(0)',
+            'animation-timing-function': 'cubic-bezier(0, 0, 0.2, 1)',
+          },
+        },
+        'bounce-right': {
+          '0%, 100%': {
+            transform: 'translateX(25%)',
+            'animation-timing-function': 'cubic-bezier(0.8, 0, 1, 1)',
+          },
+          '50%': {
+            transform: 'translateX(0)',
+            'animation-timing-function': 'cubic-bezier(0, 0, 0.2, 1)',
+          },
+        },
+      },
       spacing: {
         108: '27rem',
         120: '30rem',

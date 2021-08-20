@@ -17,7 +17,7 @@ const BlockStatisticsPane = () => {
   useEffect(() => {
     if (!!blocks) {
       setProcessingData(true)
-      const blockTimeDayArray = blocks?.blockTimeDay.map((bt) => {
+      const blockTimeDayArray = blocks?.blockTimeDay?.map((bt) => {
         bt.value = round(bt.value, 2)
         return bt
       })

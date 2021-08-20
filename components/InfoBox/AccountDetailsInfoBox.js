@@ -8,7 +8,6 @@ import ActivityPane from './Common/ActivityPane'
 import HotspotsPane from './AccountDetails/HotspotsPane'
 import ValidatorsPane from './AccountDetails/ValidatorsPane'
 import AccountIcon from '../AccountIcon'
-import MakerIcon from '../Icons/Maker'
 import CopyableText from '../Common/CopyableText'
 import MakerOverviewPane from './AccountDetails/MakerOverviewPane'
 import { useMaker } from '../../data/makers'
@@ -21,15 +20,15 @@ const AccountDetailsInfoBox = () => {
   const subtitles = useMemo(() => {
     if (maker)
       return [
-        {
-          title: maker?.name,
-          tooltip: 'This is a Maker Account',
-          icon: (
-            <MakerIcon classes="h-4 w-auto mr-0.5 md:mr-1 text-purple-500" />
-          ),
-        },
+        [
+          {
+            title: maker?.name,
+            tooltip: 'This is a Maker Account',
+            iconPath: '/images/maker.svg',
+          },
+        ],
       ]
-    return []
+    return [[]]
   }, [maker])
 
   const renderOverviewPane = useCallback(() => {

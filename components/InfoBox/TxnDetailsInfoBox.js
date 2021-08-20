@@ -66,25 +66,29 @@ const TxnDetailsInfoBox = () => {
   const generateSubtitles = (txn) => {
     if (!txn)
       return [
-        {
-          iconPath: '/images/clock.svg',
-          loading: true,
-        },
-        {
-          iconPath: '/images/address.svg',
-          loading: true,
-        },
+        [
+          {
+            iconPath: '/images/clock.svg',
+            loading: true,
+          },
+          {
+            iconPath: '/images/address.svg',
+            loading: true,
+          },
+        ],
       ]
     return [
-      {
-        title: <Timestamp date={txn.time} />,
-        iconPath: '/images/clock.svg',
-      },
-      {
-        title: formattedTxnHash(txn.hash),
-        textToCopy: txn.hash,
-        iconPath: '/images/address.svg',
-      },
+      [
+        {
+          title: <Timestamp date={txn.time} />,
+          iconPath: '/images/clock.svg',
+        },
+        {
+          title: formattedTxnHash(txn.hash),
+          textToCopy: txn.hash,
+          iconPath: '/images/address.svg',
+        },
+      ],
     ]
   }
 

@@ -17,6 +17,12 @@ import Gain from '../Hotspots/Gain'
 import Elevation from '../Hotspots/Elevation'
 import { isDataOnly } from '../Hotspots/utils'
 import SkeletonWidgets from './Common/SkeletonWidgets'
+import HexIndex from '../Common/HexIndex'
+import MakerIcon from '../Icons/MakerIcon'
+import { useMaker } from '../../data/makers'
+import Skeleton from '../Common/Skeleton'
+import { useCallback } from 'react'
+import AccountIcon from '../AccountIcon'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -40,17 +46,11 @@ const HotspotDetailsRoute = () => {
 
 const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
   const { clearSelectedHotspot } = useSelectedHotspot()
+  const { maker, isLoading: makerLoading } = useMaker(hotspot?.payer)
 
   const IS_DATA_ONLY = useMemo(() => isDataOnly(hotspot), [hotspot])
 
-  const title = useMemo(
-    () => (
-      <CopyableText textToCopy={address} tooltip="Copy address">
-        {address && animalHash(address)}
-      </CopyableText>
-    ),
-    [address],
-  )
+  const title = animalHash(address)
 
   useEffect(() => {
     return () => {
@@ -58,59 +58,96 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
     }
   }, [clearSelectedHotspot])
 
-  const generateSubtitles = (hotspot) => {
-    if (!hotspot)
+  const generateSubtitles = useCallback(
+    (hotspot) => {
+      if (!hotspot)
+        return [
+          [
+            {
+              iconPath: '/images/maker.svg',
+              loading: true,
+              skeletonClasses: 'w-8',
+            },
+            {
+              iconPath: '/images/gain.svg',
+              loading: true,
+              skeletonClasses: 'w-10',
+            },
+            {
+              iconPath: '/images/elevation.svg',
+              loading: true,
+              skeletonClasses: 'w-10',
+            },
+          ],
+          [
+            {
+              iconPath: '/images/address-symbol.svg',
+              loading: true,
+              skeletonClasses: 'w-20',
+            },
+            {
+              iconPath: '/images/account-green.svg',
+              loading: true,
+              skeletonClasses: 'w-20',
+            },
+          ],
+        ]
       return [
-        {
-          iconPath: '/images/location-blue.svg',
-          loading: true,
-          skeletonClasses: 'w-10',
-        },
-        {
-          iconPath: '/images/account-green.svg',
-          loading: true,
-          skeletonClasses: 'w-10',
-        },
-        {
-          iconPath: '/images/gain.svg',
-          loading: true,
-          skeletonClasses: 'w-10',
-        },
-        {
-          iconPath: '/images/elevation.svg',
-          loading: true,
-          skeletonClasses: 'w-10',
-        },
+        [
+          {
+            iconPath: '/images/maker.svg',
+            title: makerLoading ? <Skeleton /> : <span>{maker?.name}</span>,
+            path: `/accounts/${maker?.address}`,
+          },
+          {
+            iconPath: '/images/gain.svg',
+            title: <Gain hotspot={hotspot} icon={false} />,
+          },
+          {
+            iconPath: '/images/elevation.svg',
+            title: <Elevation hotspot={hotspot} icon={false} />,
+          },
+        ],
+        [
+          {
+            iconPath: '/images/address-symbol.svg',
+            title: <AccountAddress address={address} truncate={7} />,
+            textToCopy: address,
+          },
+          {
+            iconPath: '/images/account-green.svg',
+            title: (
+              <span className="flex items-center justify-start">
+                <AccountAddress
+                  address={hotspot.owner}
+                  truncate={7}
+                  showSecondHalf={false}
+                />
+                <AccountIcon
+                  address={hotspot.owner}
+                  className="h-2.5 md:h-3.5 w-auto ml-0.5"
+                />
+              </span>
+            ),
+            path: `/accounts/${hotspot.owner}`,
+          },
+        ],
       ]
-    return [
-      {
-        iconPath: '/images/location-blue.svg',
-        path: `/cities/${hotspot.geocode.cityId}`,
-        title: <FlagLocation geocode={hotspot.geocode} condensedView />,
-      },
-      {
-        iconPath: '/images/account-green.svg',
-        title: <AccountAddress address={hotspot.owner} truncate={5} />,
-        path: `/accounts/${hotspot.owner}`,
-      },
-      {
-        iconPath: '/images/gain.svg',
-        title: <Gain hotspot={hotspot} icon={false} />,
-      },
-      {
-        iconPath: '/images/elevation.svg',
-        title: <Elevation hotspot={hotspot} icon={false} />,
-      },
-    ]
-  }
+    },
+    [address, maker?.address, maker?.name, makerLoading],
+  )
 
   const generateBreadcrumbs = (hotspot) => {
     if (!hotspot) return [{ title: 'Hotspots', path: '/hotspots' }]
     return [
       { title: 'Hotspots', path: '/hotspots/latest' },
       ...(hotspot.location
-        ? // if the hotspot has a hex, show a breadcrumb for it
+        ? // if the hotspot has a location, show breadcrumbs for it
           [
+            {
+              title: <FlagLocation geocode={hotspot.geocode} condensedView />,
+              path: `/hotspots/cities/${hotspot.geocode.cityId}`,
+            },
             {
               title: (
                 <div className="flex items-center justify-center">
@@ -119,7 +156,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
                     src="/images/location-hex.svg"
                     className="h-3.5 w-auto mr-0.5 md:mr-1"
                   />
-                  {hotspot.location}
+                  <HexIndex index={hotspot.location} />
                 </div>
               ),
               path: `/hotspots/hex/${hotspot.location}`,

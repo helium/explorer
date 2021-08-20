@@ -10,13 +10,14 @@ import TrendWidget from '../Widgets/TrendWidget'
 import RewardsTrendWidget from '../Widgets/RewardsTrendWidget'
 import { useNetworkRewards } from '../../data/rewards'
 import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
+import useApi from '../../hooks/useApi'
 
 const MarketInfoBox = () => {
   const { market } = useMarket()
   const { stats } = useStats()
   const { oraclePrices } = useOraclePrices()
   const [latestOraclePrice] = oraclePrices || []
-  const { rewards: networkRewards } = useNetworkRewards()
+  const { data: networkRewards } = useApi('/network/rewards')
 
   return (
     <InfoBox title="Market" metaTitle="Market">
@@ -66,13 +67,13 @@ const MarketInfoBox = () => {
               }
               isLoading={!market || !stats}
             />
-            <RewardsTrendWidget
+            {/* <RewardsTrendWidget
               title="Network Rewards"
               series={networkRewards}
               showTarget
               periodLabel="30 Day Trend"
               isLoading={!networkRewards}
-            />
+            /> */}
             <Widget
               title="Circulating Supply"
               tooltip={`${round(
@@ -97,11 +98,14 @@ const MarketInfoBox = () => {
             <Widget
               title="DC per HNT"
               tooltip="DC are used to transmit or receive 24 bytes of data over the Helium Network"
-              value={(
-                latestOraclePrice?.price /
-                100000000 /
-                0.00001
-              ).toLocaleString()}
+              // value={(
+              //   latestOraclePrice?.price /
+              //   100000000 /
+              //   0.00001
+              // ).toLocaleString()}
+              value={latestOraclePrice?.price
+                ?.toDataCredits()
+                ?.toString(0, { showTicker: false })}
               isLoading={!oraclePrices}
             />
             <div className="col-span-2 pb-1" />

@@ -55,7 +55,7 @@ const BaseList = ({
       ) : (
         <>
           <div className="w-full">
-            <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans">
+            <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans whitespace-nowrap">
               {renderTitle(item)}
             </div>
             <div className="flex items-center space-x-4 h-6 text-gray-525 text-xs md:text-sm whitespace-nowrap">
@@ -154,7 +154,9 @@ const BaseList = ({
           description={listHeaderDescription}
         />
       )}
-      {(items || []).map((item, i, { length }) => baseRenderItem(item, i, length))}
+      {(items || []).map((item, i, { length }) =>
+        baseRenderItem(item, i, length),
+      )}
       {fetchMore && hasMore && (
         <div
           ref={sentryRef}

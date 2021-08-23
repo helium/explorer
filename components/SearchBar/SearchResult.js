@@ -106,6 +106,18 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
     )
   }
 
+  if (result.type === 'hex') {
+    return (
+      <BaseSearchResult
+        title={result.item.placeName}
+        subtitle={`${result.item.hotspotCount.toLocaleString()} Hotspots`}
+        type={result.type}
+        selected={selected}
+        onSelect={handleSelect}
+      />
+    )
+  }
+
   if (result.type === 'maker') {
     return (
       <BaseSearchResult

@@ -11,14 +11,13 @@ import SkeletonWidgets from './Common/SkeletonWidgets'
 import { useState } from 'react'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import CityStatisticsPane from './CityDetails/CityStatisticsPane'
-import HotspotsList from '../Lists/HotspotsList'
 import SkeletonList from '../Lists/SkeletonList'
 import CityHotspotsPane from './CityDetails/CityHotspotsPane'
 
 const CityDetailsInfoBox = () => {
   const { cityid } = useParams()
   const { selectedCity, selectCity, clearSelectedCity } = useSelectedCity()
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   useAsync(async () => {
     if (!selectedCity) {

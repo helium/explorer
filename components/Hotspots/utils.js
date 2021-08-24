@@ -26,6 +26,20 @@ export const formatDistance = (meters) => {
   )
 }
 
+export const formatCountryLocation = (geocode0, shortened = false) => {
+  const geocode = camelcaseKeys(geocode0)
+
+  if (!geocode?.shortCountry && !geocode?.longCountry) {
+    return 'No location set'
+  }
+
+  const locationTerms = []
+
+  locationTerms.push(shortened ? geocode?.shortCountry : geocode?.longCountry)
+
+  return locationTerms.join(', ')
+}
+
 export const formatLocation = (geocode0, shortened = false) => {
   const geocode = camelcaseKeys(geocode0)
 

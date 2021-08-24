@@ -4,6 +4,7 @@ import I18n from '../../copy/I18n'
 import StatisticsPane from './Hotspots/StatisticsPane'
 import LatestHotspotsPane from './Hotspots/LatestHotspotsPane'
 import MakersPane from './Hotspots/MakersPane'
+import TopCitiesPane from './Hotspots/TopCitiesPane'
 
 const HotspotsInfoBox = () => {
   return (
@@ -12,11 +13,14 @@ const HotspotsInfoBox = () => {
         <TabPane title="Statistics" key="statistics">
           <StatisticsPane />
         </TabPane>
+        <TabPane title="Latest Hotspots" key="latest" path="latest">
+          <LatestHotspotsPane />
+        </TabPane>
         <TabPane title="Makers" key="makers" path="makers">
           <MakersPane />
         </TabPane>
-        <TabPane title="Latest Hotspots" key="latest" path="latest">
-          <LatestHotspotsPane />
+        <TabPane title="Cities" key="latest" path="cities">
+          <TopCitiesPane />
         </TabPane>
       </TabNavbar>
     </InfoBox>

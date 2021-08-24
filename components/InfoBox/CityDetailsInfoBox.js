@@ -46,9 +46,11 @@ const CityDetailsInfoBox = () => {
   const generateTitle = (city) => {
     if (!city) return 'Loading city...'
     return (
-      <span className="flex items-start justify-start">{`${city?.longCity}${
-        city?.longState && city?.longCity ? ', ' : ''
-      }${city?.longState}`}</span>
+      <span className="flex items-start justify-start">{`${
+        city?.longCity ? city.longCity : ''
+      }${city?.longState && city?.longCity ? ', ' : ''}${
+        city?.longState
+      }`}</span>
     )
   }
 

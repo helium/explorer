@@ -16,8 +16,8 @@ const HexDetailsInfoBox = () => {
   const { clearSelectedHex, selectHex, selectedHex } = useSelectedHex()
   const { data: hexes } = useApi(
     '/hexes',
-    { dedupingInterval: 1000 * 60 },
-    { localCache: false },
+    { dedupingInterval: 1000 * 60 * 60 },
+    { localCache: false, version: 'v1' },
   )
 
   const { result: hotspots, loading } = useAsync(fetchHexHotspots, [index])
@@ -27,7 +27,6 @@ const HexDetailsInfoBox = () => {
 
     return hexes.find(({ hex }) => hex === index)
   }, [hexes, index])
-
 
   useEffect(() => {
     if (!selectedHex) {

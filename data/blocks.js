@@ -23,11 +23,7 @@ export const useLatestBlocks = (initialData, count = 100) => {
 }
 
 export const fetchBlockHeight = async () => {
-  const response = await fetch('https://api.helium.io/v1/blocks/height')
-  const {
-    data: { height },
-  } = await response.json()
-  return height
+  return client.blocks.getHeight()
 }
 
 export const useBlockHeight = (initialData) => {
@@ -87,11 +83,5 @@ export const useFetchBlocks = (pageSize = 20) => {
 }
 
 export const fetchHeightByTimestamp = async (timestamp) => {
-  const response = await fetch(
-    `https://api.helium.io/v1/blocks/height?max_time=${timestamp}`,
-  )
-  const {
-    data: { height },
-  } = await response.json()
-  return height
+  return client.blocks.getHeight({ maxTime: timestamp })
 }

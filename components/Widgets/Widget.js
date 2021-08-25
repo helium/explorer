@@ -17,6 +17,7 @@ const Widget = ({
   changeSuffix,
   valueSuffix,
   subtitle,
+  longSubtitle = false,
   onClick,
   icon,
   span = 1,
@@ -80,7 +81,17 @@ const Widget = ({
               {changeSuffix}
             </div>
           ))}
-        {subtitle && isLoading ? <Skeleton className="w-1/3" /> : subtitle}
+        {subtitle && isLoading ? (
+          <Skeleton className="w-1/3" />
+        ) : (
+          <span
+            className={classNames({
+              'text-sm leading-tight': longSubtitle,
+            })}
+          >
+            {subtitle}
+          </span>
+        )}
       </div>
 
       {(onClick || linkTo) && (

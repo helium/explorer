@@ -7,7 +7,7 @@ import Hex from '../Hex'
 import { generateRewardScaleColor } from '../Hotspots/utils'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
-import { formatDistance } from '../../utils/distance'
+import { formatHexDistance } from '../../utils/distance'
 import { haversineDistance } from '../../utils/location'
 import I18n from '../../copy/I18n'
 import { Tooltip } from 'antd'
@@ -63,7 +63,7 @@ const WitnessesList = ({
       return (
         <span className="whitespace-nowrap">
           <Tooltip title={<I18n t="tooltips.distance" />} placement="left">
-            {formatDistance(
+            {formatHexDistance(
               haversineDistance(
                 h3ToGeo(w.locationHex)[1],
                 h3ToGeo(w.locationHex)[0],

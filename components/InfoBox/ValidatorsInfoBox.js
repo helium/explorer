@@ -1,40 +1,28 @@
 import InfoBox from './InfoBox'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import Widget from '../Widgets/Widget'
-import { useMemo } from 'react'
 import { clamp } from 'lodash'
 import { formatLargeNumber, formatPercent } from '../../utils/format'
 import VersionsWidget from '../Widgets/VersionsWidget'
 import { useElections } from '../../data/consensus'
-import ValidatorsList from '../Lists/ValidatorsList'
 import useApi from '../../hooks/useApi'
 import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
-import SkeletonList from '../Lists/SkeletonList'
 import StatWidget from '../Widgets/StatWidget'
 import { differenceInDays } from 'date-fns'
 import { useValidatorStats } from '../../data/validators'
 import Currency from '../Common/Currency'
 import { useMarket } from '../../data/market'
 import ElectionsPane from './Common/ElectionsPane'
+import AllValidatorsPane from './Validators/AllValidatorsPane'
+import ConsensusGroupPane from './Validators/ConsensusGroupPane'
 
 const TICKER = 'HNT'
 
 const ValidatorsInfoBox = () => {
-  const { data: validators } = useApi('/validators')
   const { data: stats } = useApi('/metrics/validators')
   const { consensusGroups } = useElections()
   const { stats: validatorStats } = useValidatorStats()
   const { market } = useMarket()
-
-  const isLoading = useMemo(() => validators === undefined, [validators])
-
-  const recentGroups = useMemo(() => consensusGroups?.recentElections || [], [
-    consensusGroups,
-  ])
-
-  const consensusGroup = useMemo(() => validators?.filter((v) => v.elected), [
-    validators,
-  ])
 
   return (
     <InfoBox title="Validators" metaTitle="Validators">
@@ -91,37 +79,17 @@ const ValidatorsInfoBox = () => {
               valueType="percent"
               changeType="percent"
             />
-            <VersionsWidget validators={validators} isLoading={isLoading} />
+            <VersionsWidget />
           </InfoBoxPaneContainer>
         </TabPane>
         <TabPane title="Elections" key="elections" path="elections">
           <ElectionsPane />
         </TabPane>
         <TabPane title="Consensus Group" key="consensus" path="consensus">
-          <InfoBoxPaneContainer span={1} padding={false}>
-            {isLoading ? (
-              <SkeletonList />
-            ) : (
-              <ValidatorsList
-                validators={consensusGroup}
-                recentGroups={recentGroups}
-                title={`Currently Elected Validators (${consensusGroup?.length})`}
-              />
-            )}
-          </InfoBoxPaneContainer>
+          <ConsensusGroupPane />
         </TabPane>
         <TabPane title="All Validators" key="all" path="all">
-          <InfoBoxPaneContainer span={1} padding={false}>
-            {isLoading ? (
-              <SkeletonList />
-            ) : (
-              <ValidatorsList
-                validators={validators}
-                recentGroups={recentGroups}
-                title={`All Validators (${validators?.length})`} // maybe redundant because of the #XXX next to each validator?
-              />
-            )}
-          </InfoBoxPaneContainer>
+          <AllValidatorsPane />
         </TabPane>
       </TabNavbar>
     </InfoBox>

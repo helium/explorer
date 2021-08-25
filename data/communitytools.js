@@ -6,13 +6,28 @@
 // start a pull request") and then click "Propose changes" and one of the core
 // contributors will review it as soon as possible.
 
+// Please make sure your app is in ALPHABETICAL order
+
 export const communityToolsList = [
   {
-    name: 'Hotspot Utility',
-    url: 'https://apps.apple.com/us/app/helium-hotspot-utility/id1527367455',
+    name: 'Bobcat Diagnoser',
+    url: 'https://www.bobcatminer.com/post/bobcat-diagnoser-user-guide',
     description:
-      'This App allows you to easily configure your Hotspot WiFi and view Ethernet status.',
-    tags: ['iOS'],
+      'This utility reports miner temp, firmware updates, syncing blocks and more for Bobcat Hotspots.',
+    tags: ['Monitoring'],
+  },
+  {
+    name: 'DeWi Rewards Report',
+    url: 'https://etl.dewi.org/dashboard/11-rewards-report-for-an-account',
+    description:
+      'A free rewards report for accounts to tabulate mining earnings.',
+    tags: ['Data Export'],
+  },
+  {
+    name: 'Fairspot CSV Export',
+    url: 'https://www.fairspot.host/hnt-export-mining-tax',
+    description: 'A tool to export transactions from your Helium wallet.',
+    tags: ['Data Export'],
   },
   {
     name: 'Helistats',
@@ -22,22 +37,16 @@ export const communityToolsList = [
     tags: ['Monitoring', 'iOS'],
   },
   {
-    name: 'MinerTax',
-    url: 'https://www.minertax.com/home?symbol=HNT',
-    description: 'Export CSV for mining and staking rewards',
-    tags: ['Data Export'],
-  },
-  {
-    name: 'Hotspotty',
-    url: 'https://hotspotty.net',
-    description: 'Hotspot Monitoring and Dashboard solution',
-    tags: ['Monitoring', 'Data Export'],
-  },
-  {
     name: 'Helisum',
     url: 'https://helisum.com',
     description: 'Hotspot Monitoring and Dashboard solution',
     tags: ['Monitoring', 'Data Export'],
+  },
+  {
+    name: 'Helium Hosts',
+    url: 'https://heliumhosts.com/',
+    description: 'Network with other Hotspot owners in your area',
+    tags: ['Planning'],
   },
   {
     name: 'helium-tax',
@@ -46,10 +55,36 @@ export const communityToolsList = [
     tags: ['Data Export'],
   },
   {
+    name: 'HeliumVision',
+    url: 'https://helium.vision',
+    description: 'Helium Network Planning, Optimization and Simulations',
+    tags: ['Monitoring', 'Planning'],
+  },
+  {
     name: 'Hotsbot',
     url: 'https://hotsbot.net/',
     description: 'Hotspot monitoring and event tracking via Telegram',
     tags: ['Monitoring'],
+  },
+  {
+    name: 'Hotspot Utility',
+    url: 'https://apps.apple.com/us/app/helium-hotspot-utility/id1527367455',
+    description:
+      'This App allows you to easily configure your Hotspot WiFi and view Ethernet status.',
+    tags: ['iOS'],
+  },
+  {
+    name: 'HotspotRF',
+    url: 'https://hotspotrf.com',
+    description:
+      'Improve and optimize Helium hotspot placement using Radio Frequency (RF) modeling.',
+    tags: ['Planning'],
+  },
+  {
+    name: 'Hotspotty',
+    url: 'https://hotspotty.net',
+    description: 'Hotspot Monitoring and Dashboard solution',
+    tags: ['Monitoring', 'Data Export'],
   },
   {
     name: 'Kudzu',
@@ -58,17 +93,26 @@ export const communityToolsList = [
     tags: ['Monitoring', 'Planning'],
   },
   {
-    name: 'HeliumVision',
-    url: 'https://helium.vision',
-    description: 'Helium Network Planning, Optimization and Simulations',
-    tags: ['Monitoring', 'Planning'],
+    name: 'MinerTax',
+    url: 'https://www.minertax.com/home?symbol=HNT',
+    description: 'Export CSV for mining and staking rewards',
+    tags: ['Data Export'],
   },
   {
-    name: 'Helium Hosts',
-    url: 'https://heliumhosts.com/',
-    description: 'Network with other Hotspot owners in your area',
-    tags: ['Planning'],
+    name: 'Nebra Dashboard',
+    url: 'https://dashboard.nebra.com',
+    description:
+      'Control and monitor your Nebra (and in future other branded) Hotspots remotely including host tools.',
+    tags: ['Monitoring'],
   },
+  {
+    name: 'Nebra Diagnostics',
+    url: 'https://helium.nebra.com/handy-guides/local-diagnostics',
+    description:
+      'Local diagnostics utility for Nebra Hotspots including syncing, firmware, and other useful info.',
+    tags: ['Monitoring'],
+  },
+
   // The lines below are a template that you can copy and paste and then populate
   // to add a new tool to the list.All the possible tags are included in the
   // template, so just remove the ones that don't apply, and please don't make up

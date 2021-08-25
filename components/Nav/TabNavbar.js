@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { matchPath } from 'react-router'
 import {
   Switch,
@@ -9,6 +9,8 @@ import {
 } from 'react-router-dom'
 import classNames from 'classnames'
 import { castArray } from 'lodash'
+import { useScrollIndicators } from '../../hooks/useScrollIndicators'
+import ScrollIndicator from '../../hooks/useScrollIndicators'
 
 const NavItem = ({
   title,
@@ -39,7 +41,17 @@ const NavItem = ({
   )
 }
 
-const TabNavbar = ({ centered = false, classes, children }) => {
+const TabNavbar = ({ centered = false, className, children }) => {
+  const scrollContainer = useRef(null)
+
+  const {
+    autoScroll,
+    isScrollable,
+    isScrolledToStart,
+    isScrolledToEnd,
+    updateScrollIndicators,
+  } = useScrollIndicators(scrollContainer)
+
   const { path, url } = useRouteMatch()
   const location = useLocation()
 
@@ -76,10 +88,13 @@ const TabNavbar = ({ centered = false, classes, children }) => {
 
   return (
     <>
-      <div className="w-full bg-white z-10">
+      <div className="w-full relative bg-white z-10">
         <div
-          className={classNames(classes, {
-            'w-full border-b border-gray-400 border-solid mt-1 lg:mt-2 px-2 md:px-3 flex overflow-x-scroll no-scrollbar': !classes,
+          ref={scrollContainer}
+          onScroll={updateScrollIndicators}
+          className={classNames(className, {
+            'w-full border-b border-gray-400 border-solid mt-1 lg:mt-2 px-2 md:px-3 flex overflow-x-scroll no-scrollbar':
+              !className,
             'justify-center': centered,
             'justify-start': !centered,
           })}
@@ -105,6 +120,18 @@ const TabNavbar = ({ centered = false, classes, children }) => {
             )
           })}
         </div>
+        <ScrollIndicator
+          direction="right"
+          wrapperClasses="pb-1"
+          onClick={autoScroll}
+          shown={isScrollable && !isScrolledToEnd}
+        />
+        <ScrollIndicator
+          direction="left"
+          wrapperClasses="pb-1"
+          onClick={() => autoScroll({ direction: 'left' })}
+          shown={isScrollable && !isScrolledToStart}
+        />
       </div>
 
       <Switch>

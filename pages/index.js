@@ -7,7 +7,6 @@ import Page from '../components/CoverageMap/Page'
 import MetaTags from '../components/AppLayout/MetaTags'
 import MapLayersBox from '../components/Map/MapLayersBox'
 import InfoBoxSwitch from '../components/InfoBox/InfoBoxSwitch'
-import { latestCoverageUrl } from '../commonjs/coverage'
 import useKeydown from '../hooks/useKeydown'
 import useGA from '../hooks/useGA'
 import Head from 'next/head'
@@ -74,14 +73,6 @@ export const Index = ({ coverageUrl }) => {
       `}</style>
     </Page>
   )
-}
-
-export async function getStaticProps() {
-  const coverageUrl = await latestCoverageUrl()
-  return {
-    props: { coverageUrl },
-    revalidate: 60,
-  }
 }
 
 export default Index

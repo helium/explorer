@@ -33,6 +33,7 @@ const CommunityToolWidget = ({ title, description, tags, url }) => {
       title={<CategoryPillSection tags={tags} />}
       value={title}
       subtitle={description}
+      longSubtitle
       linkTo={url}
     />
   )

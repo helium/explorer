@@ -65,7 +65,7 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
         >
           <div
             className={classNames(
-              'bg-white w-full flex flex-col overflow-mask-fix md:h-full infoboxshadow',
+              'bg-white w-full flex flex-col overflow-mask-fix md:h-full infoboxshadow relative',
             )}
           >
             {children}

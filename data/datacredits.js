@@ -1,13 +1,13 @@
 import useSWR from 'swr'
+import client from './client'
 
 export const fetchDataCredits = async () => {
-  const response = await fetch('https://api.helium.io/v1/dc_burns/stats')
-  const dcStats = await response.json()
+  const stats = await client.stats.dcBurns()
 
   return {
-    totalDay: dcStats.data.last_day.total,
-    totalWeek: dcStats.data.last_week.total,
-    totalMonth: dcStats.data.last_month.total,
+    totalDay: stats.lastDay.total,
+    totalWeek: stats.lastWeek.total,
+    totalMonth: stats.lastMonth.total,
   }
 }
 

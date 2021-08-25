@@ -3,8 +3,6 @@ import { useAsync } from 'react-async-hook'
 import { h3ToGeo } from 'h3-js'
 import useSWR from 'swr'
 import client, { TAKE_MAX } from './client'
-import { fetchAll } from '../utils/pagination'
-import camelcaseKeys from 'camelcase-keys'
 import { haversineDistance } from '../utils/location'
 import { hotspotToRes8 } from '../components/Hotspots/utils'
 
@@ -50,22 +48,20 @@ export const getHotspotRewardsBuckets = async (
 
 export const fetchNearbyHotspots = async (lat, lon, distance = 1000) => {
   if (!lat || !lon) return []
-  const hotspots = await fetchAll('/hotspots/location/distance', {
-    lat,
-    lon,
-    distance,
-  })
+  const hotspots = await (
+    await client.hotspots.locationDistance({ lat, lon, distance })
+  ).take(TAKE_MAX)
   const hotspotsWithDistance = hotspots.map((h) => ({
     ...h,
     distance:
       haversineDistance(
         lon,
         lat,
-        h3ToGeo(h.location_hex)[1],
-        h3ToGeo(h.location_hex)[0],
+        h3ToGeo(h.locationHex)[1],
+        h3ToGeo(h.locationHex)[0],
       ) * 1000,
   }))
-  return camelcaseKeys(hotspotsWithDistance)
+  return hotspotsWithDistance
 }
 
 export const fetchHotspot = async (address) => {

@@ -9,6 +9,13 @@
 // Please make sure your app is in ALPHABETICAL order
 
 export const communityToolsList = [
+   {
+    name: 'HotspotRF',
+    url: 'https://hotspotrf.com',
+    description:
+      'Improve and optimize Helium hotspot placement using Radio Frequency (RF) modeling.',
+    tags: ['Planning', 'Optimization'],
+  },
   {
     name: 'Bobcat Diagnoser',
     url: 'https://www.bobcatminer.com/post/bobcat-diagnoser-user-guide',
@@ -90,6 +97,20 @@ export const communityToolsList = [
     url: 'https://www.minertax.com/home?symbol=HNT',
     description: 'Export CSV for mining and staking rewards',
     tags: ['Data Export'],
+  },
+  {
+    name: 'Nebra Dashboard',
+    url: 'https://dashboard.nebra.com',
+    description:
+      'Control and monitor your Nebra (and in future other branded) Hotspots remotely including host tools.',
+    tags: ['Monitoring'],
+  },
+  {
+    name: 'Nebra Diagnostics',
+    url: 'https://helium.nebra.com/handy-guides/local-diagnostics',
+    description:
+      'Local diagnostics utility for Nebra Hotspots including syncing, firmware, and other useful info.',
+    tags: ['Monitoring'],
   },
 
   // The lines below are a template that you can copy and paste and then populate

@@ -1,6 +1,5 @@
 import { getUnixTime } from 'date-fns'
 import useSWR from 'swr'
-import { fetchAll } from '../utils/pagination'
 import client, { TAKE_MAX } from './client'
 
 const NETWORK_DATES = [
@@ -38,14 +37,9 @@ export const getHotspotRewardsBuckets = async (
 }
 
 export const fetchHotspotRewardsSum = async (address, numBack, bucketType) => {
-  // const value = await client.hotspot(address).rewards.sum.get('-1 day')
-  // TODO need to fix helium-js to take min time in this format
-  const response = await fetch(
-    `https://api.helium.io/v1/hotspots/${address}/rewards/sum/?min_time=-${numBack}%20${bucketType}`,
-  )
-  const {
-    data: { total },
-  } = await response.json()
+  const { total } = await client
+    .hotspot(address)
+    .rewards.sum.get(`-${numBack} ${bucketType}`)
   return total
 }
 
@@ -71,10 +65,12 @@ export const useHotspotRewardsSum = (
 }
 
 export const getNetworkRewardsBuckets = async (numBack, bucketType) => {
-  const rewards = await fetchAll('/rewards/sum', {
-    min_time: `-${numBack} ${bucketType}`,
-    bucket: bucketType,
-  })
+  const rewards = await (
+    await client.rewards.sum.list({
+      minTime: `-${numBack} ${bucketType}`,
+      bucket: bucketType,
+    })
+  ).take(TAKE_MAX)
   const rewardsWithTarget = rewards.map((r) => ({
     ...r,
     target: getTargetProduction(r.timestamp) / 30,
@@ -88,7 +84,7 @@ export const useNetworkRewards = (numBack = 30, bucketType = 'day') => {
     getNetworkRewardsBuckets(numBack, bucketType)
 
   const { data, error } = useSWR(key, fetcher(numBack, bucketType), {
-    refreshInterval: 1000 * 60 * 10,
+    refreshInterval: 1000 * 60 * 60,
   })
 
   return {
@@ -105,11 +101,11 @@ export const getValidatorRewardsBuckets = async (
 ) => {
   if (!address) return
 
-  // TODO add to helium-js
-  const rewards = await fetchAll(`/validators/${address}/rewards/sum`, {
-    min_time: `-${numBack} ${bucketType}`,
+  const list = await client.validator(address).rewards.sum.list({
+    minTime: `-${numBack} ${bucketType}`,
     bucket: bucketType,
   })
+  const rewards = await list.take(TAKE_MAX)
   return rewards.reverse()
 }
 
@@ -129,7 +125,12 @@ export const getAccountRewardsBuckets = async (
   return rewards.reverse()
 }
 
-export const useRewardBuckets = (address, type, numBack = 30, bucketType = 'day') => {
+export const useRewardBuckets = (
+  address,
+  type,
+  numBack = 30,
+  bucketType = 'day',
+) => {
   const key = `rewards/${type}s/${address}/${numBack}/${bucketType}`
 
   const fetcher = (address, numBack, bucketType) => () => {
@@ -142,7 +143,7 @@ export const useRewardBuckets = (address, type, numBack = 30, bucketType = 'day'
 
       case 'validator':
         return getValidatorRewardsBuckets(address, numBack, bucketType)
-    
+
       default:
         throw new Error('Invalid reward type')
     }
@@ -159,13 +160,14 @@ export const useRewardBuckets = (address, type, numBack = 30, bucketType = 'day'
   }
 }
 
-export const fetchValidatorRewardsSum = async (address, numBack, bucketType) => {
-  const response = await fetch(
-    `https://api.helium.io/v1/validators/${address}/rewards/sum/?min_time=-${numBack}%20${bucketType}`,
-  )
-  const {
-    data: { total },
-  } = await response.json()
+export const fetchValidatorRewardsSum = async (
+  address,
+  numBack,
+  bucketType,
+) => {
+  const { total } = await client
+    .validator(address)
+    .rewards.sum.get(`-${numBack} ${bucketType}`)
   return total
 }
 

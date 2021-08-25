@@ -15,7 +15,7 @@ const useSelectedCity = () => {
 
   const selectCity = useCallback(
     async (city) => {
-      const geometry = await fetchApi(
+      const geometry = await fetchApi('v1')(
         '/cities/search?' +
           qs.stringify({
             term: [city.longCity, city.longState, city.longCountry].join(', '),

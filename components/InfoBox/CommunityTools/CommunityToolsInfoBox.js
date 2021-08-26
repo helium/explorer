@@ -3,21 +3,22 @@ import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import InfoBoxPaneTitleSection from '../Common/InfoBoxPaneTitleSection'
 import CommunityToolWidget from '../../Widgets/CommunityToolWidget'
 
-import { communityToolsList } from '../../../data/communitytools'
+import { communityToolsList, types } from '../../../data/communitytools'
 import { useMemo } from 'react'
 import PillNavbar from '../../Nav/PillNavbar'
 import { useCallback } from 'react'
 import { useState } from 'react'
 import InfoBoxToolsSection from '../Common/InfoBoxToolsSection'
 import classNames from 'classnames'
+import { useEffect } from 'react'
 
-const filters = {
-  All: ['All'],
-  iOS: ['iOS'],
-  Monitoring: ['Monitoring'],
-  'Data Export': ['Data Export'],
-  Planning: ['Planning'],
-}
+// const filters = {
+//   All: ['All'],
+//   iOS: ['iOS'],
+//   Monitoring: ['Monitoring'],
+//   'Data Export': ['Data Export'],
+//   Planning: ['Planning'],
+// }
 
 const CommunityToolsInfoBox = () => {
   const sortedTools = useMemo(
@@ -28,12 +29,47 @@ const CommunityToolsInfoBox = () => {
     [],
   )
 
-  const [filter, setFilter] = useState([])
+  const [shownToolsList, setShownToolsList] = useState(sortedTools)
 
-  const handleUpdateFilter = useCallback((filterName) => {
-    setFilter(filterName)
-    // scrollView.current.scrollTo(0, 0)
-  }, [])
+  const [filterType, setFilterType] = useState(null)
+  const [filterSearchTerm, setFilterSearchTerm] = useState('')
+
+  const handleUpdateSearchFilter = (e) => {
+    e.preventDefault()
+    setFilterSearchTerm(e.target.value)
+  }
+
+  useEffect(() => {
+    if (filterSearchTerm === '') {
+      setShownToolsList(sortedTools)
+    }
+
+    const query = filterSearchTerm.toLowerCase()
+
+    const listFilteredByQuery = sortedTools.filter((t) => {
+      const name = t.name.toLowerCase()
+      const url = t.url.toLowerCase()
+      const description = t.description.toLowerCase()
+      const tags = t?.tags
+
+      return (
+        name?.includes(query) ||
+        description?.includes(query) ||
+        url?.includes(query) ||
+        tags?.some((t) => t?.toLowerCase()?.includes(query))
+      )
+    })
+    setShownToolsList(listFilteredByQuery)
+  }, [filterSearchTerm, sortedTools])
+
+  useEffect(() => {
+    const listFilteredBySelectedType = sortedTools.filter((t) => {
+      const tags = t?.tags
+
+      return tags?.some((t) => t === filterType)
+    })
+    setShownToolsList(listFilteredBySelectedType)
+  }, [filterType, sortedTools])
 
   return (
     <InfoBox title="Community Tools" metaTitle="Community Tools">
@@ -72,24 +108,34 @@ const CommunityToolsInfoBox = () => {
         }
       />
       <InfoBoxToolsSection>
-        <div className="flex flex-row items-center justify-center">
-          {Object.entries(filters).map(([key, value]) => {
-            return (
-              <div
-                className={classNames(
-                  'px-1 rounded-md bg-gray-400 text-sm text-white font-sans font-light mr-1',
-                  { 'bg-navy-900': value === filter[0] },
-                )}
-                onClick={() => setFilter([value])}
-              >
-                {key}
-              </div>
-            )
-          })}
+        <div className="flex flex-col w-full">
+          <div className="flex flex-row items-center justify-start">
+            {Object.entries(types).map(([key, value]) => {
+              return (
+                <div
+                  className={classNames(
+                    'px-1 rounded-md bg-gray-400 text-sm text-white font-sans font-light mr-1 cursor-pointer',
+                    { 'bg-navy-900': value === filterType },
+                  )}
+                  onClick={() => setFilterType(value)}
+                >
+                  {value}
+                </div>
+              )
+            })}
+          </div>
+          <input
+            type="search"
+            id="filter-search"
+            value={filterSearchTerm}
+            onChange={handleUpdateSearchFilter}
+            className="w-full border-gray-300 bg-white border-none outline-none text-base font-sans"
+            placeholder="Search for a tool..."
+          />
         </div>
       </InfoBoxToolsSection>
       <InfoBoxPaneContainer>
-        {sortedTools.map((t) => {
+        {shownToolsList.map((t) => {
           return (
             <CommunityToolWidget
               tags={t.tags}
@@ -99,6 +145,11 @@ const CommunityToolsInfoBox = () => {
             />
           )
         })}
+        {shownToolsList.length === 0 && (
+          <span className="text-gray-525 w-full text-center col-span-2">
+            No results
+          </span>
+        )}
       </InfoBoxPaneContainer>
     </InfoBox>
   )

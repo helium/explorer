@@ -1,10 +1,18 @@
 import classNames from 'classnames'
 
-const InfoBoxToolsSection = ({ children }) => {
+const InfoBoxToolsSection = ({
+  children,
+  className,
+  defaultClasses = true,
+}) => {
   return (
     <div
       className={classNames(
-        'w-full px-4 py-2 bg-white border-b border-solid border-gray-300 ',
+        {
+          'w-full px-4 py-2 border-b border-solid bg-white border-gray-400':
+            defaultClasses,
+        },
+        className,
       )}
     >
       <div className={classNames('flex items-center justify-between')}>

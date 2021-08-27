@@ -30,6 +30,12 @@ export const communityToolsList = [
     tags: ['Data Export'],
   },
   {
+    name: 'HDS - Hotspot Discord Status',
+    url: 'https://www.github.com/co8/hds',
+    description: 'Activity and Reward Notifications sent to your Discord Channel',
+    tags: ['Monitoring'],
+  },
+  {
     name: 'Helistats',
     url: 'https://apps.apple.com/us/app/helistats/id1573119107',
     description:
@@ -110,12 +116,6 @@ export const communityToolsList = [
     url: 'https://helium.nebra.com/handy-guides/local-diagnostics',
     description:
       'Local diagnostics utility for Nebra Hotspots including syncing, firmware, and other useful info.',
-    tags: ['Monitoring'],
-  },
-  {
-    name: 'HDS - Hotspot Discord Status',
-    url: 'https://www.github.com/co8/hds',
-    description: 'Activity and Reward Notifications sent to your Discord Channel',
     tags: ['Monitoring'],
   },
 

@@ -25,15 +25,12 @@ const CityDetailsInfoBox = () => {
 
       const city = await client.cities.get(cityid)
 
-      console.log(city)
-      
       const geometry = await fetchApi('v1')(
         '/cities/search?' +
-        qs.stringify({
-          term: [city.longCity, city.longState, city.longCountry].join(', '),
-        }),
-        )
-        console.log(geometry)
+          qs.stringify({
+            term: [city.longCity, city.longState, city.longCountry].join(', '),
+          }),
+      )
 
       selectCity({ ...city, geometry })
       setIsLoading(false)

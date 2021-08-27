@@ -3,9 +3,11 @@ import { store, SET_SELECTED_CITY } from '../store/store'
 import useDispatch from '../store/useDispatch'
 import { fetchApi } from './useApi'
 import qs from 'qs'
+import { useHistory } from 'react-router'
 
 const useSelectedCity = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const {
     state: { selectedCity },
@@ -13,7 +15,7 @@ const useSelectedCity = () => {
 
   const selectCity = useCallback(
     async (city) => {
-      const geometry = await fetchApi(
+      const geometry = await fetchApi('v1')(
         '/cities/search?' +
           qs.stringify({
             term: [city.longCity, city.longState, city.longCountry].join(', '),
@@ -24,8 +26,9 @@ const useSelectedCity = () => {
         type: SET_SELECTED_CITY,
         payload: { ...city, geometry },
       })
+      history.push(`/hotspots/cities/${city.cityId}`)
     },
-    [dispatch],
+    [dispatch, history],
   )
 
   const clearSelectedCity = useCallback(() => {

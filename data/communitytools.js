@@ -112,6 +112,12 @@ export const communityToolsList = [
       'Local diagnostics utility for Nebra Hotspots including syncing, firmware, and other useful info.',
     tags: ['Monitoring'],
   },
+  {
+    name: 'HDS - Hotspot Discord Status',
+    url: 'https://www.github.com/co8/hds',
+    description: 'Activity and Reward Notifications sent to your Discord Channel',
+    tags: ['Monitoring'],
+  },
 
   // The lines below are a template that you can copy and paste and then populate
   // to add a new tool to the list.All the possible tags are included in the

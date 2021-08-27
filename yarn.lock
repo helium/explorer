@@ -13121,9 +13121,9 @@ ret@~0.1.10:
   integrity sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==
 
 retry-axios@^2.1.2:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/retry-axios/-/retry-axios-2.4.0.tgz#b5da2afed8dd0134c73c86206e1d1881d7c66a67"
-  integrity sha512-rK7UBYgbrNoVothbSmM0tEm9DIiXapmVUrnUYn+d9AuQvF0AY5RkJU2FQvlufe9hlFwrCdDhrJTwiyRtR7wUaA==
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/retry-axios/-/retry-axios-2.5.0.tgz#4995b09a38138f0635bf2bdc8d5ac44a98b63fde"
+  integrity sha512-Ukxel/VgYJFVSQg2RgSLOzzHlL4ry1jfUQMrkTF6Uy2CtW7umetoHxJILFYFLmJ4+3C6hSCBqREQp0XoFdCq6g==
 
 retry@^0.12.0:
   version "0.12.0"

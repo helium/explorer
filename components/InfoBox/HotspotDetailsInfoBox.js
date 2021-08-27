@@ -85,7 +85,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
     return [
       {
         iconPath: '/images/location-blue.svg',
-        path: `/cities/${hotspot.geocode.cityId}`,
+        path: `/hotspots/cities/${hotspot.geocode.cityId}`,
         title: <FlagLocation geocode={hotspot.geocode} condensedView />,
       },
       {

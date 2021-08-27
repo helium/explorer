@@ -9,10 +9,26 @@
 // Please make sure your app is in ALPHABETICAL order
 
 export const types = {
-  monitoring: 'Monitoring',
-  export: 'Data Export',
-  ios: 'iOS',
-  planning: 'Planning',
+  monitoring: {
+    label: 'Monitoring',
+    foregroundColor: '#474DFF',
+    backgroundColor: '#d4d4ff',
+  },
+  export: {
+    label: 'Data Export',
+    foregroundColor: '#A667F6',
+    backgroundColor: '#e4d5fd',
+  },
+  ios: {
+    label: 'iOS',
+    foregroundColor: '#32C48D',
+    backgroundColor: '#ccf1e8',
+  },
+  planning: {
+    label: 'Planning',
+    foregroundColor: '#F0BB32',
+    backgroundColor: '#f7ebc6',
+  },
 }
 
 export const communityToolsList = [

@@ -9,7 +9,7 @@ const InfoBoxToolsSection = ({
     <div
       className={classNames(
         {
-          'w-full px-4 py-2 border-b border-solid bg-white border-gray-400':
+          'bg-white w-full px-4 py-2 border-b border-solid border-gray-400':
             defaultClasses,
         },
         className,

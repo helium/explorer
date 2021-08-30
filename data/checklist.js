@@ -103,7 +103,7 @@ export const getChecklistItems = (
           <p>
             Hotspot is offline.{' '}
             <a
-              href="https://intercom.help/heliumnetwork/en/articles/3207912-troubleshooting-network-connection-issues"
+              href="https://docs.helium.com/troubleshooting/network-troubleshooting/"
               target="_blank"
               rel="noopener noreferrer"
             >

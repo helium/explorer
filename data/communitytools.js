@@ -49,6 +49,12 @@ export const communityToolsList = [
     tags: ['Monitoring', 'Data Export'],
   },
   {
+    name: 'Heliumbot.io',
+    url: 'https://heliumbot.io',
+    description: 'Managed hotspot monitoring and profit calculation service providing push notifications',
+    tags: ['Monitoring'],
+  },
+  {
     name: 'Helium Hosts',
     url: 'https://heliumhosts.com/',
     description: 'Network with other Hotspot owners in your area',

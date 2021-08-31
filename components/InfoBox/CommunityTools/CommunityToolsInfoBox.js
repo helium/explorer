@@ -8,6 +8,7 @@ import { useMemo } from 'react'
 import { useState } from 'react'
 import InfoBoxToolsSection from '../Common/InfoBoxToolsSection'
 import { useEffect } from 'react'
+import Fuse from 'fuse.js'
 
 const CommunityToolsInfoBox = () => {
   const sortedTools = useMemo(
@@ -25,8 +26,10 @@ const CommunityToolsInfoBox = () => {
 
   const handleUpdateSearchFilter = (e) => {
     e.preventDefault()
-    // when a query gets typed, clear the category selection
-    setFilterType(null)
+    if (filterType !== null) {
+      // when a query gets typed, clear the category selection (if there was one)
+      setFilterType(null)
+    }
     setFilterSearchTerm(e.target.value)
   }
 
@@ -48,19 +51,15 @@ const CommunityToolsInfoBox = () => {
     } else {
       const query = filterSearchTerm.toLowerCase()
 
-      const listFilteredByQuery = sortedTools.filter((t) => {
-        const name = t.name.toLowerCase()
-        const url = t.url.toLowerCase()
-        const description = t.description.toLowerCase()
-        const tags = t?.tags
-
-        return (
-          name?.includes(query) ||
-          description?.includes(query) ||
-          url?.includes(query) ||
-          tags?.some((t) => t?.label?.toLowerCase()?.includes(query))
-        )
+      const fuse = new Fuse(sortedTools, {
+        includeScore: true,
+        keys: ['name', 'description', 'url', 'tags.label'],
+        minMatchCharLength: 1,
+        threshold: 0.3,
       })
+
+      const listFilteredByQuery = fuse.search(query).map(({ item }) => item)
+
       setShownToolsList(listFilteredByQuery)
     }
   }, [filterSearchTerm, sortedTools])
@@ -154,6 +153,7 @@ const CommunityToolsInfoBox = () => {
       </InfoBoxToolsSection>
       <InfoBoxPaneContainer>
         {shownToolsList.map((t) => {
+          console.log(t)
           return (
             <CommunityToolWidget
               tags={t.tags}

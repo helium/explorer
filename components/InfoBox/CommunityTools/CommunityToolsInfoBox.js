@@ -3,8 +3,12 @@ import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import InfoBoxPaneTitleSection from '../Common/InfoBoxPaneTitleSection'
 import CommunityToolWidget from '../../Widgets/CommunityToolWidget'
 
-import { communityToolsList } from '../../../data/communitytools'
+import { communityToolsList, types } from '../../../data/communitytools'
 import { useMemo } from 'react'
+import { useState } from 'react'
+import InfoBoxToolsSection from '../Common/InfoBoxToolsSection'
+import { useEffect } from 'react'
+import Fuse from 'fuse.js'
 
 const CommunityToolsInfoBox = () => {
   const sortedTools = useMemo(
@@ -14,6 +18,66 @@ const CommunityToolsInfoBox = () => {
       ),
     [],
   )
+
+  const [shownToolsList, setShownToolsList] = useState(sortedTools)
+
+  const [filterType, setFilterType] = useState(null)
+  const [filterSearchTerm, setFilterSearchTerm] = useState('')
+
+  const handleUpdateSearchFilter = (e) => {
+    e.preventDefault()
+    if (filterType !== null) {
+      // when a query gets typed, clear the category selection (if there was one)
+      setFilterType(null)
+    }
+    setFilterSearchTerm(e.target.value)
+  }
+
+  const handleUpdateSearchType = (value) => {
+    // when a category gets selected, clear the search query field
+    setFilterSearchTerm('')
+    if (filterType === value) {
+      // if this one was already selected, deselect it
+      setFilterType(null)
+    } else {
+      setFilterType(value)
+    }
+  }
+
+  useEffect(() => {
+    if (filterSearchTerm === '') {
+      // if there isn't a search query, show the whole list
+      setShownToolsList(sortedTools)
+    } else {
+      const query = filterSearchTerm.toLowerCase()
+
+      const fuse = new Fuse(sortedTools, {
+        includeScore: true,
+        keys: ['name', 'description', 'url', 'tags.label'],
+        minMatchCharLength: 1,
+        threshold: 0.3,
+      })
+
+      const listFilteredByQuery = fuse.search(query).map(({ item }) => item)
+
+      setShownToolsList(listFilteredByQuery)
+    }
+  }, [filterSearchTerm, sortedTools])
+
+  useEffect(() => {
+    if (filterType === null) {
+      // if there isn't a category selected, show the whole list
+      setShownToolsList(sortedTools)
+    } else {
+      const listFilteredBySelectedType = sortedTools.filter((t) => {
+        const tags = t?.tags
+
+        return tags?.some((t) => t?.label === filterType)
+      })
+      setShownToolsList(listFilteredBySelectedType)
+    }
+  }, [filterType, sortedTools])
+
   return (
     <InfoBox title="Community Tools" metaTitle="Community Tools">
       <InfoBoxPaneTitleSection
@@ -50,8 +114,46 @@ const CommunityToolsInfoBox = () => {
           </div>
         }
       />
+      <InfoBoxToolsSection
+        defaultClasses={false}
+        className="pt-1 md:pt-2 px-1.5 md:px-4 border-b border-solid border-gray-350 bg-gray-300"
+      >
+        <div className="flex flex-col w-full">
+          <div className="flex flex-row items-center justify-start flex-wrap">
+            {Object.entries(types).map(([_key, value]) => (
+              <div
+                className="px-1 md:px-1.5 py-1 md:py-0.5 rounded-md md:rounded-lg text-xs md:text-sm font-sans mr-1 md:mr-1.5 cursor-pointer whitespace-nowrap mb-1 md:mb-2"
+                style={
+                  value.label === filterType
+                    ? {
+                        backgroundColor: value.foregroundColor,
+                        color: value.backgroundColor,
+                      }
+                    : {
+                        backgroundColor: value.backgroundColor,
+                        color: value.foregroundColor,
+                      }
+                }
+                onClick={() => handleUpdateSearchType(value.label)}
+              >
+                {value.label}
+              </div>
+            ))}
+            <input
+              type="search"
+              id="filter-search"
+              value={filterSearchTerm}
+              onChange={handleUpdateSearchFilter}
+              className="border border-solid border-gray-350 bg-white focus:border-gray-525 outline-none text-base font-light flex-grow font-sans w-20 rounded-lg px-1 mb-1 md:mb-2"
+              placeholder="or search..."
+              autoComplete="off"
+            />
+          </div>
+        </div>
+      </InfoBoxToolsSection>
       <InfoBoxPaneContainer>
-        {sortedTools.map((t) => {
+        {shownToolsList.map((t) => {
+          console.log(t)
           return (
             <CommunityToolWidget
               tags={t.tags}
@@ -61,6 +163,11 @@ const CommunityToolsInfoBox = () => {
             />
           )
         })}
+        {shownToolsList.length === 0 && (
+          <span className="text-gray-525 w-full text-center col-span-2">
+            No results
+          </span>
+        )}
       </InfoBoxPaneContainer>
     </InfoBox>
   )

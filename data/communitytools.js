@@ -53,6 +53,13 @@ export const communityToolsList = [
     tags: [types.export],
   },
   {
+    name: 'HDS - Hotspot Discord Status',
+    url: 'https://www.github.com/co8/hds',
+    description:
+      'Activity and Reward Notifications sent to your Discord Channel',
+    tags: [types.monitoring],
+  },
+  {
     name: 'Helistats',
     url: 'https://apps.apple.com/us/app/helistats/id1573119107',
     description:
@@ -64,6 +71,13 @@ export const communityToolsList = [
     url: 'https://helisum.com',
     description: 'Hotspot Monitoring and Dashboard solution',
     tags: [types.monitoring, types.export],
+  },
+  {
+    name: 'Heliumbot.io',
+    url: 'https://heliumbot.io',
+    description:
+      'Managed hotspot monitoring and profit calculation service providing push notifications',
+    tags: [types.monitoring],
   },
   {
     name: 'Helium Hosts',

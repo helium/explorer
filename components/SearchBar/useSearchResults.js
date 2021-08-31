@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import client from '../../data/client'
 import { Address } from '@helium/crypto'
-import { fetchApi } from '../../hooks/useApi'
-import camelcaseKeys from 'camelcase-keys'
 import { useDebouncedCallback } from 'use-debounce'
 import useResultsReducer, { CLEAR_RESULTS, PUSH_RESULTS } from './resultsStore'
 import { useMakers } from '../../data/makers'
@@ -118,12 +116,7 @@ const useSearchResults = () => {
   const searchCities = useCallback(
     async (term) => {
       const cities = await (await client.cities.list({ query: term })).take(20)
-      const cityResults = cities.map((city) =>
-        toSearchResult(
-          { ...city, hotspotCount: parseInt(city.hotspotCount) },
-          'city',
-        ),
-      )
+      const cityResults = cities.map((city) => toSearchResult(city, 'city'))
       dispatch({ type: PUSH_RESULTS, payload: { results: cityResults, term } })
     },
     [dispatch],

@@ -4,7 +4,7 @@ import Widget from './Widget'
 const CategoryPillSection = ({ tags }) => {
   return (
     <div className="flex items-center space-x-2">
-      {tags.map((tag) => {
+      {tags?.map((tag) => {
         return (
           <div
             className={classNames(

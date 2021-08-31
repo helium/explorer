@@ -95,13 +95,18 @@ export const useHotspots = (context, address, pageSize = 20) => {
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [hasMore, setHasMore] = useState(true)
 
-  const makeList = () => {
+  const makeList = async () => {
     if (!context || !address) {
       return client.hotspots.list()
     }
 
     if (context === 'account') {
       return client.account(address).hotspots.list()
+    }
+
+    if (context === 'city') {
+      const list = await client.city(address).hotspots.list()
+      return list
     }
   }
 

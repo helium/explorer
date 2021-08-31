@@ -31,7 +31,7 @@ const GenericObjectWidget = ({ title, value }) => {
                 <div className="text-base leading-tight tracking-tight">
                   {key}
                 </div>
-                <div className="text-sm leading-tight tracking-tighter text-gray-600">
+                <div className="text-sm leading-tight tracking-tighter text-gray-600 break-all">
                   {value}
                 </div>
               </div>

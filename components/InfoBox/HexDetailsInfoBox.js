@@ -64,7 +64,7 @@ const HexDetailsInfoBox = () => {
                 showLocationName={false}
               />
             ),
-            path: `/cities/${hotspot.geocode.cityId}`,
+            path: `/hotspots/cities/${hotspot.geocode.cityId}`,
             title: formatLocation(hotspot.geocode),
           },
           {

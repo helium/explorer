@@ -119,7 +119,7 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
         title={
           <div className="flex flex-col items-start justify-start">
             <span className="">{streetAddress}</span>
-            <div className="flex items-center justify-start">
+            <div className="flex items-start justify-start">
               <Flag
                 countryCode={result.item.countryCode}
                 className="mr-1.5 w-3 h-auto"

@@ -4,21 +4,18 @@ import Widget from './Widget'
 const CategoryPillSection = ({ tags }) => {
   return (
     <div className="flex items-center space-x-2">
-      {tags.map((tag) => {
+      {tags?.map((tag) => {
         return (
           <div
             className={classNames(
               'px-2 py-0.5 rounded-full text-xs font-medium',
-              {
-                'bg-navy-50 text-navy-400': tag === 'Monitoring',
-                'bg-purple-50 text-purple-500': tag === 'Data Export',
-                'bg-yellow-50 text-yellow-800': tag === 'Planning',
-                'bg-green-50 text-green-500': tag === 'iOS',
-                // TODO: add more tag options
-              },
             )}
+            style={{
+              backgroundColor: tag.backgroundColor,
+              color: tag.foregroundColor,
+            }}
           >
-            {tag}
+            {tag.label}
           </div>
         )
       })}

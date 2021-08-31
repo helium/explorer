@@ -38,7 +38,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
                 {b.title}
               </Link>
               <p className="text-gray-700 opacity-30 mx-2 my-0 font-bold text-md font-sans">
-                /
+                |
               </p>
             </span>
           )

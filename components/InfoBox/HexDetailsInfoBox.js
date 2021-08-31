@@ -44,27 +44,34 @@ const HexDetailsInfoBox = () => {
     (hotspot) => {
       if (!hotspot)
         return [
-          {
-            iconPath: '/images/location-blue.svg',
-            loading: true,
-          },
-          {
-            icon: <img src="/images/dc.svg" />,
-            loading: true,
-          },
+          [
+            {
+              iconPath: '/images/location-blue.svg',
+              loading: true,
+            },
+            {
+              iconPath: '/images/dc.svg',
+              loading: true,
+            },
+          ],
         ]
       return [
-        {
-          icon: (
-            <FlagLocation geocode={hotspot.geocode} showLocationName={false} />
-          ),
-          path: `/hotspots/cities/${hotspot.geocode.cityId}`,
-          title: formatLocation(hotspot.geocode),
-        },
-        {
-          icon: <img src="/images/dc.svg" />,
-          title: `${mapHex?.dc?.toLocaleString() || 0} DC (7d)`,
-        },
+        [
+          {
+            icon: (
+              <FlagLocation
+                geocode={hotspot.geocode}
+                showLocationName={false}
+              />
+            ),
+            path: `/hotspots/cities/${hotspot.geocode.cityId}`,
+            title: formatLocation(hotspot.geocode),
+          },
+          {
+            iconPath: '/images/dc.svg',
+            title: `${mapHex?.dc?.toLocaleString() || 0} DC (7d)`,
+          },
+        ],
       ]
     },
     [mapHex?.dc],

@@ -1,9 +1,9 @@
 import classNames from 'classnames'
-const MakerIcon = ({ classes }) => {
+const MakerIcon = ({ className }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={classNames('', classes)}
+      className={classNames('text-purple-500', className)}
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"

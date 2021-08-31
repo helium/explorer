@@ -70,16 +70,20 @@ const CityDetailsInfoBox = () => {
   const generateSubtitles = (city) => {
     if (!city)
       return [
-        {
-          iconPath: '/images/location-blue.svg',
-          loading: true,
-        },
+        [
+          {
+            iconPath: '/images/location-blue.svg',
+            loading: true,
+          },
+        ],
       ]
     return [
-      {
-        title: selectedCity.longCountry,
-        icon: <ReactCountryFlag countryCode={selectedCity.shortCountry} />,
-      },
+      [
+        {
+          title: selectedCity.longCountry,
+          icon: <ReactCountryFlag countryCode={selectedCity.shortCountry} />,
+        },
+      ],
     ]
   }
 

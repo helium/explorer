@@ -32,7 +32,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
           return (
             <span className="pointer-events-auto flex flex-row items-center justify-start pb-1">
               <Link
-                className="text-gray-600 font-sans font-semibold hover:text-gray-200"
+                className="text-gray-600 font-sans text-xs md:text-sm font-semibold hover:text-gray-200"
                 to={b.path}
               >
                 {b.title}

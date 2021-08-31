@@ -14,7 +14,7 @@ const ElectionTimeWidget = () => {
       setIsLoading(true)
       const electionTimesArray = blocks?.electionTimeDay
       setElectionTimes(
-        electionTimesArray.map((et) => ({
+        electionTimesArray?.map((et) => ({
           ...et,
           value: round(et.value / 60, 1),
         })),
@@ -31,7 +31,7 @@ const ElectionTimeWidget = () => {
       changeInitial="second_last"
       changeSuffix=" min"
       isLoading={isLoading}
-      periodLabel={`${blocks?.electionTimeDay.length} days`}
+      periodLabel={`${blocks?.electionTimeDay?.length} days`}
     />
   )
 }

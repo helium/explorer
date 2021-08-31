@@ -15,12 +15,12 @@ import classNames from 'classnames'
 import TransactionTypesWidget from '../Widgets/TransactionTypesWidget'
 import SkeletonList from '../Lists/SkeletonList'
 import { useHistory } from 'react-router-dom'
-import Timestamp from 'react-timestamp'
 import { useBlockHeight } from '../../data/blocks'
 import PreviousIcon from '../Icons/Previous'
 import NextIcon from '../Icons/Next'
 import InfoBoxTitleButton from './Common/InfoBoxTitleButton'
 import Skeleton from '../Common/Skeleton'
+import BlockTimestamp from '../Common/BlockTimestamp'
 
 const BlockDetailsInfoBox = () => {
   const { height: currentHeight } = useBlockHeight()
@@ -72,46 +72,48 @@ const BlockDetailsInfoBox = () => {
   const generateSubtitles = (block) => {
     if (blockLoading)
       return [
+        [
+          {
+            iconPath: '/images/clock.svg',
+            loading: true,
+            skeletonClasses: 'w-32',
+          },
+          {
+            iconPath: '/images/txn.svg',
+            loading: true,
+            skeletonClasses: 'w-32',
+          },
+        ],
+        [
+          {
+            iconPath: '/images/block-purple.svg',
+            loading: true,
+            // newRow: true,
+            skeletonClasses: 'w-32',
+          },
+        ],
+      ]
+    return [
+      [
         {
           iconPath: '/images/clock.svg',
-          loading: true,
-          skeletonClasses: 'w-32',
+          title: (
+            <BlockTimestamp blockHash={block.hash} blockTime={block.time} />
+          ),
         },
         {
           iconPath: '/images/txn.svg',
-          loading: true,
-          skeletonClasses: 'w-32',
+          title: `${block.transactionCount} transactions`,
         },
+      ],
+      [
         {
           iconPath: '/images/block-purple.svg',
-          loading: true,
+          title: `${formattedTxnHash(block.hash)}`,
+          textToCopy: block.hash,
           newRow: true,
-          skeletonClasses: 'w-32',
         },
-      ]
-    return [
-      {
-        iconPath: '/images/clock.svg',
-        title: (
-          <Timestamp
-            date={
-              block.hash === 'La6PuV80Ps9qTP0339Pwm64q3_deMTkv6JOo1251EJI'
-                ? 1564436673
-                : block.time
-            }
-          />
-        ),
-      },
-      {
-        iconPath: '/images/txn.svg',
-        title: `${block.transactionCount} transactions`,
-      },
-      {
-        iconPath: '/images/block-purple.svg',
-        title: `${formattedTxnHash(block.hash)}`,
-        textToCopy: block.hash,
-        newRow: true,
-      },
+      ],
     ]
   }
 

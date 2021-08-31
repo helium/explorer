@@ -2,7 +2,13 @@ import { useEffect, useState } from 'react'
 import classNames from 'classnames'
 import { Tooltip } from 'antd'
 
-const CopyableText = ({ textToCopy, tooltip, className, children }) => {
+const CopyableText = ({
+  textToCopy,
+  tooltip,
+  className,
+  iconClasses,
+  children,
+}) => {
   const [successStatus, setSuccessStatus] = useState(false)
 
   useEffect(() => {
@@ -64,12 +70,18 @@ const CopyableText = ({ textToCopy, tooltip, className, children }) => {
         onClick={() => copyTextToClipboard(textToCopy)}
       >
         <span className="relative inline-flex items-center justify-between">
-          <span className={classNames('mr-2', className)}>{children}</span>
+          <span className={classNames({ 'mr-2': !className }, className)}>
+            {children}
+          </span>
           <span className="flex-1">
             {successStatus ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="inline-block h-4 w-auto text-green-500"
+                className={classNames(
+                  'inline-block text-green-500',
+                  { 'h-4 w-auto': !iconClasses },
+                  iconClasses,
+                )}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -93,7 +105,11 @@ const CopyableText = ({ textToCopy, tooltip, className, children }) => {
               <Tooltip title={tooltip}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="inline-block h-4 w-auto text-gray-600 cursor-pointer"
+                  className={classNames(
+                    'inline-block text-gray-600 cursor-pointer',
+                    { 'h-4 w-auto': !iconClasses },
+                    iconClasses,
+                  )}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"

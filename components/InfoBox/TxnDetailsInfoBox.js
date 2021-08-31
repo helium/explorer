@@ -8,8 +8,8 @@ import {
   getTxnTypeName,
 } from '../../utils/txns'
 import classNames from 'classnames'
-import Timestamp from 'react-timestamp'
 import TxnDetailsSwitch from './TxnDetails/TxnDetailsSwitch'
+import BlockTimestamp from '../Common/BlockTimestamp'
 
 const TxnDetailsInfoBox = () => {
   const { hash } = useParams()
@@ -80,7 +80,9 @@ const TxnDetailsInfoBox = () => {
     return [
       [
         {
-          title: <Timestamp date={txn.time} />,
+          title: (
+            <BlockTimestamp blockHeight={txn.height} blockTime={txn.time} />
+          ),
           iconPath: '/images/clock.svg',
         },
         {

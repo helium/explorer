@@ -15,12 +15,12 @@ import classNames from 'classnames'
 import TransactionTypesWidget from '../Widgets/TransactionTypesWidget'
 import SkeletonList from '../Lists/SkeletonList'
 import { useHistory } from 'react-router-dom'
-import Timestamp from 'react-timestamp'
 import { useBlockHeight } from '../../data/blocks'
 import PreviousIcon from '../Icons/Previous'
 import NextIcon from '../Icons/Next'
 import InfoBoxTitleButton from './Common/InfoBoxTitleButton'
 import Skeleton from '../Common/Skeleton'
+import BlockTimestamp from '../Common/BlockTimestamp'
 
 const BlockDetailsInfoBox = () => {
   const { height: currentHeight } = useBlockHeight()
@@ -98,13 +98,7 @@ const BlockDetailsInfoBox = () => {
         {
           iconPath: '/images/clock.svg',
           title: (
-            <Timestamp
-              date={
-                block.hash === 'La6PuV80Ps9qTP0339Pwm64q3_deMTkv6JOo1251EJI'
-                  ? 1564436673
-                  : block.time
-              }
-            />
+            <BlockTimestamp blockHash={block.hash} blockTime={block.time} />
           ),
         },
         {

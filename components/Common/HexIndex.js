@@ -2,7 +2,7 @@ const HexIndex = ({
   index,
   truncateAmount = 5,
   truncate = true,
-  showSecondHalf,
+  showSecondHalf = false,
 }) => {
   return (
     <span>

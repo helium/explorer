@@ -6,7 +6,9 @@ import { useRouteMatch } from 'react-router-dom'
 import useApi from '../../../hooks/useApi'
 
 const ValidatorsLayer = ({ minZoom, maxZoom, onValidatorClick }) => {
-  const { data: validators } = useApi('/validators')
+  const { data: validators } = useApi('/validators', undefined, {
+    version: 'v2',
+  })
   const validatorsMatch = useRouteMatch('/validators')
   const consensusMatch = useRouteMatch('/validators/consensus')
 

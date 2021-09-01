@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import useApi from '../../hooks/useApi'
 
 const ElectionTimeWidget = () => {
-  let { data: blocks } = useApi('/metrics/blocks')
+  let { data: blocks } = useApi('/metrics/blocks', undefined, { version: 'v2' })
 
   const [isLoading, setIsLoading] = useState(true)
   const [electionTimes, setElectionTimes] = useState()

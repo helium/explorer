@@ -14,8 +14,12 @@ import { useDataCredits } from '../../data/datacredits'
 import { useValidatorStats } from '../../data/validators'
 
 const OverviewInfoBox = () => {
-  const { data: hotspots } = useApi('/metrics/hotspots')
-  const { data: blocks } = useApi('/metrics/blocks')
+  const { data: hotspots } = useApi('/metrics/hotspots', undefined, {
+    version: 'v2',
+  })
+  const { data: blocks } = useApi('/metrics/blocks', undefined, {
+    version: 'v2',
+  })
   const { stats: validatorStats } = useValidatorStats()
   const { market } = useMarket()
   const { stats } = useStats()

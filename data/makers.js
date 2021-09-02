@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import useApi from '../hooks/useApi'
 
 export const useMakers = () => {
-  const { data: makersData } = useApi('/makers')
+  const { data: makersData } = useApi('/makers', undefined, { version: 'v2' })
 
   const makers = useMemo(() => {
     if (!makersData) return []

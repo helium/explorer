@@ -8,7 +8,6 @@ import { round } from 'lodash'
 import { useOraclePrices } from '../../data/oracles'
 import TrendWidget from '../Widgets/TrendWidget'
 import RewardsTrendWidget from '../Widgets/RewardsTrendWidget'
-import { useNetworkRewards } from '../../data/rewards'
 import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 import useApi from '../../hooks/useApi'
 
@@ -17,7 +16,9 @@ const MarketInfoBox = () => {
   const { stats } = useStats()
   const { oraclePrices } = useOraclePrices()
   const [latestOraclePrice] = oraclePrices || []
-  const { data: networkRewards } = useApi('/network/rewards')
+  const { data: networkRewards } = useApi('/network/rewards', undefined, {
+    version: 'v2',
+  })
 
   return (
     <InfoBox title="Market" metaTitle="Market">
@@ -67,13 +68,13 @@ const MarketInfoBox = () => {
               }
               isLoading={!market || !stats}
             />
-            {/* <RewardsTrendWidget
+            <RewardsTrendWidget
               title="Network Rewards"
               series={networkRewards}
               showTarget
               periodLabel="30 Day Trend"
               isLoading={!networkRewards}
-            /> */}
+            />
             <Widget
               title="Circulating Supply"
               tooltip={`${round(

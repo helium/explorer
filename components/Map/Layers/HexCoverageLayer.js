@@ -17,7 +17,7 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
   const { data: hexes } = useApi(
     '/hexes',
     { dedupingInterval: 1000 * 60 * 60 },
-    { localCache: false, version: 'v2' },
+    { localCache: false, version: 'v1' },
   )
 
   const pointsSource = useMemo(() => {

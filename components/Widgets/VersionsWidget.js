@@ -17,9 +17,7 @@ const versionColor = (version, index) => {
 }
 
 const VersionsWidget = () => {
-  const { data: versionCounts } = useApi('/validators/versions', undefined, {
-    version: 'v2',
-  })
+  const { data: versionCounts } = useApi('/validators/versions')
 
   const isLoading = useMemo(() => !versionCounts, [versionCounts])
   const totalValidators = useMemo(() => {

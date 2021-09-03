@@ -9,10 +9,8 @@ import Widget from '../../Widgets/Widget'
 import { maxBy } from 'lodash'
 
 const StatisticsPane = () => {
-  const { data: stats } = useApi('/metrics/hotspots', undefined, {
-    version: 'v2',
-  })
-  const { data: makers } = useApi('/makers', undefined, { version: 'v2' })
+  const { data: stats } = useApi('/metrics/hotspots')
+  const { data: makers } = useApi('/makers')
   const { latestHotspots } = useLatestHotspots()
 
   const latestHotspot = useMemo(() => {

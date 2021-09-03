@@ -17,7 +17,7 @@ const HexDetailsInfoBox = () => {
   const { data: hexes } = useApi(
     '/hexes',
     { dedupingInterval: 1000 * 60 * 60 },
-    { localCache: false, version: 'v2' },
+    { localCache: false, version: 'v1' },
   )
 
   const { result: hotspots, loading } = useAsync(fetchHexHotspots, [index])

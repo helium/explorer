@@ -19,9 +19,7 @@ import ConsensusGroupPane from './Validators/ConsensusGroupPane'
 const TICKER = 'HNT'
 
 const ValidatorsInfoBox = () => {
-  const { data: stats } = useApi('/metrics/validators', undefined, {
-    version: 'v2',
-  })
+  const { data: stats } = useApi('/metrics/validators')
   const { consensusGroups } = useElections()
   const { stats: validatorStats } = useValidatorStats()
   const { market } = useMarket()

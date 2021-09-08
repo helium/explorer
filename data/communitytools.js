@@ -149,6 +149,12 @@ export const communityToolsList = [
       'Local diagnostics utility for Nebra Hotspots including syncing, firmware, and other useful info.',
     tags: [types.monitoring],
   },
+  {
+    name: 'ZenLedger',
+    url: 'https://www.zenledger.io',
+    description: 'Simplifying Helium taxes for investors and miners',
+    tags: [types.export]
+  },
 
   // The lines below are a template that you can copy and paste and then populate
   // to add a new tool to the list. All the possible tags are included in the

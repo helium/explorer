@@ -49,7 +49,11 @@ const BlockStatisticsPane = () => {
       <StatWidget
         title="Block Height"
         series={blocks?.height}
-        linkTo={`/blocks/${blocks?.height[blocks?.height?.length - 1]?.value}`}
+        linkTo={
+          blocks?.height?.length
+            ? `/blocks/${blocks.height[blocks.height.length - 1].value}`
+            : '/blocks'
+        }
         isLoading={!blocks}
       />
       <StatWidget

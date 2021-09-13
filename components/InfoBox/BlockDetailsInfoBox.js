@@ -30,20 +30,26 @@ const BlockDetailsInfoBox = () => {
   const [block, setBlock] = useState({})
   const [blockLoading, setBlockLoading] = useState(true)
 
+  const [txns, setTxns] = useState({})
+  const [txnsLoading, setTxnsLoading] = useState(true)
+
   useAsync(async () => {
-    const getBlockDetails = async (height) => {
-      setBlockLoading(true)
-      const [block, txns] = await Promise.all([
-        fetchBlock(height),
-        fetchBlockTxns(height),
-      ])
-      const splitTxns = splitTransactionsByTypes(txns)
-      if (splitTxns.length > 0)
-        history.push(`/blocks/${height}/${splitTxns[0].type}`)
-      setBlock({ ...block, splitTxns, txns })
-      setBlockLoading(false)
-    }
-    getBlockDetails(height)
+    // get block metadata (for subtitles)
+    setBlockLoading(true)
+    const block = await fetchBlock(height)
+    setBlock(block)
+    setBlockLoading(false)
+  }, [height])
+
+  useAsync(async () => {
+    // get transactions (for the list and the tabs)
+    setTxnsLoading(true)
+    const txns = await fetchBlockTxns(height)
+    const splitTxns = splitTransactionsByTypes(txns)
+    if (splitTxns.length > 0)
+      history.push(`/blocks/${height}/${splitTxns[0].type}`)
+    setTxns({ splitTxns, txns })
+    setTxnsLoading(false)
   }, [height])
 
   const title = useMemo(() => {
@@ -88,7 +94,6 @@ const BlockDetailsInfoBox = () => {
           {
             iconPath: '/images/block-purple.svg',
             loading: true,
-            // newRow: true,
             skeletonClasses: 'w-32',
           },
         ],
@@ -117,7 +122,7 @@ const BlockDetailsInfoBox = () => {
     ]
   }
 
-  if (blockLoading) {
+  if (txnsLoading) {
     return (
       <InfoBox title={title} subtitles={generateSubtitles(block)}>
         <div
@@ -144,14 +149,14 @@ const BlockDetailsInfoBox = () => {
       subtitles={generateSubtitles(block)}
       breadcrumbs={[{ title: 'Blocks', path: '/blocks/latest' }]}
     >
-      {block.txns?.length > 0 ? (
+      {txns?.txns?.length > 0 ? (
         <>
-          <TransactionTypesWidget txns={block.txns} />
+          <TransactionTypesWidget txns={txns.txns} />
           <TabNavbar
             centered={false}
             className="w-full border-b border-gray-400 border-solid mt-0 px-2 md:px-4 flex overflow-x-scroll no-scrollbar"
           >
-            {block.splitTxns.map((type) => {
+            {txns?.splitTxns.map((type) => {
               return (
                 <TabPane
                   title={

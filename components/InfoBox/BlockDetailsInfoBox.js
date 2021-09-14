@@ -14,7 +14,6 @@ import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import classNames from 'classnames'
 import TransactionTypesWidget from '../Widgets/TransactionTypesWidget'
 import SkeletonList from '../Lists/SkeletonList'
-import { useHistory } from 'react-router-dom'
 import { useBlockHeight } from '../../data/blocks'
 import PreviousIcon from '../Icons/Previous'
 import NextIcon from '../Icons/Next'
@@ -25,7 +24,6 @@ import BlockTimestamp from '../Common/BlockTimestamp'
 const BlockDetailsInfoBox = () => {
   const { height: currentHeight } = useBlockHeight()
   const { block: height } = useParams()
-  const history = useHistory()
 
   const [block, setBlock] = useState({})
   const [blockLoading, setBlockLoading] = useState(true)
@@ -46,8 +44,6 @@ const BlockDetailsInfoBox = () => {
     setTxnsLoading(true)
     const txns = await fetchBlockTxns(height)
     const splitTxns = splitTransactionsByTypes(txns)
-    if (splitTxns.length > 0)
-      history.push(`/blocks/${height}/${splitTxns[0].type}`)
     setTxns({ splitTxns, txns })
     setTxnsLoading(false)
   }, [height])
@@ -116,7 +112,6 @@ const BlockDetailsInfoBox = () => {
           iconPath: '/images/block-purple.svg',
           title: `${formattedTxnHash(block.hash)}`,
           textToCopy: block.hash,
-          newRow: true,
         },
       ],
     ]
@@ -153,10 +148,13 @@ const BlockDetailsInfoBox = () => {
         <>
           <TransactionTypesWidget txns={txns.txns} />
           <TabNavbar
+            {...(txns?.splitTxns?.length
+              ? { basePath: `/${txns.splitTxns[0].type}` }
+              : {})}
             centered={false}
             className="w-full border-b border-gray-400 border-solid mt-0 px-2 md:px-4 flex overflow-x-scroll no-scrollbar"
           >
-            {txns?.splitTxns.map((type) => {
+            {txns?.splitTxns.map((type, i) => {
               return (
                 <TabPane
                   title={
@@ -175,7 +173,7 @@ const BlockDetailsInfoBox = () => {
                     </div>
                   }
                   key={type.type}
-                  path={type.type}
+                  {...(i !== 0 ? { path: type.type } : {})}
                   customStyles
                   classes={'text-gray-600 hover:text-gray-800'}
                   activeClasses={'border-b-3 border-solid'}

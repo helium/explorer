@@ -132,6 +132,19 @@ const WitnessesWidget = ({
                         dB
                       </span>
                     </Tooltip>
+
+                    <span>Frequency</span>
+                    <Tooltip
+                      title={'The frequency at which the signal was received.'}
+                      placement={'right'}
+                    >
+                      <span className="text-gray-800 font-medium">
+                        {w.frequency.toLocaleString(undefined, {
+                          maximumFractionDigits: 1,
+                        })}{' '}
+                        MHz
+                      </span>
+                    </Tooltip>
                   </div>
                 </div>
               </div>

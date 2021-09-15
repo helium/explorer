@@ -73,6 +73,13 @@ const ActiveWitnessInfo = ({
           })}
             dB`}
       </span>
+      <span className="col-span-1">Frequency</span>
+      <span className="col-span-4 text-gray-800 font-medium ml-0.5">
+        {activeWitness.frequency &&
+          `${activeWitness.frequency.toLocaleString(undefined, {
+            maximumFractionDigits: 1,
+          })} MHz`}
+      </span>
     </div>
   )
 }

@@ -1,5 +1,4 @@
 import RewardScaleWidget from '../../Widgets/RewardScaleWidget'
-import RelayedWarningWidget from '../../Widgets/WarningWidget'
 import StatusWidget from '../../Widgets/StatusWidget'
 import StatWidget from '../../Widgets/StatWidget'
 import { useHotspotBeaconSums } from '../../../data/beacons'
@@ -13,6 +12,7 @@ import useToggle from '../../../utils/useToggle'
 import classNames from 'classnames'
 import ChevronIcon from '../../Icons/Chevron'
 import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
+import WarningWidget from '../../Widgets/WarningWidget'
 import InfoBoxPaneTitleSection from '../Common/InfoBoxPaneTitleSection'
 import ExternalLinkIcon from '../../Icons/ExternalLink'
 import RecentActivityWidget from '../../Widgets/RecentActivityWidget'
@@ -57,7 +57,7 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
       <InfoBoxPaneContainer>
         {!isDataOnly && (
           <>
-            <RelayedWarningWidget
+            <WarningWidget
               isVisible={isRelay(hotspot.status.listenAddrs)}
               warningText={'Hotspot is being Relayed.'}
               link={
@@ -67,6 +67,14 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
             />
             <RewardScaleWidget hotspot={hotspot} />
             <StatusWidget hotspot={hotspot} />
+            <WarningWidget
+              isVisible={hotspot.rewardScale && hotspot.rewardScale < 1}
+              warningText="Suboptimal Transmit Scale"
+              link={
+                `https://app.hotspotty.net/hotspots/${hotspot.address}/reward-scaling`
+              }
+              linkText="Improve"
+            />
           </>
         )}
         <PeriodizedRewardsWidget

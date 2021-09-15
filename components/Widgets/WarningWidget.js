@@ -11,7 +11,7 @@ const WarningWidget = ({
     <>
       <span className="flex items-center justify-start">
         <img alt="" className="h-3 mr-1" src="/images/warning.svg" />
-        <div className="text-yellow-700 text-sm font-semibold whitespace-nowrap">
+        <div className="text-yellow-700 text-sm font-semibold whitespace-nowrap truncate">
           {warningText}
         </div>
       </span>

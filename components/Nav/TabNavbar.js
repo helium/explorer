@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react'
+import { useCallback, useMemo, useEffect, useRef } from 'react'
 import { matchPath } from 'react-router'
 import {
   Switch,
@@ -21,9 +21,31 @@ const NavItem = ({
   href,
 }) => {
   const customStyles = classes || activeClasses || activeStyles
+  const ref = useRef(null)
+
+  useEffect(() => {
+    if (active)
+      ref.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+        inline: 'nearest',
+      })
+  }, [active, ref])
+
+  const styles = {
+    // scroll-margin tells the browser to leave a margin around it when using it as a scroll target
+    scrollMargin: 32 + 20,
+    // 32px is the width of the bouncing scroll indicator, and 20px is the padding at the end of the list
+    // 32 + 20 so that:
+    // 1. if it's jumping to the last item, it won't leave a scroll indicator that jumps to nothing
+    // 2. if it's not the last item, the ones behind it will peek out slightly and won't be fully obscured by the scroll indicator)
+  }
+
   return (
     <Link
       to={href}
+      // jump to the active element (setting a ref triggers the useEffect above)
+      {...(active ? { ref: ref } : {})}
       className={classNames(
         classes,
         active ? activeClasses : '',
@@ -34,7 +56,7 @@ const NavItem = ({
             active && !customStyles,
         },
       )}
-      style={active ? activeStyles : {}}
+      style={active ? { ...activeStyles, ...styles } : styles}
     >
       {title}
     </Link>

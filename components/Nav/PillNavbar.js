@@ -5,19 +5,21 @@ import { useScrollIndicators } from '../../hooks/useScrollIndicators'
 import ScrollIndicator from '../../hooks/useScrollIndicators'
 import { useRef } from 'react'
 
-const NavItem = ({ title, active = false, onClick, type }) => {
+const NavItem = ({ title, active = false, onClick, type, disabled }) => {
   const handleClick = useCallback(() => {
     onClick(title)
   }, [onClick, title])
 
   return (
     <span
-      onClick={handleClick}
+      // don't allow clicking to another filter until the current one has finished loading
+      {...(!disabled ? { onClick: handleClick } : {})}
       className={classNames(
         'py-1 px-2.5 mr-0 md:mr-1 flex font-medium text-sm md:text-base cursor-pointer whitespace-nowrap transition-all transform duration-200',
         {
           'text-gray-700': !active,
           'text-white rounded-full': active,
+          'cursor-wait ': disabled,
         },
       )}
       style={active ? { backgroundColor: getTxnTypeColor(type) } : {}}
@@ -27,7 +29,7 @@ const NavItem = ({ title, active = false, onClick, type }) => {
   )
 }
 
-const PillNavbar = ({ navItems, activeItem, onClick }) => {
+const PillNavbar = ({ navItems, activeItem, onClick, disabled }) => {
   const scrollContainer = useRef(null)
 
   const {
@@ -51,6 +53,7 @@ const PillNavbar = ({ navItems, activeItem, onClick }) => {
             type={item.value[0]}
             active={item.key === activeItem}
             onClick={onClick}
+            disabled={disabled}
           />
         ))}
         <span className="pr-4" />

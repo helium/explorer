@@ -89,6 +89,7 @@ const ActivityPane = ({ context, address }) => {
             value,
           }))}
           activeItem={filter}
+          disabled={isLoadingInitial || isLoadingMore}
           onClick={handleUpdateFilter}
         />
       </div>

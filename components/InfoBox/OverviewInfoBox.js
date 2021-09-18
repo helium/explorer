@@ -10,7 +10,7 @@ import Widget from '../Widgets/Widget'
 import Currency from '../Common/Currency'
 import { useMarket } from '../../data/market'
 import { useStats } from '../../data/stats'
-import { useDataCredits } from '../../data/datacredits'
+// import { useDataCredits } from '../../data/datacredits'
 import { useValidatorStats } from '../../data/validators'
 
 const OverviewInfoBox = () => {
@@ -19,7 +19,7 @@ const OverviewInfoBox = () => {
   const { stats: validatorStats } = useValidatorStats()
   const { market } = useMarket()
   const { stats } = useStats()
-  const { dataCredits } = useDataCredits()
+  // const { dataCredits } = useDataCredits()
 
   return (
     <InfoBox title="Helium Explorer">
@@ -32,6 +32,7 @@ const OverviewInfoBox = () => {
         />
         <StatWidget
           title="Block Height"
+          span={2}
           series={blocks?.height}
           isLoading={!blocks}
           linkTo="/blocks"
@@ -45,7 +46,7 @@ const OverviewInfoBox = () => {
           isLoading={!market}
           linkTo="/market"
         />
-        <Widget
+        {/* <Widget
           title="DC Spent (30d)"
           tooltip="Data Credits are spent for transaction fees and to send data over the Helium Network. HNT are burned to create DC."
           value={
@@ -55,7 +56,7 @@ const OverviewInfoBox = () => {
           change={<Currency value={dataCredits?.totalMonth * 0.00001} />}
           isLoading={!dataCredits}
           linkTo="/market"
-        />
+        /> */}
         <Widget
           title="HNT Staked"
           tooltip="The amount of HNT being staked by Validators"

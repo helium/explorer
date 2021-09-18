@@ -15,7 +15,7 @@ const filtersByContext = {
     Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
     'All Activity': [],
   },
-  account: { 
+  account: {
     Payments: ['payment_v1', 'payment_v2'],
     Stakes: ['stake_validator_v1'],
     'Hotspot Transfers': ['transfer_hotspot_v1'],
@@ -29,7 +29,9 @@ const ActivityPane = ({ context, address }) => {
   const scrollView = useRef()
   const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
-  const [filter, setFilter] = useState('Rewards')
+  const [filter, setFilter] = useState(
+    context === 'hotspot' ? 'Beacons' : 'Payments',
+  )
 
   const filters = filtersByContext[context]
 

@@ -9,18 +9,18 @@ import { Link } from 'react-router-i18n'
 
 const filtersByContext = {
   hotspot: {
-    Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
     Beacons: ['poc_receipts_v1'],
     Data: ['state_channel_close_v1'],
     Consensus: ['consensus_group_v1'],
+    Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
     'All Activity': [],
   },
   account: {
-    Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
     Payments: ['payment_v1', 'payment_v2'],
     Stakes: ['stake_validator_v1'],
     'Hotspot Transfers': ['transfer_hotspot_v1'],
     'Token Burns': ['token_burn_v1'],
+    Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
     'All Activity': [],
   },
 }
@@ -29,7 +29,9 @@ const ActivityPane = ({ context, address }) => {
   const scrollView = useRef()
   const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
-  const [filter, setFilter] = useState('Rewards')
+  const [filter, setFilter] = useState(
+    context === 'hotspot' ? 'Beacons' : 'Payments',
+  )
 
   const filters = filtersByContext[context]
 

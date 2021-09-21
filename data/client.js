@@ -3,7 +3,7 @@ import Client, { Network } from '@helium/http'
 export const TAKE_MAX = 100000
 
 const client = new Client(
-  new Network({ baseURL: 'http://gordon.stakejoy.com', version: 1 }),
+  new Network({ baseURL: 'http://gordon.stakejoy.com/api', version: 1 }),
   { retry: 0 },
 )
 

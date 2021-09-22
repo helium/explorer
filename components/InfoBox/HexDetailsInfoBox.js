@@ -51,10 +51,10 @@ const HexDetailsInfoBox = () => {
             iconPath: '/images/location-blue.svg',
             loading: true,
           },
-          {
-            iconPath: '/images/dc.svg',
-            loading: true,
-          },
+          // {
+          //   iconPath: '/images/dc.svg',
+          //   loading: true,
+          // },
         ],
       ]
     return [

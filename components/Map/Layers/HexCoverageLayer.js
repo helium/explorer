@@ -111,7 +111,8 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
         paint={hexOutlineStyle}
       />
       <Layer
-        sourceId="points"
+        sourceId="points_source"
+        sourceLayer="public.points"
         id="labels"
         type="symbol"
         minZoom={11}
@@ -208,23 +209,14 @@ const dcStyle = (minZoom, maxZoom) => ({
 
 const hexDefaultStyle = () => ({
   'fill-color': HOTSPOT_COLOR,
-  // 'fill-opacity': 0.5,
-  'fill-opacity': [
-    'interpolate',
-    ['exponential', 1],
-    ['zoom'],
-    6.5,
-    0,
-    12,
-    0.5,
-  ],
+  'fill-opacity': 0.5,
 })
 
 const hexOutlineStyle = {
-  'line-color': '#2a3654',
-  'line-width': ['interpolate', ['exponential', 1], ['zoom'], 6.5, 0.1, 12, 4],
+  'line-color': '#2f3a59',
+  'line-width': ['interpolate', ['exponential', 1], ['zoom'], 6.5, 0, 12, 4],
   'line-blur': 4,
-  'line-opacity': 0.75,
+  'line-opacity': 1,
 }
 
 const hexRewardScaleStyle = (minZoom, maxZoom) => ({

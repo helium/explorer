@@ -1,12 +1,12 @@
 import { useMemo, memo } from 'react'
 import { Source, Layer, GeoJSONLayer } from 'react-mapbox-gl'
-import GeoJSON from 'geojson'
-import { h3ToGeo } from 'h3-js'
-import { h3SetToFeatureCollection } from 'geojson2h3'
-import useApi from '../../../hooks/useApi'
+// import GeoJSON from 'geojson'
+// import { h3ToGeo } from 'h3-js'
+// import { h3SetToFeatureCollection } from 'geojson2h3'
+// import useApi from '../../../hooks/useApi'
 import useSelectedHex from '../../../hooks/useSelectedHex'
 import { emptyGeoJSON } from '../../../utils/location'
-import { clamp, keyBy } from 'lodash'
+// import { clamp, keyBy } from 'lodash'
 
 const HOTSPOT_COLOR = '#29d391'
 const DATA_COLOR = '#58a7f9'
@@ -15,7 +15,6 @@ const DC_THRESHOLD = 100
 const TILESERVER_URL =
   process.env.NEXT_PUBLIC_TILESERVER_URL ||
   'https://hotspot-tileserver.helium.wtf'
-// https://hotspot-tileserver.helium.wtf/public.h3_res8.json
 
 const HEX_SOURCE_OPTIONS = {
   type: 'vector',

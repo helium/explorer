@@ -15,7 +15,7 @@ import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
 import WarningWidget from '../../Widgets/WarningWidget'
 import InfoBoxPaneTitleSection from '../Common/InfoBoxPaneTitleSection'
 import ExternalLinkIcon from '../../Icons/ExternalLink'
-import RecentActivityWidget from '../../Widgets/RecentActivityWidget'
+// import RecentActivityWidget from '../../Widgets/RecentActivityWidget'
 
 const StatisticsPane = ({ hotspot, isDataOnly }) => {
   const { beaconSums, isLoading: isBeaconSumsLoading } = useHotspotBeaconSums(
@@ -26,6 +26,8 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
 
   const { result: witnessesData } = useAsync(fetchWitnesses, [hotspot.address])
   const [showChecklist, toggleShowChecklist] = useToggle()
+
+  const errorFetchingWitnesses = hotspot?.errors?.length > 0
 
   return (
     <>
@@ -70,9 +72,7 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
             <WarningWidget
               isVisible={hotspot.rewardScale && hotspot.rewardScale < 1}
               warningText="Suboptimal Transmit Scale"
-              link={
-                `https://app.hotspotty.net/hotspots/${hotspot.address}/reward-scaling`
-              }
+              link={`https://app.hotspotty.net/hotspots/${hotspot.address}/reward-scaling`}
               linkText="Improve"
             />
           </>
@@ -96,7 +96,12 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
             <Widget
               title="Total Witnesses"
               linkTo={`/hotspots/${hotspot?.address}/witnesses`}
-              value={hotspot?.witnesses?.length}
+              value={
+                errorFetchingWitnesses
+                  ? 'Error fetching'
+                  : hotspot?.witnesses?.length
+              }
+              valueIsText={errorFetchingWitnesses}
               subtitle={
                 <span className="text-gray-550 text-sm font-sans">
                   Within past 5 days

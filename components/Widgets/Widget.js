@@ -16,6 +16,7 @@ const Widget = ({
   change,
   changeSuffix,
   valueSuffix,
+  valueIsText = false,
   subtitle,
   longSubtitle = false,
   onClick,
@@ -57,7 +58,7 @@ const Widget = ({
                     'text-gray-400 text-md font-light': emptyValue,
                   })}
                 >
-                  <span className="break-all">
+                  <span className={valueIsText ? 'break-normal' : 'break-all'}>
                     {value}
                     {valueSuffix && valueSuffix}
                   </span>

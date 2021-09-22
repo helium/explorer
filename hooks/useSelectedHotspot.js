@@ -1,4 +1,4 @@
-import { useContext, useCallback } from 'react'
+import { useContext, useCallback, useState } from 'react'
 import { hotspotToRes8 } from '../components/Hotspots/utils'
 import client, { TAKE_MAX } from '../data/client'
 import { fetchHotspot } from '../data/hotspots'
@@ -16,6 +16,7 @@ async function getWitnesses(hotspotAddress) {
 
 const useSelectedHotspot = () => {
   const dispatch = useDispatch()
+  const [errors, setErrors] = useState([])
 
   const {
     state: { selectedHotspot },
@@ -30,6 +31,9 @@ const useSelectedHotspot = () => {
         witnesses = fetchedWitnesses
       } catch (e) {
         console.error(e)
+        const newErrors = errors
+        newErrors.push(e)
+        setErrors(newErrors)
       }
 
       const filteredWitnesses = witnesses
@@ -45,10 +49,11 @@ const useSelectedHotspot = () => {
         payload: {
           ...hotspot,
           witnesses: filteredWitnesses,
+          errors,
         },
       })
     },
-    [dispatch],
+    [dispatch, errors],
   )
 
   const clearSelectedHotspot = useCallback(() => {

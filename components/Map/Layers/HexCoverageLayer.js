@@ -86,8 +86,14 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
 
   return (
     <>
-      <Source id="points" tileJsonSource={POINTS_SOURCE_OPTIONS} />
-      <Layer sourceId="points" id="points" type="circle" paint={circleLayout} />
+      <Source id="points_source" tileJsonSource={POINTS_SOURCE_OPTIONS} />
+      <Layer
+        sourceId="points_source"
+        sourceLayer="public.points"
+        id="points"
+        type="circle"
+        paint={circleLayout}
+      />
       <Source id="hexes_source" tileJsonSource={HEX_SOURCE_OPTIONS} />
       <Layer
         sourceId="hexes_source"
@@ -202,7 +208,16 @@ const dcStyle = (minZoom, maxZoom) => ({
 
 const hexDefaultStyle = () => ({
   'fill-color': HOTSPOT_COLOR,
-  'fill-opacity': 0.5,
+  // 'fill-opacity': 0.5,
+  'fill-opacity': [
+    'interpolate',
+    ['exponential', 1],
+    ['zoom'],
+    6.5,
+    0,
+    12,
+    0.5,
+  ],
 })
 
 const hexOutlineStyle = {
@@ -212,8 +227,8 @@ const hexOutlineStyle = {
   'line-opacity': 0.75,
 }
 
-const hexRewardScaleStyle = () => ({
-  ...hexDefaultStyle(),
+const hexRewardScaleStyle = (minZoom, maxZoom) => ({
+  ...hexDefaultStyle(minZoom, maxZoom),
   'fill-color': [
     'case',
     ['==', ['get', 'avg_reward_scale'], 0],

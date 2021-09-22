@@ -5,6 +5,12 @@ import { useDebouncedCallback } from 'use-debounce'
 import useResultsReducer, { CLEAR_RESULTS, PUSH_RESULTS } from './resultsStore'
 import { useMakers } from '../../data/makers'
 import Fuse from 'fuse.js'
+import geojson2h3 from './geojson2h3'
+import { h3SetToFeatureCollection } from 'geojson2h3'
+import { h3ToGeo } from 'h3-js'
+// todo: name
+import Geocoding from '@mapbox/mapbox-sdk/services/geocoding'
+import { parseAddress } from '../../utils/format'
 
 const useSearchResults = () => {
   const [term, setTerm] = useState('')
@@ -122,6 +128,81 @@ const useSearchResults = () => {
     [dispatch],
   )
 
+  const searchMapAddresses = useCallback(
+    async (term) => {
+      // https://docs.mapbox.com/help/troubleshooting/address-geocoding-format-guide/
+      const parsed = parseAddress(term)
+
+      const geocodingClient = Geocoding({
+        accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
+      })
+      const mapboxResp = await geocodingClient
+        .forwardGeocode({
+          query: parsed.address,
+          limit: 2,
+          countries: parsed.countries,
+        })
+        .send()
+
+      const mapAddressResultsPromise = Promise.all(
+        mapboxResp.body.features.map(async (feature) => {
+          const geocode = feature.center
+          const tinyPolygon = {
+            type: 'Feature',
+            geometry: {
+              type: 'Polygon',
+              // Have to provide a polygon to H3 geocode api
+              // Simplest is just a tiny triangle around the address geocode
+              coordinates: [
+                [
+                  [geocode[0] - 1e-4, geocode[1] - 1e-4],
+                  [geocode[0] + 1e-4, geocode[1] - 1e-4],
+                  [geocode[0], geocode[1] + 1e-4],
+                ],
+              ],
+            },
+          }
+
+          const hexagons = geojson2h3.featureToH3Set(tinyPolygon, 8, {
+            ensureOutput: true,
+          })
+          if (hexagons.length === 0) {
+            // TODO: log error?
+            return
+          }
+          const index = hexagons[0]
+
+          // TODO: do we need to fetch more pages?
+          const hotspots = await (await client.hotspots.hex(index)).take(100)
+
+          const countryContext = feature.context.find(({ id }) =>
+            id.includes('country'),
+          )
+
+          const countryCode = countryContext ? countryContext.short_code : null
+
+          const hex = {
+            index,
+            feature: h3SetToFeatureCollection(index),
+            center: h3ToGeo(index),
+            hotspots: hotspots,
+            hotspotCount: hotspots.length,
+            placeName: feature.place_name,
+            countryCode: countryCode,
+            searchText: term, // maybe parsed address here as text to match?
+          }
+          return toSearchResult(hex, 'hex')
+        }),
+      )
+      const mapAddressResults = await mapAddressResultsPromise
+      dispatch({
+        type: PUSH_RESULTS,
+        payload: { results: mapAddressResults, term },
+      })
+    },
+    [dispatch],
+  )
+
   const searchMaker = useCallback(
     async (term) => {
       const fuse = new Fuse(makers, {
@@ -159,6 +240,7 @@ const useSearchResults = () => {
         searchHotspot(term.replace(/-/g, ' '))
         searchValidator(term.replace(/-/g, ' '))
         searchCities(term)
+        searchMapAddresses(term)
         searchMaker(term)
       }
     },
@@ -202,6 +284,13 @@ const toSearchResult = (item, type) => {
         item,
         key: item.cityId,
         indexed: [item.longCity],
+      }
+    case 'hex':
+      return {
+        type,
+        item,
+        key: item.index,
+        indexed: item.placeName,
       }
 
     case 'maker':

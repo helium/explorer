@@ -239,7 +239,7 @@ const useSearchResults = () => {
       } else {
         searchHotspot(term.replace(/-/g, ' '))
         searchValidator(term.replace(/-/g, ' '))
-        searchCities(term)
+        // searchCities(term)
         searchMapAddresses(term)
         searchMaker(term)
       }

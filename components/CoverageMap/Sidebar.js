@@ -2,8 +2,9 @@ import React from 'react'
 import classNames from 'classnames'
 import InfiniteScroll from 'react-infinite-scroller'
 
-const Sidebar = ({ autoHeight = false, children }) => (
-  <aside className={classNames({ autoHeight })}>
+
+const Sidebar = ({ autoHeight = false, children, showBetaBanner }) => (
+    <aside className={classNames({ autoHeight })}>
     {children}
     <style jsx>{`
       aside {
@@ -19,6 +20,7 @@ const Sidebar = ({ autoHeight = false, children }) => (
         border-radius: 0px;
         overflow: hidden;
         box-shadow: 0px 0px 46px #121723;
+        padding-top: ${showBetaBanner ? '64px' : '0px'};
       }
 
       aside.autoHeight {

@@ -8,13 +8,12 @@ const Banner = () => {
       <div className="relative w-full">
         <a
           className="bg-navy-400 w-full hover:shadow-lg hover:bg-navy-500 flex items-center pr-12 justify-center transition-all px-5 duration-250 text-white text-xs md:text-sm py-1 font-sans font-normal md:h-8 h-12 leading-tight"
-          href="https://explorer-v1.helium.com/"
+          href="https://helium-explorer-pr-702.herokuapp.com/"
           rel="noopener noreferrer"
           target="_blank"
         >
           <p className="m-0">
-            Welcome to the new Helium Explorer! If you still want to use the
-            legacy version, you can access it here {'->'}
+          Help stress test the new Explorer with the faster API! {'->'}
           </p>
         </a>
         <button

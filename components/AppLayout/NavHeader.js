@@ -4,6 +4,10 @@ import Logo from './Logo'
 import MapButton from './MapButton'
 import SearchBar from '../SearchBar'
 import Link from 'next/link'
+import classNames from 'classnames'
+import BetaBanner from '../BetaBanner/BetaBanner'
+import { useContext } from 'react'
+import BetaBannerContext from '../BetaBanner/BannerContext'
 
 const { Header } = Layout
 

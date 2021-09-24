@@ -12,18 +12,29 @@ import en from 'javascript-time-ago/locale/en'
 import { GAScript } from '../hooks/useGA'
 import BannerContext from '../components/Common/Banner/BannerContext'
 
+import { useEffect, useState } from 'react'
+import { Container } from 'next/app'
+import BetaBannerContext from '../components/BetaBanner/BannerContext'
+
 JavascriptTimeAgo.addLocale(en)
 const useShowBannerState = createPersistedState('old-explorer-banner')
 
 function MyApp({ Component, pageProps }) {
-  const [showBanner, setShowBanner] = useShowBannerState(false)
-  const hideBanner = () => setShowBanner(false)
+  const [showBetaBanner, setBetaBanner] = useState(false)
+  const toggleBetaBanner = () => setBetaBanner((prevState) => !prevState)
+
+  useEffect(() => {
+    const PERCENT_OF_USERS_TO_SHOW_BANNER_TO = 25
+    if (Math.random() * 100 <= PERCENT_OF_USERS_TO_SHOW_BANNER_TO) {
+      setBetaBanner(true)
+    }
+  }, [])
 
   return (
     // this #app div is used to increase the specificity of Tailwind's utility classes, making it easier to override styles without resorting to !important
     // the corresponding value is in /tailwind.config.js: important: "#app"
     <div id="app" suppressHydrationWarning>
-      <BannerContext.Provider value={{ showBanner, hideBanner }}>
+      <BetaBannerContext.Provider value={{ showBetaBanner, hideBetaBanner }}>
         <GAScript />
         {typeof window === 'undefined' ? null : (
           <Router>
@@ -41,7 +52,7 @@ function MyApp({ Component, pageProps }) {
           </Router>
         )}
         <script src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js"></script>
-      </BannerContext.Provider>
+      </BetaBannerContext.Provider>
     </div>
   )
 }

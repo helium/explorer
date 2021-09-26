@@ -6,13 +6,13 @@ import client, { TAKE_MAX } from './client'
 import { haversineDistance } from '../utils/location'
 import { hotspotToRes8 } from '../components/Hotspots/utils'
 
-export const fetchLatestHotspots = async (count = 20) => {
+export const fetchLatestHotspots = async (count = 50) => {
   const hotspots = await (await client.hotspots.list()).take(count)
 
   return JSON.parse(JSON.stringify(hotspots))
 }
 
-export const useLatestHotspots = (initialData, count = 20) => {
+export const useLatestHotspots = (initialData, count = 50) => {
   const fetcher = () => fetchLatestHotspots(count)
   const { data, error } = useSWR('latestHotspots', fetcher, {
     initialData,

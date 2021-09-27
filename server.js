@@ -6,6 +6,7 @@ const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
 const compression = require('compression')
 const url = require('url')
+const cors = require('cors')
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 3000
@@ -27,6 +28,8 @@ if (!dev && cluster.isMaster) {
 } else {
   const app = next({ dir: '.', dev })
   const nextHandler = app.getRequestHandler()
+
+  app.use(cors())
 
   app.prepare().then(() => {
     const server = express()

@@ -8,6 +8,7 @@ import { useRewardBuckets } from '../../data/rewards'
 import RewardScaleHex from '../Common/RewardScaleHex'
 import Skeleton from '../Common/Skeleton'
 import HotspotTimeAgo from '../Common/HotspotTimeAgo'
+import { isDataOnly } from '../Hotspots/utils'
 
 const HexHotspotsList = ({
   hotspots,
@@ -73,7 +74,7 @@ const HotspotItem = ({ hotspot }) => {
     <>
       <div className="w-full">
         <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans">
-          <StatusCircle status={hotspot.status} />
+          {!isDataOnly(hotspot) && <StatusCircle status={hotspot.status} />}
           {animalHash(hotspot.address)}
         </div>
         <div className="flex items-center space-x-4 h-6 text-gray-525 text-xs md:text-sm whitespace-nowrap">

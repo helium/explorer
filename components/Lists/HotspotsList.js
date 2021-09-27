@@ -8,6 +8,7 @@ import Gain from '../Hotspots/Gain'
 import Elevation from '../Hotspots/Elevation'
 import Rewards from '../Hotspots/Rewards'
 import TransmitScale from '../Hotspots/TransmitScale'
+import { isDataOnly } from '../Hotspots/utils'
 
 const HotspotsList = ({
   hotspots,
@@ -32,7 +33,7 @@ const HotspotsList = ({
   const renderTitle = useCallback((h) => {
     return (
       <>
-        <StatusCircle status={h.status} />
+        {!isDataOnly(h) && <StatusCircle status={h.status} />}
         {animalHash(h.address)}
       </>
     )

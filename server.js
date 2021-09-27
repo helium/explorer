@@ -42,8 +42,7 @@ if (!dev && cluster.isMaster) {
         if (proto === 'https') {
           res.set({
             'Strict-Transport-Security': 'max-age=31557600', // one-year
-            'Access-Control-Allow-Headers':
-              'Origin, X-Requested-With, Content-Type, Accept',
+            'Access-Control-Allow-Origin': '*',
           })
           return nextPlug()
         }

@@ -4,20 +4,14 @@ import Logo from './Logo'
 import MapButton from './MapButton'
 import SearchBar from '../SearchBar'
 import Link from 'next/link'
-import classNames from 'classnames'
-import BetaBanner from '../BetaBanner/BetaBanner'
-import { useContext } from 'react'
-import BetaBannerContext from '../BetaBanner/BannerContext'
 
 const { Header } = Layout
 
 const NavHeader = () => {
-  const { showBetaBanner, toggleBetaBanner } = useContext(BetaBannerContext)
   return (
     <>
-      {showBetaBanner && <BetaBanner toggleBetaBanner={toggleBetaBanner} />}
       <Header
-        className={classNames('z-40', { 'mt-14': showBetaBanner })}
+        className="z-40"
         style={{
           backgroundColor: '#101725',
           display: 'flex',
@@ -38,6 +32,5 @@ const NavHeader = () => {
     </>
   )
 }
-
 
 export default NavHeader

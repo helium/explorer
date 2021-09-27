@@ -2,8 +2,6 @@ import React from 'react'
 import { Layout, Typography } from 'antd'
 import NavHeader from './NavHeader'
 import MetaTags from './MetaTags'
-import { useContext } from 'react'
-import BetaBannerContext from '../BetaBanner/BannerContext'
 
 const { Content, Footer } = Layout
 const { Text } = Typography
@@ -16,12 +14,11 @@ const AppLayout = ({
   openGraphImageAbsoluteUrl,
   url,
 }) => {
-  const { showBetaBanner } = useContext(BetaBannerContext)
   const layoutStyle = {
     fontFamily: 'Inter, sans-serif',
     fontStyle: 'normal',
     minHeight: '100vh',
-    paddingTop: showBetaBanner ? '120px' : '64px',
+    paddingTop: '64px',
   }
   return (
     <Layout style={layoutStyle}>
@@ -33,17 +30,17 @@ const AppLayout = ({
         url={url}
       />
 
-    <NavHeader />
+      <NavHeader />
 
-    <Content style={{ padding: '0px' }}>{children}</Content>
+      <Content style={{ padding: '0px' }}>{children}</Content>
 
-    <Footer style={{ textAlign: 'center', backgroundColor: '#101725' }}>
-         <Text style={{ color: '#8182AB' }}>
-           ©{new Date().getFullYear()} Helium Systems, Inc.
-         </Text>
-       </Footer>
-     </Layout>
-   )
- }
+      <Footer style={{ textAlign: 'center', backgroundColor: '#101725' }}>
+        <Text style={{ color: '#8182AB' }}>
+          ©{new Date().getFullYear()} Helium Systems, Inc.
+        </Text>
+      </Footer>
+    </Layout>
+  )
+}
 
 export default AppLayout

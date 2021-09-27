@@ -9,6 +9,7 @@ import AccountAddress from '../AccountAddress'
 import ValidatorFlagLocation from '../Validators/ValidatorFlagLocation'
 import HotspotSimpleIcon from '../Icons/HotspotSimple'
 import LocationIcon from '../Icons/Location'
+import Flag from '../Common/Flag'
 
 const SearchResult = ({ result, onSelect, selected = false }) => {
   const handleSelect = useCallback(() => {
@@ -106,6 +107,35 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
     )
   }
 
+  if (result.type === 'hex') {
+    const [streetAddress] = result.item.placeName.split(',', 1)
+
+    const addressRemainder = [
+      result.item.placeName.substr(streetAddress.length + 1),
+    ]
+
+    return (
+      <BaseSearchResult
+        title={
+          <div className="flex flex-col items-start justify-start">
+            <span className="">{streetAddress}</span>
+            <div className="flex items-start justify-start">
+              <Flag
+                countryCode={result.item.countryCode}
+                className="mr-1.5 w-3 h-auto"
+              />
+              <span className="text-xs text-gray-600">{addressRemainder}</span>
+            </div>
+          </div>
+        }
+        subtitle={`${result.item.hotspotCount.toLocaleString()} Hotspots`}
+        type={result.type}
+        selected={selected}
+        onSelect={handleSelect}
+      />
+    )
+  }
+
   if (result.type === 'maker') {
     return (
       <BaseSearchResult
@@ -136,6 +166,7 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
 const pillColors = {
   validator: 'purple',
   hotspot: 'green',
+  hex: 'green',
 }
 
 const pillTitles = {

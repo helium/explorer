@@ -6,7 +6,6 @@ const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
 const compression = require('compression')
 const url = require('url')
-const cors = require('cors')
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 3000
@@ -29,8 +28,6 @@ if (!dev && cluster.isMaster) {
   const app = next({ dir: '.', dev })
   const nextHandler = app.getRequestHandler()
 
-  app.use(cors())
-
   app.prepare().then(() => {
     const server = express()
 
@@ -45,6 +42,8 @@ if (!dev && cluster.isMaster) {
         if (proto === 'https') {
           res.set({
             'Strict-Transport-Security': 'max-age=31557600', // one-year
+            'Access-Control-Allow-Headers':
+              'Origin, X-Requested-With, Content-Type, Accept',
           })
           return nextPlug()
         }

@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }) {
   const hideBanner = () => setShowBanner(false)
 
   useEffect(() => {
-    const PERCENT_OF_USERS_TO_SHOW_BANNER_TO = 0
+    const PERCENT_OF_USERS_TO_SHOW_BANNER_TO = 25
     if (Math.random() * 100 <= PERCENT_OF_USERS_TO_SHOW_BANNER_TO) {
       setShowBanner(true)
     }

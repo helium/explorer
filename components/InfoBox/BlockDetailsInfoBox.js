@@ -20,6 +20,8 @@ import NextIcon from '../Icons/Next'
 import InfoBoxTitleButton from './Common/InfoBoxTitleButton'
 import Skeleton from '../Common/Skeleton'
 import BlockTimestamp from '../Common/BlockTimestamp'
+import BlockTransactionsList from './BlocksInfoPanes/BlockTransactionsList'
+import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 
 const BlockDetailsInfoBox = () => {
   const { height: currentHeight } = useBlockHeight()
@@ -28,8 +30,8 @@ const BlockDetailsInfoBox = () => {
   const [block, setBlock] = useState({})
   const [blockLoading, setBlockLoading] = useState(true)
 
-  const [txns, setTxns] = useState({})
-  const [txnsLoading, setTxnsLoading] = useState(true)
+  // const [txns, setTxns] = useState({})
+  // const [txnsLoading, setTxnsLoading] = useState(true)
 
   useAsync(async () => {
     // get block metadata (for subtitles)
@@ -39,14 +41,14 @@ const BlockDetailsInfoBox = () => {
     setBlockLoading(false)
   }, [height])
 
-  useAsync(async () => {
-    // get transactions (for the list and the tabs)
-    setTxnsLoading(true)
-    const txns = await fetchBlockTxns(height)
-    const splitTxns = splitTransactionsByTypes(txns)
-    setTxns({ splitTxns, txns })
-    setTxnsLoading(false)
-  }, [height])
+  // useAsync(async () => {
+  //   // get transactions (for the list and the tabs)
+  //   setTxnsLoading(true)
+  //   const txns = await fetchBlockTxns(height)
+  //   const splitTxns = splitTransactionsByTypes(txns)
+  //   setTxns({ splitTxns, txns })
+  //   setTxnsLoading(false)
+  // }, [height])
 
   const title = useMemo(() => {
     const blockHeight = parseInt(height)
@@ -117,10 +119,10 @@ const BlockDetailsInfoBox = () => {
     ]
   }
 
-  if (txnsLoading) {
+  if (blockLoading) {
     return (
       <InfoBox title={title} subtitles={generateSubtitles(block)}>
-        <div
+        {/* <div
           className="bg-white px-5 pt-3 rounded-lg col-span-2"
           style={{ width: '100%', minHeight: 60 + 76 }}
         >
@@ -131,7 +133,7 @@ const BlockDetailsInfoBox = () => {
             <Skeleton className="w-1/4 h-10" />
             <Skeleton className="w-1/4 h-10" />
           </div>
-        </div>
+        </div> */}
         <SkeletonList />
       </InfoBox>
     )
@@ -144,10 +146,11 @@ const BlockDetailsInfoBox = () => {
       subtitles={generateSubtitles(block)}
       breadcrumbs={[{ title: 'Blocks', path: '/blocks/latest' }]}
     >
-      {txns?.txns?.length > 0 ? (
-        <>
-          <TransactionTypesWidget txns={txns.txns} />
-          <TabNavbar
+      {/* {txns?.txns?.length > 0 ? ( */}
+
+      <BlockTransactionsList height={height} />
+      {/* <TransactionTypesWidget txns={txns.txns} /> */}
+      {/* <TabNavbar
             {...(txns?.splitTxns?.length
               ? { basePath: `/${txns.splitTxns[0].type}` }
               : {})}
@@ -199,13 +202,13 @@ const BlockDetailsInfoBox = () => {
                 </TabPane>
               )
             })}
-          </TabNavbar>
-        </>
-      ) : (
+          </TabNavbar> */}
+
+      {/* ) : (
         <div className="py-10 px-3 flex flex-col items-center justify-center">
-          <p className="font-sans text-gray-600 text-lg">No transactions</p>
+        <p className="font-sans text-gray-600 text-lg">No transactions</p>
         </div>
-      )}
+      )} */}
     </InfoBox>
   )
 }

@@ -44,10 +44,42 @@ export const fetchBlock = async (height) => {
 }
 
 export const fetchBlockTxns = async (height) => {
-  const txns = await (await client.block(height).transactions.list()).take(
-    TAKE_MAX,
-  )
+  const txns = await (
+    await client.block(height).transactions.list()
+  ).take(TAKE_MAX)
   return txns
+}
+
+export const useFetchBlockTxns = (height, pageSize = 50) => {
+  const [list, setList] = useState()
+  const [results, setResults] = useState([])
+  const [isLoadingInitial, setIsLoadingInitial] = useState(true)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
+
+  useAsync(async () => {
+    const newList = await client.block(height).transactions.list()
+    setList(newList)
+    setIsLoadingInitial(false)
+  }, [])
+
+  useAsync(async () => {
+    if (!list) return
+    setIsLoadingMore(true)
+    const newResults = await list.take(pageSize)
+    setResults(newResults)
+    setIsLoadingMore(false)
+    if (newResults.length < pageSize) {
+      setHasMore(false)
+    }
+  }, [list])
+
+  const fetchMore = useCallback(async () => {
+    const newResults = await list.take(pageSize)
+    setResults([...results, ...newResults])
+  }, [list, pageSize, results])
+
+  return { results, fetchMore, isLoadingInitial, isLoadingMore, hasMore }
 }
 
 export const useFetchBlocks = (pageSize = 20) => {

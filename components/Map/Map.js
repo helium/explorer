@@ -230,7 +230,7 @@ const CoverageMap = () => {
       })
       if (features.length > 0 && !measuring) {
         const [hexFeature] = features
-        selectHex(hexFeature.properties.id)
+        selectHex(hexFeature.properties.hex)
       }
     },
     [selectHex, measuring],

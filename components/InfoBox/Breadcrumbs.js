@@ -28,12 +28,9 @@ const Breadcrumbs = ({ breadcrumbs }) => {
     <div className="flex flex-row items-center justify-start">
       {breadcrumbsToDisplay &&
         breadcrumbsToDisplay.length > 0 &&
-        breadcrumbsToDisplay.map((b, i) => {
+        breadcrumbsToDisplay.map((b) => {
           return (
-            <span
-              className="pointer-events-auto flex flex-row items-center justify-start pb-1"
-              key={`${i}-${b.title}`}
-            >
+            <span className="pointer-events-auto flex flex-row items-center justify-start pb-1">
               <Link
                 className="text-gray-600 font-sans text-xs md:text-sm font-semibold hover:text-gray-200"
                 to={b.path}

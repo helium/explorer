@@ -1,13 +1,14 @@
 import classNames from 'classnames'
 import { memo, useCallback } from 'react'
 import { useFetchBlockTxns } from '../../../data/blocks'
-import { getTxnTypeName } from '../../../utils/txns'
+import { getTxnTypeColor, getTxnTypeName } from '../../../utils/txns'
 import BlockTimestamp from '../../Common/BlockTimestamp'
 import BaseList from '../../Lists/BaseList'
 import animalHash from 'angry-purple-tiger'
 import AccountIcon from '../../AccountIcon'
 import AccountAddress from '../../AccountAddress'
 import ChevronIcon from '../../Icons/Chevron'
+import ActivityColorSlice from '../../Lists/ActivityList/ActivityColorSlice'
 
 const BlockTransactionsList = ({ height }) => {
   const {
@@ -24,28 +25,43 @@ const BlockTransactionsList = ({ height }) => {
 
   const linkExtractor = useCallback((txn) => `/txns/${txn.hash}`, [])
 
-  const renderItem = useCallback((txn) => {
+  const renderItem = useCallback(
+    (txn) => {
+      return (
+        <>
+          <ActivityColorSlice highlightColor={getTxnTypeColor(txn.type)} />
+          <div className="w-full px-4 py-2">
+            <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans whitespace-nowrap">
+              {renderTxnType(txn)}
+            </div>
+            <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans whitespace-nowrap">
+              {renderTitle(txn)}
+            </div>
+            <div className="flex items-center space-x-4 h-6 text-gray-525 text-xs md:text-sm whitespace-nowrap">
+              {renderSubtitle(txn)}
+            </div>
+          </div>
+          <div className="flex items-center px-4 text-xs md:text-sm font-sans text-gray-525">
+            {renderDetails(txn)}
+          </div>
+          {linkExtractor && (
+            <div className="flex items-center">
+              <img alt="" src="/images/details-arrow.svg" />
+            </div>
+          )}
+        </>
+      )
+    },
+    [linkExtractor, renderDetails, renderSubtitle, renderTxnType],
+  )
+
+  const renderTxnType = useCallback((txn) => {
     return (
-      <>
-        <div className="w-full">
-          <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans whitespace-nowrap">
-            {renderTitle(txn)}
-          </div>
-          <div className="flex items-center space-x-4 h-6 text-gray-525 text-xs md:text-sm whitespace-nowrap">
-            {renderSubtitle(txn)}
-          </div>
-        </div>
-        <div className="flex items-center px-4 text-xs md:text-sm font-sans text-gray-525">
-          {renderDetails(txn)}
-        </div>
-        {linkExtractor && (
-          <div className="flex items-center">
-            <img alt="" src="/images/details-arrow.svg" />
-          </div>
-        )}
-      </>
+      <span className="text-xs text-gray-700 whitespace-nowrap">
+        {getTxnTypeName(txn.type)}
+      </span>
     )
-  }, [])
+  })
 
   const renderTitle = useCallback((txn) => {
     switch (txn.type) {
@@ -310,12 +326,11 @@ const BlockTransactionsList = ({ height }) => {
         fetchMore={fetchMore}
         isLoadingMore={isLoadingMore}
         hasMore={hasMore}
-        // renderTitle={renderTitle}
-        // renderSubtitle={renderSubtitle}
         renderDetails={renderDetails}
         blankTitle="No Transactions"
         renderItem={renderItem}
         render
+        itemPadding={false}
       />
     </div>
   )

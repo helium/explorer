@@ -1,12 +1,7 @@
 import { useMemo, memo } from 'react'
 import { Source, Layer, GeoJSONLayer } from 'react-mapbox-gl'
-// import GeoJSON from 'geojson'
-// import { h3ToGeo } from 'h3-js'
-// import { h3SetToFeatureCollection } from 'geojson2h3'
-// import useApi from '../../../hooks/useApi'
 import useSelectedHex from '../../../hooks/useSelectedHex'
 import { emptyGeoJSON } from '../../../utils/location'
-// import { clamp, keyBy } from 'lodash'
 
 const HOTSPOT_COLOR = '#29d391'
 const DATA_COLOR = '#58a7f9'
@@ -28,34 +23,6 @@ const POINTS_SOURCE_OPTIONS = {
 
 const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
   const { selectedHex } = useSelectedHex()
-  // const { data: hexes } = useApi(
-  //   '/hexes',
-  //   { dedupingInterval: 1000 * 60 * 60 },
-  //   { localCache: false, version: 'v1' },
-  // )
-
-  // const pointsSource = useMemo(() => {
-  //   if (!hexes) return emptyGeoJSON
-
-  //   const points = hexes.map((h) => {
-  //     const [lat, lng] = h3ToGeo(h.hex)
-  //     return { ...h, lat, lng, dc: clamp(h?.dc || 0, 100) }
-  //   })
-
-  //   return GeoJSON.parse(points, { Point: ['lat', 'lng'] })
-  // }, [hexes])
-
-  // const hexesSource = useMemo(() => {
-  //   if (!hexes) return emptyGeoJSON
-  //   const hexLookup = keyBy(
-  //     hexes.map((h) => ({ ...h, dc: clamp(h?.dc || 0, 100) })),
-  //     'hex',
-  //   )
-  //   return h3SetToFeatureCollection(
-  //     Object.keys(hexLookup),
-  //     (h3Index) => hexLookup[h3Index],
-  //   )
-  // }, [hexes])
 
   const circleLayout = useMemo(() => {
     switch (layer) {

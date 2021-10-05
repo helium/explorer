@@ -5,43 +5,14 @@ import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import { useAsync } from 'react-async-hook'
 import { fetchHexHotspots } from '../../data/hotspots'
 import HexHotspotsList from '../Lists/HexHotspotsList'
-import {
-  useCallback,
-  // useEffect, useMemo
-} from 'react'
-// import useSelectedHex from '../../hooks/useSelectedHex'
+import { useCallback } from 'react'
 import { formatLocation } from '../Hotspots/utils'
 import FlagLocation from '../Common/FlagLocation'
-// import useApi from '../../hooks/useApi'
 
 const HexDetailsInfoBox = () => {
   const { index } = useParams()
-  // const { clearSelectedHex, selectHex, selectedHex } = useSelectedHex()
-  // const { data: hexes } = useApi(
-  //   '/hexes',
-  //   { dedupingInterval: 1000 * 60 * 60 },
-  //   { localCache: false, version: 'v1' },
-  // )
 
   const { result: hotspots, loading } = useAsync(fetchHexHotspots, [index])
-
-  // const mapHex = useMemo(() => {
-  //   if (!hexes) return
-
-  //   return hexes.find(({ hex }) => hex === index)
-  // }, [hexes, index])
-
-  // useEffect(() => {
-  //   if (!selectedHex) {
-  //     selectHex(index)
-  //   }
-  // }, [index, selectHex, selectedHex])
-
-  // useEffect(() => {
-  //   return () => {
-  //     clearSelectedHex()
-  //   }
-  // }, [clearSelectedHex])
 
   const generateSubtitles = useCallback((hotspot) => {
     if (!hotspot)
@@ -51,10 +22,6 @@ const HexDetailsInfoBox = () => {
             iconPath: '/images/location-blue.svg',
             loading: true,
           },
-          // {
-          //   iconPath: '/images/dc.svg',
-          //   loading: true,
-          // },
         ],
       ]
     return [
@@ -66,10 +33,6 @@ const HexDetailsInfoBox = () => {
           path: `/hotspots/cities/${hotspot.geocode.cityId}`,
           title: formatLocation(hotspot.geocode),
         },
-        // {
-        //   iconPath: '/images/dc.svg',
-        //   title: `${mapHex?.dc?.toLocaleString() || 0} DC (7d)`,
-        // },
       ],
     ]
   }, [])

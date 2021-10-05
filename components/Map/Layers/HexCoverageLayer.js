@@ -97,7 +97,11 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
           ],
           'text-color': [
             'case',
-            ['==', ['get', 'id'], selectedHex?.index],
+            [
+              '==',
+              ['get', 'id'],
+              selectedHex?.index ? selectedHex.index : null,
+            ],
             '#ffffff',
             '#10192d',
           ],

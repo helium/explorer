@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useEffect, useRef } from 'react'
+import React, { useCallback, useMemo, useEffect, useRef } from 'react'
 import { matchPath } from 'react-router'
 import {
   Switch,
@@ -124,7 +124,7 @@ const TabNavbar = ({ centered = false, className, children }) => {
           {navItems.map((item, i, { length }) => {
             if (item.hidden) return null
             return (
-              <>
+              <React.Fragment key={item.key}>
                 <NavItem
                   key={item.key}
                   title={item.title}
@@ -138,7 +138,7 @@ const TabNavbar = ({ centered = false, className, children }) => {
                   // add a spacer after the last item so the right side of the container has padding
                   <div className="px-2 py-2 md:px-4" />
                 )}
-              </>
+              </React.Fragment>
             )
           })}
         </div>

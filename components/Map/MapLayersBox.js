@@ -4,12 +4,8 @@ import useMapLayer from '../../hooks/useMapLayer'
 import Hex from '../Icons/Hex'
 
 const MapLayersBox = () => {
-  const {
-    showMapLayers,
-    setMapLayer,
-    mapLayer,
-    toggleMapLayers,
-  } = useMapLayer()
+  const { showMapLayers, setMapLayer, mapLayer, toggleMapLayers } =
+    useMapLayer()
 
   const handleClick = useCallback(
     (clickedLayer) => () => {
@@ -38,11 +34,11 @@ const MapLayersBox = () => {
       id: 'rewardScale',
       icon: <Hex className="text-reward-scale-0.6 w-5 h-5" />,
     },
-    {
-      title: 'Device Usage',
-      id: 'dc',
-      icon: <Hex className="text-blue-400 w-5 h-5" />,
-    },
+    // {
+    //   title: 'Device Usage',
+    //   id: 'dc',
+    //   icon: <Hex className="text-blue-400 w-5 h-5" />,
+    // },
     // {
     //   title: 'Owner',
     //   id: 'owner',

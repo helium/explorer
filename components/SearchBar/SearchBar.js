@@ -9,6 +9,7 @@ import SearchResult from './SearchResult'
 import { useHistory } from 'react-router'
 import useSelectedTxn from '../../hooks/useSelectedTxn'
 import useSelectedCity from '../../hooks/useSelectedCity'
+import useSelectedHex from '../../hooks/useSelectedHex'
 
 const SearchBar = () => {
   const input = useRef()
@@ -18,6 +19,7 @@ const SearchBar = () => {
   const { selectHotspot } = useSelectedHotspot()
   const { selectTxn } = useSelectedTxn()
   const { selectCity } = useSelectedCity()
+  const { selectHex } = useSelectedHex()
   const history = useHistory()
 
   const handleChange = useCallback(
@@ -51,8 +53,11 @@ const SearchBar = () => {
       if (result.type === 'city') {
         selectCity(result.item)
       }
+      if (result.type === 'hex') {
+        selectHex(result.item.index)
+      }
     },
-    [history, selectCity, selectHotspot, selectTxn, setTerm],
+    [history, selectCity, selectHex, selectHotspot, selectTxn, setTerm],
   )
 
   const clearSearch = useCallback(() => {

@@ -10,14 +10,23 @@ import createPersistedState from 'use-persisted-state'
 
 import en from 'javascript-time-ago/locale/en'
 import { GAScript } from '../hooks/useGA'
+import { useEffect } from 'react'
+
 import BannerContext from '../components/Common/Banner/BannerContext'
 
 JavascriptTimeAgo.addLocale(en)
-const useShowBannerState = createPersistedState('old-explorer-banner')
+const useShowBannerState = createPersistedState('new-api-banner')
 
 function MyApp({ Component, pageProps }) {
   const [showBanner, setShowBanner] = useShowBannerState(false)
   const hideBanner = () => setShowBanner(false)
+
+  useEffect(() => {
+    const PERCENT_OF_USERS_TO_SHOW_BANNER_TO = 0
+    if (Math.random() * 100 <= PERCENT_OF_USERS_TO_SHOW_BANNER_TO) {
+      setShowBanner(true)
+    }
+  }, [setShowBanner])
 
   return (
     // this #app div is used to increase the specificity of Tailwind's utility classes, making it easier to override styles without resorting to !important

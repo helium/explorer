@@ -19,8 +19,6 @@ const BlockTransactionsList = ({ height }) => {
     hasMore,
   } = useFetchBlockTxns(height)
 
-  // console.log(txns)
-
   const keyExtractor = useCallback((txn) => txn.hash, [])
 
   const linkExtractor = useCallback((txn) => `/txns/${txn.hash}`, [])

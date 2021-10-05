@@ -63,6 +63,7 @@ const RewardPeriodSelector = ({ periods, handlePeriodChange }) => {
               setSelectedIndex(i)
               handlePeriodChange(p.number, p.type)
             }}
+            key={`${i}-${p.type}`}
           >
             {p.number}
             {p.type.slice(0, 1).toUpperCase()}

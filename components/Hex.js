@@ -4,7 +4,7 @@ const Hex = ({ width, height, fillColor, className }) => (
     height={height ? height : 32}
     viewBox="0 0 28 32"
     fill="none"
-    preserveAspectRatio
+    preserveAspectRatio="xMinYMin meet"
     xmlns="http://www.w3.org/2000/svg"
   >
     <path

@@ -146,7 +146,7 @@ const CoverageMap = () => {
   useEffect(() => {
     if (!selectedHex) return
 
-    const [lat, lng] = h3ToGeo(selectedHex.index)
+    const [lat, lng] = selectedHex.center
     const selectionBounds = findBounds([
       { lat, lng },
       ...paddingPoints({ lat, lng }),

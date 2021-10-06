@@ -24,7 +24,6 @@ import MeasuringPointsLayer from './Layers/MeasuringPointsLayer'
 import { useRouteMatch } from 'react-router-dom'
 import classNames from 'classnames'
 import useSelectedCity from '../../hooks/useSelectedCity'
-import { h3ToGeo } from 'h3-js'
 
 const maxZoom = 14
 const minZoom = 2

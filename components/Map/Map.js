@@ -24,6 +24,7 @@ import MeasuringPointsLayer from './Layers/MeasuringPointsLayer'
 import { useRouteMatch } from 'react-router-dom'
 import classNames from 'classnames'
 import useSelectedCity from '../../hooks/useSelectedCity'
+import { h3ToGeo } from 'h3-js'
 
 const maxZoom = 14
 const minZoom = 2
@@ -145,7 +146,7 @@ const CoverageMap = () => {
   useEffect(() => {
     if (!selectedHex) return
 
-    const [lat, lng] = selectedHex.center
+    const [lat, lng] = h3ToGeo(selectedHex.index)
     const selectionBounds = findBounds([
       { lat, lng },
       ...paddingPoints({ lat, lng }),

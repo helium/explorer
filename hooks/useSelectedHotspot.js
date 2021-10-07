@@ -1,4 +1,4 @@
-import { useContext, useCallback } from 'react'
+import { useContext, useCallback, useState } from 'react'
 import { hotspotToRes8 } from '../components/Hotspots/utils'
 import client, { TAKE_MAX } from '../data/client'
 import { fetchHotspot } from '../data/hotspots'
@@ -11,11 +11,12 @@ const MAX_WITNESS_DISTANCE_THRESHOLD = 200
 async function getWitnesses(hotspotAddress) {
   const list = await client.hotspot(hotspotAddress).witnesses.list()
   const witnesses = await list.take(TAKE_MAX)
-  return witnesses.filter(w => !(w.address === hotspotAddress))
+  return witnesses.filter((w) => !(w.address === hotspotAddress))
 }
 
 const useSelectedHotspot = () => {
   const dispatch = useDispatch()
+  const [errors, setErrors] = useState([])
 
   const {
     state: { selectedHotspot },
@@ -23,12 +24,19 @@ const useSelectedHotspot = () => {
 
   const selectHotspot = useCallback(
     async (address) => {
-      const [hotspot, fetchedWitnesses] = await Promise.all([
-        fetchHotspot(address),
-        getWitnesses(address),
-      ])
+      const hotspot = await fetchHotspot(address)
+      let witnesses = []
+      try {
+        const fetchedWitnesses = await getWitnesses(address)
+        witnesses = fetchedWitnesses
+      } catch (e) {
+        console.error(e)
+        const newErrors = errors
+        newErrors.push(e)
+        setErrors(newErrors)
+      }
 
-      const filteredWitnesses = fetchedWitnesses
+      const filteredWitnesses = witnesses
         .filter(
           (w) =>
             haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <=
@@ -41,10 +49,11 @@ const useSelectedHotspot = () => {
         payload: {
           ...hotspot,
           witnesses: filteredWitnesses,
+          errors,
         },
       })
     },
-    [dispatch],
+    [dispatch, errors],
   )
 
   const clearSelectedHotspot = useCallback(() => {

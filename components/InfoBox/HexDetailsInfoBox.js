@@ -8,11 +8,20 @@ import HexHotspotsList from '../Lists/HexHotspotsList'
 import { useCallback } from 'react'
 import { formatLocation } from '../Hotspots/utils'
 import FlagLocation from '../Common/FlagLocation'
+import useSelectedHex from '../../hooks/useSelectedHex'
 
 const HexDetailsInfoBox = () => {
   const { index } = useParams()
 
   const { result: hotspots, loading } = useAsync(fetchHexHotspots, [index])
+
+  const { selectedHex, selectHex } = useSelectedHex(index)
+
+  useAsync(async () => {
+    if (!selectedHex) {
+      selectHex(index)
+    }
+  }, [selectedHex, index])
 
   const generateSubtitles = useCallback((hotspot) => {
     if (!hotspot)

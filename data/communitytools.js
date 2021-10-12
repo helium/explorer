@@ -89,7 +89,7 @@ export const communityToolsList = [
     name: 'HeliumStatus.io',
     url: 'https://app.heliumstatus.io',
     description: 'Diagnostic tools and hotspot monitoring',
-    tags: ['Monitoring'],
+    tags: [types.monitoring],
   },
   {
     name: 'helium-tax',

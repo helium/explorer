@@ -23,43 +23,13 @@ const BlockTransactionsList = ({ height }) => {
 
   const linkExtractor = useCallback((txn) => `/txns/${txn.hash}`, [])
 
-  const renderItem = useCallback(
-    (txn) => {
-      return (
-        <>
-          <ActivityColorSlice highlightColor={getTxnTypeColor(txn.type)} />
-          <div className="w-full px-4 py-2">
-            <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans whitespace-nowrap">
-              {renderTxnType(txn)}
-            </div>
-            <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans whitespace-nowrap">
-              {renderTitle(txn)}
-            </div>
-            <div className="flex items-center space-x-4 h-6 text-gray-525 text-xs md:text-sm whitespace-nowrap">
-              {renderSubtitle(txn)}
-            </div>
-          </div>
-          <div className="flex items-center px-4 text-xs md:text-sm font-sans text-gray-525">
-            {renderDetails(txn)}
-          </div>
-          {linkExtractor && (
-            <div className="flex items-center">
-              <img alt="" src="/images/details-arrow.svg" />
-            </div>
-          )}
-        </>
-      )
-    },
-    [linkExtractor, renderDetails, renderSubtitle, renderTxnType],
-  )
-
   const renderTxnType = useCallback((txn) => {
     return (
       <span className="text-xs text-gray-700 whitespace-nowrap">
         {getTxnTypeName(txn.type)}
       </span>
     )
-  })
+  }, [])
 
   const renderTitle = useCallback((txn) => {
     switch (txn.type) {
@@ -308,6 +278,36 @@ const BlockTransactionsList = ({ height }) => {
   const renderDetails = useCallback((t) => {
     return null
   }, [])
+
+  const renderItem = useCallback(
+    (txn) => {
+      return (
+        <>
+          <ActivityColorSlice highlightColor={getTxnTypeColor(txn.type)} />
+          <div className="w-full px-4 py-2">
+            <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans whitespace-nowrap">
+              {renderTxnType(txn)}
+            </div>
+            <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans whitespace-nowrap">
+              {renderTitle(txn)}
+            </div>
+            <div className="flex items-center space-x-4 h-6 text-gray-525 text-xs md:text-sm whitespace-nowrap">
+              {renderSubtitle(txn)}
+            </div>
+          </div>
+          <div className="flex items-center px-4 text-xs md:text-sm font-sans text-gray-525">
+            {renderDetails(txn)}
+          </div>
+          {linkExtractor && (
+            <div className="flex items-center px-4">
+              <img alt="" src="/images/details-arrow.svg" />
+            </div>
+          )}
+        </>
+      )
+    },
+    [linkExtractor, renderDetails, renderSubtitle, renderTitle, renderTxnType],
+  )
 
   return (
     <div

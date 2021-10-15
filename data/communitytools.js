@@ -86,6 +86,12 @@ export const communityToolsList = [
     tags: [types.planning],
   },
   {
+    name: 'HeliumStatus.io',
+    url: 'https://app.heliumstatus.io',
+    description: 'Diagnostic tools and hotspot monitoring',
+    tags: [types.monitoring],
+  },
+  {
     name: 'helium-tax',
     url: 'https://davetapley.com/helium-tax/',
     description: 'Export CSV for mining and staking rewards',

@@ -126,8 +126,8 @@ export const communityToolsList = [
   {
     name: 'Hotspotty',
     url: 'https://hotspotty.net',
-    description: 'Hotspot Monitoring and Dashboard solution',
-    tags: [types.monitoring, types.export],
+    description: 'Your all-in-one tool for building the Helium network',
+    tags: [types.monitoring, types.export, types.planning],
   },
   {
     name: 'Kudzu',

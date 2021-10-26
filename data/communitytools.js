@@ -156,6 +156,13 @@ export const communityToolsList = [
     tags: [types.monitoring],
   },
   {
+    name: 'SenseCAP Dashboard',
+    url: 'https://status.sensecapmx.cloud',
+    description:
+      'The diagnostic and reward statistics dashboard, for SenseCAP Hotspots.',
+    tags: [types.monitoring],
+  },
+  {
     name: 'ZenLedger',
     url: 'https://www.zenledger.io',
     description: 'Simplifying Helium taxes for investors and miners',

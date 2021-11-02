@@ -6,6 +6,7 @@ import useSearchResults from './useSearchResults'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import useKeydown from '../../hooks/useKeydown'
 import SearchResult from './SearchResult'
+import BaseSearchResult from './BaseSearchResult'
 import { useHistory } from 'react-router'
 import useSelectedTxn from '../../hooks/useSelectedTxn'
 import useSelectedCity from '../../hooks/useSelectedCity'
@@ -14,7 +15,7 @@ import useSelectedHex from '../../hooks/useSelectedHex'
 const SearchBar = () => {
   const input = useRef()
   const scroll = useRef()
-  const { term, setTerm, results } = useSearchResults()
+  const { term, setTerm, results, resultsLoading } = useSearchResults()
   const [selectedResultIndex, setSelectedResultIndex] = useState(0)
   const { selectHotspot } = useSelectedHotspot()
   const { selectTxn } = useSelectedTxn()
@@ -85,7 +86,7 @@ const SearchBar = () => {
         )
       },
       Enter: () => {
-        handleSelectResult(results[selectedResultIndex])
+        if (!resultsLoading) handleSelectResult(results[selectedResultIndex])
       },
     },
     input,
@@ -124,23 +125,37 @@ const SearchBar = () => {
           </div>
         )}
       </div>
-      {results.length > 0 && (
+      {term.length > 0 && (
         <div
           ref={scroll}
           className="absolute bg-white max-h-72 md:w-96 -left-12 md:left-auto -right-12 md:right-0 top-12 rounded-lg divide-y divide-gray-400 overflow-y-scroll no-scrollbar shadow-md"
         >
-          {results.map((r, i) => (
-            <SearchResult
-              key={r.key}
-              result={r}
-              onSelect={handleSelectResult}
-              selected={selectedResultIndex === i}
+          {/* show that results are loading once you start typing */}
+          {resultsLoading ? (
+            <BaseSearchResult
+              title="Loading results..."
+              subtitle="Talking to the API..."
             />
-          ))}
+          ) : results.length === 0 ? (
+            // if nothing comes back from the API, show "No results" instead of nothing
+            <BaseSearchResult
+              title="No results found"
+              subtitle="Try another query"
+            />
+          ) : (
+            // otherwise list the results
+            results.map((r, i) => (
+              <SearchResult
+                key={r.key}
+                result={r}
+                onSelect={handleSelectResult}
+                selected={selectedResultIndex === i}
+              />
+            ))
+          )}
         </div>
       )}
     </div>
   )
 }
-
 export default SearchBar

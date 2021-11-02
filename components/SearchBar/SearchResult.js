@@ -1,15 +1,14 @@
-import classNames from 'classnames'
 import Timestamp from 'react-timestamp'
 import FlagLocation from '../Common/FlagLocation'
 import { formatHotspotName } from '../Hotspots/utils'
-import Pill from '../Common/Pill'
-import { capitalize, round } from 'lodash'
+import { round } from 'lodash'
 import { useCallback } from 'react'
 import AccountAddress from '../AccountAddress'
 import ValidatorFlagLocation from '../Validators/ValidatorFlagLocation'
 import HotspotSimpleIcon from '../Icons/HotspotSimple'
 import LocationIcon from '../Icons/Location'
 import Flag from '../Common/Flag'
+import BaseSearchResult from './BaseSearchResult'
 
 const SearchResult = ({ result, onSelect, selected = false }) => {
   const handleSelect = useCallback(() => {
@@ -162,42 +161,6 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
   }
   return null
 }
-
-const pillColors = {
-  validator: 'purple',
-  hotspot: 'green',
-  hex: 'green',
-}
-
-const pillTitles = {
-  dataonly: 'Data Only',
-}
-
-const BaseSearchResult = ({ title, subtitle, type, onSelect, selected }) => (
-  <div
-    className={classNames(
-      'border-solid py-2 px-4 flex hover:bg-gray-350 cursor-pointer',
-      {
-        'bg-gray-350': selected,
-      },
-    )}
-    onClick={onSelect}
-  >
-    <div className="w-full">
-      <div className="font-medium text-base text-navy-1000">{title}</div>
-      <div className="text-gray-700 text-sm">{subtitle}</div>
-    </div>
-    <div className="flex items-center px-2">
-      <Pill
-        title={pillTitles[type] ? pillTitles[type] : capitalize(type)}
-        color={pillColors[type] || 'gray'}
-      />
-    </div>
-    <div className="flex">
-      <img alt="" src="/images/details-arrow.svg" />
-    </div>
-  </div>
-)
 
 const truncateHash = (hash) => [hash.slice(0, 10), hash.slice(-10)].join('...')
 

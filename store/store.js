@@ -17,6 +17,7 @@ const initialState = {
   measurementHover: null,
   measurementEnd: null,
   distance: null,
+  searchFocused: false,
 }
 
 const store = createContext(initialState)
@@ -34,6 +35,7 @@ export const SET_CURRENT_POSITION = 'SET_CURRENT_POSITION'
 export const SET_MEASUREMENT_START = 'SET_MEASUREMENT_START'
 export const SET_MEASUREMENT_END = 'SET_MEASUREMENT_END'
 export const TOGGLE_MEASUREMENT_TOOL = 'TOGGLE_MEASUREMENT_TOOL'
+export const SET_SEARCH_FOCUSED = 'SET_SEARCH_FOCUSED'
 
 const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
@@ -69,6 +71,8 @@ const StateProvider = ({ children }) => {
         return { ...state, measurementStart: action.payload }
       case SET_MEASUREMENT_END:
         return { ...state, measurementEnd: action.payload }
+      case SET_SEARCH_FOCUSED:
+        return { ...state, searchFocused: action.payload }
       case TOGGLE_MEASUREMENT_TOOL:
         if (state.measuring) {
           return {

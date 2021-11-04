@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import client from '../../data/client'
 import { Address } from '@helium/crypto'
 import { useDebouncedCallback } from 'use-debounce'
@@ -11,11 +11,26 @@ import { h3ToGeo } from 'h3-js'
 // todo: name
 import Geocoding from '@mapbox/mapbox-sdk/services/geocoding'
 import { parseAddress } from '../../utils/format'
+import { SET_SEARCH_FOCUSED, store } from '../../store/store'
+import useDispatch from '../../store/useDispatch'
 
 const useSearchResults = () => {
   const [term, setTerm] = useState('')
   const [results, dispatch] = useResultsReducer()
   const [resultsLoading, setResultsLoading] = useState(true)
+
+  const mainDispatch = useDispatch()
+  const {
+    state: { searchFocused },
+  } = useContext(store)
+
+  const setSearchFocused = useCallback(
+    (value) => {
+      mainDispatch({ type: SET_SEARCH_FOCUSED, payload: value })
+    },
+    [mainDispatch],
+  )
+
   const { makers } = useMakers()
 
   const searchHotspot = useCallback(
@@ -256,17 +271,20 @@ const useSearchResults = () => {
       dispatch({ type: CLEAR_RESULTS })
       return
     } else {
+      setSearchFocused(true)
       setResultsLoading(true)
     }
 
     const trimmedTerm = term.trim()
     doSearch(trimmedTerm)
-  }, [dispatch, doSearch, term])
+  }, [dispatch, doSearch, setSearchFocused, term])
 
   return {
     term,
     setTerm,
     resultsLoading,
+    searchFocused,
+    setSearchFocused,
     results: results[term] || [],
   }
 }

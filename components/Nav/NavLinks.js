@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import { Link } from 'react-router-i18n'
 import FeedbackBubble from '../FeedbackBubble'
 import FeedbackIcon from '../Icons/Feedback'
+import useSearchResults from '../SearchBar/useSearchResults'
 
 const NavLink = ({ href, title, className, onClick, fallback }) =>
   fallback ? (
@@ -34,8 +35,14 @@ const NavLinks = ({
   navLinkClasses,
   fallbackLinks = false,
 }) => {
+  const { searchFocused } = useSearchResults()
+
   return (
-    <div className={className}>
+    <div
+      className={classNames(className, 'duration-200 transition-all', {
+        'opacity-0': searchFocused,
+      })}
+    >
       <NavLink
         href="/hotspots"
         title="Hotspots"

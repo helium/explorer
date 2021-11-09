@@ -176,8 +176,8 @@ export const communityToolsList = [
     tags: [types.export]
   },
   {
-    name: 'Helium Wallet',
-    url: 'https://helium-wallet.web.app',
+    name: 'Helium Tools',
+    url: 'https://helium-tools.web.app',
     description: 'fast and lightweight helium rewards dashboard',
     tags: [types.monitoring]
   },

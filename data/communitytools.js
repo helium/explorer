@@ -175,7 +175,12 @@ export const communityToolsList = [
     description: 'Simplifying Helium taxes for investors and miners',
     tags: [types.export]
   },
-
+  {
+    name: 'Helium Tools',
+    url: 'https://helium-tools.web.app',
+    description: 'fast and lightweight helium rewards dashboard',
+    tags: [types.monitoring]
+  },
   // The lines below are a template that you can copy and paste and then populate
   // to add a new tool to the list. All the possible tags are included in the
   // template, so just remove the ones that don't apply, and please don't make up

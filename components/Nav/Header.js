@@ -53,7 +53,7 @@ const Header = ({ fallbackLinks = false }) => {
           <a
             href="/"
             className={classNames('transition-all duration-200', {
-              'hidden xl:flex': searchFocused,
+              'hidden md:flex': searchFocused,
             })}
           >
             <img alt="Helium Logo" src="/images/logo-sm.svg" />
@@ -62,7 +62,7 @@ const Header = ({ fallbackLinks = false }) => {
           <Link
             to="/"
             className={classNames('transition-all duration-200', {
-              'hidden xl:flex': searchFocused,
+              'hidden md:flex': searchFocused,
             })}
           >
             <img alt="Helium Logo" src="/images/logo-sm.svg" />
@@ -83,8 +83,8 @@ const Header = ({ fallbackLinks = false }) => {
           <div className="grid grid-flow-col gap-4 items-center">
             <SearchBar />
             <MenuButton
-              className={classNames('transition-all duration-200', {
-                'hidden md:flex': searchFocused,
+              className={classNames('', {
+                hidden: searchFocused,
               })}
             />
           </div>

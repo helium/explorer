@@ -118,9 +118,8 @@ const SearchBar = () => {
     <div className="">
       <div
         className={classNames(
-          'relative bg-white rounded-full transition-all duration-200 h-8 flex overflow-hidden',
-          { 'w-full md:w-96': searchFocused },
-          { 'w-60': !searchFocused },
+          'relative bg-white transition-all rounded-full duration-200 h-8 flex overflow-hidden',
+          { 'w-full md:w-96': searchFocused, 'w-60': !searchFocused },
         )}
       >
         <div className="absolute flex left-2 h-full pointer-events-none">
@@ -158,7 +157,7 @@ const SearchBar = () => {
         <>
           <div
             ref={scroll}
-            className="absolute bg-white max-h-96 md:max-h-72 md:w-96 left-2 md:left-auto right-2 md:right-4 top-14 rounded-lg divide-y divide-gray-400 overflow-y-scroll no-scrollbar shadow-md z-40"
+            className="absolute bg-white max-h-96 md:max-h-72 md:w-96 left-2 md:left-auto right-2 lg:right-4 top-14 rounded-lg divide-y divide-gray-400 overflow-y-scroll no-scrollbar shadow-md z-40"
           >
             {/* show that results are loading once you start typing */}
             {resultsLoading ? (
@@ -186,10 +185,17 @@ const SearchBar = () => {
           </div>
           <div
             className={classNames(
-              'xl:hidden absolute transition-all duration-500 ease-in-out top-0 z-30 left-0 h-screen w-screen mobilenav-blur',
+              'md:hidden absolute transition-all duration-500 ease-in-out top-0 z-30 left-0 h-screen w-screen mobilenav-blur',
               {
-                'opacity-0': results.length === 0 || term.length === 0,
-                'opacity-100': results.length > 0 || term.length > 0,
+                'opacity-0':
+                  (results.length === 0 || term.length === 0) &&
+                  !searchFocused &&
+                  !resultsLoading,
+                'opacity-100':
+                  searchFocused ||
+                  results.length > 0 ||
+                  term.length > 0 ||
+                  resultsLoading,
               },
             )}
           />

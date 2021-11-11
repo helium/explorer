@@ -5,7 +5,7 @@ import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import { useAsync } from 'react-async-hook'
 import { fetchHexHotspots } from '../../data/hotspots'
 import HexHotspotsList from '../Lists/HexHotspotsList'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { formatLocation } from '../Hotspots/utils'
 import FlagLocation from '../Common/FlagLocation'
 import useSelectedHex from '../../hooks/useSelectedHex'
@@ -15,13 +15,19 @@ const HexDetailsInfoBox = () => {
 
   const { result: hotspots, loading } = useAsync(fetchHexHotspots, [index])
 
-  const { selectedHex, selectHex } = useSelectedHex(index)
+  const { selectedHex, selectHex, clearSelectedHex } = useSelectedHex(index)
 
-  useAsync(async () => {
+  useEffect(() => {
     if (!selectedHex) {
       selectHex(index)
     }
-  }, [selectedHex, index])
+  }, [selectedHex, index, selectHex])
+
+  useEffect(() => {
+    return () => {
+      clearSelectedHex()
+    }
+  }, [clearSelectedHex])
 
   const generateSubtitles = useCallback((hotspot) => {
     if (!hotspot)

@@ -114,6 +114,13 @@ const ActivityList = ({
           )
 
         case 'poc_receipts_v1':
+          const witnesses = txn.path?.[0]?.witnesses
+          const total = witnesses?.length
+          const numberOfValidWitnesses = witnesses?.filter(
+            (w) => w.isValid,
+          )?.length
+          const numberOfInvalidWitnesses = total - numberOfValidWitnesses
+
           return (
             <>
               {timestamp}
@@ -125,15 +132,25 @@ const ActivityList = ({
                 />
                 <FlagLocation geocode={txn.path[0].geocode} condensedView />
               </div>
-              <div className="flex items-center justify-start">
-                <img
-                  alt=""
-                  src="/images/witness-yellow-mini.svg"
-                  className="h-3 w-auto mr-1"
-                />
-                <span className="">
-                  {txn.path?.[0]?.witnesses?.length || 0}
-                </span>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-start">
+                  <img
+                    alt=""
+                    src="/images/witness-yellow-mini.svg"
+                    className="h-3 w-auto mr-0.5"
+                  />
+                  <span className="text-xs">{numberOfValidWitnesses || 0}</span>
+                </div>
+                <div className="flex items-center justify-start">
+                  <img
+                    alt=""
+                    src="/images/witness-gray.svg"
+                    className="h-3 w-auto mr-0.5"
+                  />
+                  <span className="text-xs">
+                    {numberOfInvalidWitnesses || 0}
+                  </span>
+                </div>
               </div>
             </>
           )

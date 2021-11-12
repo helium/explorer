@@ -23,15 +23,26 @@ const filtersByContext = {
     Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
     'All Activity': [],
   },
+  validator: {
+    Heartbeats: ['validator_heartbeat_v1'],
+    Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
+    Stakes: ['stake_validator_v1'],
+    'All Activity': [],
+  },
+}
+
+const defaultFilter = {
+  hotspot: 'Beacons',
+  validator: 'Heartbeats',
+  account: 'Payments',
 }
 
 const ActivityPane = ({ context, address }) => {
   const scrollView = useRef()
   const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
-  const [filter, setFilter] = useState(
-    context === 'hotspot' ? 'Beacons' : 'Payments',
-  )
+
+  const [filter, setFilter] = useState(defaultFilter[context])
 
   const filters = filtersByContext[context]
 

@@ -11,7 +11,11 @@ export const useActivity = (context, address, filters = [], pageSize = 20) => {
 
   useAsync(async () => {
     const clientContext =
-      context === 'hotspot' ? client.hotspot(address) : client.account(address)
+      context === 'hotspot'
+        ? client.hotspot(address)
+        : context === 'account'
+        ? client.account(address)
+        : client.validator(address)
     const newList = await clientContext.activity.list({ filterTypes: filters })
     setList(newList)
   }, [address, filters, context])

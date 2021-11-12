@@ -9,6 +9,7 @@ import AccountIcon from '../../AccountIcon'
 import AccountAddress from '../../AccountAddress'
 import ChevronIcon from '../../Icons/Chevron'
 import ActivityColorSlice from '../../Lists/ActivityList/ActivityColorSlice'
+import { formatVersion } from '../../Validators/utils'
 
 const BlockTransactionsList = ({ height }) => {
   const {
@@ -267,7 +268,7 @@ const BlockTransactionsList = ({ height }) => {
                 clipRule="evenodd"
               />
             </svg>
-            <span className="ml-1">{txn.version}</span>
+            <span className="ml-1">{formatVersion(txn.version)}</span>
           </span>
         )
       default:

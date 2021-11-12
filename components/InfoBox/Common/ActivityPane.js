@@ -26,7 +26,11 @@ const filtersByContext = {
   validator: {
     Heartbeats: ['validator_heartbeat_v1'],
     Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
-    Stakes: ['stake_validator_v1'],
+    Stakes: [
+      'stake_validator_v1',
+      'unstake_validator_v1',
+      'transfer_validator_stake_v1',
+    ],
     'All Activity': [],
   },
 }

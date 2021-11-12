@@ -124,6 +124,18 @@ const CONFIG = {
     accountContextName: 'Stake Transferred',
     validatorContextName: 'Stake Transferred',
   },
+  receive_transferred_stake: {
+    color: '#a235fa',
+    name: 'Receive Transfer Stake',
+    accountContextName: 'Received Transferred Stake',
+    validatorContextName: 'Received Transferred Stake',
+  },
+  send_transferred_stake: {
+    color: '#a235fa',
+    name: 'Send Transfer Stake',
+    accountContextName: 'Transferred Stake',
+    validatorContextName: 'Sent Transferred Stake',
+  },
   validator_heartbeat_v1: {
     color: '#A984FF',
     name: 'Validator Heartbeat',
@@ -182,4 +194,12 @@ export const getPocReceiptRole = (txn, address) => {
   }
 
   return 'poc_witnesses_invalid'
+}
+
+export const getStakeTransferRole = (txn, address) => {
+  if (txn.oldAddress === address) {
+    return 'send_transferred_stake'
+  }
+
+  return 'receive_transferred_stake'
 }

@@ -3,6 +3,7 @@ import BaseList from '../BaseList'
 import FlagLocation from '../../Common/FlagLocation'
 import {
   getPocReceiptRole,
+  getStakeTransferRole,
   getTxnTypeColor,
   getTxnTypeName,
 } from '../../../utils/txns'
@@ -55,6 +56,20 @@ const ActivityList = ({
             <span className="flex items-end justify-start">
               <span>
                 {getTxnTypeName(getPocReceiptRole(txn, address), 'hotspot')}
+              </span>
+              <span className="hidden md:block text-xs text-gray-600 font-sans font-extralight ml-1 mb-0.5">
+                <TimeAgo date={txn.time * 1000} timeStyle="mini" /> ago
+              </span>
+            </span>
+          )
+        case 'transfer_validator_stake_v1':
+          return (
+            <span className="flex items-end justify-start">
+              <span>
+                {getTxnTypeName(
+                  getStakeTransferRole(txn, address),
+                  'validator',
+                )}
               </span>
               <span className="hidden md:block text-xs text-gray-600 font-sans font-extralight ml-1 mb-0.5">
                 <TimeAgo date={txn.time * 1000} timeStyle="mini" /> ago
@@ -247,7 +262,9 @@ const ActivityList = ({
                 : getTxnTypeColor(txn.type)
             }
             expandedContent={
-              txn.type === 'rewards_v1' || txn.type === 'rewards_v2' ? (
+              txn.type === 'rewards_v1' ||
+              txn.type === 'rewards_v2' ||
+              txn.type === 'rewards_v3' ? (
                 <ExpandedRewardContent txn={txn} address={address} />
               ) : (
                 <ExpandedPoCReceiptContent txn={txn} address={address} />

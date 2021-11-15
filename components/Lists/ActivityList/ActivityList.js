@@ -114,13 +114,6 @@ const ActivityList = ({
           )
 
         case 'poc_receipts_v1':
-          const witnesses = txn.path?.[0]?.witnesses
-          const total = witnesses?.length
-          const numberOfValidWitnesses = witnesses?.filter(
-            (w) => w.isValid,
-          )?.length
-          const numberOfInvalidWitnesses = total - numberOfValidWitnesses
-
           return (
             <>
               {timestamp}
@@ -139,7 +132,9 @@ const ActivityList = ({
                     src="/images/witness-yellow-mini.svg"
                     className="h-3 w-auto mr-0.5"
                   />
-                  <span className="text-xs">{numberOfValidWitnesses || 0}</span>
+                  <span className="text-xs">
+                    {txn.numberOfValidWitnesses || 0}
+                  </span>
                 </div>
                 <div className="flex items-center justify-start">
                   <img
@@ -148,7 +143,7 @@ const ActivityList = ({
                     className="h-3 w-auto mr-0.5"
                   />
                   <span className="text-xs">
-                    {numberOfInvalidWitnesses || 0}
+                    {txn.numberOfInvalidWitnesses || 0}
                   </span>
                 </div>
               </div>

@@ -2,6 +2,7 @@ import useSWR from 'swr'
 import { useState, useCallback } from 'react'
 import { useAsync } from 'react-async-hook'
 import client, { TAKE_MAX } from './client'
+import { supplementTxnList } from './txns'
 
 export const fetchLatestBlocks = async (count = 100) => {
   const blocks = await (await client.blocks.list()).take(count)
@@ -67,7 +68,7 @@ export const useFetchBlockTxns = (height, pageSize = 50) => {
     if (!list) return
     setIsLoadingMore(true)
     const newResults = await list.take(pageSize)
-    setResults(newResults)
+    setResults(supplementTxnList(newResults))
     setIsLoadingMore(false)
     if (newResults.length < pageSize) {
       setHasMore(false)
@@ -76,7 +77,7 @@ export const useFetchBlockTxns = (height, pageSize = 50) => {
 
   const fetchMore = useCallback(async () => {
     const newResults = await list.take(pageSize)
-    setResults([...results, ...newResults])
+    setResults([...results, ...supplementTxnList(newResults)])
   }, [list, pageSize, results])
 
   return { results, fetchMore, isLoadingInitial, isLoadingMore, hasMore }

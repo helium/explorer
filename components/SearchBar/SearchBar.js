@@ -13,6 +13,37 @@ import useSelectedCity from '../../hooks/useSelectedCity'
 import useSelectedHex from '../../hooks/useSelectedHex'
 import classNames from 'classnames'
 
+const Results = ({
+  resultsLoading,
+  results,
+  handleSelectResult,
+  selectedResultIndex,
+}) => {
+  //  show that results are loading once you start typing
+  if (resultsLoading) {
+    return (
+      <BaseSearchResult
+        title="Loading results..."
+        subtitle="Talking to the API..."
+      />
+    )
+  }
+  // if nothing comes back from the API, show "No results" instead of nothing
+  if (results.length === 0) {
+    return (
+      <BaseSearchResult title="No results found" subtitle="Try another query" />
+    )
+  }
+  return results.map((r, i) => (
+    <SearchResult
+      key={r.key}
+      result={r}
+      onSelect={handleSelectResult}
+      selected={selectedResultIndex === i}
+    />
+  ))
+}
+
 const SearchBar = () => {
   const input = useRef()
   const scroll = useRef()
@@ -159,29 +190,12 @@ const SearchBar = () => {
             ref={scroll}
             className="absolute bg-white max-h-96 md:max-h-72 md:w-96 left-2 md:left-auto right-2 lg:right-4 top-14 rounded-lg divide-y divide-gray-400 overflow-y-scroll no-scrollbar shadow-md z-40"
           >
-            {/* show that results are loading once you start typing */}
-            {resultsLoading ? (
-              <BaseSearchResult
-                title="Loading results..."
-                subtitle="Talking to the API..."
-              />
-            ) : results.length === 0 ? (
-              // if nothing comes back from the API, show "No results" instead of nothing
-              <BaseSearchResult
-                title="No results found"
-                subtitle="Try another query"
-              />
-            ) : (
-              // otherwise list the results
-              results.map((r, i) => (
-                <SearchResult
-                  key={r.key}
-                  result={r}
-                  onSelect={handleSelectResult}
-                  selected={selectedResultIndex === i}
-                />
-              ))
-            )}
+            <Results
+              resultsLoading={resultsLoading}
+              results={results}
+              handleSelectResult={handleSelectResult}
+              selectedResultIndex={selectedResultIndex}
+            />
           </div>
           <div
             className={classNames(

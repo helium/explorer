@@ -248,17 +248,21 @@ const useSearchResults = () => {
         // if it's a valid address, it could be a hotspot or an account
         await searchAddress(term)
       } else if (term.length > 20 && isBase64Url(term)) {
-        // if term is a base64 string, it could be a:
-        // block hash
-        await searchBlock(term)
-        // transaction hash
-        await searchTransaction(term)
+        await Promise.all([
+          // if term is a base64 string, it could be a:
+          // block hash
+          await searchBlock(term),
+          // transaction hash
+          await searchTransaction(term),
+        ])
       } else {
-        await searchHotspot(term.replace(/-/g, ' '))
-        await searchValidator(term.replace(/-/g, ' '))
-        // await searchCities(term)
-        await searchMapAddresses(term)
-        await searchMaker(term)
+        await Promise.all([
+          await searchHotspot(term.replace(/-/g, ' ')),
+          await searchValidator(term.replace(/-/g, ' ')),
+          // await searchCities(term)
+          await searchMapAddresses(term),
+          await searchMaker(term),
+        ])
       }
       setResultsLoading(false)
     },

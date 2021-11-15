@@ -164,7 +164,7 @@ const SearchBar = () => {
           value={term}
           onChange={handleChange}
           className={classNames(
-            'w-full border-none outline-none text-base font-sans placeholder-gray-525 z-40 px-4',
+            'w-full border-none outline-none text-base font-sans placeholder-gray-525 z-40 pl-4 pr-7',
             {
               'placeholder-gray-700': searchFocused,
             },

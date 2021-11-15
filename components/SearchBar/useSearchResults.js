@@ -299,7 +299,7 @@ const toSearchResult = (item, type) => {
         type,
         item,
         key: item.address,
-        indexed: item.name.replaceAll('-', ' '),
+        indexed: item.name?.replaceAll('-', ' '),
       }
 
     case 'block':

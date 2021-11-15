@@ -104,6 +104,13 @@ export const communityToolsList = [
     tags: [types.monitoring, types.planning],
   },
   {
+    name: 'HNT-tracker',
+    url: 'https://hnt-tracker.fifu-verein.de/',
+    description:
+      'Free CSV exports for HNT rewards, balance and payments. Conversion into all major currencies. Useful for taxes.',
+    tags: [types.export],
+  },  
+  {
     name: 'Hotsbot',
     url: 'https://hotsbot.net/',
     description: 'Hotspot monitoring and event tracking via Telegram',

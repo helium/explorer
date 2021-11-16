@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import client from '../../data/client'
 import { Address } from '@helium/crypto'
 import { useDebouncedCallback } from 'use-debounce'
@@ -11,10 +11,26 @@ import { h3ToGeo } from 'h3-js'
 // todo: name
 import Geocoding from '@mapbox/mapbox-sdk/services/geocoding'
 import { parseAddress } from '../../utils/format'
+import { SET_SEARCH_FOCUSED, store } from '../../store/store'
+import useDispatch from '../../store/useDispatch'
 
 const useSearchResults = () => {
   const [term, setTerm] = useState('')
   const [results, dispatch] = useResultsReducer()
+  const [resultsLoading, setResultsLoading] = useState(true)
+
+  const mainDispatch = useDispatch()
+  const {
+    state: { searchFocused },
+  } = useContext(store)
+
+  const setSearchFocused = useCallback(
+    (value) => {
+      mainDispatch({ type: SET_SEARCH_FOCUSED, payload: value })
+    },
+    [mainDispatch],
+  )
+
   const { makers } = useMakers()
 
   const searchHotspot = useCallback(
@@ -175,7 +191,7 @@ const useSearchResults = () => {
           // TODO: do we need to fetch more pages?
           const hotspots = await (await client.hotspots.hex(index)).take(100)
 
-          const countryContext = feature.context.find(({ id }) =>
+          const countryContext = feature.context?.find(({ id }) =>
             id.includes('country'),
           )
 
@@ -222,27 +238,33 @@ const useSearchResults = () => {
   )
 
   const doSearch = useDebouncedCallback(
-    (term) => {
-      // dispatch({ type: CLEAR_RESULTS })
+    async (term) => {
+      setResultsLoading(true)
+      dispatch({ type: CLEAR_RESULTS })
       if (isPositiveInt(term)) {
         // if term is an integer, assume it's a block height
-        searchBlock(parseInt(term))
+        await searchBlock(parseInt(term))
       } else if (Address.isValid(term)) {
         // if it's a valid address, it could be a hotspot or an account
-        searchAddress(term)
+        await searchAddress(term)
       } else if (term.length > 20 && isBase64Url(term)) {
-        // if term is a base64 string, it could be a:
-        // block hash
-        searchBlock(term)
-        // transaction hash
-        searchTransaction(term)
+        await Promise.all([
+          // if term is a base64 string, it could be a:
+          // block hash
+          await searchBlock(term),
+          // transaction hash
+          await searchTransaction(term),
+        ])
       } else {
-        searchHotspot(term.replace(/-/g, ' '))
-        searchValidator(term.replace(/-/g, ' '))
-        // searchCities(term)
-        searchMapAddresses(term)
-        searchMaker(term)
+        await Promise.all([
+          await searchHotspot(term.replace(/-/g, ' ')),
+          await searchValidator(term.replace(/-/g, ' ')),
+          // await searchCities(term)
+          await searchMapAddresses(term),
+          await searchMaker(term),
+        ])
       }
+      setResultsLoading(false)
     },
     500,
     { trailing: true },
@@ -252,13 +274,23 @@ const useSearchResults = () => {
     if (term === '') {
       dispatch({ type: CLEAR_RESULTS })
       return
+    } else {
+      setSearchFocused(true)
+      setResultsLoading(true)
     }
 
     const trimmedTerm = term.trim()
     doSearch(trimmedTerm)
-  }, [dispatch, doSearch, term])
+  }, [dispatch, doSearch, setSearchFocused, term])
 
-  return { term, setTerm, results: results[term] || [] }
+  return {
+    term,
+    setTerm,
+    resultsLoading,
+    searchFocused,
+    setSearchFocused,
+    results: results[term] || [],
+  }
 }
 
 const toSearchResult = (item, type) => {

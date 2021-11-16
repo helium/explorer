@@ -1,8 +1,9 @@
 import Widget from './Widget'
 import { useValidator } from '../../data/validators'
-import ValidatorFlagLocation from '../Validators/ValidatorFlagLocation'
 import animalHash from 'angry-purple-tiger'
 import ValidatorStatusDot from '../Validators/ValidatorStatusDot'
+import { formatVersion } from '../Validators/utils'
+import HeartbeatIcon from '../Icons/HeartbeatIcon'
 
 const ValidatorWidget = ({ title, address }) => {
   const { validator } = useValidator(address)
@@ -19,10 +20,9 @@ const ValidatorWidget = ({ title, address }) => {
         </div>
       }
       subtitle={
-        <span className="flex items-center space-x-2">
-          <ValidatorFlagLocation geo={validator.geo} />
-          <span className="text-gray-400">|</span>
-          <span>#{validator.number}</span>
+        <span className="flex items-center space-x-1">
+          <HeartbeatIcon />
+          <span>{formatVersion(validator.versionHeartbeat)}</span>
         </span>
       }
       span={2}

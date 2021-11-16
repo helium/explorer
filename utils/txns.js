@@ -25,18 +25,21 @@ const CONFIG = {
     color: '#E68B00',
     name: 'Mining Reward',
     hotspotContextName: 'Received Mining Rewards',
+    validatorContextName: 'Received Mining Rewards',
     tooltip: 'Mining Reward (v1)',
   },
   rewards_v2: {
     color: '#E68B00',
     name: 'Mining Reward',
     hotspotContextName: 'Received Mining Rewards',
+    validatorContextName: 'Received Mining Rewards',
     tooltip: 'Mining Reward (v2)',
   },
   rewards_v3: {
     color: '#E68B00',
     name: 'Mining Reward',
     hotspotContextName: 'Received Mining Rewards',
+    validatorContextName: 'Received Mining Rewards',
     tooltip: 'Mining Reward (v3)',
   },
   consensus_group_v1: {
@@ -107,10 +110,36 @@ const CONFIG = {
     color: '#a235fa',
     name: 'Stake Validator',
     accountContextName: 'Staked Validator',
+    validatorContextName: 'Received Stake',
+  },
+  unstake_validator_v1: {
+    color: '#a235fa',
+    name: 'Unstake Validator',
+    accountContextName: 'Unstaked Validator',
+    validatorContextName: 'Unstaked',
+  },
+  transfer_validator_stake_v1: {
+    color: '#a235fa',
+    name: 'Transfer Stake',
+    accountContextName: 'Stake Transferred',
+    validatorContextName: 'Stake Transferred',
+  },
+  receive_transferred_stake: {
+    color: '#a235fa',
+    name: 'Receive Transfer Stake',
+    accountContextName: 'Received Transferred Stake',
+    validatorContextName: 'Received Transferred Stake',
+  },
+  send_transferred_stake: {
+    color: '#a235fa',
+    name: 'Send Transfer Stake',
+    accountContextName: 'Transferred Stake',
+    validatorContextName: 'Sent Transferred Stake',
   },
   validator_heartbeat_v1: {
     color: '#A984FF',
     name: 'Validator Heartbeat',
+    validatorContextName: 'Produced Heartbeat',
   },
   token_burn_v1: { color: '#E86161', name: 'Token Burn' },
   default: { color: '#474DFF' },
@@ -121,6 +150,8 @@ export const getTxnTypeName = (id, context = 'block') => {
     return CONFIG[id]?.hotspotContextName || CONFIG[id]?.name || id
   if (context === 'account')
     return CONFIG[id]?.accountContextName || CONFIG[id]?.name || id
+  if (context === 'validator')
+    return CONFIG[id]?.validatorContextName || CONFIG[id]?.name || id
   return CONFIG[id]?.name || id
 }
 
@@ -163,4 +194,12 @@ export const getPocReceiptRole = (txn, address) => {
   }
 
   return 'poc_witnesses_invalid'
+}
+
+export const getStakeTransferRole = (txn, address) => {
+  if (txn.oldAddress === address) {
+    return 'send_transferred_stake'
+  }
+
+  return 'receive_transferred_stake'
 }

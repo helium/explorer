@@ -3,6 +3,7 @@ import BaseList from '../BaseList'
 import FlagLocation from '../../Common/FlagLocation'
 import {
   getPocReceiptRole,
+  getStakeTransferRole,
   getTxnTypeColor,
   getTxnTypeName,
 } from '../../../utils/txns'
@@ -14,6 +15,8 @@ import ExpandedRewardContent from './ExpandedRewardContent'
 import PaymentSubtitle from './PaymentSubtitle'
 import animalHash from 'angry-purple-tiger'
 import Timestamp from 'react-timestamp'
+import { formatVersion } from '../../Validators/utils'
+import HeartbeatIcon from '../../Icons/HeartbeatIcon'
 
 const isExpandable = (txn) => {
   return (
@@ -54,6 +57,20 @@ const ActivityList = ({
             <span className="flex items-end justify-start">
               <span>
                 {getTxnTypeName(getPocReceiptRole(txn, address), 'hotspot')}
+              </span>
+              <span className="hidden md:block text-xs text-gray-600 font-sans font-extralight ml-1 mb-0.5">
+                <TimeAgo date={txn.time * 1000} timeStyle="mini" /> ago
+              </span>
+            </span>
+          )
+        case 'transfer_validator_stake_v1':
+          return (
+            <span className="flex items-end justify-start">
+              <span>
+                {getTxnTypeName(
+                  getStakeTransferRole(txn, address),
+                  'validator',
+                )}
               </span>
               <span className="hidden md:block text-xs text-gray-600 font-sans font-extralight ml-1 mb-0.5">
                 <TimeAgo date={txn.time * 1000} timeStyle="mini" /> ago
@@ -213,6 +230,16 @@ const ActivityList = ({
               </span>
             </>
           )
+        case 'validator_heartbeat_v1':
+          return (
+            <>
+              {timestamp}
+              <span className="flex items-center">
+                <HeartbeatIcon />
+                <span className="ml-1">{formatVersion(txn.version)}</span>
+              </span>
+            </>
+          )
         default:
           return timestamp
       }
@@ -237,7 +264,9 @@ const ActivityList = ({
                 : getTxnTypeColor(txn.type)
             }
             expandedContent={
-              txn.type === 'rewards_v1' || txn.type === 'rewards_v2' ? (
+              txn.type === 'rewards_v1' ||
+              txn.type === 'rewards_v2' ||
+              txn.type === 'rewards_v3' ? (
                 <ExpandedRewardContent txn={txn} address={address} />
               ) : (
                 <ExpandedPoCReceiptContent txn={txn} address={address} />

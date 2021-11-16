@@ -147,14 +147,28 @@ const BlockTransactionsList = ({ height }) => {
               {animalHash(txn.challenger)}
             </span>
             <span className="ml-3 flex flex-row items-center justify-start">
-              <img
-                alt=""
-                src="/images/witness-yellow-mini.svg"
-                className="h-3 w-auto"
-              />
-              <span className="ml-1.5 text-sm font-sans">
-                {txn.path[0].witnesses.length}
-              </span>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-start">
+                  <img
+                    alt=""
+                    src="/images/witness-yellow-mini.svg"
+                    className="h-3 w-auto mr-0.5"
+                  />
+                  <span className="text-xs">
+                    {txn.numberOfValidWitnesses || 0}
+                  </span>
+                </div>
+                <div className="flex items-center justify-start">
+                  <img
+                    alt=""
+                    src="/images/witness-gray.svg"
+                    className="h-3 w-auto mr-0.5"
+                  />
+                  <span className="text-xs">
+                    {txn.numberOfInvalidWitnesses || 0}
+                  </span>
+                </div>
+              </div>
             </span>
           </span>
         )

@@ -37,7 +37,7 @@ export const Index = ({ coverageUrl }) => {
   })
 
   return (
-    <Page className="overflow-hidden">
+    <Page>
       <Head>
         <link
           href="https://api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css"
@@ -58,19 +58,6 @@ export const Index = ({ coverageUrl }) => {
       {mapSupported && <Map coverageUrl={coverageUrl} />}
       <InfoBoxSwitch />
       <MapLayersBox />
-
-      <style jsx global>{`
-        #__next,
-        #app,
-        #app article {
-          height: 100%;
-        }
-
-        html,
-        body {
-          overscroll-behavior: none;
-        }
-      `}</style>
     </Page>
   )
 }

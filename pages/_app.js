@@ -32,10 +32,9 @@ function MyApp({ Component, pageProps }) {
     // this #app div is used to increase the specificity of Tailwind's utility classes, making it easier to override styles without resorting to !important
     // the corresponding value is in /tailwind.config.js: important: "#app"
     <div id="app" suppressHydrationWarning>
-      {/* <BannerContext.Provider value={{ showBanner, hideBanner }}> */}
-      <GAScript />
-      <Component {...pageProps} />
-      {/* {typeof window === 'undefined' ? null : (
+      <BannerContext.Provider value={{ showBanner, hideBanner }}>
+        <GAScript />
+        {typeof window === 'undefined' ? null : (
           <Router>
             <StateProvider>
               <SWRConfig
@@ -49,9 +48,9 @@ function MyApp({ Component, pageProps }) {
               </SWRConfig>
             </StateProvider>
           </Router>
-        )} */}
-      <script src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js"></script>
-      {/* </BannerContext.Provider> */}
+        )}
+        <script src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js"></script>
+      </BannerContext.Provider>
     </div>
   )
 }

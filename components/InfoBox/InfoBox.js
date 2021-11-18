@@ -29,7 +29,7 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
         </title>
       </Helmet>
       <div className="w-full md:h-screen h-full flex flex-col items-end justify-end md:justify-start max-h-90p md:max-h-screen">
-        <div className="flex justify-between w-full p-4 rounded-t-2xl md:rounded-none titlebox-blur md:pt-28">
+        <div className="flex mt-40 md:mt-0 justify-between w-full p-4 rounded-t-2xl md:rounded-none titlebox-blur md:pt-28">
           <div className="flex flex-col items-start justify-start">
             <Breadcrumbs breadcrumbs={breadcrumbs} />
             <span className="pointer-events-auto text-white text-2xl md:text-3xl font-semibold font-sans tracking-tight">

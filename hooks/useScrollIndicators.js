@@ -95,7 +95,7 @@ export const useScrollIndicators = (
 
       setIsScrollable(scrollHeight > viewHeight)
       setIsScrolledToEnd(
-        scrollPositionY + BUFFER_PIXELS >= scrollHeight - viewHeight,
+        scrollPositionY + (BUFFER_PIXELS + 10) >= scrollHeight - viewHeight,
       )
       setIsScrolledToStart(scrollPositionY < BUFFER_PIXELS)
     }

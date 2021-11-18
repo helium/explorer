@@ -1,8 +1,8 @@
 import React from 'react'
 import Head from 'next/head'
 
-const Page = ({ children, backgroundColor = '#212E3A', className }) => (
-  <article className={className}>
+const Page = ({ children, backgroundColor = '#212E3A' }) => (
+  <div>
     <Head>
       <link rel="icon" type="image/png" href="static/img/favicon.png" />
     </Head>
@@ -110,9 +110,6 @@ const Page = ({ children, backgroundColor = '#212E3A', className }) => (
       section {
         display: block;
       }
-      body {
-        line-height: 1;
-      }
       ol,
       ul {
         list-style: none;
@@ -133,18 +130,17 @@ const Page = ({ children, backgroundColor = '#212E3A', className }) => (
         border-spacing: 0;
       }
       body {
+        line-height: 1;
         margin: 0;
         font-family: 'Inter', Helvetica, Arial, sans-serif;
-        font-size: 15px;
         background: ${backgroundColor};
-        height: 100vh;
       }
       .mono {
         font-family: 'input-mono', monaco, monospace !important;
       }
     `}</style>
     {children}
-  </article>
+  </div>
 )
 
 export default Page

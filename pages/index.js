@@ -11,34 +11,40 @@ import useKeydown from '../hooks/useKeydown'
 import useGA from '../hooks/useGA'
 import Head from 'next/head'
 import mapboxglSupported from '@mapbox/mapbox-gl-supported'
+import MaintenanceMode from '../components/MaintenanceMode'
 
-const mapSupported = mapboxglSupported.supported()
+// const mapSupported = mapboxglSupported.supported()
 
-if (!mapSupported) {
-  console.error(
-    'WebGL was not able to initialize in your browser. Please try on another device or browser to enable the full functionality of the Helium Explorer.',
-  )
-}
+// if (!mapSupported) {
+//   console.error(
+//     'WebGL was not able to initialize in your browser. Please try on another device or browser to enable the full functionality of the Helium Explorer.',
+//   )
+// }
 
-const Map = dynamic(() => import('../components/Map/Map'), {
-  ssr: false,
-  loading: () => <div />,
-})
+// const Map = dynamic(() => import('../components/Map/Map'), {
+//   ssr: false,
+//   loading: () => <div />,
+// })
+
+const MAINTENANCE_MODE = true
 
 export const Index = ({ coverageUrl }) => {
-  useGA()
-  const history = useHistory()
-  const location = useLocation()
+  if (MAINTENANCE_MODE) {
+    return <MaintenanceMode />
+  }
+  // useGA()
+  // const history = useHistory()
+  // const location = useLocation()
 
-  useKeydown({
-    Escape: () => {
-      history.push(location.pathname.split('/').slice(0, -1).join('/') || '/')
-    },
-  })
+  // useKeydown({
+  //   Escape: () => {
+  //     history.push(location.pathname.split('/').slice(0, -1).join('/') || '/')
+  //   },
+  // })
 
   return (
     <Page>
-      <Head>
+      {/* <Head>
         <link
           href="https://api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css"
           rel="stylesheet"
@@ -57,7 +63,7 @@ export const Index = ({ coverageUrl }) => {
       <Header activeNav="coverage" />
       {mapSupported && <Map coverageUrl={coverageUrl} />}
       <InfoBoxSwitch />
-      <MapLayersBox />
+      <MapLayersBox /> */}
     </Page>
   )
 }

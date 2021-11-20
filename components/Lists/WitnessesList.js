@@ -10,8 +10,10 @@ import {
 } from '../Hotspots/utils'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import BaseList from './BaseList'
+import { calculateDistance, formatDistance } from '../../utils/distance'
 
 const WitnessesList = ({
+  hotspot,
   witnesses,
   isLoading = true,
   title,
@@ -55,9 +57,18 @@ const WitnessesList = ({
 
   const renderDetails = useCallback((w) => {
     return (
-      <span className="whitespace-nowrap">
-        {witnessRssi(w?.witnessInfo?.histogram)} dBm
-      </span>
+      <>
+        <span className="flex items-center">
+          <span className="ml-1 whitespace-nowrap">
+            {witnessRssi(w?.witnessInfo?.histogram)} dBm
+          </span>
+          <span className="ml-1 whitespace-nowrap">
+            {formatDistance(
+              calculateDistance([hotspot.lat, hotspot.lng], [w?.lat, w?.lng]),
+            )}
+          </span>
+        </span>
+      </>
     )
   }, [])
 

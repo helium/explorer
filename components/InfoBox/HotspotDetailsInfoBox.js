@@ -188,11 +188,11 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
           )}
         </TabPane>
         <TabPane title="Activity" path="activity" key="activity">
-          {isLoading ? (
+          {/* {isLoading ? (
             <SkeletonList />
-          ) : (
-            <ActivityPane context="hotspot" address={hotspot?.address} />
-          )}
+          ) : ( */}
+          <ActivityPane context="hotspot" address={hotspot?.address} />
+          {/* )} */}
         </TabPane>
         <TabPane
           title="Witnesses"

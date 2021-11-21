@@ -6,6 +6,7 @@ import { useActivity } from '../../../data/activity'
 import ActivityList from '../../Lists/ActivityList/ActivityList'
 import PillNavbar from '../../Nav/PillNavbar'
 import { Link } from 'react-router-i18n'
+import SkeletonList from '../../Lists/SkeletonList'
 
 const filtersByContext = {
   hotspot: {
@@ -41,6 +42,68 @@ const defaultFilter = {
   account: 'Payments',
 }
 
+const ActivityContent = ({
+  isLoadingInitial,
+  isLoadingMore,
+  error,
+  setError,
+  context,
+  filter,
+  address,
+  transactions,
+  fetchMore,
+  hasMore,
+}) => {
+  if (isLoadingInitial || isLoadingMore || !transactions) {
+    return <SkeletonList />
+  }
+
+  if (error) {
+    console.log(error)
+    return (
+      <div className="bg-red-100">
+        <span>{error.toString()}</span>
+        <button className="" onClick={setError(null)}>
+          Retry
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <ActivityList
+      title={`${upperFirst(context)} Activity (${filter})`}
+      description={
+        <div className="flex flex-col space-y-2">
+          <div>
+            All transactions that this {context} has participated in, filtered
+            by the currently selected filter ({filter}).
+          </div>
+          <div>
+            If you want to create an export of this activity for taxes or
+            record-keeping purposes, you can use one of the community-developed
+            tools to do so. You can browse them all{' '}
+            <Link
+              className="text-gray-800 font-bold hover:text-darkgray-800"
+              to="/tools"
+            >
+              here
+            </Link>
+            .
+          </div>
+        </div>
+      }
+      context={context}
+      address={address}
+      transactions={transactions}
+      isLoading={isLoadingInitial}
+      isLoadingMore={isLoadingMore}
+      fetchMore={fetchMore}
+      hasMore={hasMore}
+    />
+  )
+}
+
 const ActivityPane = ({ context, address }) => {
   const scrollView = useRef()
   const [prevScrollPos, setPrevScrollPos] = useState(0)
@@ -50,8 +113,15 @@ const ActivityPane = ({ context, address }) => {
 
   const filters = filtersByContext[context]
 
-  const { transactions, fetchMore, isLoadingInitial, isLoadingMore, hasMore } =
-    useActivity(context, address, filters[filter])
+  const {
+    transactions,
+    fetchMore,
+    isLoadingInitial,
+    isLoadingMore,
+    hasMore,
+    error,
+    setError,
+  } = useActivity(context, address, filters[filter])
 
   const setVisibility = useCallback(
     () =>
@@ -76,9 +146,9 @@ const ActivityPane = ({ context, address }) => {
   useEffect(() => {
     const currentScrollView = scrollView.current
 
-    currentScrollView.addEventListener('scroll', handleScroll)
+    currentScrollView?.addEventListener('scroll', handleScroll)
 
-    return () => currentScrollView.removeEventListener('scroll', handleScroll)
+    return () => currentScrollView?.removeEventListener('scroll', handleScroll)
   }, [handleScroll])
 
   const handleUpdateFilter = useCallback((filterName) => {
@@ -111,35 +181,17 @@ const ActivityPane = ({ context, address }) => {
         />
       </div>
       <div className="grid grid-flow-row grid-cols-1">
-        <ActivityList
-          title={`${upperFirst(context)} Activity (${filter})`}
-          description={
-            <div className="flex flex-col space-y-2">
-              <div>
-                All transactions that this {context} has participated in,
-                filtered by the currently selected filter ({filter}).
-              </div>
-              <div>
-                If you want to create an export of this activity for taxes or
-                record-keeping purposes, you can use one of the
-                community-developed tools to do so. You can browse them all{' '}
-                <Link
-                  className="text-gray-800 font-bold hover:text-darkgray-800"
-                  to="/tools"
-                >
-                  here
-                </Link>
-                .
-              </div>
-            </div>
-          }
-          context={context}
-          address={address}
+        <ActivityContent
           transactions={transactions}
-          isLoading={isLoadingInitial}
-          isLoadingMore={isLoadingMore}
           fetchMore={fetchMore}
           hasMore={hasMore}
+          setError={setError}
+          error={error}
+          address={address}
+          context={context}
+          filter={filter}
+          isLoadingInitial={isLoadingInitial}
+          isLoadingMore={isLoadingMore}
         />
       </div>
     </div>

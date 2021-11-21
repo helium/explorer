@@ -18,24 +18,39 @@ export const useActivity = (context, address, filters = [], pageSize = 20) => {
   const [isLoadingInitial, setIsLoadingInitial] = useState(true)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [hasMore, setHasMore] = useState(true)
+  const [error, setError] = useState(null)
 
   useAsync(async () => {
-    const clientContext = pickClientContext(address, context)
-    const newList = await clientContext.activity.list({ filterTypes: filters })
-    setList(newList)
-  }, [address, filters, context])
-
-  useAsync(async () => {
-    if (!list) return
-    setIsLoadingMore(true)
-    const newTransactions = await list.take(pageSize)
-    setTransactions(supplementTxnList(newTransactions))
-    setIsLoadingMore(false)
-    setIsLoadingInitial(false)
-    if (newTransactions.length < pageSize) {
-      setHasMore(false)
+    if (!error) {
+      try {
+        const clientContext = pickClientContext(address, context)
+        const newList = await clientContext.activity.list({
+          filterTypes: filters,
+        })
+        setList(newList)
+      } catch (e) {
+        setError(e)
+      }
     }
-  }, [list, pageSize])
+  }, [address, filters, context, error])
+
+  useAsync(async () => {
+    if (!error) {
+      try {
+        if (!list) return
+        setIsLoadingMore(true)
+        const newTransactions = await list.take(pageSize)
+        setTransactions(supplementTxnList(newTransactions))
+        setIsLoadingMore(false)
+        setIsLoadingInitial(false)
+        if (newTransactions.length < pageSize) {
+          setHasMore(false)
+        }
+      } catch (e) {
+        setError(e)
+      }
+    }
+  }, [list, pageSize, error])
 
   useEffect(() => {
     setIsLoadingInitial(true)
@@ -43,9 +58,26 @@ export const useActivity = (context, address, filters = [], pageSize = 20) => {
   }, [filters])
 
   const fetchMore = useCallback(async () => {
-    const newTransactions = await list.take(pageSize)
-    setTransactions([...transactions, ...supplementTxnList(newTransactions)])
-  }, [list, pageSize, transactions])
+    if (!error) {
+      try {
+        const newTransactions = await list.take(pageSize)
+        setTransactions([
+          ...transactions,
+          ...supplementTxnList(newTransactions),
+        ])
+      } catch (e) {
+        setError(e)
+      }
+    }
+  }, [list, pageSize, transactions, error])
 
-  return { transactions, fetchMore, isLoadingInitial, isLoadingMore, hasMore }
+  return {
+    transactions,
+    fetchMore,
+    isLoadingInitial,
+    isLoadingMore,
+    hasMore,
+    error,
+    setError,
+  }
 }

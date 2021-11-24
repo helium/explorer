@@ -28,7 +28,7 @@ const OverviewPane = () => {
       <PeriodizedRewardsWidget
         address={account?.address}
         type="account"
-        title="Earnings"
+        title="Rolling Earnings"
       />
       <Widget
         title="Hotspots"

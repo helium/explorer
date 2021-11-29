@@ -98,6 +98,12 @@ export const communityToolsList = [
     tags: [types.export],
   },
   {
+    name: 'helium.tools',
+    url: 'https://helium.tools',
+    description: 'Set of tools to monitor and compare earnings in selected location(s).',
+    tags: [types.planning, types.monitoring],
+  },  
+  {
     name: 'HeliumVision',
     url: 'https://helium.vision',
     description: 'Helium Network Planning, Optimization and Simulations',

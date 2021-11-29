@@ -71,23 +71,25 @@ const ExpandableListItem = ({
           {expanded && (
             <div className="w-full py-2 flex flex-col justify-between">
               {expandedContent}
-              <Link
-                to={linkTo}
-                // clear selected hotspot when navigating to selected transaction, this was causing a Mapbox error on mobile
-                onClick={clearSelectedHotspot}
-                className={classNames(
-                  'w-full bg-gray-300 hover:bg-gray-350 transition-all duration-200 cursor-pointer rounded-lg mt-2 flex items-center justify-center',
-                )}
-              >
-                <p className="text-gray-600 font-sans text-sm p-2 m-0">
-                  View transaction details
-                </p>
-                <ChevronIcon
-                  className={
-                    'h-auto text-gray-600 transition-all duration-200 w-4 transform rotate-90'
-                  }
-                />
-              </Link>
+              {!txn.type.startsWith('rewards') && (
+                <Link
+                  to={linkTo}
+                  // clear selected hotspot when navigating to selected transaction, this was causing a Mapbox error on mobile
+                  onClick={clearSelectedHotspot}
+                  className={classNames(
+                    'w-full bg-gray-300 hover:bg-gray-350 transition-all duration-200 cursor-pointer rounded-lg mt-2 flex items-center justify-center',
+                  )}
+                >
+                  <p className="text-gray-600 font-sans text-sm p-2 m-0">
+                    View transaction details
+                  </p>
+                  <ChevronIcon
+                    className={
+                      'h-auto text-gray-600 transition-all duration-200 w-4 transform rotate-90'
+                    }
+                  />
+                </Link>
+              )}
             </div>
           )}
         </div>

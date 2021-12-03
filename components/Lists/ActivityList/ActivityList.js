@@ -7,11 +7,10 @@ import {
   getTxnTypeColor,
   getTxnTypeName,
 } from '../../../utils/txns'
-import ExpandableListItem from './ExpandableActivityListItem'
 import ActivityListItem from './ActivityListItem'
+import ExpandableListItem from './ExpandableListItem'
+import ExpandedContent from './ExpandedListItemContent/ExpandedContent'
 import TimeAgo from 'react-time-ago'
-import ExpandedPoCReceiptContent from './ExpandedPoCReceiptContent'
-import ExpandedRewardContent from './ExpandedRewardContent'
 import PaymentSubtitle from './PaymentSubtitle'
 import animalHash from 'angry-purple-tiger'
 import Timestamp from 'react-timestamp'
@@ -20,6 +19,7 @@ import HeartbeatIcon from '../../Icons/HeartbeatIcon'
 
 const isExpandable = (txn) => {
   return (
+    txn.type === 'transfer_hotspot_v1' ||
     txn.type === 'rewards_v1' ||
     txn.type === 'rewards_v2' ||
     txn.type === 'rewards_v3' ||
@@ -263,15 +263,7 @@ const ActivityList = ({
                 ? getTxnTypeColor(getPocReceiptRole(txn, address))
                 : getTxnTypeColor(txn.type)
             }
-            expandedContent={
-              txn.type === 'rewards_v1' ||
-              txn.type === 'rewards_v2' ||
-              txn.type === 'rewards_v3' ? (
-                <ExpandedRewardContent txn={txn} address={address} />
-              ) : (
-                <ExpandedPoCReceiptContent txn={txn} address={address} />
-              )
-            }
+            expandedContent={<ExpandedContent txn={txn} address={address} />}
           />
         )
       }

@@ -59,6 +59,8 @@ const HotspotsList = ({
     <BaseList
       items={hotspots}
       keyExtractor={keyExtractor}
+      listHeaderTitle="Hotspots"
+      listHeaderShowCount={true}
       linkExtractor={linkExtractor}
       onSelectItem={handleSelectHotspot}
       isLoading={isLoading}

@@ -181,6 +181,12 @@ export const communityToolsList = [
     description: 'Simplifying Helium taxes for investors and miners',
     tags: [types.export]
   },
+  {
+    name: 'hntTax',
+    url: 'https://hnttax.us',
+    description: 'A tax firm specializing in HNT mining taxes. Offers both free and paid tax advice and services.',
+    tags: [types.export]
+  },
 
   // The lines below are a template that you can copy and paste and then populate
   // to add a new tool to the list. All the possible tags are included in the

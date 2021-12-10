@@ -187,6 +187,12 @@ export const communityToolsList = [
     description: 'A tax firm specializing in HNT mining taxes. Offers both free and paid tax advice and services.',
     tags: [types.export]
   },
+  {
+    name: 'Helium Portal',
+    url: 'https://heliumportal.com',
+    description: 'City and nationwide toplist and communication platform',
+    tags: [types.planning],
+  },
 
   // The lines below are a template that you can copy and paste and then populate
   // to add a new tool to the list. All the possible tags are included in the

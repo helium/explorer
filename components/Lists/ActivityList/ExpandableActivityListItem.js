@@ -5,8 +5,25 @@ import { Link } from 'react-router-i18n'
 import useSelectedTxn from '../../../hooks/useSelectedTxn'
 import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
 import { useCallback } from 'react'
-import ActivityColorSlice from './ActivityColorSlice'
+import ActivityIcon from './ActivityIcon'
 import ExpandIcon from '../../Icons/ExpandIcon'
+import TimeAgo from 'react-time-ago'
+import Timestamp from 'react-timestamp'
+
+const TransactionTimestamp = ({ txn, expanded }) => (
+  <span className="flex items-center space-x-1">
+    <img alt="" src="/images/clock.svg" className="w-3.5 h-3.5" />
+    {expanded ? (
+      <span className="tracking-tighter">
+        <Timestamp date={txn.time} />
+      </span>
+    ) : (
+      <span className="text-xs text-gray-600 font-sans font-extralight ml-1 mt-px md:mt-0.5">
+        <TimeAgo date={txn.time * 1000} timeStyle="mini" /> ago
+      </span>
+    )}
+  </span>
+)
 
 const ExpandableListItem = ({
   address,
@@ -44,20 +61,18 @@ const ExpandableListItem = ({
 
   return (
     <div
-      className="w-full flex items-stretch cursor-pointer"
+      className="bg-white hover:bg-bluegray-50 focus:bg-bluegray-50 cursor-pointer transition-all duration-75 relative flex border-solid border-bluegray-300 border-b border-t-0"
       onClick={handleItemClick}
     >
-      <ActivityColorSlice highlightColor={highlightColor} />
-      <div className="w-full flex px-4 py-2">
-        <div className="w-full flex flex-col">
-          <div className="w-full flex justify-between">
-            <div className="flex flex-col">
+      <div className="w-full flex items-stretch justify-center">
+        <div className="w-full flex px-4 py-2 space-x-2 items-center">
+          <ActivityIcon txn={txn} highlightColor={highlightColor} />
+          <div className="w-full flex flex-row">
+            <div className="w-full flex justify-between">
               <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans">
                 {title}
               </div>
-              <div className="flex items-center space-x-2 md:space-x-3 h-6 text-gray-525 text-xs md:text-sm whitespace-nowrap">
-                {subtitle}
-              </div>
+              <TransactionTimestamp txn={txn} expanded={expanded} />
             </div>
             <div className={'flex items-center justify-center'}>
               <ExpandIcon

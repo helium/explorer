@@ -176,24 +176,20 @@ export const formattedTxnHash = (hash) => {
   return `${hash.slice(0, 5)}...${hash.slice(-5)}`
 }
 
-export const getPocReceiptRole = (txn, address) => {
-  if (txn.challenger === address) {
+export const getPocReceiptRole = (txn) => {
+  if (txn.role === 'challenger') {
     return 'poc_challengers'
   }
 
-  if (txn.path.some((p) => p.challengee === address)) {
+  if (txn.role === 'challengee') {
     return 'poc_challengees'
   }
 
-  if (
-    txn.path.some((p) =>
-      p.witnesses.some((w) => w.gateway === address && w.isValid),
-    )
-  ) {
+  if (txn.role === 'witness') {
     return 'poc_witnesses_valid'
   }
 
-  return 'poc_witnesses_invalid'
+  return 'poc_receipts_v1'
 }
 
 export const getStakeTransferRole = (txn, address) => {

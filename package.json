@@ -9,7 +9,7 @@
     "@feedback-fish/react": "^1.2.1",
     "@helium/crypto": "^3.1.0",
     "@helium/currency": "^3.25.1",
-    "@helium/http": "^3.43.0",
+    "@helium/http": "^3.51.0",
     "@mapbox/mapbox-gl-supported": "^2.0.0",
     "@mapbox/mapbox-sdk": "^0.13.0",
     "@next/bundle-analyzer": "^11.0.1",

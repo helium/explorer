@@ -11,7 +11,6 @@ const TESTNET_API_BASE = 'https://helium-testnet-explorer-api.herokuapp.com/api'
 export const fetchApi = (version = 'v1') => async (route) => {
   const base = NETWORK === 'testnet' ? TESTNET_API_BASE : API_BASES[version]
   const url = [base, route].join('')
-  console.log('fetch api url', url)
   const response = await fetch(url, {
     headers: {
       'cache-control': 'max-age=60',

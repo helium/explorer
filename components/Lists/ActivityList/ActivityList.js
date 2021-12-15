@@ -7,10 +7,6 @@ import {
 } from '../../../utils/txns'
 import ExpandableListItem from './ExpandableActivityListItem'
 import ActivityListItem from './ActivityListItem'
-import TimeAgo from 'react-time-ago'
-import ExpandedPoCReceiptContentRoles from './ExpandedPoCReceiptContent'
-import ExpandedRewardContent from './ExpandedRewardContent'
-import Timestamp from 'react-timestamp'
 
 const isExpandable = (txn) => {
   return (
@@ -47,7 +43,7 @@ const ActivityList = ({
     (txn) => {
       switch (txn.type) {
         case 'poc_receipts_v1':
-          return getTxnTypeName(getPocReceiptRole(txn), 'hotspot')
+          return getTxnTypeName(getPocReceiptRole(txn.role), 'hotspot')
         case 'transfer_validator_stake_v1':
           return (
             <span>
@@ -74,51 +70,45 @@ const ActivityList = ({
 
   const renderItem = useCallback(
     (txn) => {
-      if (isExpandable(txn)) {
-        return (
-          <ExpandableListItem
-            txn={txn}
-            address={address}
-            context={context}
-            title={generateTitle(txn)}
-            // subtitle={generateSubtitle(txn)}
-            linkTo={`/txns/${txn.hash}`}
-            highlightColor={
-              txn.type === 'poc_receipts_v1'
-                ? getTxnTypeColor(getPocReceiptRole(txn, address))
-                : getTxnTypeColor(txn.type)
-            }
-            expandedContent={
-              txn.type === 'rewards_v1' ||
-              txn.type === 'rewards_v2' ||
-              txn.type === 'rewards_v3' ? (
-                <ExpandedRewardContent txn={txn} address={address} />
-              ) : (
-                <ExpandedPoCReceiptContentRoles txn={txn} address={address} />
-              )
-            }
-          />
-        )
-      }
-
+      // if (isExpandable(txn)) {
       return (
-        <ActivityListItem
+        <ExpandableListItem
+          txn={txn}
+          address={address}
+          context={context}
           title={generateTitle(txn)}
           // subtitle={generateSubtitle(txn)}
           linkTo={`/txns/${txn.hash}`}
-          highlightColor={getTxnTypeColor(txn.type)}
+          highlightColor={
+            txn.type === 'poc_receipts_v1'
+              ? getTxnTypeColor(getPocReceiptRole(txn.role))
+              : getTxnTypeColor(txn.type)
+          }
         />
       )
+      // }
+
+      // return (
+      //   <ActivityListItem
+      //     title={generateTitle(txn)}
+      //     // subtitle={generateSubtitle(txn)}
+      //     linkTo={`/txns/${txn.hash}`}
+      //     highlightColor={getTxnTypeColor(txn.type)}
+      //   />
+      // )
     },
     [address, context, generateTitle],
   )
 
   const expandableItem = useCallback((txn) => {
-    if (isExpandable(txn)) return true
+    // if (isExpandable(txn)) {
+    return true
+    // }
   }, [])
 
   return (
     <BaseList
+      isActivityList
       defaultBaseItem={false}
       listHeaderTitle={title}
       listHeaderDescription={description}

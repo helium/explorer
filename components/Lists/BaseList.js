@@ -4,6 +4,7 @@ import SkeletonList from './SkeletonList'
 import classNames from 'classnames'
 import { Link } from 'react-router-i18n'
 import InfoBoxPaneTitleSection from '../InfoBox/Common/InfoBoxPaneTitleSection'
+import SkeletonActivityList from './ActivityList/SkeletonActivityList'
 
 const BaseList = ({
   items,
@@ -24,8 +25,9 @@ const BaseList = ({
   isLoadingMore,
   hasMore,
   itemPadding = true,
-  defaultBaseItem = true,
   expandableItem = () => false,
+  defaultBaseItem = true,
+  isActivityList = false,
 }) => {
   const [sentryRef] = useInfiniteScroll({
     loading: isLoadingMore,
@@ -119,7 +121,11 @@ const BaseList = ({
   )
 
   if (isLoading) {
-    return <SkeletonList />
+    if (isActivityList) {
+      return <SkeletonActivityList />
+    } else {
+      return <SkeletonList />
+    }
   }
 
   if (items && items.length === 0) {

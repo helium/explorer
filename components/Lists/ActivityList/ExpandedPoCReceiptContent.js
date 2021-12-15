@@ -113,13 +113,13 @@ const WitnessesDetails = ({ txn, role, address, isWitness }) => {
   )
 }
 
-const ExpandedPoCReceiptContent = ({ txn, address }) => {
-  const role = getPocReceiptRole(txn, address)
+const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
+  const role = getPocReceiptRole(initialRole)
   const isWitness =
     role === 'poc_witnesses_valid' || role === 'poc_witnesses_invalid'
 
   return (
-    <div className="bg-gray-300 w-full rounded-md px-2 py-2">
+    <div className="">
       <RoleParticipant
         roleTitle="Challenger"
         isActive={role === 'poc_challengers'}

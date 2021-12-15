@@ -1,4 +1,3 @@
-import ActivityColorSlice from './ActivityColorSlice'
 import Image from 'next/image'
 import ActivityIcon from './ActivityIcon'
 

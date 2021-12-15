@@ -176,16 +176,16 @@ export const formattedTxnHash = (hash) => {
   return `${hash.slice(0, 5)}...${hash.slice(-5)}`
 }
 
-export const getPocReceiptRole = (txn) => {
-  if (txn.role === 'challenger') {
+export const getPocReceiptRole = (role) => {
+  if (role === 'challenger') {
     return 'poc_challengers'
   }
 
-  if (txn.role === 'challengee') {
+  if (role === 'challengee') {
     return 'poc_challengees'
   }
 
-  if (txn.role === 'witness') {
+  if (role === 'witness') {
     return 'poc_witnesses_valid'
   }
 

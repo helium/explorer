@@ -21,6 +21,7 @@ import { useMaker } from '../../data/makers'
 import Skeleton from '../Common/Skeleton'
 import { useCallback } from 'react'
 import AccountIcon from '../AccountIcon'
+import SkeletonActivityList from '../Lists/ActivityList/SkeletonActivityList'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -189,7 +190,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
         </TabPane>
         <TabPane title="Activity" path="activity" key="activity">
           {isLoading ? (
-            <SkeletonList />
+            <SkeletonActivityList />
           ) : (
             <ActivityPane context="hotspot" address={hotspot?.address} />
           )}

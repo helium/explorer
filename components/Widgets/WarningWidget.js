@@ -11,11 +11,11 @@ const WarningWidget = ({
     <>
       <span className="flex items-center justify-start">
         <img alt="" className="h-3 mr-1" src="/images/warning.svg" />
-        <div className="text-yellow-700 text-sm font-semibold whitespace-nowrap truncate">
+        <div className="text-yellow-700 text-xs font-semibold whitespace-nowrap truncate">
           {warningText}
         </div>
       </span>
-      {subtitle && <div className="text-sm text-gray-600 mt-1">{subtitle}</div>}
+      {subtitle && <div className="text-xs text-gray-600 mt-1">{subtitle}</div>}
     </>
   )
 
@@ -28,7 +28,7 @@ const WarningWidget = ({
         href={link}
       >
         {inner}
-        <span className="text-gray-600 font-sans text-right whitespace-nowrap">
+        <span className="text-gray-600 font-sans text-right whitespace-nowrap text-xs">
           {linkText} {'->'}
         </span>
       </a>

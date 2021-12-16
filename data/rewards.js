@@ -1,4 +1,4 @@
-import { getUnixTime } from 'date-fns'
+import { formatISO, getUnixTime, parseISO, startOfDay, sub } from 'date-fns'
 import useSWR from 'swr'
 import client, { TAKE_MAX } from './client'
 
@@ -25,13 +25,28 @@ export const getHotspotRewardsBuckets = async (
   address,
   numBack,
   bucketType,
+  inUTCDays = false,
 ) => {
   if (!address) return
-  const list = await client.hotspot(address).rewards.sum.list({
-    minTime: `-${numBack} ${bucketType}`,
-    maxTime: new Date(),
-    bucket: bucketType,
-  })
+  let list
+  if (inUTCDays) {
+    const now = new Date(new Date().setUTCHours(0, 0, 0, 0)).toISOString()
+
+    const maxTime = now
+    const minTime = sub(parseISO(now), { days: numBack }).toISOString()
+
+    list = await client.hotspot(address).rewards.sum.list({
+      minTime,
+      maxTime,
+      bucket: bucketType,
+    })
+  } else {
+    list = await client.hotspot(address).rewards.sum.list({
+      minTime: `-${numBack} ${bucketType}`,
+      maxTime: new Date(),
+      bucket: bucketType,
+    })
+  }
   const rewards = await list.take(TAKE_MAX)
   return rewards.reverse()
 }
@@ -98,13 +113,28 @@ export const getValidatorRewardsBuckets = async (
   address,
   numBack,
   bucketType,
+  inUTCDays = false,
 ) => {
   if (!address) return
 
-  const list = await client.validator(address).rewards.sum.list({
-    minTime: `-${numBack} ${bucketType}`,
-    bucket: bucketType,
-  })
+  let list
+  if (inUTCDays) {
+    const now = new Date(new Date().setUTCHours(0, 0, 0, 0)).toISOString()
+
+    const maxTime = now
+    const minTime = sub(parseISO(now), { days: numBack }).toISOString()
+
+    list = await client.hotspot(address).rewards.sum.list({
+      minTime,
+      maxTime,
+      bucket: bucketType,
+    })
+  } else {
+    list = await client.validator(address).rewards.sum.list({
+      minTime: `-${numBack} ${bucketType}`,
+      bucket: bucketType,
+    })
+  }
   const rewards = await list.take(TAKE_MAX)
   return rewards.reverse()
 }
@@ -113,14 +143,29 @@ export const getAccountRewardsBuckets = async (
   address,
   numBack,
   bucketType,
+  inUTCDays = false,
 ) => {
   if (!address) return
 
-  const list = await client.account(address).rewards.sum.list({
-    minTime: `-${numBack} ${bucketType}`,
-    maxTime: new Date(),
-    bucket: bucketType,
-  })
+  let list
+  if (inUTCDays) {
+    const now = new Date(new Date().setUTCHours(0, 0, 0, 0)).toISOString()
+
+    const maxTime = now
+    const minTime = sub(parseISO(now), { days: numBack }).toISOString()
+
+    list = await client.hotspot(address).rewards.sum.list({
+      minTime,
+      maxTime,
+      bucket: bucketType,
+    })
+  } else {
+    list = await client.account(address).rewards.sum.list({
+      minTime: `-${numBack} ${bucketType}`,
+      maxTime: new Date(),
+      bucket: bucketType,
+    })
+  }
   const rewards = await list.take(TAKE_MAX)
   return rewards.reverse()
 }
@@ -130,19 +175,25 @@ export const useRewardBuckets = (
   type,
   numBack = 30,
   bucketType = 'day',
+  inUTCDays = true,
 ) => {
   const key = `rewards/${type}s/${address}/${numBack}/${bucketType}`
 
   const fetcher = (address, numBack, bucketType) => () => {
     switch (type) {
       case 'account':
-        return getAccountRewardsBuckets(address, numBack, bucketType)
+        return getAccountRewardsBuckets(address, numBack, bucketType, inUTCDays)
 
       case 'hotspot':
-        return getHotspotRewardsBuckets(address, numBack, bucketType)
+        return getHotspotRewardsBuckets(address, numBack, bucketType, inUTCDays)
 
       case 'validator':
-        return getValidatorRewardsBuckets(address, numBack, bucketType)
+        return getValidatorRewardsBuckets(
+          address,
+          numBack,
+          bucketType,
+          inUTCDays,
+        )
 
       default:
         throw new Error('Invalid reward type')

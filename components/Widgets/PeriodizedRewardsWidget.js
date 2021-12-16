@@ -8,8 +8,8 @@ const PeriodizedRewardsWidget = ({
   type,
   address,
   periods = [
-    { number: 24, type: 'hour' },
     { number: 7, type: 'day' },
+    { number: 14, type: 'day' },
     { number: 30, type: 'day' },
   ],
 }) => {

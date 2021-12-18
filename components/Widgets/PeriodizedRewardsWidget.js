@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import classNames from 'classnames'
 import { useRewardBuckets } from '../../data/rewards'
 import RewardsTrendWidget from './RewardsTrendWidget'
+import useApi from '../../hooks/useApi'
 
 const PeriodizedRewardsWidget = ({
   title,
@@ -27,6 +28,8 @@ const PeriodizedRewardsWidget = ({
     setPeriodType(type)
   }, [])
 
+  const { data: averageEarnings } = useApi('/network/rewards/averages')
+
   return (
     <RewardsTrendWidget
       title={title}
@@ -39,6 +42,8 @@ const PeriodizedRewardsWidget = ({
         />
       }
       series={rewards}
+      targetSeries={averageEarnings}
+      showTarget={type === 'hotspot'}
       dataPointTimePeriod={periodType}
       periodLabel
     />

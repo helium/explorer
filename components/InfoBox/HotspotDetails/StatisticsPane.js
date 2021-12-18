@@ -79,7 +79,7 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
         )}
         <PeriodizedRewardsWidget
           address={hotspot?.address}
-          title="Rolling Earnings"
+          title="Earnings (UTC Day)"
           type="hotspot"
         />
         {/* <RecentActivityWidget context="hotspot" address={hotspot.address} /> */}

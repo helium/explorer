@@ -1,4 +1,4 @@
-import { formatISO, getUnixTime, parseISO, startOfDay, sub } from 'date-fns'
+import { getUnixTime, parseISO, sub } from 'date-fns'
 import useSWR from 'swr'
 import client, { TAKE_MAX } from './client'
 
@@ -124,7 +124,7 @@ export const getValidatorRewardsBuckets = async (
     const maxTime = now
     const minTime = sub(parseISO(now), { days: numBack }).toISOString()
 
-    list = await client.hotspot(address).rewards.sum.list({
+    list = await client.validator(address).rewards.sum.list({
       minTime,
       maxTime,
       bucket: bucketType,
@@ -146,7 +146,6 @@ export const getAccountRewardsBuckets = async (
   inUTCDays = false,
 ) => {
   if (!address) return
-
   let list
   if (inUTCDays) {
     const now = new Date(new Date().setUTCHours(0, 0, 0, 0)).toISOString()
@@ -154,7 +153,7 @@ export const getAccountRewardsBuckets = async (
     const maxTime = now
     const minTime = sub(parseISO(now), { days: numBack }).toISOString()
 
-    list = await client.hotspot(address).rewards.sum.list({
+    list = await client.account(address).rewards.sum.list({
       minTime,
       maxTime,
       bucket: bucketType,

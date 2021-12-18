@@ -247,7 +247,7 @@ const RewardsTrendWidget = ({
         },
         {
           ...(showTarget && {
-            label: 'Average Earnings',
+            label: 'Network Average',
             data: averageEarningsData.map((s) => s?.value || 'N/A'),
             backgroundColor: '#c7c8e9',
             minBarLength: width,

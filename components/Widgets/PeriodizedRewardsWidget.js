@@ -12,6 +12,7 @@ const PeriodizedRewardsWidget = ({
     { number: 7, type: 'day' },
     { number: 14, type: 'day' },
     { number: 30, type: 'day' },
+    { number: 24, type: 'hour' },
   ],
 }) => {
   const [periodLength, setPeriodLength] = useState(periods[0].number)
@@ -21,6 +22,7 @@ const PeriodizedRewardsWidget = ({
     type,
     periodLength * 2,
     periodType,
+    periodType === 'day',
   )
 
   const handlePeriodChange = useCallback((number, type) => {
@@ -43,7 +45,7 @@ const PeriodizedRewardsWidget = ({
       }
       series={rewards}
       targetSeries={averageEarnings}
-      showTarget={type === 'hotspot'}
+      showTarget={type === 'hotspot' && periodType === 'day'}
       dataPointTimePeriod={periodType}
       periodLabel
     />

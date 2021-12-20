@@ -18,7 +18,7 @@ import {
   Legend,
 } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
-import { format } from 'date-fns'
+import { format, addMinutes } from 'date-fns'
 
 ChartJS.register(
   CategoryScale,
@@ -226,16 +226,19 @@ const RewardsTrendWidget = ({
 
   const data = useMemo(() => {
     const width = chartContainerWidth / (dataToDisplay.length * 2)
+
+    const labels = dataToDisplay.map((s) => {
+      const date = new Date(s.timestamp.slice(0, 10))
+      const utcOffset = date.getTimezoneOffset()
+      const offsetDate = addMinutes(date, utcOffset)
+      return format(offsetDate, 'MMM d')
+    })
+
     return {
-      labels: dataToDisplay.map((s) => {
-        return format(
-          new Date(new Date(s.timestamp.slice(0, 10)).setUTCHours(0, 0, 0, 0)),
-          'MMM d',
-        )
-      }),
+      labels,
       datasets: [
         {
-          label: 'This Hotspotʼs Earnings',
+          label: 'Your Earnings',
           data: actualEarningsData.map((s) =>
             s?.value !== null ? s.value : null,
           ),

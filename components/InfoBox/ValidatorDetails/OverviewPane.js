@@ -67,7 +67,7 @@ const OverviewPane = () => {
       <PeriodizedRewardsWidget
         address={validator?.address}
         type="validator"
-        title="Earnings (UTC Day)"
+        title="Rolling Earnings"
       />
       <PenaltyWidget validator={validator} />
       {/* <Widget

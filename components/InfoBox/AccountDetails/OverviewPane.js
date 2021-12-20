@@ -17,8 +17,9 @@ const OverviewPane = () => {
     address,
     TAKE_MAX,
   )
-  const { validators, isLoading: isLoadingValidators } =
-    useAccountValidators(address)
+  const { validators, isLoading: isLoadingValidators } = useAccountValidators(
+    address,
+  )
 
   return (
     <InfoBoxPaneContainer>
@@ -27,7 +28,7 @@ const OverviewPane = () => {
       <PeriodizedRewardsWidget
         address={account?.address}
         type="account"
-        title="Earnings (UTC Day)"
+        title="Rolling Earnings"
       />
       <Widget
         title="Hotspots"

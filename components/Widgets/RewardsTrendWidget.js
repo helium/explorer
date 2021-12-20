@@ -235,7 +235,7 @@ const RewardsTrendWidget = ({
       }),
       datasets: [
         {
-          label: 'This Hotspot's Earnings',
+          label: 'This Hotspotʼs Earnings',
           data: actualEarningsData.map((s) =>
             s?.value !== null ? s.value : null,
           ),

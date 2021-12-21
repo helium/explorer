@@ -39,6 +39,13 @@ module.exports = {
         0.8: '#9FE14A',
         1: '#29D344',
       },
+      'earnings-scale': {
+        0: '#2E303B',
+        0.1: '#E95858',
+        0.25: '#FCC945',
+        0.9: '#8ED343',
+        1: '#14D5FF',
+      },
       navy: {
         50: '#d4d4ff',
         300: '#0008FF',
@@ -124,6 +131,7 @@ module.exports = {
       8: '8px',
     },
     extend: {
+      colors: {},
       animation: {
         'bounce-left': 'bounce-left 2s infinite',
         'bounce-right': 'bounce-right 2s infinite',
@@ -178,6 +186,12 @@ module.exports = {
         '90p': '90%',
         '550px': '550px',
         '650px': '650px',
+      },
+      backgroundImage: {
+        'earnings-pattern':
+          'linear-gradient(90deg, #E95858 10.04%, #FCC945 27.17%, #8ED343 52.61%, #14D5FF 91.53%)',
+        'rewards-pattern':
+          'linear-gradient(90deg, #FC8745 10%, #FEA053 25%, #FCC945 50%, #9FE14A 90%, #29D344 100%)',
       },
     },
   },

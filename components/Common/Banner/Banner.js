@@ -8,13 +8,33 @@ const Banner = () => {
       <div className="relative w-full">
         <a
           className="bg-navy-400 w-full hover:shadow-lg hover:bg-navy-500 flex items-center pr-8 justify-center transition-all px-0.5 md:px-5 duration-250 text-white text-xs md:text-sm py-1 font-sans font-normal md:h-8 h-8 leading-tight"
-          href="https://helium-explorer-pr-702.herokuapp.com/"
+          href="https://docs.helium.com/blockchain/mining#how-do-hotspots-earn-helium-tokens"
           rel="noopener noreferrer"
           target="_blank"
         >
-          <p className="m-0">
-            Help stress test the new Explorer with the faster API! {'->'}
+          <p className="m-0 mr-2">
+            Check out the new Hotspot Earnings Map Layer
           </p>
+
+          <svg
+            width="20"
+            height="18"
+            viewBox="0 0 27 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              opacity="0.6"
+              d="M9.85264 9.68533C11.8494 8.53263 15.0867 8.53262 17.0834 9.68533L24.6781 14.0697C26.6748 15.2224 26.6748 17.0913 24.6781 18.244L17.0834 22.6284C15.0867 23.7811 11.8494 23.7811 9.85265 22.6284L2.25797 18.244C0.261262 17.0913 0.261256 15.2224 2.25797 14.0697L9.85264 9.68533Z"
+              fill="white"
+              fill-opacity="0.61"
+            />
+            <path
+              opacity="0.8"
+              d="M9.85264 1.37185C11.8494 0.21915 15.0867 0.219147 17.0834 1.37185L24.6781 5.75625C26.6748 6.90895 26.6748 8.77786 24.6781 9.93056L17.0834 14.315C15.0867 15.4677 11.8494 15.4677 9.85265 14.315L2.25797 9.93056C0.261262 8.77786 0.261256 6.90896 2.25797 5.75626L9.85264 1.37185Z"
+              fill="white"
+            />
+          </svg>
         </a>
         <button
           className="border border-solid absolute right-0 top-0 border-transparent hover:bg-navy-600 w-8 md:w-10 h-full z-40 cursor-pointer bg-navy-500 focus:outline-none focus:border-navy-400 flex items-center justify-center"

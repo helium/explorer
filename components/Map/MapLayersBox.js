@@ -34,6 +34,11 @@ const MapLayersBox = () => {
       id: 'rewardScale',
       icon: <Hex className="text-reward-scale-0.6 w-5 h-5" />,
     },
+    {
+      title: 'Earnings',
+      id: 'earnings',
+      icon: <Hex className="text-earnings-scale-0.9 w-5 h-5" />,
+    },
     // {
     //   title: 'Device Usage',
     //   id: 'dc',

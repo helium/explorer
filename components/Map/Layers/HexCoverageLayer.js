@@ -26,6 +26,9 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
 
   const circleLayout = useMemo(() => {
     switch (layer) {
+      case 'earnings':
+        return earningsStyle(minZoom, maxZoom)
+
       case 'rewardScale':
         return rewardScaleStyle(minZoom, maxZoom)
 
@@ -41,6 +44,9 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
     switch (layer) {
       case 'rewardScale':
         return hexRewardScaleStyle()
+
+      case 'earnings':
+        return hexEarningsStyle()
 
       case 'dc':
         return hexDcStyle()
@@ -137,6 +143,30 @@ const defaultStyle = (minZoom, maxZoom) => ({
   ],
 })
 
+const earningsStyle = (minZoom, maxZoom) => ({
+  ...defaultStyle(minZoom, maxZoom),
+  'circle-color': [
+    'case',
+    ['==', ['get', 'avg_earnings'], 0],
+    '#4F5293',
+    [
+      'interpolate',
+      ['linear'],
+      ['get', 'avg_earnings'],
+      0,
+      '#2E303B',
+      0.1,
+      '#E95858',
+      0.25,
+      '#FCC945',
+      0.9,
+      '#8ED343',
+      1,
+      '#14D5FF',
+    ],
+  ],
+})
+
 const rewardScaleStyle = (minZoom, maxZoom) => ({
   ...defaultStyle(minZoom, maxZoom),
   'circle-color': [
@@ -211,6 +241,30 @@ const hexRewardScaleStyle = (minZoom, maxZoom) => ({
       '#9FE14A',
       1,
       '#29D344',
+    ],
+  ],
+})
+
+const hexEarningsStyle = (minZoom, maxZoom) => ({
+  ...hexDefaultStyle(minZoom, maxZoom),
+  'fill-color': [
+    'case',
+    ['==', ['get', 'avg_earnings'], 0],
+    '#4F5293',
+    [
+      'interpolate',
+      ['linear'],
+      ['get', 'avg_earnings'],
+      0,
+      '#2E303B',
+      0.1,
+      '#E95858',
+      0.25,
+      '#FCC945',
+      0.9,
+      '#8ED343',
+      1,
+      '#14D5FF',
     ],
   ],
 })

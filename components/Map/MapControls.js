@@ -1,3 +1,4 @@
+import { Tooltip } from 'antd'
 import classNames from 'classnames'
 import Image from 'next/image'
 import useInfoBox from '../../hooks/useInfoBox'
@@ -63,11 +64,48 @@ const MapControls = () => {
             </span>
           </a>
           <div className="flex flex-col p-2 pb-1 w-full">
-            <div className="bg-gradient-to-r from-reward-scale-0 via-reward-scale-0.6 to-reward-scale-1 rounded-full h-2.5 w-full" />
+            <div className="bg-rewards-pattern rounded-full h-2.5 w-full" />
             <div className="flex items-center justify-between mt-1">
               <span className="text-white text-xs font-sans">0</span>
               <span className="text-white text-xs font-sans">0.5</span>
               <span className="text-white text-xs font-sans">1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className={classNames(
+          'fixed bottom-10 md:bottom-7 right-14 px-4 md:px-8 py-1 md:py-0.5 w-3/4 max-w-xs md:max-w-sm transform-gpu transition-all duration-300 ease-in-out',
+          {
+            'opacity-100 pointer-events-auto':
+              mapLayer === 'earnings' && !showMapLayers,
+            'opacity-0 pointer-events-none translate-y-10':
+              mapLayer !== 'earnings' || showMapLayers,
+          },
+        )}
+      >
+        <div className="rounded-lg flex flex-row items-center justify-between titlebox-blur">
+          <a
+            href="https://docs.helium.com/wallets/app-wallet/hexagons/#transmit-scale"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <Tooltip title="Rocket good, zero bad">
+              <span className="text-white font-sans text-sm pl-2 pr-2 md:pr-8 whitespace-nowrap">
+                Earnings (7D) ⓘ
+              </span>
+            </Tooltip>
+          </a>
+          <div className="flex flex-col p-2 pb-1 pl-0 w-full">
+            <div className="bg-earnings-pattern rounded-full h-2.5 w-full" />
+            <div className="flex items-center mt-1">
+              <span className="text-white text-xs font-sans flex-1">0</span>
+              <span className="text-white text-xs font-sans flex-1 text-center">
+                1x (avg)
+              </span>
+              <span className="text-white text-xs font-sans flex-1 text-right">
+                {'2x 🚀'}
+              </span>
             </div>
           </div>
         </div>
@@ -107,3 +145,9 @@ const MapControls = () => {
 }
 
 export default MapControls
+
+// linear-gradient(to right, #2E303B, 0%, #E95858, 10%, #FCC945, 25%, #8ED343, 90%, #14D5FF)
+// linear-gradient(to right, #2E303B, 0%, #E95858, 10%, #FCC945, 25%, #8ED343, 90%, #14D5FF)
+
+// working background-image
+// not working background-color

@@ -141,12 +141,12 @@ const rewardScaleStyle = (minZoom, maxZoom) => ({
   ...defaultStyle(minZoom, maxZoom),
   'circle-color': [
     'case',
-    ['==', ['get', 'avg_reward_scale'], 0],
+    ['==', ['get', 'avg_earnings'], 0],
     '#4F5293',
     [
       'interpolate',
       ['linear'],
-      ['get', 'avg_reward_scale'],
+      ['get', 'avg_earnings'],
       0,
       '#FF6666',
       0.2,
@@ -193,12 +193,12 @@ const hexRewardScaleStyle = (minZoom, maxZoom) => ({
   ...hexDefaultStyle(minZoom, maxZoom),
   'fill-color': [
     'case',
-    ['==', ['get', 'avg_reward_scale'], 0],
+    ['==', ['get', 'avg_earnings'], 0],
     '#4F5293',
     [
       'interpolate',
       ['linear'],
-      ['get', 'avg_reward_scale'],
+      ['get', 'avg_earnings'],
       0,
       '#FF6666',
       0.2,

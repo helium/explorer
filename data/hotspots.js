@@ -32,6 +32,20 @@ export const getHotspotRewardsSum = async (address, numDaysBack) => {
   return client.hotspot(address).rewards.sum.get(endDate, initialDate)
 }
 
+export const getHotspotRewardsBuckets = async (
+  address,
+  numBack,
+  bucketType,
+) => {
+  const list = await client.hotspot(address).rewards.sum.list({
+    minTime: `-${numBack} ${bucketType}`,
+    maxTime: new Date(),
+    bucket: bucketType,
+  })
+  const rewards = await list.take(TAKE_MAX)
+  return rewards
+}
+
 export const fetchNearbyHotspots = async (lat, lon, distance = 1000) => {
   if (!lat || !lon) return []
   const hotspots = await (

@@ -90,7 +90,7 @@ const MapControls = () => {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <Tooltip title="Rocket good, zero bad">
+            <Tooltip title="Compares average Hotspot earnings in a hex with the average earnings of a Hotspot on the network. 1x is considered average. Hotspot Network Avg = Total Hotspot Mining Rewards Emitted/Total Online Hotspots">
               <span className="text-white font-sans text-sm pl-2 pr-2 md:pr-8 whitespace-nowrap">
                 Earnings (7D) ⓘ
               </span>

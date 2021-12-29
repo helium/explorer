@@ -15,17 +15,17 @@ const MapControls = () => {
     () => (
       <>
         <div>
-          Compares Hotspot earnings in a hex with the average earnings
-          of a Hotspot on the network. Green 🟢 hexes represent Hotspots with average earnings, blue 🔵 hexes are above average, red 🔴 hexes are below average.
+          Compares Hotspot earnings in a hex with the average earnings of a
+          Hotspot on the network. Green 🟢 hexes represent Hotspots with average
+          earnings, blue 🔵 hexes are above average, red 🔴 hexes are below
+          average.
         </div>
         <br />
-        <div>
-          How is Hotspot Network Avg Calculated? 
-        </div>
+        <div>How is Hotspot Network Avg Calculated?</div>
         <br />
         <div>
-        Hotspot Network Avg = Total Hotspot Mining
-          Rewards Emitted ➗ Total Online Hotspots
+          Hotspot Network Avg = Total Hotspot Mining Rewards Emitted ➗ Total
+          Online Hotspots
         </div>
       </>
     ),
@@ -107,11 +107,11 @@ const MapControls = () => {
         )}
       >
         <div className="rounded-lg flex flex-row items-center justify-between titlebox-blur">
-            <Tooltip title={earningsTooltipTitle}>
-              <span className="text-white font-sans text-sm pl-2 pr-2 md:pr-8 whitespace-nowrap">
-                Earnings (7D) ⓘ
-              </span>
-            </Tooltip>
+          <Tooltip title={earningsTooltipTitle}>
+            <span className="text-white font-sans text-sm pl-2 pr-2 md:pr-8 whitespace-nowrap">
+              Earnings (7D) ⓘ
+            </span>
+          </Tooltip>
           <div className="flex flex-col p-2 pb-1 pl-0 w-full">
             <div className="bg-earnings-pattern rounded-full h-2.5 w-full" />
             <div className="flex items-center mt-1">
@@ -161,9 +161,3 @@ const MapControls = () => {
 }
 
 export default MapControls
-
-// linear-gradient(to right, #2E303B, 0%, #E95858, 10%, #FCC945, 25%, #8ED343, 90%, #14D5FF)
-// linear-gradient(to right, #2E303B, 0%, #E95858, 10%, #FCC945, 25%, #8ED343, 90%, #14D5FF)
-
-// working background-image
-// not working background-color

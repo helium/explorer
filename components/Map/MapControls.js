@@ -15,13 +15,17 @@ const MapControls = () => {
     () => (
       <>
         <div>
-          Compares average Hotspot earnings in a hex with the average earnings
-          of a Hotspot on the network.
+          Compares Hotspot earnings in a hex with the average earnings
+          of a Hotspot on the network. Green 🟢 hexes represent Hotspots with average earnings, blue 🔵 hexes are above average, red 🔴 hexes are below average.
         </div>
         <br />
         <div>
-          1x is considered average. Hotspot Network Avg = Total Hotspot Mining
-          Rewards Emitted/Total Online Hotspots
+          How is Hotspot Network Avg Calculated? 
+        </div>
+        <br />
+        <div>
+        Hotspot Network Avg = Total Hotspot Mining
+          Rewards Emitted ➗ Total Online Hotspots
         </div>
       </>
     ),

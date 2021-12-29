@@ -107,17 +107,11 @@ const MapControls = () => {
         )}
       >
         <div className="rounded-lg flex flex-row items-center justify-between titlebox-blur">
-          <a
-            href="https://docs.helium.com/wallets/app-wallet/hexagons/#transmit-scale"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
             <Tooltip title={earningsTooltipTitle}>
               <span className="text-white font-sans text-sm pl-2 pr-2 md:pr-8 whitespace-nowrap">
                 Earnings (7D) ⓘ
               </span>
             </Tooltip>
-          </a>
           <div className="flex flex-col p-2 pb-1 pl-0 w-full">
             <div className="bg-earnings-pattern rounded-full h-2.5 w-full" />
             <div className="flex items-center mt-1">

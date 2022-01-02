@@ -117,6 +117,12 @@ export const communityToolsList = [
     tags: [types.export],
   },  
   {
+    name: 'HNTMonitor',
+    url: 'https://www.hntmonitor.com/',
+    description: 'Monitor real-time and historical data with alerting. Useful for managing fleets of hotspots in a single ui.',
+    tags: [types.monitoring],
+  },
+  {
     name: 'Hotsbot',
     url: 'https://hotsbot.net/',
     description: 'Hotspot monitoring and event tracking via Telegram',

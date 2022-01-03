@@ -2,6 +2,7 @@ import { Tooltip } from 'antd'
 import classNames from 'classnames'
 import Image from 'next/image'
 import { useMemo } from 'react'
+import useApi from '../../hooks/useApi'
 import useInfoBox from '../../hooks/useInfoBox'
 import useMapLayer from '../../hooks/useMapLayer'
 import MapLocationButton from './MapLocationButton'
@@ -10,6 +11,15 @@ import MeasuringToolButton from './MeasuringToolButton'
 const MapControls = () => {
   const { showInfoBox, toggleInfoBox } = useInfoBox()
   const { showMapLayers, toggleMapLayers, mapLayer } = useMapLayer()
+
+  const { data: earnings } = useApi('/hexes/earnings')
+
+  const earningsUpdatedAt = useMemo(() => {
+    if (!earnings) return
+
+    const { updatedAt } = earnings
+    return `Last Updated: ${updatedAt}`
+  }, [earnings])
 
   const earningsTooltipTitle = useMemo(
     () => (
@@ -125,6 +135,10 @@ const MapControls = () => {
             </div>
           </div>
         </div>
+
+        <span className="text-white font-sans text-sm pl-2 pr-2 md:pr-8 whitespace-nowrap">
+          {earningsUpdatedAt}
+        </span>
       </div>
       <div
         className={classNames(

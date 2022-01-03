@@ -61,11 +61,11 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
           <>
             <WarningWidget
               isVisible={isRelay(hotspot.status.listenAddrs)}
-              warningText={'Hotspot is being Relayed.'}
+              warningText={'Hotspot is relayed. Expect lower earnings.'}
               link={
                 'https://docs.helium.com/troubleshooting/network-troubleshooting'
               }
-              linkText={'Get help'}
+              linkText={'Fix it'}
             />
             <RewardScaleWidget hotspot={hotspot} />
             <StatusWidget hotspot={hotspot} />
@@ -79,7 +79,7 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
         )}
         <PeriodizedRewardsWidget
           address={hotspot?.address}
-          title="Rolling Earnings"
+          title="Earnings (UTC)"
           type="hotspot"
         />
         {/* <RecentActivityWidget context="hotspot" address={hotspot.address} /> */}

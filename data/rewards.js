@@ -21,17 +21,25 @@ const getTargetProduction = (timestamp) => {
   return TARGET_PRODUCTION[NETWORK_DATES[0]]
 }
 
-export const getHotspotRewardsBuckets = async (
-  address,
-  numBack,
-  bucketType,
-) => {
+const getRewardsSumParams = ({ bucket, numBack }) => {
+  const maxTime = new Date()
+  if (bucket === 'day') {
+    maxTime.setUTCHours(0, 0, 0, 0)
+  } else {
+    maxTime.setUTCMinutes(0, 0, 0)
+  }
+  return {
+    minTime: `-${numBack} ${bucket}`,
+    maxTime,
+    bucket,
+  }
+}
+
+export const getHotspotRewardsBuckets = async (address, numBack, bucket) => {
   if (!address) return
-  const list = await client.hotspot(address).rewards.sum.list({
-    minTime: `-${numBack} ${bucketType}`,
-    maxTime: new Date(),
-    bucket: bucketType,
-  })
+
+  const params = getRewardsSumParams({ bucket, numBack })
+  const list = await client.hotspot(address).rewards.sum.list(params)
   const rewards = await list.take(TAKE_MAX)
   return rewards.reverse()
 }
@@ -64,13 +72,9 @@ export const useHotspotRewardsSum = (
   }
 }
 
-export const getNetworkRewardsBuckets = async (numBack, bucketType) => {
-  const rewards = await (
-    await client.rewards.sum.list({
-      minTime: `-${numBack} ${bucketType}`,
-      bucket: bucketType,
-    })
-  ).take(TAKE_MAX)
+export const getNetworkRewardsBuckets = async (numBack, bucket) => {
+  const params = getRewardsSumParams({ bucket, numBack })
+  const rewards = await (await client.rewards.sum.list(params)).take(TAKE_MAX)
   const rewardsWithTarget = rewards.map((r) => ({
     ...r,
     target: getTargetProduction(r.timestamp) / 30,
@@ -94,33 +98,21 @@ export const useNetworkRewards = (numBack = 30, bucketType = 'day') => {
   }
 }
 
-export const getValidatorRewardsBuckets = async (
-  address,
-  numBack,
-  bucketType,
-) => {
+export const getValidatorRewardsBuckets = async (address, numBack, bucket) => {
   if (!address) return
 
-  const list = await client.validator(address).rewards.sum.list({
-    minTime: `-${numBack} ${bucketType}`,
-    bucket: bucketType,
-  })
+  const params = getRewardsSumParams({ bucket, numBack })
+
+  const list = await client.validator(address).rewards.sum.list(params)
   const rewards = await list.take(TAKE_MAX)
   return rewards.reverse()
 }
 
-export const getAccountRewardsBuckets = async (
-  address,
-  numBack,
-  bucketType,
-) => {
+export const getAccountRewardsBuckets = async (address, numBack, bucket) => {
   if (!address) return
 
-  const list = await client.account(address).rewards.sum.list({
-    minTime: `-${numBack} ${bucketType}`,
-    maxTime: new Date(),
-    bucket: bucketType,
-  })
+  const params = getRewardsSumParams({ bucket, numBack })
+  const list = await client.account(address).rewards.sum.list(params)
   const rewards = await list.take(TAKE_MAX)
   return rewards.reverse()
 }

@@ -8,6 +8,7 @@ import Banner from '../Common/Banner/Banner'
 import { useContext } from 'react'
 import BannerContext from '../Common/Banner/BannerContext'
 import useSearchResults from '../SearchBar/useSearchResults'
+import NetworkToggle from '../Common/NetworkToggle'
 
 const MenuButton = ({ className }) => {
   const [menuOpen, toggleMenu] = useToggle()
@@ -68,6 +69,7 @@ const Header = ({ fallbackLinks = false }) => {
             <img alt="Helium Logo" src="/images/logo-sm.svg" />
           </Link>
         )}
+        <NetworkToggle />
         <div
           className={classNames(
             'grid grid-flow-col gap-8 items-center transition-all duration-200',

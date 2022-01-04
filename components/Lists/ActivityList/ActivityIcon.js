@@ -1,12 +1,17 @@
-import classNames from 'classnames'
+import { getTxnIconPath } from '../../../utils/txns'
 
-const ActivityIcon = ({ highlightColor }) => {
+const ActivityIcon = ({ highlightColor, txn }) => {
+  const imagePath = getTxnIconPath(txn)
   return (
     <div>
-      <div
-        className={classNames('h-8 w-8 rounded-full')}
-        style={{ backgroundColor: highlightColor }}
-      />
+      {imagePath ? (
+        <img src={imagePath} className="w-8 h-8" alt="" />
+      ) : (
+        <div
+          className="w-8 h-8 rounded-full"
+          style={{ backgroundColor: highlightColor }}
+        />
+      )}
     </div>
   )
 }

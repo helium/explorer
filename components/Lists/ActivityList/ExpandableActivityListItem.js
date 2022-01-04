@@ -7,7 +7,6 @@ import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
 import { useCallback, useState } from 'react'
 import ActivityIcon from './ActivityIcon'
 import ActivityItemTimestamp from './ActivityItemTimestamp'
-import ExpandedRewardContent from './ExpandedRewardContent'
 import ExpandedPoCReceiptContent from './ExpandedPoCReceiptContent'
 import Skeleton from '../../Common/Skeleton'
 import { fetchTxnDetails } from '../../../data/txns'
@@ -16,7 +15,12 @@ import ChevronThin from '../../Icons/ChevronThin'
 const ExpandedContent = ({ txn, role, address }) => {
   if (!txn) {
     // TODO: add better skeleton
-    return <Skeleton />
+    return (
+      <div className="space-y-2">
+        <Skeleton />
+        <Skeleton />
+      </div>
+    )
   }
 
   if (
@@ -26,8 +30,9 @@ const ExpandedContent = ({ txn, role, address }) => {
   ) {
     return (
       <div>
-        Rewards
-        {/* <ExpandedRewardContent txn={txn} role={role} />) */}
+        <p className="text-sm font-sans">
+          Received mining rewards in block {txn.height?.toLocaleString()}
+        </p>
       </div>
     )
   }
@@ -36,10 +41,15 @@ const ExpandedContent = ({ txn, role, address }) => {
     return <ExpandedPoCReceiptContent txn={txn} role={role} address={address} />
   }
 
+  // TODO: add other txn types
+
   return (
     <div>
       {/* TODO add generic details view */}
-      <p>{txn.type}</p>
+      <p className="font-sans font-light">
+        Transaction Type:{' '}
+        <span className="text-purple-700 font-bold">{txn.type}</span>
+      </p>
     </div>
   )
 }
@@ -123,12 +133,16 @@ const ExpandableListItem = ({
       <div
         className={classNames(
           'w-full flex flex-col justify-between bg-bluegray-50 transition-all duration-200',
-          { 'py-0 opacity-0': !expanded, 'py-6 opacity-100': expanded },
+          { 'py-0 opacity-0': !expanded, 'py-4 opacity-100': expanded },
         )}
       >
         {expanded && (
           <div className="px-6">
-            <div className="bg-white w-full rounded-t-lg px-2 py-2">
+            <div
+              className={classNames('bg-white w-full rounded-t-lg px-2 py-2', {
+                'rounded-b-lg': txnDetails?.type.startsWith('rewards'),
+              })}
+            >
               <ExpandedContent
                 txn={txnDetails}
                 role={txn.role}

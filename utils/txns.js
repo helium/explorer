@@ -145,6 +145,76 @@ const CONFIG = {
   default: { color: '#474DFF' },
 }
 
+export const getTxnIconPath = (txn) => {
+  // TODO: abstract this function into the CONFIG above and make it take into account both roles _and_ types, with iconPath as a new field for each txn type/role defined in the CONFIG
+  const { role, type } = txn
+
+  const ICON_PATH_ROOT = '/images/activity-icons'
+
+  switch (type) {
+    case 'rewards_v1':
+    case 'rewards_v2':
+    case 'rewards_v3': {
+      return `${ICON_PATH_ROOT}/received_rewards.svg`
+    }
+    case 'payment_v1':
+    case 'payment_v2': {
+      if (role === 'payee') {
+        return `${ICON_PATH_ROOT}/payment_received.svg`
+      } else if (role === 'payer') {
+        return `${ICON_PATH_ROOT}/payment_sent.svg`
+      } else {
+        return `${ICON_PATH_ROOT}/payment.svg`
+      }
+    }
+    case 'assert_location_v1':
+    case 'assert_location_v2': {
+      return `${ICON_PATH_ROOT}/assert_location.svg`
+    }
+    case 'poc_request_v1': {
+      return `${ICON_PATH_ROOT}/poc_challenger.svg`
+    }
+    case 'poc_receipts_v1': {
+      if (role === 'witness') {
+        return `${ICON_PATH_ROOT}/poc_witness.svg`
+      } else if (role === 'challengee') {
+        return `${ICON_PATH_ROOT}/poc_challengee.svg`
+      } else if (role === 'challenger') {
+        return `${ICON_PATH_ROOT}/poc_challenger.svg`
+      } else {
+        return `${ICON_PATH_ROOT}/poc_receipts.svg`
+      }
+    }
+    case 'token_burn_v1': {
+      return `${ICON_PATH_ROOT}/token_burn.svg`
+    }
+    case 'stake_validator_v1': {
+      return `${ICON_PATH_ROOT}/staked_validator.svg`
+    }
+    case 'unstake_validator_v1': {
+      return `${ICON_PATH_ROOT}/unstake_validator.svg`
+    }
+    case 'transfer_validator_stake_v1': {
+      return `${ICON_PATH_ROOT}/transferred_stake.svg`
+    }
+    case 'validator_heartbeat_v1': {
+      return `${ICON_PATH_ROOT}/validator_heartbeat.svg`
+    }
+    case 'state_channel_open_v1': {
+      return `${ICON_PATH_ROOT}/state_channel_open.svg`
+    }
+    case 'state_channel_close_v1': {
+      return `${ICON_PATH_ROOT}/state_channel_close.svg`
+    }
+    case 'transfer_hotspot_v1': {
+      return `${ICON_PATH_ROOT}/transfer_hotspot.svg`
+    }
+    default: {
+      return null
+    }
+  }
+}
+
 export const getTxnTypeName = (id, context = 'block') => {
   if (context === 'hotspot')
     return CONFIG[id]?.hotspotContextName || CONFIG[id]?.name || id

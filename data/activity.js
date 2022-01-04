@@ -39,6 +39,7 @@ export const useActivity = (context, address, filters = [], pageSize = 20) => {
 
   useEffect(() => {
     setIsLoadingInitial(true)
+    setHasMore(true)
     setIsLoadingMore(true)
   }, [filters])
 

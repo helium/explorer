@@ -171,6 +171,9 @@ export const getTxnIconPath = (txn) => {
     case 'assert_location_v2': {
       return `${ICON_PATH_ROOT}/assert_location.svg`
     }
+    case 'add_gateway_v1': {
+      return `${ICON_PATH_ROOT}/add_hotspot.svg`
+    }
     case 'poc_request_v1': {
       return `${ICON_PATH_ROOT}/poc_challenger.svg`
     }

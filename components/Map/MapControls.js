@@ -7,12 +7,24 @@ import useInfoBox from '../../hooks/useInfoBox'
 import useMapLayer from '../../hooks/useMapLayer'
 import MapLocationButton from './MapLocationButton'
 import MeasuringToolButton from './MeasuringToolButton'
+import { round } from 'lodash'
 
 const MapControls = () => {
   const { showInfoBox, toggleInfoBox } = useInfoBox()
   const { showMapLayers, toggleMapLayers, mapLayer } = useMapLayer()
 
   const { data: earnings } = useApi('/hexes/earnings')
+  const { data: averageEarnings } = useApi('/network/rewards/averages')
+
+  const avg7dEarnings = useMemo(() => {
+    const latest7dayEarnings = averageEarnings.slice(-7)
+    const sum = latest7dayEarnings.reduce(
+      (a, b) => a + (b['avg_rewards'] || 0),
+      0,
+    )
+    return round(sum / latest7dayEarnings.length, 2)
+  }, [averageEarnings])
+  console.log({ avg7dEarnings })
 
   const earningsUpdatedAt = useMemo(() => {
     if (!earnings) return
@@ -126,11 +138,11 @@ const MapControls = () => {
             <div className="bg-earnings-pattern rounded-full h-2.5 w-full" />
             <div className="flex items-center mt-1">
               <span className="text-white text-xs font-sans flex-1">0</span>
-              <span className="text-white text-xs font-sans flex-1 text-center">
-                1x (avg)
+              <span className="text-white text-xs font-sans flex-2 text-center">
+                {`${avg7dEarnings} (Avg)`}
               </span>
               <span className="text-white text-xs font-sans flex-1 text-right">
-                {'2x 🚀'}
+                {`${avg7dEarnings * 2}+`}
               </span>
             </div>
           </div>

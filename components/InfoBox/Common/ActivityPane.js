@@ -17,7 +17,11 @@ const filtersByContext = {
   },
   account: {
     Payments: ['payment_v1', 'payment_v2'],
-    Stakes: ['stake_validator_v1'],
+    Stakes: [
+      'stake_validator_v1',
+      'unstake_validator_v1',
+      'transfer_validator_stake_v1',
+    ],
     'Hotspot Transfers': ['transfer_hotspot_v1'],
     'Token Burns': ['token_burn_v1'],
     Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],

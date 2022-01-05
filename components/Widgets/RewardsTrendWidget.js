@@ -234,7 +234,7 @@ const RewardsTrendWidget = ({
       if (dataPointTimePeriod === 'day') {
         return format(offsetDate, 'MMM d')
       }
-      return `${format(offsetDate, 'MMM d hh:mma')} UTC`
+      return `${format(offsetDate, 'MMM d HH:mm')} UTC`
     })
 
     return {

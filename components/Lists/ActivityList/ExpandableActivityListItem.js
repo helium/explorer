@@ -11,6 +11,7 @@ import ExpandedPoCReceiptContent from './ExpandedPoCReceiptContent'
 import Skeleton from '../../Common/Skeleton'
 import { fetchTxnDetails } from '../../../data/txns'
 import ChevronThin from '../../Icons/ChevronThin'
+import TxnDetailsSwitch from '../../InfoBox/TxnDetails/TxnDetailsSwitch'
 
 const ExpandedContent = ({ txn, role, address }) => {
   if (!txn) {
@@ -44,13 +45,14 @@ const ExpandedContent = ({ txn, role, address }) => {
   // TODO: add other txn types
 
   return (
-    <div>
-      {/* TODO add generic details view */}
-      <p className="font-sans font-light">
-        Transaction Type:{' '}
-        <span className="text-purple-700 font-bold">{txn.type}</span>
-      </p>
-    </div>
+    <TxnDetailsSwitch txn={txn} isLoading={!txn} />
+    // <div>
+    //   {/* TODO add generic details view */}
+    //   <p className="font-sans font-light">
+    //     Transaction Type:{' '}
+    //     <span className="text-purple-700 font-bold">{txn.type}</span>
+    //   </p>
+    // </div>
   )
 }
 

@@ -60,7 +60,7 @@ const HotspotsList = ({
     <BaseList
       items={hotspots}
       keyExtractor={keyExtractor}
-      listHeaderTitle="Hotspots"
+      listHeaderTitle={showCount ? 'Hotspots' : null}
       listHeaderShowCount={showCount}
       linkExtractor={linkExtractor}
       onSelectItem={handleSelectHotspot}

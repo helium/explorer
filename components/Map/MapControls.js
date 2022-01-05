@@ -119,7 +119,7 @@ const MapControls = () => {
       </div>
       <div
         className={classNames(
-          'fixed bottom-10 md:bottom-7 right-14 px-4 md:px-8 py-1 md:py-0.5 w-3/4 max-w-xs md:max-w-sm transform-gpu transition-all duration-300 ease-in-out',
+          'fixed bottom-10 md:bottom-7 right-14 px-4 md:px-8 py-1 md:py-0.5 w-3/4 max-w-sm md:max-w-md transform-gpu transition-all duration-300 ease-in-out',
           {
             'opacity-100 pointer-events-auto':
               mapLayer === 'earnings' && !showMapLayers,
@@ -128,13 +128,13 @@ const MapControls = () => {
           },
         )}
       >
-        <div className="rounded-lg flex flex-row items-center justify-between titlebox-blur">
-          <Tooltip title={earningsTooltipTitle}>
-            <span className="text-white font-sans text-sm pl-2 pr-2 md:pr-8 whitespace-nowrap">
-              Earnings (7D) ⓘ
+        <div className="rounded-lg flex sm:flex-row flex-col items-center justify-between titlebox-blur">
+          <Tooltip title={earningsTooltipTitle} className="flex-1">
+            <span className="text-white font-sans text-sm pl-2 pr-2 md:pr-4 whitespace-nowrap">
+              Daily HNT Earnings (7D Avg.) ⓘ
             </span>
           </Tooltip>
-          <div className="flex flex-col p-2 pb-1 pl-0 w-full">
+          <div className="flex-1 flex-col p-2 pb-1 sm:pl-0 w-full">
             <div className="bg-earnings-pattern rounded-full h-2.5 w-full" />
             <div className="flex items-center mt-1">
               <span className="text-white text-xs font-sans flex-1">0</span>

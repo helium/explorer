@@ -46,11 +46,6 @@ const StatisticsPane = () => {
         isLoading={!stats}
       />
       <HotspotWidget title="Latest Hotspot" hotspot={latestHotspot} />
-      <StatWidget
-        title="Hotspot Owners"
-        series={stats?.ownersCount}
-        isLoading={!stats}
-      />
     </InfoBoxPaneContainer>
   )
 }

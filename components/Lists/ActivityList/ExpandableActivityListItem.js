@@ -12,6 +12,7 @@ import Skeleton from '../../Common/Skeleton'
 import { fetchTxnDetails } from '../../../data/txns'
 import ChevronThin from '../../Icons/ChevronThin'
 import TxnDetailsSwitch from '../../InfoBox/TxnDetails/TxnDetailsSwitch'
+import ExpandedPaymentContent from './ExpandedPaymentContent'
 
 const ExpandedContent = ({ txn, role, address }) => {
   if (!txn) {
@@ -22,6 +23,10 @@ const ExpandedContent = ({ txn, role, address }) => {
         <Skeleton />
       </div>
     )
+  }
+
+  if (txn.type.startsWith('payment')) {
+    return <ExpandedPaymentContent txn={txn} role={role} address={address} />
   }
 
   if (

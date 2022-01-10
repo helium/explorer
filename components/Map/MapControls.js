@@ -17,14 +17,13 @@ const MapControls = () => {
   const { data: averageEarnings } = useApi('/network/rewards/averages')
 
   const avg7dEarnings = useMemo(() => {
-    const latest7dayEarnings = averageEarnings.slice(-7)
+    const latest7dayEarnings = averageEarnings?.slice(-7) || []
     const sum = latest7dayEarnings.reduce(
       (a, b) => a + (b['avg_rewards'] || 0),
       0,
     )
     return round(sum / latest7dayEarnings.length, 2)
   }, [averageEarnings])
-  console.log({ avg7dEarnings })
 
   const earningsUpdatedAt = useMemo(() => {
     if (!earnings) return

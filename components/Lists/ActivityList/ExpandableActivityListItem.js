@@ -12,11 +12,12 @@ import Skeleton from '../../Common/Skeleton'
 import { fetchTxnDetails } from '../../../data/txns'
 import ChevronThin from '../../Icons/ChevronThin'
 import TxnDetailsSwitch from '../../InfoBox/TxnDetails/TxnDetailsSwitch'
-import ExpandedPaymentContent from './ExpandedPaymentContent'
+// import ExpandedPaymentContent from './ExpandedPaymentContent'
+import ExpandedRewardContent from './ExpandedRewardContent'
 
 const ExpandedContent = ({ txn, role, address }) => {
   if (!txn) {
-    // TODO: add better skeleton
+    // TODO: add better skeleton, maybe specific to each type of txn
     return (
       <div className="space-y-2">
         <Skeleton />
@@ -25,40 +26,26 @@ const ExpandedContent = ({ txn, role, address }) => {
     )
   }
 
-  if (txn.type.startsWith('payment')) {
-    return <ExpandedPaymentContent txn={txn} role={role} address={address} />
-  }
+  // TODO: flesh out payment summary
+  // if (txn.type.startsWith('payment')) {
+  //   return <ExpandedPaymentContent txn={txn} role={role} address={address} />
+  // }
 
   if (
     txn.type === 'rewards_v1' ||
     txn.type === 'rewards_v2' ||
     txn.type === 'rewards_v3'
   ) {
-    return (
-      <div>
-        <p className="text-sm font-sans">
-          Received mining rewards in block {txn.height?.toLocaleString()}
-        </p>
-      </div>
-    )
+    return <ExpandedRewardContent txn={txn} role={role} />
   }
 
   if (txn.type === 'poc_receipts_v1') {
     return <ExpandedPoCReceiptContent txn={txn} role={role} address={address} />
   }
 
-  // TODO: add other txn types
+  // TODO: add inline summaries of all other common txn types
 
-  return (
-    <TxnDetailsSwitch txn={txn} isLoading={!txn} />
-    // <div>
-    //   {/* TODO add generic details view */}
-    //   <p className="font-sans font-light">
-    //     Transaction Type:{' '}
-    //     <span className="text-purple-700 font-bold">{txn.type}</span>
-    //   </p>
-    // </div>
-  )
+  return <TxnDetailsSwitch txn={txn} isLoading={!txn} />
 }
 
 const ExpandableListItem = ({
@@ -77,13 +64,12 @@ const ExpandableListItem = ({
 
   const [txnDetails, setTxnDetails] = useState()
 
-  const fetchTxn = async (txn) => {
-    if (txn?.type.startsWith('rewards')) {
-      setTxnDetails(txn)
-    } else {
-      const details = await fetchTxnDetails(txn.hash)
-      setTxnDetails(details)
-    }
+  const fetchTxn = async (txn, address) => {
+    const details = await fetchTxnDetails(
+      txn.hash,
+      txn?.type.startsWith('rewards') ? { actor: address } : {},
+    )
+    setTxnDetails(details)
   }
 
   const handleItemClick = useCallback(() => {
@@ -91,8 +77,10 @@ const ExpandableListItem = ({
       clearSelectedTxn()
       if (context === 'hotspot') selectHotspot(address)
     } else {
-      selectTxn(txn.hash)
-      fetchTxn(txn)
+      if (!txn.type.startsWith('rewards')) {
+        selectTxn(txn.hash)
+      }
+      fetchTxn(txn, address)
     }
     toggleExpanded()
   }, [
@@ -156,7 +144,7 @@ const ExpandableListItem = ({
                 address={address}
               />
             </div>
-            {!txnDetails?.type.startsWith('rewards') && (
+            {txnDetails && !txnDetails?.type.startsWith('rewards') && (
               <Link
                 to={linkTo}
                 // clear selected hotspot when navigating to selected transaction, this was causing a Mapbox error on mobile

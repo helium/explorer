@@ -1,8 +1,8 @@
 import { getColor, getName, getTooltip } from '../components/Txns/TxnTag'
 import client from './client'
 
-export const fetchTxnDetails = async (txnHash) => {
-  const txn = await client.transactions.get(txnHash)
+export const fetchTxnDetails = async (txnHash, params = {}) => {
+  const txn = await client.transactions.get(txnHash, params)
 
   txn.name = getName(txn.type)
   txn.color = getColor(txn.type)

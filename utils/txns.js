@@ -13,7 +13,7 @@ const CONFIG = {
   poc_request_v1: {
     color: '#A667F6',
     name: 'PoC Challenge',
-    hotspotContextName: 'Constructed Beacon',
+    hotspotContextName: 'Constructed Challenge',
     tooltip: 'Proof of Coverage Challenge',
   },
   poc_receipts_v1: {
@@ -56,7 +56,7 @@ const CONFIG = {
   poc_challengers: {
     color: '#A667F6',
     name: 'Challenger',
-    hotspotContextName: 'Constructed Beacon',
+    hotspotContextName: 'Challenged Beaconer',
     tooltip: 'PoC challenger',
   },
   poc_challengees: {

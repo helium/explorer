@@ -4,7 +4,7 @@ import ChevronIcon from '../../Icons/Chevron'
 import { Link } from 'react-router-i18n'
 import useSelectedTxn from '../../../hooks/useSelectedTxn'
 import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import ActivityIcon from './ActivityIcon'
 import ActivityItemTimestamp from './ActivityItemTimestamp'
 import ExpandedPoCReceiptContent from './ExpandedPoCReceiptContent'
@@ -93,6 +93,12 @@ const ExpandableListItem = ({
     toggleExpanded,
     txn,
   ])
+
+  useEffect(() => {
+    return () => {
+      clearSelectedTxn()
+    }
+  }, [clearSelectedTxn])
 
   return (
     <>

@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from 'react'
 import animalHash from 'angry-purple-tiger'
-import { useAsync } from 'react-async-hooks'
 import { useParams } from 'react-router'
 import InfoBox from './InfoBox'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
@@ -26,13 +25,23 @@ import SkeletonActivityList from '../Lists/ActivityList/SkeletonActivityList'
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
 
-  const { selectedHotspot: hotspot, selectHotspot } = useSelectedHotspot()
+  const {
+    selectedHotspot: hotspot,
+    selectHotspot,
+    clearSelectedHotspot,
+  } = useSelectedHotspot()
 
-  useAsync(async () => {
+  useEffect(() => {
     if (!hotspot) {
       selectHotspot(address)
     }
-  }, [hotspot, address])
+  }, [hotspot, address, selectHotspot])
+
+  useEffect(() => {
+    return () => {
+      clearSelectedHotspot()
+    }
+  }, [clearSelectedHotspot])
 
   return (
     <HotspotDetailsInfoBox

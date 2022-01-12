@@ -30,6 +30,10 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
   const { selectedTxn, clearSelectedTxn } = useSelectedTxn()
   const { clearSelectedHotspot } = useSelectedHotspot()
 
+  // the two useEffects below are to clear selected transactions when
+  // navigating to or from a hotspot's /activity page, where a transaction
+  // /and/ a hotspot may currently be "selected" (for snapping the map to
+  // e.g. expanded beacon activity or expanded location assert)
   useEffect(() => {
     if (selectedTxn) {
       clearSelectedTxn()

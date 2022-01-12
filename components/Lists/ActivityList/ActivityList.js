@@ -6,7 +6,6 @@ import {
   getTxnTypeName,
 } from '../../../utils/txns'
 import ExpandableListItem from './ExpandableActivityListItem'
-import ActivityListItem from './ActivityListItem'
 
 const isExpandable = (txn) => {
   return (
@@ -69,42 +68,22 @@ const ActivityList = ({
   )
 
   const renderItem = useCallback(
-    (txn) => {
-      // if (isExpandable(txn)) {
-      return (
-        <ExpandableListItem
-          txn={txn}
-          address={address}
-          context={context}
-          title={generateTitle(txn)}
-          // subtitle={generateSubtitle(txn)}
-          linkTo={`/txns/${txn.hash}`}
-          highlightColor={
-            txn.type === 'poc_receipts_v1'
-              ? getTxnTypeColor(getPocReceiptRole(txn.role))
-              : getTxnTypeColor(txn.type)
-          }
-        />
-      )
-      // }
-
-      // return (
-      //   <ActivityListItem
-      //     title={generateTitle(txn)}
-      //     // subtitle={generateSubtitle(txn)}
-      //     linkTo={`/txns/${txn.hash}`}
-      //     highlightColor={getTxnTypeColor(txn.type)}
-      //   />
-      // )
-    },
+    (txn) => (
+      <ExpandableListItem
+        txn={txn}
+        address={address}
+        context={context}
+        title={generateTitle(txn)}
+        linkTo={`/txns/${txn.hash}`}
+        highlightColor={
+          txn.type === 'poc_receipts_v1'
+            ? getTxnTypeColor(getPocReceiptRole(txn.role))
+            : getTxnTypeColor(txn.type)
+        }
+      />
+    ),
     [address, context, generateTitle],
   )
-
-  const expandableItem = useCallback((txn) => {
-    // if (isExpandable(txn)) {
-    return true
-    // }
-  }, [])
 
   return (
     <BaseList
@@ -115,7 +94,7 @@ const ActivityList = ({
       items={transactions}
       keyExtractor={keyExtractor}
       linkExtractor={linkExtractor}
-      expandableItem={expandableItem}
+      expandableItem={() => true}
       onSelectItem={handleSelectTxn}
       isLoading={isLoading}
       renderItem={renderItem}

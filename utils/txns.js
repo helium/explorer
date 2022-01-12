@@ -4,7 +4,7 @@ const CONFIG = {
   state_channel_open_v1: { color: '#22CAAC', name: 'State Channel Open' },
   price_oracle_v1: { color: '#292929', name: 'Price Oracle' },
   state_channel_close_v1: {
-    color: '#D3F4EE',
+    color: '#22CAAC',
     hotspotContextName: 'Transferred Packets',
     name: 'State Channel Close',
   },

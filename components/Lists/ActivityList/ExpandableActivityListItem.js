@@ -14,6 +14,7 @@ import ChevronThin from '../../Icons/ChevronThin'
 import TxnDetailsSwitch from '../../InfoBox/TxnDetails/TxnDetailsSwitch'
 // import ExpandedPaymentContent from './ExpandedPaymentContent'
 import ExpandedRewardContent from './ExpandedRewardContent'
+import ExpandedStateChannelCloseContent from './ExpandedStateChannelCloseContent'
 
 const ExpandedContent = ({ txn, role, address }) => {
   if (!txn) {
@@ -37,6 +38,16 @@ const ExpandedContent = ({ txn, role, address }) => {
     txn.type === 'rewards_v3'
   ) {
     return <ExpandedRewardContent txn={txn} role={role} />
+  }
+
+  if (txn.type === 'state_channel_close_v1') {
+    return (
+      <ExpandedStateChannelCloseContent
+        txn={txn}
+        role={role}
+        address={address}
+      />
+    )
   }
 
   if (txn.type === 'poc_receipts_v1') {
@@ -67,7 +78,11 @@ const ExpandableListItem = ({
   const fetchTxn = async (txn, address) => {
     const details = await fetchTxnDetails(
       txn.hash,
-      txn?.type.startsWith('rewards') ? { actor: address } : {},
+      // if txn is a reward or state channel close, pass actor param to
+      // get summary with context instead of entire transaction
+      txn?.type.startsWith('rewards') || txn?.type === 'state_channel_close_v1'
+        ? { actor: address }
+        : {},
     )
     setTxnDetails(details)
   }

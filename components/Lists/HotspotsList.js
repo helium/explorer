@@ -16,6 +16,7 @@ const HotspotsList = ({
   fetchMore,
   isLoadingMore,
   hasMore,
+  showCount = false,
 }) => {
   const { selectHotspot } = useSelectedHotspot()
 
@@ -59,8 +60,8 @@ const HotspotsList = ({
     <BaseList
       items={hotspots}
       keyExtractor={keyExtractor}
-      listHeaderTitle="Hotspots"
-      listHeaderShowCount={true}
+      listHeaderTitle={showCount ? 'Hotspots' : null}
+      listHeaderShowCount={showCount}
       linkExtractor={linkExtractor}
       onSelectItem={handleSelectHotspot}
       isLoading={isLoading}

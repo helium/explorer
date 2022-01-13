@@ -8,19 +8,24 @@ export const API_BASES = {
 
 const TESTNET_API_BASE = 'https://helium-testnet-explorer-api.herokuapp.com/api'
 
-export const fetchApi = (version = 'v1') => async (route) => {
-  const base = NETWORK === 'testnet' ? TESTNET_API_BASE : API_BASES[version]
-  const url = [base, route].join('')
-  const response = await fetch(url, {
-    headers: {
-      'cache-control': 'max-age=60',
-    },
-  })
-  return response.json()
-}
+export const fetchApi =
+  (version = 'v1') =>
+  async (route) => {
+    const base = NETWORK === 'testnet' ? TESTNET_API_BASE : API_BASES[version]
+    const url = [base, route].join('')
+    const response = await fetch(url, {
+      headers: {
+        'cache-control': 'max-age=60',
+      },
+    })
+    return response.json()
+  }
 
-const useApi = (route, options = {}, config = { localCache: true, version: 'v1' }) => {
-
+const useApi = (
+  route,
+  options = {},
+  config = { localCache: true, version: 'v1' },
+) => {
   let initialData
 
   if (typeof window !== 'undefined' && config.localCache) {

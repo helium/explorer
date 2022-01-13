@@ -3,13 +3,8 @@ import { useHotspots } from '../../../data/hotspots'
 import HotspotsList from '../../Lists/HotspotsList'
 
 const HotspotsPane = ({ address }) => {
-  const {
-    hotspots,
-    fetchMore,
-    isLoadingInitial,
-    isLoadingMore,
-    hasMore,
-  } = useHotspots('account', address)
+  const { hotspots, fetchMore, isLoadingInitial, isLoadingMore, hasMore } =
+    useHotspots('account', address)
 
   return (
     <div
@@ -24,6 +19,7 @@ const HotspotsPane = ({ address }) => {
         isLoadingMore={isLoadingMore}
         fetchMore={fetchMore}
         hasMore={hasMore}
+        showCount
       />
     </div>
   )

@@ -56,7 +56,7 @@ const ExpandedContent = ({ txn, role, address }) => {
 
   // TODO: add inline summaries of all other common txn types
 
-  return <TxnDetailsSwitch txn={txn} isLoading={!txn} />
+  return <TxnDetailsSwitch txn={txn} isLoading={!txn} inline />
 }
 
 const ExpandableListItem = ({

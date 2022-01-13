@@ -7,7 +7,7 @@ import { useAsync } from 'react-async-hook'
 import animalHash from 'angry-purple-tiger'
 import { fetchHotspot } from '../../../data/hotspots'
 
-const TransferHotspotV1 = ({ txn }) => {
+const TransferHotspotV1 = ({ txn, inline }) => {
   const [transferredHotspot, setTransferredHotspot] = useState()
 
   useAsync(async () => {
@@ -16,7 +16,7 @@ const TransferHotspotV1 = ({ txn }) => {
   }, [])
 
   return (
-    <InfoBoxPaneContainer>
+    <InfoBoxPaneContainer padding={!inline}>
       {transferredHotspot ? (
         <HotspotWidget
           title="Transferred Hotspot"

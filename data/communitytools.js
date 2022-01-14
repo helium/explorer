@@ -180,6 +180,12 @@ export const communityToolsList = [
     description:
       'The diagnostic and reward statistics dashboard, for SenseCAP Hotspots.',
     tags: [types.monitoring],
+  },  
+  {
+    name: 'TaxBit',
+    url: 'https://www.taxbit.com',
+    description: 'Simplifying Helium taxes and Data Aggregation for investors and miners',
+    tags: [types.export]
   },
   {
     name: 'ZenLedger',

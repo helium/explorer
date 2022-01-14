@@ -27,8 +27,6 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
   const { result: witnessesData } = useAsync(fetchWitnessed, [hotspot.address])
   const [showChecklist, toggleShowChecklist] = useToggle()
 
-  console.log(hotspot)
-
   const errorFetchingWitnessed = hotspot?.errors?.length > 0
 
   return (

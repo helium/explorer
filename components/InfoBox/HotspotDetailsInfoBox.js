@@ -6,7 +6,7 @@ import InfoBox from './InfoBox'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import StatisticsPane from './HotspotDetails/StatisticsPane'
 import ActivityPane from './Common/ActivityPane'
-import WitnessesPane from './HotspotDetails/WitnessesPane'
+import WitnessedPane from './HotspotDetails/WitnessedPane'
 import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import AccountAddress from '../AccountAddress'
@@ -195,12 +195,12 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
           )}
         </TabPane>
         <TabPane
-          title="Witnesses"
-          path="witnesses"
-          key="witnesses"
+          title="Witnessed"
+          path="witnessed"
+          key="witnessed"
           hidden={IS_DATA_ONLY}
         >
-          {isLoading ? <SkeletonList /> : <WitnessesPane hotspot={hotspot} />}
+          {isLoading ? <SkeletonList /> : <WitnessedPane hotspot={hotspot} />}
         </TabPane>
         <TabPane
           title="Nearby"

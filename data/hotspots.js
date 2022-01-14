@@ -68,10 +68,10 @@ export const fetchHexHotspots = async (index) => {
   return hotspots
 }
 
-export const fetchWitnesses = async (address) => {
-  const list = await client.hotspot(address).witnesses.list()
-  const witnesses = await list.take(TAKE_MAX)
-  return witnesses
+export const fetchWitnessed = async (address) => {
+  const list = await client.hotspot(address).witnessed.list()
+  const witnessed = await list.take(TAKE_MAX)
+  return witnessed
 }
 
 export const useHotspots = (context, address, pageSize = 20) => {

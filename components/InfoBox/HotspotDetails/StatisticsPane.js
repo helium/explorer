@@ -6,7 +6,7 @@ import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import ChecklistWidget from '../../Widgets/ChecklistWidget'
 import { isRelay } from '../../Hotspots/utils'
 import Widget from '../../Widgets/Widget'
-import { fetchWitnesses } from '../../../data/hotspots'
+import { fetchWitnessed } from '../../../data/hotspots'
 import { useAsync } from 'react-async-hook'
 import useToggle from '../../../utils/useToggle'
 import classNames from 'classnames'
@@ -24,10 +24,12 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
     'week',
   )
 
-  const { result: witnessesData } = useAsync(fetchWitnesses, [hotspot.address])
+  const { result: witnessesData } = useAsync(fetchWitnessed, [hotspot.address])
   const [showChecklist, toggleShowChecklist] = useToggle()
 
-  const errorFetchingWitnesses = hotspot?.errors?.length > 0
+  console.log(hotspot)
+
+  const errorFetchingWitnessed = hotspot?.errors?.length > 0
 
   return (
     <>
@@ -94,14 +96,14 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
               changeType="percent"
             />
             <Widget
-              title="Total Witnesses"
-              linkTo={`/hotspots/${hotspot?.address}/witnesses`}
+              title="Total Witnessed"
+              linkTo={`/hotspots/${hotspot?.address}/witnessed`}
               value={
-                errorFetchingWitnesses
+                errorFetchingWitnessed
                   ? 'Error fetching'
-                  : hotspot?.witnesses?.length
+                  : hotspot?.witnessed?.length
               }
-              valueIsText={errorFetchingWitnesses}
+              valueIsText={errorFetchingWitnessed}
               subtitle={
                 <span className="text-gray-550 text-sm font-sans">
                   Within past 5 days

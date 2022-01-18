@@ -11,7 +11,6 @@ const filtersByContext = {
   hotspot: {
     Beacons: ['poc_receipts_v1'],
     Data: ['state_channel_close_v1'],
-    Consensus: ['consensus_group_v1'],
     Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
     'All Activity': [],
   },

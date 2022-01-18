@@ -11,6 +11,8 @@ import classNames from 'classnames'
 import { castArray } from 'lodash'
 import { useScrollIndicators } from '../../hooks/useScrollIndicators'
 import ScrollIndicator from '../../hooks/useScrollIndicators'
+import TutorialPopup from '../Common/TutorialPopup'
+import createPersistedState from 'use-persisted-state'
 
 const NavItem = ({
   title,
@@ -19,9 +21,14 @@ const NavItem = ({
   activeStyles,
   active = false,
   href,
+  tooltipTitle,
+  tooltipBody,
 }) => {
   const customStyles = classes || activeClasses || activeStyles
   const ref = useRef(null)
+
+  const useShowPopupState = createPersistedState('show-witnessed-tutorial')
+  const [showPopup, setShowPopup] = useShowPopupState(true)
 
   useEffect(() => {
     if (active)
@@ -58,6 +65,15 @@ const NavItem = ({
       )}
       style={active ? { ...activeStyles, ...styles } : styles}
     >
+      {(tooltipTitle || tooltipBody) && showPopup && (
+        <TutorialPopup
+          title={tooltipTitle}
+          body={tooltipBody}
+          tooltipPositioningClasses="left-[50px] md:left-[280px] bottom-[57%] md:bottom-auto md:top-[160px] w-[320px]"
+          arrowPositioningClasses="left-[180px] md:left-[275px] bottom-[57%] md:bottom-auto md:top-[250px]"
+          dismissHandler={() => setShowPopup(false)}
+        />
+      )}
       {title}
     </Link>
   )
@@ -88,6 +104,8 @@ const TabNavbar = ({ centered = false, className, children }) => {
           activeClasses: c.props.activeClasses,
           activeStyles: c.props.activeStyles,
           hidden: c.props.hidden,
+          tooltipTitle: c.props.tooltipTitle,
+          tooltipBody: c.props.tooltipBody,
         }
       return null
     })
@@ -128,6 +146,8 @@ const TabNavbar = ({ centered = false, className, children }) => {
                 <NavItem
                   key={item.key}
                   title={item.title}
+                  tooltipTitle={item.tooltipTitle}
+                  tooltipBody={item.tooltipBody}
                   classes={item.classes}
                   activeClasses={item.activeClasses}
                   activeStyles={item.activeStyles}
@@ -155,7 +175,6 @@ const TabNavbar = ({ centered = false, className, children }) => {
           shown={isScrollable && !isScrolledToStart}
         />
       </div>
-
       <Switch>
         {navPanes.map((pane) => (
           <Route

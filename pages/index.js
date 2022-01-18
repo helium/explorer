@@ -58,6 +58,7 @@ export const Index = ({ coverageUrl }) => {
       {mapSupported && <Map coverageUrl={coverageUrl} />}
       <InfoBoxSwitch />
       <MapLayersBox />
+      <div id="portal-destination" />
     </Page>
   )
 }

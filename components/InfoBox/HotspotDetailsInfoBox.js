@@ -198,6 +198,8 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
           title="Witnessed"
           path="witnessed"
           key="witnessed"
+          tooltipTitle="Updated Witnessed List"
+          tooltipBody="Now updated with new and more relevant information, the witnessed list shows the Hotspots that you've seen beacon (i.e. Hotspots you've witnessed). The bigger this list is and the higher the average transmit scale of these Hotspots, the more HNT you can mine."
           hidden={IS_DATA_ONLY}
         >
           {isLoading ? <SkeletonList /> : <WitnessedPane hotspot={hotspot} />}

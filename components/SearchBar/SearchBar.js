@@ -12,6 +12,8 @@ import useSelectedTxn from '../../hooks/useSelectedTxn'
 import useSelectedCity from '../../hooks/useSelectedCity'
 import useSelectedHex from '../../hooks/useSelectedHex'
 import classNames from 'classnames'
+import { useContext } from 'react'
+import BannerContext from '../Common/Banner/BannerContext'
 
 const Results = ({
   resultsLoading,
@@ -60,6 +62,8 @@ const SearchBar = () => {
   const { selectTxn } = useSelectedTxn()
   const { selectCity } = useSelectedCity()
   const { selectHex } = useSelectedHex()
+  const { showBanner } = useContext(BannerContext)
+
   const history = useHistory()
 
   const handleChange = useCallback(
@@ -188,7 +192,13 @@ const SearchBar = () => {
         <>
           <div
             ref={scroll}
-            className="absolute bg-white max-h-96 md:max-h-72 md:w-96 left-2 md:left-auto right-2 lg:right-4 top-14 rounded-lg divide-y divide-gray-400 overflow-y-scroll no-scrollbar shadow-md z-40"
+            className={classNames(
+              'absolute bg-white max-h-96 md:max-h-72 md:w-96 left-2 md:left-auto right-2 lg:right-4 rounded-lg divide-y divide-gray-400 overflow-y-scroll no-scrollbar shadow-md z-40',
+              {
+                'top-14': !showBanner,
+                'top-20': showBanner,
+              },
+            )}
           >
             <Results
               resultsLoading={resultsLoading}

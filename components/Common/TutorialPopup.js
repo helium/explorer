@@ -31,7 +31,7 @@ const TutorialPopup = ({
             className="text-white w-5 h-5 absolute top-3 right-4"
             onClick={dismissHandler}
           >
-            <CloseIcon className="w-7 h-7" />
+            <CloseIcon className="w-6 h-6" />
           </button>
         </div>
       </div>

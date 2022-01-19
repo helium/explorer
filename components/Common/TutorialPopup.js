@@ -40,7 +40,7 @@ const TutorialPopup = ({
           arrowPositioningClasses,
           'absolute bg-green-500 bg-opacity-60 backdrop-blur-md rotate-45 w-10 h-10 z-20',
         )}
-      ></div>
+      />
     </>,
     document?.getElementById('portal-destination'),
   )

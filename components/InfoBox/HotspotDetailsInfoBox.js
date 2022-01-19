@@ -21,6 +21,7 @@ import { useMaker } from '../../data/makers'
 import Skeleton from '../Common/Skeleton'
 import { useCallback } from 'react'
 import AccountIcon from '../AccountIcon'
+import createPersistedState from 'use-persisted-state'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -43,6 +44,13 @@ const HotspotDetailsRoute = () => {
 }
 
 const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
+  const useShowPopupState = createPersistedState('show-witnessed-tutorial')
+  const [showPopup, setShowPopup] = useShowPopupState(true)
+
+  // useEffect(() => {
+  //   setShowPopup(true)
+  // }, [setShowPopup])
+
   const { clearSelectedHotspot } = useSelectedHotspot()
   const { maker, isLoading: makerLoading } = useMaker(hotspot?.payer)
 
@@ -200,6 +208,8 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
           key="witnessed"
           tooltipTitle="Updated Witnessed List"
           tooltipBody="Now updated with new and more relevant information, the witnessed list shows the Hotspots that you've seen beacon (i.e. Hotspots you've witnessed). The bigger this list is and the higher the average transmit scale of these Hotspots, the more HNT you can mine."
+          tooltipShown={showPopup}
+          tooltipHandleDismiss={() => setShowPopup(false)}
           hidden={IS_DATA_ONLY}
         >
           {isLoading ? <SkeletonList /> : <WitnessedPane hotspot={hotspot} />}

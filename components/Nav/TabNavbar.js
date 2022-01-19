@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useEffect, useRef } from 'react'
+import React, { useCallback, useMemo, useEffect, useRef, useState } from 'react'
 import { matchPath } from 'react-router'
 import {
   Switch,
@@ -12,7 +12,6 @@ import { castArray } from 'lodash'
 import { useScrollIndicators } from '../../hooks/useScrollIndicators'
 import ScrollIndicator from '../../hooks/useScrollIndicators'
 import TutorialPopup from '../Common/TutorialPopup'
-import createPersistedState from 'use-persisted-state'
 
 const NavItem = ({
   title,
@@ -23,12 +22,16 @@ const NavItem = ({
   href,
   tooltipTitle,
   tooltipBody,
+  tooltipShown,
+  tooltipHandleDismiss,
 }) => {
   const customStyles = classes || activeClasses || activeStyles
   const ref = useRef(null)
 
-  const useShowPopupState = createPersistedState('show-witnessed-tutorial')
-  const [showPopup, setShowPopup] = useShowPopupState(true)
+  const [domReady, setDomReady] = useState(false)
+  useEffect(() => {
+    setDomReady(true)
+  }, [])
 
   useEffect(() => {
     if (active)
@@ -49,33 +52,35 @@ const NavItem = ({
   }
 
   return (
-    <Link
-      to={href}
-      // jump to the active element (setting a ref triggers the useEffect above)
-      {...(active ? { ref: ref } : {})}
-      className={classNames(
-        classes,
-        active ? activeClasses : '',
-        'mx-2 py-2 lg:py-3 inline-block font-medium text-sm md:text-base cursor-pointer whitespace-nowrap',
-        {
-          'text-gray-600 hover:text-navy-400': !active && !customStyles,
-          'text-navy-400 border-navy-400 border-b-3 border-solid':
-            active && !customStyles,
-        },
-      )}
-      style={active ? { ...activeStyles, ...styles } : styles}
-    >
-      {(tooltipTitle || tooltipBody) && showPopup && (
+    <>
+      <Link
+        to={href}
+        // jump to the active element (setting a ref triggers the useEffect above)
+        {...(active ? { ref: ref } : {})}
+        className={classNames(
+          classes,
+          active ? activeClasses : '',
+          'mx-2 py-2 lg:py-3 inline-block font-medium text-sm md:text-base cursor-pointer whitespace-nowrap',
+          {
+            'text-gray-600 hover:text-navy-400': !active && !customStyles,
+            'text-navy-400 border-navy-400 border-b-3 border-solid':
+              active && !customStyles,
+          },
+        )}
+        style={active ? { ...activeStyles, ...styles } : styles}
+      >
+        {title}
+      </Link>
+      {(tooltipTitle || tooltipBody) && tooltipShown && domReady && (
         <TutorialPopup
           title={tooltipTitle}
           body={tooltipBody}
-          tooltipPositioningClasses="left-[50px] md:left-[280px] bottom-[57%] md:bottom-auto md:top-[160px] w-[320px]"
-          arrowPositioningClasses="left-[180px] md:left-[275px] bottom-[57%] md:bottom-auto md:top-[250px]"
-          dismissHandler={() => setShowPopup(false)}
+          tooltipPositioningClasses="left-[50px] md:left-auto md:right-[-115px] top-[78px] md:top-[160px] w-80"
+          arrowPositioningClasses="left-[175px] md:left-auto md:right-[165px] top-[250px] md:top-[243px] lg:top-[250px]"
+          dismissHandler={tooltipHandleDismiss}
         />
       )}
-      {title}
-    </Link>
+    </>
   )
 }
 
@@ -106,7 +111,10 @@ const TabNavbar = ({ centered = false, className, children }) => {
           hidden: c.props.hidden,
           tooltipTitle: c.props.tooltipTitle,
           tooltipBody: c.props.tooltipBody,
+          tooltipShown: c.props.tooltipShown,
+          tooltipHandleDismiss: c.props.tooltipHandleDismiss,
         }
+
       return null
     })
   }, [children])
@@ -146,13 +154,15 @@ const TabNavbar = ({ centered = false, className, children }) => {
                 <NavItem
                   key={item.key}
                   title={item.title}
-                  tooltipTitle={item.tooltipTitle}
-                  tooltipBody={item.tooltipBody}
                   classes={item.classes}
                   activeClasses={item.activeClasses}
                   activeStyles={item.activeStyles}
                   active={navMatch(item.path)}
                   href={item.path ? `${url}/${item.path}` : url}
+                  tooltipTitle={item.tooltipTitle}
+                  tooltipBody={item.tooltipBody}
+                  tooltipShown={item.tooltipShown}
+                  tooltipHandleDismiss={item.tooltipHandleDismiss}
                 />
                 {i === length - 1 && (
                   // add a spacer after the last item so the right side of the container has padding

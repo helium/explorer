@@ -47,7 +47,7 @@ const ChangelogButton = ({ className }) => {
     <div
       className={classNames(
         className,
-        'duration-200 transition-all text-gray-400 hover:text-white cursor-pointer relative',
+        'duration-200 transition-all text-gray-400 hover:text-white cursor-pointer relative pt-0.5',
       )}
       onClick={showChangelog}
     >
@@ -87,7 +87,7 @@ const ChangelogButton = ({ className }) => {
           }}
         >
           <div className="w-3 h-3">
-            <div className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+            <div className="animate-ping absolute top-0.5 right-0 inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
             <div
               className={classNames(
                 'w-3 h-3',

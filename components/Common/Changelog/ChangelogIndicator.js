@@ -44,7 +44,6 @@ const ChangelogIndicator = ({
         changelogContent[changelogItemKey]?.active &&
         // and it is not already set to "seen" in the state
         changelogState[changelogItemKey] === false
-        // the best way to make a million dollars really quickly is
       ) {
         // user hasn't seen this key yet
         // set this key to true

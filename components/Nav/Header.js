@@ -9,6 +9,7 @@ import { useContext } from 'react'
 import BannerContext from '../Common/Banner/BannerContext'
 import useSearchResults from '../SearchBar/useSearchResults'
 import NetworkToggle from '../Common/NetworkToggle'
+import ChangelogButton from '../Common/Changelog/ChangelogButton'
 
 const MenuButton = ({ className }) => {
   const [menuOpen, toggleMenu] = useToggle()
@@ -82,8 +83,9 @@ const Header = ({ fallbackLinks = false }) => {
             className="hidden xl:grid grid-flow-col gap-4 w-full"
             fallbackLinks={fallbackLinks}
           />
-          <div className="grid grid-flow-col gap-4 items-center">
+          <div className="grid grid-flow-col gap-2 items-center">
             <SearchBar />
+            <ChangelogButton className="block xl:hidden px-0" />
             <MenuButton
               className={classNames('', {
                 hidden: searchFocused,

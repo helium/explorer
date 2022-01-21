@@ -20,7 +20,7 @@ JavascriptTimeAgo.addLocale(en)
 const useShowBannerState = createPersistedState('avg-earnings')
 
 function MyApp({ Component, pageProps }) {
-  const [showBanner, setShowBanner] = useShowBannerState(true)
+  const [showBanner, setShowBanner] = useShowBannerState(false)
   const hideBanner = () => setShowBanner(false)
 
   const {

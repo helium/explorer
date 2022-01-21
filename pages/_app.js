@@ -12,36 +12,82 @@ import en from 'javascript-time-ago/locale/en'
 import { GAScript } from '../hooks/useGA'
 
 import BannerContext from '../components/Common/Banner/BannerContext'
+import ChangelogContext from '../components/Common/Changelog/ChangelogContext'
+import { useState } from 'react'
+import ChangelogOverlay from '../components/Common/Changelog/ChangelogOverlay'
 
 JavascriptTimeAgo.addLocale(en)
 const useShowBannerState = createPersistedState('avg-earnings')
+const useChangelogState = createPersistedState('helium-explorer-changelog')
 
 function MyApp({ Component, pageProps }) {
   const [showBanner, setShowBanner] = useShowBannerState(true)
   const hideBanner = () => setShowBanner(false)
+
+  const [changelogState, setChangelogState] = useChangelogState({})
+  const [changelogShown, setChangelogShown] = useState(false)
+
+  const hideChangelog = () => setChangelogShown(false)
+  const showChangelog = () => setChangelogShown(true)
+
+  const initializeChangelogItem = (changelogItemKey) => {
+    const newState = changelogState || {}
+    newState[changelogItemKey] = false
+    try {
+      // needs to be wrapped in a try/catch because of a weird bug with use-persisted-state:
+      // https://github.com/donavon/use-persisted-state/issues/56#issuecomment-892877563
+      setChangelogState(newState)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  const setChangelogItemAsSeen = (changelogItemKey) => {
+    const newState = changelogState || {}
+    newState[changelogItemKey] = true
+    try {
+      // needs to be wrapped in a try/catch because of a weird bug with use-persisted-state:
+      // https://github.com/donavon/use-persisted-state/issues/56#issuecomment-892877563
+      setChangelogState(newState)
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
   return (
     // this #app div is used to increase the specificity of Tailwind's utility classes, making it easier to override styles without resorting to !important
     // the corresponding value is in /tailwind.config.js: important: "#app"
     <div id="app" suppressHydrationWarning>
       <BannerContext.Provider value={{ showBanner, hideBanner }}>
-        <GAScript />
-        {typeof window === 'undefined' ? null : (
-          <Router>
-            <StateProvider>
-              <SWRConfig
-                value={{
-                  refreshInterval: 1000 * 60,
-                  fetcher: (resource, init) =>
-                    fetch(resource, init).then((res) => res.json()),
-                }}
-              >
-                <Component {...pageProps} />
-              </SWRConfig>
-            </StateProvider>
-          </Router>
-        )}
-        <script src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js"></script>
+        <ChangelogContext.Provider
+          value={{
+            changelogState,
+            changelogShown,
+            showChangelog,
+            hideChangelog,
+            initializeChangelogItem,
+            setChangelogItemAsSeen,
+          }}
+        >
+          <ChangelogOverlay />
+          <GAScript />
+          {typeof window === 'undefined' ? null : (
+            <Router>
+              <StateProvider>
+                <SWRConfig
+                  value={{
+                    refreshInterval: 1000 * 60,
+                    fetcher: (resource, init) =>
+                      fetch(resource, init).then((res) => res.json()),
+                  }}
+                >
+                  <Component {...pageProps} />
+                </SWRConfig>
+              </StateProvider>
+            </Router>
+          )}
+          <script src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js"></script>
+        </ChangelogContext.Provider>
       </BannerContext.Provider>
     </div>
   )

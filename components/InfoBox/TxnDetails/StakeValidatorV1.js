@@ -3,9 +3,9 @@ import AccountWidget from '../../Widgets/AccountWidget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import ValidatorWidget from '../../Widgets/ValidatorWidget'
 
-const StakeValidatorV1 = ({ txn }) => {
+const StakeValidatorV1 = ({ txn, inline }) => {
   return (
-    <InfoBoxPaneContainer>
+    <InfoBoxPaneContainer padding={!inline}>
       <AccountWidget title="Owner" address={txn.owner} />
       <Widget title={'Stake'} value={txn.stake.toString(2)} />
       <Widget title={'Fee'} value={txn.fee.toString()} />

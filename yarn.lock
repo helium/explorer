@@ -1862,6 +1862,15 @@
     create-hash "^1.2.0"
     libsodium-wrappers "^0.7.6"
 
+"@helium/crypto@^3.45.0":
+  version "3.45.0"
+  resolved "https://registry.yarnpkg.com/@helium/crypto/-/crypto-3.45.0.tgz#2892aaac8f35865cd32a91222fd5ffbe9f973e08"
+  integrity sha512-J89U4GsLLjODPEPTD5m6q6w6zjbtJjYTxrXAF+Sp+Aqq9nPSOTvQ4gx12dfKXfPT/Rq1vrZ5/CIVXYPhQ7PTJQ==
+  dependencies:
+    bs58 "^4.0.1"
+    create-hash "^1.2.0"
+    libsodium-wrappers "^0.7.6"
+
 "@helium/currency@^3.25.1":
   version "3.25.1"
   resolved "https://registry.yarnpkg.com/@helium/currency/-/currency-3.25.1.tgz#83b6146b93423791c2b3f96188999d8c7447037b"
@@ -1869,16 +1878,25 @@
   dependencies:
     bignumber.js "^9.0.0"
 
-"@helium/http@^3.43.0":
-  version "3.43.0"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.43.0.tgz#d8a9efc441fa061c742b346c2739125c04c41b7b"
-  integrity sha512-FrH0LbZWrtVUMGSvxgJBOEyAyApO8+Nzu38SyMoW7Rw4hJFUz51qcAG8m2wqca/mkiiCcCE8FVcR04DPTYQ/Ow==
+"@helium/currency@^3.52.0":
+  version "3.52.0"
+  resolved "https://registry.yarnpkg.com/@helium/currency/-/currency-3.52.0.tgz#68b8ec1c2db73b7c88f54c1b59686a5ade148986"
+  integrity sha512-L91EKuzO+X4v45df8fgr9ihR1WTzThTQIx3Uh2bQwpwkDjxvxdI6xq43VEhz0+y7JN2XGRl3tX4ljQST+Azw4Q==
   dependencies:
-    "@helium/currency" "^3.25.1"
+    bignumber.js "^9.0.0"
+
+"@helium/http@^3.55.0":
+  version "3.55.0"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.55.0.tgz#73e883aa804046ae4f9921e3508633bf88a16270"
+  integrity sha512-KrTOY+dQsGP0EZtGycTFcV9ZpU6pRoQHkr1+l9iWFA46pCLSfwIHKJXWUuKbKQy92MBWgQdtZnTr5TsioQlufA==
+  dependencies:
+    "@helium/crypto" "^3.45.0"
+    "@helium/currency" "^3.52.0"
     axios "^0.21.1"
     camelcase-keys "^6.2.2"
     qs "^6.9.3"
     retry-axios "^2.1.2"
+    snakecase-keys "^5.1.0"
 
 "@humanwhocodes/config-array@^0.5.0":
   version "0.5.0"
@@ -6977,10 +6995,15 @@ focus-trap@^6.6.0:
   dependencies:
     tabbable "^5.2.0"
 
-follow-redirects@^1.0.0, follow-redirects@^1.14.0:
+follow-redirects@^1.0.0:
   version "1.14.6"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.6.tgz#8cfb281bbc035b3c067d6cd975b0f6ade6e855cd"
   integrity sha512-fhUl5EwSJbbl8AR+uYL2KQDxLkdSjZGR36xy46AO7cOMTrCMON6Sa28FmAnC2tRTDbd/Uuzz3aJBv7EBN7JH8A==
+
+follow-redirects@^1.14.0:
+  version "1.14.7"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.7.tgz#2004c02eb9436eee9a21446a6477debf17e81685"
+  integrity sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==
 
 for-in@^1.0.2:
   version "1.0.2"
@@ -11901,10 +11924,17 @@ qs@6.7.0:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
   integrity sha512-VCdBRNFTX1fyE7Nb6FYoURo/SPe62QCaAyzJvUjwRaIsc+NePBEniHlvxFmmX56+HZphIGtV0XeCirBtpDrTyQ==
 
-qs@^6.10.1, qs@^6.9.3:
+qs@^6.10.1:
   version "6.10.1"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.10.1.tgz#4931482fa8d647a5aab799c5271d2133b981fb6a"
   integrity sha512-M528Hph6wsSVOBiYUnGf+K/7w0hNshs/duGsNXPUCLH5XAqjEtiPGwNONLV0tBH8NoGb0mvD5JubnUTrujKDTg==
+  dependencies:
+    side-channel "^1.0.4"
+
+qs@^6.9.3:
+  version "6.10.3"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.10.3.tgz#d6cde1b2ffca87b5aa57889816c5f81535e22e8e"
+  integrity sha512-wr7M2E0OFRfIfJZjKGieI8lBKb7fRCH4Fv5KNPEs7gJ8jadvotdsS08PzOKR7opXhZ/Xkjtt3WF9g38drmyRqQ==
   dependencies:
     side-channel "^1.0.4"
 
@@ -13160,9 +13190,9 @@ ret@~0.1.10:
   integrity sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==
 
 retry-axios@^2.1.2:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/retry-axios/-/retry-axios-2.5.0.tgz#4995b09a38138f0635bf2bdc8d5ac44a98b63fde"
-  integrity sha512-Ukxel/VgYJFVSQg2RgSLOzzHlL4ry1jfUQMrkTF6Uy2CtW7umetoHxJILFYFLmJ4+3C6hSCBqREQp0XoFdCq6g==
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/retry-axios/-/retry-axios-2.6.0.tgz#d4dc5c8a8e73982e26a705e46a33df99a28723e0"
+  integrity sha512-pOLi+Gdll3JekwuFjXO3fTq+L9lzMQGcSq7M5gIjExcl3Gu1hd4XXuf5o3+LuSBsaULQH7DiNbsqPd1chVpQGQ==
 
 retry@^0.12.0:
   version "0.12.0"
@@ -13669,6 +13699,23 @@ slice-ansi@^4.0.0:
     ansi-styles "^4.0.0"
     astral-regex "^2.0.0"
     is-fullwidth-code-point "^3.0.0"
+
+snake-case@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/snake-case/-/snake-case-3.0.4.tgz#4f2bbd568e9935abdfd593f34c691dadb49c452c"
+  integrity sha512-LAOh4z89bGQvl9pFfNF8V146i7o7/CqFPbqzYgP+yYzDIDeS9HaNFtXABamRW+AQzEVODcvE79ljJ+8a9YSdMg==
+  dependencies:
+    dot-case "^3.0.4"
+    tslib "^2.0.3"
+
+snakecase-keys@^5.1.0:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/snakecase-keys/-/snakecase-keys-5.1.2.tgz#36b9d8796eed3e7fe589b359252ee8d98540c7bc"
+  integrity sha512-fvtDQZqPBqYb0dEY97TGuOMbN2NJ05Tj4MaoKwjTKkmjcG6mrd58JYGr23UWZRi6Aqv49Fk4HtjTIStOQenaug==
+  dependencies:
+    map-obj "^4.1.0"
+    snake-case "^3.0.4"
+    type-fest "^2.5.2"
 
 snapdragon-node@^2.0.1:
   version "2.1.1"
@@ -14733,6 +14780,11 @@ type-fest@^1.2.1:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-1.2.2.tgz#1930bc36b2064f7ab4aa307a6d1b65965199c698"
   integrity sha512-pfkPYCcuV0TJoo/jlsUeWNV8rk7uMU6ocnYNvca1Vu+pyKi8Rl8Zo2scPt9O72gCsXIm+dMxOOWuA3VFDSdzWA==
+
+type-fest@^2.5.2:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.9.0.tgz#7a2d430dd966f52b6bc723da2aaa2c9867530551"
+  integrity sha512-uC0hJKi7eAGXUJ/YKk53RhnKxMwzHWgzf4t92oz8Qez28EBgVTfpDTB59y9hMYLzc/Wl85cD7Tv1hLZZoEJtrg==
 
 type-is@~1.6.17, type-is@~1.6.18:
   version "1.6.18"

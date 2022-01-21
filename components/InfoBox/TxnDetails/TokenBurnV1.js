@@ -5,7 +5,7 @@ import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import AccountWidget from '../../Widgets/AccountWidget'
 import Widget from '../../Widgets/Widget'
 
-const TokenBurnV1 = ({ txn }) => {
+const TokenBurnV1 = ({ txn, inline }) => {
   const [oraclePrice, setOraclePrice] = useState()
   useAsync(async () => {
     const { price } = await client.oracle.getPriceAtBlock(txn.height)
@@ -13,7 +13,7 @@ const TokenBurnV1 = ({ txn }) => {
   }, [])
 
   return (
-    <InfoBoxPaneContainer>
+    <InfoBoxPaneContainer padding={!inline}>
       <AccountWidget title="Payer" address={txn.payer} />
       <AccountWidget title="Payee" address={txn.payee} />
       <Widget title="Amount Burned" span={2} value={txn.amount.toString(2)} />

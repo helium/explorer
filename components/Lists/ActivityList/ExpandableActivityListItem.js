@@ -4,9 +4,60 @@ import ChevronIcon from '../../Icons/Chevron'
 import { Link } from 'react-router-i18n'
 import useSelectedTxn from '../../../hooks/useSelectedTxn'
 import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
-import { useCallback } from 'react'
-import ActivityColorSlice from './ActivityColorSlice'
-import ExpandIcon from '../../Icons/ExpandIcon'
+import { useCallback, useEffect, useState } from 'react'
+import ActivityIcon from './ActivityIcon'
+import ActivityItemTimestamp from './ActivityItemTimestamp'
+import ExpandedPoCReceiptContent from './ExpandedPoCReceiptContent'
+import Skeleton from '../../Common/Skeleton'
+import { fetchTxnDetails } from '../../../data/txns'
+import ChevronThin from '../../Icons/ChevronThin'
+import TxnDetailsSwitch from '../../InfoBox/TxnDetails/TxnDetailsSwitch'
+// import ExpandedPaymentContent from './ExpandedPaymentContent'
+import ExpandedRewardContent from './ExpandedRewardContent'
+import ExpandedStateChannelCloseContent from './ExpandedStateChannelCloseContent'
+
+const ExpandedContent = ({ txn, role, address }) => {
+  if (!txn) {
+    // TODO: add better skeleton, maybe specific to each type of txn
+    return (
+      <div className="space-y-2">
+        <Skeleton />
+        <Skeleton />
+      </div>
+    )
+  }
+
+  // TODO: flesh out payment summary
+  // if (txn.type.startsWith('payment')) {
+  //   return <ExpandedPaymentContent txn={txn} role={role} address={address} />
+  // }
+
+  if (
+    txn.type === 'rewards_v1' ||
+    txn.type === 'rewards_v2' ||
+    txn.type === 'rewards_v3'
+  ) {
+    return <ExpandedRewardContent txn={txn} role={role} />
+  }
+
+  if (txn.type === 'state_channel_close_v1') {
+    return (
+      <ExpandedStateChannelCloseContent
+        txn={txn}
+        role={role}
+        address={address}
+      />
+    )
+  }
+
+  if (txn.type === 'poc_receipts_v1') {
+    return <ExpandedPoCReceiptContent txn={txn} role={role} address={address} />
+  }
+
+  // TODO: add inline summaries of all other common txn types
+
+  return <TxnDetailsSwitch txn={txn} isLoading={!txn} inline />
+}
 
 const ExpandableListItem = ({
   address,
@@ -16,19 +67,35 @@ const ExpandableListItem = ({
   subtitle,
   linkTo,
   highlightColor,
-  expandedContent,
 }) => {
   const [expanded, toggleExpanded] = useToggle()
 
   const { selectTxn, clearSelectedTxn } = useSelectedTxn()
   const { selectHotspot, clearSelectedHotspot } = useSelectedHotspot()
 
+  const [txnDetails, setTxnDetails] = useState()
+
+  const fetchTxn = async (txn, address) => {
+    const details = await fetchTxnDetails(
+      txn.hash,
+      // if txn is a reward or state channel close, pass actor param to
+      // get summary with context instead of entire transaction
+      txn?.type.startsWith('rewards') || txn?.type === 'state_channel_close_v1'
+        ? { actor: address }
+        : {},
+    )
+    setTxnDetails(details)
+  }
+
   const handleItemClick = useCallback(() => {
     if (expanded) {
       clearSelectedTxn()
       if (context === 'hotspot') selectHotspot(address)
     } else {
-      selectTxn(txn.hash)
+      if (!txn.type.startsWith('rewards')) {
+        selectTxn(txn.hash)
+      }
+      fetchTxn(txn, address)
     }
     toggleExpanded()
   }, [
@@ -39,62 +106,89 @@ const ExpandableListItem = ({
     selectHotspot,
     selectTxn,
     toggleExpanded,
-    txn.hash,
+    txn,
   ])
 
+  useEffect(() => {
+    return () => {
+      clearSelectedTxn()
+    }
+  }, [clearSelectedTxn])
+
   return (
-    <div
-      className="w-full flex items-stretch cursor-pointer"
-      onClick={handleItemClick}
-    >
-      <ActivityColorSlice highlightColor={highlightColor} />
-      <div className="w-full flex px-4 py-2">
-        <div className="w-full flex flex-col">
-          <div className="w-full flex justify-between">
-            <div className="flex flex-col">
-              <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans">
-                {title}
+    <>
+      <div
+        className={classNames(
+          'bg-white hover:bg-bluegray-50 focus:bg-bluegray-50 cursor-pointer transition-all duration-75 relative flex border-solid border-bluegray-300 border-t-0',
+        )}
+        onClick={handleItemClick}
+      >
+        <div className="w-full flex items-stretch justify-center">
+          <div className="w-full flex px-4 py-2 space-x-2 items-center">
+            <ActivityIcon txn={txn} highlightColor={highlightColor} />
+            <div className="w-full flex flex-row">
+              <div className="w-full flex justify-between">
+                <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans">
+                  {title}
+                </div>
+                <ActivityItemTimestamp txn={txn} expanded={expanded} />
               </div>
-              <div className="flex items-center space-x-2 md:space-x-3 h-6 text-gray-525 text-xs md:text-sm whitespace-nowrap">
-                {subtitle}
+              <div className={'flex items-center justify-center'}>
+                <ChevronThin
+                  className={classNames(
+                    'h-auto text-gray-550 transition-all duration-200 w-3.5 transform',
+                    { 'rotate-0': expanded, 'rotate-180': !expanded },
+                  )}
+                />
               </div>
-            </div>
-            <div className={'flex items-center justify-center'}>
-              <ExpandIcon
-                expanded={expanded}
-                className={
-                  'transition-all duration-200 w-6 h-auto transform opacity-75 text-gray-525'
-                }
-              />
             </div>
           </div>
-          {expanded && (
-            <div className="w-full py-2 flex flex-col justify-between">
-              {expandedContent}
-              {!txn.type.startsWith('rewards') && (
-                <Link
-                  to={linkTo}
-                  // clear selected hotspot when navigating to selected transaction, this was causing a Mapbox error on mobile
-                  onClick={clearSelectedHotspot}
-                  className={classNames(
-                    'w-full bg-gray-300 hover:bg-gray-350 transition-all duration-200 cursor-pointer rounded-lg mt-2 flex items-center justify-center',
-                  )}
-                >
-                  <p className="text-gray-600 font-sans text-sm p-2 m-0">
-                    View transaction details
-                  </p>
-                  <ChevronIcon
-                    className={
-                      'h-auto text-gray-600 transition-all duration-200 w-4 transform rotate-90'
-                    }
-                  />
-                </Link>
-              )}
-            </div>
-          )}
         </div>
       </div>
-    </div>
+
+      <div
+        className={classNames(
+          'w-full flex flex-col justify-between bg-bluegray-50 transition-all duration-200',
+          { 'py-0 opacity-0': !expanded, 'py-4 opacity-100': expanded },
+        )}
+      >
+        {expanded && (
+          <div className="px-6">
+            <div
+              className={classNames('bg-white w-full rounded-t-lg px-2 py-2', {
+                'rounded-b-lg': txnDetails?.type.startsWith('rewards'),
+              })}
+            >
+              <ExpandedContent
+                txn={txnDetails}
+                role={txn.role}
+                address={address}
+              />
+            </div>
+            {txnDetails && !txnDetails?.type.startsWith('rewards') && (
+              <Link
+                to={linkTo}
+                // clear selected hotspot when navigating to selected transaction, this was causing a Mapbox error on mobile
+                onClick={clearSelectedHotspot}
+                className={classNames(
+                  'w-full bg-white hover:bg-gray-350 transition-all duration-200 cursor-pointer rounded-b-lg mt-px flex items-center justify-center',
+                )}
+              >
+                <p className="text-gray-700 font-sans font-medium text-sm p-2 m-0">
+                  View Transaction Details
+                </p>
+                <ChevronIcon
+                  className={
+                    'h-auto text-gray-700 transition-all duration-200 w-4 transform rotate-90'
+                  }
+                />
+              </Link>
+            )}
+          </div>
+        )}
+      </div>
+      <div className="w-full border-solid border-b border-bluegray-300" />
+    </>
   )
 }
 export default ExpandableListItem

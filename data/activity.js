@@ -21,7 +21,7 @@ export const useActivity = (context, address, filters = [], pageSize = 20) => {
 
   useAsync(async () => {
     const clientContext = pickClientContext(address, context)
-    const newList = await clientContext.activity.list({ filterTypes: filters })
+    const newList = await clientContext.roles.list({ filterTypes: filters })
     setList(newList)
   }, [address, filters, context])
 
@@ -39,6 +39,7 @@ export const useActivity = (context, address, filters = [], pageSize = 20) => {
 
   useEffect(() => {
     setIsLoadingInitial(true)
+    setHasMore(true)
     setIsLoadingMore(true)
   }, [filters])
 

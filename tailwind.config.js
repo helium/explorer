@@ -107,7 +107,9 @@ module.exports = {
         800: '#171E2D',
       },
       bluegray: {
+        50: '#F5F5FA',
         100: '#E9EAFF2',
+        300: '#CECEE9',
       },
       reward: {
         witness: '#FFC769',

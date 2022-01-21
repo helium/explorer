@@ -17,7 +17,7 @@ const rewardTypeColor = {
   consensus: 'consensus',
 }
 
-const ExpandedRewardContent = ({ txn }) => {
+const ExpandedRewardContent = ({ txn, role }) => {
   return (
     <div className="flex flex-col items-start w-full space-y-1 my-0.5">
       {txn.rewards.map((r, i) => (
@@ -29,9 +29,11 @@ const ExpandedRewardContent = ({ txn }) => {
             <span className="text-black font-sans text-sm">
               {`+${r.amount.toString(3)}`}
             </span>
-            <span className="text-black font-sans text-sm font-thin">
-              {r?.gateway && animalHash(r.gateway)}
-            </span>
+            {role !== 'reward_gateway' && (
+              <span className="text-black font-sans text-sm font-thin">
+                {r?.gateway && animalHash(r.gateway)}
+              </span>
+            )}
           </div>
           <Pill
             key={r.type}

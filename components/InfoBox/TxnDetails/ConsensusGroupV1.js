@@ -11,7 +11,7 @@ import AccountIcon from '../../AccountIcon'
 import { truncateHash } from '../../../utils/format'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
-const ConsensusGroupV1 = ({ txn }) => {
+const ConsensusGroupV1 = ({ txn, inline }) => {
   const [members, setMembers] = useState([])
   const [isLoadingInitial, setIsLoadingInitial] = useState(false)
 
@@ -23,7 +23,7 @@ const ConsensusGroupV1 = ({ txn }) => {
   }, [])
 
   return (
-    <InfoBoxPaneContainer>
+    <InfoBoxPaneContainer padding={!inline}>
       <MembersWidget members={members} />
       <Widget
         title={'Delay'}

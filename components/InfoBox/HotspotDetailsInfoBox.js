@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import animalHash from 'angry-purple-tiger'
+import { useAsync } from 'react-async-hooks'
 import { useParams } from 'react-router'
 import InfoBox from './InfoBox'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
@@ -20,29 +21,17 @@ import { useMaker } from '../../data/makers'
 import Skeleton from '../Common/Skeleton'
 import { useCallback } from 'react'
 import AccountIcon from '../AccountIcon'
-import SkeletonActivityList from '../Lists/ActivityList/SkeletonActivityList'
-import ChangelogIndicator from '../Common/Changelog/ChangelogIndicator'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
 
-  const {
-    selectedHotspot: hotspot,
-    selectHotspot,
-    clearSelectedHotspot,
-  } = useSelectedHotspot()
+  const { selectedHotspot: hotspot, selectHotspot } = useSelectedHotspot()
 
-  useEffect(() => {
+  useAsync(async () => {
     if (!hotspot) {
       selectHotspot(address)
     }
-  }, [hotspot, address, selectHotspot])
-
-  useEffect(() => {
-    return () => {
-      clearSelectedHotspot()
-    }
-  }, [clearSelectedHotspot])
+  }, [hotspot, address])
 
   return (
     <HotspotDetailsInfoBox
@@ -198,20 +187,9 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
             <StatisticsPane hotspot={hotspot} isDataOnly={IS_DATA_ONLY} />
           )}
         </TabPane>
-        <TabPane
-          title="Activity"
-          path="activity"
-          key="activity"
-          changelogIndicator={
-            <ChangelogIndicator
-              changelogItemKey="activity-v2"
-              positionClasses="top-[290px] md:top-[250px] left-[140px] md:left-[160px]"
-              sizeClasses="w-4 h-4 md:w-4 md:h-4"
-            />
-          }
-        >
+        <TabPane title="Activity" path="activity" key="activity">
           {isLoading ? (
-            <SkeletonActivityList />
+            <SkeletonList />
           ) : (
             <ActivityPane context="hotspot" address={hotspot?.address} />
           )}

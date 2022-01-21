@@ -2,9 +2,9 @@ import Widget from '../../Widgets/Widget'
 import AccountWidget from '../../Widgets/AccountWidget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
-const PaymentV2 = ({ txn, inline }) => {
+const PaymentV2 = ({ txn }) => {
   return (
-    <InfoBoxPaneContainer padding={!inline}>
+    <InfoBoxPaneContainer>
       <AccountWidget title="Payer" address={txn.payer} />
       <Widget
         title={'Total HNT'}

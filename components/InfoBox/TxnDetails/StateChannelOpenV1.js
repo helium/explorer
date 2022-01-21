@@ -2,9 +2,9 @@ import AccountWidget from '../../Widgets/AccountWidget'
 import Widget from '../../Widgets/Widget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
-const StateChannelOpenV1 = ({ txn, inline }) => {
+const StateChannelOpenV1 = ({ txn }) => {
   return (
-    <InfoBoxPaneContainer padding={!inline}>
+    <InfoBoxPaneContainer>
       <AccountWidget title="Owner" address={txn.owner} />
       <Widget title="OUI" value={txn.oui} />
       <Widget title="Nonce" value={txn.nonce} />

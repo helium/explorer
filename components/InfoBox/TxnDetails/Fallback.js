@@ -43,10 +43,10 @@ const GenericObjectWidget = ({ title, value }) => {
   )
 }
 
-const Fallback = ({ txn, inline }) => {
+const Fallback = ({ txn }) => {
   return (
     <>
-      <InfoBoxPaneContainer padding={!inline}>
+      <InfoBoxPaneContainer>
         {Object.entries(txn).map(([key, value]) => {
           // these fields will show up in the title / breadcrumbs / subtitle, so no need to repeat them
           if (

@@ -12,7 +12,6 @@ import CopyableText from '../Common/CopyableText'
 import MakerOverviewPane from './AccountDetails/MakerOverviewPane'
 import { useMaker } from '../../data/makers'
 import SkeletonWidgets from './Common/SkeletonWidgets'
-import SkeletonActivityList from '../Lists/ActivityList/SkeletonActivityList'
 
 const AccountDetailsInfoBox = () => {
   const { address } = useParams()
@@ -66,11 +65,7 @@ const AccountDetailsInfoBox = () => {
         </TabPane>
 
         <TabPane title="Activity" key="activity" path="activity">
-          {isLoading ? (
-            <SkeletonActivityList />
-          ) : (
-            <ActivityPane context="account" address={address} />
-          )}
+          <ActivityPane context="account" address={address} />
         </TabPane>
 
         <TabPane title="Hotspots" key="hotspots" path="hotspots">

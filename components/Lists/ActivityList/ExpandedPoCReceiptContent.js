@@ -1,4 +1,4 @@
-import { getPocReceiptRole, getTxnTypeColor } from '../../../utils/txns'
+import { getPocReceiptRole } from '../../../utils/txns'
 import animalHash from 'angry-purple-tiger'
 import classNames from 'classnames'
 import { h3ToGeo } from 'h3-js'
@@ -10,8 +10,8 @@ const RoleParticipant = ({
   isActive,
   participantText,
   participantDetails,
-  inactiveParticipantStyles,
-  activeParticipantStyles,
+  inactiveParticipantClasses,
+  activeParticipantClasses,
   activeParticipantDetails,
   iconPath,
 }) => (
@@ -25,10 +25,10 @@ const RoleParticipant = ({
         className={classNames(
           'ml-1.5 flex items-center text-sm font-sans font-medium',
           {
-            'px-2 py-0.5 rounded-md': isActive,
+            [`${activeParticipantClasses} px-2 py-0.5 rounded-md`]: isActive,
+            [`${inactiveParticipantClasses}`]: !isActive,
           },
         )}
-        style={isActive ? activeParticipantStyles : inactiveParticipantStyles}
       >
         {participantText}
       </span>
@@ -113,24 +113,19 @@ const WitnessesDetails = ({ txn, role, address, isWitness }) => {
   )
 }
 
-const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
-  const role = getPocReceiptRole(initialRole)
+const ExpandedPoCReceiptContent = ({ txn, address }) => {
+  const role = getPocReceiptRole(txn, address)
   const isWitness =
     role === 'poc_witnesses_valid' || role === 'poc_witnesses_invalid'
 
   return (
-    <div className="">
+    <div className="bg-gray-300 w-full rounded-md px-2 py-2">
       <RoleParticipant
         roleTitle="Challenger"
         isActive={role === 'poc_challengers'}
         participantText={animalHash(txn.challenger)}
-        activeParticipantStyles={{
-          backgroundColor: getTxnTypeColor(role),
-          color: 'white',
-        }}
-        inactiveParticipantStyles={{
-          color: 'black',
-        }}
+        activeParticipantClasses="bg-purple-500 text-white"
+        inactiveParticipantClasses="text-black"
         iconPath="/images/challenger-icon.svg"
       />
       <RoleParticipant
@@ -138,13 +133,8 @@ const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
         roleTitle="Beaconer"
         isActive={role === 'poc_challengees'}
         participantText={animalHash(txn.path[0].challengee)}
-        activeParticipantStyles={{
-          backgroundColor: getTxnTypeColor(role),
-          color: 'white',
-        }}
-        inactiveParticipantStyles={{
-          color: 'black',
-        }}
+        activeParticipantClasses="bg-blue-500 text-white"
+        inactiveParticipantClasses="text-black"
         iconPath="/images/poc_receipt_icon.svg"
       />
       <RoleParticipant
@@ -156,13 +146,12 @@ const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
             ? animalHash(address)
             : `${txn.path[0].witnesses.length} hotspots`
         }
-        activeParticipantStyles={{
-          backgroundColor: getTxnTypeColor(role),
-          color: 'black',
-        }}
-        inactiveParticipantStyles={{
-          color: 'black',
-        }}
+        activeParticipantClasses={
+          role === 'poc_witnesses_valid'
+            ? 'bg-yellow-500 text-black'
+            : 'bg-gray-800 text-white'
+        }
+        inactiveParticipantClasses="text-black"
         iconPath="/images/witness-yellow-mini.svg"
         participantDetails={
           <WitnessesDetails

@@ -2,8 +2,8 @@ import Widget from '../../Widgets/Widget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import ValidatorWidget from '../../Widgets/ValidatorWidget'
 
-const ValidatorHeartbeatV1 = ({ txn, inline }) => (
-  <InfoBoxPaneContainer padding={!inline}>
+const ValidatorHeartbeatV1 = ({ txn }) => (
+  <InfoBoxPaneContainer>
     <ValidatorWidget title="Validator" address={txn.address} />
     <Widget title={'Version'} value={txn.version} span={2} />
     <Widget

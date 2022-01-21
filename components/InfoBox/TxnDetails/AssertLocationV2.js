@@ -8,7 +8,7 @@ import { getMakerName } from '../../Makers/utils'
 import { formatGain, formatElevation } from '../../Hotspots/utils'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
-const AssertLocationV2 = ({ txn, inline }) => {
+const AssertLocationV2 = ({ txn }) => {
   const [assertedHotspot, setAssertedHotspot] = useState()
   const [makerName, setMakerName] = useState()
   const [isLoadingInitial, setIsLoadingInitial] = useState(false)
@@ -29,7 +29,7 @@ const AssertLocationV2 = ({ txn, inline }) => {
     txn.payer === txn.owner || txn.payer === null ? txn.owner : txn.payer
 
   return (
-    <InfoBoxPaneContainer padding={!inline}>
+    <InfoBoxPaneContainer>
       <HotspotWidget
         hotspot={assertedHotspot}
         title="Asserted Hotspot"

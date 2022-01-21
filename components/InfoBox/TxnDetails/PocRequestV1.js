@@ -6,7 +6,7 @@ import AccountWidget from '../../Widgets/AccountWidget'
 import Widget from '../../Widgets/Widget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
-const PocRequestV1 = ({ txn, inline }) => {
+const PocRequestV1 = ({ txn }) => {
   const [challenger, setChallenger] = useState()
 
   useAsync(async () => {
@@ -15,7 +15,7 @@ const PocRequestV1 = ({ txn, inline }) => {
   }, [])
 
   return (
-    <InfoBoxPaneContainer padding={!inline}>
+    <InfoBoxPaneContainer>
       <HotspotWidget title="Challenger Hotspot" hotspot={challenger} />
       <AccountWidget title="Challenger Owner" address={txn.challengerOwner} />
       <Widget title="Version" value={txn.version} />

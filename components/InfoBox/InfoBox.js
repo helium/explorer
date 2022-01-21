@@ -14,7 +14,7 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
   return (
     <div
       className={classNames(
-        'fixed left-0 z-20 bottom-0 md:top-0 md:m-auto w-full md:w-120 flex flex-col items-center justify-end transform-gpu transition-all duration-200 ease-in-out h-screen',
+        'pointer-events-none fixed left-0 z-20 bottom-0 md:top-0 md:m-auto w-full md:w-120 flex flex-col items-center justify-end transform-gpu transition-all duration-200 ease-in-out h-screen',
         // TODO: revisit Tailwind JIT mode. this is doable and much more flexible with Tailwind JIT and the [] syntax for arbitrary values, but for some reason it was breaking all Tailwind styles with Hot Module Reloading. for now we can extend the themes to use more manual values:
         {
           'translate-y-120p md:-translate-x-full md:translate-y-0':
@@ -28,8 +28,7 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
           {metaTitle ? `${metaTitle} — Helium Explorer` : 'Helium Explorer'}
         </title>
       </Helmet>
-      <div className="w-full md:h-screen h-full flex flex-col items-end justify-end md:justify-start max-h-90p md:max-h-screen relative">
-        <div id="portal-destination" />
+      <div className="w-full md:h-screen h-full flex flex-col items-end justify-end md:justify-start max-h-90p md:max-h-screen">
         <div className="flex mt-40 md:mt-0 justify-between w-full p-4 rounded-t-2xl md:rounded-none titlebox-blur md:pt-28">
           <div className="flex flex-col items-start justify-start">
             <Breadcrumbs breadcrumbs={breadcrumbs} />

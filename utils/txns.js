@@ -1,42 +1,42 @@
 import { groupBy } from 'lodash'
 
 const CONFIG = {
-  state_channel_open_v1: { color: '#22CAAC', name: 'State Channel Open' },
-  price_oracle_v1: { color: '#292929', name: 'Price Oracle' },
+  state_channel_open_v1: { color: '#E68B00', name: 'State Channel Open' },
+  price_oracle_v1: { color: 'rebeccapurple', name: 'Price Oracle' },
   state_channel_close_v1: {
-    color: '#22CAAC',
+    color: 'teal',
     hotspotContextName: 'Transferred Packets',
     name: 'State Channel Close',
   },
   payment_v1: { color: '#1D91F8', name: 'Payment' },
   payment_v2: { color: '#1D91F8', name: 'Payment' },
   poc_request_v1: {
-    color: '#A667F6',
+    color: '#29D391',
     name: 'PoC Challenge',
-    hotspotContextName: 'Constructed Challenge',
+    hotspotContextName: 'Created Challenge',
     tooltip: 'Proof of Coverage Challenge',
   },
   poc_receipts_v1: {
-    color: '#1D91F8',
+    color: '#38A2FF',
     name: 'PoC Receipt',
     tooltip: 'Proof of Coverage Receipt',
   },
   rewards_v1: {
-    color: '#A667F6',
+    color: '#E68B00',
     name: 'Mining Reward',
     hotspotContextName: 'Received Mining Rewards',
     validatorContextName: 'Received Mining Rewards',
     tooltip: 'Mining Reward (v1)',
   },
   rewards_v2: {
-    color: '#A667F6',
+    color: '#E68B00',
     name: 'Mining Reward',
     hotspotContextName: 'Received Mining Rewards',
     validatorContextName: 'Received Mining Rewards',
     tooltip: 'Mining Reward (v2)',
   },
   rewards_v3: {
-    color: '#A667F6',
+    color: '#E68B00',
     name: 'Mining Reward',
     hotspotContextName: 'Received Mining Rewards',
     validatorContextName: 'Received Mining Rewards',
@@ -49,7 +49,7 @@ const CONFIG = {
     tooltip: 'Consensus Election',
   },
   transfer_hotspot_v1: {
-    color: '#D3293D',
+    color: '#474DFF',
     name: 'Transfer Hotspot',
     tooltip: 'Hotspot Transfer Confirmation Transaction',
   },
@@ -62,29 +62,29 @@ const CONFIG = {
   poc_challengees: {
     color: '#1D91F8',
     name: 'Beacon',
-    hotspotContextName: 'Broadcasted Beacon',
+    hotspotContextName: 'Sent Beacon',
     tooltip: 'PoC challengee',
   },
   assert_location_v1: {
-    color: '#93D30B',
+    color: '#16CEE8',
     name: 'Assert Location',
     hotspotContextName: 'Asserted Location',
     tooltip: 'Assert Location Transaction (v1)',
   },
   assert_location_v2: {
-    color: '#93D30B',
+    color: '#16CEE8',
     name: 'Assert Location',
     hotspotContextName: 'Asserted Location',
     tooltip: 'Assert Location Transaction (v2)',
   },
   add_gateway_v1: {
-    color: '#29D391',
+    color: '#8597BB',
     name: 'Add Hotspot',
     hotspotContextName: 'Added to Blockchain',
     tooltip: 'Add Gateway Transaction',
   },
   poc_witnesses: {
-    color: '#FCC945',
+    color: '#FFC769',
     name: 'Witness',
     hotspotContextName: 'Witnessed Beacon',
     tooltip: 'PoC witness',
@@ -96,7 +96,7 @@ const CONFIG = {
     tooltip: 'PoC witness (Valid)',
   },
   poc_witnesses_invalid: {
-    color: '#FCC945',
+    color: '#617095',
     name: 'Witness',
     hotspotContextName: 'Witnessed Beacon (Invalid)',
     tooltip: 'PoC witness (Invalid)',
@@ -107,115 +107,42 @@ const CONFIG = {
     tooltip: 'Mining Reward for Security Token holders',
   },
   stake_validator_v1: {
-    color: '#7830D3',
+    color: '#a235fa',
     name: 'Stake Validator',
     accountContextName: 'Staked Validator',
     validatorContextName: 'Received Stake',
   },
   unstake_validator_v1: {
-    color: '#FF6666',
+    color: '#a235fa',
     name: 'Unstake Validator',
     accountContextName: 'Unstaked Validator',
     validatorContextName: 'Unstaked',
   },
   transfer_validator_stake_v1: {
-    color: '#A667F6',
+    color: '#a235fa',
     name: 'Transfer Stake',
     accountContextName: 'Stake Transferred',
     validatorContextName: 'Stake Transferred',
   },
   receive_transferred_stake: {
-    color: '#A667F6',
+    color: '#a235fa',
     name: 'Receive Transfer Stake',
     accountContextName: 'Received Transferred Stake',
     validatorContextName: 'Received Transferred Stake',
   },
   send_transferred_stake: {
-    color: '#A667F6',
+    color: '#a235fa',
     name: 'Send Transfer Stake',
     accountContextName: 'Transferred Stake',
     validatorContextName: 'Sent Transferred Stake',
   },
   validator_heartbeat_v1: {
-    color: '#A667F6',
+    color: '#A984FF',
     name: 'Validator Heartbeat',
     validatorContextName: 'Produced Heartbeat',
   },
-  token_burn_v1: { color: '#F49F3B', name: 'Token Burn' },
+  token_burn_v1: { color: '#E86161', name: 'Token Burn' },
   default: { color: '#474DFF' },
-}
-
-export const getTxnIconPath = (txn) => {
-  // TODO: abstract this function into the CONFIG above and make it take into account both roles _and_ types, with iconPath as a new field for each txn type/role defined in the CONFIG
-  const { role, type } = txn
-
-  const ICON_PATH_ROOT = '/images/activity-icons'
-
-  switch (type) {
-    case 'rewards_v1':
-    case 'rewards_v2':
-    case 'rewards_v3': {
-      return `${ICON_PATH_ROOT}/received_rewards.svg`
-    }
-    case 'payment_v1':
-    case 'payment_v2': {
-      if (role === 'payee') {
-        return `${ICON_PATH_ROOT}/payment_received.svg`
-      } else if (role === 'payer') {
-        return `${ICON_PATH_ROOT}/payment_sent.svg`
-      } else {
-        return `${ICON_PATH_ROOT}/payment.svg`
-      }
-    }
-    case 'assert_location_v1':
-    case 'assert_location_v2': {
-      return `${ICON_PATH_ROOT}/assert_location.svg`
-    }
-    case 'add_gateway_v1': {
-      return `${ICON_PATH_ROOT}/add_hotspot.svg`
-    }
-    case 'poc_request_v1': {
-      return `${ICON_PATH_ROOT}/poc_challenger.svg`
-    }
-    case 'poc_receipts_v1': {
-      if (role === 'witness') {
-        return `${ICON_PATH_ROOT}/poc_witness.svg`
-      } else if (role === 'challengee') {
-        return `${ICON_PATH_ROOT}/poc_challengee.svg`
-      } else if (role === 'challenger') {
-        return `${ICON_PATH_ROOT}/poc_challenger.svg`
-      } else {
-        return `${ICON_PATH_ROOT}/poc_receipts.svg`
-      }
-    }
-    case 'token_burn_v1': {
-      return `${ICON_PATH_ROOT}/token_burn.svg`
-    }
-    case 'stake_validator_v1': {
-      return `${ICON_PATH_ROOT}/staked_validator.svg`
-    }
-    case 'unstake_validator_v1': {
-      return `${ICON_PATH_ROOT}/unstake_validator.svg`
-    }
-    case 'transfer_validator_stake_v1': {
-      return `${ICON_PATH_ROOT}/transferred_stake.svg`
-    }
-    case 'validator_heartbeat_v1': {
-      return `${ICON_PATH_ROOT}/validator_heartbeat.svg`
-    }
-    case 'state_channel_open_v1': {
-      return `${ICON_PATH_ROOT}/state_channel_open.svg`
-    }
-    case 'state_channel_close_v1': {
-      return `${ICON_PATH_ROOT}/state_channel_close.svg`
-    }
-    case 'transfer_hotspot_v1': {
-      return `${ICON_PATH_ROOT}/transfer_hotspot.svg`
-    }
-    default: {
-      return null
-    }
-  }
 }
 
 export const getTxnTypeName = (id, context = 'block') => {
@@ -249,20 +176,24 @@ export const formattedTxnHash = (hash) => {
   return `${hash.slice(0, 5)}...${hash.slice(-5)}`
 }
 
-export const getPocReceiptRole = (role) => {
-  if (role === 'challenger') {
+export const getPocReceiptRole = (txn, address) => {
+  if (txn.challenger === address) {
     return 'poc_challengers'
   }
 
-  if (role === 'challengee') {
+  if (txn.path.some((p) => p.challengee === address)) {
     return 'poc_challengees'
   }
 
-  if (role === 'witness') {
+  if (
+    txn.path.some((p) =>
+      p.witnesses.some((w) => w.gateway === address && w.isValid),
+    )
+  ) {
     return 'poc_witnesses_valid'
   }
 
-  return 'poc_receipts_v1'
+  return 'poc_witnesses_invalid'
 }
 
 export const getStakeTransferRole = (txn, address) => {

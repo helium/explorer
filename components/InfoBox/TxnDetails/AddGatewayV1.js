@@ -7,7 +7,7 @@ import Widget from '../../Widgets/Widget'
 import { getMakerName } from '../../Makers/utils'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
-const AddGatewayV1 = ({ txn, inline }) => {
+const AddGatewayV1 = ({ txn }) => {
   const [addedHotspot, setAddedHotspot] = useState()
   const [makerName, setMakerName] = useState()
   const [isLoadingInitial, setIsLoadingInitial] = useState(false)
@@ -28,7 +28,7 @@ const AddGatewayV1 = ({ txn, inline }) => {
     txn.payer === txn.owner || txn.payer === null ? txn.owner : txn.payer
 
   return (
-    <InfoBoxPaneContainer padding={!inline}>
+    <InfoBoxPaneContainer>
       <HotspotWidget
         hotspot={addedHotspot}
         title="Added Hotspot"

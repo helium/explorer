@@ -13,46 +13,24 @@ import { GAScript } from '../hooks/useGA'
 
 import BannerContext from '../components/Common/Banner/BannerContext'
 import ChangelogContext from '../components/Common/Changelog/ChangelogContext'
-import { useState } from 'react'
 import ChangelogOverlay from '../components/Common/Changelog/ChangelogOverlay'
+import { useChangelog } from '../hooks/useChangelog'
 
 JavascriptTimeAgo.addLocale(en)
 const useShowBannerState = createPersistedState('avg-earnings')
-const useChangelogState = createPersistedState('helium-explorer-changelog')
 
 function MyApp({ Component, pageProps }) {
   const [showBanner, setShowBanner] = useShowBannerState(true)
   const hideBanner = () => setShowBanner(false)
 
-  const [changelogState, setChangelogState] = useChangelogState({})
-  const [changelogShown, setChangelogShown] = useState(false)
-
-  const hideChangelog = () => setChangelogShown(false)
-  const showChangelog = () => setChangelogShown(true)
-
-  const initializeChangelogItem = (changelogItemKey) => {
-    const newState = changelogState || {}
-    newState[changelogItemKey] = false
-    try {
-      // needs to be wrapped in a try/catch because of a weird bug with use-persisted-state:
-      // https://github.com/donavon/use-persisted-state/issues/56#issuecomment-892877563
-      setChangelogState(newState)
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
-  const setChangelogItemAsSeen = (changelogItemKey) => {
-    const newState = changelogState || {}
-    newState[changelogItemKey] = true
-    try {
-      // needs to be wrapped in a try/catch because of a weird bug with use-persisted-state:
-      // https://github.com/donavon/use-persisted-state/issues/56#issuecomment-892877563
-      setChangelogState(newState)
-    } catch (e) {
-      console.error(e)
-    }
-  }
+  const {
+    changelogState,
+    changelogShown,
+    showChangelog,
+    hideChangelog,
+    initializeChangelogItem,
+    setChangelogItemAsSeen,
+  } = useChangelog()
 
   return (
     // this #app div is used to increase the specificity of Tailwind's utility classes, making it easier to override styles without resorting to !important

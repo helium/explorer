@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { useContext, useEffect, useState } from 'react'
+import NotificationIcon from '../../Icons/NotificationIcon'
 import { changelogContent } from './changelog-content'
 import ChangelogContext from './ChangelogContext'
 
@@ -7,14 +8,16 @@ const ChangelogButton = ({ className }) => {
   const {
     showChangelog,
     changelogState,
-    setChangelogItemAsSeen,
     initializeChangelogItem,
+    setAllChangelogItemsAsSeen,
   } = useContext(ChangelogContext)
 
-  const [newChangelogItems, setNewChangelogItems] = useState([])
+  const [newChangelogItems, setNewChangelogItems] = useState(false)
 
   useEffect(() => {
     const changelogKeys = Object.keys(changelogContent)
+
+    let unseenItemsExist = false
 
     if (changelogKeys?.length > 0) {
       changelogKeys.forEach((changelogKey) => {
@@ -35,12 +38,11 @@ const ChangelogButton = ({ className }) => {
           changelogState?.hasOwnProperty(changelogKey) &&
           changelogState[changelogKey] === false
         ) {
-          const newItems = []
-          newItems.push(changelogKey)
-          setNewChangelogItems(newItems)
+          unseenItemsExist = true
         }
       })
     }
+    setNewChangelogItems(unseenItemsExist)
   }, [changelogState, initializeChangelogItem])
 
   return (
@@ -52,14 +54,10 @@ const ChangelogButton = ({ className }) => {
       onClick={showChangelog}
     >
       <NotificationIcon hasNewNotifications={newChangelogItems} />
+      {newChangelogItems && (
         <div
           className={'absolute z-50 cursor-pointer -top-1 -right-1'}
-          onClick={() => {
-            newChangelogItems.forEach((changelogItemKey) => {
-              setChangelogItemAsSeen(changelogItemKey)
-              setNewChangelogItems([])
-            })
-          }}
+          onClick={setAllChangelogItemsAsSeen}
         >
           <div className="w-3 h-3">
             <div className="animate-ping absolute top-0.5 right-0 inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />

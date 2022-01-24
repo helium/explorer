@@ -30,6 +30,7 @@ function MyApp({ Component, pageProps }) {
     hideChangelog,
     initializeChangelogItem,
     setChangelogItemAsSeen,
+    setAllChangelogItemsAsSeen,
   } = useChangelog()
 
   return (
@@ -45,6 +46,7 @@ function MyApp({ Component, pageProps }) {
             hideChangelog,
             initializeChangelogItem,
             setChangelogItemAsSeen,
+            setAllChangelogItemsAsSeen,
           }}
         >
           <ChangelogOverlay />

@@ -693,10 +693,6 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
     display: none;
   }
 }
-/* Hide scrollbar for Chrome, Safari and Opera */
-.hotspot-checklist-scrollbar::-webkit-scrollbar {
-  display: none;
-}
 
 /* Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
@@ -825,19 +821,6 @@ tr.ant-table-expanded-row-level-1 > td.ant-table-cell {
   .no-location-set {
     height: 200px;
   }
-  #hotspot-checklist-container {
-    border-radius: 0px;
-  }
-  .hotspot-checklist-padding-container {
-    padding: 0 0;
-  }
-  .hotspot-checklist-progress-bar-container {
-    padding: 0 15px;
-  }
-  #hotspot-checklist-inner-shadow {
-    border-radius: 0 0 0 0;
-  }
-
   .hotspot-name > h1 {
     line-height: 1;
   }

@@ -20,10 +20,16 @@ export const changelogContent = {
   },
   'witnessed': {
     title: 'Witnesses -> Witnessed',
-    description: [{
+    description: [
+      {
       type: 'paragraph', content:
-        "Now updated with new and more relevant information, the witnessed list shows the Hotspots that you've seen beacon (i.e. Hotspots you've witnessed). The bigger this list is and the higher the average transmit scale of these Hotspots, the more HNT you can mine"
-    },],
+        "Now updated with new and more relevant information, the witnessed list shows the Hotspots that you've seen beacon (i.e. Hotspots you've witnessed). "
+    },
+    {
+      type: 'paragraph', content:
+        "The bigger this list is and the higher the average transmit scale of these Hotspots, the more HNT you can mine. Read More"
+    },
+  ],
     active: true,
   },
 }

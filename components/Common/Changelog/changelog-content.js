@@ -24,12 +24,17 @@ export const changelogContent = {
       {
         type: 'paragraph',
         content:
-          "Now updated with new and more relevant information, the witnessed list shows the Hotspots that you've seen beacon (i.e. Hotspots you've witnessed). ",
+          "The new witnessed list shows the Hotspots that you've seen beacon (i.e. Hotspots you've witnessed).",
       },
       {
         type: 'paragraph',
         content:
-          'The bigger this list is and the higher the average transmit scale of these Hotspots, the more HNT you can mine.',
+          "How does the new list differ from the old? The old list showed the Hotspots that saw you and had no impact on your earnings whether there were 0 or 50 Hotspots on the list. ",
+      },
+      {
+        type: 'paragraph',
+        content:
+          'The bigger this new witnessed list is and the higher the average transmit scale of these Hotspots, the more HNT you can mine.',
       },
       {
         type: 'link',

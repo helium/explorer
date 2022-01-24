@@ -16,12 +16,14 @@ export const changelogContent = {
         content: '/images/changelog-images/activity-v2.png',
       },
     ],
+    active: false,
+  },
+  'witnessed': {
+    title: 'Witnesses -> Witnessed',
+    description: [{
+      type: 'paragraph', content:
+        "Now updated with new and more relevant information, the witnessed list shows the Hotspots that you've seen beacon (i.e. Hotspots you've witnessed). The bigger this list is and the higher the average transmit scale of these Hotspots, the more HNT you can mine"
+    },],
     active: true,
   },
-  // 'witnessed': {
-  //   title: 'Witnesses -> Witnessed',
-  //   description:
-  //     '',
-  //   active: false,
-  // },
 }

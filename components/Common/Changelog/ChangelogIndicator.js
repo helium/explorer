@@ -9,30 +9,13 @@ const ChangelogIndicator = ({
   positionClasses,
   sizeClasses,
 }) => {
-  const {
-    showChangelog,
-    changelogState,
-    initializeChangelogItem,
-    setChangelogItemAsSeen,
-  } = useContext(ChangelogContext)
+  const { showChangelog, changelogState, setChangelogItemAsSeen } =
+    useContext(ChangelogContext)
 
   const [domReady, setDomReady] = useState(false)
   useEffect(() => {
     setDomReady(true)
   }, [])
-
-  useEffect(() => {
-    if (
-      // is a valid and active key in changelogContent JSON
-      changelogContent?.hasOwnProperty(changelogItemKey) &&
-      changelogContent[changelogItemKey]?.active &&
-      // and it doesn't exist yet in the state (user hasn't been here yet)
-      !changelogState?.hasOwnProperty(changelogItemKey)
-    ) {
-      initializeChangelogItem(changelogItemKey)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [changelogItemKey])
 
   const openChangelogItem = (changelogItemKey) => {
     // check that this key is a valid one in the changelogContent JSON

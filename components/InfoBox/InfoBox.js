@@ -6,7 +6,14 @@ import Breadcrumbs from './Breadcrumbs'
 import SubtitleSection from './SubtitleSection'
 import ChevronIcon from '../Icons/Chevron'
 
-const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
+const InfoBox = ({
+  title,
+  metaTitle,
+  description,
+  children,
+  breadcrumbs,
+  subtitles,
+}) => {
   const { showInfoBox, toggleInfoBox } = useInfoBox()
 
   const BUTTON_SIZE = 30
@@ -36,6 +43,7 @@ const InfoBox = ({ title, metaTitle, children, breadcrumbs, subtitles }) => {
             <span className="pointer-events-auto text-white text-2xl md:text-3xl font-semibold font-sans tracking-tight">
               {title}
             </span>
+            <span className="">{description}</span>
             <SubtitleSection subtitles={subtitles} />
           </div>
           <div

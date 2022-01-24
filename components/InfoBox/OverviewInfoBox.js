@@ -22,7 +22,32 @@ const OverviewInfoBox = () => {
   const { dataCredits } = useDataCredits()
 
   return (
-    <InfoBox title="Helium Explorer">
+    <InfoBox
+      title={
+        <div className="pt-4 lg:pt-10 lg:px-5">
+          <span className="text-white text-2xl md:text-3xl font-light font-sans tracking-tight">
+            Welcome to{' '}
+            <p className="font-semibold leading-5">Helium Explorer</p>
+          </span>
+        </div>
+      }
+      description={
+        <div className="w-full py-4 lg:px-5">
+          <span className="text-white font-sans font-light text-lg tracking-tight leading-tight">
+            Helium Explorer is a Block Explorer and Analytics Platform for{' '}
+            <a
+              href="https://helium.com"
+              rel="noopener noreferrer"
+              target="_blank"
+              className="text-green-450 underline"
+            >
+              Helium
+            </a>
+            , a decentralized wireless connectivity platform.
+          </span>
+        </div>
+      }
+    >
       <InfoBoxPaneContainer>
         <TrendWidget
           title="Hotspots"

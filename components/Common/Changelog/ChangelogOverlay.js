@@ -64,6 +64,8 @@ const ChangelogOverlay = () => {
                           <div className="py-4">
                             <a
                               href={contentBlock.content}
+                              target="_blank"
+                              rel="noopener noreferrer"
                               className="text-navy-400 font-medium font-sans"
                             >
                               Read more {'->'}

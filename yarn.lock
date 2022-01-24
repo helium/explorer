@@ -1885,10 +1885,10 @@
   dependencies:
     bignumber.js "^9.0.0"
 
-"@helium/http@^3.60.0":
-  version "3.60.0"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.60.0.tgz#1e3c4a3cfa94f995de0a82f33e21f019995c14ab"
-  integrity sha512-gXncYiByjgNoMaY0DjDlOUsXlqMIS6nrJkC4nSzTYDfDGRRDJAjD3NnUV4FthkNXR4+joqK5k948pU8X2iBpvQ==
+"@helium/http@^3.61.0":
+  version "3.61.0"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.61.0.tgz#d3f86905737b3a324641b5c099bb67f3504efdab"
+  integrity sha512-lHjR1OHdXxxNul4tnvhfh1nsD/Sfmc97M2opUdYnW/9IEEd4uxXqK6lnFKYr6nS2r6fL2fKfSCcdm5Bg9q023g==
   dependencies:
     "@helium/crypto" "^3.60.0"
     "@helium/currency" "^3.52.0"
@@ -14782,9 +14782,9 @@ type-fest@^1.2.1:
   integrity sha512-pfkPYCcuV0TJoo/jlsUeWNV8rk7uMU6ocnYNvca1Vu+pyKi8Rl8Zo2scPt9O72gCsXIm+dMxOOWuA3VFDSdzWA==
 
 type-fest@^2.5.2:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.9.0.tgz#7a2d430dd966f52b6bc723da2aaa2c9867530551"
-  integrity sha512-uC0hJKi7eAGXUJ/YKk53RhnKxMwzHWgzf4t92oz8Qez28EBgVTfpDTB59y9hMYLzc/Wl85cD7Tv1hLZZoEJtrg==
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.10.0.tgz#0ee9c3cd411efb3bba434065d32235592d3644cf"
+  integrity sha512-u2yreDMllFI3VCpWt0rKrGs/E2LO0YHBwiiOIj+ilQh9+ALMaa4lNBSdoDvuHN3cbKcYk9L1BXP49x9RT+o/SA==
 
 type-is@~1.6.17, type-is@~1.6.18:
   version "1.6.18"

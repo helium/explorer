@@ -222,7 +222,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
           key="witnessed"
           changelogIndicator={
             <ChangelogIndicator
-              changelogItemKey="witnesses-witnessed"
+              changelogItemKey="witnessed"
               positionClasses="top-[290px] md:top-[250px] left-[225px] md:left-[260px]"
               sizeClasses="w-4 h-4 md:w-4 md:h-4"
             />

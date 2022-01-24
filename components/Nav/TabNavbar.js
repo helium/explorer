@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useEffect, useRef } from 'react'
 import { matchPath } from 'react-router'
 import {
   Switch,
@@ -11,7 +11,6 @@ import classNames from 'classnames'
 import { castArray } from 'lodash'
 import { useScrollIndicators } from '../../hooks/useScrollIndicators'
 import ScrollIndicator from '../../hooks/useScrollIndicators'
-import TutorialPopup from '../Common/TutorialPopup'
 
 const NavItem = ({
   title,
@@ -21,18 +20,9 @@ const NavItem = ({
   active = false,
   changelogIndicator,
   href,
-  tooltipTitle,
-  tooltipBody,
-  tooltipShown,
-  tooltipHandleDismiss,
 }) => {
   const customStyles = classes || activeClasses || activeStyles
   const ref = useRef(null)
-
-  const [domReady, setDomReady] = useState(false)
-  useEffect(() => {
-    setDomReady(true)
-  }, [])
 
   useEffect(() => {
     if (active)

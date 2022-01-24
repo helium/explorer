@@ -4,7 +4,7 @@ import { memo, useState } from 'react'
 import { useAsync } from 'react-async-hook'
 import client from '../../data/client'
 import Skeleton from '../Common/Skeleton'
-import { getPocReceiptRole, getTxnTypeName } from '../../utils/txns'
+import { getPocReceiptRole, getTxnTypeColor, getTxnTypeName } from '../../utils/txns'
 import TimeAgo from '../Common/TimeAgo'
 
 const RecentActivityWidget = ({ context, address }) => {
@@ -14,7 +14,7 @@ const RecentActivityWidget = ({ context, address }) => {
   useAsync(async () => {
     setTransactionsLoading(true)
     setTransactions(
-      await (await client.hotspot(address).activity.list()).take(5),
+      await (await client.hotspot(address).roles.list()).take(5),
     )
     setTransactionsLoading(false)
   }, [address])
@@ -41,9 +41,10 @@ const RecentActivityWidget = ({ context, address }) => {
           ) : (
             transactions.map((t) => (
               <div className="flex items-center justify-between w-full">
+                <div className='w-2 h-4 mr-2 rounded-full' style={{backgroundColor: t.type === 'poc_receipts_v1' ?  getTxnTypeColor(getPocReceiptRole(t.role)) : getTxnTypeColor(t.type)}} />
                 <div className="text-xs md:text-sm text-black tracking-tight w-full break-all">
                   {t.type === 'poc_receipts_v1'
-                    ? getTxnTypeName(getPocReceiptRole(t, address), 'hotspot')
+                    ? getTxnTypeName(getPocReceiptRole(t.role), 'hotspot')
                     : getTxnTypeName(t.type, 'hotspot')}
                 </div>
 

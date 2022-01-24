@@ -18,12 +18,20 @@ export const changelogContent = {
     ],
     active: false,
   },
-  'witnessed': {
+  witnessed: {
     title: 'Witnesses -> Witnessed',
-    description: [{
-      type: 'paragraph', content:
-        "Now updated with new and more relevant information, the witnessed list shows the Hotspots that you've seen beacon (i.e. Hotspots you've witnessed). The bigger this list is and the higher the average transmit scale of these Hotspots, the more HNT you can mine"
-    },],
+    description: [
+      {
+        type: 'paragraph',
+        content:
+          "Now updated with new and more relevant information, the witnessed list shows the Hotspots that you've seen beacon (i.e. Hotspots you've witnessed). The bigger this list is and the higher the average transmit scale of these Hotspots, the more HNT you can mine.",
+      },
+      {
+        type: 'link',
+        content:
+          'https://docs.helium.com/troubleshooting/understanding-witnesses#transmit-scale-and-witnessed-list',
+      },
+    ],
     active: true,
   },
 }

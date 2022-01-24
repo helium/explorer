@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import RewardScaleWidget from '../../Widgets/RewardScaleWidget'
 import StatusWidget from '../../Widgets/StatusWidget'
 import StatWidget from '../../Widgets/StatWidget'
@@ -16,6 +17,8 @@ import WarningWidget from '../../Widgets/WarningWidget'
 import InfoBoxPaneTitleSection from '../Common/InfoBoxPaneTitleSection'
 import ExternalLinkIcon from '../../Icons/ExternalLink'
 // import RecentActivityWidget from '../../Widgets/RecentActivityWidget'
+import useSelectedTxn from '../../../hooks/useSelectedTxn'
+import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
 
 const StatisticsPane = ({ hotspot, isDataOnly }) => {
   const { beaconSums, isLoading: isBeaconSumsLoading } = useHotspotBeaconSums(
@@ -24,7 +27,30 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
     'week',
   )
 
-  const { result: witnessesData } = useAsync(fetchWitnessed, [hotspot.address])
+  const { selectedTxn, clearSelectedTxn } = useSelectedTxn()
+  const { clearSelectedHotspot } = useSelectedHotspot()
+
+  // the two useEffects below are to clear selected transactions when
+  // navigating to or from a hotspot's /activity page, where a transaction
+  // /and/ a hotspot may currently be "selected" (for snapping the map to
+  // e.g. expanded beacon activity or expanded location assert)
+  useEffect(() => {
+    if (selectedTxn) {
+      clearSelectedTxn()
+    }
+    return () => {
+      clearSelectedTxn()
+      clearSelectedHotspot()
+    }
+  }, [selectedTxn, clearSelectedTxn, clearSelectedHotspot])
+
+  useEffect(() => {
+    return () => {
+      clearSelectedTxn()
+    }
+  }, [clearSelectedTxn])
+
+  const { result: witnessesData } = useAsync(fetchWitnesses, [hotspot.address])
   const [showChecklist, toggleShowChecklist] = useToggle()
 
   const errorFetchingWitnessed = hotspot?.errors?.length > 0

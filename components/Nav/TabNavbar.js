@@ -19,6 +19,7 @@ const NavItem = ({
   activeClasses,
   activeStyles,
   active = false,
+  changelogIndicator,
   href,
   tooltipTitle,
   tooltipBody,
@@ -52,35 +53,25 @@ const NavItem = ({
   }
 
   return (
-    <>
-      <Link
-        to={href}
-        // jump to the active element (setting a ref triggers the useEffect above)
-        {...(active ? { ref: ref } : {})}
-        className={classNames(
-          classes,
-          active ? activeClasses : '',
-          'mx-2 py-2 lg:py-3 inline-block font-medium text-sm md:text-base cursor-pointer whitespace-nowrap',
-          {
-            'text-gray-600 hover:text-navy-400': !active && !customStyles,
-            'text-navy-400 border-navy-400 border-b-3 border-solid':
-              active && !customStyles,
-          },
-        )}
-        style={active ? { ...activeStyles, ...styles } : styles}
-      >
-        {title}
-      </Link>
-      {(tooltipTitle || tooltipBody) && tooltipShown && domReady && (
-        <TutorialPopup
-          title={tooltipTitle}
-          body={tooltipBody}
-          tooltipPositioningClasses="left-[50px] md:left-auto md:right-[-115px] top-[78px] md:top-[160px] w-80"
-          arrowPositioningClasses="left-[175px] md:left-auto md:right-[165px] top-[250px] md:top-[243px] lg:top-[250px]"
-          dismissHandler={tooltipHandleDismiss}
-        />
+    <Link
+      to={href}
+      // jump to the active element (setting a ref triggers the useEffect above)
+      {...(active ? { ref: ref } : {})}
+      className={classNames(
+        classes,
+        active ? activeClasses : '',
+        'mx-2 py-2 lg:py-3 inline-block font-medium text-sm md:text-base cursor-pointer whitespace-nowrap relative',
+        {
+          'text-gray-600 hover:text-navy-400': !active && !customStyles,
+          'text-navy-400 border-navy-400 border-b-3 border-solid':
+            active && !customStyles,
+        },
       )}
-    </>
+      style={active ? { ...activeStyles, ...styles } : styles}
+    >
+      {changelogIndicator}
+      {title}
+    </Link>
   )
 }
 
@@ -109,10 +100,7 @@ const TabNavbar = ({ centered = false, className, children }) => {
           activeClasses: c.props.activeClasses,
           activeStyles: c.props.activeStyles,
           hidden: c.props.hidden,
-          tooltipTitle: c.props.tooltipTitle,
-          tooltipBody: c.props.tooltipBody,
-          tooltipShown: c.props.tooltipShown,
-          tooltipHandleDismiss: c.props.tooltipHandleDismiss,
+          changelogIndicator: c.props.changelogIndicator,
         }
 
       return null
@@ -159,10 +147,7 @@ const TabNavbar = ({ centered = false, className, children }) => {
                   activeStyles={item.activeStyles}
                   active={navMatch(item.path)}
                   href={item.path ? `${url}/${item.path}` : url}
-                  tooltipTitle={item.tooltipTitle}
-                  tooltipBody={item.tooltipBody}
-                  tooltipShown={item.tooltipShown}
-                  tooltipHandleDismiss={item.tooltipHandleDismiss}
+                  changelogIndicator={item.changelogIndicator}
                 />
                 {i === length - 1 && (
                   // add a spacer after the last item so the right side of the container has padding

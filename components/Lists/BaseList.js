@@ -4,6 +4,7 @@ import SkeletonList from './SkeletonList'
 import classNames from 'classnames'
 import { Link } from 'react-router-i18n'
 import InfoBoxPaneTitleSection from '../InfoBox/Common/InfoBoxPaneTitleSection'
+import SkeletonActivityList from './ActivityList/SkeletonActivityList'
 
 const BaseList = ({
   items,
@@ -25,6 +26,8 @@ const BaseList = ({
   hasMore,
   itemPadding = true,
   expandableItem = () => false,
+  defaultBaseItem = true,
+  isActivityList = false,
 }) => {
   const [sentryRef] = useInfiniteScroll({
     loading: isLoadingMore,
@@ -73,22 +76,21 @@ const BaseList = ({
         </>
       )
 
+      const defaultClasses = [
+        'bg-white hover:bg-gray-200 focus:bg-gray-200 cursor-pointer transition-all duration-75 relative flex border-solid border-gray-500 border-b',
+        {
+          'px-4 py-2': itemPadding,
+          'border-t-0': i !== 0 && i !== length - 1,
+        },
+      ]
+
       if (linkExtractor && !expandableItem(item)) {
         return (
           <Link
             to={linkExtractor(item)}
             onClick={handleSelectItem(item)}
             key={keyExtractor(item)}
-            className={classNames(
-              'bg-white',
-              'hover:bg-gray-200 focus:bg-gray-200 cursor-pointer transition-all duration-75',
-              'relative flex',
-              'border-solid border-gray-500 border-b',
-              {
-                'px-4 py-2': itemPadding,
-                'border-t-0': i !== 0 && i !== length - 1,
-              },
-            )}
+            className={defaultBaseItem ? classNames(...defaultClasses) : ''}
           >
             {inner}
           </Link>
@@ -98,22 +100,14 @@ const BaseList = ({
       return (
         <div
           key={keyExtractor(item)}
-          className={classNames(
-            'bg-white',
-            'hover:bg-gray-200 focus:bg-gray-200 transition-all duration-75',
-            'relative flex',
-            'border-solid border-gray-500 border-b',
-            {
-              'px-4 py-2': itemPadding,
-              'border-t-0': i !== 0 && i !== length - 1,
-            },
-          )}
+          className={defaultBaseItem ? classNames(...defaultClasses) : ''}
         >
           {inner}
         </div>
       )
     },
     [
+      defaultBaseItem,
       expandableItem,
       handleSelectItem,
       itemPadding,
@@ -127,7 +121,11 @@ const BaseList = ({
   )
 
   if (isLoading) {
-    return <SkeletonList />
+    if (isActivityList) {
+      return <SkeletonActivityList />
+    } else {
+      return <SkeletonList />
+    }
   }
 
   if (items && items.length === 0) {

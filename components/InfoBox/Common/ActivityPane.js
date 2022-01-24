@@ -9,20 +9,25 @@ import { Link } from 'react-router-i18n'
 
 const filtersByContext = {
   hotspot: {
+    'All Activity': [],
     Beacons: ['poc_receipts_v1'],
     Data: ['state_channel_close_v1'],
     Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
-    'All Activity': [],
   },
   account: {
+    'All Activity': [],
     Payments: ['payment_v1', 'payment_v2'],
-    Stakes: ['stake_validator_v1'],
+    Stakes: [
+      'stake_validator_v1',
+      'unstake_validator_v1',
+      'transfer_validator_stake_v1',
+    ],
     'Hotspot Transfers': ['transfer_hotspot_v1'],
     'Token Burns': ['token_burn_v1'],
     Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
-    'All Activity': [],
   },
   validator: {
+    'All Activity': [],
     Heartbeats: ['validator_heartbeat_v1'],
     Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
     Stakes: [
@@ -30,14 +35,13 @@ const filtersByContext = {
       'unstake_validator_v1',
       'transfer_validator_stake_v1',
     ],
-    'All Activity': [],
   },
 }
 
 const defaultFilter = {
-  hotspot: 'Beacons',
-  validator: 'Heartbeats',
-  account: 'Payments',
+  hotspot: 'All Activity',
+  validator: 'All Activity',
+  account: 'All Activity',
 }
 
 const ActivityPane = ({ context, address }) => {

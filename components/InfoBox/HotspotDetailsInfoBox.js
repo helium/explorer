@@ -5,7 +5,7 @@ import InfoBox from './InfoBox'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import StatisticsPane from './HotspotDetails/StatisticsPane'
 import ActivityPane from './Common/ActivityPane'
-import WitnessesPane from './HotspotDetails/WitnessesPane'
+import WitnessedPane from './HotspotDetails/WitnessedPane'
 import NearbyHotspotsPane from './HotspotDetails/NearbyHotspotsPane'
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import AccountAddress from '../AccountAddress'
@@ -198,18 +198,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
             <StatisticsPane hotspot={hotspot} isDataOnly={IS_DATA_ONLY} />
           )}
         </TabPane>
-        <TabPane
-          title="Activity"
-          path="activity"
-          key="activity"
-          changelogIndicator={
-            <ChangelogIndicator
-              changelogItemKey="activity-v2"
-              positionClasses="top-[290px] md:top-[250px] left-[140px] md:left-[160px]"
-              sizeClasses="w-4 h-4 md:w-4 md:h-4"
-            />
-          }
-        >
+        <TabPane title="Activity" path="activity" key="activity">
           {isLoading ? (
             <SkeletonActivityList />
           ) : (
@@ -217,12 +206,19 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
           )}
         </TabPane>
         <TabPane
-          title="Witnesses"
-          path="witnesses"
-          key="witnesses"
+          title="Witnessed"
+          path="witnessed"
+          key="witnessed"
+          changelogIndicator={
+            <ChangelogIndicator
+              changelogItemKey="witnessed"
+              positionClasses="top-[290px] md:top-[250px] left-[225px] md:left-[260px]"
+              sizeClasses="w-4 h-4 md:w-4 md:h-4"
+            />
+          }
           hidden={IS_DATA_ONLY}
         >
-          {isLoading ? <SkeletonList /> : <WitnessesPane hotspot={hotspot} />}
+          {isLoading ? <SkeletonList /> : <WitnessedPane hotspot={hotspot} />}
         </TabPane>
         <TabPane
           title="Nearby"

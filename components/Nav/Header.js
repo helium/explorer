@@ -45,7 +45,7 @@ const Header = ({ fallbackLinks = false }) => {
         className={classNames(
           'fixed w-full z-30 flex items-center justify-between',
           {
-            'pt-14 md:pt-10': showBanner,
+            'pt-8 md:pt-10': showBanner,
             'p-4': !searchFocused,
             'px-2 py-4 md:px-4 md:py-4': searchFocused,
           },

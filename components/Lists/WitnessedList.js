@@ -12,9 +12,9 @@ import { haversineDistance } from '../../utils/location'
 import I18n from '../../copy/I18n'
 import { Tooltip } from 'antd'
 
-const WitnessesList = ({
+const WitnessedList = ({
   hotspot,
-  witnesses,
+  witnessed,
   isLoading = true,
   title,
   description,
@@ -80,7 +80,7 @@ const WitnessesList = ({
 
   return (
     <BaseList
-      items={witnesses}
+      items={witnessed}
       listHeaderTitle={title}
       listHeaderDescription={description}
       listHeaderShowCount={showCount}
@@ -91,9 +91,9 @@ const WitnessesList = ({
       renderTitle={renderTitle}
       renderSubtitle={renderSubtitle}
       renderDetails={renderDetails}
-      blankTitle="No witnesses"
+      blankTitle="Not witnessed"
     />
   )
 }
 
-export default WitnessesList
+export default WitnessedList

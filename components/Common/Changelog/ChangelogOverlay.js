@@ -17,7 +17,8 @@ const CloseButton = ({ className, onClick }) => (
 )
 
 const ChangelogOverlay = () => {
-  const { changelogShown, hideChangelog } = useContext(ChangelogContext)
+  const { changelogShown, hideChangelog, setAllChangelogItemsAsSeen } =
+    useContext(ChangelogContext)
 
   if (!changelogShown) return null
 
@@ -64,6 +65,8 @@ const ChangelogOverlay = () => {
                           <div className="py-4">
                             <a
                               href={contentBlock.content}
+                              target="_blank"
+                              rel="noopener noreferrer"
                               className="text-navy-400 font-medium font-sans"
                             >
                               Read more {'->'}
@@ -84,7 +87,10 @@ const ChangelogOverlay = () => {
           )}
           <CloseButton
             className="absolute top-4 right-4"
-            onClick={() => hideChangelog()}
+            onClick={() => {
+              setAllChangelogItemsAsSeen()
+              hideChangelog()
+            }}
           />
         </div>
       </div>

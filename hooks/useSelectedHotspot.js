@@ -8,10 +8,10 @@ import { haversineDistance } from '../utils/location'
 
 const MAX_WITNESS_DISTANCE_THRESHOLD = 200
 
-async function getWitnesses(hotspotAddress) {
-  const list = await client.hotspot(hotspotAddress).witnesses.list()
-  const witnesses = await list.take(TAKE_MAX)
-  return witnesses.filter((w) => !(w.address === hotspotAddress))
+async function getWitnessed(hotspotAddress) {
+  const list = await client.hotspot(hotspotAddress).witnessed.list()
+  const witnessed = await list.take(TAKE_MAX)
+  return witnessed.filter((w) => !(w.address === hotspotAddress))
 }
 
 const useSelectedHotspot = () => {
@@ -25,10 +25,10 @@ const useSelectedHotspot = () => {
   const selectHotspot = useCallback(
     async (address) => {
       const hotspot = await fetchHotspot(address)
-      let witnesses = []
+      let witnessed = []
       try {
-        const fetchedWitnesses = await getWitnesses(address)
-        witnesses = fetchedWitnesses
+        const fetchedWitnessed = await getWitnessed(address)
+        witnessed = fetchedWitnessed
       } catch (e) {
         console.error(e)
         const newErrors = errors
@@ -36,7 +36,7 @@ const useSelectedHotspot = () => {
         setErrors(newErrors)
       }
 
-      const filteredWitnesses = witnesses
+      const filteredWitnessed = witnessed
         .filter(
           (w) =>
             haversineDistance(hotspot?.lng, hotspot?.lat, w.lng, w.lat) <=
@@ -48,7 +48,7 @@ const useSelectedHotspot = () => {
         type: SET_SELECTED_HOTSPOT,
         payload: {
           ...hotspot,
-          witnesses: filteredWitnesses,
+          witnessed: filteredWitnessed,
           errors,
         },
       })

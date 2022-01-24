@@ -132,7 +132,7 @@ const CoverageMap = () => {
     }
 
     const selectionBounds = findBounds([
-      ...(selectedHotspot.witnesses || []).map(({ lat, lng }) => ({
+      ...(selectedHotspot.witnessed || []).map(({ lat, lng }) => ({
         lat,
         lng,
       })),
@@ -323,7 +323,7 @@ const CoverageMap = () => {
         witnesses={
           selectedHotspot && selectedTxn
             ? selectedTxnParticipants
-            : selectedHotspot?.witnesses || selectedTxnParticipants || []
+            : selectedHotspot?.witnessed || selectedTxnParticipants || []
         }
       />
       {validatorsMatch && (

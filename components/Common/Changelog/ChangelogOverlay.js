@@ -17,7 +17,8 @@ const CloseButton = ({ className, onClick }) => (
 )
 
 const ChangelogOverlay = () => {
-  const { changelogShown, hideChangelog } = useContext(ChangelogContext)
+  const { changelogShown, hideChangelog, setAllChangelogItemsAsSeen } =
+    useContext(ChangelogContext)
 
   if (!changelogShown) return null
 
@@ -86,7 +87,10 @@ const ChangelogOverlay = () => {
           )}
           <CloseButton
             className="absolute top-4 right-4"
-            onClick={() => hideChangelog()}
+            onClick={() => {
+              setAllChangelogItemsAsSeen()
+              hideChangelog()
+            }}
           />
         </div>
       </div>

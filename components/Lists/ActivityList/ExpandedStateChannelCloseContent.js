@@ -5,11 +5,16 @@ const ExpandedStateChannelCloseContent = ({ txn }) => {
       {txn.stateChannel.summaries.map((s, i) => (
         <span
           key={i}
-          className="mr-1 bg-gray-300 w-full px-2 py-1 flex rounded-md justify-between items-center"
+          className="mr-1 w-full px-2 py-1 flex rounded-md justify-between items-center"
         >
-          <div className="flex items-start justify-start flex-col">
-            <span className="text-black font-sans text-sm">{s.numDcs} DC</span>
-            <span className="text-black font-sans text-sm">
+          <div className="flex items-start justify-start flex-row w-full">
+            <span className="text-black font-sans text-sm flex flex-row items-center justify-start w-full space-x-2">
+              <img src="/images/dc.svg" alt="" />
+              <span className="text-sm text-black font-sans font-light">
+                {s.numDcs} DC
+              </span>
+            </span>
+            <span className="text-black font-sans text-sm whitespace-nowrap">
               {s.numPackets} packets
             </span>
           </div>

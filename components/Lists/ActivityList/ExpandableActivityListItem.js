@@ -15,6 +15,7 @@ import TxnDetailsSwitch from '../../InfoBox/TxnDetails/TxnDetailsSwitch'
 // import ExpandedPaymentContent from './ExpandedPaymentContent'
 import ExpandedRewardContent from './ExpandedRewardContent'
 import ExpandedStateChannelCloseContent from './ExpandedStateChannelCloseContent'
+import ActivityItemPrefetchedSummary from './ActivityItemPrefetchedSummary'
 
 const ExpandedContent = ({ txn, role, address }) => {
   if (!txn) {
@@ -64,7 +65,6 @@ const ExpandableListItem = ({
   context,
   txn,
   title,
-  subtitle,
   linkTo,
   highlightColor,
 }) => {
@@ -86,6 +86,23 @@ const ExpandableListItem = ({
     )
     setTxnDetails(details)
   }
+
+  const shouldPrefetchDetails = (type) => {
+    if (
+      type.startsWith('rewards') ||
+      type.startsWith('poc_receipts') ||
+      type.startsWith('payment')
+    ) {
+      return true
+    }
+    return false
+  }
+
+  useEffect(() => {
+    if (shouldPrefetchDetails(txn.type)) {
+      fetchTxn(txn, address)
+    }
+  }, [address, txn])
 
   const handleItemClick = useCallback(() => {
     if (expanded) {
@@ -119,7 +136,7 @@ const ExpandableListItem = ({
     <>
       <div
         className={classNames(
-          'bg-white hover:bg-bluegray-50 focus:bg-bluegray-50 cursor-pointer transition-all duration-75 relative flex border-solid border-bluegray-300 border-t-0',
+          'bg-white hover:bg-bluegray-50 focus:bg-bluegray-50 cursor-pointer transition-all duration-75 relative flex border-solid border-bluegray-300 border-t-0 h-[60px]',
         )}
         onClick={handleItemClick}
       >
@@ -127,12 +144,19 @@ const ExpandableListItem = ({
           <div className="w-full flex px-4 py-2 space-x-2 items-center">
             <ActivityIcon txn={txn} highlightColor={highlightColor} />
             <div className="w-full flex flex-row">
-              <div className="w-full flex justify-between">
+              <div className="w-full flex flex-col justify-between">
                 <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans">
                   {title}
                 </div>
-                <ActivityItemTimestamp txn={txn} expanded={expanded} />
+                {txnDetails && !expanded && (
+                  <ActivityItemPrefetchedSummary
+                    txn={txnDetails}
+                    address={address}
+                    role={txn.role}
+                  />
+                )}
               </div>
+              <ActivityItemTimestamp txn={txn} expanded={expanded} />
               <div className={'flex items-center justify-center'}>
                 <ChevronThin
                   className={classNames(

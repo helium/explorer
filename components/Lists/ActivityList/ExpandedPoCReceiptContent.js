@@ -1,4 +1,8 @@
-import { getPocReceiptRole, getTxnTypeColor } from '../../../utils/txns'
+import {
+  getPocReceiptRole,
+  getPocReceiptRoleFromFullTxn,
+  getTxnTypeColor,
+} from '../../../utils/txns'
 import animalHash from 'angry-purple-tiger'
 import classNames from 'classnames'
 import { h3ToGeo } from 'h3-js'
@@ -91,7 +95,7 @@ const WitnessesDetails = ({ txn, role, address, isWitness }) => {
       {/* if this hotspot is a witness and is invalid, display the reason why */}
       {role === 'poc_witnesses_invalid' && (
         <span className="text-xs font-sans font-semibold text-red-500 mt-1 ml-6">
-          {activeWitness?.invalidReason}
+          invalid: {activeWitness?.invalidReason}
         </span>
       )}
       {/* if this hotspot is in the witnesses list for this PoC Receipt... */}
@@ -114,7 +118,8 @@ const WitnessesDetails = ({ txn, role, address, isWitness }) => {
 }
 
 const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
-  const role = getPocReceiptRole(initialRole)
+  const role = getPocReceiptRoleFromFullTxn(txn, address)
+
   const isWitness =
     role === 'poc_witnesses_valid' || role === 'poc_witnesses_invalid'
 
@@ -158,7 +163,7 @@ const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
         }
         activeParticipantStyles={{
           backgroundColor: getTxnTypeColor(role),
-          color: 'black',
+          color: role === 'poc_witnesses_invalid' ? 'white' : 'black',
         }}
         inactiveParticipantStyles={{
           color: 'black',

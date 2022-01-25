@@ -24,6 +24,7 @@ const CONFIG = {
   rewards_v1: {
     color: '#A667F6',
     name: 'Mining Reward',
+    accountContextName: 'Received Mining Rewards',
     hotspotContextName: 'Received Mining Rewards',
     validatorContextName: 'Received Mining Rewards',
     tooltip: 'Mining Reward (v1)',
@@ -31,6 +32,7 @@ const CONFIG = {
   rewards_v2: {
     color: '#A667F6',
     name: 'Mining Reward',
+    accountContextName: 'Received Mining Rewards',
     hotspotContextName: 'Received Mining Rewards',
     validatorContextName: 'Received Mining Rewards',
     tooltip: 'Mining Reward (v2)',
@@ -38,6 +40,7 @@ const CONFIG = {
   rewards_v3: {
     color: '#A667F6',
     name: 'Mining Reward',
+    accountContextName: 'Received Mining Rewards',
     hotspotContextName: 'Received Mining Rewards',
     validatorContextName: 'Received Mining Rewards',
     tooltip: 'Mining Reward (v3)',
@@ -96,7 +99,7 @@ const CONFIG = {
     tooltip: 'PoC witness (Valid)',
   },
   poc_witnesses_invalid: {
-    color: '#FCC945',
+    color: '#617095',
     name: 'Witness',
     hotspotContextName: 'Witnessed Beacon (Invalid)',
     tooltip: 'PoC witness (Invalid)',
@@ -262,7 +265,33 @@ export const getPocReceiptRole = (role) => {
     return 'poc_witnesses_valid'
   }
 
+  // TODO: blocked by: https://github.com/helium/blockchain-http/issues/376
+  // if (role === 'witness_invalid') {
+  //   return 'poc_witnesses_invalid'
+  // }
+
   return 'poc_receipts_v1'
+}
+
+// temporary workaround for above TODO comment
+export const getPocReceiptRoleFromFullTxn = (txn, address) => {
+  if (txn.challenger === address) {
+    return 'poc_challengers'
+  }
+
+  if (txn.path.some((p) => p.challengee === address)) {
+    return 'poc_challengees'
+  }
+
+  if (
+    txn.path.some((p) =>
+      p.witnesses.some((w) => w.gateway === address && w.isValid),
+    )
+  ) {
+    return 'poc_witnesses_valid'
+  }
+
+  return 'poc_witnesses_invalid'
 }
 
 export const getStakeTransferRole = (txn, address) => {

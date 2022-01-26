@@ -7,15 +7,18 @@ import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
 import { useCallback, useEffect, useState } from 'react'
 import ActivityIcon from './ActivityIcon'
 import ActivityItemTimestamp from './ActivityItemTimestamp'
-import ExpandedPoCReceiptContent from './ExpandedPoCReceiptContent'
 import Skeleton from '../../Common/Skeleton'
 import { fetchTxnDetails } from '../../../data/txns'
 import ChevronThin from '../../Icons/ChevronThin'
 import TxnDetailsSwitch from '../../InfoBox/TxnDetails/TxnDetailsSwitch'
-// import ExpandedPaymentContent from './ExpandedPaymentContent'
-import ExpandedRewardContent from './ExpandedRewardContent'
-import ExpandedStateChannelCloseContent from './ExpandedStateChannelCloseContent'
 import ActivityItemPrefetchedSummary from './ActivityItemPrefetchedSummary'
+
+import {
+  ExpandedPoCReceiptContent,
+  // ExpandedPaymentContent,
+  ExpandedRewardContent,
+  ExpandedStateChannelCloseContent,
+} from './InlineExpandedContent'
 
 const ExpandedContent = ({ txn, role, address }) => {
   if (!txn) {
@@ -121,7 +124,9 @@ const ExpandableListItem = ({
       if (!txn.type.startsWith('rewards')) {
         selectTxn(txn.hash)
       }
-      fetchTxn(txn, address)
+      if (!isPrefetched) {
+        fetchTxn(txn, address)
+      }
     }
     toggleExpanded()
   }, [
@@ -129,6 +134,7 @@ const ExpandableListItem = ({
     clearSelectedTxn,
     context,
     expanded,
+    isPrefetched,
     selectHotspot,
     selectTxn,
     toggleExpanded,

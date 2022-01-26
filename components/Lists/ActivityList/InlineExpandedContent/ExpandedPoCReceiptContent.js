@@ -2,11 +2,14 @@ import {
   // getPocReceiptRole,
   getPocReceiptRoleFromFullTxn,
   getTxnTypeColor,
-} from '../../../utils/txns'
+} from '../../../../utils/txns'
 import animalHash from 'angry-purple-tiger'
 import classNames from 'classnames'
 import { h3ToGeo } from 'h3-js'
-import { calculateDistance, formatHexDistance } from '../../../utils/distance'
+import {
+  calculateDistance,
+  formatHexDistance,
+} from '../../../../utils/distance'
 
 const RoleParticipant = ({
   className,

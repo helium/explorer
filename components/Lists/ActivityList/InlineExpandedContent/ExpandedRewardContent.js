@@ -1,5 +1,5 @@
 import animalHash from 'angry-purple-tiger'
-import Pill from '../../Common/Pill'
+import Pill from '../../../Common/Pill'
 
 const rewardTypeText = {
   poc_witnesses: 'Witness',

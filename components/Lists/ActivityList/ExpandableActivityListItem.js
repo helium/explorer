@@ -107,6 +107,10 @@ const ExpandableListItem = ({
       setIsPrefetched(true)
       fetchTxn(txn, address)
     }
+    return () => {
+      setIsPrefetched(false)
+      setTxnDetails(null)
+    }
   }, [address, txn])
 
   const handleItemClick = useCallback(() => {

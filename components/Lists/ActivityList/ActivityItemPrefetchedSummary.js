@@ -3,6 +3,9 @@ import FlagLocation from '../../Common/FlagLocation'
 import AccountIcon from '../../AccountIcon'
 import AccountAddress from '../../AccountAddress'
 import { memo } from 'react'
+import { getPocReceiptRoleFromFullTxn } from '../../../utils/txns'
+import { h3ToGeo } from 'h3-js'
+import { calculateDistance, formatHexDistance } from '../../../utils/distance'
 
 const SummaryContent = ({ txn, address, role }) => {
   if (txn.type === 'payment_v1') {
@@ -85,7 +88,61 @@ const SummaryContent = ({ txn, address, role }) => {
       )
     }
   } else if (txn.type.startsWith('poc_receipts')) {
-    if (role === 'witness' || role === 'challengee') {
+    if (role === 'witness') {
+      const witnessRole =
+        // TODO: separate this logic by role === 'witness' vs role === 'witness_invalid'
+        // instead once "witness_invalid" is added to the list of possible roles
+        getPocReceiptRoleFromFullTxn(txn, address)
+
+      const activeWitness = txn.path[0].witnesses.find(
+        (w) => w.gateway === address,
+      )
+      if (witnessRole === 'poc_witnesses_invalid') {
+        return (
+          <span className="text-xs font-sans font-semibold text-red-500">
+            invalid: {activeWitness?.invalidReason}
+          </span>
+        )
+      } else if (witnessRole === 'poc_witnesses_valid') {
+        const { challengeeLocationHex } = txn.path[0]
+        const [challengeeLat, challengeeLng] = h3ToGeo(challengeeLocationHex)
+        const [witnessLat, witnessLng] = h3ToGeo(activeWitness.locationHex)
+
+        return (
+          <div className="flex flex-row items-center justify-start w-full">
+            <p className="font-extralight text-xs whitespace-nowrap text-gray-700 tracking-tighter">
+              <span className="text-gray-800 font-normal">
+                {challengeeLng &&
+                  formatHexDistance(
+                    calculateDistance(
+                      [challengeeLng, challengeeLat],
+                      [witnessLng, witnessLat],
+                    ),
+                  )}
+              </span>
+              <span className="inline-flex mx-1 md:mx-1.5"> | </span>
+              <span className="text-gray-800 font-normal">
+                {activeWitness.signal &&
+                  `${activeWitness.signal?.toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })}
+                dBm`}{' '}
+                RSSI
+              </span>
+              <span className="inline-flex mx-1 md:mx-1.5"> | </span>
+              <span className="text-gray-800 font-normal">
+                {activeWitness.snr &&
+                  `${activeWitness.snr?.toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })}
+            dB`}{' '}
+                SNR
+              </span>
+            </p>
+          </div>
+        )
+      }
+    } else if (role === 'challengee') {
       return (
         <div className="flex flex-row items-center justify-start space-x-2">
           <div className="flex items-center justify-center">

@@ -68,25 +68,6 @@ const ExpandableListItem = ({
   linkTo,
   highlightColor,
 }) => {
-  const [expanded, toggleExpanded] = useToggle()
-
-  const { selectTxn, clearSelectedTxn } = useSelectedTxn()
-  const { selectHotspot, clearSelectedHotspot } = useSelectedHotspot()
-
-  const [txnDetails, setTxnDetails] = useState()
-
-  const fetchTxn = async (txn, address) => {
-    const details = await fetchTxnDetails(
-      txn.hash,
-      // if txn is a reward or state channel close, pass actor param to
-      // get summary with context instead of entire transaction
-      txn?.type.startsWith('rewards') || txn?.type === 'state_channel_close_v1'
-        ? { actor: address }
-        : {},
-    )
-    setTxnDetails(details)
-  }
-
   const shouldPrefetchDetails = (type) => {
     if (
       type.startsWith('rewards') ||
@@ -98,8 +79,32 @@ const ExpandableListItem = ({
     return false
   }
 
+  const [expanded, toggleExpanded] = useToggle()
+
+  const { selectTxn, clearSelectedTxn } = useSelectedTxn()
+  const { selectHotspot, clearSelectedHotspot } = useSelectedHotspot()
+
+  const [txnDetails, setTxnDetails] = useState()
+  const [detailsLoading, setDetailsLoading] = useState(false)
+  const [isPrefetched, setIsPrefetched] = useState(false)
+
+  const fetchTxn = async (txn, address) => {
+    setDetailsLoading(true)
+    const details = await fetchTxnDetails(
+      txn.hash,
+      // if txn is a reward or state channel close, pass actor param to
+      // get summary with context instead of entire transaction
+      txn?.type.startsWith('rewards') || txn?.type === 'state_channel_close_v1'
+        ? { actor: address }
+        : {},
+    )
+    setTxnDetails(details)
+    setDetailsLoading(false)
+  }
+
   useEffect(() => {
     if (shouldPrefetchDetails(txn.type)) {
+      setIsPrefetched(true)
       fetchTxn(txn, address)
     }
   }, [address, txn])
@@ -148,9 +153,10 @@ const ExpandableListItem = ({
                 <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans">
                   {title}
                 </div>
-                {txnDetails && !expanded && (
+                {isPrefetched && !expanded && (
                   <ActivityItemPrefetchedSummary
                     txn={txnDetails}
+                    detailsLoading={detailsLoading}
                     address={address}
                     role={txn.role}
                   />

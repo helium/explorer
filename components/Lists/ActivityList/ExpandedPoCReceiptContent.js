@@ -1,5 +1,5 @@
 import {
-  getPocReceiptRole,
+  // getPocReceiptRole,
   getPocReceiptRoleFromFullTxn,
   getTxnTypeColor,
 } from '../../../utils/txns'
@@ -118,7 +118,11 @@ const WitnessesDetails = ({ txn, role, address, isWitness }) => {
 }
 
 const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
-  const role = getPocReceiptRoleFromFullTxn(txn, address)
+  const role =
+    // TODO: change to:
+    // getPocReceiptRole(initialRole)
+    // once "witness_invalid" is added to the list of possible roles
+    getPocReceiptRoleFromFullTxn(txn, address)
 
   const isWitness =
     role === 'poc_witnesses_valid' || role === 'poc_witnesses_invalid'

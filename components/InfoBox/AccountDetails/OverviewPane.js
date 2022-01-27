@@ -37,7 +37,7 @@ const OverviewPane = () => {
 
 const maybeShowNone = (value) => {
   if (value === 0) return <NoneValue />
-  return value
+  return value?.toLocaleString()
 }
 
 const NoneValue = () => {

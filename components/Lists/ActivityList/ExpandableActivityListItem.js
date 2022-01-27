@@ -19,6 +19,7 @@ import {
   ExpandedRewardContent,
   ExpandedStateChannelCloseContent,
 } from './InlineExpandedContent'
+import { shouldPrefetchDetails } from './PrefetchedSummaries/utils'
 
 const ExpandedContent = ({ txn, role, address }) => {
   if (!txn) {
@@ -71,17 +72,6 @@ const ExpandableListItem = ({
   linkTo,
   highlightColor,
 }) => {
-  const shouldPrefetchDetails = (type) => {
-    if (
-      type.startsWith('rewards') ||
-      type.startsWith('poc_receipts') ||
-      type.startsWith('payment')
-    ) {
-      return true
-    }
-    return false
-  }
-
   const [expanded, toggleExpanded] = useToggle()
 
   const { selectTxn, clearSelectedTxn } = useSelectedTxn()

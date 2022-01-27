@@ -4,6 +4,7 @@ import {
   PaymentV1Summary,
   PaymentV2Summary,
   PoCReceiptSummary,
+  StateChannelCloseSummary,
   RewardSummary,
 } from './PrefetchedSummaries'
 
@@ -22,6 +23,9 @@ const getSummaryComponent = (txn) => {
     case 'rewards_v2':
     case 'rewards_v3': {
       return RewardSummary
+    }
+    case 'state_channel_close_v1': {
+      return StateChannelCloseSummary
     }
 
     // we can also return other types that won't be prefetched, but will show up as a

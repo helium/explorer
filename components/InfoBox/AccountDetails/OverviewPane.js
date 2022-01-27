@@ -1,8 +1,5 @@
 import { useParams } from 'react-router'
 import { useAccount } from '../../../data/accounts'
-import { TAKE_MAX } from '../../../data/client'
-import { useHotspots } from '../../../data/hotspots'
-import { useAccountValidators } from '../../../data/validators'
 import QrWidget from '../../Widgets/QrWidget'
 import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
 import Widget from '../../Widgets/Widget'
@@ -12,13 +9,6 @@ import AccountBalanceWidget from '../../Widgets/AccountBalanceWidget'
 const OverviewPane = () => {
   const { address } = useParams()
   const { account } = useAccount(address)
-  const { hotspots, isLoadingInitial: loadingHotspots } = useHotspots(
-    'account',
-    address,
-    TAKE_MAX,
-  )
-  const { validators, isLoading: isLoadingValidators } =
-    useAccountValidators(address)
 
   return (
     <InfoBoxPaneContainer>
@@ -31,14 +21,14 @@ const OverviewPane = () => {
       />
       <Widget
         title="Hotspots"
-        isLoading={loadingHotspots}
-        value={maybeShowNone(hotspots.length)}
+        isLoading={!account}
+        value={maybeShowNone(account?.hotspotCount)}
         linkTo={`/accounts/${address}/hotspots`}
       />
       <Widget
         title="Validators"
-        isLoading={isLoadingValidators}
-        value={maybeShowNone(validators?.length)}
+        isLoading={!account}
+        value={maybeShowNone(account?.validatorCount)}
         linkTo={`/accounts/${address}/validators`}
       />
     </InfoBoxPaneContainer>
@@ -46,7 +36,7 @@ const OverviewPane = () => {
 }
 
 const maybeShowNone = (value) => {
-  if (value === '0') return <NoneValue />
+  if (value === 0) return <NoneValue />
   return value
 }
 

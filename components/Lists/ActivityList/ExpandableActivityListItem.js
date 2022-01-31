@@ -21,47 +21,77 @@ import {
 } from './InlineExpandedContent'
 import { shouldPrefetchDetails } from './PrefetchedSummaries/utils'
 
-const ExpandedContent = ({ txn, role, address }) => {
+const getExpandedComponent = (txn) => {
+  switch (txn.type) {
+    case 'rewards_v1':
+    case 'rewards_v2':
+    case 'rewards_v3': {
+      return ExpandedRewardContent
+    }
+    // TODO: add expanded payment content
+    case 'state_channel_close_v1': {
+      return ExpandedStateChannelCloseContent
+    }
+    case 'poc_receipts_v1': {
+      return ExpandedPoCReceiptContent
+    }
+    // TODO: add other types here
+    default:
+      return null
+  }
+}
+
+const ExpandedContent = ({ txn, role, address, linkTo, linkClickHandler }) => {
   if (!txn) {
-    // TODO: add better skeleton, maybe specific to each type of txn
     return (
-      <div className="space-y-2">
-        <Skeleton />
-        <Skeleton />
+      <div className="px-6">
+        <div className="bg-white w-full rounded-lg px-2 py-2">
+          <div className="space-y-2">
+            <Skeleton />
+            <Skeleton />
+          </div>
+        </div>
       </div>
     )
   }
 
-  // TODO: flesh out payment summary
-  // if (txn.type.startsWith('payment')) {
-  //   return <ExpandedPaymentContent txn={txn} role={role} address={address} />
-  // }
+  const ExpandedComponent = getExpandedComponent(txn)
 
-  if (
-    txn.type === 'rewards_v1' ||
-    txn.type === 'rewards_v2' ||
-    txn.type === 'rewards_v3'
-  ) {
-    return <ExpandedRewardContent txn={txn} role={role} />
-  }
-
-  if (txn.type === 'state_channel_close_v1') {
-    return (
-      <ExpandedStateChannelCloseContent
-        txn={txn}
-        role={role}
-        address={address}
-      />
-    )
-  }
-
-  if (txn.type === 'poc_receipts_v1') {
-    return <ExpandedPoCReceiptContent txn={txn} role={role} address={address} />
-  }
-
-  // TODO: add inline summaries of all other common txn types
-
-  return <TxnDetailsSwitch txn={txn} isLoading={!txn} inline />
+  return (
+    <div className="px-6">
+      <div
+        className={classNames('bg-white w-full rounded-t-lg px-2 py-2', {
+          'rounded-b-lg': txn?.type.startsWith('rewards'),
+        })}
+      >
+        {ExpandedComponent ? (
+          <ExpandedComponent txn={txn} role={role} address={address} />
+        ) : (
+          // if there isn't a specific expanded view, show the full details inline
+          <TxnDetailsSwitch txn={txn} isLoading={!txn} inline />
+        )}
+      </div>
+      {txn && !txn?.type.startsWith('rewards') && (
+        <Link
+          to={linkTo}
+          // clear selected hotspot when navigating to selected transaction, this was causing a Mapbox error on mobile
+          onClick={linkClickHandler}
+          className={classNames(
+            'w-full bg-white hover:bg-gray-350 transition-all duration-200 cursor-pointer rounded-b-lg mt-px flex items-center justify-center',
+          )}
+        >
+          <p className="text-gray-700 font-sans font-medium text-sm p-2 m-0">
+            View Transaction Details
+          </p>
+          <ChevronIcon
+            className={
+              'h-auto text-gray-700 transition-all duration-200 w-4 transform rotate-90'
+            }
+          />
+        </Link>
+      )}
+    </div>
+  )
 }
 
 const ExpandableListItem = ({
@@ -183,38 +213,13 @@ const ExpandableListItem = ({
         )}
       >
         {expanded && (
-          <div className="px-6">
-            <div
-              className={classNames('bg-white w-full rounded-t-lg px-2 py-2', {
-                'rounded-b-lg': txnDetails?.type.startsWith('rewards'),
-              })}
-            >
-              <ExpandedContent
-                txn={txnDetails}
-                role={txn.role}
-                address={address}
-              />
-            </div>
-            {txnDetails && !txnDetails?.type.startsWith('rewards') && (
-              <Link
-                to={linkTo}
-                // clear selected hotspot when navigating to selected transaction, this was causing a Mapbox error on mobile
-                onClick={clearSelectedHotspot}
-                className={classNames(
-                  'w-full bg-white hover:bg-gray-350 transition-all duration-200 cursor-pointer rounded-b-lg mt-px flex items-center justify-center',
-                )}
-              >
-                <p className="text-gray-700 font-sans font-medium text-sm p-2 m-0">
-                  View Transaction Details
-                </p>
-                <ChevronIcon
-                  className={
-                    'h-auto text-gray-700 transition-all duration-200 w-4 transform rotate-90'
-                  }
-                />
-              </Link>
-            )}
-          </div>
+          <ExpandedContent
+            txn={txnDetails}
+            role={txn.role}
+            address={address}
+            linkClickHandler={clearSelectedHotspot}
+            linkTo={linkTo}
+          />
         )}
       </div>
       <div className="w-full border-solid border-b border-bluegray-300" />

@@ -20,6 +20,7 @@ import {
   ExpandedStateChannelCloseContent,
 } from './InlineExpandedContent'
 import { shouldPrefetchDetails } from './PrefetchedSummaries/utils'
+import { isDefaultExpandedStyle } from './InlineExpandedContent/utils'
 
 const getExpandedComponent = (txn) => {
   switch (txn.type) {
@@ -57,10 +58,13 @@ const ExpandedContent = ({ txn, role, address, linkTo, linkClickHandler }) => {
 
   const ExpandedComponent = getExpandedComponent(txn)
 
+  const defaultExpandedStyle = isDefaultExpandedStyle(txn)
+
   return (
     <div className="px-6">
       <div
-        className={classNames('bg-white w-full rounded-t-lg px-2 py-2', {
+        className={classNames({
+          'bg-white w-full rounded-t-lg px-2 py-2': defaultExpandedStyle,
           'rounded-b-lg': txn?.type.startsWith('rewards'),
         })}
       >

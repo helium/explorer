@@ -6,6 +6,7 @@ import {
   PoCReceiptSummary,
   StateChannelCloseSummary,
   RewardSummary,
+  HeartbeatSummary,
 } from './PrefetchedSummaries'
 
 const getSummaryComponent = (txn) => {
@@ -26,6 +27,9 @@ const getSummaryComponent = (txn) => {
     }
     case 'state_channel_close_v1': {
       return StateChannelCloseSummary
+    }
+    case 'validator_heartbeat_v1': {
+      return HeartbeatSummary
     }
 
     // we can also return other types that won't be prefetched, but will show up as a

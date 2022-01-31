@@ -2,16 +2,23 @@ import { getColor, getName, getTooltip } from '../components/Txns/TxnTag'
 import client from './client'
 
 export const fetchTxnDetails = async (txnHash) => {
-  const txn = await client.transactions.get(txnHash)
+  let txn = {}
 
-  txn.name = getName(txn.type)
-  txn.color = getColor(txn.type)
-  txn.tooltip = getTooltip(txn.type)
+  try {
+    txn = await client.transactions.get(txnHash)
 
-  if (txn.location) {
-    const geocode = await client.locations.get(txn.location)
-    txn.geocode = geocode
+    txn.name = getName(txn.type)
+    txn.color = getColor(txn.type)
+    txn.tooltip = getTooltip(txn.type)
+
+    if (txn.location) {
+      const geocode = await client.locations.get(txn.location)
+      txn.geocode = geocode
+    }
+  } catch (err) {
+    console.error(err)
   }
+
   return txn
 }
 

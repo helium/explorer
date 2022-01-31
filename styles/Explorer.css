@@ -1,5 +1,16 @@
 @import '~antd/dist/antd.css';
 
+::-moz-selection {
+  /* Code for Firefox */
+  color: black;
+  background: #29d391;
+}
+
+::selection {
+  color: black;
+  background: #29d391;
+}
+
 body {
   background-color: #11192e;
 }

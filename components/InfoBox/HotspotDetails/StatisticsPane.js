@@ -44,7 +44,7 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
     }
   }, [clearSelectedTxn])
 
-  const errorFetchingWitnesses = hotspot?.errors?.length > 0
+  const errorFetchingWitnessed = hotspot?.errors?.length > 0
 
   return (
     <>
@@ -111,14 +111,14 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
               changeType="percent"
             />
             <Widget
-              title="Total Witnesses"
-              linkTo={`/hotspots/${hotspot?.address}/witnesses`}
+              title="Total Witnessed"
+              linkTo={`/hotspots/${hotspot?.address}/witnessed`}
               value={
-                errorFetchingWitnesses
+                errorFetchingWitnessed
                   ? 'Error fetching'
-                  : hotspot?.witnesses?.length
+                  : hotspot?.witnessed?.length
               }
-              valueIsText={errorFetchingWitnesses}
+              valueIsText={errorFetchingWitnessed}
               subtitle={
                 <span className="text-gray-550 text-sm font-sans">
                   Within past 5 days

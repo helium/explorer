@@ -17,7 +17,8 @@ const CloseButton = ({ className, onClick }) => (
 )
 
 const ChangelogOverlay = () => {
-  const { changelogShown, hideChangelog } = useContext(ChangelogContext)
+  const { changelogShown, hideChangelog, setAllChangelogItemsAsSeen } =
+    useContext(ChangelogContext)
 
   if (!changelogShown) return null
 
@@ -32,40 +33,64 @@ const ChangelogOverlay = () => {
           <p className="font-semibold text-2xl md:text-4xl pb-5 font-sans tracking-tighter">
             What's New?
           </p>
-          {Object.keys(changelogContent).map((changelogItemKey) => {
-            const itemDetails = changelogContent[changelogItemKey]
-            return (
-              <div className="">
-                <p className="text-navy-400 tracking-tight font-medium text-xl pb-2">
-                  {itemDetails.title}
-                </p>
-                <div className="space-y-2">
-                  {itemDetails.description.map((contentBlock) => {
-                    if (contentBlock.type === 'paragraph') {
-                      return (
-                        <p className="text-gray-700 text-md font-light tracking-tight leading-tight">
-                          {contentBlock.content}
-                        </p>
-                      )
-                    }
-                    if (contentBlock.type === 'image') {
-                      return (
-                        <img
-                          src={contentBlock.content}
-                          alt=""
-                          className="pt-2"
-                        />
-                      )
-                    }
-                    return <div>{contentBlock.content}</div>
-                  })}
+          {Object.keys(changelogContent).map(
+            (changelogItemKey, index, { length }) => {
+              const itemDetails = changelogContent[changelogItemKey]
+              if (!itemDetails.active) return null
+              return (
+                <div className="">
+                  <p className="text-navy-400 tracking-tight font-medium text-xl pb-2 font-sans">
+                    {itemDetails.title}
+                  </p>
+                  <div className="space-y-2">
+                    {itemDetails.description.map((contentBlock) => {
+                      if (contentBlock.type === 'paragraph') {
+                        return (
+                          <p className="text-gray-700 text-md font-light tracking-tight leading-tight">
+                            {contentBlock.content}
+                          </p>
+                        )
+                      }
+                      if (contentBlock.type === 'image') {
+                        return (
+                          <img
+                            src={contentBlock.content}
+                            alt=""
+                            className="pt-2"
+                          />
+                        )
+                      }
+                      if (contentBlock.type === 'link') {
+                        return (
+                          <div className="py-4">
+                            <a
+                              href={contentBlock.content}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-navy-400 font-medium font-sans"
+                            >
+                              Read more {'->'}
+                            </a>
+                          </div>
+                        )
+                      }
+                      return <div>{contentBlock.content}</div>
+                    })}
+                  </div>
+                  {/* divider */}
+                  {index !== length - 1 && (
+                    <div className="border-b border-solid border-gray-350 w-full h-px my-5" />
+                  )}
                 </div>
-              </div>
-            )
-          })}
+              )
+            },
+          )}
           <CloseButton
             className="absolute top-4 right-4"
-            onClick={() => hideChangelog()}
+            onClick={() => {
+              setAllChangelogItemsAsSeen()
+              hideChangelog()
+            }}
           />
         </div>
       </div>

@@ -1,4 +1,7 @@
-import { getPocReceiptRoleFromFullTxn } from '../../../../utils/txns'
+import {
+  getHumanReadableInvalidReason,
+  getPocReceiptRoleFromFullTxn,
+} from '../../../../utils/txns'
 import { h3ToGeo } from 'h3-js'
 import {
   calculateDistance,
@@ -19,7 +22,8 @@ const PoCReceiptSummary = ({ txn, address, role }) => {
     if (witnessRole === 'poc_witnesses_invalid') {
       return (
         <span className="text-xs font-sans font-semibold text-red-500">
-          invalid: {activeWitness?.invalidReason}
+          Invalid Witness:{' '}
+          {getHumanReadableInvalidReason(activeWitness?.invalidReason)}
         </span>
       )
     } else if (witnessRole === 'poc_witnesses_valid') {

@@ -1,4 +1,5 @@
 import {
+  getHumanReadableInvalidReason,
   // getPocReceiptRole,
   getPocReceiptRoleFromFullTxn,
 } from '../../../../utils/txns'
@@ -22,9 +23,9 @@ const ActiveWitnessInfo = ({
   const [witnessLat, witnessLng] = h3ToGeo(activeWitness.locationHex)
 
   return (
-    <div className="bg-white grid grid-cols-5 text-xs font-sans font-thin text-gray-800 ml-7 mb-2 mt-1.5 whitespace-nowrap">
-      <span className="col-span-1">Distance</span>
-      <span className="col-span-4 text-gray-800 font-medium ml-0.5">
+    <div className="grid grid-cols-8 text-xs font-sans font-thin text-gray-800 px-4 py-2 whitespace-nowrap bg-bluegray-50 rounded-md mt-2">
+      <span className="col-span-2">Distance</span>
+      <span className="col-span-2 text-gray-800 font-medium ml-0.5">
         {challengeeLng &&
           formatHexDistance(
             calculateDistance(
@@ -33,24 +34,24 @@ const ActiveWitnessInfo = ({
             ),
           )}
       </span>
-      <span className="col-span-1">RSSI</span>
-      <span className="col-span-4 text-gray-800 font-medium ml-0.5">
+      <span className="col-span-2">RSSI</span>
+      <span className="col-span-2 text-gray-800 font-medium ml-0.5">
         {activeWitness.signal &&
           `${activeWitness.signal?.toLocaleString(undefined, {
             maximumFractionDigits: 2,
           })}
             dBm`}
       </span>
-      <span className="col-span-1">SNR</span>
-      <span className="col-span-4 text-gray-800 font-medium ml-0.5">
+      <span className="col-span-2">SNR</span>
+      <span className="col-span-2 text-gray-800 font-medium ml-0.5">
         {activeWitness.snr &&
           `${activeWitness.snr?.toLocaleString(undefined, {
             maximumFractionDigits: 2,
           })}
             dB`}
       </span>
-      <span className="col-span-1">Frequency</span>
-      <span className="col-span-4 text-gray-800 font-medium ml-0.5">
+      <span className="col-span-2">Frequency</span>
+      <span className="col-span-2 text-gray-800 font-medium ml-0.5">
         {activeWitness.frequency &&
           `${activeWitness.frequency.toLocaleString(undefined, {
             maximumFractionDigits: 1,
@@ -63,11 +64,12 @@ const ActiveWitnessInfo = ({
 const WitnessesDetails = ({ txn, role, address, isWitness }) => {
   const activeWitness = txn.path[0].witnesses.find((w) => w.gateway === address)
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mr-4 w-full">
       {/* if this hotspot is a witness and is invalid, display the reason why */}
       {role === 'poc_witnesses_invalid' && (
-        <span className="text-xs font-sans font-semibold text-red-500 mt-1 ml-6">
-          invalid: {activeWitness?.invalidReason}
+        <span className="text-xs font-sans font-semibold text-red-500 mt-0 mb-2 ml-[22px]">
+          Invalid Witness:{' '}
+          {getHumanReadableInvalidReason(activeWitness?.invalidReason)}
         </span>
       )}
       {/* if this hotspot is in the witnesses list for this PoC Receipt... */}
@@ -86,11 +88,10 @@ const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
     getPocReceiptRoleFromFullTxn(txn, address)
 
   const beaconerAddress = txn.path[0].challengee
-
   const challengerAddress = txn.challenger
 
-  const isBeaconer = address === beaconerAddress
   const isChallenger = address === challengerAddress
+  const isBeaconer = address === beaconerAddress
   const isWitness =
     role === 'poc_witnesses_valid' || role === 'poc_witnesses_invalid'
 
@@ -101,14 +102,14 @@ const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
         <div className="ml-2 flex flex-col items-start justify-start">
           <span className="text-xs font-sans font-light">Challenger</span>
           {isChallenger ? (
-            <span className="flex flex-row items-center justify-start text-black font-medium">
+            <span className="-mt-0.5 md:-mt-1 text-sm md:text-base flex flex-row items-center justify-start text-black font-medium">
               <ArrowIcon className="text-black w-4 h-auto mr-1 inline" />
               {animalHash(address)}
             </span>
           ) : (
             <Link
               to={`/hotspots/${challengerAddress}`}
-              className="-mt-1 flex flex-row items-center justify-start text-base font-sans font-medium text-black hover:text-navy-400 outline-none border border-solid border-transparent focus:border-navy-400"
+              className="-mt-1 flex flex-row items-center justify-start text-sm md:text-base font-sans font-medium text-black hover:text-navy-400 outline-none border border-solid border-transparent focus:border-navy-400"
             >
               {animalHash(challengerAddress)}
             </Link>
@@ -122,20 +123,20 @@ const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
             <span className="flex flex-col items-start justify-start">
               <span className="text-xs font-sans font-light">Beaconer</span>
               {isBeaconer ? (
-                <span className="flex flex-row items-center justify-start text-black font-medium">
+                <span className="-mt-0.5 md:-mt-1 text-sm md:text-base flex flex-row items-center justify-start text-black font-medium">
                   <ArrowIcon className="text-black w-4 h-auto mr-1 inline" />
                   {animalHash(address)}
                 </span>
               ) : (
                 <Link
                   to={`/hotspots/${beaconerAddress}`}
-                  className="-mt-1 flex flex-row items-center justify-start text-base font-sans font-medium text-black hover:text-navy-400 outline-none border border-solid border-transparent focus:border-navy-400"
+                  className="-mt-0.5 md:-mt-1 flex flex-row items-center justify-start text-sm md:text-base font-sans font-medium text-black hover:text-navy-400 outline-none border border-solid border-transparent focus:border-navy-400"
                 >
                   {animalHash(beaconerAddress)}
                 </Link>
               )}
             </span>
-            <span className="text-sm font-sans font-light text-black ml-1 whitespace-nowrap">
+            <span className="text-xs md:text-sm font-sans font-light text-black ml-0.5 whitespace-nowrap">
               <FlagLocation geocode={txn.path[0].geocode} condensedView />
             </span>
           </div>
@@ -147,32 +148,34 @@ const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
           <ActivityIcon txn={{ type: 'poc_receipts_v1', role: 'witness' }} />
           <div className="ml-2 flex flex-col items-start justify-start">
             <span className="flex flex-col items-start justify-start">
-              <span className="text-xs font-sans font-light">Witnesses</span>
-              <div className="flex flex-row items-center justify-start space-x-1">
-                <div className="flex items-center justify-center">
-                  <img
-                    src="/images/witness-yellow-mini.svg"
-                    className="w-3 h-auto"
-                    alt=""
-                  />
-                  <span className="text-xs font-sans font-light text-black ml-0.5">
-                    {txn?.numberOfValidWitnesses}
-                  </span>
+              <span className="flex flex-row items-center justify-start">
+                <span className="text-xs font-sans font-light">Witnesses</span>
+                <div className="flex flex-row items-center justify-start space-x-1 ml-2">
+                  <div className="flex items-center justify-center">
+                    <img
+                      src="/images/witness-yellow-mini.svg"
+                      className="w-3 h-auto"
+                      alt=""
+                    />
+                    <span className="text-xs font-sans font-light text-black ml-0.5">
+                      {txn?.numberOfValidWitnesses}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <img
+                      src="/images/witness-gray.svg"
+                      className="w-3 h-auto"
+                      alt=""
+                    />
+                    <span className="text-xs font-sans font-light text-black ml-0.5">
+                      {txn?.numberOfInvalidWitnesses}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center justify-center">
-                  <img
-                    src="/images/witness-gray.svg"
-                    className="w-3 h-auto"
-                    alt=""
-                  />
-                  <span className="text-xs font-sans font-light text-black ml-0.5">
-                    {txn?.numberOfInvalidWitnesses}
-                  </span>
-                </div>
-              </div>
+              </span>
 
               {isWitness ? (
-                <span className="-mt-1 flex flex-row space-x-1 align-center justify-start text-base font-sans font-medium">
+                <span className="-mt-0.5 md:-mt-1 flex flex-row space-x-1 align-center justify-start text-sm md:text-base font-sans font-medium">
                   <span className="flex flex-row items-center justify-start text-black">
                     <ArrowIcon className="text-black w-4 h-auto mr-1 inline" />
                     {animalHash(address)}
@@ -186,7 +189,7 @@ const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
                   )}
                 </span>
               ) : (
-                <span className="-mt-1 text-base font-sans font-medium text-gray-550">
+                <span className="-mt-0.5 md:-mt-1 text-sm md:text-base font-sans font-medium text-gray-550">
                   {txn.path[0].witnesses.length} hotspots
                 </span>
               )}

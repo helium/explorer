@@ -301,3 +301,23 @@ export const getStakeTransferRole = (txn, address) => {
 
   return 'receive_transferred_stake'
 }
+
+export const getHumanReadableInvalidReason = (rawInvalidReason) => {
+  switch (rawInvalidReason) {
+    case 'witness_too_close': {
+      return 'Witness too close'
+    }
+    case 'witness_rssi_too_high': {
+      return 'Witness RSSI too high'
+    }
+    case 'witness_on_incorrect_channel': {
+      return 'Witness on incorrect channel'
+    }
+    case 'witness_rssi_below_lower_bound': {
+      return 'Witness RSSI below lower bound'
+    }
+    default: {
+      return `${rawInvalidReason}`
+    }
+  }
+}

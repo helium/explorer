@@ -110,6 +110,12 @@ export const communityToolsList = [
     tags: [types.monitoring, types.planning],
   },
   {
+    name: 'HMS Block Status Tool',
+    url: 'https://heliummining.se/check-my-block-status/',
+    description: 'Easily look up your Hotspot device block height, sync status, relay and more to track progress.',
+    tags: [types.monitoring],
+  },
+  {
     name: 'HNT-tracker',
     url: 'https://hnt-tracker.fifu-verein.de/',
     description:

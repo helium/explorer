@@ -2,7 +2,7 @@ import TimeAgo from 'react-time-ago'
 import Timestamp from 'react-timestamp'
 
 const ActivityItemTimestamp = ({ txn, expanded }) => (
-  <span className="flex items-center space-x-1 px-2">
+  <span className="flex flex-auto whitespace-nowrap items-center space-x-1 px-4">
     <img alt="" src="/images/clock-outline.svg" className="w-3 h-3" />
     {expanded ? (
       <>

@@ -5,10 +5,10 @@ const ActivityIcon = ({ highlightColor, txn }) => {
   return (
     <div>
       {imagePath ? (
-        <img src={imagePath} className="w-9 h-9" alt="" />
+        <img src={imagePath} className="w-8 h-8" alt="" />
       ) : (
         <div
-          className="w-9 h-9 rounded-full"
+          className="w-8 h-8 rounded-full"
           style={{ backgroundColor: highlightColor }}
         />
       )}

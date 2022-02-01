@@ -68,22 +68,20 @@ const ActivityList = ({
   )
 
   const renderItem = useCallback(
-    (txn) => {
-      return (
-        <ExpandableListItem
-          txn={txn}
-          address={address}
-          context={context}
-          title={generateTitle(txn)}
-          linkTo={`/txns/${txn.hash}`}
-          highlightColor={
-            txn.type === 'poc_receipts_v1'
-              ? getTxnTypeColor(getPocReceiptRole(txn.role))
-              : getTxnTypeColor(txn.type)
-          }
-        />
-      )
-    },
+    (txn) => (
+      <ExpandableListItem
+        txn={txn}
+        address={address}
+        context={context}
+        title={generateTitle(txn)}
+        linkTo={`/txns/${txn.hash}`}
+        highlightColor={
+          txn.type === 'poc_receipts_v1'
+            ? getTxnTypeColor(getPocReceiptRole(txn.role))
+            : getTxnTypeColor(txn.type)
+        }
+      />
+    ),
     [address, context, generateTitle],
   )
 

@@ -12,9 +12,7 @@ export const fetchTxnDetails = async (txnHash, params = {}) => {
     const geocode = await client.locations.get(txn.location)
     txn.geocode = geocode
   }
-
-  const supplementedTxn = supplementTxnDetails(txn)
-  return supplementedTxn
+  return txn
 }
 
 export const supplementTxnList = (results) => {
@@ -34,19 +32,4 @@ export const supplementTxnList = (results) => {
         return txn
     }
   })
-}
-
-export const supplementTxnDetails = (txn) => {
-  switch (txn.type) {
-    case 'poc_receipts_v1':
-      const witnesses = txn.path?.[0]?.witnesses
-      const total = witnesses?.length
-      const numberOfValidWitnesses = witnesses?.filter((w) => w.isValid)?.length
-      const numberOfInvalidWitnesses = total - numberOfValidWitnesses
-      return { ...txn, numberOfValidWitnesses, numberOfInvalidWitnesses }
-    // case: 'other_txn_type':
-    // for supplementing txn details at the source
-    default:
-      return txn
-  }
 }

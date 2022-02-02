@@ -10,7 +10,7 @@ import { Link } from 'react-router-i18n'
 const filtersByContext = {
   hotspot: {
     'All Activity': [],
-    Beacons: ['poc_receipts_v1'],
+    Beacons: ['poc_receipts_v1', 'poc_receipts_v2'],
     Data: ['state_channel_close_v1'],
     Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
   },

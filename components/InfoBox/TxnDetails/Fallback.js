@@ -20,10 +20,10 @@ const GenericObjectWidget = ({ title, value }) => {
       <div className="text-xl font-medium text-black my-1.5 tracking-tight w-full break-all pb-4">
         {title}
       </div>
-      <div className="space-y-2">
+      <div className="space-y-2 break-all">
         {Object.entries(value).map(([key, value]) => {
           if (typeof value === 'object') {
-            return JSON.stringify(value)
+            return <GenericObjectWidget title={key} value={value} />
           }
           return (
             <div key={key} className="flex justify-between items-center">

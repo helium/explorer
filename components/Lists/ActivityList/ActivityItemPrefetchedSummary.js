@@ -17,7 +17,8 @@ const getSummaryComponent = (txn) => {
     case 'payment_v2': {
       return PaymentV2Summary
     }
-    case 'poc_receipts_v1': {
+    case 'poc_receipts_v1':
+    case 'poc_receipts_v2': {
       return PoCReceiptSummary
     }
     case 'rewards_v1':

@@ -21,6 +21,11 @@ const CONFIG = {
     name: 'PoC Receipt',
     tooltip: 'Proof of Coverage Receipt',
   },
+  poc_receipts_v2: {
+    color: '#1D91F8',
+    name: 'PoC Receipt',
+    tooltip: 'Proof of Coverage Receipt',
+  },
   rewards_v1: {
     color: '#A667F6',
     name: 'Mining Reward',
@@ -180,7 +185,8 @@ export const getTxnIconPath = (txn) => {
     case 'poc_request_v1': {
       return `${ICON_PATH_ROOT}/poc_challenger.svg`
     }
-    case 'poc_receipts_v1': {
+    case 'poc_receipts_v1':
+    case 'poc_receipts_v2': {
       if (role === 'witness') {
         return `${ICON_PATH_ROOT}/poc_witness.svg`
       } else if (role === 'challengee') {

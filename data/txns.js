@@ -39,6 +39,7 @@ export const supplementTxnList = (results) => {
 export const supplementTxnDetails = (txn) => {
   switch (txn.type) {
     case 'poc_receipts_v1':
+    case 'poc_receipts_v2':
       const witnesses = txn.path?.[0]?.witnesses
       const total = witnesses?.length
       const numberOfValidWitnesses = witnesses?.filter((w) => w.isValid)?.length

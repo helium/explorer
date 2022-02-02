@@ -154,7 +154,13 @@ const CoverageMap = () => {
   }, [selectedHex])
 
   useEffect(() => {
-    if (!selectedCity) return
+    if (
+      !selectedCity ||
+      !selectedCity?.geometry?.northeast ||
+      !selectedCity?.geometry?.southwest
+    ) {
+      return
+    }
 
     const { northeast, southwest } = selectedCity.geometry.viewport
 
@@ -186,7 +192,7 @@ const CoverageMap = () => {
       setSelectedTxnParticipants([])
       return
     }
-    if (selectedTxn?.type === 'poc_receipts_v1') {
+    if (selectedTxn?.type?.startsWith('poc_receipts')) {
       const target = selectedTxn.path[0].challengee
       const targetHotspot = await fetchHotspot(target)
       const witnesses = selectedTxn.path[0].witnesses.map(hotspotToRes8)

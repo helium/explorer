@@ -33,7 +33,8 @@ const getExpandedComponent = (txn) => {
     case 'state_channel_close_v1': {
       return ExpandedStateChannelCloseContent
     }
-    case 'poc_receipts_v1': {
+    case 'poc_receipts_v1':
+    case 'poc_receipts_v2': {
       return ExpandedPoCReceiptContent
     }
     // TODO: add other types here

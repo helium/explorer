@@ -93,7 +93,7 @@ const TxnDetailsInfoBox = () => {
     ]
   }
 
-  // Transaction doesn't exists
+  // Transaction doesn't exist
   if (selectedTxn && Object.keys(selectedTxn).length === 0) {
     return (
       <ErrorInfoBox

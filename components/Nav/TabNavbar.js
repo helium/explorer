@@ -18,6 +18,7 @@ const NavItem = ({
   activeClasses,
   activeStyles,
   active = false,
+  changelogIndicator,
   href,
 }) => {
   const customStyles = classes || activeClasses || activeStyles
@@ -49,7 +50,7 @@ const NavItem = ({
       className={classNames(
         classes,
         active ? activeClasses : '',
-        'mx-2 py-2 lg:py-3 inline-block font-medium text-sm md:text-base cursor-pointer whitespace-nowrap',
+        'mx-2 py-2 lg:py-3 inline-block font-medium text-sm md:text-base cursor-pointer whitespace-nowrap relative',
         {
           'text-gray-600 hover:text-navy-400': !active && !customStyles,
           'text-navy-400 border-navy-400 border-b-3 border-solid':
@@ -58,6 +59,7 @@ const NavItem = ({
       )}
       style={active ? { ...activeStyles, ...styles } : styles}
     >
+      {changelogIndicator}
       {title}
     </Link>
   )
@@ -88,7 +90,9 @@ const TabNavbar = ({ centered = false, className, children }) => {
           activeClasses: c.props.activeClasses,
           activeStyles: c.props.activeStyles,
           hidden: c.props.hidden,
+          changelogIndicator: c.props.changelogIndicator,
         }
+
       return null
     })
   }, [children])
@@ -133,6 +137,7 @@ const TabNavbar = ({ centered = false, className, children }) => {
                   activeStyles={item.activeStyles}
                   active={navMatch(item.path)}
                   href={item.path ? `${url}/${item.path}` : url}
+                  changelogIndicator={item.changelogIndicator}
                 />
                 {i === length - 1 && (
                   // add a spacer after the last item so the right side of the container has padding
@@ -155,7 +160,6 @@ const TabNavbar = ({ centered = false, className, children }) => {
           shown={isScrollable && !isScrolledToStart}
         />
       </div>
-
       <Switch>
         {navPanes.map((pane) => (
           <Route

@@ -1,11 +1,11 @@
 import classNames from 'classnames'
 import { useAsync } from 'react-async-hook'
-import { fetchWitnesses } from '../../../data/hotspots'
-import WitnessesList from '../../Lists/WitnessesList'
+import { fetchWitnessed } from '../../../data/hotspots'
+import WitnessedList from '../../Lists/WitnessedList'
 import animalHash from 'angry-purple-tiger'
 
-const WitnessesPane = ({ hotspot }) => {
-  const { result: witnesses, loading } = useAsync(fetchWitnesses, [
+const WitnessedPane = ({ hotspot }) => {
+  const { result: witnessed, loading } = useAsync(fetchWitnessed, [
     hotspot.address,
   ])
 
@@ -16,17 +16,17 @@ const WitnessesPane = ({ hotspot }) => {
         'overflow-y-hidden': loading,
       })}
     >
-      <WitnessesList
+      <WitnessedList
         hotspot={hotspot}
-        witnesses={witnesses || []}
+        witnessed={witnessed || []}
         isLoading={loading}
-        title="Witnesses"
+        title="Witnessed"
         description={
           <>
             <div>
-              Hotspots on the Helium network that have successfully witnessed
-              beacons sent by {animalHash(hotspot.address)}. There are many
-              reasons a nearby Hotspot may not be a valid witness.
+              Hotspots on the Helium network whose beacons{' '}
+              {animalHash(hotspot.address)} has successfully witnessed. There
+              are many reasons a Hotspot may not be a valid witness.
             </div>
             <div className="pt-1.5">
               Learn more{' '}
@@ -48,4 +48,4 @@ const WitnessesPane = ({ hotspot }) => {
   )
 }
 
-export default WitnessesPane
+export default WitnessedPane

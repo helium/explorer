@@ -42,7 +42,7 @@ const RecentActivityWidget = ({ context, address }) => {
             transactions.map((t) => (
               <div className="flex items-center justify-between w-full">
                 <div className="text-xs md:text-sm text-black tracking-tight w-full break-all">
-                  {t.type === 'poc_receipts_v1'
+                  {t.type.startsWith('poc_receipts')
                     ? getTxnTypeName(getPocReceiptRole(t, address), 'hotspot')
                     : getTxnTypeName(t.type, 'hotspot')}
                 </div>

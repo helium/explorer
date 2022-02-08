@@ -153,7 +153,6 @@ const CommunityToolsInfoBox = () => {
       </InfoBoxToolsSection>
       <InfoBoxPaneContainer>
         {shownToolsList.map((t) => {
-          console.log(t)
           return (
             <CommunityToolWidget
               tags={t.tags}

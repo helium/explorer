@@ -102,7 +102,7 @@ export const communityToolsList = [
     url: 'https://helium.tools',
     description: 'Set of tools to monitor and compare earnings in selected location(s).',
     tags: [types.planning, types.monitoring],
-  },  
+  },
   {
     name: 'HeliumVision',
     url: 'https://helium.vision',
@@ -110,12 +110,18 @@ export const communityToolsList = [
     tags: [types.monitoring, types.planning],
   },
   {
+    name: 'HMS Block Status Tool',
+    url: 'https://heliummining.se/check-my-block-status/',
+    description: 'Easily look up your Hotspot device block height, sync status, relay and more to track progress.',
+    tags: [types.monitoring],
+  },
+  {
     name: 'HNT-tracker',
     url: 'https://hnt-tracker.fifu-verein.de/',
     description:
       'Free CSV exports for HNT rewards, balance and payments. Conversion into all major currencies. Useful for taxes.',
     tags: [types.export],
-  },  
+  },
   {
     name: 'HNTMonitor',
     url: 'https://www.hntmonitor.com/',
@@ -182,6 +188,12 @@ export const communityToolsList = [
     tags: [types.monitoring],
   },
   {
+    name: 'TaxBit',
+    url: 'https://www.taxbit.com',
+    description: 'Simplifying Helium taxes and Data Aggregation for investors and miners',
+    tags: [types.export]
+  },
+  {
     name: 'ZenLedger',
     url: 'https://www.zenledger.io',
     description: 'Simplifying Helium taxes for investors and miners',
@@ -199,6 +211,12 @@ export const communityToolsList = [
     description: 'City and nationwide toplist and communication platform',
     tags: [types.planning],
   },
+  {
+    name: 'HS Analyzer',
+    url: 'https://hs-analyzer.com',
+    description: 'HS Analyzer is simple tool for checking your Helium hotspot and its stats (RSSI, Valid / Invalid Beacons etc.).',
+    tags: [types.monitoring]
+  }
 
   // The lines below are a template that you can copy and paste and then populate
   // to add a new tool to the list. All the possible tags are included in the

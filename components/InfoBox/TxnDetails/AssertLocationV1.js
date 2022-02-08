@@ -7,7 +7,7 @@ import Widget from '../../Widgets/Widget'
 import { getMakerName } from '../../Makers/utils'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 
-const AssertLocationV1 = ({ txn }) => {
+const AssertLocationV1 = ({ txn, inline }) => {
   const [assertedHotspot, setAssertedHotspot] = useState()
   const [makerName, setMakerName] = useState()
   const [isLoadingInitial, setIsLoadingInitial] = useState(false)
@@ -28,7 +28,7 @@ const AssertLocationV1 = ({ txn }) => {
     txn.payer === txn.owner || txn.payer === null ? txn.owner : txn.payer
 
   return (
-    <InfoBoxPaneContainer>
+    <InfoBoxPaneContainer padding={!inline}>
       <HotspotWidget
         hotspot={assertedHotspot}
         title="Asserted Hotspot"

@@ -10,6 +10,7 @@ import { useCallback } from 'react'
 import SkeletonList from '../Lists/SkeletonList'
 import AccountIcon from '../AccountIcon'
 import ActivityPane from './Common/ActivityPane'
+import SkeletonActivityList from '../Lists/ActivityList/SkeletonActivityList'
 
 const ValidatorDetailsInfoBox = () => {
   const { address } = useParams()
@@ -82,7 +83,11 @@ const ValidatorDetailsInfoBox = () => {
           <OverviewPane />
         </TabPane>
         <TabPane title="Activity" key="activity" path="activity">
-          <ActivityPane context="validator" address={address} />
+          {isLoading ? (
+            <SkeletonActivityList />
+          ) : (
+            <ActivityPane context="validator" address={address} />
+          )}
         </TabPane>
         <TabPane title="Penalties" key="penalties" path="penalties">
           {isLoading ? <SkeletonList /> : <PenaltiesPane />}

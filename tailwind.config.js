@@ -66,6 +66,7 @@ module.exports = {
         50: '#ccf1e8',
         100: '#474DFF',
         400: '#29D344',
+        450: '#29D391',
         500: '#32C48D',
       },
       red: {
@@ -107,7 +108,9 @@ module.exports = {
         800: '#171E2D',
       },
       bluegray: {
+        50: '#F5F5FA',
         100: '#E9EAFF2',
+        300: '#CECEE9',
       },
       reward: {
         witness: '#FFC769',

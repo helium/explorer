@@ -3,7 +3,7 @@ import { Layout, Typography } from 'antd'
 import NavHeader from './NavHeader'
 import MetaTags from './MetaTags'
 import { useContext } from 'react'
-import BetaBannerContext from '../BetaBanner/BannerContext'
+import BannerContext from '../Banner/BannerContext'
 
 const { Content, Footer } = Layout
 const { Text } = Typography
@@ -16,12 +16,12 @@ const AppLayout = ({
   openGraphImageAbsoluteUrl,
   url,
 }) => {
-  const { showBetaBanner } = useContext(BetaBannerContext)
+  const { showBanner } = useContext(BannerContext)
   const layoutStyle = {
     fontFamily: 'Inter, sans-serif',
     fontStyle: 'normal',
     minHeight: '100vh',
-    paddingTop: showBetaBanner ? '120px' : '64px',
+    paddingTop: showBanner ? '120px' : '64px',
   }
   return (
     <Layout style={layoutStyle}>

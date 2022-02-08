@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import SkeletonList from './SkeletonList'
 import classNames from 'classnames'
@@ -11,6 +11,7 @@ const BaseList = ({
   listHeaderTitle,
   listHeaderDescription,
   listHeaderShowCount,
+  listHeaderCount,
   keyExtractor,
   linkExtractor,
   isLoading = true,
@@ -120,6 +121,18 @@ const BaseList = ({
     ],
   )
 
+  const renderListHeaderTitle = useMemo(() => {
+    if (listHeaderShowCount) {
+      if (listHeaderCount !== undefined) {
+        return `${listHeaderTitle} (${listHeaderCount.toLocaleString()})`
+      } else {
+        return `${listHeaderTitle} (${items.length.toLocaleString()})`
+      }
+    }
+
+    return listHeaderTitle
+  }, [items.length, listHeaderCount, listHeaderShowCount, listHeaderTitle])
+
   if (isLoading) {
     if (isActivityList) {
       return <SkeletonActivityList />
@@ -144,11 +157,7 @@ const BaseList = ({
     >
       {(listHeaderTitle || listHeaderDescription) && (
         <InfoBoxPaneTitleSection
-          title={
-            listHeaderShowCount
-              ? `${listHeaderTitle} (${items.length})`
-              : listHeaderTitle
-          }
+          title={renderListHeaderTitle}
           description={listHeaderDescription}
         />
       )}

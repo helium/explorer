@@ -1862,10 +1862,10 @@
     create-hash "^1.2.0"
     libsodium-wrappers "^0.7.6"
 
-"@helium/crypto@^3.45.0":
-  version "3.45.0"
-  resolved "https://registry.yarnpkg.com/@helium/crypto/-/crypto-3.45.0.tgz#2892aaac8f35865cd32a91222fd5ffbe9f973e08"
-  integrity sha512-J89U4GsLLjODPEPTD5m6q6w6zjbtJjYTxrXAF+Sp+Aqq9nPSOTvQ4gx12dfKXfPT/Rq1vrZ5/CIVXYPhQ7PTJQ==
+"@helium/crypto@^3.60.0":
+  version "3.60.0"
+  resolved "https://registry.yarnpkg.com/@helium/crypto/-/crypto-3.60.0.tgz#58be74745d0c7cc3198481dc69f5530393fc7287"
+  integrity sha512-zvDshfSv9wv0PAmmKvZPFP9pnNmR6Q7ZAy+WuGpCD3AxuWv9fiODgKATVuTMhV/QXkkxI+5t8TbGUjTOxsXAmA==
   dependencies:
     bs58 "^4.0.1"
     create-hash "^1.2.0"
@@ -1885,12 +1885,12 @@
   dependencies:
     bignumber.js "^9.0.0"
 
-"@helium/http@^3.55.0":
-  version "3.55.0"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.55.0.tgz#73e883aa804046ae4f9921e3508633bf88a16270"
-  integrity sha512-KrTOY+dQsGP0EZtGycTFcV9ZpU6pRoQHkr1+l9iWFA46pCLSfwIHKJXWUuKbKQy92MBWgQdtZnTr5TsioQlufA==
+"@helium/http@^3.63.0":
+  version "3.63.0"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-3.63.0.tgz#47b11003f6e333f8178fa6f15355874617d0b589"
+  integrity sha512-YZVgAysuceUe2pJ5CWS5cc4w5n6da/C65zyl46YSPnJvsxgLXt69sqFcbF9kic5mWLnVqh0kwgUhoCIby56F7Q==
   dependencies:
-    "@helium/crypto" "^3.45.0"
+    "@helium/crypto" "^3.60.0"
     "@helium/currency" "^3.52.0"
     axios "^0.21.1"
     camelcase-keys "^6.2.2"
@@ -14782,9 +14782,9 @@ type-fest@^1.2.1:
   integrity sha512-pfkPYCcuV0TJoo/jlsUeWNV8rk7uMU6ocnYNvca1Vu+pyKi8Rl8Zo2scPt9O72gCsXIm+dMxOOWuA3VFDSdzWA==
 
 type-fest@^2.5.2:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.9.0.tgz#7a2d430dd966f52b6bc723da2aaa2c9867530551"
-  integrity sha512-uC0hJKi7eAGXUJ/YKk53RhnKxMwzHWgzf4t92oz8Qez28EBgVTfpDTB59y9hMYLzc/Wl85cD7Tv1hLZZoEJtrg==
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.10.0.tgz#0ee9c3cd411efb3bba434065d32235592d3644cf"
+  integrity sha512-u2yreDMllFI3VCpWt0rKrGs/E2LO0YHBwiiOIj+ilQh9+ALMaa4lNBSdoDvuHN3cbKcYk9L1BXP49x9RT+o/SA==
 
 type-is@~1.6.17, type-is@~1.6.18:
   version "1.6.18"

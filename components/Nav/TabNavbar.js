@@ -92,6 +92,7 @@ const TabNavbar = ({ centered = false, className, children }) => {
           hidden: c.props.hidden,
           changelogIndicator: c.props.changelogIndicator,
         }
+
       return null
     })
   }, [children])
@@ -159,7 +160,6 @@ const TabNavbar = ({ centered = false, className, children }) => {
           shown={isScrollable && !isScrolledToStart}
         />
       </div>
-
       <Switch>
         {navPanes.map((pane) => (
           <Route

@@ -4,14 +4,8 @@ import StatusWidget from '../../Widgets/StatusWidget'
 import StatWidget from '../../Widgets/StatWidget'
 import { useHotspotBeaconSums } from '../../../data/beacons'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
-import ChecklistWidget from '../../Widgets/ChecklistWidget'
 import { isRelay } from '../../Hotspots/utils'
 import Widget from '../../Widgets/Widget'
-import { fetchWitnesses } from '../../../data/hotspots'
-import { useAsync } from 'react-async-hook'
-import useToggle from '../../../utils/useToggle'
-import classNames from 'classnames'
-import ChevronIcon from '../../Icons/Chevron'
 import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
 import WarningWidget from '../../Widgets/WarningWidget'
 import InfoBoxPaneTitleSection from '../Common/InfoBoxPaneTitleSection'
@@ -50,10 +44,7 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
     }
   }, [clearSelectedTxn])
 
-  const { result: witnessesData } = useAsync(fetchWitnesses, [hotspot.address])
-  const [showChecklist, toggleShowChecklist] = useToggle()
-
-  const errorFetchingWitnesses = hotspot?.errors?.length > 0
+  const errorFetchingWitnessed = hotspot?.errors?.length > 0
 
   return (
     <>
@@ -120,14 +111,14 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
               changeType="percent"
             />
             <Widget
-              title="Total Witnesses"
-              linkTo={`/hotspots/${hotspot?.address}/witnesses`}
+              title="Total Witnessed"
+              linkTo={`/hotspots/${hotspot?.address}/witnessed`}
               value={
-                errorFetchingWitnesses
+                errorFetchingWitnessed
                   ? 'Error fetching'
-                  : hotspot?.witnesses?.length
+                  : hotspot?.witnessed?.length
               }
-              valueIsText={errorFetchingWitnesses}
+              valueIsText={errorFetchingWitnessed}
               subtitle={
                 <span className="text-gray-550 text-sm font-sans">
                   Within past 5 days
@@ -135,35 +126,6 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
               }
             />
           </>
-        )}
-        {!showChecklist ? (
-          <div
-            className="bg-gray-200 p-3 rounded-lg col-span-2 cursor-pointer hover:bg-gray-300"
-            onClick={toggleShowChecklist}
-          >
-            <div
-              className={classNames(
-                'flex items-center justify-between',
-                'text-gray-600 mx-auto text-md px-4 py-3',
-              )}
-            >
-              Load checklist
-              <ChevronIcon
-                className={classNames(
-                  'h-4 w-4',
-                  'ml-1',
-                  'transform duration-500 transition-all',
-                  { 'rotate-180': !showChecklist },
-                )}
-              />
-            </div>
-          </div>
-        ) : (
-          <ChecklistWidget
-            hotspot={hotspot}
-            witnesses={witnessesData}
-            isDataOnly={isDataOnly}
-          />
         )}
       </InfoBoxPaneContainer>
     </>

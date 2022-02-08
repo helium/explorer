@@ -12,7 +12,8 @@ const isExpandable = (txn) => {
     txn.type === 'rewards_v1' ||
     txn.type === 'rewards_v2' ||
     txn.type === 'rewards_v3' ||
-    txn.type === 'poc_receipts_v1'
+    txn.type === 'poc_receipts_v1' ||
+    txn.type === 'poc_receipts_v2'
   )
 }
 
@@ -42,6 +43,7 @@ const ActivityList = ({
     (txn) => {
       switch (txn.type) {
         case 'poc_receipts_v1':
+        case 'poc_receipts_v2':
           return getTxnTypeName(getPocReceiptRole(txn.role), 'hotspot')
         case 'transfer_validator_stake_v1':
           return (
@@ -68,20 +70,22 @@ const ActivityList = ({
   )
 
   const renderItem = useCallback(
-    (txn) => (
-      <ExpandableListItem
-        txn={txn}
-        address={address}
-        context={context}
-        title={generateTitle(txn)}
-        linkTo={`/txns/${txn.hash}`}
-        highlightColor={
-          txn.type === 'poc_receipts_v1'
-            ? getTxnTypeColor(getPocReceiptRole(txn.role))
-            : getTxnTypeColor(txn.type)
-        }
-      />
-    ),
+    (txn) => {
+      return (
+        <ExpandableListItem
+          txn={txn}
+          address={address}
+          context={context}
+          title={generateTitle(txn)}
+          linkTo={`/txns/${txn.hash}`}
+          highlightColor={
+            txn.type === 'poc_receipts_v1'
+              ? getTxnTypeColor(getPocReceiptRole(txn.role))
+              : getTxnTypeColor(txn.type)
+          }
+        />
+      )
+    },
     [address, context, generateTitle],
   )
 

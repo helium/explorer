@@ -26,14 +26,18 @@ const ErrorInfoBox = ({
       </Helmet>
       <InfoBox
         title={errorTitle}
-        subtitles={[
-          [
-            {
-              iconPath: '/images/warning.svg',
-              title: subtitleText,
-            },
-          ],
-        ]}
+        subtitles={
+          subtitleText
+            ? [
+                [
+                  {
+                    iconPath: '/images/warning.svg',
+                    title: subtitleText,
+                  },
+                ],
+              ]
+            : []
+        }
         breadcrumbs={breadcrumbs}
       >
         <InfoBoxPaneContainer>

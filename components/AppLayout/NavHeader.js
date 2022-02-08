@@ -15,7 +15,7 @@ const NavHeader = () => {
   const { showBanner, toggleBanner } = useContext(BannerContext)
   return (
     <>
-      {showBanner && <Banner toggleBetaBanner={toggleBanner} />}
+      {showBanner && <Banner toggleBanner={toggleBanner} />}
       <Header
         className={classNames('z-40', { 'mt-14': showBanner })}
         style={{

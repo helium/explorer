@@ -97,8 +97,10 @@ const TxnDetailsInfoBox = () => {
   if (selectedTxn && Object.keys(selectedTxn).length === 0) {
     return (
       <ErrorInfoBox
-        errorTitle="404 - Transaction Not Found"
-        warningTitle="This transaction doesn't exists"
+        subtitleText="Double check the transaction hash"
+        errorTitle="404 — Transaction Not Found"
+        warningTitle="Transaction hash didn't match any transactions."
+        breadcrumbs={[{ title: 'Blocks', path: '/blocks/latest' }]}
       />
     )
   }

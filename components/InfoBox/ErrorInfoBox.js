@@ -9,6 +9,8 @@ const ErrorInfoBox = ({
   errorType = 404,
   errorTitle = '404 — Not Found',
   warningTitle = "This page doesn't exist",
+  breadcrumbs,
+  subtitleText,
 }) => {
   const { pathname: path } = useLocation()
 
@@ -22,7 +24,18 @@ const ErrorInfoBox = ({
       <Helmet>
         <meta name="robots" content="noindex" />
       </Helmet>
-      <InfoBox title={errorTitle}>
+      <InfoBox
+        title={errorTitle}
+        subtitles={[
+          [
+            {
+              iconPath: '/images/warning.svg',
+              title: subtitleText,
+            },
+          ],
+        ]}
+        breadcrumbs={breadcrumbs}
+      >
         <InfoBoxPaneContainer>
           {
             <WarningWidget

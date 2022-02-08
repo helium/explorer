@@ -6,18 +6,15 @@ import SearchBar from '../SearchBar'
 import Link from 'next/link'
 import classNames from 'classnames'
 import Banner from '../Banner/Banner'
-import { useContext } from 'react'
-import BannerContext from '../Banner/BannerContext'
 
 const { Header } = Layout
 
 const NavHeader = () => {
-  const { showBanner, toggleBanner } = useContext(BannerContext)
   return (
     <>
-      {showBanner && <Banner toggleBanner={toggleBanner} />}
+      <Banner />
       <Header
-        className={classNames('z-40', { 'mt-14': showBanner })}
+        className={classNames('z-40 mt-14')}
         style={{
           backgroundColor: '#101725',
           display: 'flex',

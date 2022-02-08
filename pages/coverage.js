@@ -6,8 +6,6 @@ import dynamic from 'next/dynamic'
 import HotspotSidebar from '../components/CoverageMap/HotspotSidebar'
 import { Client } from '@helium/http'
 import MetaTags from '../components/AppLayout/MetaTags'
-import { useContext } from 'react'
-import BannerContext from '../components/Banner/BannerContext'
 
 const Map = dynamic(() => import('../components/CoverageMap/CoverageMap'), {
   ssr: false,
@@ -56,8 +54,6 @@ const Coverage = (props) => {
     setSelectedHotspots([])
   }
 
-  const { showBanner, toggleBanner } = useContext(BannerContext)
-
   return (
     <Page>
       <MetaTags
@@ -71,8 +67,8 @@ const Coverage = (props) => {
       <title>Helium Network - Coverage</title>
       <Header activeNav="coverage" />
       <HotspotSidebar
-        showBanner={showBanner}
-        toggleBanner={toggleBanner}
+        showBanner={true}
+        // toggleBanner={}
         hotspots={hotspots}
         count={count}
         selectedHotspots={selectedHotspots}

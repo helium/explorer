@@ -9,7 +9,7 @@ import 'nprogress/nprogress.css' //styles of nprogress
 
 import { useEffect, useState } from 'react'
 import { Container } from 'next/app'
-import BannerContext from '../components/Banner/BannerContext'
+import { BannerContext } from '../components/Banner/BannerContext'
 
 //Binding events.
 Router.events.on('routeChangeStart', () => NProgress.start())

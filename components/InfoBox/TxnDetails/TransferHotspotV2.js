@@ -14,7 +14,7 @@ const TransferHotspotV2 = ({ txn, inline }) => {
   useAsync(async () => {
     const fetchedHotspot = await fetchHotspot(txn.gateway)
     setTransferredHotspot(fetchedHotspot)
-  }, [])
+  }, [txn.gateway])
 
   return (
     <InfoBoxPaneContainer padding={!inline}>

@@ -38,7 +38,7 @@ const ExpandedTransferHotspotV1Content = ({ txn, role, address }) => {
   useAsync(async () => {
     const fetchedHotspot = await fetchHotspot(txn.gateway)
     setTransferredHotspot(fetchedHotspot)
-  }, [])
+  }, [txn.gateway])
 
   return (
     <div className="w-full flex flex-col items-stretch justify-center space-y-1 tracking-tight">

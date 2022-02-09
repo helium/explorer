@@ -33,7 +33,7 @@ const PoCReceiptSummary = ({ txn, address, role }) => {
 
       return (
         <div className="flex flex-row items-center justify-start w-full">
-          <p className="font-extralight text-xs whitespace-nowrap text-gray-700 tracking-tighter">
+          <p className="font-extralight text-xs text-gray-700 tracking-tighter">
             <span className="text-gray-800 font-normal">
               {challengeeLng &&
                 formatHexDistance(

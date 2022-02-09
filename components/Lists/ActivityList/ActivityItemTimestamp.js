@@ -10,12 +10,12 @@ const ActivityItemTimestamp = ({ txn, expanded }) => (
           <Timestamp date={txn.time} />
         </span>
         <span className="block md:hidden text-xs text-gray-600 font-sans font-extralight ml-1 mt-px md:mt-0.5">
-          <TimeAgo date={txn.time * 1000} timeStyle="mini" /> ago
+          <TimeAgo date={txn.time * 1000} timeStyle="mini" />
         </span>
       </>
     ) : (
       <span className="text-xs text-gray-600 font-sans font-extralight ml-1 mt-px md:mt-0.5">
-        <TimeAgo date={txn.time * 1000} timeStyle="mini" /> ago
+        <TimeAgo date={txn.time * 1000} timeStyle="mini" />
       </span>
     )}
   </span>

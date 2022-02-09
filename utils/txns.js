@@ -61,6 +61,11 @@ const CONFIG = {
     name: 'Transfer Hotspot',
     tooltip: 'Hotspot Transfer Confirmation Transaction',
   },
+  transfer_hotspot_v2: {
+    color: '#D3293D',
+    name: 'Transfer Hotspot',
+    tooltip: 'Hotspot Transfer Confirmation Transaction',
+  },
   poc_challengers: {
     color: '#A667F6',
     name: 'Challenger',
@@ -218,7 +223,8 @@ export const getTxnIconPath = (txn) => {
     case 'state_channel_close_v1': {
       return `${ICON_PATH_ROOT}/state_channel_close.svg`
     }
-    case 'transfer_hotspot_v1': {
+    case 'transfer_hotspot_v1':
+    case 'transfer_hotspot_v2': {
       return `${ICON_PATH_ROOT}/transfer_hotspot.svg`
     }
     default: {

@@ -2,3 +2,5 @@ export { default as ExpandedPoCReceiptContent } from './ExpandedPoCReceiptConten
 export { default as ExpandedPaymentContent } from './ExpandedPaymentContent'
 export { default as ExpandedStateChannelCloseContent } from './ExpandedStateChannelCloseContent'
 export { default as ExpandedRewardContent } from './ExpandedRewardContent'
+export { default as ExpandedTransferHotspotV1Content } from './ExpandedTransferHotspotV1Content'
+export { default as ExpandedTransferHotspotV2Content } from './ExpandedTransferHotspotV2Content'

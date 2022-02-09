@@ -44,6 +44,7 @@ const getTxnComponent = (txn) => {
     case 'state_channel_open_v1':
       return StateChannelOpenV1
     case 'transfer_hotspot_v1':
+    case 'transfer_hotspot_v2':
       return TransferHotspotV1
     case 'add_gateway_v1':
       return AddGatewayV1

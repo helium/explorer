@@ -5,19 +5,16 @@ import MapButton from './MapButton'
 import SearchBar from '../SearchBar'
 import Link from 'next/link'
 import classNames from 'classnames'
-import BetaBanner from '../BetaBanner/BetaBanner'
-import { useContext } from 'react'
-import BetaBannerContext from '../BetaBanner/BannerContext'
+import Banner from '../Banner/Banner'
 
 const { Header } = Layout
 
 const NavHeader = () => {
-  const { showBetaBanner, toggleBetaBanner } = useContext(BetaBannerContext)
   return (
     <>
-      {showBetaBanner && <BetaBanner toggleBetaBanner={toggleBetaBanner} />}
+      <Banner />
       <Header
-        className={classNames('z-40', { 'mt-14': showBetaBanner })}
+        className={classNames('z-40 mt-14')}
         style={{
           backgroundColor: '#101725',
           display: 'flex',

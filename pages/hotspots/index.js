@@ -39,16 +39,16 @@ const Hotspots = ({
   } = useStats(initialStats)
   const { latestHotspots } = useLatestHotspots(initialLatestHotspots)
 
-  const days = hotspotGrowth.length
-  const hotspotGrowth24Hours =
-    hotspotGrowth[days - 1].count - hotspotGrowth[days - 2].count
-  const hotspotGrowth24HourPreviousPeriod =
-    hotspotGrowth[days - 2].count - hotspotGrowth[days - 3].count
+  // const days = hotspotGrowth.length
+  // const hotspotGrowth24Hours =
+  //   hotspotGrowth[days - 1].count - hotspotGrowth[days - 2].count
+  // const hotspotGrowth24HourPreviousPeriod =
+  //   hotspotGrowth[days - 2].count - hotspotGrowth[days - 3].count
 
-  const hotspotGrowth30Days =
-    hotspotGrowth[days - 1].count - hotspotGrowth[days - 31].count
-  const hotspotGrowth30DayPreviousPeriod =
-    hotspotGrowth[days - 31].count - hotspotGrowth[days - 61].count
+  // const hotspotGrowth30Days =
+  //   hotspotGrowth[days - 1].count - hotspotGrowth[days - 31].count
+  // const hotspotGrowth30DayPreviousPeriod =
+  //   hotspotGrowth[days - 31].count - hotspotGrowth[days - 61].count
 
   return (
     <AppLayout
@@ -60,31 +60,31 @@ const Hotspots = ({
       url={`https://explorer.helium.com/accounts/hotspots`}
     >
       <TopBanner icon={HotspotsImg} title="Hotspots" />
-      <TopChart
+      {/* <TopChart
         title="Hotspot Network Growth"
         chart={<HotspotChart data={hotspotGrowth} />}
-      />
+      /> */}
       <div className="max-w-screen-lg mx-auto px-2 sm:px-3 md:px-4 lg:px-10 pt-5 pb-24">
         {/* Stats section */}
         <section className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3 lg:gap-4">
           <Widget
             title="Total Hotspots"
             value={totalHotspots.toLocaleString()}
-            change={
-              ((totalHotspots - hotspotGrowth.slice(-11, -10)[0].count) /
-                totalHotspots) *
-              100
-            }
-            changeSuffix="%"
+            // change={
+            //   ((totalHotspots - hotspotGrowth.slice(-11, -10)[0].count) /
+            //     totalHotspots) *
+            //   100
+            // }
+            // changeSuffix="%"
           />
-          <Widget
+          {/* <Widget
             title="Hotspots Online"
             value={onlineHotspotCount.toLocaleString()}
             change={(onlineHotspotCount / totalHotspots) * 100}
             changeSuffix="%"
             changeIsAmbivalent
-          />
-          <Widget
+          /> */}
+          {/* <Widget
             title="Hotspots Added in Last 24 Hours"
             value={hotspotGrowth24Hours.toLocaleString()}
             change={
@@ -103,18 +103,18 @@ const Hotspots = ({
               100
             }
             changeSuffix="%"
-          />
+          /> */}
           <Widget title="Cities" value={totalCities.toLocaleString()} />
           <Widget title="Countries" value={totalCountries.toLocaleString()} />
         </section>
 
         {/* Hotspot Map section */}
-        <section className="mt-5 bg-white rounded-lg p-5">
+        {/* <section className="mt-5 bg-white rounded-lg p-5">
           <h2 className="font-medium text-base pb-4 m-0">Hotspot Map</h2>
           <a href="/coverage">
             <MiniCoverageMap zoomLevel={0.9} />
           </a>
-        </section>
+        </section> */}
 
         {/* Top cities section */}
         <section className="mt-5 bg-white rounded-lg py-5">
@@ -141,50 +141,50 @@ const Hotspots = ({
 }
 
 export async function getStaticProps() {
-  const client = new Client()
+  // const client = new Client()
   const stats = await fetchStats()
-  const hotspots = await (await client.hotspots.list()).take(100000)
+  // const hotspots = [] // await (await client.hotspots.list()).take(100000)
 
-  const now = new Date()
+  // const now = new Date()
 
-  const hotspotGrowth = [
-    {
-      time: getUnixTime(now),
-      count: stats.totalHotspots,
-    },
-  ]
+  // const hotspotGrowth = [
+  //   {
+  //     time: getUnixTime(now),
+  //     count: stats.totalHotspots,
+  //   },
+  // ]
 
   const makers = await getMakersData()
 
-  Array.from({ length: 364 }, (x, i) => {
-    const date = sub(now, { days: i + 1 })
-    // count hotspots where the time added is earlier than the given date
-    const count = countBy(
-      hotspots,
-      (h) => compareAsc(new Date(h.timestampAdded), date) === -1,
-    ).true
+  // Array.from({ length: 364 }, (x, i) => {
+  //   const date = sub(now, { days: i + 1 })
+  //   // count hotspots where the time added is earlier than the given date
+  //   const count = countBy(
+  //     hotspots,
+  //     (h) => compareAsc(new Date(h.timestampAdded), date) === -1,
+  //   ).true
 
-    hotspotGrowth.unshift({
-      time: getUnixTime(date),
-      count,
-    })
-  })
+  //   hotspotGrowth.unshift({
+  //     time: getUnixTime(date),
+  //     count,
+  //   })
+  // })
 
-  const onlineHotspotCount = countBy(
-    hotspots,
-    (h) => h.status.online === 'online',
-  ).true
+  // const onlineHotspotCount = countBy(
+  //   hotspots,
+  //   (h) => h.status.online === 'online',
+  // ).true
 
-  const latestHotspots = JSON.parse(JSON.stringify(hotspots.slice(0, 20)))
+  // const latestHotspots = JSON.parse(JSON.stringify(hotspots.slice(0, 20)))
 
   const topCities = await fetchCitiesByOnline()
   const topCitiesTotal = await fetchCitiesByTotal()
 
   return {
     props: {
-      hotspotGrowth,
-      onlineHotspotCount,
-      latestHotspots,
+      hotspotGrowth: [],
+      onlineHotspotCount: 0,
+      latestHotspots: [],
       stats,
       makers,
       topCities,

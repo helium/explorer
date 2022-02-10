@@ -29,7 +29,7 @@ export const changelogContent = {
       {
         type: 'paragraph',
         content:
-          "How does the new list differ from the old? The old list showed the Hotspots that saw you and had no impact on your earnings whether there were 0 or 50 Hotspots on the list. ",
+          'How does the new list differ from the old? The old list showed the Hotspots that saw you and had no impact on your earnings whether there were 0 or 50 Hotspots on the list. ',
       },
       {
         type: 'paragraph',
@@ -42,6 +42,6 @@ export const changelogContent = {
           'https://docs.helium.com/troubleshooting/understanding-witnesses#transmit-scale-and-witnessed-list',
       },
     ],
-    active: true,
+    active: false,
   },
 }

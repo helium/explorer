@@ -18,6 +18,8 @@ import {
   // ExpandedPaymentContent,
   ExpandedRewardContent,
   ExpandedStateChannelCloseContent,
+  ExpandedTransferHotspotV1Content,
+  ExpandedTransferHotspotV2Content,
 } from './InlineExpandedContent'
 import { shouldPrefetchDetails } from './PrefetchedSummaries/utils'
 import { isDefaultExpandedStyle } from './InlineExpandedContent/utils'
@@ -36,6 +38,12 @@ const getExpandedComponent = (txn) => {
     case 'poc_receipts_v1':
     case 'poc_receipts_v2': {
       return ExpandedPoCReceiptContent
+    }
+    case 'transfer_hotspot_v1': {
+      return ExpandedTransferHotspotV1Content
+    }
+    case 'transfer_hotspot_v2': {
+      return ExpandedTransferHotspotV2Content
     }
     // TODO: add other types here
     default:

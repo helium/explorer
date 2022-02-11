@@ -25,6 +25,19 @@ export const useLatestHotspots = (initialData, count = 20) => {
   }
 }
 
+export const getHotspotDenylistPresenceCount = async (hotspotAddress) => {
+  try {
+    const denylistResponse = await fetch(
+      `https://cors-anywhere.herokuapp.com/https://denylist-api.herokuapp.com/api/hotspots/${hotspotAddress}`,
+    )
+
+    console.log(denylistResponse)
+    return 1
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export const getHotspotRewardsSum = async (address, numDaysBack) => {
   const initialDate = new Date()
   const endDate = new Date()

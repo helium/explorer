@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import animalHash from 'angry-purple-tiger'
 import { useParams } from 'react-router'
 import InfoBox from './InfoBox'
@@ -22,6 +22,7 @@ import { useCallback } from 'react'
 import AccountIcon from '../AccountIcon'
 import SkeletonActivityList from '../Lists/ActivityList/SkeletonActivityList'
 import ChangelogIndicator from '../Common/Changelog/ChangelogIndicator'
+import { getHotspotDenylistPresenceCount } from '../../data/hotspots'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -66,6 +67,17 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
       clearSelectedHotspot()
     }
   }, [clearSelectedHotspot])
+
+  const [denylistCount, setDenylistCount] = useState(0)
+
+  useEffect(() => {
+    const fetchCount = async () => {
+      const count = await getHotspotDenylistPresenceCount(address)
+
+      setDenylistCount(count)
+    }
+    fetchCount()
+  }, [address])
 
   const generateSubtitles = useCallback(
     (hotspot) => {

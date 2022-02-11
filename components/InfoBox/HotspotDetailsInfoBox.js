@@ -21,8 +21,8 @@ import Skeleton from '../Common/Skeleton'
 import { useCallback } from 'react'
 import AccountIcon from '../AccountIcon'
 import SkeletonActivityList from '../Lists/ActivityList/SkeletonActivityList'
-import ChangelogIndicator from '../Common/Changelog/ChangelogIndicator'
-import { getHotspotDenylistPresenceCount } from '../../data/hotspots'
+import { getHotspotDenylistResults } from '../../data/hotspots'
+import DenylistIcon from '../Icons/DenylistIcon'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -60,21 +60,18 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
 
   const IS_DATA_ONLY = useMemo(() => isDataOnly(hotspot), [hotspot])
 
-  const title = animalHash(address)
-
   useEffect(() => {
     return () => {
       clearSelectedHotspot()
     }
   }, [clearSelectedHotspot])
 
-  const [denylistCount, setDenylistCount] = useState(0)
+  const [isOnDenylist, setIsOnDenylist] = useState(false)
 
   useEffect(() => {
     const fetchCount = async () => {
-      const count = await getHotspotDenylistPresenceCount(address)
-
-      setDenylistCount(count)
+      const denylistResults = await getHotspotDenylistResults(address)
+      if (denylistResults?.length > 0) setIsOnDenylist(denylistResults)
     }
     fetchCount()
   }, [address])
@@ -195,9 +192,35 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
     ]
   }
 
+  const generateTitle = useCallback(
+    (address) => {
+      const title = animalHash(address)
+
+      return (
+        <div className="flex flex-col items-start justify-start">
+          <div className="w-full items-center justify-between relative">
+            {title}
+          </div>
+          {isOnDenylist && (
+            <a
+              href="https://github.com/helium/denylist"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-sans uppercase text-white font-black bg-red-400 hover:bg-red-500 rounded-md px-2 py-1 mt-1 flex items-center justify-center"
+            >
+              <DenylistIcon className="text-white h-3 w-3 mr-1" />
+              On Denylist
+            </a>
+          )}
+        </div>
+      )
+    },
+    [isOnDenylist],
+  )
+
   return (
     <InfoBox
-      title={title}
+      title={generateTitle(address)}
       metaTitle={`Hotspot ${animalHash(address)}`}
       subtitles={generateSubtitles(hotspot)}
       breadcrumbs={generateBreadcrumbs(hotspot)}
@@ -221,13 +244,6 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
           title="Witnessed"
           path="witnessed"
           key="witnessed"
-          changelogIndicator={
-            <ChangelogIndicator
-              changelogItemKey="witnessed"
-              positionClasses="top-[290px] md:top-[250px] left-[225px] md:left-[260px]"
-              sizeClasses="w-4 h-4 md:w-4 md:h-4"
-            />
-          }
           hidden={IS_DATA_ONLY}
         >
           {isLoading ? <SkeletonList /> : <WitnessedPane hotspot={hotspot} />}

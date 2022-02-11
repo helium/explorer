@@ -20,8 +20,8 @@ const ConsensusGroupPane = () => {
   return (
     <InfoBoxPaneContainer span={1} padding={false}>
       <ValidatorsList
-        validators={consensusGroup}
-        recentGroups={recentGroups}
+        validators={consensusGroup || []}
+        recentGroups={recentGroups || []}
         title={`Currently Elected Validators (${consensusGroup?.length})`}
         isLoading={isLoading}
       />

@@ -216,6 +216,12 @@ export const communityToolsList = [
     url: 'https://hs-analyzer.com',
     description: 'HS Analyzer is simple tool for checking your Helium hotspot and its stats (RSSI, Valid / Invalid Beacons etc.).',
     tags: [types.monitoring]
+  },
+  {
+    name: 'hnt.sh',
+    url: 'https://hnt.sh',
+    description: 'Never lose earnings again, we will monitor your hotspots 24/7 and ping them every 5 minutes.',
+    tags: [types.monitoring]
   }
 
   // The lines below are a template that you can copy and paste and then populate

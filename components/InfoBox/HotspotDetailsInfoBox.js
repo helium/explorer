@@ -71,7 +71,11 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
   useEffect(() => {
     const fetchCount = async () => {
       const denylistResults = await getHotspotDenylistResults(address)
-      if (denylistResults?.length > 0) setIsOnDenylist(denylistResults)
+      if (denylistResults?.length > 0) {
+        setIsOnDenylist(true)
+      } else {
+        setIsOnDenylist(false)
+      }
     }
     fetchCount()
   }, [address])

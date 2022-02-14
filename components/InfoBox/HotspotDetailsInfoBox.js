@@ -23,6 +23,7 @@ import AccountIcon from '../AccountIcon'
 import SkeletonActivityList from '../Lists/ActivityList/SkeletonActivityList'
 import { getHotspotDenylistResults } from '../../data/hotspots'
 import DenylistIcon from '../Icons/DenylistIcon'
+import { Tooltip } from 'antd'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -206,15 +207,20 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
             {title}
           </div>
           {isOnDenylist && (
-            <a
-              href="https://github.com/helium/denylist"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs font-sans uppercase text-white font-black bg-red-400 hover:bg-red-500 rounded-md px-2 py-1 mt-1 flex items-center justify-center"
+            <Tooltip
+              title="This Hotspot is on the denylist. Click to learn more."
+              placement="right"
             >
-              <DenylistIcon className="text-white h-3 w-3 mr-1" />
-              On Denylist
-            </a>
+              <a
+                href="https://github.com/helium/denylist"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-sans uppercase text-white font-black bg-red-400 hover:bg-red-500 rounded-md px-2 py-1 mt-1 flex items-center justify-center"
+              >
+                <DenylistIcon className="text-white h-3 w-3 mr-1" />
+                On Denylist
+              </a>
+            </Tooltip>
           )}
         </div>
       )

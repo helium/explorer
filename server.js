@@ -6,6 +6,7 @@ const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
 const compression = require('compression')
 const url = require('url')
+const fs = require('fs')
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 3000
@@ -30,6 +31,18 @@ if (!dev && cluster.isMaster) {
 
   app.prepare().then(() => {
     const server = express()
+
+    const pathToIndex = path.join(__dirname, '.next/server/pages/index.html')
+    server.get('/', (req, res) => {
+      const raw = fs.readFileSync(pathToIndex)
+      console.log('raw', raw)
+      const pageTitle = 'Homepage - Welcome to my page'
+      const updated = raw.replace(
+        '__PAGE_META_TAGS__',
+        `<title>${pageTitle}</title>`,
+      )
+      res.send(updated)
+    })
 
     if (!dev) {
       console.log('in production server config')
@@ -67,6 +80,9 @@ if (!dev && cluster.isMaster) {
       //   'Cache-Control': 'public, max-age=3600'
       // });
       const parsedUrl = url.parse(req.url, true)
+      const { pathname, query } = parsedUrl
+      console.log('pathname', pathname)
+      console.log('query', query)
       nextHandler(req, res, parsedUrl)
     })
 

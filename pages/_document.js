@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+import MetaTags from '../components/AppLayout/MetaTags'
 
 class ExplorerDocument extends Document {
   static async getInitialProps(ctx) {
@@ -9,7 +10,9 @@ class ExplorerDocument extends Document {
   render() {
     return (
       <Html>
-        <Head>__PAGE_META_TAGS__</Head>
+        <Head>
+          <MetaTags />
+        </Head>
         <body>
           <Main />
           <NextScript />

@@ -30,11 +30,11 @@ const InfoBox = ({
         },
       )}
     >
-      <Helmet>
+      {/* <Helmet>
         <title>
           {metaTitle ? `${metaTitle} — Helium Explorer` : 'Helium Explorer'}
         </title>
-      </Helmet>
+      </Helmet> */}
       <div className="w-full md:h-screen h-full flex flex-col items-end justify-end md:justify-start max-h-90p md:max-h-screen relative">
         <div id="portal-destination" />
         <div className="flex mt-40 md:mt-0 justify-between w-full p-4 rounded-t-2xl md:rounded-none titlebox-blur md:pt-28">

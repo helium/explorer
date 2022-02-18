@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import animalHash from 'angry-purple-tiger'
 import { round, sumBy } from 'lodash'
 import StatusCircle from '../Hotspots/StatusCircle'
@@ -9,6 +9,9 @@ import RewardScaleHex from '../Common/RewardScaleHex'
 import Skeleton from '../Common/Skeleton'
 import HotspotTimeAgo from '../Common/HotspotTimeAgo'
 import { isDataOnly } from '../Hotspots/utils'
+import classNames from 'classnames'
+import { getHotspotDenylistResults } from '../../data/hotspots'
+import DenylistIcon from '../Icons/DenylistIcon'
 
 const HexHotspotsList = ({
   hotspots,
@@ -70,22 +73,39 @@ const HotspotRewards = ({ address }) => {
 }
 
 const HotspotItem = ({ hotspot }) => {
+  const [isOnDenylist, setIsOnDenylist] = useState(false)
+
+  useEffect(() => {
+    const checkDenylist = async () => {
+      const denylistResults = await getHotspotDenylistResults(hotspot.address)
+      if (denylistResults?.length > 0) setIsOnDenylist(true)
+    }
+    if (hotspot) checkDenylist()
+  }, [hotspot])
+
   return (
     <>
-      <div className="w-full">
-        <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans">
+      <div className={classNames('w-full', { 'opacity-50': isOnDenylist })}>
+        <div className="text-sm md:text-base font-medium text-darkgray-800 font-sans flex items-center justify-start">
           {!isDataOnly(hotspot) && <StatusCircle status={hotspot.status} />}
           {animalHash(hotspot.address)}
+          {isOnDenylist && (
+            <span className="text-xs font-sans text-white bg-red-400 rounded-md p-1 ml-1 mt-0.5 flex items-center justify-center">
+              <DenylistIcon className="w-3 h-3 text-white" />
+            </span>
+          )}
         </div>
         <div className="flex items-center space-x-4 h-6 text-gray-525 text-xs md:text-sm whitespace-nowrap">
           <RewardScaleHex rewardScale={hotspot?.rewardScale} />
           <HotspotRewards address={hotspot.address} />
         </div>
       </div>
-      <div className="flex items-center px-4">
-        <span className="whitespace-nowrap text-xs md:text-sm font-sans text-gray-525">
-          <HotspotTimeAgo hotspot={hotspot} />
-        </span>
+      <div className="flex flex-col items-center justify-center px-4">
+        <div className="flex items-center">
+          <span className="whitespace-nowrap text-xs md:text-sm font-sans text-gray-525">
+            <HotspotTimeAgo hotspot={hotspot} />
+          </span>
+        </div>
       </div>
       <div className="flex items-center">
         <img alt="" src="/images/details-arrow.svg" />

@@ -25,6 +25,21 @@ export const useLatestHotspots = (initialData, count = 20) => {
   }
 }
 
+export const getHotspotDenylistResults = async (hotspotAddress) => {
+  try {
+    const denylistResponse = await (
+      await fetch(
+        `https://denylist-api.herokuapp.com/api/hotspots/${hotspotAddress}`,
+      )
+    ).json()
+    const { denylists } = denylistResponse
+    return denylists
+  } catch (e) {
+    console.error(e)
+    return null
+  }
+}
+
 export const getHotspotRewardsSum = async (address, numDaysBack) => {
   const initialDate = new Date()
   const endDate = new Date()

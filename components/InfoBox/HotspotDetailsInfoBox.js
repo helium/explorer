@@ -235,7 +235,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
       subtitles={generateSubtitles(hotspot)}
       breadcrumbs={generateBreadcrumbs(hotspot)}
     >
-      <TabNavbar>
+      <TabNavbar htmlTitleRoot={`${animalHash(address)}`}>
         <TabPane title="Statistics" key="statistics">
           {isLoading ? (
             <SkeletonWidgets />

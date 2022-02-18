@@ -11,6 +11,7 @@ import classNames from 'classnames'
 import { castArray } from 'lodash'
 import { useScrollIndicators } from '../../hooks/useScrollIndicators'
 import ScrollIndicator from '../../hooks/useScrollIndicators'
+import { Helmet } from 'react-helmet'
 
 const NavItem = ({
   title,
@@ -65,7 +66,12 @@ const NavItem = ({
   )
 }
 
-const TabNavbar = ({ centered = false, className, children }) => {
+const TabNavbar = ({
+  centered = false,
+  className,
+  htmlTitleRoot,
+  children,
+}) => {
   const scrollContainer = useRef(null)
 
   const {
@@ -167,6 +173,11 @@ const TabNavbar = ({ centered = false, className, children }) => {
             exact
             path={pane.props.path ? `${path}/${pane.props.path}` : path}
           >
+            <Helmet>
+              <title>{`${htmlTitleRoot ? `${htmlTitleRoot} – ` : ''}${
+                pane.props.title
+              }`}</title>
+            </Helmet>
             {pane}
           </Route>
         ))}

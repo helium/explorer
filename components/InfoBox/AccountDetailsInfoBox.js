@@ -60,7 +60,7 @@ const AccountDetailsInfoBox = () => {
           : [{ title: 'Overview', path: '/' }]
       }
     >
-      <TabNavbar>
+      <TabNavbar htmlTitleRoot={`Account ${address.slice(0, 4)}...`}>
         <TabPane title="Overview" key="overview">
           {renderOverviewPane()}
         </TabPane>

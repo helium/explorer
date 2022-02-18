@@ -68,7 +68,7 @@ const HexDetailsInfoBox = () => {
       breadcrumbs={[{ title: 'Hotspots', path: '/hotspots' }]}
       subtitles={generateSubtitles(hotspots?.[0])}
     >
-      <TabNavbar>
+      <TabNavbar htmlTitleRoot={`Hex ${index.slice(0, 5)}...`}>
         <TabPane title="Hotspots" key="hotspots">
           <div
             className={classNames(

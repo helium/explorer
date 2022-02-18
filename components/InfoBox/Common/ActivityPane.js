@@ -1,6 +1,5 @@
 import classNames from 'classnames'
-import { upperFirst } from 'lodash'
-import debounce from 'lodash.debounce'
+import { upperFirst, debounce } from 'lodash'
 import { useEffect, useRef, useState, memo, useCallback } from 'react'
 import { useActivity } from '../../../data/activity'
 import ActivityList from '../../Lists/ActivityList/ActivityList'

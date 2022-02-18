@@ -94,7 +94,7 @@ const CityDetailsInfoBox = () => {
       breadcrumbs={generateBreadcrumbs(selectedCity)}
       subtitles={generateSubtitles(selectedCity)}
     >
-      <TabNavbar>
+      <TabNavbar htmlTitleRoot={selectedCity?.longCity}>
         <TabPane title="Statistics" key="statistics">
           {isLoading ? (
             <SkeletonWidgets />

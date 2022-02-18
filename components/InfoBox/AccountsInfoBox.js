@@ -10,7 +10,7 @@ const AccountsInfoBox = () => {
 
   return (
     <InfoBox title="Accounts" metaTitle="Accounts">
-      <TabNavbar>
+      <TabNavbar htmlTitleRoot="Accounts">
         <TabPane title="Overview" key="overview">
           <div />
         </TabPane>

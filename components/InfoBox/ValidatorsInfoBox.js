@@ -26,7 +26,7 @@ const ValidatorsInfoBox = () => {
 
   return (
     <InfoBox title="Validators" metaTitle="Validators">
-      <TabNavbar basePath="validators">
+      <TabNavbar basePath="validators" htmlTitleRoot="Validators">
         <TabPane title="Statistics" key="statistics">
           <InfoBoxPaneContainer>
             <Widget

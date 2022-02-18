@@ -78,7 +78,7 @@ const ValidatorDetailsInfoBox = () => {
       subtitles={generateSubtitles()}
       breadcrumbs={[{ title: 'Validators', path: '/validators/all' }]}
     >
-      <TabNavbar>
+      <TabNavbar htmlTitleRoot={`${animalHash(address)}`}>
         <TabPane title="Overview" key="overview">
           <OverviewPane />
         </TabPane>

@@ -8,7 +8,7 @@ import ElectionsPane from './Common/ElectionsPane'
 const BlocksInfoBox = () => {
   return (
     <InfoBox title={<I18n t="blocks.title" />} metaTitle="Blocks">
-      <TabNavbar basePath="blocks">
+      <TabNavbar basePath="blocks" htmlTitleRoot="Blocks">
         <TabPane title="Statistics" key="statistics">
           <BlockStatisticsPane />
         </TabPane>

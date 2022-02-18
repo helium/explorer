@@ -6,7 +6,6 @@ const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
 const compression = require('compression')
 const url = require('url')
-const fs = require('fs')
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 3000

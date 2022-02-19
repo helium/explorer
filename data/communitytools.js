@@ -216,6 +216,12 @@ export const communityToolsList = [
     url: 'https://hs-analyzer.com',
     description: 'HS Analyzer is simple tool for checking your Helium hotspot and its stats (RSSI, Valid / Invalid Beacons etc.).',
     tags: [types.monitoring]
+  },
+  {
+    name: 'Helium Board',
+    url: 'https://www.heliumboard.com/',
+    description: 'Helium Board is sophisticated tool for seeing reports for Helium hotspots, overall Helium network, receiving alerts for set triggers and access multiple tools (PeerPing, PeerBook Inquiry, Hotspot Analysis etc.)',
+    tags: [types.monitoring] [types.planning]
   }
 
   // The lines below are a template that you can copy and paste and then populate

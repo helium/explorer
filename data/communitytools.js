@@ -60,6 +60,13 @@ export const communityToolsList = [
     tags: [types.monitoring],
   },
   {
+    name: 'Helert',
+    url: 'https://helert.com',
+    description:
+      'Email alerts for new nearby hotspots, offline hotspots, transmit scale changes and more!',
+    tags: [types.monitoring],
+  },
+  {
     name: 'Helistats',
     url: 'https://apps.apple.com/us/app/helistats/id1573119107',
     description:

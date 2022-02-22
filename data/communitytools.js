@@ -215,6 +215,12 @@ export const communityToolsList = [
     name: 'HS Analyzer',
     url: 'https://hs-analyzer.com',
     description: 'HS Analyzer is simple tool for checking your Helium hotspot and its stats (RSSI, Valid / Invalid Beacons etc.).',
+    tags: [types.monitoring, types.ios]
+  },
+   {
+    name: 'DataGovs',
+    url: 'https://testflight.apple.com/join/8VZV1pxF',
+    description: 'DataGovs on Govs protocol lets teams and organizations buy, connect, automate, and monitor assets in one place—Hotspots and sensors.',
     tags: [types.monitoring]
   }
 

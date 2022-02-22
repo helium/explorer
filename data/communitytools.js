@@ -220,7 +220,7 @@ export const communityToolsList = [
    {
     name: 'DataGovs',
     url: 'https://testflight.apple.com/join/8VZV1pxF',
-    description: 'DataGovs on Govs protocol let’s teams and orgs in buy, connect, automate, and monitor assets in one place. Hotspots and sensors.',
+    description: 'DataGovs on Govs protocol lets teams and organizations buy, connect, automate, and monitor assets in one place—Hotspots and sensors.',
     tags: [types.monitoring]
   }
 

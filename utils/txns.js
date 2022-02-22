@@ -75,7 +75,7 @@ const CONFIG = {
   poc_challengees: {
     color: '#1D91F8',
     name: 'Beacon',
-    hotspotContextName: 'Broadcasted Beacon',
+    hotspotContextName: 'Broadcast Beacon',
     tooltip: 'PoC challengee',
   },
   assert_location_v1: {

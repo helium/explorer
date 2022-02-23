@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.helium.wallet.app",
+      "sha256_cert_fingerprints": [
+        "67:1A:2D:23:0B:07:D5:6A:B7:5D:F0:CB:D7:AA:51:61:74:31:4C:BE:43:A4:61:02:F0:06:84:99:87:7E:29:09"
+      ]
+    }
+  }
+]

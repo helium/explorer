@@ -229,6 +229,12 @@ export const communityToolsList = [
     url: 'https://testflight.apple.com/join/8VZV1pxF',
     description: 'DataGovs on Govs protocol lets teams and organizations buy, connect, automate, and monitor assets in one place—Hotspots and sensors.',
     tags: [types.monitoring]
+  },
+  {
+    name: 'Helium Board',
+    url: 'https://www.heliumboard.com/',
+    description: 'Helium Board is a sophisticated tool for seeing reports for Helium hotspots and the overall Helium network, as well as receiving alerts for set triggers, and accessing multiple tools (PeerPing, PeerBook Inquiry, Hotspot Analysis etc.)',
+    tags: [types.monitoring, types.planning],
   }
 
   // The lines below are a template that you can copy and paste and then populate

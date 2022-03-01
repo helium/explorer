@@ -220,7 +220,7 @@ export const communityToolsList = [
   {
     name: 'Helium Board',
     url: 'https://www.heliumboard.com/',
-    description: 'Helium Board is sophisticated tool for seeing reports for Helium hotspots, overall Helium network, receiving alerts for set triggers and access multiple tools (PeerPing, PeerBook Inquiry, Hotspot Analysis etc.)',
+    description: 'Helium Board is a sophisticated tool for seeing reports for Helium hotspots and the overall Helium network, as well as receiving alerts for set triggers, and accessing multiple tools (PeerPing, PeerBook Inquiry, Hotspot Analysis etc.)',
     tags: [types.monitoring, types.planning],
   }
 

@@ -1,46 +1,17 @@
 import classNames from 'classnames'
 import { upperFirst, debounce } from 'lodash'
-import { useEffect, useRef, useState, memo, useCallback } from 'react'
+import { useEffect, useRef, useState, memo, useCallback, useMemo } from 'react'
 import { useActivity } from '../../../data/activity'
 import ActivityList from '../../Lists/ActivityList/ActivityList'
-import PillNavbar from '../../Nav/PillNavbar'
+import PillNavbar, { PillPane } from '../../Nav/PillNavbar'
 import { Link } from 'react-router-i18n'
-
-const filtersByContext = {
-  hotspot: {
-    'All Activity': [],
-    Beacons: ['poc_receipts_v1', 'poc_receipts_v2'],
-    Data: ['state_channel_close_v1'],
-    Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
-  },
-  account: {
-    'All Activity': [],
-    Payments: ['payment_v1', 'payment_v2'],
-    Stakes: [
-      'stake_validator_v1',
-      'unstake_validator_v1',
-      'transfer_validator_stake_v1',
-    ],
-    'Hotspot Transfers': ['transfer_hotspot_v1', 'transfer_hotspot_v2'],
-    'Token Burns': ['token_burn_v1'],
-    Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
-  },
-  validator: {
-    'All Activity': [],
-    Heartbeats: ['validator_heartbeat_v1'],
-    Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
-    Stakes: [
-      'stake_validator_v1',
-      'unstake_validator_v1',
-      'transfer_validator_stake_v1',
-    ],
-  },
-}
+import { activityFiltersByContext } from '../../../utils/activity'
+import TabNavbar, { TabPane } from '../../Nav/TabNavbar'
 
 const defaultFilter = {
-  hotspot: 'All Activity',
-  validator: 'All Activity',
-  account: 'All Activity',
+  hotspot: 'all',
+  validator: 'all',
+  account: 'all',
 }
 
 const ActivityPane = ({ context, address }) => {
@@ -48,12 +19,11 @@ const ActivityPane = ({ context, address }) => {
   const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
 
-  const [filter, setFilter] = useState(defaultFilter[context])
+  const [filter, setFilter] = useState(
+    activityFiltersByContext[defaultFilter[context]],
+  )
 
-  const filters = filtersByContext[context]
-
-  const { transactions, fetchMore, isLoadingInitial, isLoadingMore, hasMore } =
-    useActivity(context, address, filters[filter])
+  const filters = activityFiltersByContext[context]
 
   const setVisibility = useCallback(
     () =>
@@ -83,17 +53,31 @@ const ActivityPane = ({ context, address }) => {
     return () => currentScrollView.removeEventListener('scroll', handleScroll)
   }, [handleScroll])
 
+  const [filtersLoading, setFiltersLoading] = useState(false)
+
+  const currentFilters = useMemo(() => {
+    return Object.entries(filters).map(([key, value]) => ({
+      key,
+      value: value.types,
+      name: value.name,
+    }))
+  }, [filters, context])
+
   const handleUpdateFilter = useCallback((filterName) => {
+    setFiltersLoading(true)
     setFilter(filterName)
+    setFiltersLoading(false)
+
+    console.log(filter)
     scrollView.current.scrollTo(0, 0)
   }, [])
 
   return (
     <div
       ref={scrollView}
-      className={classNames('no-scrollbar', {
-        'overflow-y-scroll': !isLoadingInitial,
-        'overflow-y-hidden': isLoadingInitial,
+      className={classNames('no-scrollbar overflow-y-scroll', {
+        // 'overflow-y-scroll': !isLoadingInitial,
+        // 'overflow-y-hidden': isLoadingInitial,
       })}
     >
       <div
@@ -103,47 +87,102 @@ const ActivityPane = ({ context, address }) => {
         )}
       >
         <PillNavbar
-          navItems={Object.entries(filters).map(([key, value]) => ({
-            key,
-            value,
-          }))}
+          navItems={currentFilters}
           activeItem={filter}
-          disabled={isLoadingInitial || isLoadingMore}
+          // disabled={isLoadingInitial || isLoadingMore}
           onClick={handleUpdateFilter}
-        />
+        >
+          {currentFilters.map((filter) => {
+            return (
+              <PillPane title={filter.name} path={filter.key} key={filter.key}>
+                <ActivityList
+                  title={`${upperFirst(context)} Activity (${filter.name})`}
+                  description={
+                    <div className="flex flex-col space-y-2">
+                      <div>
+                        All transactions that this {context} has participated
+                        in, filtered by the currently selected filter ({filter}
+                        ).
+                      </div>
+                      <div>
+                        If you want to create an export of this activity for
+                        taxes or record-keeping purposes, you can use one of the
+                        community-developed tools to do so. You can browse them
+                        all{' '}
+                        <Link
+                          className="text-gray-800 font-bold hover:text-darkgray-800"
+                          to="/tools"
+                        >
+                          here
+                        </Link>
+                        .
+                      </div>
+                    </div>
+                  }
+                  context={context}
+                  address={address}
+                  filter={filter}
+                  isLoading={!filter}
+                  filters={filters}
+                  filtersLoading={filtersLoading}
+                  // transactions={transactions}
+                  // isLoadingMore={isLoadingMore}
+                  // fetchMore={fetchMore}
+                  // hasMore={hasMore}
+                />
+              </PillPane>
+            )
+          })}
+        </PillNavbar>
+
+        {/* <TabNavbar>
+          <TabPane title="Statistics" key="statistics">
+            <div>Hello</div>
+          </TabPane>
+          <TabPane title="Activity" key="all">
+            <div>Loading</div>
+          </TabPane>
+        </TabNavbar> */}
       </div>
-      <div className="grid grid-flow-row grid-cols-1">
-        <ActivityList
-          title={`${upperFirst(context)} Activity (${filter})`}
-          description={
-            <div className="flex flex-col space-y-2">
-              <div>
-                All transactions that this {context} has participated in,
-                filtered by the currently selected filter ({filter}).
+      {/* <div className="grid grid-flow-row grid-cols-1">
+        {filter && (
+          <ActivityList
+            title={`${upperFirst(context)} Activity (${
+              activityFiltersByContext[context][filter].name
+            })`}
+            description={
+              <div className="flex flex-col space-y-2">
+                <div>
+                  All transactions that this {context} has participated in,
+                  filtered by the currently selected filter ({filter}).
+                </div>
+                <div>
+                  If you want to create an export of this activity for taxes or
+                  record-keeping purposes, you can use one of the
+                  community-developed tools to do so. You can browse them all{' '}
+                  <Link
+                    className="text-gray-800 font-bold hover:text-darkgray-800"
+                    to="/tools"
+                  >
+                    here
+                  </Link>
+                  .
+                </div>
               </div>
-              <div>
-                If you want to create an export of this activity for taxes or
-                record-keeping purposes, you can use one of the
-                community-developed tools to do so. You can browse them all{' '}
-                <Link
-                  className="text-gray-800 font-bold hover:text-darkgray-800"
-                  to="/tools"
-                >
-                  here
-                </Link>
-                .
-              </div>
-            </div>
-          }
-          context={context}
-          address={address}
-          transactions={transactions}
-          isLoading={isLoadingInitial}
-          isLoadingMore={isLoadingMore}
-          fetchMore={fetchMore}
-          hasMore={hasMore}
-        />
-      </div>
+            }
+            context={context}
+            address={address}
+            filter={filter}
+            filters={filters}
+            filtersLoading={filtersLoading}
+            // transactions={transactions}
+            // isLoading={isLoadingInitial}
+            // isLoadingMore={isLoadingMore}
+            // fetchMore={fetchMore}
+            // hasMore={hasMore}
+          />
+        )}
+      </div> */}
     </div>
   )
 }

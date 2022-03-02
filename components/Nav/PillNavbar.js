@@ -1,17 +1,34 @@
+import { useCallback, useMemo, useRef } from 'react'
 import classNames from 'classnames'
-import { useCallback } from 'react'
 import { getTxnTypeColor } from '../../utils/txns'
 import { useScrollIndicators } from '../../hooks/useScrollIndicators'
 import ScrollIndicator from '../../hooks/useScrollIndicators'
-import { useRef } from 'react'
+import { matchPath } from 'react-router'
+import {
+  Route,
+  Switch,
+  useRouteMatch,
+  Link,
+  useLocation,
+} from 'react-router-dom'
+import { castArray } from 'lodash'
 
-const NavItem = ({ title, active = false, onClick, type, disabled }) => {
+const NavItem = ({
+  id,
+  title,
+  active = false,
+  onClick,
+  type,
+  disabled,
+  href,
+}) => {
   const handleClick = useCallback(() => {
-    onClick(title)
-  }, [onClick, title])
+    onClick(id)
+  }, [onClick, id])
 
   return (
-    <span
+    <Link
+      to={href}
       // don't allow clicking to another filter until the current one has finished loading
       {...(!disabled ? { onClick: handleClick } : {})}
       className={classNames(
@@ -25,11 +42,17 @@ const NavItem = ({ title, active = false, onClick, type, disabled }) => {
       style={active ? { backgroundColor: getTxnTypeColor(type) } : {}}
     >
       {title}
-    </span>
+    </Link>
   )
 }
 
-const PillNavbar = ({ navItems, activeItem, onClick, disabled }) => {
+const PillNavbar = ({
+  // navItems,
+  activeItem,
+  onClick,
+  disabled,
+  children,
+}) => {
   const scrollContainer = useRef(null)
 
   const {
@@ -39,6 +62,44 @@ const PillNavbar = ({ navItems, activeItem, onClick, disabled }) => {
     isScrolledToEnd,
     updateScrollIndicators,
   } = useScrollIndicators(scrollContainer)
+
+  const { path, url } = useRouteMatch()
+  const location = useLocation()
+
+  const navItems = useMemo(() => {
+    return castArray(children).map((c) => {
+      if (c)
+        return {
+          key: c.props.path,
+          title: c.props.title,
+          path: c.props.path,
+          // classes: c.props.classes,
+          // activeClasses: c.props.activeClasses,
+          // activeStyles: c.props.activeStyles,
+          // hidden: c.props.hidden,
+          // changelogIndicator: c.props.changelogIndicator,
+        }
+
+      return null
+    })
+  }, [children])
+
+  const navPanes = useMemo(() => {
+    return castArray(children)
+  }, [children])
+
+  const navMatch = useCallback(
+    (itemPath) => {
+      console.log(itemPath)
+      const match = matchPath(location.pathname, {
+        path: itemPath ? `${path}/${itemPath}` : path,
+        exact: false,
+      })
+      return match
+    },
+    [location.pathname, path],
+  )
+
   return (
     <>
       <div
@@ -49,11 +110,14 @@ const PillNavbar = ({ navItems, activeItem, onClick, disabled }) => {
         {navItems.map((item) => (
           <NavItem
             key={item.key}
-            title={item.key}
-            type={item.value[0]}
+            id={item.key}
+            title={item.title}
+            // type={item.value[0]}
+            active={navMatch(item.path)}
             active={item.key === activeItem}
             onClick={onClick}
             disabled={disabled}
+            href={item.path ? `${url}/${item.path}` : url}
           />
         ))}
         <span className="pr-4" />
@@ -70,8 +134,31 @@ const PillNavbar = ({ navItems, activeItem, onClick, disabled }) => {
         onClick={() => autoScroll({ direction: 'left' })}
         shown={isScrollable && !isScrolledToStart}
       />
+      <Switch>
+        {navPanes.map((pane) => {
+          console.log(url)
+          console.log(path)
+          console.log(pane.props.path)
+          return (
+            <Route
+              key={pane.key}
+              // exact
+              path={pane.props.path ? `${path}/${pane.props.path}` : path}
+            >
+              {/* <Helmet>
+              <title>{`${htmlTitleRoot ? `${htmlTitleRoot} – ` : ''}${
+                pane.props.title
+              }`}</title>
+            </Helmet> */}
+              {pane}
+            </Route>
+          )
+        })}
+      </Switch>
     </>
   )
 }
+
+export const PillPane = ({ children }) => children
 
 export default PillNavbar

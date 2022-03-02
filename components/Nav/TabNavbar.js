@@ -111,9 +111,10 @@ const TabNavbar = ({
     (itemPath) => {
       const match = matchPath(location.pathname, {
         path: itemPath ? `${path}/${itemPath}` : path,
-        exact: true,
+        exact: itemPath ? false : true,
       })
-      return match?.isExact || false
+      console.log(match)
+      return match //?.isExact || false
     },
     [location.pathname, path],
   )

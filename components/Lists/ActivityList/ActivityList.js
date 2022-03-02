@@ -6,6 +6,7 @@ import {
   getTxnTypeName,
 } from '../../../utils/txns'
 import ExpandableListItem from './ExpandableActivityListItem'
+import { useActivity } from '../../../data/activity'
 
 const isExpandable = (txn) => {
   return (
@@ -22,15 +23,28 @@ const ActivityList = ({
   description,
   address,
   context,
-  transactions,
-  isLoading = true,
-  fetchMore,
-  isLoadingMore,
-  hasMore,
+  filter,
+  filters,
+  filtersLoading,
+  // transactions,
+  // isLoading = true,
+  // fetchMore,
+  // isLoadingMore,
+  // hasMore,
 }) => {
   const handleSelectTxn = useCallback((txn) => {
     console.log('selected txn', txn)
   }, [])
+  console.log(filters)
+  console.log(filter)
+
+  const {
+    transactions,
+    fetchMore,
+    isLoadingInitial: isLoading,
+    isLoadingMore,
+    hasMore,
+  } = useActivity(context, address, filters[filter.key].types)
 
   const keyExtractor = useCallback((txn) => txn.hash, [])
 
@@ -100,11 +114,11 @@ const ActivityList = ({
       linkExtractor={linkExtractor}
       expandableItem={() => true}
       onSelectItem={handleSelectTxn}
-      isLoading={isLoading}
+      isLoading={isLoading || filtersLoading}
       renderItem={renderItem}
       blankTitle="No activity"
       fetchMore={fetchMore}
-      isLoadingMore={isLoadingMore}
+      isLoadingMore={isLoadingMore || filtersLoading}
       hasMore={hasMore}
       itemPadding={false}
     />

@@ -6,6 +6,7 @@ import {
   StateChannelCloseV1,
   StateChannelOpenV1,
   TransferHotspotV1,
+  TransferHotspotV2,
   ConsensusGroupV1,
   AddGatewayV1,
   AssertLocationV1,
@@ -45,6 +46,8 @@ const getTxnComponent = (txn) => {
       return StateChannelOpenV1
     case 'transfer_hotspot_v1':
       return TransferHotspotV1
+    case 'transfer_hotspot_v2':
+      return TransferHotspotV2
     case 'add_gateway_v1':
       return AddGatewayV1
     case 'assert_location_v1':

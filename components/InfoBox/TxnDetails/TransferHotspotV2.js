@@ -8,7 +8,7 @@ import animalHash from 'angry-purple-tiger'
 import { fetchHotspot } from '../../../data/hotspots'
 import Skeleton from '../../Common/Skeleton'
 
-const TransferHotspotV1 = ({ txn, inline }) => {
+const TransferHotspotV2 = ({ txn, inline }) => {
   const [transferredHotspot, setTransferredHotspot] = useState()
 
   useAsync(async () => {
@@ -31,15 +31,11 @@ const TransferHotspotV1 = ({ txn, inline }) => {
           change={<Skeleton className="w-1/3" />}
         />
       )}
-      <AccountWidget title="Seller" address={txn.seller} />
-      <AccountWidget title="Buyer" address={txn.buyer} />
-      <Widget
-        title="Payment to Seller"
-        value={txn.amountToSeller.toString(2)}
-      />
+      <AccountWidget title="Previous Owner" address={txn.owner} />
+      <AccountWidget title="New Owner" address={txn.newOwner} />
       <Widget title="Fee" value={txn.fee.toString()} />
     </InfoBoxPaneContainer>
   )
 }
 
-export default TransferHotspotV1
+export default TransferHotspotV2

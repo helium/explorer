@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import animalHash from 'angry-purple-tiger'
 import { useParams } from 'react-router'
 import InfoBox from './InfoBox'
@@ -21,7 +21,9 @@ import Skeleton from '../Common/Skeleton'
 import { useCallback } from 'react'
 import AccountIcon from '../AccountIcon'
 import SkeletonActivityList from '../Lists/ActivityList/SkeletonActivityList'
-import ChangelogIndicator from '../Common/Changelog/ChangelogIndicator'
+import { getHotspotDenylistResults } from '../../data/hotspots'
+import DenylistIcon from '../Icons/DenylistIcon'
+import { Tooltip } from 'antd'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -59,13 +61,25 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
 
   const IS_DATA_ONLY = useMemo(() => isDataOnly(hotspot), [hotspot])
 
-  const title = animalHash(address)
-
   useEffect(() => {
     return () => {
       clearSelectedHotspot()
     }
   }, [clearSelectedHotspot])
+
+  const [isOnDenylist, setIsOnDenylist] = useState(false)
+
+  useEffect(() => {
+    const fetchCount = async () => {
+      const denylistResults = await getHotspotDenylistResults(address)
+      if (denylistResults?.length > 0) {
+        setIsOnDenylist(true)
+      } else {
+        setIsOnDenylist(false)
+      }
+    }
+    fetchCount()
+  }, [address])
 
   const generateSubtitles = useCallback(
     (hotspot) => {
@@ -183,14 +197,45 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
     ]
   }
 
+  const generateTitle = useCallback(
+    (address) => {
+      const title = animalHash(address)
+
+      return (
+        <div className="flex flex-col items-start justify-start">
+          <div className="w-full items-center justify-between relative">
+            {title}
+          </div>
+          {isOnDenylist && (
+            <Tooltip
+              title="This Hotspot is on the denylist. Click to learn more."
+              placement="right"
+            >
+              <a
+                href="https://github.com/helium/denylist"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-sans uppercase text-white font-black bg-red-400 hover:bg-red-500 rounded-md px-2 py-1 mt-1 flex items-center justify-center"
+              >
+                <DenylistIcon className="text-white h-3 w-3 mr-1" />
+                On Denylist
+              </a>
+            </Tooltip>
+          )}
+        </div>
+      )
+    },
+    [isOnDenylist],
+  )
+
   return (
     <InfoBox
-      title={title}
+      title={generateTitle(address)}
       metaTitle={`Hotspot ${animalHash(address)}`}
       subtitles={generateSubtitles(hotspot)}
       breadcrumbs={generateBreadcrumbs(hotspot)}
     >
-      <TabNavbar>
+      <TabNavbar htmlTitleRoot={`${animalHash(address)}`}>
         <TabPane title="Statistics" key="statistics">
           {isLoading ? (
             <SkeletonWidgets />
@@ -209,13 +254,6 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
           title="Witnessed"
           path="witnessed"
           key="witnessed"
-          changelogIndicator={
-            <ChangelogIndicator
-              changelogItemKey="witnessed"
-              positionClasses="top-[290px] md:top-[250px] left-[225px] md:left-[260px]"
-              sizeClasses="w-4 h-4 md:w-4 md:h-4"
-            />
-          }
           hidden={IS_DATA_ONLY}
         >
           {isLoading ? <SkeletonList /> : <WitnessedPane hotspot={hotspot} />}

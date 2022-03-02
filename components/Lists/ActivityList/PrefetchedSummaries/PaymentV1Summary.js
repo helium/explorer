@@ -5,7 +5,7 @@ const PaymentV1Summary = ({ txn, role, address }) => {
   const amount = txn.amount.toString(2)
 
   const isSender = role === 'payer'
-  const sender = isSender ? address : txn.payer
+  const sender = isSender ? txn.payee : txn.payer
 
   return (
     <span className="flex items-center">

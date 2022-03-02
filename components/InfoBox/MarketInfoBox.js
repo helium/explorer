@@ -21,7 +21,7 @@ const MarketInfoBox = () => {
 
   return (
     <InfoBox title="Market" metaTitle="Market">
-      <TabNavbar>
+      <TabNavbar htmlTitleRoot={'Market'}>
         <TabPane title="Statistics" key="statistics">
           <InfoBoxPaneContainer>
             <TrendWidget

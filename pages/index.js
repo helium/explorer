@@ -1,16 +1,15 @@
 import React from 'react'
 import dynamic from 'next/dynamic'
 import { useHistory, useLocation } from 'react-router'
-import { Helmet } from 'react-helmet'
 import Header from '../components/Nav/Header'
 import Page from '../components/CoverageMap/Page'
-import MetaTags from '../components/AppLayout/MetaTags'
 import MapLayersBox from '../components/Map/MapLayersBox'
 import InfoBoxSwitch from '../components/InfoBox/InfoBoxSwitch'
 import useKeydown from '../hooks/useKeydown'
 import useGA from '../hooks/useGA'
 import Head from 'next/head'
 import mapboxglSupported from '@mapbox/mapbox-gl-supported'
+import { Helmet } from 'react-helmet'
 
 const mapSupported = mapboxglSupported.supported()
 
@@ -44,15 +43,8 @@ export const Index = ({ coverageUrl }) => {
           rel="stylesheet"
         />
       </Head>
-      <MetaTags
-        description={`View an interactive map of the Helium network and all the hotspots currently active around the world`}
-        openGraphImageAbsoluteUrl={
-          'https://explorer.helium.com/images/og/coverage.png'
-        }
-        url={'https://explorer.helium.com/coverage'}
-      />
       <Helmet>
-        <title>Helium Explorer</title>
+        <title data-react-helmet="true">Helium Explorer</title>
       </Helmet>
       <Header activeNav="coverage" />
       {mapSupported && <Map coverageUrl={coverageUrl} />}

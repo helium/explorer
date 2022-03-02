@@ -60,6 +60,13 @@ export const communityToolsList = [
     tags: [types.monitoring],
   },
   {
+    name: 'Helert',
+    url: 'https://helert.com',
+    description:
+      'Email alerts for new nearby hotspots, offline hotspots, transmit scale changes and more!',
+    tags: [types.monitoring],
+  },
+  {
     name: 'Helistats',
     url: 'https://apps.apple.com/us/app/helistats/id1573119107',
     description:
@@ -215,7 +222,19 @@ export const communityToolsList = [
     name: 'HS Analyzer',
     url: 'https://hs-analyzer.com',
     description: 'HS Analyzer is simple tool for checking your Helium hotspot and its stats (RSSI, Valid / Invalid Beacons etc.).',
+    tags: [types.monitoring, types.ios]
+  },
+   {
+    name: 'DataGovs',
+    url: 'https://testflight.apple.com/join/8VZV1pxF',
+    description: 'DataGovs on Govs protocol lets teams and organizations buy, connect, automate, and monitor assets in one place—Hotspots and sensors.',
     tags: [types.monitoring]
+  },
+  {
+    name: 'Helium Board',
+    url: 'https://www.heliumboard.com/',
+    description: 'Helium Board is a sophisticated tool for seeing reports for Helium hotspots and the overall Helium network, as well as receiving alerts for set triggers, and accessing multiple tools (PeerPing, PeerBook Inquiry, Hotspot Analysis etc.)',
+    tags: [types.monitoring, types.planning],
   }
 
   // The lines below are a template that you can copy and paste and then populate

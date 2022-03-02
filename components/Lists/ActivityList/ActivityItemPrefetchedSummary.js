@@ -7,6 +7,8 @@ import {
   StateChannelCloseSummary,
   RewardSummary,
   HeartbeatSummary,
+  TransferHotspotV1Summary,
+  TransferHotspotV2Summary,
 } from './PrefetchedSummaries'
 
 const getSummaryComponent = (txn) => {
@@ -31,6 +33,12 @@ const getSummaryComponent = (txn) => {
     }
     case 'validator_heartbeat_v1': {
       return HeartbeatSummary
+    }
+    case 'transfer_hotspot_v1': {
+      return TransferHotspotV1Summary
+    }
+    case 'transfer_hotspot_v2': {
+      return TransferHotspotV2Summary
     }
 
     // we can also return other types that won't be prefetched, but will show up as a

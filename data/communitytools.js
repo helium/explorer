@@ -24,6 +24,11 @@ export const types = {
     foregroundColor: '#32C48D',
     backgroundColor: '#ccf1e8',
   },
+  android: {
+    label: 'Android',
+    foregroundColor: '#FF4747',
+    backgroundColor: '#f8d4d9',
+  },
   planning: {
     label: 'Planning',
     foregroundColor: '#F0BB32',
@@ -78,6 +83,12 @@ export const communityToolsList = [
     url: 'https://helisum.com',
     description: 'Hotspot Monitoring and Dashboard solution',
     tags: [types.monitoring, types.export],
+  },
+  {
+    name: 'Helium Geek',
+    url: 'https://heliumgeek.com',
+    description: 'Check your hotspot vitals and your rewards, get notified for network issues and rewards. HeliumGeek supports iOS, Android, iOS widgets and Apple Watch app with complications.',
+    tags: [types.monitoring, types.android, types.ios],
   },
   {
     name: 'Heliumbot.io',

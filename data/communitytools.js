@@ -26,7 +26,7 @@ export const types = {
   },
   android: {
     label: 'Android',
-    foregroundColor: '#6486cb',
+    foregroundColor: '#FF4747',
     backgroundColor: '#f8d4d9',
   },
   planning: {

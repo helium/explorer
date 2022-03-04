@@ -2,10 +2,10 @@ import classNames from 'classnames'
 import { useAsync } from 'react-async-hook'
 import { fetchWitnessed } from '../../../data/hotspots'
 import WitnessedList from '../../Lists/WitnessedList'
-import animalHash from 'angry-purple-tiger'
 import Widget from '../../Widgets/Widget'
 import { useMemo } from 'react'
 import { generateRewardScaleColor } from '../../Hotspots/utils'
+import Hex from '../../Hex'
 
 const WitnessedPane = ({ hotspot }) => {
   const { result: witnessed, loading } = useAsync(fetchWitnessed, [
@@ -27,54 +27,56 @@ const WitnessedPane = ({ hotspot }) => {
 
   return (
     <div
-      className={classNames('grid grid-flow-row grid-cols-1 no-scrollbar', {
-        'overflow-y-scroll': !loading,
-        'overflow-y-hidden': loading,
-      })}
+      className={classNames(
+        'grid grid-flow-row grid-cols-1 no-scrollbar relative',
+        {
+          'overflow-y-scroll': !loading,
+          'overflow-y-hidden': loading,
+        },
+      )}
     >
+      <div className="w-full px-4 py-2 border-b border-solid border-gray-350 grid grid-flow-row grid-cols-2 gap-1 md:gap-2 sticky">
+        <Widget
+          title="Hotspots Witnessed"
+          span={1}
+          value={
+            witnessed?.length ? (
+              <div className="flex flex-row items-center justify-start">
+                <img
+                  src="/images/witness.svg"
+                  className="w-[16px] h-[16px] mr-1"
+                />
+                {witnessed.length}
+              </div>
+            ) : (
+              0
+            )
+          }
+        />
+        <Widget
+          span={1}
+          tooltipUrl="https://docs.helium.com/troubleshooting/understanding-witnesses"
+          title="Avg Transmit Scale"
+          value={
+            avgTransmitScale ? (
+              <span className="flex items-center">
+                <Hex
+                  width={16}
+                  height={18}
+                  fillColor={generateRewardScaleColor(avgTransmitScale)}
+                />
+                <span className="ml-1">{avgTransmitScale.toFixed(2)}</span>
+              </span>
+            ) : (
+              'N/A'
+            )
+          }
+        />
+      </div>
       <WitnessedList
         hotspot={hotspot}
         witnessed={witnessed || []}
         isLoading={loading}
-        title="Witnessed"
-        description={
-          <>
-            {!loading && (
-              <div>
-                Over the last 5 days, {animalHash(hotspot.address)} has
-                successfully witnessed beacons from{' '}
-                <span className="font-bold text-navy-400">
-                  {witnessed?.length} Hotspot
-                  {witnessed?.length === 1 ? '' : 's'}
-                </span>
-                {', '}
-                with an average transmit scale of{' '}
-                <span
-                  className="font-bold"
-                  style={{
-                    color: generateRewardScaleColor(avgTransmitScale),
-                  }}
-                >
-                  {avgTransmitScale.toFixed(2)}
-                </span>
-                .
-              </div>
-            )}
-            <div className="pt-1.5">
-              Learn more{' '}
-              <a
-                className="text-navy-400"
-                href="https://docs.helium.com/troubleshooting/understanding-witnesses/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                here
-              </a>
-              .
-            </div>
-          </>
-        }
-        showCount
       />
     </div>
   )

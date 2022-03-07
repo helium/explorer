@@ -6,6 +6,7 @@ import Widget from '../../Widgets/Widget'
 import { useMemo } from 'react'
 import { generateRewardScaleColor } from '../../Hotspots/utils'
 import Hex from '../../Hex'
+import animalHash from 'angry-purple-tiger'
 
 const WitnessedPane = ({ hotspot }) => {
   const { result: witnessed, loading } = useAsync(fetchWitnessed, [
@@ -38,6 +39,20 @@ const WitnessedPane = ({ hotspot }) => {
       <div className="w-full px-4 py-2 border-b border-solid border-gray-350 grid grid-flow-row grid-cols-2 gap-1 md:gap-2 sticky">
         <Widget
           title="Hotspots Witnessed"
+          tooltip={
+            <span>
+              {`Hotspots on the Helium network whose beacons ${animalHash(
+                hotspot.address,
+              )} has successfully witnessed. There are many reasons a hotspot may not be a valid witness.`}{' '}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://docs.helium.com/troubleshooting/understanding-witnesses"
+              >
+                Learn more here.
+              </a>
+            </span>
+          }
           span={1}
           value={
             witnessed?.length ? (
@@ -55,7 +70,19 @@ const WitnessedPane = ({ hotspot }) => {
         />
         <Widget
           span={1}
-          tooltipUrl="https://docs.helium.com/troubleshooting/understanding-witnesses"
+          tooltip={
+            <span>
+              The average transmit scale of all the witnessed hotspots in the
+              list below.{' '}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://docs.helium.com/troubleshooting/understanding-witnesses/#transmit-scale-and-witnessed-list"
+              >
+                Learn more here.
+              </a>
+            </span>
+          }
           title="Avg Transmit Scale"
           value={
             avgTransmitScale ? (

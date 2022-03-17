@@ -7,11 +7,14 @@ export const fetchOraclePrices = async () => {
   const prices = []
   const list = await client.oracle.listPrices()
 
-  for await (const oraclePrice of list) {
-    if (isBefore(new Date(oraclePrice.timestamp), timeLimit))
-      break
+  try {
+    for await (const oraclePrice of list) {
+      if (isBefore(new Date(oraclePrice.timestamp), timeLimit)) break
 
-    prices.push(oraclePrice)
+      prices.push(oraclePrice)
+    }
+  } catch (e) {
+    console.error(e)
   }
   return prices
 }

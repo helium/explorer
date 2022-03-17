@@ -10,7 +10,7 @@ import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
 import WarningWidget from '../../Widgets/WarningWidget'
 import InfoBoxPaneTitleSection from '../Common/InfoBoxPaneTitleSection'
 import ExternalLinkIcon from '../../Icons/ExternalLink'
-// import RecentActivityWidget from '../../Widgets/RecentActivityWidget'
+import RecentActivityWidget from '../../Widgets/RecentActivityWidget'
 import useSelectedTxn from '../../../hooks/useSelectedTxn'
 import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
 
@@ -99,7 +99,7 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
           title="Earnings (UTC)"
           type="hotspot"
         />
-        {/* <RecentActivityWidget context="hotspot" address={hotspot.address} /> */}
+        <RecentActivityWidget context="hotspot" address={hotspot.address} />
         {!isDataOnly && (
           <>
             <StatWidget

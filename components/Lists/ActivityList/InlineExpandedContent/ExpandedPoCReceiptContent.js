@@ -14,6 +14,7 @@ import ActivityIcon from '../ActivityIcon'
 import FlagLocation from '../../../Common/FlagLocation'
 import { Link } from 'react-router-i18n'
 import ArrowIcon from '../../../Icons/ArrowIcon'
+import useChallengeIssuer from '../../../../hooks/useChallengeIssuer'
 
 const ActiveWitnessInfo = ({
   activeWitness,
@@ -95,6 +96,8 @@ const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
   const isWitness =
     role === 'poc_witnesses_valid' || role === 'poc_witnesses_invalid'
 
+  const { challengeIssuer } = useChallengeIssuer()
+
   return (
     <div className="w-full flex flex-col items-center justify-center space-y-px tracking-tight">
       <div className="bg-white w-full rounded-t-lg px-2 py-2 flex flex-row items-start justify-start">
@@ -108,7 +111,7 @@ const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
             </span>
           ) : (
             <Link
-              to={`/hotspots/${challengerAddress}`}
+              to={`/${challengeIssuer}s/${challengerAddress}`}
               className="-mt-1 flex flex-row items-center justify-start text-sm md:text-base font-sans font-medium text-black hover:text-navy-400 outline-none border border-solid border-transparent focus:border-navy-400"
             >
               {animalHash(challengerAddress)}

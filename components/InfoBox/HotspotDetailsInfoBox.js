@@ -24,6 +24,7 @@ import SkeletonActivityList from '../Lists/ActivityList/SkeletonActivityList'
 import { getHotspotDenylistResults } from '../../data/hotspots'
 import DenylistIcon from '../Icons/DenylistIcon'
 import { Tooltip } from 'antd'
+import useChallengeIssuer from '../../hooks/useChallengeIssuer'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -228,6 +229,9 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
     [isOnDenylist],
   )
 
+  const { challengeIssuer } = useChallengeIssuer()
+  const liteHotspotsActive = challengeIssuer === 'validator'
+
   return (
     <InfoBox
       title={generateTitle(address)}
@@ -240,7 +244,11 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
           {isLoading ? (
             <SkeletonWidgets />
           ) : (
-            <StatisticsPane hotspot={hotspot} isDataOnly={IS_DATA_ONLY} />
+            <StatisticsPane
+              hotspot={hotspot}
+              isDataOnly={IS_DATA_ONLY}
+              liteHotspotsActive={liteHotspotsActive}
+            />
           )}
         </TabPane>
         <TabPane title="Activity" path="activity" key="activity">

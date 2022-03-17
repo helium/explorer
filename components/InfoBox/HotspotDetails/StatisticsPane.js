@@ -14,7 +14,7 @@ import ExternalLinkIcon from '../../Icons/ExternalLink'
 import useSelectedTxn from '../../../hooks/useSelectedTxn'
 import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
 
-const StatisticsPane = ({ hotspot, isDataOnly }) => {
+const StatisticsPane = ({ hotspot, isDataOnly, liteHotspotsActive }) => {
   const { beaconSums, isLoading: isBeaconSumsLoading } = useHotspotBeaconSums(
     hotspot.address,
     2,
@@ -76,14 +76,16 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
       <InfoBoxPaneContainer>
         {!isDataOnly && (
           <>
-            <WarningWidget
-              isVisible={isRelay(hotspot.status.listenAddrs)}
-              warningText={'Hotspot is relayed. Expect lower earnings.'}
-              link={
-                'https://docs.helium.com/troubleshooting/network-troubleshooting'
-              }
-              linkText={'Fix it'}
-            />
+            {!liteHotspotsActive && (
+              <WarningWidget
+                isVisible={isRelay(hotspot.status.listenAddrs)}
+                warningText={'Hotspot is relayed. Expect lower earnings.'}
+                link={
+                  'https://docs.helium.com/troubleshooting/network-troubleshooting'
+                }
+                linkText={'Fix it'}
+              />
+            )}
             <RewardScaleWidget hotspot={hotspot} />
             <StatusWidget hotspot={hotspot} />
             <WarningWidget

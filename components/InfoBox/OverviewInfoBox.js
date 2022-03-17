@@ -2,7 +2,7 @@ import { round } from 'lodash'
 import InfoBox from './InfoBox'
 import TrendWidget from '../Widgets/TrendWidget'
 import StatWidget from '../Widgets/StatWidget'
-import HalveningCountdownWidget from '../Widgets/HalvingCountdownWidget'
+// import HalveningCountdownWidget from '../Widgets/HalvingCountdownWidget'
 import useApi from '../../hooks/useApi'
 import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 import { formatLargeNumber } from '../../utils/format'
@@ -91,7 +91,7 @@ const OverviewInfoBox = () => {
           isLoading={!market || !validatorStats}
           linkTo="/validators"
         />
-        <HalveningCountdownWidget />
+        {/* <HalveningCountdownWidget /> */}
         <Widget
           title="Total Beacons"
           value={stats?.challenges?.toLocaleString()}

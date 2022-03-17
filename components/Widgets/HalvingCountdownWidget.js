@@ -13,6 +13,7 @@ const HalveningCountdownWidget = () => {
       title="Countdown to Rewards Halving"
       value={
         <Countdown
+          // TODO: replace with block deadline logic
           date={new Date('2021-08-01')}
           renderer={({ days, hours, minutes, seconds, completed }) => {
             if (completed) setCountdownCompleted(true)

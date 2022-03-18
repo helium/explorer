@@ -4,7 +4,6 @@ import {
   getPocReceiptRoleFromFullTxn,
 } from '../../../../utils/txns'
 import animalHash from 'angry-purple-tiger'
-import classNames from 'classnames'
 import { h3ToGeo } from 'h3-js'
 import {
   calculateDistance,
@@ -14,7 +13,6 @@ import ActivityIcon from '../ActivityIcon'
 import FlagLocation from '../../../Common/FlagLocation'
 import { Link } from 'react-router-i18n'
 import ArrowIcon from '../../../Icons/ArrowIcon'
-import useChallengeIssuer from '../../../../hooks/useChallengeIssuer'
 
 const ActiveWitnessInfo = ({
   activeWitness,
@@ -96,7 +94,8 @@ const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
   const isWitness =
     role === 'poc_witnesses_valid' || role === 'poc_witnesses_invalid'
 
-  const { challengeIssuer } = useChallengeIssuer()
+  const challengeIssuer =
+    txn.type === 'poc_receipts_v1' ? 'hotspot' : 'validator'
 
   return (
     <div className="w-full flex flex-col items-center justify-center space-y-px tracking-tight">

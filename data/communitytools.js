@@ -246,6 +246,12 @@ export const communityToolsList = [
     url: 'https://www.heliumboard.com/',
     description: 'Helium Board is a sophisticated tool for seeing reports for Helium hotspots and the overall Helium network, as well as receiving alerts for set triggers, and accessing multiple tools (PeerPing, PeerBook Inquiry, Hotspot Analysis etc.)',
     tags: [types.monitoring, types.planning],
+  },
+  {
+    name: 'Watchium',
+    url: 'https://watchium.disk91.com',
+    description: 'Watch Helium hotspots, accurately. Monitor your fleet, export rewards. Built by miners. For miners. We have our own ETL/api distinct from Helium that makes the app very fast. Get an invitation code on our Discord channel #watchium',
+    tags: [types.monitoring, types.export, types.android, types.ios],
   }
 
   // The lines below are a template that you can copy and paste and then populate

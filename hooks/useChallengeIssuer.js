@@ -11,7 +11,9 @@ const useChallengeIssuer = () => {
       const { pocChallengerType: type } = await client.vars.get([
         'poc_challenger_type',
       ])
-      setChallengeIssuer(type)
+      if (type !== undefined) {
+        setChallengeIssuer(type)
+      }
       setChallengeIssuerLoading(false)
     }
     fetchVar()

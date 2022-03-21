@@ -124,8 +124,8 @@ const WitnessesWidget = ({
                 </div>
               </div>
               <Pill
-                title={w.isValid ? 'VALID' : 'INVALID'}
-                color={w.isValid ? 'green' : 'gray'}
+                title={w.isValid || w.is_valid ? 'VALID' : 'INVALID'}
+                color={w.isValid || w.is_valid ? 'green' : 'gray'}
                 tooltip={w.invalidReason}
               />
             </div>

@@ -123,7 +123,7 @@ const StatisticsPane = ({ hotspot, isDataOnly, liteHotspotsActive }) => {
               valueIsText={errorFetchingWitnessed}
               subtitle={
                 <span className="text-gray-550 text-sm font-sans">
-                  Within past 5 days
+                  Within past 3 days
                 </span>
               }
             />

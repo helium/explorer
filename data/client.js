@@ -5,7 +5,7 @@ export const TAKE_MAX = 100000
 export const NETWORK = process.env.NEXT_PUBLIC_NETWORK || 'mainnet'
 
 export const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'https://helium-api.stakejoy.com'
+  process.env.NEXT_PUBLIC_API_URL || 'https://api.helium.io'
 
 const clientNetwork = () => {
   if (NETWORK === 'testnet') return Network.testnet

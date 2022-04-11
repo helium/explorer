@@ -25,6 +25,7 @@ import { useRouteMatch } from 'react-router-dom'
 import classNames from 'classnames'
 import useSelectedCity from '../../hooks/useSelectedCity'
 import CbrsLayer from './Layers/CbrsLayer'
+import { geoToH3 } from 'h3-js'
 
 const maxZoom = 14
 const minZoom = 2
@@ -243,6 +244,16 @@ const CoverageMap = () => {
     [selectHex, measuring, mapLayer],
   )
 
+  const handleCBRSHexClick = useCallback(
+    (e) => {
+      if (e && e.lngLat) {
+        const hex = geoToH3(e.lngLat.lat, e.lngLat.lng, 8)
+        selectHex(hex)
+      }
+    },
+    [selectHex, measuring, mapLayer],
+  )
+
   const handleMouseMove = useCallback(
     (map, e) => {
       const features = mapLayer !== 'cbrs' ? map.queryRenderedFeatures(e.point, {
@@ -337,7 +348,7 @@ const CoverageMap = () => {
         <ValidatorsLayer minZoom={minZoom} maxZoom={maxZoom} />
       )}
       {mapLayer === 'cbrs' && (
-        <CbrsLayer minZoom={minZoom} maxZoom={maxZoom} />
+        <CbrsLayer minZoom={minZoom} maxZoom={maxZoom} onClick={handleCBRSHexClick} />
       )}
       <MeasuringPointsLayer
         active={measuring}

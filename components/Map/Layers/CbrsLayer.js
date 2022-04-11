@@ -77,7 +77,6 @@ const CbrsLayer = ({ minZoom, maxZoom, onClick }) => {
         id="cbrsPoint"
         data={cbrsPointGeo}
         circlePaint={pointStyle}
-        circleOnClick={onClick}
       />
     </>
   )

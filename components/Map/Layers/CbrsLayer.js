@@ -5,8 +5,10 @@ import cbrsData from '../../../data/cbrs.csv'
 import { h3ToGeo } from 'h3-js'
 import { h3SetToFeatureCollection } from 'geojson2h3'
 import geoJSON from 'geojson'
+import useSelectedHex from '../../../hooks/useSelectedHex'
 
 const CbrsLayer = ({ minZoom, maxZoom, onClick }) => {
+  const { selectedHex } = useSelectedHex()
 
   const cbrsHexGeo = useMemo(() => {
     if (!cbrsData) return emptyGeoJSON
@@ -42,7 +44,7 @@ const CbrsLayer = ({ minZoom, maxZoom, onClick }) => {
       minZoom,
       1,
       maxZoom,
-      0.5,
+      0.6,
     ],
   }), [maxZoom, minZoom])
 
@@ -77,6 +79,13 @@ const CbrsLayer = ({ minZoom, maxZoom, onClick }) => {
         id="cbrsPoint"
         data={cbrsPointGeo}
         circlePaint={pointStyle}
+      />
+      <GeoJSONLayer
+        data={selectedHex?.feature || emptyGeoJSON}
+        linePaint={{
+          'line-color': '#ffffff',
+          'line-width': 4,
+        }}
       />
     </>
   )

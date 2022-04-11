@@ -251,7 +251,7 @@ const CoverageMap = () => {
         selectHex(hex)
       }
     },
-    [selectHex, measuring, mapLayer],
+    [selectHex],
   )
 
   const handleMouseMove = useCallback(

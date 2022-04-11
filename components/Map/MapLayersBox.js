@@ -39,6 +39,11 @@ const MapLayersBox = () => {
       id: 'earnings',
       icon: <Hex className="text-earnings-scale-0.9 w-5 h-5" />,
     },
+    {
+      title: '5G',
+      id: 'cbrs',
+      icon: <Hex className="w-5 h-5" color="#D23E72" />,
+    },
     // {
     //   title: 'Device Usage',
     //   id: 'dc',

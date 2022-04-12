@@ -135,14 +135,14 @@ const useSearchResults = () => {
     [dispatch],
   )
 
-  const searchCities = useCallback(
-    async (term) => {
-      const cities = await (await client.cities.list({ query: term })).take(20)
-      const cityResults = cities.map((city) => toSearchResult(city, 'city'))
-      dispatch({ type: PUSH_RESULTS, payload: { results: cityResults, term } })
-    },
-    [dispatch],
-  )
+  // const searchCities = useCallback(
+  //   async (term) => {
+  //     const cities = await (await client.cities.list({ query: term })).take(20)
+  //     const cityResults = cities.map((city) => toSearchResult(city, 'city'))
+  //     dispatch({ type: PUSH_RESULTS, payload: { results: cityResults, term } })
+  //   },
+  //   [dispatch],
+  // )
 
   const searchMapAddresses = useCallback(
     async (term) => {

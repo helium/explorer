@@ -7,17 +7,14 @@ import { useStats } from '../../data/stats'
 import { round } from 'lodash'
 import { useOraclePrices } from '../../data/oracles'
 import TrendWidget from '../Widgets/TrendWidget'
-import RewardsTrendWidget from '../Widgets/RewardsTrendWidget'
-import { useNetworkRewards } from '../../data/rewards'
 import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
-import useApi from '../../hooks/useApi'
 
 const MarketInfoBox = () => {
   const { market } = useMarket()
   const { stats } = useStats()
   const { oraclePrices } = useOraclePrices()
   const [latestOraclePrice] = oraclePrices || []
-  const { data: networkRewards } = useApi('/network/rewards')
+  // const { data: networkRewards } = useApi('/network/rewards')
 
   return (
     <InfoBox title="Market" metaTitle="Market">

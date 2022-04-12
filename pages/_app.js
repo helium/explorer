@@ -66,7 +66,7 @@ function MyApp({ Component, pageProps }) {
               </StateProvider>
             </Router>
           )}
-          <script src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js"></script>
+          <script defer src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js" />
         </ChangelogContext.Provider>
       </BannerContext.Provider>
     </div>

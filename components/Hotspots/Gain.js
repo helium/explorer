@@ -8,7 +8,7 @@ const Gain = ({ hotspot, icon = true }) => {
   return (
     <Tooltip title="Antenna Gain">
       <div className="flex items-center space-x-1">
-        {icon && <img src="/images/gain.svg" className="h-3" />}
+        {icon && <img src="/images/gain.svg" className="h-3" alt="" />}
         <span>{formatGain(hotspot.gain)}</span>
       </div>
     </Tooltip>

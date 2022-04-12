@@ -1,5 +1,4 @@
-import { Tooltip } from 'antd'
-import { truncate, upperCase, upperFirst } from 'lodash'
+import { upperFirst } from 'lodash'
 import { useParams } from 'react-router'
 import { useBlockHeight } from '../../../data/blocks'
 import { useValidator } from '../../../data/validators'
@@ -89,29 +88,29 @@ const NoneValue = () => {
   return <span className="text-3xl text-gray-500">None</span>
 }
 
-const ISP = ({ validator }) => {
-  const isp = validator?.geo?.isp
-  if (!isp) return <NoneValue />
-  return (
-    <Tooltip title={isp}>
-      <span className="break-words">{formatISP(isp)}</span>
-    </Tooltip>
-  )
-}
+// const ISP = ({ validator }) => {
+//   const isp = validator?.geo?.isp
+//   if (!isp) return <NoneValue />
+//   return (
+//     <Tooltip title={isp}>
+//       <span className="break-words">{formatISP(isp)}</span>
+//     </Tooltip>
+//   )
+// }
 
-const formatISP = (isp) => {
-  if (isp.match(/-/)) {
-    return upperCase(isp.split('-')[0])
-  }
-  if (isp.length < 24 && isp.match(/,/)) {
-    return upperCase(isp.split(',')[0])
-  }
-  return upperCase(
-    truncate(isp, {
-      length: 18,
-      separator: ' ',
-    }),
-  )
-}
+// const formatISP = (isp) => {
+//   if (isp.match(/-/)) {
+//     return upperCase(isp.split('-')[0])
+//   }
+//   if (isp.length < 24 && isp.match(/,/)) {
+//     return upperCase(isp.split(',')[0])
+//   }
+//   return upperCase(
+//     truncate(isp, {
+//       length: 18,
+//       separator: ' ',
+//     }),
+//   )
+// }
 
 export default OverviewPane

@@ -14,7 +14,7 @@ const StatusWidget = ({ hotspot }) => {
 
   const liteHotspotsActive = useMemo(() => {
     return challengeIssuer === 'validator'
-  }, [challengeIssuer, challengeIssuerLoading])
+  }, [challengeIssuer])
 
   const { result: syncHeight, loading: syncHeightLoading } =
     useAsync(async () => {

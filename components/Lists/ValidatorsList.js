@@ -39,7 +39,7 @@ const ValidatorsList = ({
         <Rewards validator={v} />
         <Tooltip title="Penalty Score">
           <div className="flex items-center space-x-1">
-            <img src="/images/penalty.svg" className="w-3" />{' '}
+            <img src="/images/penalty.svg" className="w-3" alt="" />{' '}
             <span>{round(v.penalty, 2)}</span>
           </div>
         </Tooltip>

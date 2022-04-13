@@ -1,5 +1,6 @@
 import {
-  BeaconDetailsPane,
+  PocReceiptsV1,
+  PocReceiptsV2,
   PaymentV1,
   PaymentV2,
   Rewards,
@@ -22,12 +23,9 @@ import {
 const getTxnComponent = (txn) => {
   switch (txn.type) {
     case 'poc_receipts_v1':
-      // TODO: handle better once helium-js supports poc_receipts_v2
-      // issue filed: https://github.com/helium/helium-js/issues/279
-      // use fallback view until above issue is fixed
-
-      // case 'poc_receipts_v2':
-      return BeaconDetailsPane
+      return PocReceiptsV1
+    case 'poc_receipts_v2':
+      return PocReceiptsV2
     case 'payment_v1':
       return PaymentV1
     case 'payment_v2':

@@ -60,7 +60,7 @@ const StatusWidget = ({ hotspot }) => {
         )
       }
       isLoading={syncHeightLoading || challengeIssuerLoading}
-      tooltip="Hotspots gossip their sync status over the p2p network. Pair with a hotspot over Bluetooth to get the most up-to-date sync status."
+      tooltip="A Hotspot is online and synced if it has any blockchain activity in the last 36 hours (including Proof-of-Coverage, transferring packets, or receiving mining rewards)."
       icon={
         <div
           className={classNames('rounded-full w-5 h-5', {

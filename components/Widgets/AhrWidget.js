@@ -17,15 +17,10 @@ const AhrWidget = ({ hotspot }) => {
   const onChangeCost = useCallback((e) => {
     const cost = Number.parseInt(e.target.value)
     if (cost < 1 || cost > 1000000 || isNaN(cost)) {
-      setHotspotCost(500)
+      setHotspotCost(0)
       return
     }
     setHotspotCost(cost)
-  }, [])
-
-  const focusInput = useCallback((e) => {
-    e.target.focus();
-    e.target.select();
   }, [])
 
   const onCalculateAHR = useCallback(async () => {
@@ -42,6 +37,11 @@ const AhrWidget = ({ hotspot }) => {
   }, [hotspot.address])
 
   useEffect(() => {
+    if (!hotspotCost) {
+      setBreakevenTime(0)
+      setAhr(0)
+      return
+    }
     const usdPerMonth = rewardsSum * marketPrice
     const usdPerYear = usdPerMonth * 12
     setBreakevenTime(hotspotCost / usdPerMonth)
@@ -118,7 +118,6 @@ const AhrWidget = ({ hotspot }) => {
               prefix="$"
               onChange={onChangeCost}
               className={'border-none outline-none text-base'}
-              onClick={focusInput}
             />
             <span className="text-sm font-light">Hotspot Price in USD</span>
           </div>

@@ -84,7 +84,7 @@ const AhrWidget = ({ hotspot }) => {
       </div>
       <br />
       <div>
-        The AHR is calculated without considering additional expenses and taxes.
+        The AHR is calculated without considering additional expenses and taxes. Past performance does not guarantee future results.
       </div>
     </>
   ), [])

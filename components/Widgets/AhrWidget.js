@@ -15,7 +15,17 @@ const AhrWidget = ({ hotspot }) => {
   const hotspotCostInput = useRef()
 
   const onChangeCost = useCallback((e) => {
-    setHotspotCost(e.target.value)
+    const cost = Number.parseInt(e.target.value)
+    if (cost < 1 || cost > 1000000 || isNaN(cost)) {
+      setHotspotCost(500)
+      return
+    }
+    setHotspotCost(cost)
+  }, [])
+
+  const focusInput = useCallback((e) => {
+    e.target.focus();
+    e.target.select();
   }, [])
 
   const onCalculateAHR = useCallback(async () => {
@@ -108,6 +118,7 @@ const AhrWidget = ({ hotspot }) => {
               prefix="$"
               onChange={onChangeCost}
               className={'border-none outline-none text-base'}
+              onClick={focusInput}
             />
             <span className="text-sm font-light">Hotspot Price in USD</span>
           </div>
@@ -139,8 +150,11 @@ const styles = {
     fontSize: 16,
   },
   ahrText: {
+    width: '100%',
     textAlign: "center",
     fontSize: 32,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
     color: 'black',
     paddingBottom: 8
   },

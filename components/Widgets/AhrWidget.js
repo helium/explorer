@@ -23,6 +23,14 @@ const AhrWidget = ({ hotspot }) => {
     setHotspotCost(cost)
   }, [])
 
+  useEffect(() => {
+    setRewardsSum(0)
+    setMarketPrice(0)
+    setBreakevenTime(0)
+    setAhr(0)
+    setHotspotCost(500)
+  }, [hotspot.address])
+
   const onCalculateAHR = useCallback(async () => {
     setLoading(true)
     const rewards = await fetchHotspotRewardsSum(

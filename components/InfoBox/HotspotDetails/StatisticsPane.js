@@ -13,6 +13,7 @@ import ExternalLinkIcon from '../../Icons/ExternalLink'
 import RecentActivityWidget from '../../Widgets/RecentActivityWidget'
 import useSelectedTxn from '../../../hooks/useSelectedTxn'
 import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
+import AhrWidget from '../../Widgets/AhrWidget'
 
 const StatisticsPane = ({ hotspot, isDataOnly, liteHotspotsActive }) => {
   const { beaconSums, isLoading: isBeaconSumsLoading } = useHotspotBeaconSums(
@@ -101,6 +102,7 @@ const StatisticsPane = ({ hotspot, isDataOnly, liteHotspotsActive }) => {
           title="Earnings (UTC)"
           type="hotspot"
         />
+        <AhrWidget hotspot={hotspot} />
         <RecentActivityWidget context="hotspot" address={hotspot.address} />
         {!isDataOnly && (
           <>

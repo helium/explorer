@@ -36,7 +36,7 @@ const HotspotDetailsRoute = () => {
   } = useSelectedHotspot()
 
   useEffect(() => {
-    if (!hotspot) {
+    if (!hotspot || address !== hotspot.address) {
       selectHotspot(address)
     }
   }, [hotspot, address, selectHotspot])

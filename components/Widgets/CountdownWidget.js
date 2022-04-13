@@ -10,14 +10,14 @@ const CountdownWidget = ({
   completedText,
   isLoading,
 }) => {
-  if (isLoading) {
-    return <Widget title={title} subtitle={subtitle} span={2} isLoading />
-  }
-
   const now = new Date(Date.now())
   const deadlineDate = addMinutes(now, parseInt(blocksRemaining))
 
   const [countdownCompleted, setCountdownCompleted] = useState(false)
+
+  if (isLoading) {
+    return <Widget title={title} subtitle={subtitle} span={2} isLoading />
+  }
 
   if (countdownCompleted) {
     return <Widget span={2} title={title} value={completedText} />

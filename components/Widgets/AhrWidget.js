@@ -29,7 +29,7 @@ const AhrWidget = ({ hotspot }) => {
     setRewardsSum(rewards)
     setMarketPrice(price)
     setLoading(false)
-  }, [])
+  }, [hotspot.address])
 
   useEffect(() => {
     const usdPerMonth = rewardsSum * marketPrice
@@ -53,7 +53,7 @@ const AhrWidget = ({ hotspot }) => {
         AHR is retrospective and can change daily based on past earnings.
       </span>
     </>
-  ), [loading])
+  ), [loading, onCalculateAHR])
 
   const AHRView = useMemo(() => (
     <div style={styles.ahrContainer} >

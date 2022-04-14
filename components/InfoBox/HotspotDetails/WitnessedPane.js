@@ -60,6 +60,7 @@ const WitnessedPane = ({ hotspot }) => {
                 <img
                   src="/images/witness.svg"
                   className="w-[16px] h-[16px] mr-1"
+                  alt=""
                 />
                 {witnessed.length}
               </div>

@@ -51,21 +51,21 @@ const ValidatorDetailsInfoBox = () => {
       [
         {
           iconPath: '/images/address-symbol.svg',
-          title: <AccountAddress address={validator.address} truncate={7} />,
+          title: <AccountAddress address={validator?.address} truncate={7} />,
           textToCopy: address,
         },
         {
           iconPath: '/images/account-green.svg',
           title: (
             <span className="flex items-center justify-start">
-              <AccountAddress address={validator.owner} truncate={7} />
+              <AccountAddress address={validator?.owner} truncate={7} />
               <AccountIcon
-                address={validator.owner}
+                address={validator?.owner}
                 className="h-2.5 md:h-3.5 w-auto ml-0.5"
               />
             </span>
           ),
-          path: `/accounts/${validator.owner}`,
+          path: `/accounts/${validator?.owner}`,
         },
       ],
     ]

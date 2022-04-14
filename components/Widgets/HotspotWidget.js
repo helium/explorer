@@ -1,14 +1,8 @@
 import useSelectedHotspot from '../../hooks/useSelectedHotspot'
 import FlagLocation from '../Common/FlagLocation'
 import { formatHotspotName } from '../Hotspots/utils'
+import TitleWithIcon from '../InfoBox/Common/TitleWithIcon'
 import Widget from './Widget'
-
-const TitleWithIcon = ({ title, iconPath }) => (
-  <span className="flex items-center justify-start">
-    <img alt="" src={iconPath} className="h-4 w-auto mr-1" />
-    {title}
-  </span>
-)
 
 const HotspotWidget = ({ title, titleIconPath, hotspot }) => {
   const { selectHotspot } = useSelectedHotspot()

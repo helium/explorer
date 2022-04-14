@@ -1,5 +1,6 @@
 import {
-  BeaconDetailsPane,
+  PocReceiptsV1,
+  PocReceiptsV2,
   PaymentV1,
   PaymentV2,
   Rewards,
@@ -15,6 +16,7 @@ import {
   Fallback,
   TokenBurnV1,
   StakeValidatorV1,
+  UnstakeValidatorV1,
   TransferValidatorStakeV1,
   ValidatorHeartbeatV1,
 } from './index'
@@ -22,12 +24,9 @@ import {
 const getTxnComponent = (txn) => {
   switch (txn.type) {
     case 'poc_receipts_v1':
-      // TODO: handle better once helium-js supports poc_receipts_v2
-      // issue filed: https://github.com/helium/helium-js/issues/279
-      // use fallback view until above issue is fixed
-
-      // case 'poc_receipts_v2':
-      return BeaconDetailsPane
+      return PocReceiptsV1
+    case 'poc_receipts_v2':
+      return PocReceiptsV2
     case 'payment_v1':
       return PaymentV1
     case 'payment_v2':
@@ -58,6 +57,8 @@ const getTxnComponent = (txn) => {
       return TokenBurnV1
     case 'stake_validator_v1':
       return StakeValidatorV1
+    case 'unstake_validator_v1':
+      return UnstakeValidatorV1
     case 'transfer_validator_stake_v1':
       return TransferValidatorStakeV1
     case 'validator_heartbeat_v1':

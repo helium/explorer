@@ -24,6 +24,8 @@ import MeasuringPointsLayer from './Layers/MeasuringPointsLayer'
 import { useRouteMatch } from 'react-router-dom'
 import classNames from 'classnames'
 import useSelectedCity from '../../hooks/useSelectedCity'
+import CbrsLayer from './Layers/CbrsLayer'
+import { geoToH3 } from 'h3-js'
 
 const maxZoom = 14
 const minZoom = 2
@@ -231,22 +233,32 @@ const CoverageMap = () => {
 
   const handleHexClick = useCallback(
     (e) => {
-      const features = map.current.queryRenderedFeatures(e.point, {
+      const features = mapLayer !== 'cbrs' ? map.current.queryRenderedFeatures(e.point, {
         layers: ['hexes'],
-      })
+      }) : []
       if (features.length > 0 && !measuring) {
         const [hexFeature] = features
         selectHex(hexFeature.properties.id)
       }
     },
-    [selectHex, measuring],
+    [selectHex, measuring, mapLayer],
+  )
+
+  const handleCBRSHexClick = useCallback(
+    (e) => {
+      if (e && e.lngLat) {
+        const hex = geoToH3(e.lngLat.lat, e.lngLat.lng, 8)
+        selectHex(hex)
+      }
+    },
+    [selectHex],
   )
 
   const handleMouseMove = useCallback(
     (map, e) => {
-      const features = map.queryRenderedFeatures(e.point, {
+      const features = mapLayer !== 'cbrs' ? map.queryRenderedFeatures(e.point, {
         layers: ['hexes'],
-      })
+      }) : []
       if (measuring) {
         map.getCanvas().style.cursor = 'crosshair'
       } else if (features.length > 0) {
@@ -255,7 +267,7 @@ const CoverageMap = () => {
         map.getCanvas().style.cursor = ''
       }
     },
-    [measuring],
+    [measuring, mapLayer],
   )
 
   const handleMouseMoveRef = useRef(handleMouseMove)
@@ -316,7 +328,7 @@ const CoverageMap = () => {
       <MapControls />
       <ZoomControls />
       <ScaleLegend />
-      {!HIDE_TILES && (
+      {!HIDE_TILES && mapLayer !== 'cbrs' && (
         <HexCoverageLayer
           minZoom={minZoom}
           maxZoom={maxZoom}
@@ -334,6 +346,9 @@ const CoverageMap = () => {
       />
       {validatorsMatch && (
         <ValidatorsLayer minZoom={minZoom} maxZoom={maxZoom} />
+      )}
+      {mapLayer === 'cbrs' && (
+        <CbrsLayer minZoom={minZoom} maxZoom={maxZoom} onClick={handleCBRSHexClick} />
       )}
       <MeasuringPointsLayer
         active={measuring}

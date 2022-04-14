@@ -24,6 +24,11 @@ export const types = {
     foregroundColor: '#32C48D',
     backgroundColor: '#ccf1e8',
   },
+  android: {
+    label: 'Android',
+    foregroundColor: '#FF4747',
+    backgroundColor: '#f8d4d9',
+  },
   planning: {
     label: 'Planning',
     foregroundColor: '#F0BB32',
@@ -78,6 +83,12 @@ export const communityToolsList = [
     url: 'https://helisum.com',
     description: 'Hotspot Monitoring and Dashboard solution',
     tags: [types.monitoring, types.export],
+  },
+  {
+    name: 'Helium Geek',
+    url: 'https://heliumgeek.com',
+    description: 'Check your hotspot vitals and your rewards, get notified for network issues and rewards. HeliumGeek supports iOS, Android, iOS widgets and Apple Watch app with complications.',
+    tags: [types.monitoring, types.android, types.ios],
   },
   {
     name: 'Heliumbot.io',
@@ -229,6 +240,18 @@ export const communityToolsList = [
     url: 'https://testflight.apple.com/join/8VZV1pxF',
     description: 'DataGovs on Govs protocol lets teams and organizations buy, connect, automate, and monitor assets in one place—Hotspots and sensors.',
     tags: [types.monitoring]
+  },
+  {
+    name: 'Helium Board',
+    url: 'https://www.heliumboard.com/',
+    description: 'Helium Board is a sophisticated tool for seeing reports for Helium hotspots and the overall Helium network, as well as receiving alerts for set triggers, and accessing multiple tools (PeerPing, PeerBook Inquiry, Hotspot Analysis etc.)',
+    tags: [types.monitoring, types.planning],
+  },
+  {
+    name: 'Watchium',
+    url: 'https://watchium.disk91.com',
+    description: 'Watch Helium hotspots, accurately. Monitor your fleet, export rewards. Built by miners. For miners. We have our own ETL/api distinct from Helium that makes the app very fast. Get an invitation code on our Discord channel #watchium',
+    tags: [types.monitoring, types.export, types.android, types.ios],
   }
 
   // The lines below are a template that you can copy and paste and then populate

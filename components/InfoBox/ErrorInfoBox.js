@@ -5,7 +5,13 @@ import WarningWidget from '../Widgets/WarningWidget'
 import { Helmet } from 'react-helmet'
 import { useLocation } from 'react-router-dom'
 
-const ErrorInfoBox = ({ errorType = 404, errorTitle = '404 — Not Found' }) => {
+const ErrorInfoBox = ({
+  errorType = 404,
+  errorTitle = '404 — Not Found',
+  warningTitle = "This page doesn't exist",
+  breadcrumbs,
+  subtitleText,
+}) => {
   const { pathname: path } = useLocation()
 
   const issueLink =
@@ -18,14 +24,27 @@ const ErrorInfoBox = ({ errorType = 404, errorTitle = '404 — Not Found' }) => 
       <Helmet>
         <meta name="robots" content="noindex" />
       </Helmet>
-      <InfoBox title={errorTitle}>
+      <InfoBox
+        title={errorTitle}
+        subtitles={
+          subtitleText
+            ? [
+                [
+                  {
+                    iconPath: '/images/warning.svg',
+                    title: subtitleText,
+                  },
+                ],
+              ]
+            : []
+        }
+        breadcrumbs={breadcrumbs}
+      >
         <InfoBoxPaneContainer>
           {
             <WarningWidget
               warningText={
-                errorType === 404
-                  ? "This page doesn't exist"
-                  : 'Something went wrong'
+                errorType === 404 ? warningTitle : 'Something went wrong'
               }
               isVisible
             />

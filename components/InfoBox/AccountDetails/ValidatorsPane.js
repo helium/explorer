@@ -1,11 +1,13 @@
 import classNames from 'classnames'
 import { useMemo } from 'react'
+import { useAccount } from '../../../data/accounts'
 import { useElections } from '../../../data/consensus'
 import { useAccountValidators } from '../../../data/validators'
 import SkeletonList from '../../Lists/SkeletonList'
 import ValidatorsList from '../../Lists/ValidatorsList'
 
 const ValidatorsPane = ({ address }) => {
+  const { account } = useAccount(address)
   const { validators, isLoading: isLoadingValidators } = useAccountValidators(
     address,
   )
@@ -34,6 +36,8 @@ const ValidatorsPane = ({ address }) => {
         validators={validators}
         recentGroups={recentGroups}
         isLoading={isLoading}
+        count={account?.validatorCount}
+        showCount
       />
     </div>
   )

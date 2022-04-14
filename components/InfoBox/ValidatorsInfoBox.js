@@ -26,7 +26,7 @@ const ValidatorsInfoBox = () => {
 
   return (
     <InfoBox title="Validators" metaTitle="Validators">
-      <TabNavbar basePath="validators">
+      <TabNavbar basePath="validators" htmlTitleRoot="Validators">
         <TabPane title="Statistics" key="statistics">
           <InfoBoxPaneContainer>
             <Widget
@@ -60,7 +60,7 @@ const ValidatorsInfoBox = () => {
                 calculateValidatorAPY(validatorStats?.active),
               )}
               isLoading={!validatorStats}
-              tooltip="Annual percent return of eligible validators (staked and online) accounting for the halving on 8/1/21. Note that unstaking tokens invokes a 250,000 block (~5 mo.) cooldown period where no returns will be earned before the staked tokens become liquid again. Earned rewards are immediately liquid."
+              tooltip="Annual percent return of validators that are staked and online. Note that unstaking tokens invokes a 250,000 block (~5 mo.) cooldown period where no returns will be earned before the staked tokens become liquid again. Earned rewards are immediately liquid."
             />
             <Widget
               title={`Total Staked (${TICKER})`}

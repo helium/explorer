@@ -1,16 +1,36 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import client from '../../data/client'
 import { Address } from '@helium/crypto'
-import { fetchApi } from '../../hooks/useApi'
-import camelcaseKeys from 'camelcase-keys'
 import { useDebouncedCallback } from 'use-debounce'
 import useResultsReducer, { CLEAR_RESULTS, PUSH_RESULTS } from './resultsStore'
 import { useMakers } from '../../data/makers'
 import Fuse from 'fuse.js'
+import geojson2h3 from './geojson2h3'
+import { h3SetToFeatureCollection } from 'geojson2h3'
+import { h3ToGeo } from 'h3-js'
+// todo: name
+import Geocoding from '@mapbox/mapbox-sdk/services/geocoding'
+import { parseAddress } from '../../utils/format'
+import { SET_SEARCH_FOCUSED, store } from '../../store/store'
+import useDispatch from '../../store/useDispatch'
 
 const useSearchResults = () => {
   const [term, setTerm] = useState('')
   const [results, dispatch] = useResultsReducer()
+  const [resultsLoading, setResultsLoading] = useState(true)
+
+  const mainDispatch = useDispatch()
+  const {
+    state: { searchFocused },
+  } = useContext(store)
+
+  const setSearchFocused = useCallback(
+    (value) => {
+      mainDispatch({ type: SET_SEARCH_FOCUSED, payload: value })
+    },
+    [mainDispatch],
+  )
+
   const { makers } = useMakers()
 
   const searchHotspot = useCallback(
@@ -118,13 +138,83 @@ const useSearchResults = () => {
   const searchCities = useCallback(
     async (term) => {
       const cities = await (await client.cities.list({ query: term })).take(20)
-      const cityResults = cities.map((city) =>
-        toSearchResult(
-          { ...city, hotspotCount: parseInt(city.hotspotCount) },
-          'city',
-        ),
-      )
+      const cityResults = cities.map((city) => toSearchResult(city, 'city'))
       dispatch({ type: PUSH_RESULTS, payload: { results: cityResults, term } })
+    },
+    [dispatch],
+  )
+
+  const searchMapAddresses = useCallback(
+    async (term) => {
+      // https://docs.mapbox.com/help/troubleshooting/address-geocoding-format-guide/
+      const parsed = parseAddress(term)
+
+      const geocodingClient = Geocoding({
+        accessToken: process.env.NEXT_PUBLIC_MAPBOX_KEY,
+      })
+      const mapboxResp = await geocodingClient
+        .forwardGeocode({
+          query: parsed.address,
+          limit: 2,
+          countries: parsed.countries,
+        })
+        .send()
+
+      const mapAddressResultsPromise = Promise.all(
+        mapboxResp.body.features.map(async (feature) => {
+          const geocode = feature.center
+          const tinyPolygon = {
+            type: 'Feature',
+            geometry: {
+              type: 'Polygon',
+              // Have to provide a polygon to H3 geocode api
+              // Simplest is just a tiny triangle around the address geocode
+              coordinates: [
+                [
+                  [geocode[0] - 1e-4, geocode[1] - 1e-4],
+                  [geocode[0] + 1e-4, geocode[1] - 1e-4],
+                  [geocode[0], geocode[1] + 1e-4],
+                ],
+              ],
+            },
+          }
+
+          const hexagons = geojson2h3.featureToH3Set(tinyPolygon, 8, {
+            ensureOutput: true,
+          })
+          if (hexagons.length === 0) {
+            // TODO: log error?
+            return
+          }
+          const index = hexagons[0]
+
+          // TODO: do we need to fetch more pages?
+          const hotspots = await (await client.hotspots.hex(index)).take(100)
+
+          const countryContext = feature.context?.find(({ id }) =>
+            id.includes('country'),
+          )
+
+          const countryCode = countryContext ? countryContext.short_code : null
+
+          const hex = {
+            index,
+            feature: h3SetToFeatureCollection(index),
+            center: h3ToGeo(index),
+            hotspots: hotspots,
+            hotspotCount: hotspots.length,
+            placeName: feature.place_name,
+            countryCode: countryCode,
+            searchText: term, // maybe parsed address here as text to match?
+          }
+          return toSearchResult(hex, 'hex')
+        }),
+      )
+      const mapAddressResults = await mapAddressResultsPromise
+      dispatch({
+        type: PUSH_RESULTS,
+        payload: { results: mapAddressResults, term },
+      })
     },
     [dispatch],
   )
@@ -148,26 +238,33 @@ const useSearchResults = () => {
   )
 
   const doSearch = useDebouncedCallback(
-    (term) => {
-      // dispatch({ type: CLEAR_RESULTS })
+    async (term) => {
+      setResultsLoading(true)
+      dispatch({ type: CLEAR_RESULTS })
       if (isPositiveInt(term)) {
         // if term is an integer, assume it's a block height
-        searchBlock(parseInt(term))
+        await searchBlock(parseInt(term))
       } else if (Address.isValid(term)) {
         // if it's a valid address, it could be a hotspot or an account
-        searchAddress(term)
+        await searchAddress(term)
       } else if (term.length > 20 && isBase64Url(term)) {
-        // if term is a base64 string, it could be a:
-        // block hash
-        searchBlock(term)
-        // transaction hash
-        searchTransaction(term)
+        await Promise.all([
+          // if term is a base64 string, it could be a:
+          // block hash
+          await searchBlock(term),
+          // transaction hash
+          await searchTransaction(term),
+        ])
       } else {
-        searchHotspot(term.replace(/-/g, ' '))
-        searchValidator(term.replace(/-/g, ' '))
-        searchCities(term)
-        searchMaker(term)
+        await Promise.all([
+          await searchHotspot(term.replace(/-/g, ' ')),
+          await searchValidator(term.replace(/-/g, ' ')),
+          // await searchCities(term)
+          await searchMapAddresses(term),
+          await searchMaker(term),
+        ])
       }
+      setResultsLoading(false)
     },
     500,
     { trailing: true },
@@ -177,13 +274,23 @@ const useSearchResults = () => {
     if (term === '') {
       dispatch({ type: CLEAR_RESULTS })
       return
+    } else {
+      setSearchFocused(true)
+      setResultsLoading(true)
     }
 
     const trimmedTerm = term.trim()
     doSearch(trimmedTerm)
-  }, [dispatch, doSearch, term])
+  }, [dispatch, doSearch, setSearchFocused, term])
 
-  return { term, setTerm, results: results[term] || [] }
+  return {
+    term,
+    setTerm,
+    resultsLoading,
+    searchFocused,
+    setSearchFocused,
+    results: results[term] || [],
+  }
 }
 
 const toSearchResult = (item, type) => {
@@ -196,7 +303,7 @@ const toSearchResult = (item, type) => {
         type,
         item,
         key: item.address,
-        indexed: item.name.replaceAll('-', ' '),
+        indexed: item.name?.replaceAll('-', ' '),
       }
 
     case 'block':
@@ -209,6 +316,13 @@ const toSearchResult = (item, type) => {
         item,
         key: item.cityId,
         indexed: [item.longCity],
+      }
+    case 'hex':
+      return {
+        type,
+        item,
+        key: item.index,
+        indexed: item.placeName,
       }
 
     case 'maker':

@@ -5,9 +5,16 @@ import Widget from './Widget'
 import { useAsync } from 'react-async-hook'
 import { fetchHeightByTimestamp } from '../../data/blocks'
 import { SYNC_BUFFER_BLOCKS } from '../Hotspots/utils'
+import useChallengeIssuer from '../../hooks/useChallengeIssuer'
 
 const StatusWidget = ({ hotspot }) => {
   const status = hotspot?.status?.online
+
+  const { challengeIssuer, challengeIssuerLoading } = useChallengeIssuer()
+
+  const liteHotspotsActive = useMemo(() => {
+    return challengeIssuer === 'validator'
+  }, [challengeIssuer, challengeIssuerLoading])
 
   const { result: syncHeight, loading: syncHeightLoading } =
     useAsync(async () => {
@@ -26,6 +33,10 @@ const StatusWidget = ({ hotspot }) => {
       return 'Offline'
     }
 
+    if (liteHotspotsActive) {
+      return 'Connected'
+    }
+
     if (
       !hotspot?.status?.height ||
       !syncHeight ||
@@ -35,7 +46,7 @@ const StatusWidget = ({ hotspot }) => {
     }
 
     return 'Synced'
-  }, [hotspot.status.height, status, syncHeight])
+  }, [hotspot.status.height, status, syncHeight, liteHotspotsActive])
 
   return (
     <Widget
@@ -44,12 +55,12 @@ const StatusWidget = ({ hotspot }) => {
       subtitle={
         hotspot?.status?.timestamp && (
           <span className="text-gray-550 text-sm font-sans">
-            As of <TimeAgo date={hotspot?.status?.timestamp} />
+            Last Updated <TimeAgo date={hotspot?.status?.timestamp} />
           </span>
         )
       }
-      tooltip="Hotspots gossip their sync status over the p2p network. Pair with a hotspot over Bluetooth to get the most up-to-date sync status."
-      isLoading={syncHeightLoading}
+      isLoading={syncHeightLoading || challengeIssuerLoading}
+      tooltip="A Hotspot is online and synced if it has any blockchain activity in the last 36 hours (including Proof-of-Coverage, transferring packets, or receiving mining rewards)."
       icon={
         <div
           className={classNames('rounded-full w-5 h-5', {

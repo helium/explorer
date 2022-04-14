@@ -1,7 +1,8 @@
 module.exports = {
-  mode: 'jit',
-  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
-  darkMode: false, // or 'media' or 'class'
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+  ],
   theme: {
     screens: {
       sm: '576px',
@@ -39,6 +40,13 @@ module.exports = {
         0.8: '#9FE14A',
         1: '#29D344',
       },
+      'earnings-scale': {
+        0: '#2E303B',
+        0.1: '#E95858',
+        0.25: '#FCC945',
+        0.9: '#8ED343',
+        1: '#14D5FF',
+      },
       navy: {
         50: '#d4d4ff',
         300: '#0008FF',
@@ -59,6 +67,7 @@ module.exports = {
         50: '#ccf1e8',
         100: '#474DFF',
         400: '#29D344',
+        450: '#29D391',
         500: '#32C48D',
       },
       red: {
@@ -100,7 +109,9 @@ module.exports = {
         800: '#171E2D',
       },
       bluegray: {
+        50: '#F5F5FA',
         100: '#E9EAFF2',
+        300: '#CECEE9',
       },
       reward: {
         witness: '#FFC769',
@@ -124,6 +135,33 @@ module.exports = {
       8: '8px',
     },
     extend: {
+      colors: {},
+      animation: {
+        'bounce-left': 'bounce-left 2s infinite',
+        'bounce-right': 'bounce-right 2s infinite',
+      },
+      keyframes: {
+        'bounce-left': {
+          '0%, 100%': {
+            transform: 'translateX(-25%)',
+            'animation-timing-function': 'cubic-bezier(0.8, 0, 1, 1)',
+          },
+          '50%': {
+            transform: 'translateX(0)',
+            'animation-timing-function': 'cubic-bezier(0, 0, 0.2, 1)',
+          },
+        },
+        'bounce-right': {
+          '0%, 100%': {
+            transform: 'translateX(25%)',
+            'animation-timing-function': 'cubic-bezier(0.8, 0, 1, 1)',
+          },
+          '50%': {
+            transform: 'translateX(0)',
+            'animation-timing-function': 'cubic-bezier(0, 0, 0.2, 1)',
+          },
+        },
+      },
       spacing: {
         108: '27rem',
         120: '30rem',
@@ -152,6 +190,12 @@ module.exports = {
         '90p': '90%',
         '550px': '550px',
         '650px': '650px',
+      },
+      backgroundImage: {
+        'earnings-pattern':
+          'linear-gradient(90deg, #E95858 10.04%, #FCC945 27.17%, #8ED343 52.61%, #14D5FF 91.53%)',
+        'rewards-pattern':
+          'linear-gradient(90deg, #FC8745 10%, #FEA053 25%, #FCC945 50%, #9FE14A 90%, #29D344 100%)',
       },
     },
   },

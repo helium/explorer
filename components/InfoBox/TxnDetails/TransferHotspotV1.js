@@ -6,17 +6,18 @@ import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import { useAsync } from 'react-async-hook'
 import animalHash from 'angry-purple-tiger'
 import { fetchHotspot } from '../../../data/hotspots'
+import Skeleton from '../../Common/Skeleton'
 
-const TransferHotspotV1 = ({ txn }) => {
+const TransferHotspotV1 = ({ txn, inline }) => {
   const [transferredHotspot, setTransferredHotspot] = useState()
 
   useAsync(async () => {
     const fetchedHotspot = await fetchHotspot(txn.gateway)
     setTransferredHotspot(fetchedHotspot)
-  }, [])
+  }, [txn.gateway])
 
   return (
-    <InfoBoxPaneContainer>
+    <InfoBoxPaneContainer padding={!inline}>
       {transferredHotspot ? (
         <HotspotWidget
           title="Transferred Hotspot"
@@ -27,6 +28,7 @@ const TransferHotspotV1 = ({ txn }) => {
           title="Transferred Hotspot"
           value={animalHash(txn.gateway)}
           span={2}
+          change={<Skeleton className="w-1/3" />}
         />
       )}
       <AccountWidget title="Seller" address={txn.seller} />

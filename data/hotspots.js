@@ -25,25 +25,26 @@ export const useLatestHotspots = (initialData, count = 20) => {
   }
 }
 
+export const getHotspotDenylistResults = async (hotspotAddress) => {
+  try {
+    const denylistResponse = await (
+      await fetch(
+        `https://denylist-api.herokuapp.com/api/hotspots/${hotspotAddress}`,
+      )
+    ).json()
+    const { denylists } = denylistResponse
+    return denylists
+  } catch (e) {
+    console.error(e)
+    return null
+  }
+}
+
 export const getHotspotRewardsSum = async (address, numDaysBack) => {
   const initialDate = new Date()
   const endDate = new Date()
   endDate.setDate(initialDate.getDate() - numDaysBack)
   return client.hotspot(address).rewards.sum.get(endDate, initialDate)
-}
-
-export const getHotspotRewardsBuckets = async (
-  address,
-  numBack,
-  bucketType,
-) => {
-  const list = await client.hotspot(address).rewards.sum.list({
-    minTime: `-${numBack} ${bucketType}`,
-    maxTime: new Date(),
-    bucket: bucketType,
-  })
-  const rewards = await list.take(TAKE_MAX)
-  return rewards
 }
 
 export const fetchNearbyHotspots = async (lat, lon, distance = 1000) => {
@@ -57,8 +58,8 @@ export const fetchNearbyHotspots = async (lat, lon, distance = 1000) => {
       haversineDistance(
         lon,
         lat,
-        h3ToGeo(h.location_hex)[1],
-        h3ToGeo(h.location_hex)[0],
+        h3ToGeo(h.locationHex)[1],
+        h3ToGeo(h.locationHex)[0],
       ) * 1000,
   }))
   return hotspotsWithDistance
@@ -82,10 +83,10 @@ export const fetchHexHotspots = async (index) => {
   return hotspots
 }
 
-export const fetchWitnesses = async (address) => {
-  const list = await client.hotspot(address).witnesses.list()
-  const witnesses = await list.take(TAKE_MAX)
-  return witnesses
+export const fetchWitnessed = async (address) => {
+  const list = await client.hotspot(address).witnessed.list()
+  const witnessed = await list.take(TAKE_MAX)
+  return witnessed
 }
 
 export const useHotspots = (context, address, pageSize = 20) => {
@@ -95,13 +96,18 @@ export const useHotspots = (context, address, pageSize = 20) => {
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [hasMore, setHasMore] = useState(true)
 
-  const makeList = () => {
+  const makeList = async () => {
     if (!context || !address) {
       return client.hotspots.list()
     }
 
     if (context === 'account') {
       return client.account(address).hotspots.list()
+    }
+
+    if (context === 'city') {
+      const list = await client.city(address).hotspots.list()
+      return list
     }
   }
 

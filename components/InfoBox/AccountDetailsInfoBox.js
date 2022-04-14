@@ -8,11 +8,11 @@ import ActivityPane from './Common/ActivityPane'
 import HotspotsPane from './AccountDetails/HotspotsPane'
 import ValidatorsPane from './AccountDetails/ValidatorsPane'
 import AccountIcon from '../AccountIcon'
-import MakerIcon from '../Icons/Maker'
 import CopyableText from '../Common/CopyableText'
 import MakerOverviewPane from './AccountDetails/MakerOverviewPane'
 import { useMaker } from '../../data/makers'
 import SkeletonWidgets from './Common/SkeletonWidgets'
+import SkeletonActivityList from '../Lists/ActivityList/SkeletonActivityList'
 
 const AccountDetailsInfoBox = () => {
   const { address } = useParams()
@@ -21,15 +21,15 @@ const AccountDetailsInfoBox = () => {
   const subtitles = useMemo(() => {
     if (maker)
       return [
-        {
-          title: maker?.name,
-          tooltip: 'This is a Maker Account',
-          icon: (
-            <MakerIcon classes="h-4 w-auto mr-0.5 md:mr-1 text-purple-500" />
-          ),
-        },
+        [
+          {
+            title: maker?.name,
+            tooltip: 'This is a Maker Account',
+            iconPath: '/images/maker.svg',
+          },
+        ],
       ]
-    return []
+    return [[]]
   }, [maker])
 
   const renderOverviewPane = useCallback(() => {
@@ -60,13 +60,17 @@ const AccountDetailsInfoBox = () => {
           : [{ title: 'Overview', path: '/' }]
       }
     >
-      <TabNavbar>
+      <TabNavbar htmlTitleRoot={`Account ${address.slice(0, 4)}...`}>
         <TabPane title="Overview" key="overview">
           {renderOverviewPane()}
         </TabPane>
 
         <TabPane title="Activity" key="activity" path="activity">
-          <ActivityPane context="account" address={address} />
+          {isLoading ? (
+            <SkeletonActivityList />
+          ) : (
+            <ActivityPane context="account" address={address} />
+          )}
         </TabPane>
 
         <TabPane title="Hotspots" key="hotspots" path="hotspots">

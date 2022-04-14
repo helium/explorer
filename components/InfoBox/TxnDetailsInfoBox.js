@@ -8,8 +8,9 @@ import {
   getTxnTypeName,
 } from '../../utils/txns'
 import classNames from 'classnames'
-import Timestamp from 'react-timestamp'
 import TxnDetailsSwitch from './TxnDetails/TxnDetailsSwitch'
+import BlockTimestamp from '../Common/BlockTimestamp'
+import ErrorInfoBox from './ErrorInfoBox'
 
 const TxnDetailsInfoBox = () => {
   const { hash } = useParams()
@@ -33,11 +34,9 @@ const TxnDetailsInfoBox = () => {
       <span className="flex items-start justify-start">
         <span
           className="h-5 md:h-7 w-1 -ml-4 mt-1.5 opacity-75"
-          style={{ backgroundColor: getTxnTypeColor(selectedTxn.type) }}
+          style={{ backgroundColor: getTxnTypeColor(txn.type) }}
         />
-        <span className="ml-3">
-          {getTxnTypeName(selectedTxn.type)} transaction
-        </span>
+        <span className="ml-3">{getTxnTypeName(txn.type)} transaction</span>
       </span>
     )
   }
@@ -57,8 +56,8 @@ const TxnDetailsInfoBox = () => {
         path: '/blocks/latest',
       },
       {
-        title: `${selectedTxn.height.toLocaleString()}`,
-        path: `/blocks/${selectedTxn.height}`,
+        title: `${txn.height.toLocaleString()}`,
+        path: `/blocks/${txn.height}`,
       },
     ]
   }
@@ -66,26 +65,44 @@ const TxnDetailsInfoBox = () => {
   const generateSubtitles = (txn) => {
     if (!txn)
       return [
-        {
-          iconPath: '/images/clock.svg',
-          loading: true,
-        },
-        {
-          iconPath: '/images/address.svg',
-          loading: true,
-        },
+        [
+          {
+            iconPath: '/images/clock.svg',
+            loading: true,
+          },
+          {
+            iconPath: '/images/address.svg',
+            loading: true,
+          },
+        ],
       ]
     return [
-      {
-        title: <Timestamp date={txn.time} />,
-        iconPath: '/images/clock.svg',
-      },
-      {
-        title: formattedTxnHash(txn.hash),
-        textToCopy: txn.hash,
-        iconPath: '/images/address.svg',
-      },
+      [
+        {
+          title: (
+            <BlockTimestamp blockHeight={txn.height} blockTime={txn.time} />
+          ),
+          iconPath: '/images/clock.svg',
+        },
+        {
+          title: formattedTxnHash(txn.hash),
+          textToCopy: txn.hash,
+          iconPath: '/images/address.svg',
+        },
+      ],
     ]
+  }
+
+  // Transaction doesn't exist
+  if (selectedTxn && Object.keys(selectedTxn).length === 0) {
+    return (
+      <ErrorInfoBox
+        subtitleText="Double check the transaction hash"
+        errorTitle="404 — Transaction Not Found"
+        warningTitle="Transaction hash didn't match any transactions."
+        breadcrumbs={[{ title: 'Blocks', path: '/blocks/latest' }]}
+      />
+    )
   }
 
   return (

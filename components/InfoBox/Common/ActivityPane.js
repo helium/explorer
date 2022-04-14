@@ -1,6 +1,5 @@
 import classNames from 'classnames'
-import { upperFirst } from 'lodash'
-import debounce from 'lodash.debounce'
+import { upperFirst, debounce } from 'lodash'
 import { useEffect, useRef, useState, memo, useCallback } from 'react'
 import { useActivity } from '../../../data/activity'
 import ActivityList from '../../Lists/ActivityList/ActivityList'
@@ -9,27 +8,47 @@ import { Link } from 'react-router-i18n'
 
 const filtersByContext = {
   hotspot: {
-    Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
-    Beacons: ['poc_receipts_v1'],
-    Data: ['state_channel_close_v1'],
-    Consensus: ['consensus_group_v1'],
     'All Activity': [],
+    Beacons: ['poc_receipts_v1', 'poc_receipts_v2'],
+    Data: ['state_channel_close_v1'],
+    Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
   },
   account: {
-    Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
-    Payments: ['payment_v1', 'payment_v2'],
-    Stakes: ['stake_validator_v1'],
-    'Hotspot Transfers': ['transfer_hotspot_v1'],
-    'Token Burns': ['token_burn_v1'],
     'All Activity': [],
+    Payments: ['payment_v1', 'payment_v2'],
+    Stakes: [
+      'stake_validator_v1',
+      'unstake_validator_v1',
+      'transfer_validator_stake_v1',
+    ],
+    'Hotspot Transfers': ['transfer_hotspot_v1', 'transfer_hotspot_v2'],
+    'Token Burns': ['token_burn_v1'],
+    Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
   },
+  validator: {
+    'All Activity': [],
+    Heartbeats: ['validator_heartbeat_v1'],
+    Rewards: ['rewards_v1', 'rewards_v2', 'rewards_v3'],
+    Stakes: [
+      'stake_validator_v1',
+      'unstake_validator_v1',
+      'transfer_validator_stake_v1',
+    ],
+  },
+}
+
+const defaultFilter = {
+  hotspot: 'All Activity',
+  validator: 'All Activity',
+  account: 'All Activity',
 }
 
 const ActivityPane = ({ context, address }) => {
   const scrollView = useRef()
   const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
-  const [filter, setFilter] = useState('Rewards')
+
+  const [filter, setFilter] = useState(defaultFilter[context])
 
   const filters = filtersByContext[context]
 
@@ -89,6 +108,7 @@ const ActivityPane = ({ context, address }) => {
             value,
           }))}
           activeItem={filter}
+          disabled={isLoadingInitial || isLoadingMore}
           onClick={handleUpdateFilter}
         />
       </div>

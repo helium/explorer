@@ -8,6 +8,10 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none !important;
+  touch-action: none;
+  -webkit-overflow-scrolling: none;
+  overflow: hidden;
 }
 
 code {

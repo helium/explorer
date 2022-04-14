@@ -1,9 +1,8 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import animalHash from 'angry-purple-tiger'
 import { round } from 'lodash'
 import { Tooltip } from 'antd'
 import ConsensusIndicator from '../Validators/ConsensusIndicator'
-import ValidatorFlagLocation from '../Validators/ValidatorFlagLocation'
 import ValidatorStatusDot from '../Validators/ValidatorStatusDot'
 import BaseList from './BaseList'
 import Rewards from '../Validators/Rewards'
@@ -17,6 +16,8 @@ const ValidatorsList = ({
   hasMore,
   isLoading,
   isLoadingMore,
+  showCount,
+  count,
 }) => {
   const keyExtractor = useCallback((v) => v.address, [])
 
@@ -55,6 +56,12 @@ const ValidatorsList = ({
     [recentGroups],
   )
 
+  const listHeaderTitle = useMemo(() => {
+    if (title) return title
+    if (showCount) return 'Validators'
+    return null
+  }, [showCount, title])
+
   return (
     <BaseList
       items={validators}
@@ -62,7 +69,9 @@ const ValidatorsList = ({
       isLoading={isLoading}
       hasMore={hasMore}
       isLoadingMore={isLoadingMore}
-      listHeaderTitle={title}
+      listHeaderTitle={listHeaderTitle}
+      listHeaderShowCount={showCount}
+      listHeaderCount={count}
       listHeaderDescription={description}
       keyExtractor={keyExtractor}
       linkExtractor={linkExtractor}

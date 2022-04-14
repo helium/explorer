@@ -47,11 +47,6 @@ const StatisticsPane = () => {
       />
       <HotspotWidget title="Latest Hotspot" hotspot={latestHotspot} />
       <StatWidget
-        title="Hotspot Owners"
-        series={stats?.ownersCount}
-        isLoading={!stats}
-      />
-      <StatWidget
         title="Data-Only Hotspots"
         // series={stats?.dataOnlyCount}
         // TODO: swap below line with above line

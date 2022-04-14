@@ -11,4 +11,17 @@ module.exports = {
       },
     ]
   },
+  webpack: (config, options) => {
+    config.module.rules.push({
+      test: /\.csv$/,
+      loader: 'csv-loader',
+      options: {
+        dynamicTyping: true,
+        header: false,
+        skipEmptyLines: true
+      }
+    })
+
+    return config
+  },
 }

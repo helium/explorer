@@ -1,6 +1,16 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useAsync } from 'react-async-hook'
 import client from './client'
+import { supplementTxnList } from './txns'
+
+const pickClientContext = (address, context) => {
+  const clients = {
+    hotspot: client.hotspot(address),
+    account: client.account(address),
+    validator: client.validator(address),
+  }
+  return clients[context]
+}
 
 export const useActivity = (context, address, filters = [], pageSize = 20) => {
   const [list, setList] = useState()
@@ -10,9 +20,8 @@ export const useActivity = (context, address, filters = [], pageSize = 20) => {
   const [hasMore, setHasMore] = useState(true)
 
   useAsync(async () => {
-    const clientContext =
-      context === 'hotspot' ? client.hotspot(address) : client.account(address)
-    const newList = await clientContext.activity.list({ filterTypes: filters })
+    const clientContext = pickClientContext(address, context)
+    const newList = await clientContext.roles.list({ filterTypes: filters })
     setList(newList)
   }, [address, filters, context])
 
@@ -30,6 +39,7 @@ export const useActivity = (context, address, filters = [], pageSize = 20) => {
 
   useEffect(() => {
     setIsLoadingInitial(true)
+    setHasMore(true)
     setIsLoadingMore(true)
   }, [filters])
 

@@ -16,7 +16,9 @@ const Widget = ({
   change,
   changeSuffix,
   valueSuffix,
+  valueIsText = false,
   subtitle,
+  longSubtitle = false,
   onClick,
   icon,
   span = 1,
@@ -56,7 +58,7 @@ const Widget = ({
                     'text-gray-400 text-md font-light': emptyValue,
                   })}
                 >
-                  <span className="break-all">
+                  <span className={valueIsText ? 'break-normal' : 'break-all'}>
                     {value}
                     {valueSuffix && valueSuffix}
                   </span>
@@ -80,7 +82,17 @@ const Widget = ({
               {changeSuffix}
             </div>
           ))}
-        {subtitle && isLoading ? <Skeleton className="w-1/3" /> : subtitle}
+        {subtitle && isLoading ? (
+          <Skeleton className="w-1/3" />
+        ) : (
+          <span
+            className={classNames({
+              'text-sm leading-tight': longSubtitle,
+            })}
+          >
+            {subtitle}
+          </span>
+        )}
       </div>
 
       {(onClick || linkTo) && (

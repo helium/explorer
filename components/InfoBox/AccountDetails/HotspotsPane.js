@@ -1,15 +1,12 @@
 import classNames from 'classnames'
+import { useAccount } from '../../../data/accounts'
 import { useHotspots } from '../../../data/hotspots'
 import HotspotsList from '../../Lists/HotspotsList'
 
 const HotspotsPane = ({ address }) => {
-  const {
-    hotspots,
-    fetchMore,
-    isLoadingInitial,
-    isLoadingMore,
-    hasMore,
-  } = useHotspots('account', address)
+  const { account } = useAccount(address)
+  const { hotspots, fetchMore, isLoadingInitial, isLoadingMore, hasMore } =
+    useHotspots('account', address)
 
   return (
     <div
@@ -24,6 +21,8 @@ const HotspotsPane = ({ address }) => {
         isLoadingMore={isLoadingMore}
         fetchMore={fetchMore}
         hasMore={hasMore}
+        count={account?.hotspotCount}
+        showCount
       />
     </div>
   )

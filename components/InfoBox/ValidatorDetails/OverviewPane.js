@@ -9,6 +9,8 @@ import Widget from '../../Widgets/Widget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import { formatVersion, getStatus } from '../../Validators/utils'
 import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
+import RelayedWarningWidget from '../../Widgets/WarningWidget'
+import { isRelay } from '../../Hotspots/utils'
 
 const OverviewPane = () => {
   const { address } = useParams()
@@ -17,6 +19,16 @@ const OverviewPane = () => {
 
   return (
     <InfoBoxPaneContainer>
+      {!isLoading && (
+        <RelayedWarningWidget
+          isVisible={isRelay(validator?.status?.listenAddrs)}
+          warningText={'Validator is being Relayed.'}
+          link={
+            'https://docs.helium.com/mine-hnt/validators/mainnet/deployment-guide'
+          }
+          linkText={'Learn more'}
+        />
+      )}
       <Widget
         title={'Status'}
         isLoading={isLoading}
@@ -55,7 +67,7 @@ const OverviewPane = () => {
       <PeriodizedRewardsWidget
         address={validator?.address}
         type="validator"
-        title="Earnings"
+        title="Earnings (UTC)"
       />
       <PenaltyWidget validator={validator} />
       {/* <Widget

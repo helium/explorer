@@ -8,6 +8,7 @@ import Gain from '../Hotspots/Gain'
 import Elevation from '../Hotspots/Elevation'
 import Rewards from '../Hotspots/Rewards'
 import TransmitScale from '../Hotspots/TransmitScale'
+import { isDataOnly } from '../Hotspots/utils'
 
 const HotspotsList = ({
   hotspots,
@@ -15,6 +16,8 @@ const HotspotsList = ({
   fetchMore,
   isLoadingMore,
   hasMore,
+  count,
+  showCount = false,
 }) => {
   const { selectHotspot } = useSelectedHotspot()
 
@@ -32,7 +35,7 @@ const HotspotsList = ({
   const renderTitle = useCallback((h) => {
     return (
       <>
-        <StatusCircle status={h.status} />
+        {!isDataOnly(h) && <StatusCircle status={h.status} />}
         {animalHash(h.address)}
       </>
     )
@@ -58,6 +61,9 @@ const HotspotsList = ({
     <BaseList
       items={hotspots}
       keyExtractor={keyExtractor}
+      listHeaderTitle={showCount ? 'Hotspots' : null}
+      listHeaderShowCount={showCount}
+      listHeaderCount={count}
       linkExtractor={linkExtractor}
       onSelectItem={handleSelectHotspot}
       isLoading={isLoading}

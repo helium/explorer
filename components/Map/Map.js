@@ -24,6 +24,8 @@ import MeasuringPointsLayer from './Layers/MeasuringPointsLayer'
 import { useRouteMatch } from 'react-router-dom'
 import classNames from 'classnames'
 import useSelectedCity from '../../hooks/useSelectedCity'
+import CbrsLayer from './Layers/CbrsLayer'
+import { geoToH3 } from 'h3-js'
 
 const maxZoom = 14
 const minZoom = 2
@@ -56,7 +58,7 @@ const US_EU_BOUNDS = [
 //   [-14.10009, 23.898041],
 // ]
 
-const MOBILE_PADDING = { top: 80, left: 10, right: 10, bottom: 500 }
+const MOBILE_PADDING = { top: 70, left: 10, right: 10, bottom: 510 }
 const MOBILE_PADDING_FULL = { top: 80, left: 10, right: 10, bottom: 80 }
 const DESKTOP_PADDING = {
   top: 200,
@@ -132,7 +134,7 @@ const CoverageMap = () => {
     }
 
     const selectionBounds = findBounds([
-      ...(selectedHotspot.witnesses || []).map(({ lat, lng }) => ({
+      ...(selectedHotspot.witnessed || []).map(({ lat, lng }) => ({
         lat,
         lng,
       })),
@@ -154,7 +156,13 @@ const CoverageMap = () => {
   }, [selectedHex])
 
   useEffect(() => {
-    if (!selectedCity) return
+    if (
+      !selectedCity ||
+      !selectedCity?.geometry?.northeast ||
+      !selectedCity?.geometry?.southwest
+    ) {
+      return
+    }
 
     const { northeast, southwest } = selectedCity.geometry.viewport
 
@@ -186,7 +194,7 @@ const CoverageMap = () => {
       setSelectedTxnParticipants([])
       return
     }
-    if (selectedTxn?.type === 'poc_receipts_v1') {
+    if (selectedTxn?.type?.startsWith('poc_receipts')) {
       const target = selectedTxn.path[0].challengee
       const targetHotspot = await fetchHotspot(target)
       const witnesses = selectedTxn.path[0].witnesses.map(hotspotToRes8)
@@ -225,22 +233,32 @@ const CoverageMap = () => {
 
   const handleHexClick = useCallback(
     (e) => {
-      const features = map.current.queryRenderedFeatures(e.point, {
+      const features = mapLayer !== 'cbrs' ? map.current.queryRenderedFeatures(e.point, {
         layers: ['hexes'],
-      })
+      }) : []
       if (features.length > 0 && !measuring) {
         const [hexFeature] = features
-        selectHex(hexFeature.properties.hex)
+        selectHex(hexFeature.properties.id)
       }
     },
-    [selectHex, measuring],
+    [selectHex, measuring, mapLayer],
+  )
+
+  const handleCBRSHexClick = useCallback(
+    (e) => {
+      if (e && e.lngLat) {
+        const hex = geoToH3(e.lngLat.lat, e.lngLat.lng, 8)
+        selectHex(hex)
+      }
+    },
+    [selectHex],
   )
 
   const handleMouseMove = useCallback(
     (map, e) => {
-      const features = map.queryRenderedFeatures(e.point, {
+      const features = mapLayer !== 'cbrs' ? map.queryRenderedFeatures(e.point, {
         layers: ['hexes'],
-      })
+      }) : []
       if (measuring) {
         map.getCanvas().style.cursor = 'crosshair'
       } else if (features.length > 0) {
@@ -249,7 +267,7 @@ const CoverageMap = () => {
         map.getCanvas().style.cursor = ''
       }
     },
-    [measuring],
+    [measuring, mapLayer],
   )
 
   const handleMouseMoveRef = useRef(handleMouseMove)
@@ -310,7 +328,7 @@ const CoverageMap = () => {
       <MapControls />
       <ZoomControls />
       <ScaleLegend />
-      {!HIDE_TILES && (
+      {!HIDE_TILES && mapLayer !== 'cbrs' && (
         <HexCoverageLayer
           minZoom={minZoom}
           maxZoom={maxZoom}
@@ -323,11 +341,14 @@ const CoverageMap = () => {
         witnesses={
           selectedHotspot && selectedTxn
             ? selectedTxnParticipants
-            : selectedHotspot?.witnesses || selectedTxnParticipants || []
+            : selectedHotspot?.witnessed || selectedTxnParticipants || []
         }
       />
       {validatorsMatch && (
         <ValidatorsLayer minZoom={minZoom} maxZoom={maxZoom} />
+      )}
+      {mapLayer === 'cbrs' && (
+        <CbrsLayer minZoom={minZoom} maxZoom={maxZoom} onClick={handleCBRSHexClick} />
       )}
       <MeasuringPointsLayer
         active={measuring}

@@ -5,35 +5,23 @@ import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import { useAsync } from 'react-async-hook'
 import { fetchHexHotspots } from '../../data/hotspots'
 import HexHotspotsList from '../Lists/HexHotspotsList'
-import { useCallback, useEffect, useMemo } from 'react'
-import useSelectedHex from '../../hooks/useSelectedHex'
+import { useCallback, useEffect } from 'react'
 import { formatLocation } from '../Hotspots/utils'
 import FlagLocation from '../Common/FlagLocation'
-import useApi from '../../hooks/useApi'
+import useSelectedHex from '../../hooks/useSelectedHex'
 
 const HexDetailsInfoBox = () => {
   const { index } = useParams()
-  const { clearSelectedHex, selectHex, selectedHex } = useSelectedHex()
-  const { data: hexes } = useApi(
-    '/hexes',
-    { dedupingInterval: 1000 * 60 },
-    { localCache: false },
-  )
 
   const { result: hotspots, loading } = useAsync(fetchHexHotspots, [index])
 
-  const mapHex = useMemo(() => {
-    if (!hexes) return
-
-    return hexes.find(({ hex }) => hex === index)
-  }, [hexes, index])
-
+  const { selectedHex, selectHex, clearSelectedHex } = useSelectedHex(index)
 
   useEffect(() => {
     if (!selectedHex) {
       selectHex(index)
     }
-  }, [index, selectHex, selectedHex])
+  }, [selectedHex, index, selectHex])
 
   useEffect(() => {
     return () => {
@@ -44,29 +32,25 @@ const HexDetailsInfoBox = () => {
   const generateSubtitles = useCallback((hotspot) => {
     if (!hotspot)
       return [
-        {
-          iconPath: '/images/location-blue.svg',
-          loading: true,
-        },
-      {
-        icon: <img src="/images/dc.svg" />,
-        loading: true,
-      },
+        [
+          {
+            iconPath: '/images/location-blue.svg',
+            loading: true,
+          },
+        ],
       ]
     return [
-      {
-        icon: (
-          <FlagLocation geocode={hotspot.geocode} showLocationName={false} />
-        ),
-        path: `/cities/${hotspot.geocode.cityId}`,
-        title: formatLocation(hotspot.geocode),
-      },
-      {
-        icon: <img src="/images/dc.svg" />,
-        title: `${mapHex?.dc?.toLocaleString() || 0} DC (7d)`,
-      },
+      [
+        {
+          icon: (
+            <FlagLocation geocode={hotspot.geocode} showLocationName={false} />
+          ),
+          path: `/hotspots/cities/${hotspot.geocode.cityId}`,
+          title: formatLocation(hotspot.geocode),
+        },
+      ],
     ]
-  }, [mapHex?.dc])
+  }, [])
 
   return (
     <InfoBox
@@ -84,7 +68,7 @@ const HexDetailsInfoBox = () => {
       breadcrumbs={[{ title: 'Hotspots', path: '/hotspots' }]}
       subtitles={generateSubtitles(hotspots?.[0])}
     >
-      <TabNavbar>
+      <TabNavbar htmlTitleRoot={`Hex ${index.slice(0, 5)}...`}>
         <TabPane title="Hotspots" key="hotspots">
           <div
             className={classNames(

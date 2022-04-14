@@ -15,14 +15,14 @@ const FlagLocation = ({
   if (condensedView)
     return (
       <span className="flex flex-row items-center justify-start">
+        <Flag className="mr-1" countryCode={shortCountry} />
         {showLocationName && geocodeInfo?.shortCity}
-        <Flag className="ml-1" countryCode={shortCountry} />
       </span>
     )
 
   return (
     <span className="flex flex-row items-center justify-start">
-      <Flag className="mr-2" countryCode={shortCountry} />
+      <Flag className="mr-1" countryCode={shortCountry} />
       {showLocationName && locationName}
     </span>
   )

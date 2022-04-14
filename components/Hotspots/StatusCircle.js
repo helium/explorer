@@ -5,7 +5,7 @@ function tooltipTitle(status, height) {
   let title = status === 'online' ? 'Hotspot online' : 'Hotspot offline'
 
   if (height) {
-    title = title += ` as of block ${height.toLocaleString()}`
+    title = title += `: Status last updated ${height.toLocaleString()}`
   }
 
   return title

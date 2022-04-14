@@ -5,71 +5,90 @@ import CopyableText from '../Common/CopyableText'
 import Skeleton from '../Common/Skeleton'
 import { Tooltip } from 'antd'
 
-const SubtitleSection = ({ subtitles }) => {
-  const SubtitleLoadingIndicator = ({ seeThrough, skeletonClasses }) => (
-    <span
-      className={classNames(
-        'flex items-center justify-start',
-        skeletonClasses,
-        {
-          'opacity-25': seeThrough,
-          'w-20': !skeletonClasses,
-        },
-      )}
+const Subtitle = ({ subtitle }) => {
+  const innerText = (
+    <CopyableText
+      className={classNames('text-shadow tracking-tighter text-xs md:text-sm', {
+        'mr-1 md:mr-1.5': subtitle?.textToCopy,
+      })}
+      iconClasses="h-2.5 md:h-3.5 w-auto"
+      textToCopy={subtitle.textToCopy}
     >
-      <Skeleton className="my-0 w-full h-4 md:h-5" defaultSize={false} />
-    </span>
+      {subtitle.title}
+    </CopyableText>
   )
   return (
-    <>
-      {subtitles && subtitles.length > 0 && (
-        <div className="pt-1.5 inline-block">
-          {subtitles.map((s, i) => (
-            <Tooltip title={s.tooltip} placement={'bottom'}>
-              <span
-                className={classNames(
-                  'pointer-events-auto mb-1 inline-flex items-center justify-start',
-                  {
-                    'ml-2': !s.newRow && i !== 0,
-                    // a better longterm solution is probably to allow the "subtitles" object to define multiple rows, since it'll be obvious with a few test values how the rows of icons and properties should be arranged
-                    'w-1/2': s.newRow,
-                  },
-                )}
+    <Tooltip title={subtitle.tooltip} placement={'bottom'}>
+      <span className="pointer-events-auto inline-flex items-center justify-start">
+        {subtitle.iconPath && (
+          <img
+            alt=""
+            src={subtitle.iconPath}
+            className="h-2.5 md:h-3.5 w-auto mr-0.5 md:mr-1"
+          />
+        )}
+        {subtitle.icon && (
+          <div className={classNames(subtitle?.iconClasses)}>
+            {subtitle.icon}
+          </div>
+        )}
+        {subtitle.loading && (
+          <SubtitleLoadingIndicator
+            seeThrough
+            skeletonClasses={subtitle.skeletonClasses}
+          />
+        )}
+
+        {!subtitle.loading && (
+          <>
+            {subtitle.path ? (
+              <Link
+                className="ml-0.5 text-white font-regular font-sans whitespace-nowrap text-xs sm:text-sm md:text-md"
+                to={subtitle.path}
               >
-                {s.iconPath && (
-                  <img
-                    alt=""
-                    src={s.iconPath}
-                    className="h-2.5 md:h-3.5 w-auto mr-0.5 md:mr-1"
-                  />
-                )}
-                {s.icon && s.icon}
-                {s.loading ? (
-                  <SubtitleLoadingIndicator
-                    seeThrough
-                    skeletonClasses={s.skeletonClasses}
-                  />
-                ) : (
-                  <Link
-                    className={classNames(
-                      'ml-0.5 text-white font-regular font-sans whitespace-nowrap text-xs sm:text-sm md:text-md',
-                    )}
-                    {...(s.path ? { to: s.path } : {})}
-                  >
-                    <CopyableText
-                      className="text-shadow tracking-tighter text-xs md:text-sm"
-                      textToCopy={s.textToCopy}
-                    >
-                      {s.title}
-                    </CopyableText>
-                  </Link>
-                )}
+                {innerText}
+              </Link>
+            ) : (
+              <span className="ml-0.5 text-white font-regular font-sans whitespace-nowrap text-xs sm:text-sm md:text-md">
+                {innerText}
               </span>
-            </Tooltip>
-          ))}
-        </div>
-      )}
-    </>
+            )}
+          </>
+        )}
+      </span>
+    </Tooltip>
+  )
+}
+
+const SubtitleLoadingIndicator = ({ seeThrough, skeletonClasses }) => (
+  <span
+    className={classNames('flex items-center justify-start', skeletonClasses, {
+      'opacity-25': seeThrough,
+      'w-20': !skeletonClasses,
+    })}
+  >
+    <Skeleton className="my-0 w-full h-4 md:h-5" defaultSize={false} />
+  </span>
+)
+
+const SubtitleSection = ({ subtitles }) => {
+  if (!subtitles) return null
+
+  return (
+    subtitles.length > 0 && (
+      <div className="pt-1.5 space-y-1 inline-block">
+        {subtitles.map((row, rowIndex) => (
+          <div
+            className="w-full flex flex-row items-center justify-start space-x-2 md:space-x-3"
+            key={rowIndex}
+          >
+            {row.map((s, i) => (
+              <Subtitle subtitle={s} key={`${i}-${s.title}`} />
+            ))}
+          </div>
+        ))}
+      </div>
+    )
   )
 }
 

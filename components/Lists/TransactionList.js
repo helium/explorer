@@ -36,6 +36,7 @@ const TransactionList = ({
           </span>
         )
       case 'poc_receipts_v1':
+      case 'poc_receipts_v2':
         return (
           <span className="flex items-center">
             <span className="flex items-center text-black font-sans font-medium">
@@ -130,6 +131,7 @@ const TransactionList = ({
           </div>
         )
       case 'poc_receipts_v1':
+      case 'poc_receipts_v2':
         return (
           <span className="flex items-center">
             <img

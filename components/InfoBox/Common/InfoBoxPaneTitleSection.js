@@ -42,7 +42,7 @@ const InfoBoxPaneTitleSection = ({ title, description }) => {
       </div>
       {/* if there's a description AND a title, hide the description behind the "Details button", otherwise if there's a description and NO title just show the description */}
       {(showDescription || (description && !title)) && (
-        <span className="font-sans text-gray-600 text-xs md:text-sm pt-1">
+        <span className="font-sans text-gray-800 text-xs md:text-sm pt-1">
           {description}
         </span>
       )}

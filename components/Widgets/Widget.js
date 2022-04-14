@@ -10,6 +10,7 @@ import ExternalLinkIcon from '../Icons/ExternalLink'
 const Widget = ({
   title,
   tooltip,
+  tooltipUrl,
   value,
   emptyValue = false,
   copyableValue,
@@ -36,11 +37,22 @@ const Widget = ({
           {titleIcon}
           {isLoading && !title && <Skeleton className="w-1/5" />}
           {title && <div className="text-gray-600 text-sm">{title}</div>}
-          {tooltip && (
+          {(tooltip || tooltipUrl) && (
             <div className="text-gray-600 text-sm cursor-pointer flex">
-              <Tooltip title={tooltip}>
-                <InfoCircleOutlined />
-              </Tooltip>
+              {tooltip ? (
+                <Tooltip title={tooltip}>
+                  <InfoCircleOutlined />
+                </Tooltip>
+              ) : (
+                <a
+                  className="flex"
+                  href={tooltipUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <InfoCircleOutlined className="text-gray-600"></InfoCircleOutlined>
+                </a>
+              )}
             </div>
           )}
         </div>

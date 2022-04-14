@@ -143,9 +143,17 @@ const BaseList = ({
 
   if (items && items.length === 0) {
     return (
-      <div className="flex items-center justify-center text-gray-600 py-6 text-base">
-        {blankTitle}
-      </div>
+      <>
+        {(listHeaderTitle || listHeaderDescription) && (
+          <InfoBoxPaneTitleSection
+            title={renderListHeaderTitle}
+            description={listHeaderDescription}
+          />
+        )}
+        <div className="flex items-center justify-center text-gray-600 py-6 text-base">
+          {blankTitle}
+        </div>
+      </>
     )
   }
 

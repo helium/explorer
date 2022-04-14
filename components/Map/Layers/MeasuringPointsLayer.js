@@ -13,14 +13,15 @@ const MeasuringPointsLayer = ({ from, to }) => {
     }
   }, [])
 
-  let points = []
-  if (from && to) {
-    points = [from, to]
-  } else if (from && !to) {
-    points = [from]
-  } else {
-    points = []
-  }
+  let points = useMemo(() => {
+    if (from && to) {
+      return [from, to]
+    } else if (from && !to) {
+      return [from]
+    } else {
+      return []
+    }
+  }, [from, to])
 
   const measurementPointsData = useMemo(() => {
     return geoJSON.parse(points, {

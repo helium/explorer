@@ -75,10 +75,14 @@
     }
   },
   "eslintConfig": {
-    "extends": "react-app",
+    "extends": [
+      "react-app",
+      "plugin:@next/next/recommended"
+    ],
     "rules": {
       "react/react-in-jsx-scope": "off",
-      "jsx-a11y/anchor-is-valid": "off"
+      "jsx-a11y/anchor-is-valid": "off",
+      "@next/next/no-img-element": "off"
     }
   },
   "browserslist": {
@@ -96,7 +100,9 @@
   "devDependencies": {
     "autoprefixer": "^10.3.1",
     "csv-loader": "^3.0.3",
+    "eslint": "^8.13.0",
     "eslint-config-next": "^12.1.0",
+    "eslint-config-react-app": "^7.0.0",
     "husky": "^7.0.1",
     "postcss": "^8.3.0",
     "prettier": "2.5.1",

@@ -209,7 +209,7 @@ export const getTxnIconPath = (txn) => {
       return `${ICON_PATH_ROOT}/staked_validator.svg`
     }
     case 'unstake_validator_v1': {
-      return `${ICON_PATH_ROOT}/unstake_validator.svg`
+      return `${ICON_PATH_ROOT}/unstaked_validator.svg`
     }
     case 'transfer_validator_stake_v1': {
       return `${ICON_PATH_ROOT}/transferred_stake.svg`

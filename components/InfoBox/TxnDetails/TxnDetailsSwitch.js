@@ -16,6 +16,7 @@ import {
   Fallback,
   TokenBurnV1,
   StakeValidatorV1,
+  UnstakeValidatorV1,
   TransferValidatorStakeV1,
   ValidatorHeartbeatV1,
 } from './index'
@@ -56,6 +57,8 @@ const getTxnComponent = (txn) => {
       return TokenBurnV1
     case 'stake_validator_v1':
       return StakeValidatorV1
+    case 'unstake_validator_v1':
+      return UnstakeValidatorV1
     case 'transfer_validator_stake_v1':
       return TransferValidatorStakeV1
     case 'validator_heartbeat_v1':

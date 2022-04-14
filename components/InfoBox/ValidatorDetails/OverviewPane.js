@@ -21,7 +21,7 @@ const OverviewPane = () => {
     <InfoBoxPaneContainer>
       {!isLoading && (
         <RelayedWarningWidget
-          isVisible={isRelay(validator.status.listenAddrs)}
+          isVisible={isRelay(validator?.status?.listenAddrs)}
           warningText={'Validator is being Relayed.'}
           link={
             'https://docs.helium.com/mine-hnt/validators/mainnet/deployment-guide'

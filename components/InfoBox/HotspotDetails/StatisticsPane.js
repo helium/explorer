@@ -10,11 +10,12 @@ import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
 import WarningWidget from '../../Widgets/WarningWidget'
 import InfoBoxPaneTitleSection from '../Common/InfoBoxPaneTitleSection'
 import ExternalLinkIcon from '../../Icons/ExternalLink'
-// import RecentActivityWidget from '../../Widgets/RecentActivityWidget'
+import RecentActivityWidget from '../../Widgets/RecentActivityWidget'
 import useSelectedTxn from '../../../hooks/useSelectedTxn'
 import useSelectedHotspot from '../../../hooks/useSelectedHotspot'
+import AhrWidget from '../../Widgets/AhrWidget'
 
-const StatisticsPane = ({ hotspot, isDataOnly }) => {
+const StatisticsPane = ({ hotspot, isDataOnly, liteHotspotsActive }) => {
   const { beaconSums, isLoading: isBeaconSumsLoading } = useHotspotBeaconSums(
     hotspot.address,
     2,
@@ -76,14 +77,16 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
       <InfoBoxPaneContainer>
         {!isDataOnly && (
           <>
-            <WarningWidget
-              isVisible={isRelay(hotspot.status.listenAddrs)}
-              warningText={'Hotspot is relayed. Expect lower earnings.'}
-              link={
-                'https://docs.helium.com/troubleshooting/network-troubleshooting'
-              }
-              linkText={'Fix it'}
-            />
+            {!liteHotspotsActive && (
+              <WarningWidget
+                isVisible={isRelay(hotspot.status.listenAddrs)}
+                warningText={'Hotspot is relayed. Expect lower earnings.'}
+                link={
+                  'https://docs.helium.com/troubleshooting/network-troubleshooting'
+                }
+                linkText={'Fix it'}
+              />
+            )}
             <RewardScaleWidget hotspot={hotspot} />
             <StatusWidget hotspot={hotspot} />
             <WarningWidget
@@ -99,7 +102,8 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
           title="Earnings (UTC)"
           type="hotspot"
         />
-        {/* <RecentActivityWidget context="hotspot" address={hotspot.address} /> */}
+        <AhrWidget hotspot={hotspot} />
+        <RecentActivityWidget context="hotspot" address={hotspot.address} />
         {!isDataOnly && (
           <>
             <StatWidget
@@ -121,7 +125,7 @@ const StatisticsPane = ({ hotspot, isDataOnly }) => {
               valueIsText={errorFetchingWitnessed}
               subtitle={
                 <span className="text-gray-550 text-sm font-sans">
-                  Within past 5 days
+                  Within past 3 days
                 </span>
               }
             />

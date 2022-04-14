@@ -1,4 +1,5 @@
-export { default as BeaconDetailsPane } from './BeaconDetailsPane'
+export { default as PocReceiptsV1 } from './PocReceiptsV1'
+export { default as PocReceiptsV2 } from './PocReceiptsV2'
 export { default as PaymentV1 } from './PaymentV1'
 export { default as PaymentV2 } from './PaymentV2'
 export { default as Rewards } from './Rewards'

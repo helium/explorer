@@ -102,7 +102,6 @@ const StatisticsPane = ({ hotspot, isDataOnly, liteHotspotsActive }) => {
           title="Earnings (UTC)"
           type="hotspot"
         />
-        <AhrWidget hotspot={hotspot} />
         <RecentActivityWidget context="hotspot" address={hotspot.address} />
         {!isDataOnly && (
           <>
@@ -131,6 +130,7 @@ const StatisticsPane = ({ hotspot, isDataOnly, liteHotspotsActive }) => {
             />
           </>
         )}
+        <AhrWidget hotspot={hotspot} />
       </InfoBoxPaneContainer>
     </>
   )

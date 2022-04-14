@@ -2,26 +2,17 @@ import InfoBox from './InfoBox'
 import { useAsync } from 'react-async-hooks'
 import { useState, useMemo } from 'react'
 import { useParams } from 'react-router'
-import { fetchBlock, fetchBlockTxns } from '../../data/blocks'
+import { fetchBlock } from '../../data/blocks'
 import {
-  getTxnTypeName,
-  getTxnTypeColor,
-  splitTransactionsByTypes,
   formattedTxnHash,
 } from '../../utils/txns'
-import TransactionList from '../Lists/TransactionList'
-import TabNavbar, { TabPane } from '../Nav/TabNavbar'
-import classNames from 'classnames'
-import TransactionTypesWidget from '../Widgets/TransactionTypesWidget'
 import SkeletonList from '../Lists/SkeletonList'
 import { useBlockHeight } from '../../data/blocks'
 import PreviousIcon from '../Icons/Previous'
 import NextIcon from '../Icons/Next'
 import InfoBoxTitleButton from './Common/InfoBoxTitleButton'
-import Skeleton from '../Common/Skeleton'
 import BlockTimestamp from '../Common/BlockTimestamp'
 import BlockTransactionsList from './BlocksInfoPanes/BlockTransactionsList'
-import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 
 const BlockDetailsInfoBox = () => {
   const { height: currentHeight } = useBlockHeight()

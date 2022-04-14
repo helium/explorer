@@ -4,7 +4,6 @@ import { formatHotspotName } from '../Hotspots/utils'
 import { round } from 'lodash'
 import { useCallback } from 'react'
 import AccountAddress from '../AccountAddress'
-import ValidatorFlagLocation from '../Validators/ValidatorFlagLocation'
 import HotspotSimpleIcon from '../Icons/HotspotSimple'
 import LocationIcon from '../Icons/Location'
 import Flag from '../Common/Flag'
@@ -34,7 +33,7 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
         // subtitle={<ValidatorFlagLocation geo={result.item.geo} />}
         subtitle={
           <div className="flex items-center space-x-1">
-            <img src="/images/penalty.svg" className="w-3" />{' '}
+            <img src="/images/penalty.svg" className="w-3" alt="" />{' '}
             <span>{round(result.item.penalty, 2)}</span>
           </div>
         }

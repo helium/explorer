@@ -11,7 +11,7 @@ const MakerAccountBalanceWidget = ({ account }) => {
   return (
     <div className="bg-gray-200 p-3 rounded-lg col-span-2">
       <div className="flex space-x-1 text-gray-600 text-sm whitespace-nowrap">
-        <img src="/images/dc.svg" />
+        <img src="/images/dc.svg" alt="" />
         <span>DC Balance</span>
       </div>
 

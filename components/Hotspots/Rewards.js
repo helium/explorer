@@ -13,7 +13,7 @@ const Rewards = ({ hotspot }) => {
   return (
     <Tooltip title="24h Earnings">
       <div className="flex items-center space-x-1">
-        <img src="/images/hnt.svg" className="w-3" />{' '}
+        <img src="/images/hnt.svg" className="w-3" alt="" />{' '}
         <span>{round(rewardsSum, 2)} HNT</span>
       </div>
     </Tooltip>

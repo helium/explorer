@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import { Link } from 'react-router-i18n'
 import SearchBar from '../SearchBar/SearchBar'
 import MobileNavOverlay from './MobileNavOverlay'

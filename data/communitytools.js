@@ -91,6 +91,12 @@ export const communityToolsList = [
     tags: [types.monitoring, types.android, types.ios],
   },
   {
+    name: 'HeliumLand',
+    url: 'https://helium-land.com',
+    description: ' all information you need for Helium hotspots and accounts. HeliumLand is used to monitor your rewards and hotspots status with a very simple way. 24-hours, 7 days, 30 days and 365 days rolling rewards for each hotspot.',
+    tags: [types.monitoring, types.android],
+  },
+  {
     name: 'Heliumbot.io',
     url: 'https://heliumbot.io',
     description:

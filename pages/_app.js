@@ -15,7 +15,7 @@ import BannerContext from '../components/Common/Banner/BannerContext'
 import ChangelogContext from '../components/Common/Changelog/ChangelogContext'
 import ChangelogOverlay from '../components/Common/Changelog/ChangelogOverlay'
 import { useChangelog } from '../hooks/useChangelog'
-import AuthFilter from '../components/AuthFilter'
+import AuthFilter from '../components/Auth/AuthFilter'
 
 JavascriptTimeAgo.addLocale(en)
 const useShowBannerState = createPersistedState('avg-earnings')

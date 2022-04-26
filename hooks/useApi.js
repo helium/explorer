@@ -1,5 +1,6 @@
 import useSWR from 'swr'
 import { NETWORK } from '../data/client'
+import qs from 'qs'
 
 export const API_BASES = {
   v1: 'https://explorer-api.helium.com/api',
@@ -10,9 +11,12 @@ const TESTNET_API_BASE = 'https://helium-testnet-explorer-api.herokuapp.com/api'
 
 export const fetchApi =
   (version = 'v1') =>
-  async (route) => {
+  async (route, params) => {
     const base = NETWORK === 'testnet' ? TESTNET_API_BASE : API_BASES[version]
-    const url = [base, route].join('')
+    let url = [base, route].join('')
+    if (params) {
+      url = `${url}?${qs.stringify(params)}`
+    }
     const response = await fetch(url, {
       headers: {
         'cache-control': 'max-age=60',

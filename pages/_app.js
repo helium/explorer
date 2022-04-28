@@ -15,6 +15,7 @@ import BannerContext from '../components/Common/Banner/BannerContext'
 import ChangelogContext from '../components/Common/Changelog/ChangelogContext'
 import ChangelogOverlay from '../components/Common/Changelog/ChangelogOverlay'
 import { useChangelog } from '../hooks/useChangelog'
+import SessionCounter from '../components/SessionCounter'
 
 JavascriptTimeAgo.addLocale(en)
 const useShowBannerState = createPersistedState('avg-earnings')
@@ -37,38 +38,40 @@ function MyApp({ Component, pageProps }) {
     // this #app div is used to increase the specificity of Tailwind's utility classes, making it easier to override styles without resorting to !important
     // the corresponding value is in /tailwind.config.js: important: "#app"
     <div id="app" suppressHydrationWarning>
-      <BannerContext.Provider value={{ showBanner, hideBanner }}>
-        <ChangelogContext.Provider
-          value={{
-            changelogState,
-            changelogShown,
-            showChangelog,
-            hideChangelog,
-            initializeChangelogItem,
-            setChangelogItemAsSeen,
-            setAllChangelogItemsAsSeen,
-          }}
-        >
-          <ChangelogOverlay />
-          <GAScript />
-          {typeof window === 'undefined' ? null : (
-            <Router>
-              <StateProvider>
-                <SWRConfig
-                  value={{
-                    refreshInterval: 1000 * 60,
-                    fetcher: (resource, init) =>
-                      fetch(resource, init).then((res) => res.json()),
-                  }}
-                >
-                  <Component {...pageProps} />
-                </SWRConfig>
-              </StateProvider>
-            </Router>
-          )}
-          <script defer src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js" />
-        </ChangelogContext.Provider>
-      </BannerContext.Provider>
+      <SessionCounter>
+        <BannerContext.Provider value={{ showBanner, hideBanner }}>
+          <ChangelogContext.Provider
+            value={{
+              changelogState,
+              changelogShown,
+              showChangelog,
+              hideChangelog,
+              initializeChangelogItem,
+              setChangelogItemAsSeen,
+              setAllChangelogItemsAsSeen,
+            }}
+          >
+            <ChangelogOverlay />
+            <GAScript />
+            {typeof window === 'undefined' ? null : (
+              <Router>
+                <StateProvider>
+                  <SWRConfig
+                    value={{
+                      refreshInterval: 1000 * 60,
+                      fetcher: (resource, init) =>
+                        fetch(resource, init).then((res) => res.json()),
+                    }}
+                  >
+                    <Component {...pageProps} />
+                  </SWRConfig>
+                </StateProvider>
+              </Router>
+            )}
+            <script defer src="https://0m1ljfvm0g6j.statuspage.io/embed/script.js" />
+          </ChangelogContext.Provider>
+        </BannerContext.Provider>
+      </SessionCounter>
     </div>
   )
 }

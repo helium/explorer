@@ -252,6 +252,12 @@ export const communityToolsList = [
     url: 'https://watchium.disk91.com',
     description: 'Watch Helium hotspots, accurately. Monitor your fleet, export rewards. Built by miners. For miners. We have our own ETL/api distinct from Helium that makes the app very fast. Get an invitation code on our Discord channel #watchium',
     tags: [types.monitoring, types.export, types.android, types.ios],
+  },
+  {
+    name: 'heliumCockpit',
+    url: 'https://heliumCockpit.io',
+    description: 'Advanced account and hotspot overview with balance development. Create tax reports, manage revenue sharing and monitor your hotspots.',
+    tags: [types.monitoring, types.export],
   }
 
   // The lines below are a template that you can copy and paste and then populate

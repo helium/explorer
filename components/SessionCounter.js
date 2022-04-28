@@ -3,7 +3,7 @@ import { trackEvent } from '../hooks/useGA'
 
 const LAST_AUTH_SESSION_KEY = "LAST_AUTH_SESSION_KEY"
 const DAY_IN_MILLIS = 86400000
-const FIFTEEN_MIN_MILLIS = 900000
+const FIVE_MIN_MILLIS = 300000
 
 const SessionCounter = ({ children }) => {
   const [time, setTime] = useState(Date.now())
@@ -11,7 +11,7 @@ const SessionCounter = ({ children }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(Date.now())
-    }, FIFTEEN_MIN_MILLIS)
+    }, FIVE_MIN_MILLIS)
     return () => clearInterval(interval)
   }, [])
 

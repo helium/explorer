@@ -12,6 +12,10 @@ const clientNetwork = () => {
   return new Network({ baseURL: API_URL, version: 1 })
 }
 
-const client = new Client(clientNetwork(), { retry: 3 })
+let client = new Client(clientNetwork(), { retry: 3 })
+
+export const updateClient = (options) => {
+  client = new Client(clientNetwork(), { retry: 3, ...options })
+}
 
 export default client

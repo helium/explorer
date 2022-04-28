@@ -1,26 +1,46 @@
 import { useCallback, useState, useEffect } from 'react'
+import { updateClient } from '../data/client'
 
-const TOKEN_KEY = 'BLOCKJOY_AUTH_TOKEN'
+const AUTH_TOKEN_STORAGE_KEY = 'BLOCKJOY_AUTH_TOKEN'
 
 const useAuth = () => {
   const [ authToken, setAuthToken ] = useState()
   const [ initialized, setInitialized ] = useState(false)
 
-  useEffect(() => {
-    const savedToken = localStorage.getItem(TOKEN_KEY)
-    setAuthToken(savedToken)
-    setInitialized(true)
+  const clearAuthToken = useCallback(() => {
+    localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY)
+    setAuthToken(null)
+    updateClient({ headers: { Authorization: undefined } })
   }, [])
+
+  const authErrorHandler = useCallback((error) => {
+    if (error && error.response && error.response.status === 401) {
+      clearAuthToken()
+    }
+  }, [clearAuthToken])
 
   const updateAuthToken = useCallback((token) => {
-    localStorage.setItem(TOKEN_KEY, token)
+    localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, token)
     setAuthToken(token)
-  }, [])
+    updateClient({
+      headers: {
+        Authorization: `Basic ${token}`,
+      },
+      errorCallback: authErrorHandler,
+    })
+  }, [authErrorHandler])
 
-  const clearAuthToken = useCallback(() => {
-    localStorage.removeItem(TOKEN_KEY)
-    setAuthToken(null)
-  }, [])
+  useEffect(() => {
+    const savedToken = localStorage.getItem(AUTH_TOKEN_STORAGE_KEY)
+    setAuthToken(savedToken)
+    updateClient({
+      headers: {
+        Authorization: `Basic ${savedToken}`,
+      },
+      errorCallback: authErrorHandler,
+    })
+    setInitialized(true)
+  }, [authErrorHandler])
 
   return {
     authToken,

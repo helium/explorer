@@ -50,7 +50,7 @@ const StatusWidget = ({ hotspot }) => {
 
   return (
     <Widget
-      title="Sync Status"
+      title="Status"
       value={value}
       subtitle={
         hotspot?.status?.timestamp && (

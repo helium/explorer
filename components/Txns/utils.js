@@ -137,7 +137,8 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
         url = `${urlBase}/txns/${txn.hash}`
         break
       }
-      case 'poc_receipts_v1': {
+      case 'poc_receipts_v1':
+      case 'poc_receipts_v2': {
         type = `PoC Receipt`
         description = `A challenge constructed by ${animalHash(
           txn.challenger,

@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from 'react'
 import client from '../../data/client'
-import { Address } from '@helium/crypto'
+import Address from '@helium/address'
 import { useDebouncedCallback } from 'use-debounce'
 import useResultsReducer, { CLEAR_RESULTS, PUSH_RESULTS } from './resultsStore'
 import { useMakers } from '../../data/makers'

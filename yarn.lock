@@ -1486,10 +1486,10 @@
   resolved "https://registry.yarnpkg.com/@feedback-fish/react/-/react-1.2.1.tgz#b4d226f310df936517e9e5e82397806a5df4e2d8"
   integrity sha512-4YFD2hE93xBIT/Ko0x0l6UB0OyaxJcWKLGrnznsUVoLE5Q9vB8I1LEbMySYyuvbU9ul3yM3FjGkVZhYVPdwEyA==
 
-"@helium/address@^4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@helium/address/-/address-4.2.0.tgz#a85285acd530f4650f91c09ed0692548aae0f3e8"
-  integrity sha512-++poYfMZpSro1b5m8zsNPdCHssLNXgLYEgLG+K8syU+V2oADsb+OZDp5gthvWIBC7dBY0V+YmnxjDhBsyWKRiQ==
+"@helium/address@^4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@helium/address/-/address-4.3.1.tgz#e82f001b438166822ce8548713549b1ff87741e8"
+  integrity sha512-5f24ncoR3uOQgzFEtU2+YsHZTXW3+WYEBVdMVQEc5Hkou0bOTAOjVJZNhMqpIWLRzQXto2NOrDVIWXcFqqYnkg==
   dependencies:
     bs58 "^5.0.0"
     js-sha256 "^0.9.0"
@@ -1502,12 +1502,12 @@
   dependencies:
     bignumber.js "^9.0.0"
 
-"@helium/http@^4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-4.3.0.tgz#d51e6009284d4894b11bb4a52dafe36ffbac0c2d"
-  integrity sha512-LNE/joLdqKU4jIeZhY/qXDQKR+zr3DNTg27VDdCDXVJiJsQN+Jg45649BN3F1jifXx5+qnmnk4NgBAnh3sfeYg==
+"@helium/http@^4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-4.3.1.tgz#56fe8b3e9187bd418d3282a694deeaa3f8c798ce"
+  integrity sha512-XkW2IPPQcgOaM7dPE3sjJ2VykmIgF+EpaymMHb5luAqhpRuL0WlU9yWoDZ60gpLAxzN6nYnrmrGbsp7/n/LLVw==
   dependencies:
-    "@helium/address" "^4.2.0"
+    "@helium/address" "^4.3.1"
     "@helium/currency" "^4.2.0"
     axios "^0.21.1"
     camelcase-keys "^6.2.2"

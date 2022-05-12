@@ -22,7 +22,7 @@ export const useActivity = (context, address, filters = [], pageSize = 20) => {
         newList = await client.validator(address).roles.list({ filterTypes: filters })
         break
       default:
-        newList = []
+        return
     }
     setList(newList)
   }, [address, filters, context])

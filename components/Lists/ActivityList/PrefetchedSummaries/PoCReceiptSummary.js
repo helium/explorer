@@ -89,7 +89,7 @@ const PoCReceiptSummary = ({ txn, address, role }) => {
         </span>
       </div>
     )
-  } else if (role === 'challenger') {
+  } else {
     return (
       <div className="flex flex-row items-center justify-start space-x-2 text-xs">
         <FlagLocation geocode={txn.path[0].geocode} condensedView />

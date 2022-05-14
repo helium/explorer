@@ -34,6 +34,7 @@ const filtersByContext = {
       'unstake_validator_v1',
       'transfer_validator_stake_v1',
     ],
+    Challenges: ['poc_receipts_v2'],
   },
 }
 

@@ -196,7 +196,7 @@ export const getTxnIconPath = (txn) => {
         return `${ICON_PATH_ROOT}/poc_witness.svg`
       } else if (role === 'challengee') {
         return `${ICON_PATH_ROOT}/poc_challengee.svg`
-      } else if (role === 'challenger') {
+      } else if (role === 'challenger' || role === 'validator') {
         return `${ICON_PATH_ROOT}/poc_challenger.svg`
       } else {
         return `${ICON_PATH_ROOT}/poc_receipts.svg`

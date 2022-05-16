@@ -24,6 +24,7 @@ const Widget = ({
   icon,
   span = 1,
   isLoading = false,
+  subtitleLoading = false,
   linkTo,
   className,
   titleIcon,
@@ -94,7 +95,7 @@ const Widget = ({
               {changeSuffix}
             </div>
           ))}
-        {subtitle && isLoading ? (
+        {(subtitle && isLoading) || subtitleLoading ? (
           <Skeleton className="w-1/3" />
         ) : (
           <span

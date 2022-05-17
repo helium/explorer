@@ -17,7 +17,7 @@ const StatusWidget = ({ hotspot }) => {
   useAsync(async () => {
     setLoadingActivityTimestamp(true)
     const transactionList = await (await client.hotspot(hotspot.address).roles.list()).take(1)
-    if (transactionList && transactionList[0] && transactionList[0].time) {
+    if (transactionList && transactionList.length && transactionList[0] && transactionList[0].time) {
       setLastActivityTimestamp(transactionList[0].time * 1000)
     }
     setLoadingActivityTimestamp(false)

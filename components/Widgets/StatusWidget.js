@@ -84,7 +84,7 @@ const StatusWidget = ({ hotspot }) => {
       subtitle={subtitle}
       subtitleLoading={loadingActivityTimestamp}
       isLoading={syncHeightLoading || challengeIssuerLoading}
-      tooltip="A Hotspot is online and synced if it has any blockchain activity in the last 36 hours (including Proof-of-Coverage, transferring packets, or receiving mining rewards)."
+      tooltip="A Hotspot is active if it has any blockchain activity in the last 36 hours (including Proof-of-Coverage, transferring packets, or receiving mining rewards)."
       icon={
         <div
           className={classNames('rounded-full w-5 h-5', {

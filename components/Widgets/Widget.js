@@ -24,6 +24,7 @@ const Widget = ({
   icon,
   span = 1,
   isLoading = false,
+  subtitleLoading = false,
   linkTo,
   className,
   titleIcon,
@@ -58,7 +59,7 @@ const Widget = ({
         </div>
         <div className="flex items-center">
           {icon && <div className="mr-1.5 flex items-center">{icon}</div>}
-          <div className="text-2xl font-medium text-black my-1.5 tracking-tight w-full break-all">
+          <div className="text-l md:text-2xl font-medium text-black my-1.5 tracking-tight w-full break-all">
             {isLoading ? (
               <Skeleton className="w-full" />
             ) : (
@@ -94,7 +95,7 @@ const Widget = ({
               {changeSuffix}
             </div>
           ))}
-        {subtitle && isLoading ? (
+        {(subtitle && isLoading) || subtitleLoading ? (
           <Skeleton className="w-1/3" />
         ) : (
           <span

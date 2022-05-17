@@ -45,12 +45,30 @@ const StatisticsPane = () => {
         series={stats?.countriesCount}
         isLoading={!stats}
       />
+      <StatWidget
+        title="Hotspots that have been Rewarded (24H)"
+        series={stats?.rewardedCount}
+        isLoading={!stats}
+      />
+      <StatWidget
+        title="Hotspots that have Transferred Data (24H)"
+        series={stats?.dataTransferredCount}
+        isLoading={!stats}
+      />
+      <StatWidget
+        title="Hotspots that have been Witnessed (24H)"
+        series={stats?.witnessesCount}
+        isLoading={!stats}
+      />
+      <StatWidget
+        title="Hotspots that have been Challenged (24H)"
+        series={stats?.challengeesCount}
+        isLoading={!stats}
+      />
       <HotspotWidget title="Latest Hotspot" hotspot={latestHotspot} />
       <StatWidget
         title="Data-Only Hotspots"
-        // series={stats?.dataOnlyCount}
-        // TODO: swap below line with above line
-        series={[{ value: 72 }]}
+        series={stats?.dataOnlyCount}
         isLoading={!stats}
       />
     </InfoBoxPaneContainer>

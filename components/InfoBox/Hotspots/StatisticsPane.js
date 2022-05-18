@@ -56,12 +56,12 @@ const StatisticsPane = () => {
         isLoading={!stats}
       />
       <StatWidget
-        title="Hotspots that have been Witnessed (24H)"
+        title="Hotspots that have Witnessed (24H)"
         series={stats?.witnessesCount}
         isLoading={!stats}
       />
       <StatWidget
-        title="Hotspots that have been Challenged (24H)"
+        title="Hotspots that have Beaconed (24H)"
         series={stats?.challengeesCount}
         isLoading={!stats}
       />

@@ -46,13 +46,13 @@ const StatisticsPane = () => {
         isLoading={!stats}
       />
       <StatWidget
-        title="Hotspots that have been Rewarded (24H)"
-        series={stats?.rewardedCount}
+        title="Data-Only Hotspots"
+        series={stats?.dataOnlyCount}
         isLoading={!stats}
       />
       <StatWidget
-        title="Hotspots that have Transferred Data (24H)"
-        series={stats?.dataTransferredCount}
+        title="Hotspots that have been Rewarded (24H)"
+        series={stats?.rewardedCount}
         isLoading={!stats}
       />
       <StatWidget
@@ -66,11 +66,6 @@ const StatisticsPane = () => {
         isLoading={!stats}
       />
       <HotspotWidget title="Latest Hotspot" hotspot={latestHotspot} />
-      <StatWidget
-        title="Data-Only Hotspots"
-        series={stats?.dataOnlyCount}
-        isLoading={!stats}
-      />
     </InfoBoxPaneContainer>
   )
 }

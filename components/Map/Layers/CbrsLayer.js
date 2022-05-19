@@ -21,7 +21,7 @@ const CbrsLayer = ({ minZoom, maxZoom, onClick }) => {
     if (!cbrsData) return emptyGeoJSON
 
     return h3SetToFeatureCollection(cbrsData[0])
-  }, [])
+  }, [cbrsData])
 
   const cbrsPointGeo = useMemo(() => {
     if (!cbrsData) return emptyGeoJSON

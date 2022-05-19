@@ -1,4 +1,5 @@
 export const shouldPrefetchDetails = (type) => {
+  if (!type) return false
   return (
     type.startsWith('rewards') ||
     type.startsWith('poc_receipts') ||

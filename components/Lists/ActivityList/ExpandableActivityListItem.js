@@ -74,7 +74,7 @@ const ExpandedContent = ({ txn, role, address, linkTo, linkClickHandler }) => {
       <div
         className={classNames({
           'bg-white w-full rounded-t-lg px-2 py-2': defaultExpandedStyle,
-          'rounded-b-lg': txn?.type.startsWith('rewards'),
+          'rounded-b-lg': txn?.type?.startsWith('rewards'),
         })}
       >
         {ExpandedComponent ? (
@@ -84,7 +84,7 @@ const ExpandedContent = ({ txn, role, address, linkTo, linkClickHandler }) => {
           <TxnDetailsSwitch txn={txn} isLoading={!txn} inline />
         )}
       </div>
-      {txn && !txn?.type.startsWith('rewards') && (
+      {txn && !txn?.type?.startsWith('rewards') && (
         <Link
           to={linkTo}
           // clear selected hotspot when navigating to selected transaction, this was causing a Mapbox error on mobile
@@ -154,7 +154,7 @@ const ExpandableListItem = ({
       clearSelectedTxn()
       if (context === 'hotspot') selectHotspot(address)
     } else {
-      if (!txn.type.startsWith('rewards')) {
+      if (!txn.type?.startsWith('rewards')) {
         selectTxn(txn.hash)
       }
       if (!isPrefetched) {

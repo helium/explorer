@@ -11,7 +11,7 @@ const CbrsLayer = ({ minZoom, maxZoom, onClick }) => {
 
   const cbrsData = useMemo(() => {
     try {
-      return require('../../../data/cbrs.cs')
+      return require('../../../data/cbrs.csv')
     } catch (e) {
       return null
     }

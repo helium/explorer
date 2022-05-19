@@ -54,16 +54,19 @@ const StatisticsPane = () => {
         title="Hotspots that have been Rewarded (24H)"
         series={stats?.rewardedCount}
         isLoading={!stats}
+        changeInitial="second_last"
       />
       <StatWidget
         title="Hotspots that have Witnessed (24H)"
         series={stats?.witnessesCount}
         isLoading={!stats}
+        changeInitial="second_last"
       />
       <StatWidget
         title="Hotspots that have Beaconed (24H)"
         series={stats?.challengeesCount}
         isLoading={!stats}
+        changeInitial="second_last"
       />
       <HotspotWidget title="Latest Hotspot" hotspot={latestHotspot} />
     </InfoBoxPaneContainer>

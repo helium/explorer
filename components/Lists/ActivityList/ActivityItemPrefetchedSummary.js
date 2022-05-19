@@ -60,6 +60,8 @@ const ActivityItemPrefetchedSummary = ({
   }
 
   const SummaryComponent = getSummaryComponent(txn)
+  if (!SummaryComponent) return null
+
   return (
     <div className="opacity-80">
       <SummaryComponent txn={txn} address={address} role={role} />

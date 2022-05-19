@@ -225,7 +225,7 @@ const ExpandableListItem = ({
           { 'py-0 opacity-0': !expanded, 'py-4 opacity-100': expanded },
         )}
       >
-        {expanded && (
+        {expanded && txn && (
           <ExpandedContent
             txn={txnDetails}
             role={txn.role}

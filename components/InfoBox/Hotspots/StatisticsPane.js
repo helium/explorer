@@ -21,6 +21,11 @@ const StatisticsPane = () => {
   return (
     <InfoBoxPaneContainer>
       <TrendWidget title="Hotspots" series={stats?.count} isLoading={!stats} />
+      <TrendWidget
+        title="Data-Only Hotspots"
+        series={stats?.dataOnlyCount}
+        isLoading={!stats}
+      />
       <StatWidget
         title="% Online"
         series={stats?.onlinePct}
@@ -43,11 +48,6 @@ const StatisticsPane = () => {
       <StatWidget
         title="Countries"
         series={stats?.countriesCount}
-        isLoading={!stats}
-      />
-      <StatWidget
-        title="Data-Only Hotspots"
-        series={stats?.dataOnlyCount}
         isLoading={!stats}
       />
       <StatWidget

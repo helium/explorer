@@ -41,10 +41,10 @@ const BlockStatisticsPane = () => {
   return (
     <InfoBoxPaneContainer>
       <TrendWidget
-        title="Transaction Rate"
+        title="Transaction Rate (24hr)"
         series={blocks?.txnRate}
         isLoading={!blocks}
-        periodLabel={'Last 100 Blocks'}
+        periodLabel={'31 days'}
       />
       <StatWidget
         title="Block Height"

@@ -18,8 +18,6 @@ const StatisticsPane = () => {
     return latestHotspots.find((h) => !!h.location)
   }, [latestHotspots])
 
-  console.log(stats)
-
   return (
     <InfoBoxPaneContainer>
       <TrendWidget title="Hotspots" series={stats?.count} isLoading={!stats} />

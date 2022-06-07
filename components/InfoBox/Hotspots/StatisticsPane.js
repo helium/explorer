@@ -6,7 +6,7 @@ import HotspotWidget from '../../Widgets/HotspotWidget'
 import useApi from '../../../hooks/useApi'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import Widget from '../../Widgets/Widget'
-import { maxBy } from 'lodash'
+import { maxBy, last } from 'lodash'
 
 const StatisticsPane = () => {
   const { data: stats } = useApi('/metrics/hotspots')
@@ -17,6 +17,21 @@ const StatisticsPane = () => {
     if (!latestHotspots) return null
     return latestHotspots.find((h) => !!h.location)
   }, [latestHotspots])
+
+  const challengeeSubtitle = useMemo(() => {
+    const totalHotspots = last(stats?.count)?.value
+    const hotspotsOnlinePct = last(stats?.onlinePct)?.value
+    const challengeesPerWeek = last(stats?.challengeesWeekCount)?.value
+
+    if (!totalHotspots || !hotspotsOnlinePct || !challengeesPerWeek) return ''
+
+    const onlineHotspots = Math.trunc(totalHotspots * hotspotsOnlinePct)
+    const percent = (challengeesPerWeek / onlineHotspots) * 100
+
+    if (percent === Infinity) return ''
+
+    return `${percent.toFixed(2)}% of Online Hotspots`
+  }, [stats])
 
   return (
     <InfoBoxPaneContainer>
@@ -67,6 +82,12 @@ const StatisticsPane = () => {
         series={stats?.challengeesWeekCount}
         isLoading={!stats}
         changeInitial="second_last"
+        subtitle={
+          <div className={'text-sm font-medium text-green-500'}>
+            {challengeeSubtitle}
+          </div>
+        }
+        span={2}
       />
       <HotspotWidget title="Latest Hotspot" hotspot={latestHotspot} />
     </InfoBoxPaneContainer>

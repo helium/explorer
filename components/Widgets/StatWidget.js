@@ -14,6 +14,7 @@ const StatWidget = ({
   span = 1,
   valueSuffix,
   changeSuffix,
+  subtitle,
 }) => {
   const secondLastValue =
     series && series.length > 1 ? series[series.length - 2]?.[dataKey] : 0
@@ -30,7 +31,7 @@ const StatWidget = ({
     <Widget
       title={title}
       value={valueString}
-      subtitle={
+      subtitle={subtitle ||
         <WidgetChange
           value={value}
           initial={initial}

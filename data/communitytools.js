@@ -122,6 +122,12 @@ export const communityToolsList = [
     tags: [types.planning, types.monitoring],
   },
   {
+    name: 'helium-reports',
+    url: 'https://helium-reports.com',
+    description: 'Euro-Export of the rewards of hotspot as CSV and PDF. Free and without any without entering personal data.',
+    tags: [types.export],
+  },
+  {
     name: 'HeliumVision',
     url: 'https://helium.vision',
     description: 'Helium Network Planning, Optimization and Simulations',

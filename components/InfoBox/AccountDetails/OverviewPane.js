@@ -1,10 +1,10 @@
 import { useParams } from 'react-router'
 import { useAccount } from '../../../data/accounts'
 import QrWidget from '../../Widgets/QrWidget'
-import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
+import AccountBalanceWidget from '../../Widgets/AccountBalanceWidget'
 import Widget from '../../Widgets/Widget'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
-import AccountBalanceWidget from '../../Widgets/AccountBalanceWidget'
+import AccountTokenList from '../../Accounts/AccountTokenList'
 
 const OverviewPane = () => {
   const { address } = useParams()
@@ -12,13 +12,12 @@ const OverviewPane = () => {
 
   return (
     <InfoBoxPaneContainer>
-      <AccountBalanceWidget account={account} />
-      <QrWidget address={address} />
-      <PeriodizedRewardsWidget
-        address={account?.address}
-        type="account"
-        title="Earnings (UTC)"
+      <AccountBalanceWidget
+        account={account}
+        showSubTokens={false}
       />
+      <QrWidget address={address} />
+      <AccountTokenList account={account} />
       <Widget
         title="Hotspots"
         isLoading={!account}

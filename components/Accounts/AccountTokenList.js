@@ -8,10 +8,6 @@ import TokenListItem from './TokenListItem'
 const AccountTokenList = ({ account }) => {
   const { market } = useMarket()
 
-  const totalBalance = useMemo(() => {
-    return account?.balance?.plus(account?.stakedBalance)
-  }, [account])
-
   const data = useMemo(() => {
     return orderBy(
       [
@@ -47,11 +43,11 @@ const AccountTokenList = ({ account }) => {
       'desc',
     )
   }, [
+    account?.balance,
     account?.dcBalance,
     account?.secBalance,
     account?.stakedBalance,
     market?.price,
-    totalBalance,
   ])
 
   if (!account) return <TokenListSkeleton />

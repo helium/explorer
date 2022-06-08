@@ -18,9 +18,9 @@ const AccountTokenList = ({ account }) => {
         {
           title: 'HNT',
           icon: '/images/hnt.svg',
-          amount: totalBalance?.toString(2, { showTicker: false }),
-          usdAmount: totalBalance?.times(market?.price)?.floatBalance,
-          floatAmount: totalBalance?.floatBalance,
+          amount: account?.balance?.toString(2, { showTicker: false }),
+          usdAmount: account?.balance?.times(market?.price)?.floatBalance,
+          floatAmount: account?.balance?.floatBalance,
         },
         {
           title: 'HST',

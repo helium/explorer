@@ -1,11 +1,16 @@
+import { Account } from '@helium/http'
 import { orderBy, times } from 'lodash'
-import { useMemo } from 'react'
+import { FC, Key, useMemo } from 'react'
 import { useMarket } from '../../data/market'
 import Skeleton from '../Common/Skeleton'
 import PeriodizedRewardsWidget from '../Widgets/PeriodizedRewardsWidget'
 import TokenListItem from './TokenListItem'
 
-const AccountTokenList = ({ account }) => {
+interface Props {
+  account: Account
+}
+
+const AccountTokenList: FC<Props> = ({ account }) => {
   const { market } = useMarket()
 
   const data = useMemo(() => {
@@ -14,27 +19,27 @@ const AccountTokenList = ({ account }) => {
         {
           title: 'HNT',
           icon: '/images/hnt.svg',
-          amount: account?.balance?.toString(2, { showTicker: false }),
+          amount: account?.balance,
           usdAmount: account?.balance?.times(market?.price)?.floatBalance,
           floatAmount: account?.balance?.floatBalance,
         },
         {
           title: 'HST',
           icon: '/images/hst.svg',
-          amount: account?.secBalance?.toString(2, { showTicker: false }),
+          amount: account?.secBalance,
           floatAmount: account?.secBalance?.floatBalance,
         },
         {
           title: 'DC',
           icon: '/images/dc.svg',
-          amount: account?.dcBalance?.toString(2, { showTicker: false }),
+          amount: account?.dcBalance,
           usdAmount: account?.dcBalance?.toUsd()?.floatBalance,
           floatAmount: account?.dcBalance?.floatBalance,
         },
         {
           title: 'HNT Staked',
           icon: '/images/validator.svg',
-          amount: account?.stakedBalance?.toString(2, { showTicker: false }),
+          amount: account?.stakedBalance,
           usdAmount: account?.stakedBalance?.times(market?.price)?.floatBalance,
           floatAmount: account?.stakedBalance?.floatBalance,
         },
@@ -84,17 +89,24 @@ const AccountTokenList = ({ account }) => {
   )
 }
 
-const TokenListSkeleton = () =>
-  times(4).map((i) => (
-    <div key={i} className="col-span-2 space-y-2">
-      <div className="bg-gray-200 p-3 rounded-lg flex justify-between items-center">
-        <div className="flex w-1/2 space-x-2 items-center">
-          <Skeleton className="rounded-full w-7 h-7" />
+const TokenListSkeleton = () => (
+  <>
+    {times(4).map((i: Key) => (
+      <div key={i} className="col-span-2 space-y-2">
+        <div className="bg-gray-200 p-3 rounded-lg flex justify-between items-center">
+          <div className="flex w-1/2 space-x-2 items-center">
+            <Skeleton
+              className="rounded-full w-7 h-7"
+              defaultSize={false}
+              defaultRounding={false}
+            />
+            <Skeleton className="w-1/3" />
+          </div>
           <Skeleton className="w-1/3" />
         </div>
-        <Skeleton className="w-1/3" />
       </div>
-    </div>
-  ))
+    ))}
+  </>
+)
 
 export default AccountTokenList

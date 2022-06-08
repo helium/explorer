@@ -40,7 +40,7 @@ const AccountBalanceWidget = ({ account, showSubTokens = true }) => {
       {showSubTokens && (
         <div className="flex space-x-4">
           <div className="flex space-x-1 align-middle">
-            <img alt="" src="/images/dc.svg" />
+            <img alt="Data Credits Logo" src="/images/dc.svg" />
             {!account ? (
               <Skeleton className="w-10 my-1" />
             ) : (
@@ -54,7 +54,7 @@ const AccountBalanceWidget = ({ account, showSubTokens = true }) => {
             )}
           </div>
           <div className="flex space-x-1 align-middle">
-            <img alt="" src="/images/hst.svg" />
+            <img alt="Security Tokens Logo" src="/images/hst.svg" />
             {!account ? (
               <Skeleton className="w-10 my-1" />
             ) : (
@@ -68,7 +68,7 @@ const AccountBalanceWidget = ({ account, showSubTokens = true }) => {
             )}
           </div>
           <div className="flex space-x-1 align-middle">
-            <img alt="" src="/images/validator.svg" />
+            <img alt="Validator Logo" src="/images/validator.svg" />
             {!account ? (
               <Skeleton className="w-16 my-1" />
             ) : (

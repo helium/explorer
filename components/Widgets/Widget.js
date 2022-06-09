@@ -1,11 +1,10 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import Image from 'next/image'
-import { InfoCircleOutlined } from '@ant-design/icons'
 import Skeleton from '../Common/Skeleton'
 import CopyableText from '../Common/CopyableText'
-import { Tooltip } from 'antd'
 import ExternalLinkIcon from '../Icons/ExternalLink'
+import InfoTooltip from '../Common/InfoTooltip'
 
 const Widget = ({
   title,
@@ -39,22 +38,7 @@ const Widget = ({
           {isLoading && !title && <Skeleton className="w-1/5" />}
           {title && <div className="text-gray-600 text-sm">{title}</div>}
           {(tooltip || tooltipUrl) && (
-            <div className="text-gray-600 text-sm cursor-pointer flex">
-              {tooltip ? (
-                <Tooltip title={tooltip}>
-                  <InfoCircleOutlined />
-                </Tooltip>
-              ) : (
-                <a
-                  className="flex"
-                  href={tooltipUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <InfoCircleOutlined className="text-gray-600"></InfoCircleOutlined>
-                </a>
-              )}
-            </div>
+            <InfoTooltip text={tooltip} href={tooltipUrl} />
           )}
         </div>
         <div className="flex items-center">

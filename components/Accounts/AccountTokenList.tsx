@@ -1,5 +1,5 @@
 import { Account } from '@helium/http'
-import { orderBy, times } from 'lodash'
+import { get, orderBy, times } from 'lodash'
 import { FC, Key, useMemo } from 'react'
 import { useMarket } from '../../data/market'
 import Skeleton from '../Common/Skeleton'
@@ -39,8 +39,6 @@ const AccountTokenList: FC<Props> = ({ account }) => {
           floatAmount: account?.dcBalance?.floatBalance,
           tooltip:
             'Data Credits are used to send packets on Helium. DCs are non-transferrable.',
-          tooltipUrl:
-            'https://docs.helium.com/faq/data-credits/#what-are-data-credits-do-i-need-them',
         },
         {
           title: 'HNT Staked',
@@ -50,8 +48,8 @@ const AccountTokenList: FC<Props> = ({ account }) => {
           floatAmount: account?.stakedBalance?.floatBalance,
         },
       ],
-      'floatAmount',
-      'desc',
+      (item) => [get(item, 'usdAmount', 0), get(item, 'floatAmount')],
+      ['desc', 'desc'],
     )
   }, [
     account?.balance,

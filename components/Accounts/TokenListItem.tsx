@@ -1,12 +1,15 @@
 import { FC } from 'react'
 import { Balance } from '@helium/currency'
 import Currency from '../Common/Currency'
+import InfoTooltip from '../Common/InfoTooltip'
 
 interface Props {
   title: string
   amount: Balance<any>
   usdAmount: number
   icon: string
+  tooltip?: string
+  tooltipUrl?: string
   extra?: JSX.Element
 }
 
@@ -15,6 +18,8 @@ const TokenListItem: FC<Props> = ({
   amount,
   usdAmount,
   icon,
+  tooltip,
+  tooltipUrl,
   extra,
 }) => {
   return (
@@ -22,10 +27,9 @@ const TokenListItem: FC<Props> = ({
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <img alt="" src={icon} className="w-7" />
-          <div className="grid">
-            <span className="font-medium text-lg text-darkgray-800">
-              {title}
-            </span>
+          <div className="font-medium text-lg text-darkgray-800 flex items-center space-x-1.5">
+            <span>{title}</span>
+            {tooltip && <InfoTooltip text={tooltip} href={tooltipUrl} />}
           </div>
         </div>
 

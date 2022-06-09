@@ -6,13 +6,12 @@ import {
   Tooltip as RCTooltip,
 } from 'recharts'
 import { first, last } from 'lodash'
-import { InfoCircleOutlined } from '@ant-design/icons'
-import { Tooltip } from 'antd'
 import Image from 'next/image'
 import Skeleton from '../Common/Skeleton'
 import WidgetChange from './WidgetChange'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
+import InfoTooltip from '../Common/InfoTooltip'
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
@@ -57,13 +56,7 @@ const TrendWidget = ({
       <div>
         <div className="text-gray-600 text-sm whitespace-nowrap flex space-x-1 items-center">
           <span>{title}</span>
-          {tooltip && (
-            <div className="text-gray-600 text-sm cursor-pointer flex">
-              <Tooltip title={tooltip}>
-                <InfoCircleOutlined />
-              </Tooltip>
-            </div>
-          )}
+          {tooltip && <InfoTooltip text={tooltip} />}
         </div>
         <div className="text-3xl font-medium my-1.5 tracking-tight text-black">
           {isLoading ? (

@@ -1,5 +1,5 @@
 import { Account } from '@helium/http'
-import { orderBy, times } from 'lodash'
+import { get, orderBy, times } from 'lodash'
 import { FC, Key, useMemo } from 'react'
 import { useMarket } from '../../data/market'
 import Skeleton from '../Common/Skeleton'
@@ -28,13 +28,17 @@ const AccountTokenList: FC<Props> = ({ account }) => {
           icon: '/images/hst.svg',
           amount: account?.secBalance,
           floatAmount: account?.secBalance?.floatBalance,
+          tooltip:
+            'Helium Security Tokens were minted in the genesis block and assigned to founders, investors, and organizations who will manage blockchain governance.',
         },
         {
           title: 'DC',
-          icon: '/images/dc.svg',
+          icon: '/images/dc-coin.svg',
           amount: account?.dcBalance,
           usdAmount: account?.dcBalance?.toUsd()?.floatBalance,
           floatAmount: account?.dcBalance?.floatBalance,
+          tooltip:
+            'Data Credits are used to send packets on Helium. DCs are non-transferrable.',
         },
         {
           title: 'HNT Staked',
@@ -44,8 +48,8 @@ const AccountTokenList: FC<Props> = ({ account }) => {
           floatAmount: account?.stakedBalance?.floatBalance,
         },
       ],
-      'floatAmount',
-      'desc',
+      (item) => [get(item, 'usdAmount', 0), get(item, 'floatAmount')],
+      ['desc', 'desc'],
     )
   }, [
     account?.balance,
@@ -59,7 +63,7 @@ const AccountTokenList: FC<Props> = ({ account }) => {
 
   return (
     <div className="col-span-2 space-y-2">
-      {data.map(({ title, icon, amount, usdAmount }) =>
+      {data.map(({ title, icon, amount, usdAmount, tooltip, tooltipUrl }) =>
         title === 'HNT' ? (
           <TokenListItem
             key={title}
@@ -67,6 +71,8 @@ const AccountTokenList: FC<Props> = ({ account }) => {
             icon={icon}
             amount={amount}
             usdAmount={usdAmount}
+            tooltip={tooltip}
+            tooltipUrl={tooltipUrl}
             extra={
               <PeriodizedRewardsWidget
                 address={account?.address}
@@ -82,6 +88,8 @@ const AccountTokenList: FC<Props> = ({ account }) => {
             icon={icon}
             amount={amount}
             usdAmount={usdAmount}
+            tooltip={tooltip}
+            tooltipUrl={tooltipUrl}
           />
         ),
       )}

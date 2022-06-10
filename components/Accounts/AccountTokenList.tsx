@@ -63,7 +63,7 @@ const AccountTokenList: FC<Props> = ({ account }) => {
 
   return (
     <div className="col-span-2 space-y-2">
-      {data.map(({ title, icon, amount, usdAmount, tooltip, tooltipUrl }) =>
+      {data.map(({ title, icon, amount, usdAmount, tooltip }) =>
         title === 'HNT' ? (
           <TokenListItem
             key={title}
@@ -72,7 +72,6 @@ const AccountTokenList: FC<Props> = ({ account }) => {
             amount={amount}
             usdAmount={usdAmount}
             tooltip={tooltip}
-            tooltipUrl={tooltipUrl}
             extra={
               <PeriodizedRewardsWidget
                 address={account?.address}
@@ -89,7 +88,6 @@ const AccountTokenList: FC<Props> = ({ account }) => {
             amount={amount}
             usdAmount={usdAmount}
             tooltip={tooltip}
-            tooltipUrl={tooltipUrl}
           />
         ),
       )}

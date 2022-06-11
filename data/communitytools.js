@@ -147,12 +147,6 @@ export const communityToolsList = [
     tags: [types.monitoring],
   },
   {
-    name: 'Hotsbot',
-    url: 'https://hotsbot.net/',
-    description: 'Hotspot monitoring and event tracking via Telegram',
-    tags: [types.monitoring],
-  },
-  {
     name: 'Hotspot Utility',
     url: 'https://apps.apple.com/us/app/helium-hotspot-utility/id1527367455',
     description:

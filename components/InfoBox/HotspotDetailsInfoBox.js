@@ -25,6 +25,7 @@ import { getHotspotDenylistResults } from '../../data/hotspots'
 import DenylistIcon from '../Icons/DenylistIcon'
 import { Tooltip } from 'antd'
 import useChallengeIssuer from '../../hooks/useChallengeIssuer'
+import CellStatisticsPane from './HotspotDetails/CellStatisticsPane.tsx'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -249,6 +250,18 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
               isDataOnly={IS_DATA_ONLY}
               liteHotspotsActive={liteHotspotsActive}
             />
+          )}
+        </TabPane>
+        <TabPane
+          title="5G Statistics"
+          key="5g-statistics"
+          path="5g-statistics"
+          hidden={maker?.id !== 19} //TODO: identify other 5G hotspots / makers
+        >
+          {isLoading ? (
+            <SkeletonWidgets />
+          ) : (
+            <CellStatisticsPane hotspot={hotspot} />
           )}
         </TabPane>
         <TabPane title="Activity" path="activity" key="activity">

@@ -7,10 +7,9 @@ import { CellHeartbeat } from '../InfoBox/HotspotDetails/CellStatisticsPane'
 import { isAfter, sub } from 'date-fns'
 
 type Props = {
-  hotspot: Hotspot
   heartbeat?: CellHeartbeat
 }
-const CellStatusWidget = ({ hotspot, heartbeat }: Props) => {
+const CellStatusWidget = ({ heartbeat }: Props) => {
   const timestamp = useMemo(() => new Date(heartbeat?.timestamp),
     [heartbeat?.timestamp])
 

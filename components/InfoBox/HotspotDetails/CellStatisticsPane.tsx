@@ -1,4 +1,4 @@
-import React, { memo } from 'React'
+import { memo, useMemo } from 'React'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import useApi from '../../../hooks/useApi'
 import CellStatusWidget from '../../Widgets/CellStatusWidget'
@@ -24,18 +24,22 @@ type Props = {
 }
 
 const CellStatisticsPane = ({ hotspot }: Props) => {
-  const { data: heartbeat } : SWRResponse<CellHeartbeat> =
+  const { data: heartbeat }: SWRResponse<CellHeartbeat> =
     useApi(`/cell/heartbeats/hotspots/${hotspot.address}/last`)
 
   return (
     <InfoBoxPaneContainer>
       {heartbeat !== undefined ? (
         <>
-          <CellStatusWidget hotspot={hotspot} heartbeat={heartbeat} />
+          <CellStatusWidget heartbeat={heartbeat} />
           {/*@ts-ignore*/}
           <Widget
-            title='CBSD Category'
-            value={heartbeat?.cbsdCategory}
+            title='Small Cell Location'
+            value={
+              heartbeat?.cbsdCategory === 'A'
+                ? 'Indoor'
+                : 'Outdoor'
+            }
           />
           {/*@ts-ignore*/}
           <Widget
@@ -44,7 +48,7 @@ const CellStatisticsPane = ({ hotspot }: Props) => {
           />
         </>
       ) : (
-        <div className="col-span-2">
+        <div className='col-span-2'>
           Data Not Currently Available
         </div>
       )}

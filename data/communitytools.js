@@ -79,12 +79,6 @@ export const communityToolsList = [
     tags: [types.monitoring, types.ios],
   },
   {
-    name: 'Helisum',
-    url: 'https://helisum.com',
-    description: 'Hotspot Monitoring and Dashboard solution',
-    tags: [types.monitoring, types.export],
-  },
-  {
     name: 'Helium Geek',
     url: 'https://heliumgeek.com',
     description: 'Check your hotspot vitals and your rewards, get notified for network issues and rewards. HeliumGeek supports iOS, Android, iOS widgets and Apple Watch app with complications.',

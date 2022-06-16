@@ -187,7 +187,7 @@ export const communityToolsList = [
   },
   {
     name: 'Nebra Diagnostics',
-    url: 'https://helium.nebra.com/handy-guides/local-diagnostics',
+    url: 'https://helium.nebra.com/#/handy-guides/local-diagnostics',
     description:
       'Local diagnostics utility for Nebra Hotspots including syncing, firmware, and other useful info.',
     tags: [types.monitoring],

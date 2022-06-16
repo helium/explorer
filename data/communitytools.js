@@ -97,6 +97,12 @@ export const communityToolsList = [
     description: 'Network with other Hotspot owners in your area',
     tags: [types.planning],
   },
+   {
+    name: 'Helium (HNT) Rewards Checker',
+    url: 'https://hntrewards.xyz/',
+    description: 'Check the rewards of any miner using a predefined time period or a custom one including its equivalent value in any of the top FIAT currencies',
+    tags: [types.monitoring],
+  },
   {
     name: 'HeliumStatus.io',
     url: 'https://app.heliumstatus.io',

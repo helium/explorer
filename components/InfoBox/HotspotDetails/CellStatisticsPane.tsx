@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'React'
+import { memo, useMemo } from 'react'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import useApi from '../../../hooks/useApi'
 import CellStatusWidget from '../../Widgets/CellStatusWidget'
@@ -27,6 +27,17 @@ const CellStatisticsPane = ({ hotspot }: Props) => {
   const { data: heartbeat }: SWRResponse<CellHeartbeat> =
     useApi(`/cell/heartbeats/hotspots/${hotspot.address}/last`)
 
+  const category = useMemo(() => {
+    switch (heartbeat?.cbsdCategory) {
+      case 'A':
+        return 'Indoor'
+      case 'B':
+        return 'Outdoor'
+      default:
+        return 'Unknown'
+    }
+  }, [heartbeat?.cbsdCategory])
+
   return (
     <InfoBoxPaneContainer>
       {heartbeat !== undefined ? (
@@ -35,11 +46,7 @@ const CellStatisticsPane = ({ hotspot }: Props) => {
           {/*@ts-ignore*/}
           <Widget
             title='Small Cell Location'
-            value={
-              heartbeat?.cbsdCategory === 'A'
-                ? 'Indoor'
-                : 'Outdoor'
-            }
+            value={category}
           />
           {/*@ts-ignore*/}
           <Widget

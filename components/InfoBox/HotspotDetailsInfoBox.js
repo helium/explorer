@@ -256,7 +256,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
           title="5G Statistics"
           key="5g-statistics"
           path="5g-statistics"
-          hidden={maker?.id !== 19} //TODO: identify other 5G hotspots / makers
+          hidden={!(maker?.id === 19 || maker?.id === 67)}
         >
           {isLoading ? (
             <SkeletonWidgets />

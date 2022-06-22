@@ -4,15 +4,16 @@ import { NETWORK } from '../data/client'
 export const API_BASES = {
   v1: 'https://explorer-api.helium.com/api',
   v2: 'https://explorer-api-v2.helium.com/api',
+  testnet: 'https://helium-testnet-explorer-api.herokuapp.com/api',
+  devnet: 'https://helium-devnet-explorer-api.herokuapp.com/api',
 }
-
-const TESTNET_API_BASE = 'https://helium-testnet-explorer-api.herokuapp.com/api'
 
 export const fetchApi =
   (version = 'v1') =>
   async (route) => {
-    const base = NETWORK === 'testnet' ? TESTNET_API_BASE : API_BASES[version]
+    const base = NETWORK === 'mainnet' ? API_BASES[version] : API_BASES[NETWORK]
     const url = [base, route].join('')
+    console.log('fetch api', NETWORK, url)
     const response = await fetch(url, {
       headers: {
         'cache-control': 'max-age=60',

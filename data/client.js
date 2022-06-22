@@ -9,6 +9,7 @@ export const API_URL =
 
 const clientNetwork = () => {
   if (NETWORK === 'testnet') return Network.testnet
+  if (NETWORK === 'devnet') return Network.devnet
   return new Network({ baseURL: API_URL, version: 1 })
 }
 

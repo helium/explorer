@@ -4,6 +4,7 @@ import qs from 'qs'
 const baseURLs = {
   production: 'https://api.helium.io/v1',
   testnet: 'https://testnet-api.helium.wtf/v1',
+  devnet: 'https://devnet-api.helium.wtf/v1',
 }
 
 const url = (path, params, cursor, network) => {

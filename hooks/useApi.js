@@ -13,7 +13,6 @@ export const fetchApi =
   async (route) => {
     const base = NETWORK === 'mainnet' ? API_BASES[version] : API_BASES[NETWORK]
     const url = [base, route].join('')
-    console.log('fetch api', NETWORK, url)
     const response = await fetch(url, {
       headers: {
         'cache-control': 'max-age=60',

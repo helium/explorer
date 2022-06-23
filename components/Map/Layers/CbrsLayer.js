@@ -38,7 +38,7 @@ const CbrsLayer = ({ minZoom, maxZoom, onClick }) => {
       Point: ['lat', 'lng'],
       include: ['height'],
     })
-  }, [])
+  }, [cbrsData])
 
   const hexStyle = useMemo(
     () => ({

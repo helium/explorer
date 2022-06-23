@@ -16,7 +16,7 @@ import Elevation from '../Hotspots/Elevation'
 import { isDataOnly } from '../Hotspots/utils'
 import SkeletonWidgets from './Common/SkeletonWidgets'
 import HexIndex from '../Common/HexIndex'
-import { useMaker } from '../../data/makers'
+import { MAKER_IDS, useMaker } from '../../data/makers'
 import Skeleton from '../Common/Skeleton'
 import { useCallback } from 'react'
 import AccountIcon from '../AccountIcon'
@@ -256,7 +256,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
           title="5G Statistics"
           key="5g-statistics"
           path="5g-statistics"
-          hidden={!(maker?.id === 19 || maker?.id === 67)}
+          hidden={!(maker?.id === MAKER_IDS.FREEDOM_FI || maker?.id === MAKER_IDS.BOBCAT_5G)}
         >
           {isLoading ? (
             <SkeletonWidgets />

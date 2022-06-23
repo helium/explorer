@@ -2,7 +2,6 @@ import { memo, useMemo } from 'react'
 import classNames from 'classnames'
 import TimeAgo from 'react-time-ago'
 import Widget from './Widget'
-import { Hotspot } from '@helium/http'
 import { CellHeartbeat } from '../InfoBox/HotspotDetails/CellStatisticsPane'
 import { isAfter, sub } from 'date-fns'
 

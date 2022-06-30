@@ -40,25 +40,12 @@ const CellStatisticsPane = ({ hotspot }: Props) => {
 
   return (
     <InfoBoxPaneContainer>
-      {heartbeat !== undefined ? (
-        <>
-          <CellStatusWidget heartbeat={heartbeat} />
-          {/*@ts-ignore*/}
-          <Widget
-            title='Small Cell Location'
-            value={category}
-          />
-          {/*@ts-ignore*/}
-          <Widget
-            title='Hotspot Type'
-            value={heartbeat?.hotspotType}
-          />
-        </>
-      ) : (
-        <div className='col-span-2'>
-          Data Not Currently Available
-        </div>
-      )}
+      <CellStatusWidget heartbeat={heartbeat} />
+      {/*@ts-ignore*/}
+      <Widget
+        title='Small Cell Location'
+        value={category}
+      />
     </InfoBoxPaneContainer>
   )
 }

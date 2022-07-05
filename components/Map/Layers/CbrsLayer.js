@@ -1,95 +1,90 @@
 import { memo, useMemo } from 'react'
-import { GeoJSONLayer } from 'react-mapbox-gl'
+import { GeoJSONLayer, Layer, Source } from 'react-mapbox-gl'
 import { emptyGeoJSON } from '../../../utils/location'
-import { h3ToGeo } from 'h3-js'
-import { h3SetToFeatureCollection } from 'geojson2h3'
-import geoJSON from 'geojson'
 import useSelectedHex from '../../../hooks/useSelectedHex'
+import {
+  defaultStyle,
+  hexDefaultStyle,
+  hexOutlineStyle,
+  TILESERVER_URL,
+} from './HexCoverageLayer'
+
+const CELL_HOTSPOT_COLOR = '#D23E72'
+
+const CELL_HEX_SOURCE_OPTIONS = {
+  type: 'vector',
+  url: `${TILESERVER_URL}/public.cell_h3_res8.json`,
+}
+
+const CELL_POINTS_SOURCE_OPTIONS = {
+  type: 'vector',
+  url: `${TILESERVER_URL}/public.cell_points.json`,
+}
 
 const CbrsLayer = ({ minZoom, maxZoom, onClick }) => {
   const { selectedHex } = useSelectedHex()
 
-  const cbrsData = useMemo(() => {
-    try {
-      return require('../../../data/cbrs.csv')
-    } catch (e) {
-      return null
-    }
-  }, [])
+  const circleLayout = useMemo(() => cellCircleStyle(minZoom, maxZoom),
+    [minZoom, maxZoom])
 
-  const cbrsHexGeo = useMemo(() => {
-    if (!cbrsData) return emptyGeoJSON
-
-    return h3SetToFeatureCollection(cbrsData[0])
-  }, [cbrsData])
-
-  const cbrsPointGeo = useMemo(() => {
-    if (!cbrsData) return emptyGeoJSON
-
-    const formattedData = cbrsData[0].map((res8Hex) => {
-      const coords = h3ToGeo(res8Hex)
-      return {
-        lat: coords[0],
-        lng: coords[1],
-      }
-    })
-
-    return geoJSON.parse(formattedData, {
-      Point: ['lat', 'lng'],
-      include: ['height'],
-    })
-  }, [])
-
-  const hexStyle = useMemo(
-    () => ({
-      'fill-color': '#D23E72',
-      'fill-opacity': [
-        'interpolate',
-        ['exponential', 1.75],
-        ['zoom'],
-        minZoom,
-        1,
-        maxZoom,
-        0.6,
-      ],
-    }),
-    [maxZoom, minZoom],
-  )
-
-  const pointStyle = useMemo(
-    () => ({
-      'circle-color': '#D23E72',
-      'circle-radius': {
-        stops: [
-          [minZoom, 2],
-          [maxZoom, 5],
-        ],
-      },
-      'circle-opacity': [
-        'interpolate',
-        ['exponential', 1],
-        ['zoom'],
-        minZoom,
-        0.3,
-        maxZoom,
-        0,
-      ],
-    }),
-    [maxZoom, minZoom],
-  )
+  const hexLayout = useMemo(() => cellHexStyle(), [])
 
   return (
     <>
-      <GeoJSONLayer
-        id="cbrsHex"
-        data={cbrsHexGeo}
-        fillPaint={hexStyle}
-        fillOnClick={onClick}
+      <Source id='cell_points_source' tileJsonSource={CELL_POINTS_SOURCE_OPTIONS} />
+      <Layer
+        sourceId='cell_points_source'
+        sourceLayer='public.cell_points'
+        id='cell_points'
+        type='circle'
+        paint={circleLayout}
       />
-      <GeoJSONLayer
-        id="cbrsPoint"
-        data={cbrsPointGeo}
-        circlePaint={pointStyle}
+      <Source id='cell_hexes_source' tileJsonSource={CELL_HEX_SOURCE_OPTIONS} />
+      <Layer
+        sourceId='cell_hexes_source'
+        sourceLayer='public.cell_h3_res8'
+        id='cell_hexes'
+        type='fill'
+        paint={hexLayout}
+        onClick={onClick}
+      />
+      <Layer
+        sourceId='cell_hexes_source'
+        sourceLayer='public.cell_h3_res8'
+        id='cell_hexes_line'
+        type='line'
+        paint={hexOutlineStyle}
+      />
+      <Layer
+        sourceId='cell_points_source'
+        sourceLayer='public.cell_points'
+        id='cell_labels'
+        type='symbol'
+        minZoom={11}
+        layout={{
+          'text-field': ['get', 'hotspot_count'],
+          'text-allow-overlap': false,
+          'text-font': ['Inter Semi Bold', 'Arial Unicode MS Bold'],
+          'text-size': 23,
+        }}
+        paint={{
+          'text-opacity': [
+            'case',
+            ['==', ['get', 'hotspot_count'], 1],
+            0,
+            0.85,
+          ],
+          'text-color': [
+            'case',
+            [
+              '==',
+              ['get', 'id'],
+              selectedHex?.index ? selectedHex.index : null,
+            ],
+            '#ffffff',
+            '#10192d',
+          ],
+        }}
       />
       <GeoJSONLayer
         data={selectedHex?.feature || emptyGeoJSON}
@@ -101,5 +96,15 @@ const CbrsLayer = ({ minZoom, maxZoom, onClick }) => {
     </>
   )
 }
+
+const cellCircleStyle = (minZoom, maxZoom) => ({
+  ...defaultStyle(minZoom, maxZoom),
+  'circle-color': CELL_HOTSPOT_COLOR,
+})
+
+const cellHexStyle = (minZoom, maxZoom) => ({
+  ...hexDefaultStyle(minZoom, maxZoom),
+  'fill-color': CELL_HOTSPOT_COLOR,
+})
 
 export default memo(CbrsLayer)

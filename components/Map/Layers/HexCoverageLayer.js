@@ -7,7 +7,7 @@ const HOTSPOT_COLOR = '#29d391'
 const DATA_COLOR = '#58a7f9'
 const DC_THRESHOLD = 100
 
-const TILESERVER_URL =
+export const TILESERVER_URL =
   process.env.NEXT_PUBLIC_TILESERVER_URL ||
   'https://hotspot-tileserver.helium.wtf'
 
@@ -124,7 +124,7 @@ const HexCoverageLayer = ({ minZoom, maxZoom, onHexClick, layer }) => {
   )
 }
 
-const defaultStyle = (minZoom, maxZoom) => ({
+export const defaultStyle = (minZoom, maxZoom) => ({
   'circle-color': HOTSPOT_COLOR,
   'circle-radius': {
     stops: [
@@ -157,12 +157,12 @@ const dcStyle = (minZoom, maxZoom) => ({
   ],
 })
 
-const hexDefaultStyle = () => ({
+export const hexDefaultStyle = () => ({
   'fill-color': HOTSPOT_COLOR,
   'fill-opacity': 0.5,
 })
 
-const hexOutlineStyle = {
+export const hexOutlineStyle = {
   'line-color': '#2f3a59',
   'line-width': ['interpolate', ['exponential', 1], ['zoom'], 6.5, 0, 12, 4],
   'line-blur': 4,

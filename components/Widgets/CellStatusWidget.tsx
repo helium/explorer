@@ -2,28 +2,30 @@ import { memo, useMemo } from 'react'
 import classNames from 'classnames'
 import TimeAgo from 'react-time-ago'
 import Widget from './Widget'
-import { CellHeartbeat } from '../InfoBox/HotspotDetails/CellStatisticsPane'
+import { CellHotspot } from '../InfoBox/HotspotDetails/CellStatisticsPane'
 import { isAfter, sub } from 'date-fns'
 
 type Props = {
-  heartbeat?: CellHeartbeat
+  cellHotspot?: CellHotspot
 }
-const CellStatusWidget = ({ heartbeat }: Props) => {
-  const timestamp = useMemo(() => new Date(heartbeat?.timestamp),
-    [heartbeat?.timestamp])
+const CellStatusWidget = ({ cellHotspot }: Props) => {
+  const timestamp = useMemo(() => {
+    if (!cellHotspot?.lastHeartbeat) return undefined
+    return new Date(cellHotspot?.lastHeartbeat)
+  }, [cellHotspot?.lastHeartbeat])
 
   const status = useMemo(() => {
     const activeDate = sub(new Date(), { minutes: 10 })
 
-    if (heartbeat && isAfter(timestamp, activeDate)) {
+    if (cellHotspot?.lastHeartbeat && timestamp && isAfter(timestamp, activeDate)) {
       return 'Active'
     }
 
     return 'Inactive'
-  }, [heartbeat, timestamp])
+  }, [cellHotspot?.lastHeartbeat, timestamp])
 
   const subtitle = useMemo(() => {
-    if (heartbeat?.timestamp) {
+    if (cellHotspot?.lastHeartbeat && timestamp) {
       return (
         <span className="text-gray-550 text-sm font-sans">
           Last active <TimeAgo date={timestamp} />
@@ -32,7 +34,7 @@ const CellStatusWidget = ({ heartbeat }: Props) => {
   }
 
     return null
-  }, [heartbeat?.timestamp, timestamp])
+  }, [cellHotspot?.lastHeartbeat, timestamp])
 
   return (
     // @ts-ignore
@@ -40,6 +42,7 @@ const CellStatusWidget = ({ heartbeat }: Props) => {
       title="Small Cell Status"
       value={status}
       subtitle={subtitle}
+      span={2}
       tooltip="A 5G Hotspot is active if it has a heartbeat in the last 10 minutes."
       icon={
         <div

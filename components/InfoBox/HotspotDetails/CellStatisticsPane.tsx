@@ -1,22 +1,20 @@
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import useApi from '../../../hooks/useApi'
 import CellStatusWidget from '../../Widgets/CellStatusWidget'
 import { Hotspot } from '@helium/http'
 import { SWRResponse } from 'swr'
-import Widget from '../../Widgets/Widget'
 
-export type CellHeartbeat = {
-  cbsdCategory: string,
-  cellId: number
-  createdAt: string
-  hotspotType: string
-  id: string
-  lat: number
-  lon: number
-  operationMode: string
+export type CellHotspot = {
+  blockTimestamp: string
+  height: number
+  lastAttach?: string
+  lastHeartbeat?: string
+  lastSpeedtest?: string
+  owner: string
+  payer: string
   pubkey: string
-  timestamp: string
+  txnHash: string
 }
 
 type Props = {
@@ -24,28 +22,19 @@ type Props = {
 }
 
 const CellStatisticsPane = ({ hotspot }: Props) => {
-  const { data: heartbeat }: SWRResponse<CellHeartbeat> =
-    useApi(`/cell/heartbeats/hotspots/${hotspot.address}/last`)
-
-  const category = useMemo(() => {
-    switch (heartbeat?.cbsdCategory) {
-      case 'A':
-        return 'Indoor'
-      case 'B':
-        return 'Outdoor'
-      default:
-        return 'Unknown'
-    }
-  }, [heartbeat?.cbsdCategory])
+  const { data: cellHotspot }: SWRResponse<CellHotspot> =
+    useApi(`/cell/hotspots/${hotspot.address}`)
 
   return (
     <InfoBoxPaneContainer>
-      <CellStatusWidget heartbeat={heartbeat} />
-      {/*@ts-ignore*/}
-      <Widget
-        title='Small Cell Location'
-        value={category}
-      />
+      <CellStatusWidget cellHotspot={cellHotspot} />
+      <a
+        href="https://docs.helium.com/5g-on-helium/cbrs-radios"
+        target="_blank"
+        className="col-span-2" rel="noreferrer"
+      >
+        For more information on Small Cell Radios and status, visit the docs.
+      </a>
     </InfoBoxPaneContainer>
   )
 }

@@ -17,7 +17,9 @@ const RecentActivityWidget = ({ context, address }) => {
 
   useAsync(async () => {
     setTransactionsLoading(true)
-    setTransactions(await (await client.hotspot(address).roles.list()).take(5))
+    const txnList = await client.hotspot(address).roles.list({ filterTypes: [] })
+    const txns = await txnList.take(5)
+    setTransactions(txns)
     setTransactionsLoading(false)
   }, [address])
 

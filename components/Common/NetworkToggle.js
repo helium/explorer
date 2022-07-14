@@ -13,14 +13,15 @@ const NetworkToggle = () => {
       target="_blank"
       rel="noreferrer"
       href={
-        NETWORK === 'testnet'
-          ? 'https://explorer.helium.com'
-          : 'https://testnet-explorer.helium.com'
+        NETWORK === 'mainnet'
+          ? 'https://testnet-explorer.helium.com'
+          : 'https://explorer.helium.com'
       }
       className={classNames(
         'text-white text-sm cursor-pointer bg-opacity-80 px-3 py-2 rounded hidden md:block absolute left-96',
         {
           'bg-yellow-800': NETWORK === 'testnet',
+          'bg-red-400': NETWORK === 'devnet',
           'bg-navy-500': NETWORK === 'mainnet',
         },
       )}

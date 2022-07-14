@@ -79,12 +79,6 @@ export const communityToolsList = [
     tags: [types.monitoring, types.ios],
   },
   {
-    name: 'Helisum',
-    url: 'https://helisum.com',
-    description: 'Hotspot Monitoring and Dashboard solution',
-    tags: [types.monitoring, types.export],
-  },
-  {
     name: 'Helium Geek',
     url: 'https://heliumgeek.com',
     description: 'Check your hotspot vitals and your rewards, get notified for network issues and rewards. HeliumGeek supports iOS, Android, iOS widgets and Apple Watch app with complications.',
@@ -103,6 +97,12 @@ export const communityToolsList = [
     description: 'Network with other Hotspot owners in your area',
     tags: [types.planning],
   },
+   {
+    name: 'Helium (HNT) Rewards Checker',
+    url: 'https://hntrewards.xyz/',
+    description: 'Check the rewards of any miner using a predefined time period or a custom one including its equivalent value in any of the top FIAT currencies',
+    tags: [types.monitoring],
+  },
   {
     name: 'HeliumStatus.io',
     url: 'https://app.heliumstatus.io',
@@ -120,6 +120,12 @@ export const communityToolsList = [
     url: 'https://helium.tools',
     description: 'Set of tools to monitor and compare earnings in selected location(s).',
     tags: [types.planning, types.monitoring],
+  },
+  {
+    name: 'helium-reports',
+    url: 'https://helium-reports.com',
+    description: 'Euro-Export of the rewards of hotspot as CSV and PDF. Free and without any without entering personal data.',
+    tags: [types.export],
   },
   {
     name: 'HeliumVision',
@@ -144,12 +150,6 @@ export const communityToolsList = [
     name: 'HNTMonitor',
     url: 'https://www.hntmonitor.com/',
     description: 'Monitor real-time and historical data with alerting. Useful for managing fleets of hotspots in a single ui.',
-    tags: [types.monitoring],
-  },
-  {
-    name: 'Hotsbot',
-    url: 'https://hotsbot.net/',
-    description: 'Hotspot monitoring and event tracking via Telegram',
     tags: [types.monitoring],
   },
   {
@@ -193,7 +193,7 @@ export const communityToolsList = [
   },
   {
     name: 'Nebra Diagnostics',
-    url: 'https://helium.nebra.com/handy-guides/local-diagnostics',
+    url: 'https://helium.nebra.com/#/handy-guides/local-diagnostics',
     description:
       'Local diagnostics utility for Nebra Hotspots including syncing, firmware, and other useful info.',
     tags: [types.monitoring],

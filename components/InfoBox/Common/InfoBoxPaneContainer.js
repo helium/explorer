@@ -5,7 +5,7 @@ import ScrollIndicator from '../../../hooks/useScrollIndicators'
 
 const InfoBoxPaneContainer = ({
   children,
-  className,
+  className = '',
   span = 2,
   padding = true,
 }) => {

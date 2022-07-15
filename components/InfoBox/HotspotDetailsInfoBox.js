@@ -16,7 +16,7 @@ import Elevation from '../Hotspots/Elevation'
 import { isDataOnly } from '../Hotspots/utils'
 import SkeletonWidgets from './Common/SkeletonWidgets'
 import HexIndex from '../Common/HexIndex'
-import { useMaker } from '../../data/makers'
+import { MAKER_IDS, useMaker } from '../../data/makers'
 import Skeleton from '../Common/Skeleton'
 import { useCallback } from 'react'
 import AccountIcon from '../AccountIcon'
@@ -25,6 +25,7 @@ import { getHotspotDenylistResults } from '../../data/hotspots'
 import DenylistIcon from '../Icons/DenylistIcon'
 import { Tooltip } from 'antd'
 import useChallengeIssuer from '../../hooks/useChallengeIssuer'
+import CellStatisticsPane from './HotspotDetails/CellStatisticsPane.tsx'
 
 const HotspotDetailsRoute = () => {
   const { address } = useParams()
@@ -249,6 +250,18 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
               isDataOnly={IS_DATA_ONLY}
               liteHotspotsActive={liteHotspotsActive}
             />
+          )}
+        </TabPane>
+        <TabPane
+          title="5G Statistics"
+          key="5g-statistics"
+          path="5g-statistics"
+          hidden={!(maker?.id === MAKER_IDS.FREEDOM_FI || maker?.id === MAKER_IDS.BOBCAT_5G)}
+        >
+          {isLoading ? (
+            <SkeletonWidgets />
+          ) : (
+            <CellStatisticsPane hotspot={hotspot} />
           )}
         </TabPane>
         <TabPane title="Activity" path="activity" key="activity">

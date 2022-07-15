@@ -42,3 +42,8 @@ export const useMaker = (address) => {
 
   return { maker, isLoading }
 }
+
+export const MAKER_IDS = {
+  FREEDOM_FI: 19,
+  BOBCAT_5G: 67,
+}

@@ -2,9 +2,9 @@ import InfoBox from './InfoBox'
 import TabNavbar, { TabPane } from '../Nav/TabNavbar'
 import I18n from '../../copy/I18n'
 import StatisticsPane from './Hotspots/StatisticsPane'
-import LatestHotspotsPane from './Hotspots/LatestHotspotsPane'
 import MakersPane from './Hotspots/MakersPane'
 import TopCitiesPane from './Hotspots/TopCitiesPane'
+import CellStatisticsPane from './Hotspots/CellStatisticsPane'
 
 const HotspotsInfoBox = () => {
   return (
@@ -13,8 +13,8 @@ const HotspotsInfoBox = () => {
         <TabPane title="Statistics" key="statistics">
           <StatisticsPane />
         </TabPane>
-        <TabPane title="Latest Hotspots" key="latest" path="latest">
-          <LatestHotspotsPane />
+        <TabPane title="5G Statistics" key="5g_statistics" path="5g_statistics">
+          <CellStatisticsPane />
         </TabPane>
         <TabPane title="Makers" key="makers" path="makers">
           <MakersPane />

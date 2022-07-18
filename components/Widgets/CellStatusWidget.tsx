@@ -49,6 +49,7 @@ const CellStatusWidget = ({ cellHotspot }: Props) => {
       value={status}
       subtitle={subtitle}
       isLoading={loading}
+      subtitleLoading={loading}
       span={2}
       tooltip="A 5G Hotspot is active if it has a heartbeat in the last 24 hours."
       icon={

@@ -15,7 +15,7 @@ const CellStatusWidget = ({ cellHotspot }: Props) => {
   }, [cellHotspot?.lastHeartbeat])
 
   const status = useMemo(() => {
-    const activeDate = sub(new Date(), { minutes: 10 })
+    const activeDate = sub(new Date(), { days: 1 })
 
     if (cellHotspot?.lastHeartbeat && timestamp && isAfter(timestamp, activeDate)) {
       return 'Active'
@@ -43,7 +43,7 @@ const CellStatusWidget = ({ cellHotspot }: Props) => {
       value={status}
       subtitle={subtitle}
       span={2}
-      tooltip="A 5G Hotspot is active if it has a heartbeat in the last 10 minutes."
+      tooltip="A 5G Hotspot is active if it has a heartbeat in the last 24 hours."
       icon={
         <div
           className={classNames('rounded-full w-5 h-5', {

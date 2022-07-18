@@ -14,8 +14,14 @@ const CellStatusWidget = ({ cellHotspot }: Props) => {
     return new Date(cellHotspot?.lastHeartbeat)
   }, [cellHotspot?.lastHeartbeat])
 
+  const loading = useMemo(() => !cellHotspot, [cellHotspot])
+
   const status = useMemo(() => {
     const activeDate = sub(new Date(), { days: 1 })
+
+    if (!cellHotspot?.lastHeartbeat) {
+      return 'Not Available'
+    }
 
     if (cellHotspot?.lastHeartbeat && timestamp && isAfter(timestamp, activeDate)) {
       return 'Active'
@@ -42,9 +48,11 @@ const CellStatusWidget = ({ cellHotspot }: Props) => {
       title="Small Cell Status"
       value={status}
       subtitle={subtitle}
+      isLoading={loading}
       span={2}
       tooltip="A 5G Hotspot is active if it has a heartbeat in the last 24 hours."
       icon={
+        !loading && status !== 'Not Available' &&
         <div
           className={classNames('rounded-full w-5 h-5', {
             'bg-green-400': status === 'Active',

@@ -102,7 +102,7 @@ const TrendWidget = ({
           </LineChart>
         </ResponsiveContainer>
         <div className="absolute right-4 bottom-0 text-gray-550 text-xs">
-          {periodLabel || `${series.length} Day Trend`}
+          {periodLabel || series?.length ? `${series.length} Day Trend` : ''}
         </div>
       </div>
       {linkTo && (

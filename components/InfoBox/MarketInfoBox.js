@@ -8,6 +8,8 @@ import { round } from 'lodash'
 import { useOraclePrices } from '../../data/oracles'
 import TrendWidget from '../Widgets/TrendWidget'
 import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
+import { getDaysInMonth } from 'date-fns'
+import { useMemo } from 'react'
 
 const MarketInfoBox = () => {
   const { market } = useMarket()
@@ -15,6 +17,8 @@ const MarketInfoBox = () => {
   const { oraclePrices } = useOraclePrices()
   const [latestOraclePrice] = oraclePrices || []
   // const { data: networkRewards } = useApi('/network/rewards')
+
+  const trendDays = useMemo(() => getDaysInMonth(new Date()), [])
 
   return (
     <InfoBox title="Market" metaTitle="Market">
@@ -37,7 +41,7 @@ const MarketInfoBox = () => {
                 maximumFractionDigits: 2,
               }}
               changeType="percent"
-              periodLabel="30 Day Trend"
+              periodLabel={`${trendDays} Day Trend`}
               isLoading={!oraclePrices}
             />
             <Widget

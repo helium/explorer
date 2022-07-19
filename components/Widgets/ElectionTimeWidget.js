@@ -31,7 +31,7 @@ const ElectionTimeWidget = () => {
       changeInitial="second_last"
       changeSuffix=" min"
       isLoading={isLoading}
-      periodLabel={`${blocks?.electionTimeDay?.length} days`}
+      periodLabel={`${blocks?.electionTimeDay?.length} Day Trend`}
     />
   )
 }

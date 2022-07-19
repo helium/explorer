@@ -39,7 +39,7 @@ const TrendWidget = ({
   toLocaleStringOpts = {},
   changeType = 'difference',
   isLoading = false,
-  periodLabel = '30 Day Trend',
+  periodLabel,
   linkTo,
 }) => {
   const secondLastValue =
@@ -102,7 +102,7 @@ const TrendWidget = ({
           </LineChart>
         </ResponsiveContainer>
         <div className="absolute right-4 bottom-0 text-gray-550 text-xs">
-          {periodLabel}
+          {periodLabel || `${series.length} Day Trend`}
         </div>
       </div>
       {linkTo && (

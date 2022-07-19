@@ -23,6 +23,16 @@ const CellStatisticsPane = () => {
         series={stats?.outdoorCount}
         isLoading={!stats}
       />
+      <StatWidget
+        title="Cities"
+        series={stats?.citiesCount}
+        isLoading={!stats}
+      />
+      <StatWidget
+        title="States"
+        series={stats?.statesCount}
+        isLoading={!stats}
+      />
     </InfoBoxPaneContainer>
   )
 }

@@ -44,7 +44,6 @@ const BlockStatisticsPane = () => {
         title="Transaction Rate (24hr)"
         series={blocks?.txnRate}
         isLoading={!blocks}
-        periodLabel={'31 days'}
       />
       <StatWidget
         title="Block Height"

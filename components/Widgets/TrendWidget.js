@@ -12,6 +12,7 @@ import WidgetChange from './WidgetChange'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 import InfoTooltip from '../Common/InfoTooltip'
+import { useMemo } from 'react'
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
@@ -50,6 +51,15 @@ const TrendWidget = ({
       ? secondLastValue
       : first(series || [])?.value || 0
   const yMax = last(series || [])?.value || 0
+
+  const trendLabel = useMemo(() => {
+    if (periodLabel !== undefined) {
+      return periodLabel
+    } else if (series && series.length) {
+      return `${series.length} Day Trend`
+    }
+    return ''
+  }, [periodLabel, series])
 
   const inner = (
     <>
@@ -102,7 +112,7 @@ const TrendWidget = ({
           </LineChart>
         </ResponsiveContainer>
         <div className="absolute right-4 bottom-0 text-gray-550 text-xs">
-          {periodLabel || series?.length ? `${series.length} Day Trend` : ''}
+          {trendLabel}
         </div>
       </div>
       {linkTo && (

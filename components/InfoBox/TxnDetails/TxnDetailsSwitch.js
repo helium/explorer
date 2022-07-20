@@ -19,6 +19,7 @@ import {
   UnstakeValidatorV1,
   TransferValidatorStakeV1,
   ValidatorHeartbeatV1,
+  SubnetworkRewardsV1
 } from './index'
 
 const getTxnComponent = (txn) => {
@@ -63,6 +64,8 @@ const getTxnComponent = (txn) => {
       return TransferValidatorStakeV1
     case 'validator_heartbeat_v1':
       return ValidatorHeartbeatV1
+    case 'subnetwork_rewards_v1':
+      return SubnetworkRewardsV1
     default:
       return Fallback
   }

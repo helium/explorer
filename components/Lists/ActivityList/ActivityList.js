@@ -6,6 +6,7 @@ import {
   getTxnTypeName,
 } from '../../../utils/txns'
 import ExpandableListItem from './ExpandableActivityListItem'
+import { CurrencyType } from '@helium/currency'
 
 const isExpandable = (txn) => {
   return (
@@ -60,6 +61,13 @@ const ActivityList = ({
         case 'payment_v2':
           return (
             <span>{txn.role === 'payer' ? 'Sent HNT' : 'Received HNT'}</span>
+          )
+        case 'subnetwork_rewards_v1':
+          const currencyType = txn.token_type === undefined
+            ? CurrencyType.mobile
+            : CurrencyType.fromTokenType(txn.token_type)
+          return (
+            <span>{`${currencyType.ticker} Rewards`}</span>
           )
 
         default:

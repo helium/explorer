@@ -1486,31 +1486,31 @@
   resolved "https://registry.yarnpkg.com/@feedback-fish/react/-/react-1.2.1.tgz#b4d226f310df936517e9e5e82397806a5df4e2d8"
   integrity sha512-4YFD2hE93xBIT/Ko0x0l6UB0OyaxJcWKLGrnznsUVoLE5Q9vB8I1LEbMySYyuvbU9ul3yM3FjGkVZhYVPdwEyA==
 
-"@helium/address@^4.3.1":
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/@helium/address/-/address-4.3.1.tgz#e82f001b438166822ce8548713549b1ff87741e8"
-  integrity sha512-5f24ncoR3uOQgzFEtU2+YsHZTXW3+WYEBVdMVQEc5Hkou0bOTAOjVJZNhMqpIWLRzQXto2NOrDVIWXcFqqYnkg==
+"@helium/address@^4.6.2":
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/@helium/address/-/address-4.6.2.tgz#0356bd9693ff7184f93f3c4e12c04f4f9c1db7b6"
+  integrity sha512-MXlT9SH4HPrBj+r71w51grZj4MUNi4o4SnDJds/yallROBK0qlO8m/bDCsKfmj0FVm861tIfQBrJc6y5vjsymg==
   dependencies:
     bs58 "^5.0.0"
     js-sha256 "^0.9.0"
     multiformats "^9.6.4"
 
-"@helium/currency@^4.6.1":
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/@helium/currency/-/currency-4.6.1.tgz#c24585eea0e75a85746b68029ffacd7e1e0c90db"
-  integrity sha512-+xTKE9/iezz/P4nFDq0qnjcHnN23aAmtG+rGv5Q1Z9FGNOfFuV17Xiuq6IGAVyiGGehcS9ps8sicB3ERb6zVhQ==
+"@helium/currency@^4.6.2":
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/@helium/currency/-/currency-4.6.2.tgz#0379d484b9d7d6186354c32ebd4e42273331b658"
+  integrity sha512-Q0M8lc47GIDfZhFr6cDDiDBJJlL/DaMaFhOgyKMrJ2XFp5KyHCXg9fFayXZj4HrF5nmBti/Gz7iSl49WZeUvOw==
   dependencies:
-    "@helium/transactions" "^4.6.1"
+    "@helium/transactions" "^4.6.2"
     bignumber.js "^9.0.0"
 
-"@helium/http@^4.6.1":
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-4.6.1.tgz#5d120612f8f6ea88c2c6e9aad599312deceaa8be"
-  integrity sha512-HXO/39EsD9pnIZkL4bPfXoa/Dtp8U7MXiCIkM40m3euUCpn91NKih3/H0hjSkDooQol1GIGD7TOA6O3fOsOm8w==
+"@helium/http@^4.6.2":
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-4.6.2.tgz#6c29a3348aa3b23aeb05d09e8577cbb7f6bd8b4e"
+  integrity sha512-91HWnV2yKlFE3NTSFJELm8G+utNOCL5uFJiRzmtbNdJtBoHqdO1M5WlimiQzem6kg2I040v07nzBH8TFHKAe+g==
   dependencies:
-    "@helium/address" "^4.3.1"
-    "@helium/currency" "^4.6.1"
-    "@helium/transactions" "^4.6.1"
+    "@helium/address" "^4.6.2"
+    "@helium/currency" "^4.6.2"
+    "@helium/transactions" "^4.6.2"
     axios "^0.21.1"
     camelcase-keys "^6.2.2"
     qs "^6.9.3"
@@ -1524,12 +1524,12 @@
   dependencies:
     protobufjs "^6.11.3"
 
-"@helium/transactions@^4.6.1":
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/@helium/transactions/-/transactions-4.6.1.tgz#2a960c6dbb609b5b1959cfe5b10be3f2a69a279a"
-  integrity sha512-pFikcl+dzFMwtAC+/lG1ZnRaOOAWg/mNjmawk9PQSLQVEURZttxUMDSGO5DjZrDTahR0m4t0snYg6tpHeFwwiA==
+"@helium/transactions@^4.6.2":
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/@helium/transactions/-/transactions-4.6.2.tgz#f81b599b524252a24571415501e19074f5781e6e"
+  integrity sha512-zD32S+lk9Iz4m//6R43crgWHWFHYltgTgWCSHHLNwAH4bKfC3D2986rlBtXa37A3zUdPWt9vfqsVE5rdKszyiA==
   dependencies:
-    "@helium/address" "^4.3.1"
+    "@helium/address" "^4.6.2"
     "@helium/proto" "^1.6.0"
     "@types/libsodium-wrappers" "^0.7.8"
     long "^4.0.0"

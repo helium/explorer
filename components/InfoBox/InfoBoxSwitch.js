@@ -1,6 +1,6 @@
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import OverviewInfoBox from './OverviewInfoBox'
-import HotspotsInfoBox from './HotspotsInfoBox'
+import IotInfoBox from './Iot/IotInfoBox'
 import HotspotDetailsInfoBox from './HotspotDetailsInfoBox'
 import ValidatorsInfoBox from './ValidatorsInfoBox'
 import BlocksInfoBox from './BlocksInfoBox'
@@ -15,6 +15,7 @@ import MarketInfoBox from './MarketInfoBox'
 import CommunityToolsInfoBox from './CommunityTools/CommunityToolsInfoBox'
 import ErrorInfoBox from './ErrorInfoBox'
 import CityDetailsInfoBox from './CityDetailsInfoBox'
+import MobileInfoBox from './Mobile/MobileInfoBox'
 
 const InfoBoxSwitch = () => {
   // Match locales with regular expression containing each locale separated by `|`
@@ -22,17 +23,20 @@ const InfoBoxSwitch = () => {
 
   return (
     <Switch>
-      <Route path={`${base}/hotspots/hex/:index([a-z0-9]{15})`}>
+      <Route path={`${base}/iot/hex/:index([a-z0-9]{15})`}>
         <HexDetailsInfoBox />
       </Route>
       <Route path={`${base}/hotspots/:address([a-zA-Z0-9]{40,})`}>
         <HotspotDetailsInfoBox />
       </Route>
-      <Route path={`${base}/hotspots/cities/:cityid`}>
+      <Route path={`${base}/iot/cities/:cityid`}>
         <CityDetailsInfoBox />
       </Route>
-      <Route path={`${base}/hotspots`}>
-        <HotspotsInfoBox />
+      <Route path={`${base}/iot`}>
+        <IotInfoBox />
+      </Route>
+      <Route path={`${base}/mobile`}>
+        <MobileInfoBox />
       </Route>
       <Route path={`${base}/accounts/:address([a-zA-Z0-9]{40,})`}>
         <AccountDetailsInfoBox />

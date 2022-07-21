@@ -50,7 +50,7 @@
     "react-mapbox-gl": "^5.1.1",
     "react-qr-code": "^2.0.0",
     "react-responsive": "^9.0.0-beta.6",
-    "react-router-dom": "^5.2.0",
+    "react-router-dom": "^5.3.3",
     "react-router-i18n": "^1.1.0",
     "react-time-ago": "^7.0.0",
     "react-timestamp": "^5.1.0",

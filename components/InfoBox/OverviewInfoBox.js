@@ -52,7 +52,7 @@ const OverviewInfoBox = () => {
           title="Hotspots"
           series={hotspots?.count}
           isLoading={!hotspots}
-          linkTo="/hotspots"
+          linkTo="/iot"
         />
         <StatWidget
           title="Block Height"

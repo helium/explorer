@@ -53,7 +53,7 @@ const StatisticsPane = () => {
         value={makers?.length}
         subtitle={`Latest: ${maxBy(makers, 'id')?.name}`}
         isLoading={!makers}
-        linkTo="/hotspots/makers"
+        linkTo="/iot/makers"
       />
       <StatWidget
         title="Cities"

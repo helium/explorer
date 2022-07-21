@@ -130,7 +130,7 @@ const ExpandableListItem = ({
       txn.hash,
       // if txn is a reward or state channel close, pass actor param to
       // get summary with context instead of entire transaction
-      txn?.type.startsWith('rewards') || txn?.type === 'state_channel_close_v1'
+      txn?.type.startsWith('rewards') || txn?.type === 'state_channel_close_v1' || txn?.type.startsWith('subnetwork_rewards')
         ? { actor: address }
         : {},
     )

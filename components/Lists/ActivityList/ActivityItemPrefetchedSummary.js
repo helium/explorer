@@ -9,6 +9,7 @@ import {
   HeartbeatSummary,
   TransferHotspotV1Summary,
   TransferHotspotV2Summary,
+  SubnetworkRewardSummary
 } from './PrefetchedSummaries'
 
 const getSummaryComponent = (txn) => {
@@ -27,6 +28,9 @@ const getSummaryComponent = (txn) => {
     case 'rewards_v2':
     case 'rewards_v3': {
       return RewardSummary
+    }
+    case 'subnetwork_rewards_v1': {
+      return SubnetworkRewardSummary
     }
     case 'state_channel_close_v1': {
       return StateChannelCloseSummary

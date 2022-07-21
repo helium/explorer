@@ -14,40 +14,51 @@ const AccountTokenList: FC<Props> = ({ account }) => {
   const { market } = useMarket()
 
   const data = useMemo(() => {
+    const items = [
+      {
+        title: 'HNT',
+        icon: '/images/hnt.svg',
+        amount: account?.balance,
+        usdAmount: account?.balance?.times(market?.price)?.floatBalance,
+        floatAmount: account?.balance?.floatBalance,
+      },
+      {
+        title: 'HST',
+        icon: '/images/hst.svg',
+        amount: account?.secBalance,
+        floatAmount: account?.secBalance?.floatBalance,
+        tooltip:
+          'Helium Security Tokens were minted in the genesis block and assigned to founders, investors, and organizations who will manage blockchain governance.',
+      },
+      {
+        title: 'DC',
+        icon: '/images/dc-coin.svg',
+        amount: account?.dcBalance,
+        usdAmount: account?.dcBalance?.toUsd()?.floatBalance,
+        floatAmount: account?.dcBalance?.floatBalance,
+        tooltip:
+          'Data Credits are used to send packets on Helium. DCs are non-transferrable.',
+      },
+      {
+        title: 'HNT Staked',
+        icon: '/images/validator.svg',
+        amount: account?.stakedBalance,
+        usdAmount: account?.stakedBalance?.times(market?.price)?.floatBalance,
+        floatAmount: account?.stakedBalance?.floatBalance,
+      },
+    ]
+    if (account?.mobileBalance !== null && account?.mobileBalance !== undefined) {
+      items.push({
+        title: 'MOBILE',
+        icon: '/images/mobile.svg',
+        amount: account?.mobileBalance,
+        floatAmount: account?.mobileBalance?.floatBalance,
+        usdAmount: 0,
+        tooltip: undefined
+      })
+    }
     return orderBy(
-      [
-        {
-          title: 'HNT',
-          icon: '/images/hnt.svg',
-          amount: account?.balance,
-          usdAmount: account?.balance?.times(market?.price)?.floatBalance,
-          floatAmount: account?.balance?.floatBalance,
-        },
-        {
-          title: 'HST',
-          icon: '/images/hst.svg',
-          amount: account?.secBalance,
-          floatAmount: account?.secBalance?.floatBalance,
-          tooltip:
-            'Helium Security Tokens were minted in the genesis block and assigned to founders, investors, and organizations who will manage blockchain governance.',
-        },
-        {
-          title: 'DC',
-          icon: '/images/dc-coin.svg',
-          amount: account?.dcBalance,
-          usdAmount: account?.dcBalance?.toUsd()?.floatBalance,
-          floatAmount: account?.dcBalance?.floatBalance,
-          tooltip:
-            'Data Credits are used to send packets on Helium. DCs are non-transferrable.',
-        },
-        {
-          title: 'HNT Staked',
-          icon: '/images/validator.svg',
-          amount: account?.stakedBalance,
-          usdAmount: account?.stakedBalance?.times(market?.price)?.floatBalance,
-          floatAmount: account?.stakedBalance?.floatBalance,
-        },
-      ],
+      items,
       (item) => [get(item, 'usdAmount', 0), get(item, 'floatAmount')],
       ['desc', 'desc'],
     )
@@ -56,6 +67,7 @@ const AccountTokenList: FC<Props> = ({ account }) => {
     account?.dcBalance,
     account?.secBalance,
     account?.stakedBalance,
+    account?.mobileBalance,
     market?.price,
   ])
 

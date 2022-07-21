@@ -45,14 +45,18 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
   }
 
   if (result.type === 'account') {
+    const balances = [
+      result.item.balance.toString(2),
+      result.item.secBalance.toString(2),
+      result.item.dcBalance.toString(),
+    ]
+    if (result.item.mobileBalance) {
+      balances.push(result.item.mobileBalance.toString(2))
+    }
     return (
       <BaseSearchResult
         title={<AccountAddress address={result.item.address} truncate />}
-        subtitle={[
-          result.item.balance.toString(2),
-          result.item.secBalance.toString(2),
-          result.item.dcBalance.toString(),
-        ].join(' ')}
+        subtitle={balances.join(' ')}
         type={result.type}
         selected={selected}
         onSelect={handleSelect}

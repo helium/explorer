@@ -50,6 +50,14 @@ const CONFIG = {
     validatorContextName: 'Received Mining Rewards',
     tooltip: 'Mining Reward (v3)',
   },
+  subnetwork_rewards_v1: {
+    color: '#A667F6',
+    name: 'Subnetwork Reward',
+    accountContextName: 'Received Subnetwork Rewards',
+    hotspotContextName: 'Received Subnetwork Rewards',
+    validatorContextName: 'Received Subnetwork Rewards',
+    tooltip: 'Subnetwork Reward (v1)',
+  },
   consensus_group_v1: {
     color: '#FF6666',
     name: 'Consensus Election',
@@ -167,7 +175,8 @@ export const getTxnIconPath = (txn) => {
   switch (type) {
     case 'rewards_v1':
     case 'rewards_v2':
-    case 'rewards_v3': {
+    case 'rewards_v3':
+    case 'subnetwork_rewards_v1': {
       return `${ICON_PATH_ROOT}/received_rewards.svg`
     }
     case 'payment_v1':

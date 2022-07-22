@@ -1,23 +1,24 @@
 import { round } from 'lodash'
 import InfoBox from './InfoBox'
 import TrendWidget from '../Widgets/TrendWidget'
-import StatWidget from '../Widgets/StatWidget'
 import useApi from '../../hooks/useApi'
 import InfoBoxPaneContainer from './Common/InfoBoxPaneContainer'
 import { formatLargeNumber } from '../../utils/format'
 import Widget from '../Widgets/Widget'
+import DaoWidget from '../Widgets/DaoWidget'
 import Currency from '../Common/Currency'
 import { useMarket } from '../../data/market'
-import { useStats } from '../../data/stats'
 import { useDataCredits } from '../../data/datacredits'
 import { useValidatorStats } from '../../data/validators'
+import { useStats } from '../../data/stats'
 
 const OverviewInfoBox = () => {
   const { data: hotspots } = useApi('/metrics/hotspots')
-  const { data: blocks } = useApi('/metrics/blocks')
   const { stats: validatorStats } = useValidatorStats()
+  const { data: mobileStats } = useApi('/metrics/cells')
+  const { data: validatorMetrics } = useApi('/metrics/validators')
   const { market } = useMarket()
-  const { stats } = useStats()
+  const { stats: marketStats } = useStats()
   const { dataCredits } = useDataCredits()
 
   return (
@@ -48,17 +49,51 @@ const OverviewInfoBox = () => {
       }
     >
       <InfoBoxPaneContainer>
-        <TrendWidget
-          title="Hotspots"
-          series={hotspots?.count}
-          isLoading={!hotspots}
+        <DaoWidget
+          title="HNT"
+          usdAmount={<Currency value={market?.price} />}
+          marketCap={
+            <Currency
+              value={market?.price * marketStats?.circulatingSupply}
+              isLarge
+            />
+          }
+          icon="/images/hnt.svg"
+          extra={
+            <TrendWidget
+              title="Validators"
+              series={validatorMetrics?.count}
+              isLoading={!validatorMetrics}
+              transparent
+            />
+          }
+          linkTo="/validators"
+        />
+        <DaoWidget
+          title="IOT"
+          icon="/images/iot.svg"
+          extra={
+            <TrendWidget
+              title="Hotspots"
+              series={hotspots?.count}
+              isLoading={!hotspots}
+              transparent
+            />
+          }
           linkTo="/iot"
         />
-        <StatWidget
-          title="Block Height"
-          series={blocks?.height}
-          isLoading={!blocks}
-          linkTo="/blocks"
+        <DaoWidget
+          title="MOBILE"
+          icon="/images/mobile.svg"
+          extra={
+            <TrendWidget
+              title="5G Hotspots"
+              series={mobileStats?.count}
+              isLoading={!mobileStats}
+              transparent
+            />
+          }
+          linkTo="/mobile"
         />
         <Widget
           title="Market Price"
@@ -67,6 +102,23 @@ const OverviewInfoBox = () => {
           change={round(market?.priceChange, 2)}
           changeSuffix="%"
           isLoading={!market}
+          linkTo="/market"
+        />
+        <Widget
+          title="Market Cap"
+          tooltip="Based on data provided by CoinGecko"
+          value={
+            <Currency
+              value={market?.price * marketStats?.circulatingSupply}
+              isLarge
+            />
+          }
+          subtitle={
+            <span className="text-gray-550">
+              Vol: <Currency value={market?.volume} isLarge />
+            </span>
+          }
+          isLoading={!market || !marketStats}
           linkTo="/market"
         />
         <Widget
@@ -88,18 +140,6 @@ const OverviewInfoBox = () => {
             <Currency value={market?.price * validatorStats?.staked?.amount} />
           }
           isLoading={!market || !validatorStats}
-          linkTo="/validators"
-        />
-        <Widget
-          title="Total Beacons"
-          value={stats?.challenges?.toLocaleString()}
-          isLoading={!stats}
-          linkTo="/beacons"
-        />
-        <Widget
-          title="Staked Validators"
-          value={validatorStats?.staked?.count?.toLocaleString()}
-          isLoading={!validatorStats}
           linkTo="/validators"
         />
       </InfoBoxPaneContainer>

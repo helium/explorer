@@ -42,6 +42,7 @@ const TrendWidget = ({
   isLoading = false,
   periodLabel,
   linkTo,
+  transparent = false,
 }) => {
   const secondLastValue =
     series && series.length > 1 ? series[series?.length - 2]?.value : 0
@@ -135,7 +136,13 @@ const TrendWidget = ({
   }
 
   return (
-    <div className="bg-gray-200 p-3 rounded-lg col-span-2 flex">{inner}</div>
+    <div
+      className={classNames('p-3 rounded-lg col-span-2 flex', {
+        'bg-gray-200': !transparent,
+      })}
+    >
+      {inner}
+    </div>
   )
 }
 

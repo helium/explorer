@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import InfoBox from '../InfoBox'
 import TabNavbar, { TabPane } from '../../Nav/TabNavbar'
 import StatisticsPane from './StatisticsPane'
-import MakersPane from './MakersPane'
+import MakersPane from '../Common/MakersPane'
 import TopCitiesPane from './TopCitiesPane'
 import useMapLayer from '../../../hooks/useMapLayer'
 

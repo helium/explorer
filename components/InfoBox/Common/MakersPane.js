@@ -7,8 +7,8 @@ import LocationIcon from '../../Icons/Location'
 import { Tooltip } from 'antd'
 import { useMakers } from '../../../data/makers'
 
-const MakersPane = () => {
-  const { makers } = useMakers()
+const MakersPane = ({ type = 'lorawan' }) => {
+  const { makers } = useMakers({ type })
 
   const keyExtractor = useCallback((maker) => maker.address, [])
 

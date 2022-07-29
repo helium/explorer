@@ -11,6 +11,7 @@ import { useMarket } from '../../data/market'
 import { useDataCredits } from '../../data/datacredits'
 import { useValidatorStats } from '../../data/validators'
 import { useStats } from '../../data/stats'
+import StatWidget from '../Widgets/StatWidget'
 
 const OverviewInfoBox = () => {
   const { data: hotspots } = useApi('/metrics/hotspots')
@@ -20,12 +21,13 @@ const OverviewInfoBox = () => {
   const { market } = useMarket()
   const { stats: marketStats } = useStats()
   const { dataCredits } = useDataCredits()
+  const { data: blocks } = useApi('/metrics/blocks')
 
   return (
     <InfoBox
       title={
-        <div className="pt-4 lg:pt-10 lg:px-5">
-          <span className="text-white text-2xl md:text-3xl font-light font-sans tracking-tight">
+        <div className="pt-4 lg:px-5 lg:pt-10">
+          <span className="font-sans text-2xl font-light tracking-tight text-white md:text-3xl">
             Welcome to{' '}
             <p className="font-semibold leading-5">Helium Explorer</p>
           </span>
@@ -33,7 +35,7 @@ const OverviewInfoBox = () => {
       }
       description={
         <div className="w-full py-4 lg:px-5">
-          <span className="text-white font-sans font-light text-lg tracking-tight leading-tight">
+          <span className="font-sans text-lg font-light leading-tight tracking-tight text-white">
             Helium Explorer is a Block Explorer and Analytics Platform for{' '}
             <a
               href="https://helium.com"
@@ -60,12 +62,20 @@ const OverviewInfoBox = () => {
           }
           icon="/images/hnt.svg"
           extra={
-            <TrendWidget
-              title="Validators"
-              series={validatorMetrics?.count}
-              isLoading={!validatorMetrics}
-              transparent
-            />
+            <div className="flex space-x-4">
+              <StatWidget
+                title="Block Height"
+                series={blocks?.height}
+                isLoading={!blocks}
+                transparent
+              />
+              <StatWidget
+                title="Validators Online"
+                series={validatorMetrics?.count}
+                isLoading={!validatorMetrics}
+                transparent
+              />
+            </div>
           }
           linkTo="/validators"
         />

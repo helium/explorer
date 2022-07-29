@@ -5,6 +5,7 @@ export const fetchDataCredits = async () => {
   const stats = await client.stats.dcBurns()
 
   return {
+    ...stats,
     totalWeek: stats.lastWeek.total,
     totalMonth: stats.lastMonth.total,
   }

@@ -130,7 +130,7 @@ const OverviewInfoBox = () => {
           }
           change={<Currency value={dataCredits?.totalMonth * 0.00001} />}
           isLoading={!dataCredits}
-          linkTo="/market"
+          linkTo="/iot"
         />
         <Widget
           title="HNT Staked"

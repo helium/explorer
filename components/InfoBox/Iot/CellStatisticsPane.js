@@ -8,11 +8,7 @@ const CellStatisticsPane = () => {
 
   return (
     <InfoBoxPaneContainer>
-      <TrendWidget
-        title="5G Hotspots"
-        series={stats?.count}
-        isLoading={!stats}
-      />
+      <TrendWidget title="5G Radios" series={stats?.count} isLoading={!stats} />
       <StatWidget
         title="Indoor Radios"
         series={stats?.indoorCount}

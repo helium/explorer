@@ -97,7 +97,7 @@ const OverviewInfoBox = () => {
           icon="/images/mobile.svg"
           extra={
             <TrendWidget
-              title="5G Hotspots"
+              title="5G Radios"
               series={mobileStats?.count}
               isLoading={!mobileStats}
               transparent

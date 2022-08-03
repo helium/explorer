@@ -62,13 +62,14 @@ const OverviewInfoBox = () => {
           }
           icon="/images/hnt.svg"
           extra={
-            <div className="flex space-x-4">
+            <div className="flex items-center justify-between pr-8">
               <StatWidget
                 title="Block Height"
                 series={blocks?.height}
                 isLoading={!blocks}
                 transparent
               />
+              <div className="h-16 border-l border-solid border-l-gray-400" />
               <StatWidget
                 title="Validators Online"
                 series={validatorMetrics?.count}

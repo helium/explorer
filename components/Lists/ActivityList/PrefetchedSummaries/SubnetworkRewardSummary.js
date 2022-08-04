@@ -1,17 +1,10 @@
 import Balance, { CurrencyType } from '@helium/currency'
 import { memo, useCallback, useMemo } from 'react'
 
-export const TokenType = {
-  hnt: 0,
-  hst: 1,
-  mobile: 2,
-  iot: 3
-}
-
 const SubnetworkRewardSummary = ({ txn, address }) => {
   const currencyType = useMemo(() => txn.token_type === undefined || txn.token_type === null
     ? CurrencyType.mobile
-    : CurrencyType.fromTokenType(txn.token_type), [txn.token_type])
+    : CurrencyType.fromTicker(txn.token_type), [txn.token_type])
 
   const rewardsAmount = useMemo(() => txn.rewards
     ?.filter((subnetItem) => subnetItem.account === address)
@@ -23,7 +16,7 @@ const SubnetworkRewardSummary = ({ txn, address }) => {
 
   const Icon = useCallback(() => {
     switch (txn.token_type) {
-      case TokenType.mobile:
+      case 'mobile':
         return <img alt="" src="/images/mobile.svg" className="w-4 mr-1" />
       default:
         return null

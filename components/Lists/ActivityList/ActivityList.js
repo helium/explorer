@@ -65,7 +65,7 @@ const ActivityList = ({
         case 'subnetwork_rewards_v1':
           const currencyType = txn.token_type === undefined
             ? CurrencyType.mobile
-            : CurrencyType.fromTokenType(txn.token_type)
+            : CurrencyType.fromTicker(txn.token_type)
           return (
             <span>{`${currencyType.ticker} Rewards`}</span>
           )

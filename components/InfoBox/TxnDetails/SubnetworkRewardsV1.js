@@ -11,7 +11,7 @@ const SubnetworkRewardsV1 = ({ txn, inline }) => {
 
   const currencyType = useMemo(() => txn.token_type === undefined || txn.token_type === null
     ? CurrencyType.mobile
-    : CurrencyType.fromTokenType(txn.token_type), [txn.token_type])
+    : CurrencyType.fromTicker(txn.token_type), [txn.token_type])
 
   const rewards = useMemo(() => {
     if (address) {

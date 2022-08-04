@@ -46,7 +46,7 @@ const MarketInfoBox = () => {
             />
             <Widget
               title="Market Price"
-              tooltip="Based on data provided by CoinGecko"
+              tooltip={<span>Based on data provided by <a target="_blank" rel="noreferrer" href="https://www.coingecko.com/en/coins/helium">CoinGecko</a></span>}
               value={<Currency value={market?.price} />}
               change={round(market?.priceChange, 2)}
               changeSuffix="%"
@@ -54,7 +54,7 @@ const MarketInfoBox = () => {
             />
             <Widget
               title="Market Cap"
-              tooltip="Based on data provided by CoinGecko"
+              tooltip={<span>Based on data provided by <a target="_blank" rel="noreferrer" href="https://www.coingecko.com/en/coins/helium">CoinGecko</a></span>}
               value={
                 <Currency
                   value={market?.price * stats?.circulatingSupply}

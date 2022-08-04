@@ -62,7 +62,7 @@ const parse = async (ownerAddress, txn, opts = { convertFee: true }) => {
     case 'payment_v2': {
       if (ownerAddress === txn.payer) {
         const amountObject = new Balance(
-          txn.totalAmount.integerBalance,
+          txn.totalAmountHnt.integerBalance,
           CurrencyType.networkToken,
         )
         return {

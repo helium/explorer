@@ -102,22 +102,26 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
         break
       }
       case 'payment_v2': {
-        const totalAmountObject = new Balance(
-          txn.totalAmount.integerBalance,
-          CurrencyType.networkToken,
-        )
+        let amount = ''
+        if (txn.totalAmountHnt.integerBalance !== 0) {
+          amount += txn.totalAmountHnt.toString(3)
+        }
+        if (txn.totalAmountMobile.integerBalance !== 0) {
+          if (amount.length > 0) amount += ', '
+          amount += txn.totalAmountMobile.toString(3)
+        }
+        if (txn.totalAmountIot.integerBalance !== 0) {
+          if (amount.length > 0) amount += ', '
+          amount += txn.totalAmountIot.toString(3)
+        }
 
         type = `Payment`
         description =
           txn.payments.length !== 1
             ? `A payment from account ${txn.payer.substring(0, 5)}... to ${
                 txn.payments.length
-              } accounts totaling ${totalAmountObject.toString(
-                2,
-              )} ${dateString} ${blockString}`
-            : `A payment of ${totalAmountObject.toString(
-                2,
-              )} from account ${txn.payer.substring(
+              } accounts totaling ${amount} ${dateString} ${blockString}`
+            : `A payment of ${amount} from account ${txn.payer.substring(
                 0,
                 5,
               )}... to account ${txn.payments[0].payee.substring(

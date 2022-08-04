@@ -3,12 +3,24 @@ import AccountIcon from '../../../AccountIcon'
 
 const PaymentV2Summary = ({ txn, address, role }) => {
   if (role === 'payee') {
-    const amount =
-      txn.payments.length === 1
-        ? txn.totalAmount.toString(2)
-        : txn.payments
-            .find((payment) => payment.payee === address)
-            .amount.toString(2)
+    let amount = ''
+    if (txn.payments.length === 1) {
+      if (txn.totalAmountHnt.integerBalance !== 0) {
+        amount += txn.totalAmountHnt.toString(2)
+      }
+      if (txn.totalAmountMobile.integerBalance !== 0) {
+        if (amount.length > 0) amount += ' '
+        amount += txn.totalAmountMobile.toString(2)
+      }
+      if (txn.totalAmountIot.integerBalance !== 0) {
+        if (amount.length > 0) amount += ' '
+        amount += txn.totalAmountIot.toString(2)
+      }
+    } else {
+      amount += txn.payments
+        .find((payment) => payment.payee === address)
+        .amount.toString(2)
+    }
 
     return (
       <span className="flex items-center">
@@ -30,10 +42,20 @@ const PaymentV2Summary = ({ txn, address, role }) => {
       </span>
     )
   } else if (role === 'payer') {
-    const amount = txn.totalAmount.toString(3)
+    let amount = ''
+    if (txn.totalAmountHnt.integerBalance !== 0) {
+      amount += txn.totalAmountHnt.toString(3)
+    }
+    if (txn.totalAmountMobile.integerBalance !== 0) {
+      if (amount.length > 0) amount += ' '
+      amount += txn.totalAmountMobile.toString(3)
+    }
+    if (txn.totalAmountIot.integerBalance !== 0) {
+      if (amount.length > 0) amount += ' '
+      amount += txn.totalAmountIot.toString(3)
+    }
     return (
       <span className="flex items-center">
-        <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
         <span className="text-xs font-sans font-light tracking-tight flex items-center justify-start">
           {amount} to
           <div className="ml-1">

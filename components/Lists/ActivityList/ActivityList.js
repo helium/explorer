@@ -60,7 +60,7 @@ const ActivityList = ({
         case 'payment_v1':
         case 'payment_v2':
           return (
-            <span>{txn.role === 'payer' ? 'Sent HNT' : 'Received HNT'}</span>
+            <span>{txn.role === 'payer' ? 'Sent Tokens' : 'Received Tokens'}</span>
           )
         case 'subnetwork_rewards_v1':
           const currencyType = txn.token_type === undefined

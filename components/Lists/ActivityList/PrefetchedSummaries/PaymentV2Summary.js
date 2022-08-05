@@ -24,7 +24,6 @@ const PaymentV2Summary = ({ txn, address, role }) => {
 
     return (
       <span className="flex items-center">
-        <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
         <span className="text-xs font-sans font-light tracking-tight flex items-center justify-start">
           {amount} from
           <div className="ml-1">

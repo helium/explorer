@@ -64,6 +64,22 @@ export const generateFriendlyTimestampString = (txnTime) => {
   return `on ${date} at ${time} UTC`
 }
 
+export const getTotalAmounts = (txn, separator = '', maxDecimalPlaces = 2) => {
+  let amount = ''
+  if (txn.totalAmountHnt.integerBalance !== 0) {
+    amount += txn.totalAmountHnt.toString(maxDecimalPlaces)
+  }
+  if (txn.totalAmountMobile.integerBalance !== 0) {
+    if (amount.length > 0) amount += `${separator} `
+    amount += txn.totalAmountMobile.toString(maxDecimalPlaces)
+  }
+  if (txn.totalAmountIot.integerBalance !== 0) {
+    if (amount.length > 0) amount += `${separator} `
+    amount += txn.totalAmountIot.toString(maxDecimalPlaces)
+  }
+  return amount
+}
+
 export const getMetaTagsForTransaction = (txn, isFallback) => {
   const urlBase = 'https://explorer.helium.com'
   const ogImageUrlBase = `${urlBase}/images/og`
@@ -102,19 +118,7 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
         break
       }
       case 'payment_v2': {
-        let amount = ''
-        if (txn.totalAmountHnt.integerBalance !== 0) {
-          amount += txn.totalAmountHnt.toString(3)
-        }
-        if (txn.totalAmountMobile.integerBalance !== 0) {
-          if (amount.length > 0) amount += ', '
-          amount += txn.totalAmountMobile.toString(3)
-        }
-        if (txn.totalAmountIot.integerBalance !== 0) {
-          if (amount.length > 0) amount += ', '
-          amount += txn.totalAmountIot.toString(3)
-        }
-
+        let amount = getTotalAmounts(txn, ',')
         type = `Payment`
         description =
           txn.payments.length !== 1

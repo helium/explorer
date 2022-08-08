@@ -118,7 +118,7 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
         break
       }
       case 'payment_v2': {
-        let amount = getTotalAmounts(txn, ',')
+        const amount = getTotalAmounts(txn, ',')
         type = `Payment`
         description =
           txn.payments.length !== 1

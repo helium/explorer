@@ -1502,10 +1502,10 @@
   dependencies:
     bignumber.js "^9.0.0"
 
-"@helium/http@^4.7.3":
-  version "4.7.3"
-  resolved "https://registry.yarnpkg.com/@helium/http/-/http-4.7.3.tgz#9264e89876fa211eeb7f2f6893f6d880e80d032e"
-  integrity sha512-oFQOIoi/Jcg2AYGtRHtM+XGhWbzrnwoWv88JwCA8HQVHwnQ378xSMWIbCUmR17x1d/bdTXRuJvgY146RJ90pMA==
+"@helium/http@^4.7.5":
+  version "4.7.5"
+  resolved "https://registry.yarnpkg.com/@helium/http/-/http-4.7.5.tgz#c78ffcba77d29b9ef5514adfd41c08412ee8a8d3"
+  integrity sha512-fSUjyJ2xFCO+r1drwzhvBCd+ocu7qSBBuPR2TtVyWDecAb2oitvVeZl8z70p/MKGOku+UmqpU0V0dBriyAS0Mw==
   dependencies:
     "@helium/address" "^4.6.2"
     "@helium/currency" "^4.7.3"

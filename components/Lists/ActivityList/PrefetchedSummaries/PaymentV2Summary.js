@@ -1,18 +1,18 @@
 import AccountAddress from '../../../AccountAddress'
 import AccountIcon from '../../../AccountIcon'
+import { getTotalAmounts } from '../../../Txns/utils'
 
 const PaymentV2Summary = ({ txn, address, role }) => {
   if (role === 'payee') {
     const amount =
       txn.payments.length === 1
-        ? txn.totalAmount.toString(2)
+        ? getTotalAmounts(txn)
         : txn.payments
-            .find((payment) => payment.payee === address)
-            .amount.toString(2)
+          .find((payment) => payment.payee === address)
+          .amount.toString(2)
 
     return (
       <span className="flex items-center">
-        <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
         <span className="text-xs font-sans font-light tracking-tight flex items-center justify-start">
           {amount} from
           <div className="ml-1">
@@ -30,10 +30,9 @@ const PaymentV2Summary = ({ txn, address, role }) => {
       </span>
     )
   } else if (role === 'payer') {
-    const amount = txn.totalAmount.toString(3)
+    const amount = getTotalAmounts(txn)
     return (
       <span className="flex items-center">
-        <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
         <span className="text-xs font-sans font-light tracking-tight flex items-center justify-start">
           {amount} to
           <div className="ml-1">

@@ -17,7 +17,7 @@ const PaymentV2 = ({ txn, inline }) => {
               span={1}
             />
             <Widget
-              title={`HNT sent to Payee ${idx + 1}`}
+              title={`Sent to Payee ${idx + 1}`}
               value={p.amount.toString(2)}
               span={1}
             />
@@ -26,7 +26,20 @@ const PaymentV2 = ({ txn, inline }) => {
       })}
       <Widget
         title={'Total HNT'}
-        value={txn.totalAmount.toString(2)}
+        value={txn.totalAmountHnt.toString(2)}
+        hidden={txn.totalAmountHnt.integerBalance === 0}
+        span={2}
+      />
+      <Widget
+        title={'Total MOBILE'}
+        value={txn.totalAmountMobile.toString(2)}
+        hidden={txn.totalAmountMobile.integerBalance === 0}
+        span={2}
+      />
+      <Widget
+        title={'Total IOT'}
+        value={txn.totalAmountIot.toString(2)}
+        hidden={txn.totalAmountIot.integerBalance === 0}
         span={2}
       />
       <Widget title={'Fee'} value={txn.fee.toString()} span={2} />

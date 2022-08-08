@@ -27,6 +27,7 @@ const Widget = ({
   linkTo,
   className,
   titleIcon,
+  hidden,
 }) => {
   const externalLink = linkTo && /^https?:\/\//.test(linkTo)
 
@@ -103,6 +104,8 @@ const Widget = ({
       )}
     </>
   )
+
+  if (hidden) return null
 
   if (externalLink) {
     return (

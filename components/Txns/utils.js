@@ -64,18 +64,18 @@ export const generateFriendlyTimestampString = (txnTime) => {
   return `on ${date} at ${time} UTC`
 }
 
-export const getTotalAmounts = (txn, separator = '', maxDecimalPlaces = 2) => {
+export const getTotalAmounts = (txn, options = { separator: '', maxDecimalPlaces: 2 }) => {
   let amount = ''
   if (txn.totalAmountHnt.integerBalance !== 0) {
-    amount += txn.totalAmountHnt.toString(maxDecimalPlaces)
+    amount += txn.totalAmountHnt.toString(options.maxDecimalPlaces)
   }
   if (txn.totalAmountMobile.integerBalance !== 0) {
-    if (amount.length > 0) amount += `${separator} `
-    amount += txn.totalAmountMobile.toString(maxDecimalPlaces)
+    if (amount.length > 0) amount += `${options.separator} `
+    amount += txn.totalAmountMobile.toString(options.maxDecimalPlaces)
   }
   if (txn.totalAmountIot.integerBalance !== 0) {
-    if (amount.length > 0) amount += `${separator} `
-    amount += txn.totalAmountIot.toString(maxDecimalPlaces)
+    if (amount.length > 0) amount += `${options.separator} `
+    amount += txn.totalAmountIot.toString(options.maxDecimalPlaces)
   }
   return amount
 }
@@ -118,7 +118,7 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
         break
       }
       case 'payment_v2': {
-        const amount = getTotalAmounts(txn, ',')
+        const amount = getTotalAmounts(txn, { separator: ',' })
         type = `Payment`
         description =
           txn.payments.length !== 1

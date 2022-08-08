@@ -30,7 +30,7 @@ const PaymentV2Summary = ({ txn, address, role }) => {
       </span>
     )
   } else if (role === 'payer') {
-    let amount = getTotalAmounts(txn)
+    const amount = getTotalAmounts(txn)
     return (
       <span className="flex items-center">
         <span className="text-xs font-sans font-light tracking-tight flex items-center justify-start">

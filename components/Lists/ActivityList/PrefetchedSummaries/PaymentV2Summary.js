@@ -4,14 +4,12 @@ import { getTotalAmounts } from '../../../Txns/utils'
 
 const PaymentV2Summary = ({ txn, address, role }) => {
   if (role === 'payee') {
-    let amount = ''
-    if (txn.payments.length === 1) {
-      amount = getTotalAmounts(txn)
-    } else {
-      amount += txn.payments
-        .find((payment) => payment.payee === address)
-        .amount.toString(2)
-    }
+    const amount =
+      txn.payments.length === 1
+        ? getTotalAmounts(txn)
+        : txn.payments
+          .find((payment) => payment.payee === address)
+          .amount.toString(2)
 
     return (
       <span className="flex items-center">

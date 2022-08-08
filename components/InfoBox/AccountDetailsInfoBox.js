@@ -56,7 +56,7 @@ const AccountDetailsInfoBox = () => {
       subtitles={subtitles}
       breadcrumbs={
         maker
-          ? [{ title: 'Makers', path: '/hotspots/makers' }]
+          ? [{ title: 'Makers', path: '/iot/makers' }]
           : [{ title: 'Overview', path: '/' }]
       }
     >

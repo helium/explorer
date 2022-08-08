@@ -107,7 +107,7 @@ const OverviewInfoBox = () => {
           linkTo="/mobile"
         />
         <Widget
-          title="Market Price"
+          title="HNT Market Price"
           tooltip="Based on data provided by CoinGecko"
           value={<Currency value={market?.price} />}
           change={round(market?.priceChange, 2)}
@@ -116,7 +116,7 @@ const OverviewInfoBox = () => {
           linkTo="/market"
         />
         <Widget
-          title="Market Cap"
+          title="HNT Market Cap"
           tooltip="Based on data provided by CoinGecko"
           value={
             <Currency

@@ -68,8 +68,23 @@ const TransactionList = ({
       case 'payment_v2':
         return (
           <span className="flex items-center whitespace-nowrap">
-            <span className="flex items-center text-black font-sans font-medium">
-              {txn.totalAmount.toString(2)}
+            <span
+              className="flex items-center text-black font-sans font-medium"
+              hidden={txn.totalAmountHnt.integerBalance === 0}
+            >
+              {txn.totalAmountHnt.toString(2)}
+            </span>
+            <span
+              className="flex items-center text-black font-sans font-medium"
+              hidden={txn.totalAmountMobile.integerBalance === 0}
+            >
+              {txn.totalAmountMobile.toString(2)}
+            </span>
+            <span
+              className="flex items-center text-black font-sans font-medium"
+              hidden={txn.totalAmountIot.integerBalance === 0}
+            >
+              {txn.totalAmountIot.toString(2)}
             </span>
           </span>
         )

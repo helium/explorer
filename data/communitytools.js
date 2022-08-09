@@ -124,8 +124,8 @@ export const communityToolsList = [
   {
     name: 'helium-reports',
     url: 'https://helium-reports.com',
-    description: 'Euro-Export of the rewards of hotspot as CSV and PDF. Free and without any without entering personal data.',
-    tags: [types.export],
+    description: 'Monitor the revenue and profit of your hotspot in any currency! Free and without any without entering personal data! Usable for tax-declarations - exports are available as PDF and CSV!',
+    tags: [types.monitoring, types.export],
   },
   {
     name: 'HeliumVision',

@@ -64,6 +64,22 @@ export const generateFriendlyTimestampString = (txnTime) => {
   return `on ${date} at ${time} UTC`
 }
 
+export const getTotalAmounts = (txn, options = { separator: '', maxDecimalPlaces: 2 }) => {
+  let amount = ''
+  if (txn.totalAmountHnt.integerBalance !== 0) {
+    amount += txn.totalAmountHnt.toString(options.maxDecimalPlaces)
+  }
+  if (txn.totalAmountMobile.integerBalance !== 0) {
+    if (amount.length > 0) amount += `${options.separator} `
+    amount += txn.totalAmountMobile.toString(options.maxDecimalPlaces)
+  }
+  if (txn.totalAmountIot.integerBalance !== 0) {
+    if (amount.length > 0) amount += `${options.separator} `
+    amount += txn.totalAmountIot.toString(options.maxDecimalPlaces)
+  }
+  return amount
+}
+
 export const getMetaTagsForTransaction = (txn, isFallback) => {
   const urlBase = 'https://explorer.helium.com'
   const ogImageUrlBase = `${urlBase}/images/og`
@@ -102,22 +118,14 @@ export const getMetaTagsForTransaction = (txn, isFallback) => {
         break
       }
       case 'payment_v2': {
-        const totalAmountObject = new Balance(
-          txn.totalAmount.integerBalance,
-          CurrencyType.networkToken,
-        )
-
+        const amount = getTotalAmounts(txn, { separator: ',' })
         type = `Payment`
         description =
           txn.payments.length !== 1
             ? `A payment from account ${txn.payer.substring(0, 5)}... to ${
                 txn.payments.length
-              } accounts totaling ${totalAmountObject.toString(
-                2,
-              )} ${dateString} ${blockString}`
-            : `A payment of ${totalAmountObject.toString(
-                2,
-              )} from account ${txn.payer.substring(
+              } accounts totaling ${amount} ${dateString} ${blockString}`
+            : `A payment of ${amount} from account ${txn.payer.substring(
                 0,
                 5,
               )}... to account ${txn.payments[0].payee.substring(

@@ -9,7 +9,7 @@ interface Props {
 
 const InfoTooltip: FC<Props> = ({ text, href }) => {
   return (
-    <div className="text-gray-600 text-sm cursor-pointer flex">
+    <div className="text-gray-600 text-sm cursor-pointer flex" onClick={e => e.stopPropagation()}>
       <MaybeLink href={href}>
         <Tooltip title={text}>
           <InfoCircleOutlined />

@@ -65,13 +65,6 @@ export const communityToolsList = [
     tags: [types.monitoring],
   },
   {
-    name: 'Helert',
-    url: 'https://helert.com',
-    description:
-      'Email alerts for new nearby hotspots, offline hotspots, transmit scale changes and more!',
-    tags: [types.monitoring],
-  },
-  {
     name: 'Helistats',
     url: 'https://apps.apple.com/us/app/helistats/id1573119107',
     description:
@@ -159,6 +152,13 @@ export const communityToolsList = [
       'This App allows you to easily configure your Hotspot WiFi and view Ethernet status.',
     tags: [types.ios],
   },
+    {
+    name: 'Hotspot Utility',
+    url: 'https://play.google.com/store/apps/details?id=com.kentwilliams.hotspotutility',
+    description:
+      'This App allows you to easily configure your Hotspot WiFi and view Ethernet status.',
+    tags: [types.android],
+  },
   {
     name: 'HotspotRF',
     url: 'https://hotspotrf.com',
@@ -235,12 +235,6 @@ export const communityToolsList = [
     description: 'HS Analyzer is simple tool for checking your Helium hotspot and its stats (RSSI, Valid / Invalid Beacons etc.).',
     tags: [types.monitoring, types.ios]
   },
-   {
-    name: 'DataGovs',
-    url: 'https://testflight.apple.com/join/8VZV1pxF',
-    description: 'DataGovs on Govs protocol lets teams and organizations buy, connect, automate, and monitor assets in one place—Hotspots and sensors.',
-    tags: [types.monitoring]
-  },
   {
     name: 'Helium Board',
     url: 'https://www.heliumboard.com/',
@@ -264,6 +258,6 @@ export const communityToolsList = [
   //   name: 'Example Tool Name',
   //   url: 'https://www.example.com',
   //   description: 'Easily get the animal name of a given hotspot address',
-  //   tags: [types.export, types.monitoring, types.planning, types.ios],
+  //   tags: [types.export, types.monitoring, types.planning, types.ios, types.android,],
   // },
 ]

@@ -7,11 +7,14 @@ import useApi from '../../../hooks/useApi'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import Widget from '../../Widgets/Widget'
 import { maxBy, last } from 'lodash'
+import { useDataCredits } from '../../../data/datacredits'
+import LargeBalance from '../../Common/LargeBalance'
 
 const StatisticsPane = () => {
   const { data: stats } = useApi('/metrics/hotspots')
   const { data: makers } = useApi('/makers')
   const { latestHotspots } = useLatestHotspots()
+  const { dataCredits } = useDataCredits()
 
   const latestHotspot = useMemo(() => {
     if (!latestHotspots) return null
@@ -41,6 +44,16 @@ const StatisticsPane = () => {
         series={stats?.dataOnlyCount}
         isLoading={!stats}
       />
+      <Widget
+        title="Packets Sent (24h)"
+        value={<LargeBalance value={dataCredits?.lastDay?.stateChannel} />}
+        isLoading={!dataCredits}
+      />
+      <Widget
+        title="Packets Sent (30d)"
+        value={<LargeBalance value={dataCredits?.lastMonth?.stateChannel} />}
+        isLoading={!dataCredits}
+      />
       <StatWidget
         title="% Online"
         series={stats?.onlinePct}
@@ -53,7 +66,7 @@ const StatisticsPane = () => {
         value={makers?.length}
         subtitle={`Latest: ${maxBy(makers, 'id')?.name}`}
         isLoading={!makers}
-        linkTo="/hotspots/makers"
+        linkTo="/iot/makers"
       />
       <StatWidget
         title="Cities"

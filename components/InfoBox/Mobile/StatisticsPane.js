@@ -3,16 +3,12 @@ import useApi from '../../../hooks/useApi'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import StatWidget from '../../Widgets/StatWidget'
 
-const CellStatisticsPane = () => {
+const StatisticsPane = () => {
   const { data: stats } = useApi('/metrics/cells')
 
   return (
     <InfoBoxPaneContainer>
-      <TrendWidget
-        title="5G Hotspots"
-        series={stats?.count}
-        isLoading={!stats}
-      />
+      <TrendWidget title="5G Radios" series={stats?.count} isLoading={!stats} />
       <StatWidget
         title="Indoor Radios"
         series={stats?.indoorCount}
@@ -37,4 +33,4 @@ const CellStatisticsPane = () => {
   )
 }
 
-export default CellStatisticsPane
+export default StatisticsPane

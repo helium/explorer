@@ -26,7 +26,7 @@ const useSelectedCity = () => {
         type: SET_SELECTED_CITY,
         payload: { ...city, geometry },
       })
-      history.push(`/hotspots/cities/${city.cityId}`)
+      history.push(`/iot/cities/${city.cityId}`)
     },
     [dispatch, history],
   )

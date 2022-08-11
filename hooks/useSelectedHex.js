@@ -25,7 +25,7 @@ const useSelectedHex = () => {
         type: SET_SELECTED_HEX,
         payload: { ...hex },
       })
-      history.push(`/hotspots/hex/${index}`)
+      history.push(`/iot/hex/${index}`)
     },
     [dispatch, history],
   )

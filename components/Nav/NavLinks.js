@@ -45,15 +45,15 @@ const NavLinks = ({
       })}
     >
       <NavLink
-        href="/hotspots"
-        title="Hotspots"
+        href="/iot"
+        title="IOT (Coming Soon)"
         className={navLinkClasses}
         onClick={onNavLinkClick}
         fallback={fallbackLinks}
       />
       <NavLink
-        href="/blocks"
-        title="Blocks"
+        href="/mobile"
+        title="MOBILE"
         className={navLinkClasses}
         onClick={onNavLinkClick}
         fallback={fallbackLinks}

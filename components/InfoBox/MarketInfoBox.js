@@ -45,16 +45,38 @@ const MarketInfoBox = () => {
               isLoading={!oraclePrices}
             />
             <Widget
-              title="Market Price"
-              tooltip={<span>Based on data provided by <a target="_blank" rel="noreferrer" href="https://www.coingecko.com/en/coins/helium">CoinGecko</a></span>}
+              title="HNT Market Price"
+              tooltip={
+                <span>
+                  Based on data provided by{' '}
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://www.coingecko.com/en/coins/helium"
+                  >
+                    CoinGecko
+                  </a>
+                </span>
+              }
               value={<Currency value={market?.price} />}
               change={round(market?.priceChange, 2)}
               changeSuffix="%"
               isLoading={!market}
             />
             <Widget
-              title="Market Cap"
-              tooltip={<span>Based on data provided by <a target="_blank" rel="noreferrer" href="https://www.coingecko.com/en/coins/helium">CoinGecko</a></span>}
+              title="HNT Market Cap"
+              tooltip={
+                <span>
+                  Based on data provided by{' '}
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://www.coingecko.com/en/coins/helium"
+                  >
+                    CoinGecko
+                  </a>
+                </span>
+              }
               value={
                 <Currency
                   value={market?.price * stats?.circulatingSupply}

@@ -17,10 +17,7 @@ const TopCitiesPane = () => {
 
   const keyExtractor = useCallback((city) => city.cityId, [])
 
-  const linkExtractor = useCallback(
-    (city) => `/hotspots/cities/${city.cityId}`,
-    [],
-  )
+  const linkExtractor = useCallback((city) => `/iot/cities/${city.cityId}`, [])
 
   const renderItem = useCallback((city) => {
     const cityTitle = city?.longCity ? city.longCity : city.longState

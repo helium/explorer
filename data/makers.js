@@ -1,9 +1,10 @@
 import Balance, { CurrencyType } from '@helium/currency'
+import qs from 'qs'
 import { useEffect, useMemo, useState } from 'react'
 import useApi from '../hooks/useApi'
 
-export const useMakers = () => {
-  const { data: makersData } = useApi('/makers')
+export const useMakers = ({ type = 'lorawan' } = {}) => {
+  const { data: makersData } = useApi(`/makers?${qs.stringify({ type })}`)
 
   const makers = useMemo(() => {
     if (!makersData) return []

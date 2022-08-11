@@ -171,9 +171,9 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
   )
 
   const generateBreadcrumbs = (hotspot) => {
-    if (!hotspot) return [{ title: 'Hotspots', path: '/hotspots' }]
+    if (!hotspot) return [{ title: 'IOT', path: '/iot' }]
     return [
-      { title: 'Hotspots', path: '/hotspots/latest' },
+      { title: 'IOT', path: '/iot' },
       ...(hotspot.location
         ? // if the hotspot has a location, show breadcrumbs for it
           [
@@ -192,7 +192,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
                   <HexIndex index={hotspot.location} />
                 </div>
               ),
-              path: `/hotspots/hex/${hotspot.location}`,
+              path: `/iot/hex/${hotspot.location}`,
             },
           ]
         : []),
@@ -256,7 +256,12 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
           title="5G Statistics"
           key="5g-statistics"
           path="5g-statistics"
-          hidden={!(maker?.id === MAKER_IDS.FREEDOM_FI || maker?.id === MAKER_IDS.BOBCAT_5G)}
+          hidden={
+            !(
+              maker?.id === MAKER_IDS.FREEDOM_FI ||
+              maker?.id === MAKER_IDS.BOBCAT_5G
+            )
+          }
         >
           {isLoading ? (
             <SkeletonWidgets />

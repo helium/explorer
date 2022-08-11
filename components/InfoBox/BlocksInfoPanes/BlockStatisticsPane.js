@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import ElectionTimeWidget from '../../Widgets/ElectionTimeWidget'
 
 const BlockStatisticsPane = () => {
-  let { data: blocks } = useApi('/metrics/blocks')
+  const { data: blocks } = useApi('/metrics/blocks')
 
   const [processingData, setProcessingData] = useState(true)
   const [blockTimeDay, setBlockTimeDay] = useState()

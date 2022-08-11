@@ -15,6 +15,7 @@ const StatWidget = ({
   valueSuffix,
   changeSuffix,
   subtitle,
+  transparent = false,
 }) => {
   const secondLastValue =
     series && series.length > 1 ? series[series.length - 2]?.[dataKey] : 0
@@ -31,18 +32,21 @@ const StatWidget = ({
     <Widget
       title={title}
       value={valueString}
-      subtitle={subtitle ||
-        <WidgetChange
-          value={value}
-          initial={initial}
-          type={changeType}
-          changeSuffix={changeSuffix}
-        />
+      subtitle={
+        subtitle || (
+          <WidgetChange
+            value={value}
+            initial={initial}
+            type={changeType}
+            changeSuffix={changeSuffix}
+          />
+        )
       }
       isLoading={isLoading}
       linkTo={linkTo}
       span={span}
       valueSuffix={valueSuffix}
+      transparent={transparent}
     />
   )
 }

@@ -27,6 +27,7 @@ const Widget = ({
   linkTo,
   className,
   titleIcon,
+  transparent = false,
   hidden,
 }) => {
   const externalLink = linkTo && /^https?:\/\//.test(linkTo)
@@ -37,23 +38,23 @@ const Widget = ({
         <div className="flex items-center space-x-1">
           {titleIcon}
           {isLoading && !title && <Skeleton className="w-1/5" />}
-          {title && <div className="text-gray-600 text-sm">{title}</div>}
+          {title && <div className="text-sm text-gray-600">{title}</div>}
           {(tooltip || tooltipUrl) && (
             <InfoTooltip text={tooltip} href={tooltipUrl} />
           )}
         </div>
         <div className="flex items-center">
           {icon && <div className="mr-1.5 flex items-center">{icon}</div>}
-          <div className="text-l md:text-2xl font-medium text-black my-1.5 tracking-tight w-full break-all">
+          <div className="text-l my-1.5 w-full break-all font-medium tracking-tight text-black md:text-2xl">
             {isLoading ? (
               <Skeleton className="w-full" />
             ) : (
               <CopyableText textToCopy={copyableValue}>
                 <p
-                  className={classNames('flex items-center m-0 p-0', {
-                    'cursor-pointer hover:text-gray-800 transition-all duration-150':
+                  className={classNames('m-0 flex items-center p-0', {
+                    'cursor-pointer transition-all duration-150 hover:text-gray-800':
                       copyableValue,
-                    'text-gray-400 text-md font-light': emptyValue,
+                    'text-md font-light text-gray-400': emptyValue,
                   })}
                 >
                   <span className={valueIsText ? 'break-normal' : 'break-all'}>
@@ -96,7 +97,7 @@ const Widget = ({
       {(onClick || linkTo) && (
         <div className="flex items-center justify-center">
           {externalLink ? (
-            <ExternalLinkIcon className="w-4 h-4 text-gray-525" />
+            <ExternalLinkIcon className="h-4 w-4 text-gray-525" />
           ) : (
             <Image src="/images/details-arrow.svg" width={14} height={14} />
           )}
@@ -114,8 +115,10 @@ const Widget = ({
         target="_blank"
         rel="noopener noreferrer"
         className={classNames(
-          'bg-gray-200 p-3 rounded-lg flex transition-all cursor-pointer hover:bg-gray-300',
+          'flex cursor-pointer rounded-lg p-3 transition-all',
           {
+            'bg-gray-200': !transparent,
+            'hover:bg-gray-300': !transparent,
             'col-span-1': span === 1,
             'col-span-2': span === 2,
           },
@@ -131,8 +134,10 @@ const Widget = ({
     return (
       <Link
         className={classNames(
-          'bg-gray-200 p-3 rounded-lg flex transition-all cursor-pointer hover:bg-gray-300',
+          'flex cursor-pointer rounded-lg p-3 transition-all',
           {
+            'bg-gray-200': !transparent,
+            'hover:bg-gray-300': !transparent,
             'col-span-1': span === 1,
             'col-span-2': span === 2,
           },
@@ -149,8 +154,9 @@ const Widget = ({
   return (
     <div
       className={classNames(
-        'bg-gray-200 p-3 rounded-lg flex transition-all',
+        'flex rounded-lg p-3 transition-all',
         {
+          'bg-gray-200': !transparent,
           'col-span-1': span === 1,
           'col-span-2': span === 2,
           'cursor-pointer hover:bg-gray-300': !!onClick,

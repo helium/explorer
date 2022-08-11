@@ -14,7 +14,7 @@ const IotInfoBox = () => {
   }, [setMapLayer])
 
   return (
-    <InfoBox title="IOT" metaTitle="IOT">
+    <InfoBox title="IOT (Coming Soon)" metaTitle="IOT">
       <TabNavbar htmlTitleRoot="IOT">
         <TabPane title="Statistics" key="statistics">
           <StatisticsPane />

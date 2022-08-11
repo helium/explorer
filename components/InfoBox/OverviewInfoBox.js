@@ -81,7 +81,7 @@ const OverviewInfoBox = () => {
           linkTo="/validators"
         />
         <DaoWidget
-          title="IOT"
+          title="IOT (Coming Soon)"
           icon="/images/iot.svg"
           extra={
             <TrendWidget

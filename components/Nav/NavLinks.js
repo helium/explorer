@@ -46,7 +46,7 @@ const NavLinks = ({
     >
       <NavLink
         href="/iot"
-        title="IOT"
+        title="IOT (Coming Soon)"
         className={navLinkClasses}
         onClick={onNavLinkClick}
         fallback={fallbackLinks}

@@ -54,12 +54,6 @@ const OverviewInfoBox = () => {
         <DaoWidget
           title="HNT"
           usdAmount={<Currency value={market?.price} />}
-          marketCap={
-            <Currency
-              value={market?.price * marketStats?.circulatingSupply}
-              isLarge
-            />
-          }
           icon="/images/hnt.svg"
           extra={
             <div className="flex items-center justify-between pr-8">

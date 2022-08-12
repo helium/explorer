@@ -42,7 +42,8 @@ const PaymentV2 = ({ txn, inline }) => {
         hidden={txn.totalAmountIot.integerBalance === 0}
         span={2}
       />
-      <Widget title={'Fee'} value={txn.fee.toString()} span={2} />
+      <Widget title="Nonce" value={txn.nonce} span={1} />
+      <Widget title={'Fee'} value={txn.fee.toString()} span={1} />
     </InfoBoxPaneContainer>
   )
 }

@@ -47,14 +47,16 @@ const AccountTokenList: FC<Props> = ({ account }) => {
         floatAmount: account?.stakedBalance?.floatBalance,
       },
     ]
-    if (account?.mobileBalance !== null && account?.mobileBalance !== undefined) {
+    if (
+      account?.mobileBalance !== null &&
+      account?.mobileBalance !== undefined
+    ) {
       items.push({
         title: 'MOBILE',
         icon: '/images/mobile.svg',
         amount: account?.mobileBalance,
         floatAmount: account?.mobileBalance?.floatBalance,
-        usdAmount: 0,
-        tooltip: undefined
+        tooltip: undefined,
       })
     }
     return orderBy(
@@ -111,10 +113,10 @@ const TokenListSkeleton = () => (
   <>
     {times(4).map((i: Key) => (
       <div key={i} className="col-span-2 space-y-2">
-        <div className="bg-gray-200 p-3 rounded-lg flex justify-between items-center">
-          <div className="flex w-1/2 space-x-2 items-center">
+        <div className="flex items-center justify-between rounded-lg bg-gray-200 p-3">
+          <div className="flex w-1/2 items-center space-x-2">
             <Skeleton
-              className="rounded-full w-7 h-7"
+              className="h-7 w-7 rounded-full"
               defaultSize={false}
               defaultRounding={false}
             />

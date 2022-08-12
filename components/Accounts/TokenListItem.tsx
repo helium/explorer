@@ -23,11 +23,11 @@ const TokenListItem: FC<Props> = ({
   extra,
 }) => {
   return (
-    <div className="bg-gray-200 p-3 rounded-lg">
-      <div className="flex justify-between items-center">
+    <div className="rounded-lg bg-gray-200 p-3">
+      <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <img alt="" src={icon} className="w-7" />
-          <div className="font-medium text-lg text-darkgray-800 flex items-center space-x-1.5">
+          <div className="flex items-center space-x-1.5 text-lg font-medium text-darkgray-800">
             <span>{title}</span>
             {tooltip && <InfoTooltip text={tooltip} href={tooltipUrl} />}
           </div>
@@ -35,7 +35,7 @@ const TokenListItem: FC<Props> = ({
 
         <div className="grid text-right">
           <span className="font-medium text-darkgray-800">
-            {amount.toString(2)}
+            {amount.toString(2, { showTicker: false })}
           </span>
           {usdAmount !== undefined && (
             <span className="text-sm text-gray-800">

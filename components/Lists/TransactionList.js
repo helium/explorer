@@ -1,11 +1,11 @@
 import { useCallback } from 'react'
-import Timestamp from 'react-timestamp'
 import BaseList from './BaseList'
 import { getTxnTypeName } from '../../utils/txns'
 import animalHash from 'angry-purple-tiger'
 import AccountIcon from '../AccountIcon'
 import AccountAddress from '../AccountAddress'
 import ChevronIcon from '../Icons/Chevron'
+import BlockTimestamp from '../Common/BlockTimestamp'
 
 const TransactionList = ({
   transactions,
@@ -30,7 +30,7 @@ const TransactionList = ({
       case 'poc_request_v1':
         return (
           <span className="flex items-center">
-            <span className="flex items-center text-black font-sans font-medium">
+            <span className="flex items-center font-sans font-medium text-black">
               {animalHash(txn.challenger)}
             </span>
           </span>
@@ -39,28 +39,28 @@ const TransactionList = ({
       case 'poc_receipts_v2':
         return (
           <span className="flex items-center">
-            <span className="flex items-center text-black font-sans font-medium">
+            <span className="flex items-center font-sans font-medium text-black">
               {animalHash(txn.path[0].challengee)}
             </span>
           </span>
         )
       case 'add_gateway_v1':
         return (
-          <span className="flex items-center text-black font-sans font-medium">
+          <span className="flex items-center font-sans font-medium text-black">
             {animalHash(txn.gateway)}
           </span>
         )
       case 'assert_location_v1':
       case 'assert_location_v2':
         return (
-          <span className="flex items-center text-black font-sans font-medium">
+          <span className="flex items-center font-sans font-medium text-black">
             {animalHash(txn.gateway)}
           </span>
         )
       case 'payment_v1':
         return (
           <span className="flex items-center whitespace-nowrap">
-            <span className="flex items-center text-black font-sans font-medium">
+            <span className="flex items-center font-sans font-medium text-black">
               {txn.amount.toString(2)}
             </span>
           </span>
@@ -69,19 +69,19 @@ const TransactionList = ({
         return (
           <span className="flex items-center whitespace-nowrap">
             <span
-              className="flex items-center text-black font-sans font-medium"
+              className="flex items-center font-sans font-medium text-black"
               hidden={txn.totalAmountHnt.integerBalance === 0}
             >
               {txn.totalAmountHnt.toString(2)}
             </span>
             <span
-              className="flex items-center text-black font-sans font-medium"
+              className="flex items-center font-sans font-medium text-black"
               hidden={txn.totalAmountMobile.integerBalance === 0}
             >
               {txn.totalAmountMobile.toString(2)}
             </span>
             <span
-              className="flex items-center text-black font-sans font-medium"
+              className="flex items-center font-sans font-medium text-black"
               hidden={txn.totalAmountIot.integerBalance === 0}
             >
               {txn.totalAmountIot.toString(2)}
@@ -92,7 +92,7 @@ const TransactionList = ({
       case 'validator_heartbeat_v1':
         return (
           <span className="flex items-center">
-            <span className="flex items-center text-black font-sans font-medium">
+            <span className="flex items-center font-sans font-medium text-black">
               {animalHash(txn.address)}
             </span>
           </span>
@@ -106,7 +106,7 @@ const TransactionList = ({
     const timestamp = (
       <span className="flex items-center space-x-1">
         <img alt="" src="/images/clock.svg" className="h-3 w-auto" />
-        <Timestamp date={txn.time} className="tracking-tight" />
+        <BlockTimestamp blockTime={txn.time} className="tracking-tight" />
       </span>
     )
     switch (txn.type) {
@@ -154,7 +154,7 @@ const TransactionList = ({
               src="/images/challenger-icon.svg"
               className="h-3 w-auto"
             />
-            <span className="ml-1.5 whitespace-nowrap text-sm font-sans">
+            <span className="ml-1.5 whitespace-nowrap font-sans text-sm">
               {animalHash(txn.challenger)}
             </span>
             <span className="ml-3 flex flex-row items-center justify-start">
@@ -163,7 +163,7 @@ const TransactionList = ({
                 src="/images/witness-yellow-mini.svg"
                 className="h-3 w-auto"
               />
-              <span className="ml-1.5 text-sm font-sans">
+              <span className="ml-1.5 font-sans text-sm">
                 {txn.path[0].witnesses.length}
               </span>
             </span>
@@ -176,7 +176,7 @@ const TransactionList = ({
             <img
               alt=""
               src="/images/location-hex.svg"
-              className="h-3 w-auto mr-1"
+              className="mr-1 h-3 w-auto"
             />
             {txn.location}
           </span>
@@ -195,7 +195,7 @@ const TransactionList = ({
                 />
               </span>
             </div>
-            <ChevronIcon className="text-gray-600 rotate-90 transform h-3 w-auto" />
+            <ChevronIcon className="h-3 w-auto rotate-90 transform text-gray-600" />
             <div className="flex items-center justify-end text-gray-600">
               <AccountIcon size={12} address={txn.payee} />
               <span className="pl-1 ">
@@ -223,7 +223,7 @@ const TransactionList = ({
                 />
               </span>
             </div>
-            <ChevronIcon className="text-gray-600 rotate-90 transform h-3 w-auto" />
+            <ChevronIcon className="h-3 w-auto rotate-90 transform text-gray-600" />
             {txn.payments.length === 1 ? (
               <div className="flex items-center justify-end text-gray-600">
                 <AccountIcon size={12} address={txn.payments[0].payee} />
@@ -258,7 +258,7 @@ const TransactionList = ({
               </span>
             </div>
             <span className="flex items-center justify-start space-x-1">
-              <img alt="" src="/images/hnt.svg" className="w-4 mr-1" />
+              <img alt="" src="/images/hnt.svg" className="mr-1 w-4" />
               {txn.stake.toString(2)}
             </span>
           </span>

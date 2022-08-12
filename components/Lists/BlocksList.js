@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import Image from 'next/image'
-import Timestamp from 'react-timestamp'
 import BaseList from './BaseList'
+import BlockTimestamp from '../Common/BlockTimestamp'
 
 const BlocksList = ({
   blocks,
@@ -20,7 +20,7 @@ const BlocksList = ({
 
   const renderTitle = useCallback((block) => {
     return (
-      <p className="text-black text-md font-semibold m-0 p-0">
+      <p className="text-md m-0 p-0 font-semibold text-black">
         {block.height.toLocaleString()}
       </p>
     )
@@ -28,17 +28,17 @@ const BlocksList = ({
 
   const renderSubtitle = useCallback((block) => {
     return (
-      <span className="font-normal text-gray-600 flex flex-row items-center justify-between">
+      <span className="flex flex-row items-center justify-between font-normal text-gray-600">
         <span className="flex items-center">
           <Image src="/images/clock.svg" width={14} height={14} />
-          <Timestamp
-            date={block.time}
-            className="tracking-tight text-gray-525 text-sm font-sans ml-1"
+          <BlockTimestamp
+            blockTime={block.time}
+            className="ml-1 font-sans text-sm tracking-tight text-gray-525"
           />
         </span>
-        <span className="flex items-center justify-start ml-5">
+        <span className="ml-5 flex items-center justify-start">
           <Image src="/images/txn.svg" width={14} height={14} />
-          <p className="tracking-tight text-gray-525 text-sm font-sans m-0 ml-1">
+          <p className="m-0 ml-1 font-sans text-sm tracking-tight text-gray-525">
             {block.transactionCount} transactions
           </p>
         </span>

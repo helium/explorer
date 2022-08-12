@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import Image from 'next/image'
-import Timestamp from 'react-timestamp'
 import BaseList from './BaseList'
+import BlockTimestamp from '../Common/BlockTimestamp'
 
 const BlockTransactionsList = ({
   transactions,
@@ -24,7 +24,7 @@ const BlockTransactionsList = ({
     return (
       <span className="flex items-center space-x-1">
         <Image src="/images/clock.svg" width={14} height={14} />
-        <Timestamp date={txn.time} className="tracking-tight" />
+        <BlockTimestamp blockTime={txn.time} className="tracking-tight" />
       </span>
     )
   }, [])

@@ -1,4 +1,3 @@
-import Timestamp from 'react-timestamp'
 import FlagLocation from '../Common/FlagLocation'
 import { formatHotspotName } from '../Hotspots/utils'
 import { round } from 'lodash'
@@ -8,6 +7,7 @@ import HotspotSimpleIcon from '../Icons/HotspotSimple'
 import LocationIcon from '../Icons/Location'
 import Flag from '../Common/Flag'
 import BaseSearchResult from './BaseSearchResult'
+import BlockTimestamp from '../Common/BlockTimestamp'
 
 const SearchResult = ({ result, onSelect, selected = false }) => {
   const handleSelect = useCallback(() => {
@@ -70,7 +70,7 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
         title={`#${result.item.height.toLocaleString()}`}
         subtitle={
           <span className="flex space-x-2">
-            <Timestamp date={result.item.time} />
+            <BlockTimestamp blockTime={result.item.time} />
             <span>{result.item.transactionCount.toLocaleString()} tx</span>
           </span>
         }
@@ -85,7 +85,7 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
     return (
       <BaseSearchResult
         title={truncateHash(result.item.hash)}
-        subtitle={<Timestamp date={result.item.time} />}
+        subtitle={<BlockTimestamp blockTime={result.item.time} />}
         type={result.type}
         selected={selected}
         onSelect={handleSelect}
@@ -124,7 +124,7 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
             <div className="flex items-start justify-start">
               <Flag
                 countryCode={result.item.countryCode}
-                className="mr-1.5 w-3 h-auto"
+                className="mr-1.5 h-auto w-3"
               />
               <span className="text-xs text-gray-600">{addressRemainder}</span>
             </div>
@@ -145,11 +145,11 @@ const SearchResult = ({ result, onSelect, selected = false }) => {
         subtitle={
           <div className="flex space-x-2">
             <div className="flex items-center space-x-1">
-              <HotspotSimpleIcon className="text-green-500 w-3 h-auto" />
+              <HotspotSimpleIcon className="h-auto w-3 text-green-500" />
               <span>{result.item.txns.addGatewayTxns.toLocaleString()}</span>
             </div>
             <div className="flex items-center space-x-1">
-              <LocationIcon className="text-pink-500 w-3 h-auto" />
+              <LocationIcon className="h-auto w-3 text-pink-500" />
               <span>
                 {result.item.txns.assertLocationTxns.toLocaleString()}
               </span>

@@ -8,7 +8,8 @@ const PaymentV1 = ({ txn, inline }) => {
       <AccountWidget title="Payer" address={txn.payer} />
       <AccountWidget title="Payee" address={txn.payee} />
       <Widget title={'Amount of HNT'} value={txn.amount.toString(2)} span={2} />
-      <Widget title={'Fee'} value={txn.fee.toString()} span={2} />
+      <Widget title="Nonce" value={txn.nonce} span={1} />
+      <Widget title={'Fee'} value={txn.fee.toString()} span={1} />
     </InfoBoxPaneContainer>
   )
 }

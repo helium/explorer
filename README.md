@@ -69,7 +69,7 @@ As the Explorer website becomes more mature and the broader Helium product famil
 
 So in order to help us minimize the following things in Explorer:
 
-- hardcoded hex colors, font sizes, font weights, padding and margin values
+- hardcoded hex colors, font sizes, font weights, [padding and margin](https://www.scaler.com/topics/margin-and-padding-in-css/) values
 - long CSS files with confusing media queries, inconsistent class and ID names
 - one-off solutions to override or fight against design systems like Ant
 

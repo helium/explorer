@@ -252,8 +252,13 @@ export const communityToolsList = [
     url: 'https://heliumCockpit.io',
     description: 'Advanced account and hotspot overview with balance development. Create tax reports, manage revenue sharing and monitor your hotspots.',
     tags: [types.monitoring, types.export],
+  },
+  {
+    name: 'DataGovs',
+    url: 'https://apps.apple.com/us/app/datagovsmonitor/id1631878976',
+    description: 'DataGovs on Govs protocol lets teams and organizations buy, connect, automate, and monitor assets in one place—Hotspots and sensors.',
+    tags: [types.monitoring, types.ios],
   }
-
   // The lines below are a template that you can copy and paste and then populate
   // to add a new tool to the list. All the possible tags are included in the
   // template, so just remove the ones that don't apply, and please don't make up

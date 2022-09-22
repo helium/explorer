@@ -1,66 +1,112 @@
-import { memo, useMemo } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import classNames from 'classnames'
 import TimeAgo from 'react-time-ago'
 import Widget from './Widget'
-import { CellHotspot } from '../InfoBox/HotspotDetails/CellStatisticsPane'
+import { CellHeartbeat } from '../InfoBox/HotspotDetails/CellStatisticsPane'
 import { isAfter, sub } from 'date-fns'
 
 type Props = {
-  cellHotspot?: CellHotspot
+  index: number
+  cellHotspot?: CellHeartbeat
 }
-const CellStatusWidget = ({ cellHotspot }: Props) => {
+const CellStatusWidget = ({ index, cellHotspot }: Props) => {
   const timestamp = useMemo(() => {
-    if (!cellHotspot?.lastHeartbeat) return undefined
-    return new Date(cellHotspot?.lastHeartbeat)
-  }, [cellHotspot?.lastHeartbeat])
+    if (!cellHotspot?.timestamp) return undefined
+    return new Date(cellHotspot?.timestamp * 1000)
+  }, [cellHotspot?.timestamp])
 
   const loading = useMemo(() => !cellHotspot, [cellHotspot])
 
   const status = useMemo(() => {
     const activeDate = sub(new Date(), { days: 1 })
 
-    if (!cellHotspot?.lastHeartbeat) {
+    if (!cellHotspot?.timestamp) {
       return 'Not Available'
     }
 
-    if (cellHotspot?.lastHeartbeat && timestamp && isAfter(timestamp, activeDate)) {
+    if (cellHotspot?.timestamp
+      && timestamp && isAfter(timestamp, activeDate)
+      && cellHotspot?.operationMode) {
       return 'Active'
     }
 
     return 'Inactive'
-  }, [cellHotspot?.lastHeartbeat, timestamp])
+  }, [cellHotspot?.operationMode, cellHotspot?.timestamp, timestamp])
+
+  const StatusIcon = useCallback(() => {
+    return (
+      !loading && status !== 'Not Available' &&
+      <div
+        className={classNames('rounded-full w-3 h-3 mr-1', {
+          'bg-green-400': status === 'Active',
+          'bg-yellow-400': status === 'Inactive',
+        })}
+      />
+    )
+  }, [loading, status])
+
+  const category = useMemo(() => {
+    switch (cellHotspot?.cbsdCategory) {
+      case 'A':
+        return 'Indoor'
+      case 'B':
+        return 'Outdoor'
+      default:
+        return 'Unknown'
+    }
+  }, [cellHotspot?.cbsdCategory])
+
+  const serial = useMemo(() => {
+    return cellHotspot?.cbsdId ? cellHotspot.cbsdId : 'Unknown'
+  }, [cellHotspot?.cbsdId])
 
   const subtitle = useMemo(() => {
-    if (cellHotspot?.lastHeartbeat && timestamp) {
+    if (cellHotspot?.timestamp && timestamp) {
       return (
-        <span className="text-gray-550 text-sm font-sans">
+        <span className='text-gray-550 text-sm font-sans'>
           Last active <TimeAgo date={timestamp} />
         </span>
       )
-  }
-
+    }
     return null
-  }, [cellHotspot?.lastHeartbeat, timestamp])
+  }, [cellHotspot?.timestamp, timestamp])
 
   return (
     // @ts-ignore
     <Widget
-      title="Small Cell Status"
-      value={status}
+      title={`Small Cell ${index}`}
+      value={
+        <div className='flex flex-col py-1'>
+          <div className='flex flex-row items-center'>
+            <span className='text-base font-normal text-gray-600 pr-1'>
+              Status:
+            </span>
+            <StatusIcon />
+            <span className='text-base text-gray-600'>{status}</span>
+          </div>
+          <div className='flex flex-row items-center'>
+            <span className='text-base font-normal text-gray-600 pr-1'>
+              Type:
+            </span>
+            <span className='text-base text-gray-600'>
+              {category}
+            </span>
+          </div>
+          <div className='flex flex-row items-center'>
+            <span className='text-base font-normal text-gray-600 pr-1'>
+              Serial:
+            </span>
+            <span className='text-base text-gray-600'>
+              {serial}
+            </span>
+          </div>
+        </div>
+      }
       subtitle={subtitle}
       isLoading={loading}
       subtitleLoading={loading}
       span={2}
-      tooltip="A 5G Hotspot is active if it has a heartbeat in the last 24 hours."
-      icon={
-        !loading && status !== 'Not Available' &&
-        <div
-          className={classNames('rounded-full w-5 h-5', {
-            'bg-green-400': status === 'Active',
-            'bg-yellow-400': status === 'Inactive',
-          })}
-        />
-      }
+      tooltip='A 5G Hotspot is active if it has a heartbeat in the last 24 hours.'
     />
   )
 }

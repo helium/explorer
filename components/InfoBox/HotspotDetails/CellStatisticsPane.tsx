@@ -18,6 +18,17 @@ export type CellHotspot = {
   txnHash: string
 }
 
+export type CellHeartbeat = {
+  timestamp: number
+  cellId: number
+  operationMode: boolean
+  hotspotAddress: string
+  ownerAddress: string
+  hotspotType: string
+  cbsdCategory: string
+  cbsdId: string
+}
+
 export type CellSpeedtest = {
   downloadSpeed: number
   hotspotAddress: string
@@ -31,8 +42,8 @@ type Props = {
 }
 
 const CellStatisticsPane = ({ hotspot }: Props) => {
-  const { data: cellHotspot }: SWRResponse<CellHotspot> = useApi(
-    `/cell/hotspots/${hotspot.address}`,
+  const { data: cellHotspots }: SWRResponse<CellHeartbeat[]> = useApi(
+    `/cell/hotspots/${hotspot.address}/cells`,
   )
 
   const { data: cellSpeedtest }: SWRResponse<CellSpeedtest> = useApi(
@@ -41,7 +52,9 @@ const CellStatisticsPane = ({ hotspot }: Props) => {
 
   return (
     <InfoBoxPaneContainer>
-      <CellStatusWidget cellHotspot={cellHotspot} />
+      {(cellHotspots || []).map((data, index) => (
+        <CellStatusWidget index={index + 1} cellHotspot={data} key={data.cellId} />
+      ))}
       <CellSpeedtestWidget cellSpeedtest={cellSpeedtest} />
       <a
         href="https://docs.helium.com/5g-on-helium/cbrs-radios"

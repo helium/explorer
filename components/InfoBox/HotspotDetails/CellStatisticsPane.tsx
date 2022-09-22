@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import useApi from '../../../hooks/useApi'
 import CellStatusWidget from '../../Widgets/CellStatusWidget'
@@ -50,12 +50,27 @@ const CellStatisticsPane = ({ hotspot }: Props) => {
     `/cell/hotspots/${hotspot.address}/latest-speedtest`,
   )
 
+  const RadioList = useCallback(() => {
+    if (!cellHotspots || !cellHotspots.length) return <CellStatusWidget />
+
+    return (
+      <>
+        {cellHotspots.map((data, index) => (
+          <CellStatusWidget
+            index={index + 1}
+            cellHotspot={data}
+            key={data.cellId}
+            showIndex={cellHotspots.length > 1}
+          />
+        ))}
+      </>
+    )
+  }, [cellHotspots])
+
   return (
     <InfoBoxPaneContainer>
-      {(cellHotspots || []).map((data, index) => (
-        <CellStatusWidget index={index + 1} cellHotspot={data} key={data.cellId} />
-      ))}
       <CellSpeedtestWidget cellSpeedtest={cellSpeedtest} />
+      <RadioList />
       <a
         href="https://docs.helium.com/5g-on-helium/cbrs-radios"
         target="_blank"

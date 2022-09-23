@@ -5,6 +5,7 @@ import { isAfter, sub } from 'date-fns'
 import StatusIcon from '../InfoBox/HotspotDetails/StatusIcon'
 import { Tooltip } from 'antd'
 import classNames from 'classnames'
+import { InfoCircleOutlined } from '@ant-design/icons'
 
 type Props = {
   cellHotspot?: CellHeartbeat
@@ -100,15 +101,12 @@ const CellStatusWidget = ({ cellHotspot }: Props) => {
           </span>
         </div>
         <Tooltip
-          title={
-            operationMode === 'Offline'
-              ? "Check your radio's local dashboard for more information."
-              : undefined
-          }
+          title={"Check your radio's local dashboard for more information."}
         >
           <div className="mb-1 flex flex-col ">
-            <span className="pr-1 text-sm font-normal text-gray-600">
+            <span className="flex flex-row items-center pr-1 text-sm font-normal text-gray-600">
               Operation Mode
+              <InfoCircleOutlined className="ml-1 text-gray-600" />
             </span>
             <span
               className={classNames('text-base', {

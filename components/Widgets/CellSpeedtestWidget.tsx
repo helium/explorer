@@ -44,7 +44,7 @@ const CellSpeedtestWidget = ({ cellSpeedtest, loading }: Props) => {
   return (
     <div className="col-span-2 flex flex-col rounded-lg bg-gray-200 p-3 py-4 font-medium">
       <div className="flex flex-col">
-        <div className="flex flex-row">
+        <div className="flex flex-row items-center">
           <span className="pr-2 text-xl">Speed Test</span>
           <StatusIcon
             status={status}
@@ -62,6 +62,7 @@ const CellSpeedtestWidget = ({ cellSpeedtest, loading }: Props) => {
         <SpeedtestStat
           title="Download speed"
           className="mr-8"
+          tooltip="min accepted 100 Mbps"
           invalidData={!cellSpeedtest}
           value={toMbps(cellSpeedtest?.downloadSpeed)}
           error={
@@ -73,6 +74,7 @@ const CellSpeedtestWidget = ({ cellSpeedtest, loading }: Props) => {
         <SpeedtestStat
           title="Upload speed"
           className="mr-8"
+          tooltip="min accepted 10 Mbps"
           invalidData={!cellSpeedtest}
           value={toMbps(cellSpeedtest?.uploadSpeed)}
           error={
@@ -83,6 +85,7 @@ const CellSpeedtestWidget = ({ cellSpeedtest, loading }: Props) => {
         />
         <SpeedtestStat
           title="Latency"
+          tooltip="max accepted 50 ms"
           invalidData={!cellSpeedtest}
           value={`${cellSpeedtest?.latency} ms`}
           error={cellSpeedtest?.latency > 50 ? '(max accepted 50 ms)' : null}
@@ -102,6 +105,7 @@ type SpeedtestStatProps = {
   value: string
   invalidData: boolean
   className?: string
+  tooltip?: string
   error?: string
 }
 
@@ -110,6 +114,7 @@ const SpeedtestStat = ({
   value,
   error,
   invalidData,
+  tooltip,
   className,
 }: SpeedtestStatProps) => {
   const status = useMemo(() => {
@@ -127,7 +132,12 @@ const SpeedtestStat = ({
         {title}
       </span>
       <span className="mb-1 w-12">
-        <StatusIcon status={status} hidden={status === 'Unknown'} />
+        <StatusIcon
+          status={status}
+          hidden={status === 'Unknown'}
+          tooltip={tooltip}
+          showTooltipIcon={false}
+        />
       </span>
       <span>{invalidData ? 'Unknown' : value}</span>
       <span className="text-xs font-normal">{error}</span>

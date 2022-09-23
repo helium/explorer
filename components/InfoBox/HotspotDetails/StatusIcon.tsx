@@ -1,6 +1,7 @@
 import React, { memo, useMemo } from 'react'
 import { Tooltip } from 'antd'
 import classNames from 'classnames'
+import { InfoCircleOutlined } from '@ant-design/icons'
 
 type Props = {
   status: 'Active' | 'Inactive' | 'Unknown' | 'Not Available' | 'Fail' | 'Pass'
@@ -8,6 +9,7 @@ type Props = {
   fontSize?: string
   tooltip?: string
   className?: string
+  showTooltipIcon?: boolean
 }
 const StatusIcon = ({
   status,
@@ -15,6 +17,7 @@ const StatusIcon = ({
   fontSize = 'text-sm',
   tooltip,
   className,
+  showTooltipIcon = true,
 }: Props) => {
   const backgroundColor = useMemo(() => {
     switch (status) {
@@ -58,13 +61,18 @@ const StatusIcon = ({
 
   return (
     <Tooltip title={tooltip}>
-      <div
-        className={classNames(
-          className,
-          `flex items-center justify-center ${backgroundColor} rounded-2xl px-3 ${textColor} cursor-default`,
+      <div className="flex flex-row items-center">
+        <div
+          className={classNames(
+            className,
+            `flex items-center justify-center ${backgroundColor} rounded-2xl px-3 ${textColor} cursor-default`,
+          )}
+        >
+          <span className={`${fontSize}`}>{status}</span>
+        </div>
+        {tooltip !== undefined && showTooltipIcon && (
+          <InfoCircleOutlined className="ml-1 text-gray-600" />
         )}
-      >
-        <span className={`${fontSize}`}>{status}</span>
       </div>
     </Tooltip>
   )

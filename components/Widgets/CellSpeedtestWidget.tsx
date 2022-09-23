@@ -18,7 +18,7 @@ const CellSpeedtestWidget = ({ cellSpeedtest }: Props) => {
   }, [cellSpeedtest?.timestamp])
 
   const status = useMemo(() => {
-    if (!cellSpeedtest) return 'Unknown'
+    if (!cellSpeedtest) return 'Not Available'
 
     if (
       cellSpeedtest?.downloadSpeed < 12500000 ||
@@ -52,6 +52,7 @@ const CellSpeedtestWidget = ({ cellSpeedtest }: Props) => {
         <SpeedtestStat
           title="Download speed"
           className="mr-8"
+          invalidData={!cellSpeedtest}
           value={toMbps(cellSpeedtest?.downloadSpeed)}
           error={
             cellSpeedtest?.downloadSpeed < 12500000
@@ -62,6 +63,7 @@ const CellSpeedtestWidget = ({ cellSpeedtest }: Props) => {
         <SpeedtestStat
           title="Upload speed"
           className="mr-8"
+          invalidData={!cellSpeedtest}
           value={toMbps(cellSpeedtest?.uploadSpeed)}
           error={
             cellSpeedtest?.uploadSpeed < 1250000
@@ -71,6 +73,7 @@ const CellSpeedtestWidget = ({ cellSpeedtest }: Props) => {
         />
         <SpeedtestStat
           title="Latency"
+          invalidData={!cellSpeedtest}
           value={`${cellSpeedtest?.latency} ms`}
           error={cellSpeedtest?.latency > 50 ? '(max accepted 50 ms)' : null}
         />
@@ -87,6 +90,7 @@ const CellSpeedtestWidget = ({ cellSpeedtest }: Props) => {
 type SpeedtestStatProps = {
   title: string
   value: string
+  invalidData: boolean
   className?: string
   error?: string
 }
@@ -95,8 +99,14 @@ const SpeedtestStat = ({
   title,
   value,
   error,
+  invalidData,
   className,
 }: SpeedtestStatProps) => {
+  const status = useMemo(() => {
+    if (invalidData) return 'Unknown'
+    return !!error ? 'Fail' : 'Pass'
+  }, [error, invalidData])
+
   return (
     <div
       className={classNames(className, 'mb-2 flex flex-col text-base', {
@@ -107,9 +117,9 @@ const SpeedtestStat = ({
         {title}
       </span>
       <span className="mb-1 w-12">
-        <StatusIcon status={!!error ? 'Fail' : 'Pass'} />
+        <StatusIcon status={status} hidden={status === 'Unknown'} />
       </span>
-      <span>{value}</span>
+      <span>{invalidData ? 'Unknown' : value}</span>
       <span className="text-xs font-normal">{error}</span>
     </div>
   )

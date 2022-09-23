@@ -3,6 +3,8 @@ import TimeAgo from 'react-time-ago'
 import { CellHeartbeat } from '../InfoBox/HotspotDetails/CellStatisticsPane'
 import { isAfter, sub } from 'date-fns'
 import StatusIcon from '../InfoBox/HotspotDetails/StatusIcon'
+import { Tooltip } from 'antd'
+import classNames from 'classnames'
 
 type Props = {
   index?: number
@@ -34,12 +36,20 @@ const CellStatusWidget = ({ index = 1, cellHotspot, showIndex }: Props) => {
     if (!cellHotspot?.timestamp) {
       return 'Not Available'
     }
-
     if (isRadioActive(cellHotspot)) {
       return 'Active'
     }
-
     return 'Inactive'
+  }, [cellHotspot])
+
+  const operationMode = useMemo(() => {
+    if (!cellHotspot) {
+      return 'Unknown'
+    }
+    if (cellHotspot.operationMode) {
+      return 'On Air'
+    }
+    return 'Offline'
   }, [cellHotspot])
 
   const category = useMemo(() => {
@@ -66,18 +76,20 @@ const CellStatusWidget = ({ index = 1, cellHotspot, showIndex }: Props) => {
           </span>
           <StatusIcon
             status={status}
-            tooltip="A radio is active if it has a heartbeat in the last 24 hours."
+            tooltip={
+              'A radio is active if it has a heartbeat in the last 24 hours and an "On Air" operation mode.'
+            }
           />
         </div>
         <span className="mt-1 text-sm font-normal text-gray-600">{serial}</span>
       </div>
       <div className="my-4 h-px bg-gray-400" />
-      <div className="flex flex-row">
+      <div className="flex flex-row justify-between">
         <div className="flex flex-col">
           <span className="pr-1 text-sm font-normal text-gray-600">Type</span>
           <span className="text-base">{category}</span>
         </div>
-        <div className="flex flex-col pl-8">
+        <div className="flex flex-col">
           <span className="pr-1 text-sm font-normal text-gray-600">
             Last Heartbeat
           </span>
@@ -85,6 +97,26 @@ const CellStatusWidget = ({ index = 1, cellHotspot, showIndex }: Props) => {
             {timestamp === undefined ? 'Unknown' : <TimeAgo date={timestamp} />}
           </span>
         </div>
+        <Tooltip
+          title={
+            operationMode === 'Offline'
+              ? "Check your radio's local dashboard for more information."
+              : undefined
+          }
+        >
+          <div className="flex flex-col">
+            <span className="pr-1 text-sm font-normal text-gray-600">
+              Operation Mode
+            </span>
+            <span
+              className={classNames('text-base', {
+                'text-red-500': operationMode === 'Offline',
+              })}
+            >
+              {operationMode}
+            </span>
+          </div>
+        </Tooltip>
       </div>
     </div>
   )

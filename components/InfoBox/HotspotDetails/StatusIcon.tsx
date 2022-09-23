@@ -1,23 +1,20 @@
 import React, { memo, useMemo } from 'react'
 import { Tooltip } from 'antd'
+import classNames from 'classnames'
 
 type Props = {
-  status:
-    | 'Active'
-    | 'Inactive'
-    | 'Unknown'
-    | 'Not Available'
-    | 'Failed'
-    | 'Passed'
+  status: 'Active' | 'Inactive' | 'Unknown' | 'Not Available' | 'Fail' | 'Pass'
   hidden?: boolean
   fontSize?: string
   tooltip?: string
+  className?: string
 }
 const StatusIcon = ({
   status,
   hidden,
   fontSize = 'text-sm',
   tooltip,
+  className,
 }: Props) => {
   const backgroundColor = useMemo(() => {
     switch (status) {
@@ -25,10 +22,10 @@ const StatusIcon = ({
         return 'bg-gray-400'
 
       case 'Active':
-      case 'Passed':
+      case 'Pass':
         return 'bg-green-400'
 
-      case 'Failed':
+      case 'Fail':
       case 'Inactive':
         return 'bg-red-400'
 
@@ -44,7 +41,7 @@ const StatusIcon = ({
         return 'text-white'
 
       case 'Active':
-      case 'Passed':
+      case 'Pass':
       case 'Inactive':
         return 'text-white'
 
@@ -52,7 +49,7 @@ const StatusIcon = ({
       case 'Unknown':
         return 'text-gray-600'
 
-      case 'Failed':
+      case 'Fail':
         return 'text-white'
     }
   }, [status])
@@ -62,7 +59,10 @@ const StatusIcon = ({
   return (
     <Tooltip title={tooltip}>
       <div
-        className={`flex items-center justify-center ${backgroundColor} rounded-2xl px-2 ${textColor} cursor-default`}
+        className={classNames(
+          className,
+          `flex items-center justify-center ${backgroundColor} rounded-2xl px-3 ${textColor} cursor-default`,
+        )}
       >
         <span className={`${fontSize}`}>{status}</span>
       </div>

@@ -25,10 +25,10 @@ const CellSpeedtestWidget = ({ cellSpeedtest }: Props) => {
       cellSpeedtest?.uploadSpeed < 1250000 ||
       cellSpeedtest?.latency > 50
     ) {
-      return 'Failed'
+      return 'Fail'
     }
 
-    return 'Passed'
+    return 'Pass'
   }, [cellSpeedtest])
 
   return (
@@ -36,7 +36,10 @@ const CellSpeedtestWidget = ({ cellSpeedtest }: Props) => {
       <div className="flex flex-col">
         <div className="flex flex-row">
           <span className="pr-2 text-xl">Speed Test</span>
-          <StatusIcon status={status} />
+          <StatusIcon
+            status={status}
+            tooltip="A passing speed test must have >100 Mbps download, >10 Mbps upload, and <50 ms latency."
+          />
         </div>
         {timestamp && (
           <span className="mt-1 text-sm font-normal text-gray-600">
@@ -45,27 +48,33 @@ const CellSpeedtestWidget = ({ cellSpeedtest }: Props) => {
         )}
       </div>
       <div className="my-4 h-px bg-gray-400" />
-      <SpeedtestStat
-        title="Download speed"
-        value={toMbps(cellSpeedtest?.downloadSpeed)}
-        error={
-          cellSpeedtest?.downloadSpeed < 12500000
-            ? '(min accepted 100 Mbps)'
-            : null
-        }
-      />
-      <SpeedtestStat
-        title="Upload speed"
-        value={toMbps(cellSpeedtest?.uploadSpeed)}
-        error={
-          cellSpeedtest?.uploadSpeed < 1250000 ? '(min accepted 10 Mbps)' : null
-        }
-      />
-      <SpeedtestStat
-        title="Latency"
-        value={`${cellSpeedtest?.latency} ms`}
-        error={cellSpeedtest?.latency > 50 ? '(max accepted 50 ms)' : null}
-      />
+      <div className="flex flex-row flex-wrap">
+        <SpeedtestStat
+          title="Download speed"
+          className="mr-8"
+          value={toMbps(cellSpeedtest?.downloadSpeed)}
+          error={
+            cellSpeedtest?.downloadSpeed < 12500000
+              ? '(min accepted 100 Mbps)'
+              : null
+          }
+        />
+        <SpeedtestStat
+          title="Upload speed"
+          className="mr-8"
+          value={toMbps(cellSpeedtest?.uploadSpeed)}
+          error={
+            cellSpeedtest?.uploadSpeed < 1250000
+              ? '(min accepted 10 Mbps)'
+              : null
+          }
+        />
+        <SpeedtestStat
+          title="Latency"
+          value={`${cellSpeedtest?.latency} ms`}
+          error={cellSpeedtest?.latency > 50 ? '(max accepted 50 ms)' : null}
+        />
+      </div>
       <span className="mt-2 break-normal pr-6 text-xs font-light text-gray-600">
         Speed Test Results are based on the last known value and are for
         informational purposes only. This does not impact Genesis Rewards at
@@ -78,20 +87,30 @@ const CellSpeedtestWidget = ({ cellSpeedtest }: Props) => {
 type SpeedtestStatProps = {
   title: string
   value: string
+  className?: string
   error?: string
 }
 
-const SpeedtestStat = ({ title, value, error }: SpeedtestStatProps) => {
+const SpeedtestStat = ({
+  title,
+  value,
+  error,
+  className,
+}: SpeedtestStatProps) => {
   return (
     <div
-      className={classNames('text-base', {
-        'text-gray-600': !error,
+      className={classNames(className, 'mb-2 flex flex-col text-base', {
         'text-red-400': !!error,
       })}
     >
-      <span className="mr-1 font-normal">{title}:</span>
+      <span className="mr-1 mb-1 text-sm font-normal text-gray-600">
+        {title}
+      </span>
+      <span className="mb-1 w-12">
+        <StatusIcon status={!!error ? 'Fail' : 'Pass'} />
+      </span>
       <span>{value}</span>
-      <span className="ml-1 font-normal">{error}</span>
+      <span className="text-xs font-normal">{error}</span>
     </div>
   )
 }

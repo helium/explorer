@@ -4,14 +4,16 @@ import { floor } from 'lodash'
 import { formatDistanceToNow } from 'date-fns'
 import { CellSpeedtest } from '../InfoBox/HotspotDetails/CellStatisticsPane'
 import StatusIcon from '../InfoBox/HotspotDetails/StatusIcon'
+import { Skeleton } from 'antd'
 
 type Props = {
   cellSpeedtest?: CellSpeedtest
+  loading: boolean
 }
 
 const toMbps = (num: number) => `${floor((num * 8) / 10e5)} Mbps`
 
-const CellSpeedtestWidget = ({ cellSpeedtest }: Props) => {
+const CellSpeedtestWidget = ({ cellSpeedtest, loading }: Props) => {
   const timestamp = useMemo(() => {
     if (!cellSpeedtest?.timestamp) return undefined
     return new Date(cellSpeedtest?.timestamp * 1000)
@@ -30,6 +32,14 @@ const CellSpeedtestWidget = ({ cellSpeedtest }: Props) => {
 
     return 'Pass'
   }, [cellSpeedtest])
+
+  if (loading) {
+    return (
+      <div className="col-span-2 rounded-lg bg-gray-200 p-3">
+        <Skeleton />
+      </div>
+    )
+  }
 
   return (
     <div className="col-span-2 flex flex-col rounded-lg bg-gray-200 p-3 py-4 font-medium">

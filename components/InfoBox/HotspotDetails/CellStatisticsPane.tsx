@@ -1,10 +1,11 @@
 import { memo, useCallback } from 'react'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import useApi from '../../../hooks/useApi'
-import CellStatusWidget from '../../Widgets/CellStatusWidget'
+import CellStatusWidget, { isRadioActive } from '../../Widgets/CellStatusWidget'
 import { Hotspot } from '@helium/http'
 import { SWRResponse } from 'swr'
 import CellSpeedtestWidget from '../../Widgets/CellSpeedtestWidget'
+import { sortBy } from 'lodash'
 
 export type CellHotspot = {
   blockTimestamp: string
@@ -53,15 +54,19 @@ const CellStatisticsPane = ({ hotspot }: Props) => {
   const RadioList = useCallback(() => {
     if (!cellHotspots || !cellHotspots.length) return <CellStatusWidget />
 
+    const sorted = sortBy(
+      cellHotspots,
+      (radio) => isRadioActive(radio),
+      (radio) => {
+        const length = radio.cbsdId.length
+        return radio.cbsdId.slice(length - 4, length)
+      },
+    )
+
     return (
       <>
-        {cellHotspots.map((data, index) => (
-          <CellStatusWidget
-            index={index + 1}
-            cellHotspot={data}
-            key={data.cellId}
-            showIndex={cellHotspots.length > 1}
-          />
+        {sorted.map((data, index) => (
+          <CellStatusWidget cellHotspot={data} key={data.cellId} />
         ))}
       </>
     )

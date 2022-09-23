@@ -7,8 +7,6 @@ import { Tooltip } from 'antd'
 import classNames from 'classnames'
 
 type Props = {
-  index?: number
-  showIndex?: boolean
   cellHotspot?: CellHeartbeat
 }
 
@@ -26,7 +24,7 @@ export const isRadioActive = (cellHotspot: CellHeartbeat) => {
   )
 }
 
-const CellStatusWidget = ({ index = 1, cellHotspot, showIndex }: Props) => {
+const CellStatusWidget = ({ cellHotspot }: Props) => {
   const timestamp = useMemo(() => {
     if (!cellHotspot?.timestamp) return undefined
     return new Date(cellHotspot?.timestamp * 1000)
@@ -63,6 +61,12 @@ const CellStatusWidget = ({ index = 1, cellHotspot, showIndex }: Props) => {
     }
   }, [cellHotspot?.cbsdCategory])
 
+  const last4OfSerial = useMemo(() => {
+    if (!cellHotspot?.cbsdId) return ''
+    const length = cellHotspot.cbsdId.length
+    return cellHotspot.cbsdId.slice(length - 4, length)
+  }, [cellHotspot?.cbsdId])
+
   const serial = useMemo(() => {
     return cellHotspot?.cbsdId ? cellHotspot.cbsdId : null
   }, [cellHotspot?.cbsdId])
@@ -71,9 +75,7 @@ const CellStatusWidget = ({ index = 1, cellHotspot, showIndex }: Props) => {
     <div className="col-span-2 flex flex-col rounded-lg bg-gray-200 p-3 py-4 font-medium">
       <div className="flex flex-col">
         <div className="flex flex-row">
-          <span className="pr-2 text-xl">
-            {showIndex ? `Radio ${index}` : 'Radio'}
-          </span>
+          <span className="pr-2 text-xl">{`Radio ${last4OfSerial}`}</span>
           <StatusIcon
             status={status}
             tooltip={
@@ -84,12 +86,12 @@ const CellStatusWidget = ({ index = 1, cellHotspot, showIndex }: Props) => {
         <span className="mt-1 text-sm font-normal text-gray-600">{serial}</span>
       </div>
       <div className="my-4 h-px bg-gray-400" />
-      <div className="flex flex-row justify-between">
-        <div className="flex flex-col">
+      <div className="flex flex-row flex-wrap justify-between">
+        <div className="mb-1 flex flex-col">
           <span className="pr-1 text-sm font-normal text-gray-600">Type</span>
           <span className="text-base">{category}</span>
         </div>
-        <div className="flex flex-col">
+        <div className="mb-1 flex flex-col ">
           <span className="pr-1 text-sm font-normal text-gray-600">
             Last Heartbeat
           </span>
@@ -104,7 +106,7 @@ const CellStatusWidget = ({ index = 1, cellHotspot, showIndex }: Props) => {
               : undefined
           }
         >
-          <div className="flex flex-col">
+          <div className="mb-1 flex flex-col ">
             <span className="pr-1 text-sm font-normal text-gray-600">
               Operation Mode
             </span>

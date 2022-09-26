@@ -68,7 +68,7 @@ const StatisticsPane = () => {
         title="Estimated APR"
         value={formatPercent(calculateValidatorAPY(validatorStats?.active))}
         isLoading={!validatorStats}
-        tooltip="Annual percent return of validators that are staked and online. Note that unstaking tokens invokes a 250,000 block (~5 mo.) cooldown period where no returns will be earned before the staked tokens become liquid again. Earned rewards are immediately liquid."
+        tooltip="Annual percent return of validators that are staked and online. Note that unstaking tokens invokes a 125,000 block (~86 days) cooldown period where no returns will be earned before the staked tokens become liquid again. Earned rewards are immediately liquid."
       />
       <Widget
         title={`Total Staked (${TICKER})`}

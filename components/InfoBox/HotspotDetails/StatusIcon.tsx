@@ -6,7 +6,7 @@ import { InfoCircleOutlined } from '@ant-design/icons'
 type Props = {
   status: 'Active' | 'Inactive' | 'Unknown' | 'Not Available' | 'Fail' | 'Pass'
   hidden?: boolean
-  fontSize?: string
+  fontSize?: 'xs' | 'sm' | 'base' | 'lg' | 'xl'
   tooltip?: string
   className?: string
   showTooltipIcon?: boolean
@@ -14,7 +14,7 @@ type Props = {
 const StatusIcon = ({
   status,
   hidden,
-  fontSize = 'text-sm',
+  fontSize = 'sm',
   tooltip,
   className,
   showTooltipIcon = true,
@@ -68,7 +68,7 @@ const StatusIcon = ({
             `flex items-center justify-center ${backgroundColor} rounded-2xl px-3 ${textColor} cursor-default`,
           )}
         >
-          <span className={`${fontSize}`}>{status}</span>
+          <span className={`text-${fontSize}`}>{status}</span>
         </div>
         {tooltip !== undefined && showTooltipIcon && (
           <InfoCircleOutlined className="ml-1 text-gray-600" />

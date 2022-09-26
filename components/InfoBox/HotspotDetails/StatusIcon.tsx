@@ -65,7 +65,9 @@ const StatusIcon = ({
         <div
           className={classNames(
             className,
-            `flex items-center justify-center ${backgroundColor} rounded-2xl px-3 ${textColor} cursor-default`,
+            backgroundColor,
+            textColor,
+            `flex cursor-default items-center justify-center rounded-2xl px-3`,
           )}
         >
           <span className={`text-${fontSize}`}>{status}</span>

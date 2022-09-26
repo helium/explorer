@@ -68,10 +68,6 @@ const CellStatusWidget = ({ cellHotspot }: Props) => {
     return cellHotspot.cbsdId.slice(length - 4, length)
   }, [cellHotspot?.cbsdId])
 
-  const serial = useMemo(() => {
-    return cellHotspot?.cbsdId ? cellHotspot.cbsdId : null
-  }, [cellHotspot?.cbsdId])
-
   return (
     <div className="col-span-2 flex flex-col rounded-lg bg-gray-200 p-3 py-4 font-medium">
       <div className="flex flex-col">
@@ -84,7 +80,6 @@ const CellStatusWidget = ({ cellHotspot }: Props) => {
             }
           />
         </div>
-        <span className="mt-1 text-sm font-normal text-gray-600">{serial}</span>
       </div>
       <div className="my-4 h-px bg-gray-400" />
       <div className="flex flex-row flex-wrap justify-between">

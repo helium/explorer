@@ -1,10 +1,12 @@
 import { memo } from 'react'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import useApi from '../../../hooks/useApi'
-import CellStatusWidget from '../../Widgets/CellStatusWidget'
+import CellStatusWidget, { isRadioActive } from '../../Widgets/CellStatusWidget'
 import { Hotspot } from '@helium/http'
 import { SWRResponse } from 'swr'
 import CellSpeedtestWidget from '../../Widgets/CellSpeedtestWidget'
+import { sortBy } from 'lodash'
+import { Skeleton } from 'antd'
 
 export type CellHotspot = {
   blockTimestamp: string
@@ -16,6 +18,17 @@ export type CellHotspot = {
   payer: string
   pubkey: string
   txnHash: string
+}
+
+export type CellHeartbeat = {
+  timestamp: number
+  cellId: number
+  operationMode: boolean
+  hotspotAddress: string
+  ownerAddress: string
+  hotspotType: string
+  cbsdCategory: string
+  cbsdId: string
 }
 
 export type CellSpeedtest = {
@@ -31,8 +44,8 @@ type Props = {
 }
 
 const CellStatisticsPane = ({ hotspot }: Props) => {
-  const { data: cellHotspot }: SWRResponse<CellHotspot> = useApi(
-    `/cell/hotspots/${hotspot.address}`,
+  const { data: cellHotspots }: SWRResponse<CellHeartbeat[]> = useApi(
+    `/cell/hotspots/${hotspot.address}/cells`,
   )
 
   const { data: cellSpeedtest }: SWRResponse<CellSpeedtest> = useApi(
@@ -41,8 +54,14 @@ const CellStatisticsPane = ({ hotspot }: Props) => {
 
   return (
     <InfoBoxPaneContainer>
-      <CellStatusWidget cellHotspot={cellHotspot} />
-      <CellSpeedtestWidget cellSpeedtest={cellSpeedtest} />
+      <CellSpeedtestWidget
+        cellSpeedtest={cellSpeedtest}
+        loading={cellSpeedtest === undefined}
+      />
+      <RadioList
+        cellHotspots={cellHotspots}
+        loading={cellHotspots === undefined}
+      />
       <a
         href="https://docs.helium.com/5g-on-helium/cbrs-radios"
         target="_blank"
@@ -52,6 +71,39 @@ const CellStatisticsPane = ({ hotspot }: Props) => {
         For more information on Small Cell Radios and status, visit the docs.
       </a>
     </InfoBoxPaneContainer>
+  )
+}
+
+type RadioListProps = {
+  cellHotspots: CellHeartbeat[]
+  loading: boolean
+}
+const RadioList = ({ cellHotspots, loading }: RadioListProps) => {
+  if (loading) {
+    return (
+      <div className="col-span-2 rounded-lg bg-gray-200 p-3">
+        <Skeleton />
+      </div>
+    )
+  }
+
+  if (!cellHotspots || !cellHotspots.length) return <CellStatusWidget />
+
+  const sorted = sortBy(
+    cellHotspots,
+    (radio) => isRadioActive(radio),
+    (radio) => {
+      const length = radio.cbsdId.length
+      return radio.cbsdId.slice(length - 4, length)
+    },
+  )
+
+  return (
+    <>
+      {sorted.map((data, index) => (
+        <CellStatusWidget cellHotspot={data} key={data.cellId} />
+      ))}
+    </>
   )
 }
 

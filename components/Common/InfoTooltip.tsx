@@ -1,15 +1,23 @@
 import { Tooltip } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { FC } from 'react'
+import classNames from 'classnames'
 
 interface Props {
   text?: string
   href?: string
+  className?: string
 }
 
-const InfoTooltip: FC<Props> = ({ text, href }) => {
+const InfoTooltip: FC<Props> = ({ text, href, className }) => {
   return (
-    <div className="text-gray-600 text-sm cursor-pointer flex" onClick={e => e.stopPropagation()}>
+    <div
+      className={classNames(
+        className,
+        'flex cursor-pointer text-sm text-gray-600',
+      )}
+      onClick={(e) => e.stopPropagation()}
+    >
       <MaybeLink href={href}>
         <Tooltip title={text}>
           <InfoCircleOutlined />

@@ -2,9 +2,17 @@ import React, { memo, useMemo } from 'react'
 import { Tooltip } from 'antd'
 import classNames from 'classnames'
 import { InfoCircleOutlined } from '@ant-design/icons'
+import { SpeedTestTier } from '../../Widgets/CellSpeedtestWidget'
 
 type Props = {
-  status: 'Active' | 'Inactive' | 'Unknown' | 'Not Available' | 'Fail' | 'Pass'
+  status:
+    | 'Active'
+    | 'Inactive'
+    | 'Unknown'
+    | 'Not Available'
+    | 'Fail'
+    | 'Pass'
+    | SpeedTestTier
   hidden?: boolean
   fontSize?: 'xs' | 'sm' | 'base' | 'lg' | 'xl'
   tooltip?: string
@@ -21,39 +29,24 @@ const StatusIcon = ({
 }: Props) => {
   const backgroundColor = useMemo(() => {
     switch (status) {
-      default:
-        return 'bg-gray-400'
-
-      case 'Active':
-      case 'Pass':
-        return 'bg-green-400'
-
-      case 'Fail':
-      case 'Inactive':
-        return 'bg-red-400'
-
+      case SpeedTestTier.FAIL:
       case 'Not Available':
       case 'Unknown':
-        return 'bg-gray-400'
-    }
-  }, [status])
-
-  const textColor = useMemo(() => {
-    switch (status) {
       default:
-        return 'text-white'
+        return 'bg-gray-600'
 
+      case SpeedTestTier.ACCEPTABLE:
       case 'Active':
       case 'Pass':
-      case 'Inactive':
-        return 'text-white'
+        return 'bg-green-300'
 
-      case 'Not Available':
-      case 'Unknown':
-        return 'text-gray-600'
+      case SpeedTestTier.DEGRADED:
+        return 'bg-yellow-300'
 
+      case SpeedTestTier.POOR:
       case 'Fail':
-        return 'text-white'
+      case 'Inactive':
+        return 'bg-red-300'
     }
   }, [status])
 
@@ -66,8 +59,7 @@ const StatusIcon = ({
           className={classNames(
             className,
             backgroundColor,
-            textColor,
-            `flex cursor-default items-center justify-center rounded-2xl px-3`,
+            `flex cursor-default items-center justify-center rounded-2xl px-3 text-white`,
           )}
         >
           <span className={`text-${fontSize}`}>{status}</span>

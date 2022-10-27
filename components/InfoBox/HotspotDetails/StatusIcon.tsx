@@ -10,6 +10,7 @@ type Props = {
     | 'Inactive'
     | 'Unknown'
     | 'Not Available'
+    | 'Not Enough Data'
     | 'Fail'
     | 'Pass'
     | SpeedTestTier

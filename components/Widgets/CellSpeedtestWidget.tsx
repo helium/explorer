@@ -133,8 +133,8 @@ const CellSpeedtestWidget = ({ cellSpeedtest, loading }: Props) => {
           <span className="pr-2 text-xl font-bold">Speed Test</span>
           <StatusIcon
             status={status}
-            tooltip="A 5G Hotspot automatically performs a Speed Test approximately
-            every 12 hours with the results being averaged by the MOBILE PoC Oracle."
+            tooltip="A 5G Hotspot automatically performs a Speed Test twice in
+            24 hours at random times. The MOBILE PoC Oracle averages the results."
           />
         </div>
         {timestamp && (
@@ -152,9 +152,8 @@ const CellSpeedtestWidget = ({ cellSpeedtest, loading }: Props) => {
             {`Speed Test Rewards Multiplier: ${multiplier}x`}
           </span>
           <Tooltip
-            title="Speed Test multiplier will be used together with Radio
-            type multiplier to scale the MOBILE rewards. Currently, the Speed
-            Test multiplier does not affect rewards."
+            title="Speed Test multiplier is used together with Radio type
+            multiplier to scale the MOBILE rewards."
           >
             <InfoCircleOutlined className="ml-1 mt-1 text-gray-600" />
           </Tooltip>
@@ -196,9 +195,8 @@ const CellSpeedtestWidget = ({ cellSpeedtest, loading }: Props) => {
         />
       </div>
       <span className="mt-2 break-normal pr-6 text-xs font-light text-gray-600">
-        Speed Test Results are based on the last known value and are for
-        informational purposes only. This does not impact Genesis Rewards at
-        this time.
+        Speed Test results averages are for informational purposes only. These
+        values do not impact Genesis Rewards at this time.
       </span>
     </div>
   )

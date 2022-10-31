@@ -31,12 +31,22 @@ export type CellHeartbeat = {
   cbsdId: string
 }
 
-export type CellSpeedtest = {
-  downloadSpeed: number
+export enum SpeedTestValidity {
+  VALID = 'speedtest_avg_validity_valid',
+  TOO_FEW_SAMPLES = 'speedtest_avg_validity_too_few_samples',
+  SLOW_DOWNLOAD = 'speedtest_avg_validity_slow_download_speed',
+  SLOW_UPLOAD = 'speedtest_avg_validity_slow_upload_speed',
+  HIGH_LATENCY = 'speedtest_avg_validity_high_latency',
+}
+
+export type CellAvgSpeedtest = {
+  downloadSpeedAvgBps: number
   hotspotAddress: string
-  latency: number
+  latencyAvgMs: number
+  rewardMultiplier: number
   timestamp: number
-  uploadSpeed: number
+  uploadSpeedAvgBps: number
+  validity: SpeedTestValidity
 }
 
 type Props = {
@@ -48,8 +58,8 @@ const CellStatisticsPane = ({ hotspot }: Props) => {
     `/cell/hotspots/${hotspot.address}/cells`,
   )
 
-  const { data: cellSpeedtest }: SWRResponse<CellSpeedtest> = useApi(
-    `/cell/hotspots/${hotspot.address}/latest-speedtest`,
+  const { data: cellSpeedtest }: SWRResponse<CellAvgSpeedtest> = useApi(
+    `/cell/hotspots/${hotspot.address}/avg-speedtest`,
   )
 
   return (

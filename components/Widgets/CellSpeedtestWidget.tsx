@@ -194,10 +194,6 @@ const CellSpeedtestWidget = ({ cellSpeedtest, loading }: Props) => {
           failedRange="101+ ms"
         />
       </div>
-      <span className="mt-2 break-normal pr-6 text-xs font-light text-gray-600">
-        Speed Test results averages are for informational purposes only. These
-        values do not impact Genesis Rewards at this time.
-      </span>
     </div>
   )
 }

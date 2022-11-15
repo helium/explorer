@@ -45,12 +45,12 @@ const StatisticsPane = () => {
         isLoading={!stats}
       />
       <Widget
-        title="Packets Sent (24h)"
+        title="Messages Sent (24h)"
         value={<LargeBalance value={dataCredits?.lastDay?.stateChannel} />}
         isLoading={!dataCredits}
       />
       <Widget
-        title="Packets Sent (30d)"
+        title="Messages Sent (30d)"
         value={<LargeBalance value={dataCredits?.lastMonth?.stateChannel} />}
         isLoading={!dataCredits}
       />

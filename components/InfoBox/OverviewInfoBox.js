@@ -12,6 +12,7 @@ import { useDataCredits } from '../../data/datacredits'
 import { useValidatorStats } from '../../data/validators'
 import { useStats } from '../../data/stats'
 import StatWidget from '../Widgets/StatWidget'
+import LargeBalance from '../Common/LargeBalance'
 
 const OverviewInfoBox = () => {
   const { data: hotspots } = useApi('/metrics/hotspots')
@@ -75,15 +76,39 @@ const OverviewInfoBox = () => {
           linkTo="/validators"
         />
         <DaoWidget
-          title="IOT (Coming Soon)"
+          title="IOT"
           icon="/images/iot.svg"
           extra={
-            <TrendWidget
-              title="Hotspots"
-              series={hotspots?.count}
-              isLoading={!hotspots}
-              transparent
-            />
+            <div>
+              <div className="flex items-center justify-between pr-8">
+                <Widget
+                  title="Messages Sent (24h)"
+                  value={
+                    <LargeBalance value={dataCredits?.lastDay?.stateChannel} />
+                  }
+                  isLoading={!dataCredits}
+                  transparent
+                />
+                <div className="h-16 border-l border-solid border-l-gray-400" />
+                <Widget
+                  title="Messages Sent (30d)"
+                  value={
+                    <LargeBalance
+                      value={dataCredits?.lastMonth?.stateChannel}
+                    />
+                  }
+                  isLoading={!dataCredits}
+                  transparent
+                />
+              </div>
+
+              <TrendWidget
+                title="Hotspots"
+                series={hotspots?.count}
+                isLoading={!hotspots}
+                transparent
+              />
+            </div>
           }
           linkTo="/iot"
         />

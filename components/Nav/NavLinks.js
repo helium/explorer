@@ -11,7 +11,7 @@ const NavLink = ({ href, title, className, onClick, fallback }) =>
       href={href}
       onClick={onClick}
       className={classNames(className, {
-        'text-white font-sans flex items-center justify-center text-sm hover:text-gray-500 focus:text-gray-600':
+        'flex items-center justify-center font-sans text-sm text-white hover:text-gray-500 focus:text-gray-600':
           !className,
       })}
     >
@@ -22,7 +22,7 @@ const NavLink = ({ href, title, className, onClick, fallback }) =>
       to={href}
       onClick={onClick}
       className={classNames(className, {
-        'text-white font-sans flex items-center justify-center text-sm hover:text-gray-500 focus:text-gray-600':
+        'flex items-center justify-center font-sans text-sm text-white hover:text-gray-500 focus:text-gray-600':
           !className,
       })}
     >
@@ -40,13 +40,13 @@ const NavLinks = ({
 
   return (
     <div
-      className={classNames(className, 'duration-200 transition-all', {
+      className={classNames(className, 'transition-all duration-200', {
         'opacity-0': searchFocused,
       })}
     >
       <NavLink
         href="/iot"
-        title="IOT (Coming Soon)"
+        title="IOT"
         className={navLinkClasses}
         onClick={onNavLinkClick}
         fallback={fallbackLinks}
@@ -80,13 +80,13 @@ const NavLinks = ({
         fallback={fallbackLinks}
       />
       <FeedbackBubble className="flex">
-        <div className="bg-navy-400 hover:bg-navy-300 px-4 md:px-3 py-1.5 md:py-1 cursor-pointer rounded-lg mt-5 md:mt-0">
-          <span className="text-sm text-white flex items-center">
-            <FeedbackIcon className="w-5 h-5 md:h-4 md:w-4 text-white" />
+        <div className="mt-5 cursor-pointer rounded-lg bg-navy-400 px-4 py-1.5 hover:bg-navy-300 md:mt-0 md:px-3 md:py-1">
+          <span className="flex items-center text-sm text-white">
+            <FeedbackIcon className="h-5 w-5 text-white md:h-4 md:w-4" />
           </span>
         </div>
       </FeedbackBubble>
-      <ChangelogButton className="hidden xl:block xl:-mr-4" />
+      <ChangelogButton className="hidden xl:-mr-4 xl:block" />
     </div>
   )
 }

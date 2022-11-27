@@ -146,6 +146,12 @@ export const communityToolsList = [
     tags: [types.monitoring],
   },
   {
+    name: 'hntpy',
+    url: 'https://pypi.org/project/hntpy/',
+    description: 'Python package for to simplify interactions with the Helium API and make Pythonic requests to the blockchain.',
+    tags: [types.monitoring, types.export, types.planning],
+  },
+  {
     name: 'Hotspot Utility',
     url: 'https://apps.apple.com/us/app/helium-hotspot-utility/id1527367455',
     description:

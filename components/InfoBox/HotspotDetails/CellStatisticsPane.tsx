@@ -68,6 +68,7 @@ const CellStatisticsPane = ({ hotspot }: Props) => {
       <PeriodizedRewardsWidget
         address={hotspot?.address}
         title="Hotspot Mobile Earnings (UTC)"
+        titleTooltip="Earned rewards will appear on the Blockchain in about 30 minutes after the Reward Period ends."
         type="hotspotRadios"
         periods={[
           { number: 7, type: 'day' },

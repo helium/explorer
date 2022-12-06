@@ -19,6 +19,8 @@ import {
 } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
 import { format, addMinutes } from 'date-fns'
+import { InfoCircleOutlined } from '@ant-design/icons'
+import { Tooltip } from 'antd'
 
 ChartJS.register(
   CategoryScale,
@@ -84,6 +86,7 @@ const RewardsTrendWidget = ({
   periodLength = 30,
   isMobile,
   padding = 3,
+  titleTooltip = '',
 }) => {
   const { market } = useMarket()
 
@@ -292,13 +295,20 @@ const RewardsTrendWidget = ({
           'h-24': periodSelector,
         })}
       >
-        <div className="relative w-1/3">
-          <div className="absolute whitespace-nowrap text-sm text-gray-600">
-            {title}
-          </div>
+        <div className="relative w-1/3 ">
+          <Tooltip title={titleTooltip}>
+            <div className="absolute flex content-center whitespace-nowrap text-sm text-gray-600">
+              {title}
+              {titleTooltip && (
+                <span className="flex content-center pt-1 pl-1">
+                  <InfoCircleOutlined />
+                </span>
+              )}
+            </div>
+          </Tooltip>
           <div
             className={classNames('mt-1.5 pt-4 font-medium tracking-tight', {
-              'text-2xl': isMobile,
+              'text-xl': isMobile,
               'text-3xl': !isMobile,
             })}
           >

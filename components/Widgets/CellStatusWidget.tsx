@@ -119,6 +119,7 @@ const CellStatusWidget = ({ cellHotspot }: Props) => {
           address={cellHotspot?.hotspotAddress}
           radioAddress={cellHotspot?.cbsdId}
           title="Earnings (UTC)"
+          titleTooltip="Earned rewards will appear on the Blockchain in about 30 minutes after the Reward Period ends."
           type="radio"
           periods={[
             { number: 7, type: 'day' },

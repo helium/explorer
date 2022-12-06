@@ -16,6 +16,7 @@ const PeriodizedRewardsWidget = ({
   ],
   radioAddress = '',
   padding = 3,
+  titleTooltip = '',
 }) => {
   const [periodLength, setPeriodLength] = useState(periods[0].number)
   const [periodType, setPeriodType] = useState(periods[0].type)
@@ -37,6 +38,7 @@ const PeriodizedRewardsWidget = ({
   return (
     <RewardsTrendWidget
       title={title}
+      titleTooltip={titleTooltip}
       isLoading={isLoading}
       periodLength={periodLength}
       periodSelector={

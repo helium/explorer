@@ -52,7 +52,7 @@ export const getHotspotRadioRewardsBuckets = async (address, numBack) => {
   const now = new Date()
   now.setUTCHours(0, 0, 0, 0)
   const maxTime = format(now, 'yyyy-MM-dd')
-  const minTime = format(sub(now, { days: numBack }), 'yyyy-MM-dd')
+  const minTime = format(sub(now, { days: numBack - 1 }), 'yyyy-MM-dd')
 
   const rewards = await fetchApi('v1')(
     `/cell/hotspots/${address}/rewards?` +
@@ -74,7 +74,7 @@ export const getRadioRewardsBuckets = async (
   const now = new Date()
   now.setUTCHours(0, 0, 0, 0)
   const maxTime = format(now, 'yyyy-MM-dd')
-  const minTime = format(sub(now, { days: numBack }), 'yyyy-MM-dd')
+  const minTime = format(sub(now, { days: numBack - 1 }), 'yyyy-MM-dd')
 
   const rewards = await fetchApi('v1')(
     `/cell/hotspots/${address}/cells/${radioAddress}/rewards?` +

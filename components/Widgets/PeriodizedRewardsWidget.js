@@ -14,6 +14,8 @@ const PeriodizedRewardsWidget = ({
     { number: 14, type: 'day' },
     { number: 30, type: 'day' },
   ],
+  radioAddress = '',
+  padding = 3,
 }) => {
   const [periodLength, setPeriodLength] = useState(periods[0].number)
   const [periodType, setPeriodType] = useState(periods[0].type)
@@ -22,7 +24,7 @@ const PeriodizedRewardsWidget = ({
     type,
     periodLength * 2,
     periodType,
-    periodType === 'day',
+    radioAddress,
   )
 
   const handlePeriodChange = useCallback((number, type) => {
@@ -48,6 +50,8 @@ const PeriodizedRewardsWidget = ({
       showTarget={type === 'hotspot' && periodType === 'day'}
       dataPointTimePeriod={periodType}
       periodLabel
+      isMobile={type === 'radio' || type === 'hotspotRadios'}
+      padding={padding}
     />
   )
 }
@@ -55,12 +59,12 @@ const PeriodizedRewardsWidget = ({
 const RewardPeriodSelector = ({ periods, handlePeriodChange }) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   return (
-    <div className="flex items-center px-1 space-x-3 lg:space-x-2 justify-end">
+    <div className="flex items-center justify-end space-x-3 px-1 lg:space-x-2">
       {periods.map((p, i) => {
         return (
           <button
             className={classNames(
-              'focus:outline-none font-medium text-sm border-solid border border-transparent font-sans focus:border-navy-400 focus:border-opacity-50 bg-gray-300 px-2 rounded-md',
+              'rounded-md border border-solid border-transparent bg-gray-300 px-2 font-sans text-sm font-medium focus:border-navy-400 focus:border-opacity-50 focus:outline-none',
               {
                 'text-navy-400': selectedIndex === i,
                 'text-black': selectedIndex !== i,

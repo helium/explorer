@@ -6,6 +6,7 @@ import StatusIcon from '../InfoBox/HotspotDetails/StatusIcon'
 import { Tooltip } from 'antd'
 import classNames from 'classnames'
 import { InfoCircleOutlined } from '@ant-design/icons'
+import PeriodizedRewardsWidget from './PeriodizedRewardsWidget'
 
 type Props = {
   cellHotspot?: CellHeartbeat
@@ -112,6 +113,20 @@ const CellStatusWidget = ({ cellHotspot }: Props) => {
             </span>
           </div>
         </Tooltip>
+      </div>
+      <div className="pt-3">
+        <PeriodizedRewardsWidget
+          address={cellHotspot?.hotspotAddress}
+          radioAddress={cellHotspot?.cbsdId}
+          title="Earnings (UTC)"
+          type="radio"
+          periods={[
+            { number: 7, type: 'day' },
+            { number: 14, type: 'day' },
+            { number: 30, type: 'day' },
+          ]}
+          padding={0}
+        />
       </div>
     </div>
   )

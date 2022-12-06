@@ -6,12 +6,13 @@ export const API_BASES = {
   v2: 'https://explorer-api-v2.helium.com/api',
   testnet: 'https://helium-testnet-explorer-api.herokuapp.com/api',
   devnet: 'https://helium-devnet-explorer-api.herokuapp.com/api',
+  dev: 'http://localhost:3001/api',
 }
 
 export const fetchApi =
   (version = 'v1') =>
   async (route) => {
-    const base = NETWORK === 'mainnet' ? API_BASES[version] : API_BASES[NETWORK]
+    const base = API_BASES['dev']
     const url = [base, route].join('')
     const response = await fetch(url, {
       headers: {

@@ -7,6 +7,7 @@ import { SWRResponse } from 'swr'
 import CellSpeedtestWidget from '../../Widgets/CellSpeedtestWidget'
 import { sortBy } from 'lodash'
 import { Skeleton } from 'antd'
+import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
 
 export type CellHotspot = {
   blockTimestamp: string
@@ -64,6 +65,16 @@ const CellStatisticsPane = ({ hotspot }: Props) => {
 
   return (
     <InfoBoxPaneContainer>
+      <PeriodizedRewardsWidget
+        address={hotspot?.address}
+        title="Hotspot Mobile Earnings (UTC)"
+        type="hotspotRadios"
+        periods={[
+          { number: 7, type: 'day' },
+          { number: 14, type: 'day' },
+          { number: 30, type: 'day' },
+        ]}
+      />
       <CellSpeedtestWidget
         cellSpeedtest={cellSpeedtest}
         loading={cellSpeedtest === undefined}

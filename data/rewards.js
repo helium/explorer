@@ -1,6 +1,8 @@
-import { getUnixTime } from 'date-fns'
+import { format, getUnixTime, sub } from 'date-fns'
 import useSWR from 'swr'
 import client, { TAKE_MAX } from './client'
+import { fetchApi } from '../hooks/useApi'
+import qs from 'qs'
 
 const NETWORK_DATES = [
   getUnixTime(new Date('2019-08-01')),
@@ -41,6 +43,46 @@ export const getHotspotRewardsBuckets = async (address, numBack, bucket) => {
   const params = getRewardsSumParams({ bucket, numBack })
   const list = await client.hotspot(address).rewards.sum.list(params)
   const rewards = await list.take(TAKE_MAX)
+  return rewards.reverse()
+}
+
+export const getHotspotRadioRewardsBuckets = async (address, numBack) => {
+  if (!address) return
+
+  const now = new Date()
+  now.setUTCHours(0, 0, 0, 0)
+  const maxTime = format(now, 'yyyy-MM-dd')
+  const minTime = format(sub(now, { days: numBack }), 'yyyy-MM-dd')
+
+  const rewards = await fetchApi('v1')(
+    `/cell/hotspots/${address}/rewards?` +
+      qs.stringify({
+        max_date: maxTime,
+        min_date: minTime,
+      }),
+  )
+  return rewards.reverse()
+}
+
+export const getRadioRewardsBuckets = async (
+  address,
+  radioAddress,
+  numBack,
+) => {
+  if (!address || !radioAddress) return
+
+  const now = new Date()
+  now.setUTCHours(0, 0, 0, 0)
+  const maxTime = format(now, 'yyyy-MM-dd')
+  const minTime = format(sub(now, { days: numBack }), 'yyyy-MM-dd')
+
+  const rewards = await fetchApi('v1')(
+    `/cell/hotspots/${address}/cells/${radioAddress}/rewards?` +
+      qs.stringify({
+        max_date: maxTime,
+        min_date: minTime,
+      }),
+  )
   return rewards.reverse()
 }
 
@@ -122,6 +164,7 @@ export const useRewardBuckets = (
   type,
   numBack = 30,
   bucketType = 'day',
+  radioAddress,
 ) => {
   const key = `rewards/${type}s/${address}/${numBack}/${bucketType}`
 
@@ -135,6 +178,12 @@ export const useRewardBuckets = (
 
       case 'validator':
         return getValidatorRewardsBuckets(address, numBack, bucketType)
+
+      case 'hotspotRadios':
+        return getHotspotRadioRewardsBuckets(address, numBack)
+
+      case 'radio':
+        return getRadioRewardsBuckets(address, radioAddress, numBack)
 
       default:
         throw new Error('Invalid reward type')

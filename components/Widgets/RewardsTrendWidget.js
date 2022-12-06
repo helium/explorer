@@ -29,89 +29,6 @@ ChartJS.register(
   Legend,
 )
 
-const chartOptions = {
-  layout: { autoPadding: false },
-  hover: { intersect: false },
-  backdropPadding: 0,
-  padding: 0,
-  plugins: {
-    legend: {
-      display: false,
-    },
-    tooltip: {
-      // TODO: re-enable custom tooltip component
-      // enabled: false,
-      // external: customTooltip,
-      caretPadding: 10,
-      caretX: 0,
-      caretY: 0,
-      intersect: false,
-      mode: 'index',
-      yAlign: 'center',
-      position: 'nearest',
-      callbacks: {
-        label: (item) => {
-          const {
-            dataset: { label },
-          } = item
-          const { raw } = item
-          if (raw === 'N/A') {
-            return `${label}: ${raw}`
-          }
-          const amount = Balance.fromFloat(raw, CurrencyType.networkToken)
-          return `${label}: ${amount.toString(3)}`
-        },
-      },
-      displayColors: false,
-      padding: 3,
-      pointHitRadius: 5,
-      pointRadius: 1,
-      caretSize: 10,
-      backgroundColor: 'rgba(255,255,255,.9)',
-      borderWidth: 1,
-      bodyFont: {
-        family: 'Inter',
-        size: 12,
-      },
-      bodyColor: '#303030',
-      titleFont: {
-        family: 'Inter',
-      },
-      titleColor: 'rgba(0,0,0,0.6)',
-    },
-  },
-  scales: {
-    y: {
-      ticks: {
-        display: false,
-      },
-      grid: {
-        drawBorder: false,
-        borderWidth: 0,
-        drawTicks: false,
-        color: 'transparent',
-        width: 0,
-        backdropPadding: 0,
-      },
-      drawBorder: false,
-      drawTicks: false,
-    },
-    x: {
-      ticks: {
-        display: false,
-      },
-      grid: {
-        drawBorder: false,
-        borderWidth: 0,
-        drawTicks: false,
-        display: false,
-      },
-    },
-  },
-  responsive: true,
-  maintainAspectRatio: false,
-}
-
 // TODO: refactor custom tooltip to work with Chart.js
 // const RewardTooltip = ({
 //   active,
@@ -165,17 +82,21 @@ const RewardsTrendWidget = ({
   dataPointTimePeriod = 'day',
   periodLabel,
   periodLength = 30,
+  isMobile,
+  padding = 3,
 }) => {
   const { market } = useMarket()
 
   const DATA_POINTS_TO_SHOW = periodLength
 
+  const iteratee = useMemo(() => (isMobile ? 'amount' : 'total'), [isMobile])
+
   const [firstValue, lastValue] = useMemo(() => {
     if (series.length <= DATA_POINTS_TO_SHOW) {
-      return [0, sumBy(series, 'total')]
+      return [0, sumBy(series, iteratee)]
     }
-    return chunk(series, DATA_POINTS_TO_SHOW).map((s) => sumBy(s, 'total'))
-  }, [DATA_POINTS_TO_SHOW, series])
+    return chunk(series, DATA_POINTS_TO_SHOW).map((s) => sumBy(s, iteratee))
+  }, [DATA_POINTS_TO_SHOW, iteratee, series])
 
   const change = useMemo(() => {
     return (lastValue - firstValue) / firstValue
@@ -189,10 +110,10 @@ const RewardsTrendWidget = ({
     return dataToDisplay.map((s) => {
       return {
         label: s.timestamp,
-        value: s.total,
+        value: s[iteratee],
       }
     })
-  }, [dataToDisplay])
+  }, [dataToDisplay, iteratee])
 
   const averageEarningsData = useMemo(() => {
     if (showTarget) {
@@ -214,6 +135,94 @@ const RewardsTrendWidget = ({
       return null
     }
   }, [dataToDisplay, showTarget, targetSeries])
+
+  const chartOptions = useMemo(
+    () => ({
+      layout: { autoPadding: false },
+      hover: { intersect: false },
+      backdropPadding: 0,
+      padding: 0,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          // TODO: re-enable custom tooltip component
+          // enabled: false,
+          // external: customTooltip,
+          caretPadding: 10,
+          caretX: 0,
+          caretY: 0,
+          intersect: false,
+          mode: 'index',
+          yAlign: 'center',
+          position: 'nearest',
+          callbacks: {
+            label: (item) => {
+              const {
+                dataset: { label },
+              } = item
+              const { raw } = item
+              if (raw === 'N/A') {
+                return ''
+              }
+              const amount = isMobile
+                ? new Balance(raw, CurrencyType.mobile)
+                : Balance.fromFloat(raw, CurrencyType.networkToken)
+              return `${label}: ${amount.toString(3)}`
+            },
+          },
+          displayColors: false,
+          padding: 3,
+          pointHitRadius: 5,
+          pointRadius: 1,
+          caretSize: 10,
+          backgroundColor: 'rgba(255,255,255,.9)',
+          borderWidth: 1,
+          bodyFont: {
+            family: 'Inter',
+            size: 12,
+          },
+          bodyColor: '#303030',
+          titleFont: {
+            family: 'Inter',
+          },
+          titleColor: 'rgba(0,0,0,0.6)',
+        },
+      },
+      scales: {
+        y: {
+          ticks: {
+            display: false,
+          },
+          grid: {
+            drawBorder: false,
+            borderWidth: 0,
+            drawTicks: false,
+            color: 'transparent',
+            width: 0,
+            backdropPadding: 0,
+          },
+          drawBorder: false,
+          drawTicks: false,
+        },
+        x: {
+          ticks: {
+            display: false,
+          },
+          grid: {
+            drawBorder: false,
+            borderWidth: 0,
+            drawTicks: false,
+            display: false,
+          },
+        },
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+    }),
+    [isMobile],
+  )
 
   const chartContainerRef = useRef(null)
   const [chartContainerWidth, setChartContainerWidth] = useState(271)
@@ -274,28 +283,46 @@ const RewardsTrendWidget = ({
   ])
 
   return (
-    <div className="bg-gray-200 p-3 rounded-lg flex flex-col col-span-2">
+    <div
+      className={`col-span-2 flex flex-col rounded-lg bg-gray-200 p-${padding}`}
+    >
       <div
         className={classNames('flex', {
           'h-28': !periodSelector,
           'h-24': periodSelector,
         })}
       >
-        <div className="w-1/3 relative">
-          <div className="text-gray-600 absolute text-sm whitespace-nowrap">
+        <div className="relative w-1/3">
+          <div className="absolute whitespace-nowrap text-sm text-gray-600">
             {title}
           </div>
-          <div className="text-3xl font-medium mt-1.5 tracking-tight pt-4">
-            {isLoading ? <Skeleton /> : <LargeBalance value={lastValue} />}
-          </div>
-
-          <div className="text-base text-gray-600 mb-1 tracking-tight w-full break-all">
-            {isLoading || !market ? (
-              <Skeleton className="w-1/3 my-2" />
+          <div
+            className={classNames('mt-1.5 pt-4 font-medium tracking-tight', {
+              'text-2xl': isMobile,
+              'text-3xl': !isMobile,
+            })}
+          >
+            {isLoading ? (
+              <Skeleton />
             ) : (
-              <Currency value={lastValue * market?.price} isLarge />
+              <LargeBalance
+                value={
+                  isMobile
+                    ? lastValue * CurrencyType.mobile.coefficient
+                    : lastValue
+                }
+              />
             )}
           </div>
+          {!isMobile && (
+            <div className="mb-1 w-full break-all text-base tracking-tight text-gray-600">
+              {isLoading || !market ? (
+                <Skeleton className="my-2 w-1/3" />
+              ) : (
+                <Currency value={lastValue * market?.price} isLarge />
+              )}
+            </div>
+          )}
           {firstValue > 0 && (
             <div
               className={classNames('text-sm font-medium', {
@@ -311,8 +338,8 @@ const RewardsTrendWidget = ({
             </div>
           )}
         </div>
-        <div className="p-4 pr-0 relative w-[99%]">
-          <div className="max-w-full h-full" ref={chartContainerRef}>
+        <div className="relative w-[99%] p-4 pr-0">
+          <div className="h-full max-w-full" ref={chartContainerRef}>
             <Bar
               options={chartOptions}
               data={data}
@@ -324,7 +351,7 @@ const RewardsTrendWidget = ({
             />
           </div>
           {periodLabel && (
-            <div className="absolute right-4 bottom-0 text-gray-550 text-xs z-10">
+            <div className="absolute right-4 bottom-0 z-10 text-xs text-gray-550">
               {periodLabel}
             </div>
           )}

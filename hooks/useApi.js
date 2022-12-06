@@ -12,7 +12,7 @@ export const API_BASES = {
 export const fetchApi =
   (version = 'v1') =>
   async (route) => {
-    const base = API_BASES['dev']
+    const base = NETWORK === 'mainnet' ? API_BASES[version] : API_BASES[NETWORK]
     const url = [base, route].join('')
     const response = await fetch(url, {
       headers: {

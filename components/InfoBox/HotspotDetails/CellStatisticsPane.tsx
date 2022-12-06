@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import InfoBoxPaneContainer from '../Common/InfoBoxPaneContainer'
 import useApi from '../../../hooks/useApi'
 import CellStatusWidget, { isRadioActive } from '../../Widgets/CellStatusWidget'
@@ -7,6 +7,7 @@ import { SWRResponse } from 'swr'
 import CellSpeedtestWidget from '../../Widgets/CellSpeedtestWidget'
 import { sortBy } from 'lodash'
 import { Skeleton } from 'antd'
+import PeriodizedRewardsWidget from '../../Widgets/PeriodizedRewardsWidget'
 
 export type CellHotspot = {
   blockTimestamp: string
@@ -62,8 +63,25 @@ const CellStatisticsPane = ({ hotspot }: Props) => {
     `/cell/hotspots/${hotspot.address}/avg-speedtest`,
   )
 
+  const periods = useMemo(
+    () => [
+      { number: 1, type: 'day' },
+      { number: 7, type: 'day' },
+      { number: 14, type: 'day' },
+      { number: 30, type: 'day' },
+    ],
+    [],
+  )
+
   return (
     <InfoBoxPaneContainer>
+      <PeriodizedRewardsWidget
+        address={hotspot?.address}
+        title="Hotspot Mobile Earnings (UTC)"
+        titleTooltip="Earned rewards will appear on the Blockchain in about 30 minutes after the Reward Period ends."
+        type="hotspotRadios"
+        periods={periods}
+      />
       <CellSpeedtestWidget
         cellSpeedtest={cellSpeedtest}
         loading={cellSpeedtest === undefined}

@@ -6,6 +6,7 @@ import StatusIcon from '../InfoBox/HotspotDetails/StatusIcon'
 import { Tooltip } from 'antd'
 import classNames from 'classnames'
 import { InfoCircleOutlined } from '@ant-design/icons'
+import PeriodizedRewardsWidget from './PeriodizedRewardsWidget'
 
 type Props = {
   cellHotspot?: CellHeartbeat
@@ -68,6 +69,16 @@ const CellStatusWidget = ({ cellHotspot }: Props) => {
     return cellHotspot.cbsdId.slice(length - 4, length)
   }, [cellHotspot?.cbsdId])
 
+  const periods = useMemo(
+    () => [
+      { number: 1, type: 'day' },
+      { number: 7, type: 'day' },
+      { number: 14, type: 'day' },
+      { number: 30, type: 'day' },
+    ],
+    [],
+  )
+
   return (
     <div className="col-span-2 flex flex-col rounded-lg bg-gray-200 p-3 py-4 font-medium">
       <div className="flex flex-col">
@@ -112,6 +123,17 @@ const CellStatusWidget = ({ cellHotspot }: Props) => {
             </span>
           </div>
         </Tooltip>
+      </div>
+      <div className="pt-3">
+        <PeriodizedRewardsWidget
+          address={cellHotspot?.hotspotAddress}
+          radioAddress={cellHotspot?.cbsdId}
+          title="Earnings (UTC)"
+          titleTooltip="Earned rewards will appear on the Blockchain in about 30 minutes after the Reward Period ends."
+          type="radio"
+          periods={periods}
+          padding={0}
+        />
       </div>
     </div>
   )

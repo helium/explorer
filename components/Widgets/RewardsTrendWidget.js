@@ -237,7 +237,11 @@ const RewardsTrendWidget = ({
   }, [chartContainerRef])
 
   const data = useMemo(() => {
-    const width = chartContainerWidth / (dataToDisplay.length * 2)
+    let width = chartContainerWidth / (dataToDisplay.length * 2)
+    if (dataToDisplay.length === 1) {
+      // hide bar if there is only one
+      width = 0
+    }
 
     const labels = dataToDisplay.map((s) => {
       const date = new Date(s.timestamp)

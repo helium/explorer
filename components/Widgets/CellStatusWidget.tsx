@@ -122,6 +122,7 @@ const CellStatusWidget = ({ cellHotspot }: Props) => {
           titleTooltip="Earned rewards will appear on the Blockchain in about 30 minutes after the Reward Period ends."
           type="radio"
           periods={[
+            { number: 1, type: 'day' },
             { number: 7, type: 'day' },
             { number: 14, type: 'day' },
             { number: 30, type: 'day' },

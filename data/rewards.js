@@ -166,7 +166,7 @@ export const useRewardBuckets = (
   bucketType = 'day',
   radioAddress,
 ) => {
-  const key = `rewards/${type}s/${address}/${numBack}/${bucketType}`
+  const key = `rewards/${type}s/${address}/${numBack}/${bucketType}/${radioAddress}`
 
   const fetcher = (address, numBack, bucketType) => () => {
     switch (type) {

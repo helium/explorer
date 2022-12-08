@@ -166,9 +166,9 @@ export const useRewardBuckets = (
   bucketType = 'day',
   radioAddress,
 ) => {
-  const key = `rewards/${type}s/${address}/${numBack}/${bucketType}`
+  const key = `rewards/${type}s/${address}/${numBack}/${bucketType}/${radioAddress}`
 
-  const fetcher = (address, numBack, bucketType) => () => {
+  const fetcher = (address, numBack, bucketType, radioAddress) => () => {
     switch (type) {
       case 'account':
         return getAccountRewardsBuckets(address, numBack, bucketType)
@@ -190,9 +190,13 @@ export const useRewardBuckets = (
     }
   }
 
-  const { data, error } = useSWR(key, fetcher(address, numBack, bucketType), {
-    refreshInterval: 1000 * 60 * 10,
-  })
+  const { data, error } = useSWR(
+    key,
+    fetcher(address, numBack, bucketType, radioAddress),
+    {
+      refreshInterval: 1000 * 60 * 10,
+    },
+  )
 
   return {
     rewards: data,

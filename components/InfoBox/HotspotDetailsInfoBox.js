@@ -202,6 +202,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
   const generateTitle = useCallback(
     (address) => {
       const title = animalHash(address)
+      const crowdspotAddress = 'https://www.crowdspot.io/hotspots/' + address
 
       return (
         <div className="flex flex-col items-start justify-start">
@@ -210,11 +211,11 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
           </div>
           {isOnDenylist && (
             <Tooltip
-              title="This Hotspot is on the denylist. Click to learn more."
+              title="This Hotspot is on the Denylist. Click to learn more."
               placement="right"
             >
               <a
-                href="https://github.com/helium/denylist"
+                href={crowdspotAddress}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs font-sans uppercase text-white font-black bg-red-400 hover:bg-red-500 rounded-md px-2 py-1 mt-1 flex items-center justify-center"

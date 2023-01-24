@@ -13,6 +13,12 @@ export const useValidator = (address) => {
 
   const { data, error } = useSWR(key, fetcher(address), {
     refreshInterval: 1000 * 60,
+    onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+      if (error.message === 'Request failed with status code 404') return
+      if (retryCount >= 5) return
+
+      setTimeout(() => revalidate({ retryCount }), 5000)
+    },
   })
 
   return {

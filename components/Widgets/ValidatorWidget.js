@@ -7,7 +7,12 @@ import HeartbeatIcon from '../Icons/HeartbeatIcon'
 import TitleWithIcon from '../InfoBox/Common/TitleWithIcon'
 
 const ValidatorWidget = ({ title, titleIconPath, address }) => {
-  const { validator } = useValidator(address)
+  const { validator, isError } = useValidator(address)
+
+  if (isError?.message === 'Request failed with status code 404') {
+    // not a validator address, might be an oracle
+    return null
+  }
 
   if (!validator) return <Widget span={2} isLoading />
 

@@ -10,14 +10,19 @@ const PocRequestV1 = ({ txn, inline }) => {
   const [challenger, setChallenger] = useState()
 
   useAsync(async () => {
+    if (!txn.challenger) return
     const fetchedChallenger = await fetchHotspot(txn.challenger)
     setChallenger(fetchedChallenger)
   }, [])
 
   return (
     <InfoBoxPaneContainer padding={!inline}>
-      <HotspotWidget title="Challenger Hotspot" hotspot={challenger} />
-      <AccountWidget title="Challenger Owner" address={txn.challengerOwner} />
+      {challenger && (
+        <HotspotWidget title="Challenger Hotspot" hotspot={challenger} />
+      )}
+      {txn.challengerOwner && (
+        <AccountWidget title="Challenger Owner" address={txn.challengerOwner} />
+      )}
       <Widget title="Version" value={txn.version} />
       <Widget title="Fee" value={txn.fee.toString()} />
       <Widget

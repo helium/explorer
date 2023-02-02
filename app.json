@@ -3,6 +3,7 @@
   "description": "A Helium blockchain explorer",
   "website": "https://explorer.helium.com",
   "repository": "https://github.com/helium/explorer",
+  "stack": "heroku-22",
   "buildpacks": [
     {
       "url": "heroku/nodejs"

@@ -231,7 +231,8 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
   )
 
   const { challengeIssuer } = useChallengeIssuer()
-  const liteHotspotsActive = challengeIssuer === 'validator'
+  const liteHotspotsActive =
+    challengeIssuer === 'validator' || challengeIssuer === 'oracle'
 
   return (
     <InfoBox

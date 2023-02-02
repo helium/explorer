@@ -64,6 +64,8 @@ const PoCReceiptSummary = ({ txn, address, role }) => {
           </p>
         </div>
       )
+    } else {
+      return null
     }
   } else if (role === 'challengee') {
     return (

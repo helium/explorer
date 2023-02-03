@@ -1,6 +1,5 @@
 import {
   getHumanReadableInvalidReason,
-  // getPocReceiptRole,
   getPocReceiptRoleFromFullTxn,
 } from '../../../../utils/txns'
 import animalHash from 'angry-purple-tiger'
@@ -13,6 +12,7 @@ import ActivityIcon from '../ActivityIcon'
 import FlagLocation from '../../../Common/FlagLocation'
 import { Link } from 'react-router-i18n'
 import ArrowIcon from '../../../Icons/ArrowIcon'
+import useChallengeIssuer from '../../../../hooks/useChallengeIssuer'
 
 const ActiveWitnessInfo = ({
   activeWitness,
@@ -22,9 +22,9 @@ const ActiveWitnessInfo = ({
   const [witnessLat, witnessLng] = h3ToGeo(activeWitness.locationHex)
 
   return (
-    <div className="grid grid-cols-8 text-xs font-sans font-thin text-gray-800 px-4 py-2 whitespace-nowrap bg-bluegray-50 rounded-md mt-2">
+    <div className="mt-2 grid grid-cols-8 whitespace-nowrap rounded-md bg-bluegray-50 px-4 py-2 font-sans text-xs font-thin text-gray-800">
       <span className="col-span-2">Distance</span>
-      <span className="col-span-2 text-gray-800 font-medium ml-0.5">
+      <span className="col-span-2 ml-0.5 font-medium text-gray-800">
         {challengeeLng &&
           formatHexDistance(
             calculateDistance(
@@ -34,7 +34,7 @@ const ActiveWitnessInfo = ({
           )}
       </span>
       <span className="col-span-2">RSSI</span>
-      <span className="col-span-2 text-gray-800 font-medium ml-0.5">
+      <span className="col-span-2 ml-0.5 font-medium text-gray-800">
         {activeWitness.signal &&
           `${activeWitness.signal?.toLocaleString(undefined, {
             maximumFractionDigits: 2,
@@ -42,7 +42,7 @@ const ActiveWitnessInfo = ({
             dBm`}
       </span>
       <span className="col-span-2">SNR</span>
-      <span className="col-span-2 text-gray-800 font-medium ml-0.5">
+      <span className="col-span-2 ml-0.5 font-medium text-gray-800">
         {activeWitness.snr &&
           `${activeWitness.snr?.toLocaleString(undefined, {
             maximumFractionDigits: 2,
@@ -50,7 +50,7 @@ const ActiveWitnessInfo = ({
             dB`}
       </span>
       <span className="col-span-2">Frequency</span>
-      <span className="col-span-2 text-gray-800 font-medium ml-0.5">
+      <span className="col-span-2 ml-0.5 font-medium text-gray-800">
         {activeWitness.frequency &&
           `${activeWitness.frequency.toLocaleString(undefined, {
             maximumFractionDigits: 1,
@@ -63,10 +63,10 @@ const ActiveWitnessInfo = ({
 const WitnessesDetails = ({ txn, role, address, isWitness }) => {
   const activeWitness = txn.path[0].witnesses.find((w) => w.gateway === address)
   return (
-    <div className="flex flex-col mr-4 w-full">
+    <div className="mr-4 flex w-full flex-col">
       {/* if this hotspot is a witness and is invalid, display the reason why */}
       {role === 'poc_witnesses_invalid' && (
-        <span className="text-xs font-sans font-semibold text-red-500 mt-0 mb-2 ml-[22px]">
+        <span className="mt-0 mb-2 ml-[22px] font-sans text-xs font-semibold text-red-500">
           Invalid Witness:{' '}
           {getHumanReadableInvalidReason(activeWitness?.invalidReason)}
         </span>
@@ -85,6 +85,7 @@ const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
     // getPocReceiptRole(initialRole)
     // once "witness_invalid" is added to the list of possible roles
     getPocReceiptRoleFromFullTxn(txn, address)
+  const { challengeIssuer } = useChallengeIssuer()
 
   const beaconerAddress = txn.path[0].challengee
   const challengerAddress = txn.challenger
@@ -94,82 +95,81 @@ const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
   const isWitness =
     role === 'poc_witnesses_valid' || role === 'poc_witnesses_invalid'
 
-  const challengeIssuer =
-    txn.type === 'poc_receipts_v1' ? 'hotspot' : 'validator'
-
   return (
-    <div className="w-full flex flex-col items-center justify-center space-y-px tracking-tight">
-      <div className="bg-white w-full rounded-t-lg px-2 py-2 flex flex-row items-start justify-start">
-        <ActivityIcon txn={{ type: 'poc_receipts_v1', role: 'challenger' }} />
-        <div className="ml-2 flex flex-col items-start justify-start">
-          <span className="text-xs font-sans font-light">Challenger</span>
-          {isChallenger ? (
-            <span className="-mt-0.5 md:-mt-1 text-sm md:text-base flex flex-row items-center justify-start text-black font-medium">
-              <ArrowIcon className="text-black w-4 h-auto mr-1 inline" />
-              {animalHash(address)}
-            </span>
-          ) : (
-            <Link
-              to={`/${challengeIssuer}s/${challengerAddress}`}
-              className="-mt-1 flex flex-row items-center justify-start text-sm md:text-base font-sans font-medium text-black hover:text-navy-400 outline-none border border-solid border-transparent focus:border-navy-400"
-            >
-              {animalHash(challengerAddress)}
-            </Link>
-          )}
+    <div className="flex w-full flex-col items-center justify-center space-y-px tracking-tight">
+      {challengeIssuer !== 'oracle' ? (
+        <div className="flex w-full flex-row items-start justify-start rounded-t-lg bg-white px-2 py-2">
+          <ActivityIcon txn={{ type: 'poc_receipts_v1', role: 'challenger' }} />
+          <div className="ml-2 flex flex-col items-start justify-start">
+            <span className="font-sans text-xs font-light">Challenger</span>
+            {isChallenger ? (
+              <span className="-mt-0.5 flex flex-row items-center justify-start text-sm font-medium text-black md:-mt-1 md:text-base">
+                <ArrowIcon className="mr-1 inline h-auto w-4 text-black" />
+                {animalHash(address)}
+              </span>
+            ) : (
+              <Link
+                to={`/${challengeIssuer}s/${challengerAddress}`}
+                className="-mt-1 flex flex-row items-center justify-start border border-solid border-transparent font-sans text-sm font-medium text-black outline-none hover:text-navy-400 focus:border-navy-400 md:text-base"
+              >
+                {animalHash(challengerAddress)}
+              </Link>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="w-full flex flex-row items-stretch justify-center space-x-px h-full">
-        <div className="bg-white px-2 py-2 w-full flex flex-row items-start justify-start">
+      ) : null}
+      <div className="flex h-full w-full flex-row items-stretch justify-center space-x-px">
+        <div className="flex w-full flex-row items-start justify-start bg-white px-2 py-2">
           <ActivityIcon txn={{ type: 'poc_receipts_v1', role: 'challengee' }} />
           <div className="ml-2 flex flex-col items-start justify-start">
             <span className="flex flex-col items-start justify-start">
-              <span className="text-xs font-sans font-light">Beaconer</span>
+              <span className="font-sans text-xs font-light">Beaconer</span>
               {isBeaconer ? (
-                <span className="-mt-0.5 md:-mt-1 text-sm md:text-base flex flex-row items-center justify-start text-black font-medium">
-                  <ArrowIcon className="text-black w-4 h-auto mr-1 inline" />
+                <span className="-mt-0.5 flex flex-row items-center justify-start text-sm font-medium text-black md:-mt-1 md:text-base">
+                  <ArrowIcon className="mr-1 inline h-auto w-4 text-black" />
                   {animalHash(address)}
                 </span>
               ) : (
                 <Link
                   to={`/hotspots/${beaconerAddress}`}
-                  className="-mt-0.5 md:-mt-1 flex flex-row items-center justify-start text-sm md:text-base font-sans font-medium text-black hover:text-navy-400 outline-none border border-solid border-transparent focus:border-navy-400"
+                  className="-mt-0.5 flex flex-row items-center justify-start border border-solid border-transparent font-sans text-sm font-medium text-black outline-none hover:text-navy-400 focus:border-navy-400 md:-mt-1 md:text-base"
                 >
                   {animalHash(beaconerAddress)}
                 </Link>
               )}
             </span>
-            <span className="text-xs md:text-sm font-sans font-light text-black ml-0.5 whitespace-nowrap">
+            <span className="ml-0.5 whitespace-nowrap font-sans text-xs font-light text-black md:text-sm">
               <FlagLocation geocode={txn.path[0].geocode} condensedView />
             </span>
           </div>
         </div>
       </div>
 
-      <div className="bg-white px-2 py-2 w-full flex flex-col items-start justify-start">
+      <div className="flex w-full flex-col items-start justify-start bg-white px-2 py-2">
         <div className="flex flex-row items-start justify-start">
           <ActivityIcon txn={{ type: 'poc_receipts_v1', role: 'witness' }} />
           <div className="ml-2 flex flex-col items-start justify-start">
             <span className="flex flex-col items-start justify-start">
               <span className="flex flex-row items-center justify-start">
-                <span className="text-xs font-sans font-light">Witnesses</span>
-                <div className="flex flex-row items-center justify-start space-x-1 ml-2">
+                <span className="font-sans text-xs font-light">Witnesses</span>
+                <div className="ml-2 flex flex-row items-center justify-start space-x-1">
                   <div className="flex items-center justify-center">
                     <img
                       src="/images/witness-yellow-mini.svg"
-                      className="w-3 h-auto"
+                      className="h-auto w-3"
                       alt=""
                     />
-                    <span className="text-xs font-sans font-light text-black ml-0.5">
+                    <span className="ml-0.5 font-sans text-xs font-light text-black">
                       {txn?.numberOfValidWitnesses}
                     </span>
                   </div>
                   <div className="flex items-center justify-center">
                     <img
                       src="/images/witness-gray.svg"
-                      className="w-3 h-auto"
+                      className="h-auto w-3"
                       alt=""
                     />
-                    <span className="text-xs font-sans font-light text-black ml-0.5">
+                    <span className="ml-0.5 font-sans text-xs font-light text-black">
                       {txn?.numberOfInvalidWitnesses}
                     </span>
                   </div>
@@ -177,9 +177,9 @@ const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
               </span>
 
               {isWitness ? (
-                <span className="-mt-0.5 md:-mt-1 flex flex-row space-x-1 align-center justify-start text-sm md:text-base font-sans font-medium">
+                <span className="align-center -mt-0.5 flex flex-row justify-start space-x-1 font-sans text-sm font-medium md:-mt-1 md:text-base">
                   <span className="flex flex-row items-center justify-start text-black">
-                    <ArrowIcon className="text-black w-4 h-auto mr-1 inline" />
+                    <ArrowIcon className="mr-1 inline h-auto w-4 text-black" />
                     {animalHash(address)}
                   </span>
                   {txn.path[0].witnesses.length > 1 && (
@@ -191,7 +191,7 @@ const ExpandedPoCReceiptContent = ({ txn, role: initialRole, address }) => {
                   )}
                 </span>
               ) : (
-                <span className="-mt-0.5 md:-mt-1 text-sm md:text-base font-sans font-medium text-gray-550">
+                <span className="-mt-0.5 font-sans text-sm font-medium text-gray-550 md:-mt-1 md:text-base">
                   {txn.path[0].witnesses.length} hotspots
                 </span>
               )}

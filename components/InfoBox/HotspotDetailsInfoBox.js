@@ -214,7 +214,7 @@ const HotspotDetailsInfoBox = ({ address, isLoading, hotspot }) => {
               placement="right"
             >
               <a
-                href="https://github.com/helium/denylist"
+                href="https://docs.helium.com/mine-hnt/denylist/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs font-sans uppercase text-white font-black bg-red-400 hover:bg-red-500 rounded-md px-2 py-1 mt-1 flex items-center justify-center"

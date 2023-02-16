@@ -77,29 +77,10 @@ export const communityToolsList = [
     description: 'Check your hotspot vitals and your rewards, get notified for network issues and rewards. HeliumGeek supports iOS, Android, iOS widgets and Apple Watch app with complications.',
     tags: [types.monitoring, types.android, types.ios],
   },
-  {
-    name: 'Heliumbot.io',
-    url: 'https://heliumbot.io',
-    description:
-      'Managed hotspot monitoring and profit calculation service providing push notifications',
-    tags: [types.monitoring],
-  },
-  {
-    name: 'Helium Hosts',
-    url: 'https://heliumhosts.com/',
-    description: 'Network with other Hotspot owners in your area',
-    tags: [types.planning],
-  },
    {
     name: 'Helium (HNT) Rewards Checker',
     url: 'https://hntrewards.xyz/',
     description: 'Check the rewards of any miner using a predefined time period or a custom one including its equivalent value in any of the top FIAT currencies',
-    tags: [types.monitoring],
-  },
-  {
-    name: 'HeliumStatus.io',
-    url: 'https://app.heliumstatus.io',
-    description: 'Diagnostic tools and hotspot monitoring',
     tags: [types.monitoring],
   },
   {
@@ -125,13 +106,6 @@ export const communityToolsList = [
     url: 'https://heliummining.se/check-my-block-status/',
     description: 'Easily look up your Hotspot device block height, sync status, relay and more to track progress.',
     tags: [types.monitoring],
-  },
-  {
-    name: 'HNT-tracker',
-    url: 'https://hnt-tracker.fifu-verein.de/',
-    description:
-      'Free CSV exports for HNT rewards, balance and payments. Conversion into all major currencies. Useful for taxes.',
-    tags: [types.export],
   },
   {
     name: 'HNTMonitor',

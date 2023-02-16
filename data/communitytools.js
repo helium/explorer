@@ -109,12 +109,6 @@ export const communityToolsList = [
     tags: [types.export],
   },
   {
-    name: 'helium.tools',
-    url: 'https://helium.tools',
-    description: 'Set of tools to monitor and compare earnings in selected location(s).',
-    tags: [types.planning, types.monitoring],
-  },
-  {
     name: 'helium-reports',
     url: 'https://helium-reports.com',
     description: 'Monitor the revenue and profit of your hotspot in any currency! Free and without any without entering personal data! Usable for tax-declarations - exports are available as PDF and CSV!',

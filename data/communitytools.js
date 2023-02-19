@@ -90,9 +90,9 @@ export const communityToolsList = [
     tags: [types.export],
   },
   {
-    name: 'helium-reports',
-    url: 'https://helium-reports.com',
-    description: 'Monitor the revenue and profit of your hotspot in any currency! Free and without any without entering personal data! Usable for tax-declarations - exports are available as PDF and CSV!',
+    name: 'Helium Reports',
+    url: 'https://helium-reports.com/en?utm_source=explorer.helium.com&utm_medium=web&utm_campaign=tools',
+    description: 'Free and simple website to monitor and explore the rewards of your hotspots. Export all tax relevant transactions in your currency and download it in CSV or PDF in seconds. No registration or personal data required.',
     tags: [types.monitoring, types.export],
   },
   {

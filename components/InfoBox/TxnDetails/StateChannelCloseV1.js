@@ -8,7 +8,8 @@ import { Pagination } from 'antd'
 import { Link } from 'react-router-i18n'
 import AccountIcon from '../../AccountIcon'
 import AccountAddress from '../../AccountAddress'
-import { formatBytes } from '../../../utils/units'
+import { formatBytes, dcsToBytes } from '../../../utils/units'
+import { isCellularSCOwner } from '../../../utils/txns'
 
 const StateChannelCloseV1 = ({ txn }) => {
   const [totalPackets, setTotalPackets] = useState(0)
@@ -17,6 +18,7 @@ const StateChannelCloseV1 = ({ txn }) => {
   const [totalBytes, setTotalBytes] = useState(0)
 
   const [data, setData] = useState([])
+  const isCellular = isCellularSCOwner(txn.stateChannel.owner)
 
   useEffect(() => {
     const parsedData = []
@@ -26,13 +28,13 @@ const StateChannelCloseV1 = ({ txn }) => {
     txn.stateChannel.summaries.forEach((s) => {
       packetTally += s.numPackets
       dcTally += s.numDcs
-      byteTally += s.numDcs * 24
+      byteTally += dcsToBytes(s.numDcs, isCellular)
       parsedData.push({
         client: s.client,
         owner: s.owner,
         numPackets: s.numPackets,
         numDcs: s.numDcs,
-        num_bytes: s.numDcs * 24,
+        num_bytes: dcsToBytes(s.numDcs, isCellular),
       })
     })
     parsedData.sort((b, a) =>
@@ -130,7 +132,14 @@ const StateChannelCloseV1 = ({ txn }) => {
 
   return (
     <InfoBoxPaneContainer>
-      <Widget title="Total Packets" value={totalPackets.toLocaleString()} />
+      {isCellular ? (
+        <Widget
+          title="Data Type"
+          value={<img alt="" src="/images/5g.svg" className="mt-1 w-9" />}
+        />
+      ) : (
+        <Widget title="Total Packets" value={totalPackets.toLocaleString()} />
+      )}
       <Widget title="Total Data" value={formatBytes(totalBytes)} />
       <Widget title="Total DC Spent" value={totalDcs.toLocaleString()} />
       <Widget

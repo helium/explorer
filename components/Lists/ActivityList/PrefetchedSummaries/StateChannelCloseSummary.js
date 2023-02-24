@@ -1,6 +1,8 @@
-import { formatBytes } from '../../../../utils/units'
+import { formatBytes, dcsToBytes } from '../../../../utils/units'
+import { isCellularSCOwner } from '../../../../utils/txns'
 
 const StateChannelCloseSummary = ({ txn, role, address }) => {
+  const isCellular = isCellularSCOwner(txn.stateChannel.owner)
   return (
     <span className="flex items-center">
       {txn.stateChannel.summaries.map((s, i) => (
@@ -9,9 +11,13 @@ const StateChannelCloseSummary = ({ txn, role, address }) => {
           className="mr-1 w-full py-1 flex rounded-md justify-start items-center"
         >
           <div className="flex items-start justify-center flex-row space-x-1">
-            <span className="text-gray-800 font-sans text-xs whitespace-nowrap">
-              {s.numPackets} packets
-            </span>
+            {isCellular ? (
+              <img alt="" src="/images/5g.svg" className="w-4 self-center" />
+            ) : (
+              <span className="whitespace-nowrap font-sans text-xs text-gray-800">
+                {s.numPackets} packets
+              </span>
+            )}
             <span className="text-gray-800 font-sans text-xs font-extralight">
               |
             </span>
@@ -25,7 +31,7 @@ const StateChannelCloseSummary = ({ txn, role, address }) => {
               |
             </span>
             <span className="text-gray-800 font-sans text-xs whitespace-nowrap">
-              {formatBytes(s.numDcs * 24)}
+              {formatBytes(dcsToBytes(s.numDcs, isCellular))}
             </span>
           </div>
         </span>

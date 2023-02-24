@@ -100,8 +100,12 @@ const StateChannelCloseV1 = ({ txn }) => {
                       </span>
                     </div>
                     <div className="text-sm leading-tight tracking-tighter text-gray-600 pt-1">
-                      {p.numPackets.toLocaleString()}{' '}
-                      {p.numPackets === 1 ? 'packet ' : 'packets '}
+                      {!isCellular && (
+                        <>
+                          {p.numPackets.toLocaleString()}{' '}
+                          {p.numPackets === 1 ? 'packet ' : 'packets '}
+                        </>
+                      )}
                       <span className="text-navy-600 pl-1.5">
                         {formatBytes(p.num_bytes)}
                       </span>
@@ -135,7 +139,7 @@ const StateChannelCloseV1 = ({ txn }) => {
       {isCellular ? (
         <Widget
           title="Data Type"
-          value={<img alt="" src="/images/5g.svg" className="mt-1 w-9" />}
+          value={<img alt="" src="/images/5g.svg" className="mt-1.5 w-8" />}
         />
       ) : (
         <Widget title="Total Packets" value={totalPackets.toLocaleString()} />

@@ -342,3 +342,10 @@ export const getHumanReadableInvalidReason = (rawInvalidReason) => {
     }
   }
 }
+
+export const isCellularSCOwner = (scOwner) => {
+  return (
+    scOwner === '11uJHS2YaEWJqgqC7yza9uvSmpv5FWoMQXiP8WbxBGgNUmifUJf' ||
+    scOwner === '112sgrEDx4iF5bLCCnArQeHwstm9vr3Gr32FZyAkFsEq5rhdbvYa'
+  )
+}

@@ -11,5 +11,5 @@ export const formatBytes = (bytes, decimals = 2) => {
 }
 
 export const dcsToBytes = (dcs, isCellular) => {
-  return isCellular ? dcs * 20000 : dcs * 24
+  return isCellular ? dcs * 21474.83648 : dcs * 24
 }

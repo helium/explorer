@@ -14,6 +14,19 @@ const TARGET_PRODUCTION = {
   [NETWORK_DATES[1]]: 5000000 / 2,
 }
 
+const getUTCTimeStamp = (date) => {
+  const year = date.getUTCFullYear()
+  const month = (date.getUTCMonth() + 1).toLocaleString('en-US', {
+    minimumIntegerDigits: 2,
+    useGrouping: false,
+  })
+  const day = date.getUTCDate().toLocaleString('en-US', {
+    minimumIntegerDigits: 2,
+    useGrouping: false,
+  })
+  return `${year}-${month}-${day}`
+}
+
 const getTargetProduction = (timestamp) => {
   const unixTimestamp = getUnixTime(new Date(timestamp))
   if (unixTimestamp >= NETWORK_DATES[1]) {
@@ -50,15 +63,16 @@ export const getHotspotRadioRewardsBuckets = async (address, numBack) => {
   if (!address) return
 
   const now = new Date()
-  now.setUTCHours(0, 0, 0, 0)
-  const maxTime = format(now, 'yyyy-MM-dd')
-  const minTime = format(sub(now, { days: numBack - 1 }), 'yyyy-MM-dd')
+  const start = sub(now, { days: 1 }) // previous day
+  const end = sub(now, { days: numBack })
+
+  console.log(getUTCTimeStamp(start), getUTCTimeStamp(end))
 
   const rewards = await fetchApi('v1')(
     `/cell/hotspots/${address}/rewards?` +
       qs.stringify({
-        max_date: maxTime,
-        min_date: minTime,
+        max_date: getUTCTimeStamp(start),
+        min_date: getUTCTimeStamp(end),
       }),
   )
   return rewards.reverse()
@@ -72,15 +86,14 @@ export const getRadioRewardsBuckets = async (
   if (!address || !radioAddress) return
 
   const now = new Date()
-  now.setUTCHours(0, 0, 0, 0)
-  const maxTime = format(now, 'yyyy-MM-dd')
-  const minTime = format(sub(now, { days: numBack - 1 }), 'yyyy-MM-dd')
+  const start = sub(now, { days: 1 }) // previous day
+  const end = sub(now, { days: numBack })
 
   const rewards = await fetchApi('v1')(
     `/cell/hotspots/${address}/cells/${radioAddress}/rewards?` +
       qs.stringify({
-        max_date: maxTime,
-        min_date: minTime,
+        max_date: getUTCTimeStamp(start),
+        min_date: getUTCTimeStamp(end),
       }),
   )
   return rewards.reverse()

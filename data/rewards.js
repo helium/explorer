@@ -62,11 +62,10 @@ export const getHotspotRewardsBuckets = async (address, numBack, bucket) => {
 export const getHotspotRadioRewardsBuckets = async (address, numBack) => {
   if (!address) return
 
-  const now = new Date()
-  const start = sub(now, { days: 1 }) // previous day
-  const end = sub(now, { days: numBack })
-
-  console.log(getUTCTimeStamp(start), getUTCTimeStamp(end))
+  // set base time back 2 hours for reward processing time
+  const baseTime = sub(new Date(), { hours: 2 })
+  const start = sub(baseTime, { days: 1 })
+  const end = sub(baseTime, { days: numBack })
 
   const rewards = await fetchApi('v1')(
     `/cell/hotspots/${address}/rewards?` +
@@ -85,9 +84,10 @@ export const getRadioRewardsBuckets = async (
 ) => {
   if (!address || !radioAddress) return
 
-  const now = new Date()
-  const start = sub(now, { days: 1 }) // previous day
-  const end = sub(now, { days: numBack })
+  // set base time back 2 hours for reward processing time
+  const baseTime = sub(new Date(), { hours: 2 })
+  const start = sub(baseTime, { days: 1 })
+  const end = sub(baseTime, { days: numBack })
 
   const rewards = await fetchApi('v1')(
     `/cell/hotspots/${address}/cells/${radioAddress}/rewards?` +

@@ -1,4 +1,4 @@
-import { format, getUnixTime, sub } from 'date-fns'
+import { getUnixTime, sub } from 'date-fns'
 import useSWR from 'swr'
 import client, { TAKE_MAX } from './client'
 import { fetchApi } from '../hooks/useApi'

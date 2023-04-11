@@ -12,6 +12,7 @@
     "@helium/http": "^4.7.5",
     "@mapbox/mapbox-gl-supported": "^2.0.0",
     "@mapbox/mapbox-sdk": "^0.13.0",
+    "@solana/web3.js": "^1.66.1",
     "@turf/distance": "^6.5.0",
     "@turf/helpers": "^6.5.0",
     "@welldone-software/why-did-you-render": "^6.1.4",

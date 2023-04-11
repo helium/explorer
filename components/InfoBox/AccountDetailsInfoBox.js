@@ -21,7 +21,9 @@ import { PublicKey } from '@solana/web3.js'
 const AccountDetailsInfoBox = () => {
   const { address } = useParams()
   const { maker, isLoading } = useMaker(address)
-  const solanaAddress = new PublicKey(Address.fromB58(address).publicKey).toBase58()
+  const solanaAddress = new PublicKey(
+    Address.fromB58(address).publicKey,
+  ).toBase58()
 
   const subtitles = useMemo(() => {
     if (maker)
@@ -50,23 +52,36 @@ const AccountDetailsInfoBox = () => {
   return (
     <InfoBox
       title={
-        <>
+        maker ? (
           <span className="flex items-center justify-start">
             <AccountIcon address={address} size={28} className="mr-2 mt-0.5" />
             <CopyableText textToCopy={address} tooltip="Copy address">
               <AccountAddress address={address} truncate={5} />
             </CopyableText>
           </span>
-          <a
-            className="flex items-center justify-start mt-2 ml-9 text-sm font-normal leading-none text-white hover:text-gray-100"
-            href={`https://explorer.solana.com/address/${solanaAddress}`}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <AccountAddressSolana address={address} truncate={11} />
-            <SolanaIcon className="text-green-500 w-3 h-auto ml-2" />
-          </a>
-        </>
+        ) : (
+          <>
+            <span className="flex items-center justify-start">
+              <AccountIcon
+                address={address}
+                size={28}
+                className="mr-2 mt-0.5"
+              />
+              <CopyableText textToCopy={address} tooltip="Copy address">
+                <AccountAddress address={address} truncate={5} />
+              </CopyableText>
+            </span>
+            <a
+              className="mt-2 ml-9 flex items-center justify-start text-sm font-normal leading-none text-white hover:text-gray-100"
+              href={`https://explorer.solana.com/address/${solanaAddress}`}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <AccountAddressSolana address={address} truncate={11} />
+              <SolanaIcon className="ml-2 h-auto w-3 text-green-500" />
+            </a>
+          </>
+        )
       }
       metaTitle={`Account ${address}`}
       subtitles={subtitles}

@@ -1,3 +1,7 @@
+# Archived
+
+This repository is **no longer used** for the helium blockchain explorer. The new codebase is in the [network-explorer](https://github.com/helium/network-explorer) repository
+
 # Helium Blockchain Explorer
 
 Code that powers the official [Helium Blockchain Explorer](https://explorer.helium.com/).
